@@ -18,6 +18,24 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- 参数校验依赖-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.0.Final</version>
+        </dependency>
+
+        <!-- aop切面依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+
     </dependencies>
 
     <build>

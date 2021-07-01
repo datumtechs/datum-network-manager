@@ -2,6 +2,15 @@
 spring:
   profiles:
     active: dev
+# ==================================== server conf  ==========================================
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    threads.max: 1000
+    threads.min-spare: 30
+  port: 8080
+  servlet:
+    context-path: /rosettanet-admin
 
 # ==================================== conf for mybatis =====================================
 mybatis:

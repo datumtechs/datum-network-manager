@@ -3,9 +3,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
     druid:
-      url: jdbc:mysql://al-sz-polardb-uat.rwlb.rds.aliyuncs.com:3306/dev_tracking_platon?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
-      username: dev_tracking_platon_rw
-      password: Aa123456
+      url: jdbc:mysql://192.168.9.191:3306/rosetta_admin?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+      username: platon
+      password: platon
       initial-size: 10
       max-active: 20
       min-idle: 10
@@ -32,6 +32,3 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-
-server:
-  port: 8080
