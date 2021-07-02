@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.TbTaskEventMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.TbTaskEvent">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="task_Id" jdbcType="VARCHAR" property="taskId" />
+    <result column="task_Name" jdbcType="VARCHAR" property="taskName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_At" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="owner_Identity" jdbcType="VARCHAR" property="ownerIdentity" />
+    <result column="owner_Name" jdbcType="VARCHAR" property="ownerName" />
+    <result column="last_Update_Time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_Id, task_Name, type, content, create_At, owner_Identity, owner_Name, last_Update_Time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_task_event
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_task_event
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.TbTaskEvent">
+    insert into tb_task_event (id, task_Id, task_Name, 
+      type, content, create_At, 
+      owner_Identity, owner_Name, last_Update_Time
+      )
+    values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{ownerIdentity,jdbcType=VARCHAR}, #{ownerName,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.TbTaskEvent">
+    insert into tb_task_event
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskId != null">
+        task_Id,
+      </if>
+      <if test="taskName != null">
+        task_Name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="createAt != null">
+        create_At,
+      </if>
+      <if test="ownerIdentity != null">
+        owner_Identity,
+      </if>
+      <if test="ownerName != null">
+        owner_Name,
+      </if>
+      <if test="lastUpdateTime != null">
+        last_Update_Time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ownerIdentity != null">
+        #{ownerIdentity,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerName != null">
+        #{ownerName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.TbTaskEvent">
+    update tb_task_event
+    <set>
+      <if test="taskId != null">
+        task_Id = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        task_Name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null">
+        create_At = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ownerIdentity != null">
+        owner_Identity = #{ownerIdentity,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerName != null">
+        owner_Name = #{ownerName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        last_Update_Time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.TbTaskEvent">
+    update tb_task_event
+    set task_Id = #{taskId,jdbcType=VARCHAR},
+      task_Name = #{taskName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      create_At = #{createAt,jdbcType=TIMESTAMP},
+      owner_Identity = #{ownerIdentity,jdbcType=VARCHAR},
+      owner_Name = #{ownerName,jdbcType=VARCHAR},
+      last_Update_Time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.TbGlobalPowerMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.TbGlobalPower">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="identity_Id" jdbcType="VARCHAR" property="identityId" />
+    <result column="node_Name" jdbcType="VARCHAR" property="nodeName" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="used_Processor" jdbcType="INTEGER" property="usedProcessor" />
+    <result column="used_Mem" jdbcType="BIGINT" property="usedMem" />
+    <result column="used_Bandwidth" jdbcType="BIGINT" property="usedBandwidth" />
+    <result column="total_Processor" jdbcType="INTEGER" property="totalProcessor" />
+    <result column="total_Mem" jdbcType="BIGINT" property="totalMem" />
+    <result column="total_Bandwidth" jdbcType="BIGINT" property="totalBandwidth" />
+    <result column="last_Update_Time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, identity_Id, node_Name, state, used_Processor, used_Mem, used_Bandwidth, total_Processor, 
+    total_Mem, total_Bandwidth, last_Update_Time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_global_power
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_global_power
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.TbGlobalPower">
+    insert into tb_global_power (id, identity_Id, node_Name, 
+      state, used_Processor, used_Mem, 
+      used_Bandwidth, total_Processor, total_Mem, 
+      total_Bandwidth, last_Update_Time)
+    values (#{id,jdbcType=INTEGER}, #{identityId,jdbcType=VARCHAR}, #{nodeName,jdbcType=VARCHAR}, 
+      #{state,jdbcType=VARCHAR}, #{usedProcessor,jdbcType=INTEGER}, #{usedMem,jdbcType=BIGINT}, 
+      #{usedBandwidth,jdbcType=BIGINT}, #{totalProcessor,jdbcType=INTEGER}, #{totalMem,jdbcType=BIGINT}, 
+      #{totalBandwidth,jdbcType=BIGINT}, #{lastUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.TbGlobalPower">
+    insert into tb_global_power
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="identityId != null">
+        identity_Id,
+      </if>
+      <if test="nodeName != null">
+        node_Name,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="usedProcessor != null">
+        used_Processor,
+      </if>
+      <if test="usedMem != null">
+        used_Mem,
+      </if>
+      <if test="usedBandwidth != null">
+        used_Bandwidth,
+      </if>
+      <if test="totalProcessor != null">
+        total_Processor,
+      </if>
+      <if test="totalMem != null">
+        total_Mem,
+      </if>
+      <if test="totalBandwidth != null">
+        total_Bandwidth,
+      </if>
+      <if test="lastUpdateTime != null">
+        last_Update_Time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="identityId != null">
+        #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null">
+        #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="usedProcessor != null">
+        #{usedProcessor,jdbcType=INTEGER},
+      </if>
+      <if test="usedMem != null">
+        #{usedMem,jdbcType=BIGINT},
+      </if>
+      <if test="usedBandwidth != null">
+        #{usedBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="totalProcessor != null">
+        #{totalProcessor,jdbcType=INTEGER},
+      </if>
+      <if test="totalMem != null">
+        #{totalMem,jdbcType=BIGINT},
+      </if>
+      <if test="totalBandwidth != null">
+        #{totalBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.TbGlobalPower">
+    update tb_global_power
+    <set>
+      <if test="identityId != null">
+        identity_Id = #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null">
+        node_Name = #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="usedProcessor != null">
+        used_Processor = #{usedProcessor,jdbcType=INTEGER},
+      </if>
+      <if test="usedMem != null">
+        used_Mem = #{usedMem,jdbcType=BIGINT},
+      </if>
+      <if test="usedBandwidth != null">
+        used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="totalProcessor != null">
+        total_Processor = #{totalProcessor,jdbcType=INTEGER},
+      </if>
+      <if test="totalMem != null">
+        total_Mem = #{totalMem,jdbcType=BIGINT},
+      </if>
+      <if test="totalBandwidth != null">
+        total_Bandwidth = #{totalBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateTime != null">
+        last_Update_Time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.TbGlobalPower">
+    update tb_global_power
+    set identity_Id = #{identityId,jdbcType=VARCHAR},
+      node_Name = #{nodeName,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      used_Processor = #{usedProcessor,jdbcType=INTEGER},
+      used_Mem = #{usedMem,jdbcType=BIGINT},
+      used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT},
+      total_Processor = #{totalProcessor,jdbcType=INTEGER},
+      total_Mem = #{totalMem,jdbcType=BIGINT},
+      total_Bandwidth = #{totalBandwidth,jdbcType=BIGINT},
+      last_Update_Time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

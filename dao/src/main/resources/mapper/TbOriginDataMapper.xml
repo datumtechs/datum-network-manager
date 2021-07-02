@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.TbOriginDataMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.TbOriginData">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="origin_Id" jdbcType="VARCHAR" property="originId" />
+    <result column="origin_Name" jdbcType="VARCHAR" property="originName" />
+    <result column="file_Path" jdbcType="VARCHAR" property="filePath" />
+    <result column="file_Type" jdbcType="VARCHAR" property="fileType" />
+    <result column="size" jdbcType="BIGINT" property="size" />
+    <result column="has_Title" jdbcType="CHAR" property="hasTitle" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="last_Update_Time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, origin_Id, origin_Name, file_Path, file_Type, size, has_Title, desc, last_Update_Time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_origin_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_origin_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.TbOriginData">
+    insert into tb_origin_data (id, origin_Id, origin_Name, 
+      file_Path, file_Type, size, 
+      has_Title, desc, last_Update_Time
+      )
+    values (#{id,jdbcType=INTEGER}, #{originId,jdbcType=VARCHAR}, #{originName,jdbcType=VARCHAR}, 
+      #{filePath,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, #{size,jdbcType=BIGINT}, 
+      #{hasTitle,jdbcType=CHAR}, #{desc,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.TbOriginData">
+    insert into tb_origin_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="originId != null">
+        origin_Id,
+      </if>
+      <if test="originName != null">
+        origin_Name,
+      </if>
+      <if test="filePath != null">
+        file_Path,
+      </if>
+      <if test="fileType != null">
+        file_Type,
+      </if>
+      <if test="size != null">
+        size,
+      </if>
+      <if test="hasTitle != null">
+        has_Title,
+      </if>
+      <if test="desc != null">
+        desc,
+      </if>
+      <if test="lastUpdateTime != null">
+        last_Update_Time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="originId != null">
+        #{originId,jdbcType=VARCHAR},
+      </if>
+      <if test="originName != null">
+        #{originName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=BIGINT},
+      </if>
+      <if test="hasTitle != null">
+        #{hasTitle,jdbcType=CHAR},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.TbOriginData">
+    update tb_origin_data
+    <set>
+      <if test="originId != null">
+        origin_Id = #{originId,jdbcType=VARCHAR},
+      </if>
+      <if test="originName != null">
+        origin_Name = #{originName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        file_Path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        file_Type = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        size = #{size,jdbcType=BIGINT},
+      </if>
+      <if test="hasTitle != null">
+        has_Title = #{hasTitle,jdbcType=CHAR},
+      </if>
+      <if test="desc != null">
+        desc = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        last_Update_Time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.TbOriginData">
+    update tb_origin_data
+    set origin_Id = #{originId,jdbcType=VARCHAR},
+      origin_Name = #{originName,jdbcType=VARCHAR},
+      file_Path = #{filePath,jdbcType=VARCHAR},
+      file_Type = #{fileType,jdbcType=VARCHAR},
+      size = #{size,jdbcType=BIGINT},
+      has_Title = #{hasTitle,jdbcType=CHAR},
+      desc = #{desc,jdbcType=VARCHAR},
+      last_Update_Time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

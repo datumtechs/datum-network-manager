@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.TbCarrierNodeMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.TbCarrierNode">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="identity_Id" jdbcType="VARCHAR" property="identityId" />
+    <result column="node_Id" jdbcType="VARCHAR" property="nodeId" />
+    <result column="carrier_IP" jdbcType="VARCHAR" property="carrierIp" />
+    <result column="carrier_Port" jdbcType="INTEGER" property="carrierPort" />
+    <result column="conn_Status" jdbcType="CHAR" property="connStatus" />
+    <result column="carrier_Status" jdbcType="CHAR" property="carrierStatus" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="conn_Time" jdbcType="TIMESTAMP" property="connTime" />
+    <result column="last_Update_Time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, name, identity_Id, node_Id, carrier_IP, carrier_Port, conn_Status, carrier_Status, 
+    desc, conn_Time, last_Update_Time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_carrier_node
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_carrier_node
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.TbCarrierNode">
+    insert into tb_carrier_node (Id, name, identity_Id, 
+      node_Id, carrier_IP, carrier_Port, 
+      conn_Status, carrier_Status, desc, 
+      conn_Time, last_Update_Time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, 
+      #{nodeId,jdbcType=VARCHAR}, #{carrierIp,jdbcType=VARCHAR}, #{carrierPort,jdbcType=INTEGER}, 
+      #{connStatus,jdbcType=CHAR}, #{carrierStatus,jdbcType=CHAR}, #{desc,jdbcType=VARCHAR}, 
+      #{connTime,jdbcType=TIMESTAMP}, #{lastUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.TbCarrierNode">
+    insert into tb_carrier_node
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="identityId != null">
+        identity_Id,
+      </if>
+      <if test="nodeId != null">
+        node_Id,
+      </if>
+      <if test="carrierIp != null">
+        carrier_IP,
+      </if>
+      <if test="carrierPort != null">
+        carrier_Port,
+      </if>
+      <if test="connStatus != null">
+        conn_Status,
+      </if>
+      <if test="carrierStatus != null">
+        carrier_Status,
+      </if>
+      <if test="desc != null">
+        desc,
+      </if>
+      <if test="connTime != null">
+        conn_Time,
+      </if>
+      <if test="lastUpdateTime != null">
+        last_Update_Time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="identityId != null">
+        #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null">
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierIp != null">
+        #{carrierIp,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierPort != null">
+        #{carrierPort,jdbcType=INTEGER},
+      </if>
+      <if test="connStatus != null">
+        #{connStatus,jdbcType=CHAR},
+      </if>
+      <if test="carrierStatus != null">
+        #{carrierStatus,jdbcType=CHAR},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="connTime != null">
+        #{connTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.TbCarrierNode">
+    update tb_carrier_node
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="identityId != null">
+        identity_Id = #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null">
+        node_Id = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierIp != null">
+        carrier_IP = #{carrierIp,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierPort != null">
+        carrier_Port = #{carrierPort,jdbcType=INTEGER},
+      </if>
+      <if test="connStatus != null">
+        conn_Status = #{connStatus,jdbcType=CHAR},
+      </if>
+      <if test="carrierStatus != null">
+        carrier_Status = #{carrierStatus,jdbcType=CHAR},
+      </if>
+      <if test="desc != null">
+        desc = #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="connTime != null">
+        conn_Time = #{connTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateTime != null">
+        last_Update_Time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.TbCarrierNode">
+    update tb_carrier_node
+    set name = #{name,jdbcType=VARCHAR},
+      identity_Id = #{identityId,jdbcType=VARCHAR},
+      node_Id = #{nodeId,jdbcType=VARCHAR},
+      carrier_IP = #{carrierIp,jdbcType=VARCHAR},
+      carrier_Port = #{carrierPort,jdbcType=INTEGER},
+      conn_Status = #{connStatus,jdbcType=CHAR},
+      carrier_Status = #{carrierStatus,jdbcType=CHAR},
+      desc = #{desc,jdbcType=VARCHAR},
+      conn_Time = #{connTime,jdbcType=TIMESTAMP},
+      last_Update_Time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
