@@ -1,3 +1,4 @@
+/*
 package com.platon.rosettanet.admin.filter;
 
 import cn.hutool.json.JSONUtil;
@@ -11,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+*/
 /**
  * 登录过滤器
- */
+ *//*
+
 
 @Component("loginFilter")
 public class LoginFilter implements Filter {
@@ -57,3 +60,4 @@ public class LoginFilter implements Filter {
         return true;
     }
 }
+*/

@@ -19,7 +19,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, node_Id, node_Name, conn_Status, power_Status, reason, internal_IP, internal_Port, 
-    external_IP, external_Port, start_Time, desc, create_Time, last_Update_Time
+    external_IP, external_Port, start_Time, `desc`, create_Time, last_Update_Time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -196,4 +196,10 @@
       last_Update_Time = #{lastUpdateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_power_node
+  </select>
 </mapper>
