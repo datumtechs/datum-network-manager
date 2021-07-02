@@ -1,0 +1,21 @@
+# ==================================== tidb conf  ==========================================
+spring:
+  profiles:
+    active: dev
+  application:
+    name: rosettanet-storage-server
+
+# ==================================== conf for mybatis =====================================
+mybatis:
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: com.platon.rosettanet.storage.dao.entity
+
+# =============================== conf for logger ===================================
+logging:
+  level: DEBUG
+  level.com.platon: DEBUG
+  pattern:
+    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15}[%line] - %msg%n'
+    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15}[%line] - %msg%n'
+  file:
+    name: logs/scan.log

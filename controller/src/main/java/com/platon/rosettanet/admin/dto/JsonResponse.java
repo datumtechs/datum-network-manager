@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -13,6 +15,11 @@ public class JsonResponse<T> {
     private int status = 0;   //0表示成功，其它表示错误代码
     private String msg;
     private T data;
+    private int total;          //列表查询满足条件总条数（用于分页）
+    private int pageTotal;      //	option	int	数据总页数
+    private int pageNumber;     //	option	int	第几页数据
+    private int pageSize;       //	option	int	分页请求每页数据条数
+    private List<T> list;       //返回报文JSON数组对象[{},{}...]
 
     public JsonResponse(int status, String msg, T data) {
         this.status = status;

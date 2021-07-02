@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class ControllerInterceptor {
 
-    @Pointcut("execution(public * com.platon.rosettanet.admin.controller.*.*(..))")
+    @Pointcut("execution(public * com.platon.rosettanet.admin.controller..*(..))")
     public void ControllerInterceptor() {
     }
 

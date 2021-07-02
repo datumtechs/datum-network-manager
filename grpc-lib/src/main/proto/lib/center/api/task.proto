@@ -1,0 +1,165 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/RosettaFlow/Carrier-Go/lib/center/api";
+option java_multiple_files = true;
+option java_package = "com.platon.rosettanet.admin.grpc.lib";
+
+import "lib/center/api/base.proto";
+import "lib/center/api/metadata.proto";
+
+// 任务摘要信息
+message TaskSummaryResponse {
+    string                task_id   = 1;
+    string                task_name = 2;
+    Organization          owner     = 3;
+    repeated Organization partners  = 4;
+  // 任务结果方（有多个）
+    repeated Organization receivers = 5;
+  // 任务开始时间，单位：秒级时间戳
+    uint64 create_at = 6;
+  // 任务结束时间，单位：秒级时间戳
+    uint64 end_at = 7;
+  // 任务状态：
+    string state = 8;
+}
+
+message TaskListRequest {
+    uint64 last_update_time = 1;
+}
+
+message TaskListResponse {
+  // 任务摘要列表
+    repeated TaskDetail task_list = 1;
+}
+
+// 任务详情请求参数
+message DetailTaskRequest {
+  // 任务ID，必选参数
+    string task_id = 1;
+}
+
+// 任务详情
+message TaskDetail {
+    string task_id   = 1;
+    string task_name = 2;
+  // 任务发起方组织
+    Organization owner = 3;
+  // 算法提供方组织
+    Organization algo_supplier = 4;
+  // 数据提供方组信息
+    repeated TaskDataSupplier data_supplier = 5;
+  // 算力提供方组织
+    repeated TaskPowerSupplier power_supplier = 6;
+  // 结果接收方组织
+    repeated TaskResultReceiver receivers = 7;
+  // 任务开始时间
+    uint64 create_at = 8;
+  // 任务结束时间
+    uint64 end_at = 9;
+  // 任务状态
+    string state = 10;
+  // 任务所需资源声明
+    TaskOperationCostDeclare operation_cost = 11;
+    // 任务描述
+    string desc = 12;
+}
+
+message TaskResultReceiver {
+    // // 结果接收方身份信息
+    Organization member_info = 1;
+    // 被接收结果的生成方身份信息
+    repeated Organization provider = 2;
+}
+
+// 任务数据提供方基本信息
+message TaskDataSupplier {
+  // 组织身份信息
+    Organization member_info = 1;
+  // 组织提供的元数据ID
+    string meta_id = 2;
+  // 组织提供的元数据名称
+    string                        meta_name   = 3;
+    repeated MetaDataColumnDetail column_meta = 4;
+}
+
+// 任务算力提供方基础信息
+message TaskPowerSupplier {
+  // 身份信息
+    Organization member_info = 1;
+  // 算力使用情况
+    ResourceUsedDetail power_info = 2;
+}
+
+// 系统本身资源使用信息
+message ResourceUsedDetail {
+  // 服务系统的总内存
+    uint64 total_mem = 2;
+  // 服务系统的已用内存
+    uint64 used_mem = 3;
+  // 服务的总内核数
+    uint32 total_processor = 4;
+  // 服务的已用内核数
+    uint32 used_processor = 5;
+  // 服务的总带宽数
+    uint64 total_bandwidth = 6;
+  // 服务的已用带宽数
+    uint64 used_bandwidth = 7;
+}
+
+// 定义任务所需资源的大小
+message TaskOperationCostDeclare {
+  // 任务所需的内存 (单位: byte)
+    uint64 cost_mem = 1;
+  // 任务所需的核数 (单位: 个)
+    uint32 cost_processor = 2;
+  // 任务所需的带宽 (单位: bps)
+    uint64 cost_bandwidth = 3;
+  // 任务所需的运行时长 (单位: ms)
+    uint64 duration = 4;
+}
+
+// 任务事件
+message TaskEvent {
+  // 事件类型码
+    string type = 1;
+  // 事件对应的任务id
+    string task_id = 2;
+  // 产生事件的节点身份
+    Organization owner = 3;
+  // 事件内容
+    string content = 4;
+  // 事件产生时间
+    uint64 create_at = 5;
+}
+
+message TaskEventRequest {
+    string task_id = 1;
+}
+
+message TaskEventResponse {
+  // 错误码，0 成功，1 异常
+    int32 status = 1;
+  // 错误信息
+    string msg = 2;
+  // 事件列表
+    repeated TaskEvent task_event_list = 3;
+}
+
+// TaskService defines the interface to interact with the central data service.
+service TaskService {
+
+  // 存储任务
+  rpc SaveTask(TaskDetail) returns (SimpleResponse);
+
+  // 查询任务详情（任务ID、节点ID、参与方标识）
+  rpc GetDetailTask(DetailTaskRequest) returns (TaskDetail);
+
+  // 查询任务列表
+  rpc ListTask(TaskListRequest) returns (TaskListResponse);
+
+  // 查询任务的事件列表
+  rpc ListTaskEvent(TaskEventRequest) returns (TaskEventResponse);
+
+}

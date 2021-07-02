@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/RosettaFlow/Carrier-Go/lib/center/api";
+option java_multiple_files = true;
+option java_package = "com.platon.rosettanet.admin.grpc.lib";
+
+import "lib/center/api/base.proto";
+
+message SaveIdentityRequest {
+    Organization member = 1;
+  // 节点的身份凭证（DID中的凭证信息）
+    string credential = 2;
+}
+
+message RevokeIdentityJoinRequest {
+    Organization member = 1;
+}
+
+message IdentityListRequest {
+  // 同步时间点，用于进行数据增量拉去
+    uint64 last_update_time = 1;
+}
+
+message IdentityListResponse {
+    repeated Organization identity_list = 1;
+  // 数据的最后更新点（秒级时间戳）
+    uint64 last_update_time = 2;
+}
+
+// 身份信息服务
+service IdentityService {
+
+  // 拉去所有的身份数据
+  rpc GetIdentityList(IdentityListRequest) returns (IdentityListResponse);
+
+  // 存储身份信息（节点用于申请接入网络的基本信息，详细的存于本地）
+  rpc SaveIdentity (SaveIdentityRequest) returns (SimpleResponse);
+
+  // 注销准入网络
+  rpc RevokeIdentityJoin (RevokeIdentityJoinRequest) returns (SimpleResponse);
+}
