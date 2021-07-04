@@ -1,22 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS rosetta_admin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+drop database if exists rosettanet_admin;
 
-use rosetta_admin;
-/*
-Navicat MySQL Data Transfer
+CREATE DATABASE rosettanet_admin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-Source Server         : 192.168.9.191
-Source Server Version : 50724
-Source Host           : 192.168.9.191:3306
-Source Database       : token_juweb
-
-Target Server Type    : MYSQL
-Target Server Version : 50724
-File Encoding         : 65001
-
-Date: 2021-06-20 17:58:18
-*/
-
-SET FOREIGN_KEY_CHECKS=0;
+USE rosettanet_admin;
 
 DELIMITER ;;
 
@@ -24,7 +10,7 @@ DELIMITER ;;
 DROP TABLE IF EXISTS bootstrap_node;;
 CREATE TABLE bootstrap_node(
      id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
-     rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+     rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id)
 ) COMMENT = '种子节点配置表';;
 
@@ -36,7 +22,7 @@ CREATE TABLE sys_config(
     config_Value VARCHAR(32)    COMMENT '配置值' ,
     status VARCHAR(10) NOT NULL  DEFAULT 'N' COMMENT '配置状态 enabled：可用, disabled:不可用' ,
     `desc` VARCHAR(32) COMMENT '配置描述' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id)
 ) COMMENT = '系统配置表 管理系统相关配置项，使用k-v形式';;
 ALTER TABLE sys_config ADD UNIQUE idx_config_key(config_Key);;
@@ -48,14 +34,14 @@ CREATE TABLE  sys_user(
     password VARCHAR(32) NOT NULL   COMMENT '密码 MD5加密' ,
     status VARCHAR(10)    COMMENT '用户状态 enabled：可用, disabled:不可用' ,
     is_Master CHAR(1)    COMMENT '是否为管理员 1管理员，0非管理' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id)
 ) COMMENT = '系统用户表 管理系统用户登陆信息';;
 
 -- 此表只有一条记录，有管理台添加
 DROP TABLE IF EXISTS local_org;;
 CREATE TABLE local_org(
-    name VARCHAR(32)    COMMENT '机构名称' ,
+    name VARCHAR(32) NOT NULL COMMENT '机构名称' ,
     identity_id VARCHAR(128)    COMMENT '机构身份标识ID',
     carrier_uuid VARCHAR(128)    COMMENT '机构调度服务uuid' ,
     carrier_IP VARCHAR(32)    COMMENT '调度服务IP地址' ,
@@ -63,7 +49,7 @@ CREATE TABLE local_org(
     carrier_conn_Status VARCHAR(10)    COMMENT '连接状态 enabled：可用, disabled:不可用' ,
     carrier_conn_Time DATETIME    COMMENT '服务连接时间' ,
     carrier_status VARCHAR(10)    COMMENT '服务状态 enabled：可用, disabled:不可用' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间'
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
 ) COMMENT = '本地组织信息表';;
 
 
@@ -75,9 +61,9 @@ CREATE TABLE global_org(
     identity_id VARCHAR(128)    COMMENT '机构身份标识ID' ,
     carrier_uuid VARCHAR(128)    COMMENT '机构调度服务uuid' ,
     status VARCHAR(10)    COMMENT '状态 enabled：可用, disabled:不可用' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id),
-    UNIQUE identity_id
+    UNIQUE (identity_id)
 ) COMMENT = '全网组织信息表，用于存储从全网同步过来的组织信息数据';;
 
 -- 此表数据有管理台添加
@@ -131,14 +117,14 @@ CREATE TABLE local_data_host(
 
     remarks VARCHAR(32)    COMMENT '节点备注' ,
     rec_create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id)
 ) COMMENT = '本组织数据节点配置表 配置数据节点相关信息';;
 
 
 -- 此表数据有管理台添加
 -- 是否需要个data_file_hash_id?
--- 数据上架后，回填metadata_id
+-- 数据上架后，回填meta_data_id
 DROP TABLE IF EXISTS local_data_file;;
 CREATE TABLE local_data_file(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
@@ -153,19 +139,21 @@ CREATE TABLE local_data_file(
     has_title BOOLEAN NOT NULL DEFAULT false comment '是否带标题',
     remarks VARCHAR(100) COMMENT '数据描述',
     status VARCHAR(20) NOT NULL DEFAULT 'created' COMMENT '数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
-    metadata_id VARCHAR(128) comment '元数据ID,hash',
+    meta_data_id VARCHAR(128) comment '元数据ID,hash',
     rec_create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
 	PRIMARY KEY (id),
+	UNIQUE KEY (meta_data_id),
+	UNIQUE KEY (resource_name)
 ) COMMENT = '本组织数据文件表';;
 
 -- 此表数据有管理台添加
--- 数据上架后，回填metadata_id
-DROP TABLE IF EXISTS local_metadata_column;;
-CREATE TABLE local_metadata_column(
+-- 数据上架后，回填meta_data_id
+DROP TABLE IF EXISTS local_meta_data_column;;
+CREATE TABLE local_meta_data_column(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
     data_file_id INT NOT NULL COMMENT 'data_file的ID' ,
-    metadata_Id VARCHAR(128)    COMMENT '元数据ID' ,
+    meta_data_id VARCHAR(128)    COMMENT '元数据ID' ,
     column_idx INT    COMMENT '列索引' ,
     column_name VARCHAR(32)    COMMENT '列名' ,
     column_type VARCHAR(32)    COMMENT '列类型' ,
@@ -173,8 +161,9 @@ CREATE TABLE local_metadata_column(
     remarks VARCHAR(32)    COMMENT '列描述' ,
     visible VARCHAR(6)    COMMENT '是否对外可见 YES:可见，NO:不可见' ,
     rec_create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
-    PRIMARY KEY (id)
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
+    PRIMARY KEY (id),
+    UNIQUE KEY (meta_data_id,column_idx)
 ) COMMENT = '本组织数据文件表列详细表';;
 
 -- 此表数据调用调度服务的接口获取，rpc GetMetadataList(MetadataListRequest) returns (MetadataListResponse);
@@ -192,18 +181,20 @@ CREATE TABLE global_data_file(
     has_title BOOLEAN NOT NULL DEFAULT false comment '是否带标题',
     remarks VARCHAR(100) COMMENT '数据描述',
     status VARCHAR(20) NOT NULL DEFAULT 'created' COMMENT '数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
-    metadata_id VARCHAR(128) comment '元数据ID,hash',
+    meta_data_id VARCHAR(128) comment '元数据ID,hash',
     rec_create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
 	PRIMARY KEY (id),
+	UNIQUE KEY (meta_data_id),
+	UNIQUE KEY (identity_id, resource_name)
 ) COMMENT = '全网数据文件表';;
 
 -- 此表数据调用调度服务的接口获取，rpc GetMetadataList(MetadataListRequest) returns (MetadataListResponse);
-DROP TABLE IF EXISTS global_metadata_column;;
-CREATE TABLE global_metadata_column(
+DROP TABLE IF EXISTS global_meta_data_column;;
+CREATE TABLE global_meta_data_column(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
     data_file_id INT NOT NULL COMMENT 'data_file的ID' ,
-    metadata_Id VARCHAR(128)    COMMENT '元数据ID' ,
+    meta_data_id VARCHAR(128)    COMMENT '元数据ID' ,
     column_idx INT    COMMENT '列索引' ,
     column_name VARCHAR(32)    COMMENT '列名' ,
     column_type VARCHAR(32)    COMMENT '列类型' ,
@@ -211,7 +202,7 @@ CREATE TABLE global_metadata_column(
     remarks VARCHAR(32)    COMMENT '列描述' ,
     visible VARCHAR(6)    COMMENT '是否对外可见 YES:可见，NO:不可见' ,
     rec_create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id)
 ) COMMENT = '全网数据文件表列详细表';;
 
@@ -234,7 +225,7 @@ CREATE TABLE task(
     alg_Identity_id VARCHAR(32)    COMMENT '算法提供方身份ID' ,
     reviewed Boolean COMMENT '任务是否被查看过' ,
     rec_create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id)
 ) COMMENT = '全网任务表 用于同步本地任务数据以及全网的相关数据';;
 
@@ -247,19 +238,19 @@ CREATE TABLE task_event (
     identity_id VARCHAR(128) NOT NULL COMMENT '产生事件的组织身份ID',
     event_at DATETIME NOT NULL COMMENT '产生事件的时间',
     event_content VARCHAR(512) NOT NULL COMMENT '事件内容',
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id)
 ) COMMENT = '任务事件表';;
 
 -- 此表数据调用调度服务接口获取，rpc ListTask(TaskListRequest) returns (TaskListResponse);
 DROP TABLE IF EXISTS task_power_provider;;
-CREATE TABLE tb_task_power_provider(
+CREATE TABLE task_power_provider(
     task_id VARCHAR(128) NOT NULL comment '任务ID,hash',
     identity_id VARCHAR(128) NOT NULL COMMENT '算力提供者组织身份ID',
     used_core INT    COMMENT '任务占用CPU信息' ,
     used_memory BIGINT    COMMENT '任务占用内存信息' ,
     used_Bandwidth BIGINT    COMMENT '任务占用带宽信息' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (task_ID, identity_id)
 ) COMMENT = '任务算力提供方表 任务数据提供方基础信息';;
 
@@ -267,19 +258,19 @@ CREATE TABLE tb_task_power_provider(
 DROP TABLE IF EXISTS task_data_provider;;
 CREATE TABLE task_data_provider(
     task_id VARCHAR(128) NOT NULL comment '任务ID,hash',
-    metadata_id VARCHAR(128) NOT NULL COMMENT '参与任务的元数据ID',
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
-    PRIMARY KEY (task_ID, metadata_id)
+    meta_data_id VARCHAR(128) NOT NULL COMMENT '参与任务的元数据ID',
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
+    PRIMARY KEY (task_ID, meta_data_id)
 ) COMMENT = '任务数据提供方表 存储某个任务数据提供方的信息';;
 
 -- 此表数据调用调度服务接口获取，rpc ListTask(TaskListRequest) returns (TaskListResponse);
-DROP TABLE IF EXISTS task_result_consumer;
+DROP TABLE IF EXISTS task_result_consumer;;
 CREATE TABLE task_result_consumer (
     task_id VARCHAR(128) NOT NULL comment '任务ID,hash',
     consumer_identity_id VARCHAR(128) NOT NULL COMMENT '结果消费者组织身份ID',
     producer_identity_id VARCHAR(128) NOT NULL COMMENT '结果产生者的组织身份ID',
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
-    PRIMARY KEY (id)
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
+    PRIMARY KEY (task_ID, consumer_identity_id, producer_identity_id)
 ) COMMENT = '任务结果接收方表 任务结果接收方信息';;
 
 
@@ -294,15 +285,17 @@ CREATE TABLE global_power(
     used_core INT    COMMENT '已使用CPU信息' ,
     used_Memory BIGINT    COMMENT '已使用内存' ,
     used_Bandwidth BIGINT    COMMENT '已使用带宽' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT ON UPDATE CURRENT_TIMESTAMP '最后更新时间' ,
-    PRIMARY KEY (id)
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
+    PRIMARY KEY (id),
+    UNIQUE KEY (identity_id)
 ) COMMENT = '全网算力资源表 记录全网的算力资源信息';;
 
 
 -- 用view来代替, 统计首页需要展示的本组织的相关数据。
 -- 其中本地算力统计数，也可以由global_power中获取
 create or replace view v_local_stats as
-select dataHost.data_host_count, powerHost.power_host_count
+select dataHost.data_host_count, powerHost.power_host_count, powerStats.total_core, powerStats.total_memory, powerStats.total_bandwidth,
+    releasedFile.released_data_file_count, unreleasedFile.unreleased_data_file_count, runingTask.runingTaskCount
 from
 -- 本地数据host数
 (
@@ -321,10 +314,10 @@ from
 
 -- 本地算力统计数
 (
-    select sum((core) as total_cre, sum(memory) as total_memoty, sum(bandwidth) as total_bandwidth
+    select sum(core) as total_core, sum(memory) as total_memory, sum(bandwidth) as total_bandwidth
     from local_power_host
     where status='enabled'
-) powerHost,
+) powerStats,
 
 -- 本地已上架数据文件数
 (
@@ -346,7 +339,7 @@ from
 (
     select count(tpp.task_id) as runingTaskCount
     from task_power_provider tpp, local_org lo, task t
-    where tpp.identity_id = lo.identity_id and tpp.task_id = t.task_id and t.status='running'
+    where tpp.identity_id = lo.identity_id and tpp.task_id = t.id and t.status='running'
 
 ) runingTask;;
 
