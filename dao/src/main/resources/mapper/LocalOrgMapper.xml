@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.LocalOrgMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalOrg">
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalOrg">
+    insert into local_org (name, identity_id)
+    values (#{name,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalOrg">
+    insert into local_org
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="identityId != null">
+        identity_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="identityId != null">
+        #{identityId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalOrg">
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="carrier_uuid" jdbcType="VARCHAR" property="carrierUuid" />
+    <result column="carrier_IP" jdbcType="VARCHAR" property="carrierIp" />
+    <result column="carrier_Port" jdbcType="INTEGER" property="carrierPort" />
+    <result column="carrier_conn_Status" jdbcType="VARCHAR" property="carrierConnStatus" />
+    <result column="carrier_conn_Time" jdbcType="TIMESTAMP" property="carrierConnTime" />
+    <result column="carrier_status" jdbcType="VARCHAR" property="carrierStatus" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalOrg">
+    insert into local_org (name, identity_id, carrier_uuid, 
+      carrier_IP, carrier_Port, carrier_conn_Status, 
+      carrier_conn_Time, carrier_status, rec_update_time
+      )
+    values (#{name,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{carrierUuid,jdbcType=VARCHAR}, 
+      #{carrierIp,jdbcType=VARCHAR}, #{carrierPort,jdbcType=INTEGER}, #{carrierConnStatus,jdbcType=VARCHAR}, 
+      #{carrierConnTime,jdbcType=TIMESTAMP}, #{carrierStatus,jdbcType=VARCHAR}, #{recUpdateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalOrg">
+    insert into local_org
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="identityId != null">
+        identity_id,
+      </if>
+      <if test="carrierUuid != null">
+        carrier_uuid,
+      </if>
+      <if test="carrierIp != null">
+        carrier_IP,
+      </if>
+      <if test="carrierPort != null">
+        carrier_Port,
+      </if>
+      <if test="carrierConnStatus != null">
+        carrier_conn_Status,
+      </if>
+      <if test="carrierConnTime != null">
+        carrier_conn_Time,
+      </if>
+      <if test="carrierStatus != null">
+        carrier_status,
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="identityId != null">
+        #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierUuid != null">
+        #{carrierUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierIp != null">
+        #{carrierIp,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierPort != null">
+        #{carrierPort,jdbcType=INTEGER},
+      </if>
+      <if test="carrierConnStatus != null">
+        #{carrierConnStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierConnTime != null">
+        #{carrierConnTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="carrierStatus != null">
+        #{carrierStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="recUpdateTime != null">
+        #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

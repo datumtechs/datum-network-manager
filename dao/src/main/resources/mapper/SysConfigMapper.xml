@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.SysConfigMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.SysConfig">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="config_Key" jdbcType="VARCHAR" property="configKey" />
+    <result column="config_Value" jdbcType="VARCHAR" property="configValue" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.SysConfig">
+    insert into sys_config (id, config_Key, config_Value, 
+      status, desc, rec_update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{configKey,jdbcType=VARCHAR}, #{configValue,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{recUpdateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.SysConfig">
+    insert into sys_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="configKey != null">
+        config_Key,
+      </if>
+      <if test="configValue != null">
+        config_Value,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="desc != null">
+        desc,
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="configKey != null">
+        #{configKey,jdbcType=VARCHAR},
+      </if>
+      <if test="configValue != null">
+        #{configValue,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=VARCHAR},
+      </if>
+      <if test="recUpdateTime != null">
+        #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.SysConfig">
+    <id column="variable" jdbcType="VARCHAR" property="variable" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="set_time" jdbcType="TIMESTAMP" property="setTime" />
+    <result column="set_by" jdbcType="VARCHAR" property="setBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    variable, value, set_time, set_by
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_config
+    where variable = #{variable,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_config
+    where variable = #{variable,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.SysConfig">
+    insert into sys_config (variable, value, set_time, 
+      set_by)
+    values (#{variable,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, #{setTime,jdbcType=TIMESTAMP}, 
+      #{setBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.SysConfig">
+    insert into sys_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="variable != null">
+        variable,
+      </if>
+      <if test="value != null">
+        value,
+      </if>
+      <if test="setTime != null">
+        set_time,
+      </if>
+      <if test="setBy != null">
+        set_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="variable != null">
+        #{variable,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="setTime != null">
+        #{setTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="setBy != null">
+        #{setBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.SysConfig">
+    update sys_config
+    <set>
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="setTime != null">
+        set_time = #{setTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="setBy != null">
+        set_by = #{setBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where variable = #{variable,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.SysConfig">
+    update sys_config
+    set value = #{value,jdbcType=VARCHAR},
+      set_time = #{setTime,jdbcType=TIMESTAMP},
+      set_by = #{setBy,jdbcType=VARCHAR}
+    where variable = #{variable,jdbcType=VARCHAR}
+  </update>
+</mapper>

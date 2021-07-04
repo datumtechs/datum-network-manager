@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.GlobalPowerMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.GlobalPower">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="total_core" jdbcType="INTEGER" property="totalCore" />
+    <result column="total_Memory" jdbcType="BIGINT" property="totalMemory" />
+    <result column="total_Bandwidth" jdbcType="BIGINT" property="totalBandwidth" />
+    <result column="used_core" jdbcType="INTEGER" property="usedCore" />
+    <result column="used_Memory" jdbcType="BIGINT" property="usedMemory" />
+    <result column="used_Bandwidth" jdbcType="BIGINT" property="usedBandwidth" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, identity_id, total_core, total_Memory, total_Bandwidth, used_core, used_Memory, 
+    used_Bandwidth, rec_update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from global_power
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from global_power
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.GlobalPower">
+    insert into global_power (id, identity_id, total_core, 
+      total_Memory, total_Bandwidth, used_core, 
+      used_Memory, used_Bandwidth, rec_update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{identityId,jdbcType=VARCHAR}, #{totalCore,jdbcType=INTEGER}, 
+      #{totalMemory,jdbcType=BIGINT}, #{totalBandwidth,jdbcType=BIGINT}, #{usedCore,jdbcType=INTEGER}, 
+      #{usedMemory,jdbcType=BIGINT}, #{usedBandwidth,jdbcType=BIGINT}, #{recUpdateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.GlobalPower">
+    insert into global_power
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="identityId != null">
+        identity_id,
+      </if>
+      <if test="totalCore != null">
+        total_core,
+      </if>
+      <if test="totalMemory != null">
+        total_Memory,
+      </if>
+      <if test="totalBandwidth != null">
+        total_Bandwidth,
+      </if>
+      <if test="usedCore != null">
+        used_core,
+      </if>
+      <if test="usedMemory != null">
+        used_Memory,
+      </if>
+      <if test="usedBandwidth != null">
+        used_Bandwidth,
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="identityId != null">
+        #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCore != null">
+        #{totalCore,jdbcType=INTEGER},
+      </if>
+      <if test="totalMemory != null">
+        #{totalMemory,jdbcType=BIGINT},
+      </if>
+      <if test="totalBandwidth != null">
+        #{totalBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="usedCore != null">
+        #{usedCore,jdbcType=INTEGER},
+      </if>
+      <if test="usedMemory != null">
+        #{usedMemory,jdbcType=BIGINT},
+      </if>
+      <if test="usedBandwidth != null">
+        #{usedBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="recUpdateTime != null">
+        #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.GlobalPower">
+    update global_power
+    <set>
+      <if test="identityId != null">
+        identity_id = #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCore != null">
+        total_core = #{totalCore,jdbcType=INTEGER},
+      </if>
+      <if test="totalMemory != null">
+        total_Memory = #{totalMemory,jdbcType=BIGINT},
+      </if>
+      <if test="totalBandwidth != null">
+        total_Bandwidth = #{totalBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="usedCore != null">
+        used_core = #{usedCore,jdbcType=INTEGER},
+      </if>
+      <if test="usedMemory != null">
+        used_Memory = #{usedMemory,jdbcType=BIGINT},
+      </if>
+      <if test="usedBandwidth != null">
+        used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.GlobalPower">
+    update global_power
+    set identity_id = #{identityId,jdbcType=VARCHAR},
+      total_core = #{totalCore,jdbcType=INTEGER},
+      total_Memory = #{totalMemory,jdbcType=BIGINT},
+      total_Bandwidth = #{totalBandwidth,jdbcType=BIGINT},
+      used_core = #{usedCore,jdbcType=INTEGER},
+      used_Memory = #{usedMemory,jdbcType=BIGINT},
+      used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

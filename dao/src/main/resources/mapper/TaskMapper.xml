@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.Task">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="task_Name" jdbcType="VARCHAR" property="taskName" />
+    <result column="owner_Identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
+    <result column="create_At" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="start_At" jdbcType="TIMESTAMP" property="startAt" />
+    <result column="auth_At" jdbcType="TIMESTAMP" property="authAt" />
+    <result column="auth_Status" jdbcType="VARCHAR" property="authStatus" />
+    <result column="end_At" jdbcType="TIMESTAMP" property="endAt" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="duration" jdbcType="TIMESTAMP" property="duration" />
+    <result column="cost_core" jdbcType="INTEGER" property="costCore" />
+    <result column="cost_Memory" jdbcType="BIGINT" property="costMemory" />
+    <result column="cost_Bandwidth" jdbcType="BIGINT" property="costBandwidth" />
+    <result column="alg_Identity_id" jdbcType="VARCHAR" property="algIdentityId" />
+    <result column="reviewed" jdbcType="BIT" property="reviewed" />
+    <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_Name, owner_Identity_id, create_At, start_At, auth_At, auth_Status, end_At, 
+    status, duration, cost_core, cost_Memory, cost_Bandwidth, alg_Identity_id, reviewed, 
+    rec_create_time, rec_update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from task
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
+    insert into task (id, task_Name, owner_Identity_id, 
+      create_At, start_At, auth_At, 
+      auth_Status, end_At, status, 
+      duration, cost_core, cost_Memory, 
+      cost_Bandwidth, alg_Identity_id, reviewed, 
+      rec_create_time, rec_update_time)
+    values (#{id,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR}, 
+      #{createAt,jdbcType=TIMESTAMP}, #{startAt,jdbcType=TIMESTAMP}, #{authAt,jdbcType=TIMESTAMP}, 
+      #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+      #{duration,jdbcType=TIMESTAMP}, #{costCore,jdbcType=INTEGER}, #{costMemory,jdbcType=BIGINT}, 
+      #{costBandwidth,jdbcType=BIGINT}, #{algIdentityId,jdbcType=VARCHAR}, #{reviewed,jdbcType=BIT}, 
+      #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
+    insert into task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskName != null">
+        task_Name,
+      </if>
+      <if test="ownerIdentityId != null">
+        owner_Identity_id,
+      </if>
+      <if test="createAt != null">
+        create_At,
+      </if>
+      <if test="startAt != null">
+        start_At,
+      </if>
+      <if test="authAt != null">
+        auth_At,
+      </if>
+      <if test="authStatus != null">
+        auth_Status,
+      </if>
+      <if test="endAt != null">
+        end_At,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="duration != null">
+        duration,
+      </if>
+      <if test="costCore != null">
+        cost_core,
+      </if>
+      <if test="costMemory != null">
+        cost_Memory,
+      </if>
+      <if test="costBandwidth != null">
+        cost_Bandwidth,
+      </if>
+      <if test="algIdentityId != null">
+        alg_Identity_id,
+      </if>
+      <if test="reviewed != null">
+        reviewed,
+      </if>
+      <if test="recCreateTime != null">
+        rec_create_time,
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdentityId != null">
+        #{ownerIdentityId,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startAt != null">
+        #{startAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authAt != null">
+        #{authAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authStatus != null">
+        #{authStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="endAt != null">
+        #{endAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null">
+        #{duration,jdbcType=TIMESTAMP},
+      </if>
+      <if test="costCore != null">
+        #{costCore,jdbcType=INTEGER},
+      </if>
+      <if test="costMemory != null">
+        #{costMemory,jdbcType=BIGINT},
+      </if>
+      <if test="costBandwidth != null">
+        #{costBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="algIdentityId != null">
+        #{algIdentityId,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewed != null">
+        #{reviewed,jdbcType=BIT},
+      </if>
+      <if test="recCreateTime != null">
+        #{recCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recUpdateTime != null">
+        #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
+    update task
+    <set>
+      <if test="taskName != null">
+        task_Name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdentityId != null">
+        owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null">
+        create_At = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startAt != null">
+        start_At = #{startAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authAt != null">
+        auth_At = #{authAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authStatus != null">
+        auth_Status = #{authStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="endAt != null">
+        end_At = #{endAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null">
+        duration = #{duration,jdbcType=TIMESTAMP},
+      </if>
+      <if test="costCore != null">
+        cost_core = #{costCore,jdbcType=INTEGER},
+      </if>
+      <if test="costMemory != null">
+        cost_Memory = #{costMemory,jdbcType=BIGINT},
+      </if>
+      <if test="costBandwidth != null">
+        cost_Bandwidth = #{costBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="algIdentityId != null">
+        alg_Identity_id = #{algIdentityId,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewed != null">
+        reviewed = #{reviewed,jdbcType=BIT},
+      </if>
+      <if test="recCreateTime != null">
+        rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
+    update task
+    set task_Name = #{taskName,jdbcType=VARCHAR},
+      owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
+      create_At = #{createAt,jdbcType=TIMESTAMP},
+      start_At = #{startAt,jdbcType=TIMESTAMP},
+      auth_At = #{authAt,jdbcType=TIMESTAMP},
+      auth_Status = #{authStatus,jdbcType=VARCHAR},
+      end_At = #{endAt,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=TIMESTAMP},
+      cost_core = #{costCore,jdbcType=INTEGER},
+      cost_Memory = #{costMemory,jdbcType=BIGINT},
+      cost_Bandwidth = #{costBandwidth,jdbcType=BIGINT},
+      alg_Identity_id = #{algIdentityId,jdbcType=VARCHAR},
+      reviewed = #{reviewed,jdbcType=BIT},
+      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.LocalDataHostMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalDataHost">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="host_Name" jdbcType="VARCHAR" property="hostName" />
+    <result column="internal_IP" jdbcType="VARCHAR" property="internalIp" />
+    <result column="internal_Port" jdbcType="INTEGER" property="internalPort" />
+    <result column="external_IP" jdbcType="VARCHAR" property="externalIp" />
+    <result column="external_Port" jdbcType="INTEGER" property="externalPort" />
+    <result column="conn_Status" jdbcType="VARCHAR" property="connStatus" />
+    <result column="conn_message" jdbcType="VARCHAR" property="connMessage" />
+    <result column="conn_Time" jdbcType="TIMESTAMP" property="connTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, identity_id, host_Name, internal_IP, internal_Port, external_IP, external_Port, 
+    conn_Status, conn_message, conn_Time, status, remarks, rec_create_time, rec_update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from local_data_host
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from local_data_host
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataHost">
+    insert into local_data_host (id, identity_id, host_Name, 
+      internal_IP, internal_Port, external_IP, 
+      external_Port, conn_Status, conn_message, 
+      conn_Time, status, remarks, 
+      rec_create_time, rec_update_time)
+    values (#{id,jdbcType=INTEGER}, #{identityId,jdbcType=VARCHAR}, #{hostName,jdbcType=VARCHAR}, 
+      #{internalIp,jdbcType=VARCHAR}, #{internalPort,jdbcType=INTEGER}, #{externalIp,jdbcType=VARCHAR}, 
+      #{externalPort,jdbcType=INTEGER}, #{connStatus,jdbcType=VARCHAR}, #{connMessage,jdbcType=VARCHAR}, 
+      #{connTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataHost">
+    insert into local_data_host
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="identityId != null">
+        identity_id,
+      </if>
+      <if test="hostName != null">
+        host_Name,
+      </if>
+      <if test="internalIp != null">
+        internal_IP,
+      </if>
+      <if test="internalPort != null">
+        internal_Port,
+      </if>
+      <if test="externalIp != null">
+        external_IP,
+      </if>
+      <if test="externalPort != null">
+        external_Port,
+      </if>
+      <if test="connStatus != null">
+        conn_Status,
+      </if>
+      <if test="connMessage != null">
+        conn_message,
+      </if>
+      <if test="connTime != null">
+        conn_Time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="recCreateTime != null">
+        rec_create_time,
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="identityId != null">
+        #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="hostName != null">
+        #{hostName,jdbcType=VARCHAR},
+      </if>
+      <if test="internalIp != null">
+        #{internalIp,jdbcType=VARCHAR},
+      </if>
+      <if test="internalPort != null">
+        #{internalPort,jdbcType=INTEGER},
+      </if>
+      <if test="externalIp != null">
+        #{externalIp,jdbcType=VARCHAR},
+      </if>
+      <if test="externalPort != null">
+        #{externalPort,jdbcType=INTEGER},
+      </if>
+      <if test="connStatus != null">
+        #{connStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="connMessage != null">
+        #{connMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="connTime != null">
+        #{connTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="recCreateTime != null">
+        #{recCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recUpdateTime != null">
+        #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataHost">
+    update local_data_host
+    <set>
+      <if test="identityId != null">
+        identity_id = #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="hostName != null">
+        host_Name = #{hostName,jdbcType=VARCHAR},
+      </if>
+      <if test="internalIp != null">
+        internal_IP = #{internalIp,jdbcType=VARCHAR},
+      </if>
+      <if test="internalPort != null">
+        internal_Port = #{internalPort,jdbcType=INTEGER},
+      </if>
+      <if test="externalIp != null">
+        external_IP = #{externalIp,jdbcType=VARCHAR},
+      </if>
+      <if test="externalPort != null">
+        external_Port = #{externalPort,jdbcType=INTEGER},
+      </if>
+      <if test="connStatus != null">
+        conn_Status = #{connStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="connMessage != null">
+        conn_message = #{connMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="connTime != null">
+        conn_Time = #{connTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="recCreateTime != null">
+        rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataHost">
+    update local_data_host
+    set identity_id = #{identityId,jdbcType=VARCHAR},
+      host_Name = #{hostName,jdbcType=VARCHAR},
+      internal_IP = #{internalIp,jdbcType=VARCHAR},
+      internal_Port = #{internalPort,jdbcType=INTEGER},
+      external_IP = #{externalIp,jdbcType=VARCHAR},
+      external_Port = #{externalPort,jdbcType=INTEGER},
+      conn_Status = #{connStatus,jdbcType=VARCHAR},
+      conn_message = #{connMessage,jdbcType=VARCHAR},
+      conn_Time = #{connTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

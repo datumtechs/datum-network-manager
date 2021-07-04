@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.TaskPowerProviderMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
+    <id column="task_id" jdbcType="VARCHAR" property="taskId" />
+    <id column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="used_core" jdbcType="INTEGER" property="usedCore" />
+    <result column="used_memory" jdbcType="BIGINT" property="usedMemory" />
+    <result column="used_Bandwidth" jdbcType="BIGINT" property="usedBandwidth" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    task_id, identity_id, used_core, used_memory, used_Bandwidth, rec_update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task_power_provider
+    where task_id = #{taskId,jdbcType=VARCHAR}
+      and identity_id = #{identityId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from task_power_provider
+    where task_id = #{taskId,jdbcType=VARCHAR}
+      and identity_id = #{identityId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
+    insert into task_power_provider (task_id, identity_id, used_core, 
+      used_memory, used_Bandwidth, rec_update_time
+      )
+    values (#{taskId,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{usedCore,jdbcType=INTEGER}, 
+      #{usedMemory,jdbcType=BIGINT}, #{usedBandwidth,jdbcType=BIGINT}, #{recUpdateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
+    insert into task_power_provider
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="identityId != null">
+        identity_id,
+      </if>
+      <if test="usedCore != null">
+        used_core,
+      </if>
+      <if test="usedMemory != null">
+        used_memory,
+      </if>
+      <if test="usedBandwidth != null">
+        used_Bandwidth,
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="identityId != null">
+        #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="usedCore != null">
+        #{usedCore,jdbcType=INTEGER},
+      </if>
+      <if test="usedMemory != null">
+        #{usedMemory,jdbcType=BIGINT},
+      </if>
+      <if test="usedBandwidth != null">
+        #{usedBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="recUpdateTime != null">
+        #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
+    update task_power_provider
+    <set>
+      <if test="usedCore != null">
+        used_core = #{usedCore,jdbcType=INTEGER},
+      </if>
+      <if test="usedMemory != null">
+        used_memory = #{usedMemory,jdbcType=BIGINT},
+      </if>
+      <if test="usedBandwidth != null">
+        used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT},
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where task_id = #{taskId,jdbcType=VARCHAR}
+      and identity_id = #{identityId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
+    update task_power_provider
+    set used_core = #{usedCore,jdbcType=INTEGER},
+      used_memory = #{usedMemory,jdbcType=BIGINT},
+      used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+    where task_id = #{taskId,jdbcType=VARCHAR}
+      and identity_id = #{identityId,jdbcType=VARCHAR}
+  </update>
+</mapper>
