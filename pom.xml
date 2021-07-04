@@ -9,10 +9,12 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
+        <module>grpc-lib</module>
         <module>common</module>
         <module>dao</module>
         <module>service</module>
         <module>controller</module>
+        <module>grpc-impl</module>
     </modules>
 
     <properties>
@@ -87,6 +89,13 @@
             <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>
