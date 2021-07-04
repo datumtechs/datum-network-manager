@@ -1,7 +1,6 @@
 package com.platon.rosettanet.admin.service;
 
 import com.github.pagehelper.Page;
-import com.platon.rosettanet.admin.dao.entity.TbPowerNode;
 
 /**
  * @Author liushuyu

@@ -2,6 +2,8 @@ package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
 
+import java.util.List;
+
 public interface LocalMetaDataColumnMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface LocalMetaDataColumnMapper {
     int updateByPrimaryKeySelective(LocalMetaDataColumn record);
 
     int updateByPrimaryKey(LocalMetaDataColumn record);
+
+    void insertBatch(List<LocalMetaDataColumn> localMetaDataColumnList);
 }

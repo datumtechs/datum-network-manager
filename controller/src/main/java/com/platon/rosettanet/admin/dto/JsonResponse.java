@@ -70,4 +70,18 @@ public class JsonResponse<T> {
         jsonResponse.setPageTotal(page.getPages());
         return jsonResponse;
     }
+
+    public void setPagination(int pageNo, int pageSize, int totalRows ){
+        //总记录数
+        this.total = totalRows;
+
+        //总页数，每页记录数用请求消息里的定义
+        int totalPages = (totalRows - 1) / pageSize + 1;
+
+        //总页数，每页记录数用请求消息里的定义
+        this.pageTotal = totalPages;
+
+        //当前数据是第几页，如果请求的页码小余重新计算的总记录数，则页码不变；否则页码就是总页数
+        this.pageNumber = Math.min(pageNo, pageTotal);
+    }
 }

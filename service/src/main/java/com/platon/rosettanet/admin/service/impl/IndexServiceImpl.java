@@ -2,8 +2,6 @@ package com.platon.rosettanet.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.rosettanet.admin.dao.TbPowerNodeMapper;
-import com.platon.rosettanet.admin.dao.entity.TbPowerNode;
 import com.platon.rosettanet.admin.service.IndexService;
 import org.springframework.stereotype.Service;
 

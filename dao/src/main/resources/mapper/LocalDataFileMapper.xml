@@ -209,4 +209,17 @@
       rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="listDataFile"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_data_file
+    order by file_name
+    limit #{offset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+  </select>
+
+  <select id="listDataFileCount"  resultType="java.lang.Integer">
+    select count(id)
+    from local_data_file
+  </select>
 </mapper>

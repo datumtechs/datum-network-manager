@@ -1,11 +1,9 @@
 package com.platon.rosettanet.admin.controller.system;
 
 import com.github.pagehelper.Page;
-import com.platon.rosettanet.admin.dao.entity.TbPowerNode;
 import com.platon.rosettanet.admin.dto.CommonPageReq;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.service.IndexService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
