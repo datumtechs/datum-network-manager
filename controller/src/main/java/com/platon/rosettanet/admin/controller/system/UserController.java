@@ -1,13 +1,17 @@
 package com.platon.rosettanet.admin.controller.system;
 
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.platon.rosettanet.admin.constant.ControllerConstants;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.LoginReq;
 import com.platon.rosettanet.admin.dto.req.LogoutReq;
+import com.platon.rosettanet.admin.dto.req.UserApplyOrgNameReq;
+import com.platon.rosettanet.admin.service.UserService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -22,6 +26,8 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/api/v1/system/user/")
 public class UserController {
 
+    @Resource
+    private UserService userService;
 
     @PostMapping("login.json")
     public JsonResponse<String> login(HttpServletRequest request,@Validated @RequestBody LoginReq req){
@@ -61,6 +67,15 @@ public class UserController {
             session.invalidate();
         }
         return JsonResponse.success();
+    }
+
+    @PostMapping("applyOrgName.json")
+    public JsonResponse<String> applyOrgName(@RequestBody UserApplyOrgNameReq req){
+        String orgId = userService.applyOrgName(req.getOrgName());
+        if(StrUtil.isBlank(orgId)){
+            return JsonResponse.fail("申请身份标识失败");
+        }
+        return JsonResponse.success(orgId);
     }
 
     @GetMapping("verificationCode.json")

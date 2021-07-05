@@ -3,6 +3,8 @@ package com.platon.rosettanet.admin.controller.system;
 import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.dto.CommonPageReq;
 import com.platon.rosettanet.admin.dto.JsonResponse;
+import com.platon.rosettanet.admin.dto.resp.IndexNodeListResp;
+import com.platon.rosettanet.admin.dto.resp.IndexOverviewResp;
 import com.platon.rosettanet.admin.service.IndexService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,14 +30,13 @@ public class IndexController {
 
 
     @PostMapping("overview.json")
-    public JsonResponse overview(){
-
+    public JsonResponse<IndexOverviewResp> overview(){
         return JsonResponse.success();
     }
 
-    @PostMapping("nodeList.json")
-    public JsonResponse nodeList(@Validated @RequestBody CommonPageReq req){
+    /*@PostMapping("nodeList.json")
+    public JsonResponse<IndexNodeListResp> nodeList(@Validated @RequestBody CommonPageReq req){
         Page<TbPowerNode> nodePage = indexService.nodeList(req.getPageNumber(), req.getPageSize());
         return JsonResponse.page(nodePage);
-    }
+    }*/
 }

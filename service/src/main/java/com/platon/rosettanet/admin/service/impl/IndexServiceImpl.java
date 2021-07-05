@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class IndexServiceImpl implements IndexService {
 
-    @Resource
+    /*@Resource
     private TbPowerNodeMapper tbPowerNodeMapper;
 
     @Override
@@ -26,5 +26,5 @@ public class IndexServiceImpl implements IndexService {
         Page<TbPowerNode> nodePage = PageHelper.startPage(pageNumber, pageSize);
         List<TbPowerNode> tbPowerNodes = tbPowerNodeMapper.selectAll();
         return nodePage;
-    }
+    }*/
 }

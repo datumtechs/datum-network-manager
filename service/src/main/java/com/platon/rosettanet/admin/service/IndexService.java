@@ -10,5 +10,5 @@ import com.github.pagehelper.Page;
  */
 public interface IndexService {
 
-    Page<TbPowerNode> nodeList(int pageNumber, int pageSize);
+    //Page<TbPowerNode> nodeList(int pageNumber, int pageSize);
 }
