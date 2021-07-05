@@ -1,6 +1,5 @@
 package com.platon.rosettanet.admin.dto.converter;
 
-import com.platon.rosettanet.admin.dao.entity.TbPowerNode;
 import com.platon.rosettanet.admin.dto.resp.IndexNodeListResp;
 
 /**
@@ -11,7 +10,7 @@ import com.platon.rosettanet.admin.dto.resp.IndexNodeListResp;
  */
 public class IndexNodeListRespConverter {
 
-    public static IndexNodeListResp convert(TbPowerNode tbPowerNode){
+    /*public static IndexNodeListResp convert(TbPowerNode tbPowerNode){
         IndexNodeListResp indexNodeListResp = new IndexNodeListResp();
         private String jobNodeId;//计算节点ID
         private String jobNodeName;//计算节点名称
@@ -36,5 +35,5 @@ public class IndexNodeListRespConverter {
         indexNodeListResp.setDuration();
         indexNodeListResp.setStartTime();
         return indexNodeListResp;
-    }
+    }*/
 }

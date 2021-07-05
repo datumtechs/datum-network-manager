@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class NameUtils {
 
-    public static String NAME_REG_STR = "^[\\u4e00-\\u9fa5a-zA-Z0-9]{0,12}$";
+    public static final String NAME_REG_STR = "^[\\u4e00-\\u9fa5a-zA-Z0-9]{0,12}$";
 
     /*“机构识别名称”与后续的“计算节点名称”、“数据节点名称”、“源文件名称”命名规则：
         1. 设置之后无法修改；
