@@ -31,6 +31,60 @@
     from task
     where id = #{id,jdbcType=VARCHAR}
   </select>
+
+
+
+
+  <select id="selectTaskByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_task
+    where task_Id = #{taskId,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="listTask" parameterType="map" resultType="com.platon.rosettanet.admin.dao.entity.Task">
+    SELECT
+    tt.id,
+    tt.task_Id,
+    tt.task_Name,
+    tt.state,
+    tt.create_At,
+    CASE
+    WHEN tt.owner_Identity = (SELECT identity_Id FROM tb_base_config) THEN 1
+    WHEN ttdp.owner_Identity = (SELECT identity_Id FROM tb_base_config) THEN 2
+    WHEN ttpp.owner_Identity = (SELECT identity_Id FROM tb_base_config) THEN 3
+    WHEN ttrr.owner_Identity = (SELECT identity_Id FROM tb_base_config) THEN 4
+    ELSE 0 END
+    AS role
+    FROM
+    tb_task tt
+    LEFT JOIN tb_task_data_provider ttdp ON tt.task_Id = ttdp.task_Id
+    LEFT JOIN tb_task_power_provider ttpp ON tt.task_Id = ttpp.task_Id
+    LEFT JOIN tb_task_result_receiver ttrr ON tt.task_Id = ttrr.task_Id;
+    <where>
+      <if test="status != null ">
+        tt.status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="role != null">
+        role = #{role,jdbcType=INTEGER}
+      </if>
+      <if test="startDate != null">
+        tt.create_At <![CDATA[>= ]]> #{startDate,jdbcType=DATE}
+      </if>
+      <if test="endDate != null">
+        t.create_At <![CDATA[<= ]]> #{endDate,jdbcType=DATE}
+      </if>
+    </where>
+    order by t.create_At
+
+  </select>
+
+
+
+
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from task
     where id = #{id,jdbcType=VARCHAR}

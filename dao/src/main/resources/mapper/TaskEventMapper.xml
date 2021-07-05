@@ -19,6 +19,17 @@
     from task_event
     where ID = #{id,jdbcType=BIGINT}
   </select>
+
+
+  <select id="listTbTaskEventByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_task_event
+    where task_Id = #{taskId,jdbcType=VARCHAR}
+  </select>
+
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from task_event
     where ID = #{id,jdbcType=BIGINT}
