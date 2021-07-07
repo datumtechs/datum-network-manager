@@ -22,7 +22,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>rosettanet-storage-${project.artifactId}</finalName>
+        <finalName>rosettanet-admin-${project.artifactId}</finalName>
         <extensions>
             <extension>
                 <groupId>kr.motd.maven</groupId>

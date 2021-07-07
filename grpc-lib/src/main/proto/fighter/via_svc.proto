@@ -1,0 +1,33 @@
+syntax = "proto3";
+package viasvc;
+
+// 生成类的包名
+option java_package = "com.platon.rosettanet.admin.grpc";
+//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
+option java_outer_classname = "ViaProviderRpcMessage";
+
+service ViaProvider {
+  rpc Expose(ExposeReq) returns (ExposeAns) {}
+  rpc Off(ExposeReq) returns (ExposeAns) {}
+}
+
+enum ServiceType {
+  DATA_SVC = 0;
+  COMPUTE_SVC = 1;
+  SCHEDULE_SVC = 2;
+  NET_COMM_SVC = 3;
+}
+
+message ExposeReq {
+  string task_id = 1;
+  ServiceType svc_type = 2;
+  string party_id = 3;
+  string ip = 4;
+  int32 port = 5;
+}
+
+message ExposeAns {
+  bool ok = 1;
+  string ip = 2;
+  int32 port = 3;
+}

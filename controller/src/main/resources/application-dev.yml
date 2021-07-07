@@ -32,3 +32,9 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+
+grpc:
+  client:
+    carrier-service:
+      host: 127.0.0.1
+      port: 9000

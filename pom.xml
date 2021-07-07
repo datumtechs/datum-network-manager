@@ -14,7 +14,7 @@
         <module>dao</module>
         <module>service</module>
         <module>controller</module>
-        <module>grpc-impl</module>
+        <module>grpc-client</module>
     </modules>
 
     <properties>
