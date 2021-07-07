@@ -31,12 +31,23 @@ public class JsonResponse<T> {
         this.data = data;
     }
 
+    public JsonResponse(int status, String msg, T data, List<T> list) {
+        this.status = status;
+        this.msg = msg;
+        this.data = data;
+        this.list = list;
+    }
+
     public static JsonResponse success(){
         return new JsonResponse(ResponseCodeEnum.SUCCESS.getCode(), ResponseCodeEnum.SUCCESS.getMessage(),null);
     }
 
     public static <T> JsonResponse success(T data){
         return new JsonResponse(ResponseCodeEnum.SUCCESS.getCode(), ResponseCodeEnum.SUCCESS.getMessage(),data);
+    }
+
+    public static <T> JsonResponse success(T data, List<T> list){
+        return new JsonResponse(ResponseCodeEnum.SUCCESS.getCode(), ResponseCodeEnum.SUCCESS.getMessage(),data,list);
     }
 
     public static <T> JsonResponse success(ResponseCodeEnum responseCodeEnum, String message, T data){

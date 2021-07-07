@@ -1,6 +1,9 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.TaskEvent;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TaskEventMapper {
     int deleteByPrimaryKey(Long id);
@@ -14,4 +17,7 @@ public interface TaskEventMapper {
     int updateByPrimaryKeySelective(TaskEvent record);
 
     int updateByPrimaryKey(TaskEvent record);
+
+    List<TaskEvent> listTbTaskEventByTaskId(@Param("taskId") String taskId);
+
 }
