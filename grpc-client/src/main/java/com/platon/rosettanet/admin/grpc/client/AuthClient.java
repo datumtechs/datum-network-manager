@@ -1,12 +1,10 @@
 package com.platon.rosettanet.admin.grpc.client;
 
-import com.platon.rosettanet.admin.grpc.AuthRpcMessage;
-import com.platon.rosettanet.admin.grpc.CommonMessage;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
-import com.platon.rosettanet.admin.grpc.channel.SimpleChannelManager;
+import com.platon.rosettanet.admin.grpc.service.AuthRpcMessage;
 import com.platon.rosettanet.admin.grpc.service.AuthServiceGrpc;
+import com.platon.rosettanet.admin.grpc.service.CommonMessage;
 import io.grpc.Channel;
-import io.grpc.ManagedChannelBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -15,7 +13,9 @@ import javax.annotation.Resource;
  * @Author liushuyu
  * @Date 2021/7/7 10:24
  * @Version
- * @Desc
+ * @Desc 身份信息服务客户端
+ * java服务类：AuthServiceGrpc
+ * proto文件：auth_rpc_api.proto
  */
 
 @Component

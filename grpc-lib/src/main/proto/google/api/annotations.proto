@@ -13,16 +13,16 @@
 // limitations under the License.
 
 syntax = "proto3";
+option java_multiple_files = true;
+option java_outer_classname = "AnnotationsProto";
+// 生成类的包名
+option java_package = "com.platon.rosettanet.admin.grpc.service";
 
 package google.api;
 
 import "google/api/http.proto";
 import "google/protobuf/descriptor.proto";
 
-option java_multiple_files = true;
-option java_outer_classname = "AnnotationsProto";
-// 生成类的包名
-option java_package = "com.platon.rosettanet.admin.grpc";
 
 extend google.protobuf.MethodOptions {
   // See `HttpRule`.

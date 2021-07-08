@@ -1,13 +1,14 @@
 syntax = "proto3";
+// 生成类的包名
+option java_package = "com.platon.rosettanet.admin.grpc.service";
+//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
+option java_outer_classname = "TaskRpcMessage";
 
 package rpcapi;
 
 import "carrier/api/common_message.proto";
+import "google/api/annotations.proto";
 
-// 生成类的包名
-option java_package = "com.platon.rosettanet.admin.grpc";
-//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
-option java_outer_classname = "TaskRpcMessage";
 
 //  ------------------------  task  ------------------------
 
@@ -164,21 +165,37 @@ message PublishTaskDeclareResponse {
 // ## 任务 相关接口
 service TaskService {
 
-  //  // 查看全部任务 摘要列表
-  //  rpc GetTaskSummaryList (EmptyGetParams) returns (GetTaskSummaryListResponse);
-  //  // 查看某个节点参与过的任务 摘要列表
-  //  rpc GetTaskJoinSummaryList (GetTaskJoinSummaryListRequest) returns (GetTaskJoinSummaryListResponse);
-  //  // 查看某个任务详情
-  //  rpc GetTaskDetail (GetTaskDetailRequest) returns (GetTaskDetailResponse);
+    //  // 查看全部任务 摘要列表
+    //  rpc GetTaskSummaryList (EmptyGetParams) returns (GetTaskSummaryListResponse);
+    //  // 查看某个节点参与过的任务 摘要列表
+    //  rpc GetTaskJoinSummaryList (GetTaskJoinSummaryListRequest) returns (GetTaskJoinSummaryListResponse);
+    //  // 查看某个任务详情
+    //  rpc GetTaskDetail (GetTaskDetailRequest) returns (GetTaskDetailResponse);
 
-  // 查看全部任务详情列表
-  rpc GetTaskDetailList (EmptyGetParams) returns (GetTaskDetailListResponse);
+    // 查看全部任务详情列表
+    rpc GetTaskDetailList (EmptyGetParams) returns (GetTaskDetailListResponse) {
+        option (google.api.http) = {
+            post: "/carrier/v1/task/list"
+            body: "*"
+        };
+    }
 
-  // 查看某个任务的全部事件列表
-  rpc GetTaskEventList (GetTaskEventListRequest) returns (GetTaskEventListResponse);
-  // 发布任务
-  rpc PublishTaskDeclare (PublishTaskDeclareRequest) returns (PublishTaskDeclareResponse);
+    // 查看某个任务的全部事件列表
+    rpc GetTaskEventList (GetTaskEventListRequest) returns (GetTaskEventListResponse) {
+        option (google.api.http) = {
+            post: "/carrier/v1/task/eventList"
+            body: "*"
+        };
+    }
+    // 发布任务
+    rpc PublishTaskDeclare (PublishTaskDeclareRequest) returns (PublishTaskDeclareResponse) {
+        option (google.api.http) = {
+            post: "/carrier/v1/task/publish"
+            body: "*"
+        };
+    }
 
 }
+
 
 

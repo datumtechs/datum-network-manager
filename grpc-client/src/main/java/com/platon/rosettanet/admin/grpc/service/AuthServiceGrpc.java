@@ -14,29 +14,29 @@ public final class AuthServiceGrpc {
   public static final String SERVICE_NAME = "rpcapi.AuthService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest,
-      com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> getApplyIdentityJoinMethod;
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest,
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getApplyIdentityJoinMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "ApplyIdentityJoin",
-      requestType = com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest.class,
-      responseType = com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest,
-      com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> getApplyIdentityJoinMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest, com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> getApplyIdentityJoinMethod;
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest,
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getApplyIdentityJoinMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getApplyIdentityJoinMethod;
     if ((getApplyIdentityJoinMethod = AuthServiceGrpc.getApplyIdentityJoinMethod) == null) {
       synchronized (AuthServiceGrpc.class) {
         if ((getApplyIdentityJoinMethod = AuthServiceGrpc.getApplyIdentityJoinMethod) == null) {
           AuthServiceGrpc.getApplyIdentityJoinMethod = getApplyIdentityJoinMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest, com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "ApplyIdentityJoin"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.getDefaultInstance()))
               .setSchemaDescriptor(new AuthServiceMethodDescriptorSupplier("ApplyIdentityJoin"))
               .build();
         }
@@ -45,29 +45,29 @@ public final class AuthServiceGrpc {
     return getApplyIdentityJoinMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-      com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> getRevokeIdentityJoinMethod;
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getRevokeIdentityJoinMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "RevokeIdentityJoin",
-      requestType = com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams.class,
-      responseType = com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-      com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> getRevokeIdentityJoinMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> getRevokeIdentityJoinMethod;
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getRevokeIdentityJoinMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getRevokeIdentityJoinMethod;
     if ((getRevokeIdentityJoinMethod = AuthServiceGrpc.getRevokeIdentityJoinMethod) == null) {
       synchronized (AuthServiceGrpc.class) {
         if ((getRevokeIdentityJoinMethod = AuthServiceGrpc.getRevokeIdentityJoinMethod) == null) {
           AuthServiceGrpc.getRevokeIdentityJoinMethod = getRevokeIdentityJoinMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "RevokeIdentityJoin"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.getDefaultInstance()))
               .setSchemaDescriptor(new AuthServiceMethodDescriptorSupplier("RevokeIdentityJoin"))
               .build();
         }
@@ -76,29 +76,29 @@ public final class AuthServiceGrpc {
     return getRevokeIdentityJoinMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-      com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse> getGetNodeIdentityMethod;
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse> getGetNodeIdentityMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetNodeIdentity",
-      requestType = com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams.class,
-      responseType = com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-      com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse> getGetNodeIdentityMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse> getGetNodeIdentityMethod;
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse> getGetNodeIdentityMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse> getGetNodeIdentityMethod;
     if ((getGetNodeIdentityMethod = AuthServiceGrpc.getGetNodeIdentityMethod) == null) {
       synchronized (AuthServiceGrpc.class) {
         if ((getGetNodeIdentityMethod = AuthServiceGrpc.getGetNodeIdentityMethod) == null) {
           AuthServiceGrpc.getGetNodeIdentityMethod = getGetNodeIdentityMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetNodeIdentity"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse.getDefaultInstance()))
               .setSchemaDescriptor(new AuthServiceMethodDescriptorSupplier("GetNodeIdentity"))
               .build();
         }
@@ -107,29 +107,29 @@ public final class AuthServiceGrpc {
     return getGetNodeIdentityMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-      com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse> getGetIdentityListMethod;
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse> getGetIdentityListMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetIdentityList",
-      requestType = com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams.class,
-      responseType = com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-      com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse> getGetIdentityListMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse> getGetIdentityListMethod;
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse> getGetIdentityListMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse> getGetIdentityListMethod;
     if ((getGetIdentityListMethod = AuthServiceGrpc.getGetIdentityListMethod) == null) {
       synchronized (AuthServiceGrpc.class) {
         if ((getGetIdentityListMethod = AuthServiceGrpc.getGetIdentityListMethod) == null) {
           AuthServiceGrpc.getGetIdentityListMethod = getGetIdentityListMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetIdentityList"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse.getDefaultInstance()))
               .setSchemaDescriptor(new AuthServiceMethodDescriptorSupplier("GetIdentityList"))
               .build();
         }
@@ -191,8 +191,8 @@ public final class AuthServiceGrpc {
      * 申请准入网络
      * </pre>
      */
-    public void applyIdentityJoin(com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> responseObserver) {
+    public void applyIdentityJoin(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getApplyIdentityJoinMethod(), responseObserver);
     }
 
@@ -201,8 +201,8 @@ public final class AuthServiceGrpc {
      * 注销准入网络
      * </pre>
      */
-    public void revokeIdentityJoin(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> responseObserver) {
+    public void revokeIdentityJoin(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRevokeIdentityJoinMethod(), responseObserver);
     }
 
@@ -211,8 +211,8 @@ public final class AuthServiceGrpc {
      * 查询自己组织的identity信息
      * </pre>
      */
-    public void getNodeIdentity(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse> responseObserver) {
+    public void getNodeIdentity(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetNodeIdentityMethod(), responseObserver);
     }
 
@@ -221,8 +221,8 @@ public final class AuthServiceGrpc {
      * 查询全网全部已发布的 身份信息
      * </pre>
      */
-    public void getIdentityList(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse> responseObserver) {
+    public void getIdentityList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetIdentityListMethod(), responseObserver);
     }
 
@@ -232,29 +232,29 @@ public final class AuthServiceGrpc {
             getApplyIdentityJoinMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest,
-                com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode>(
+                com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest,
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>(
                   this, METHODID_APPLY_IDENTITY_JOIN)))
           .addMethod(
             getRevokeIdentityJoinMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-                com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode>(
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>(
                   this, METHODID_REVOKE_IDENTITY_JOIN)))
           .addMethod(
             getGetNodeIdentityMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-                com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse>(
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+                com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse>(
                   this, METHODID_GET_NODE_IDENTITY)))
           .addMethod(
             getGetIdentityListMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-                com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse>(
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+                com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse>(
                   this, METHODID_GET_IDENTITY_LIST)))
           .build();
     }
@@ -279,8 +279,8 @@ public final class AuthServiceGrpc {
      * 申请准入网络
      * </pre>
      */
-    public void applyIdentityJoin(com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> responseObserver) {
+    public void applyIdentityJoin(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getApplyIdentityJoinMethod(), getCallOptions()), request, responseObserver);
     }
@@ -290,8 +290,8 @@ public final class AuthServiceGrpc {
      * 注销准入网络
      * </pre>
      */
-    public void revokeIdentityJoin(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> responseObserver) {
+    public void revokeIdentityJoin(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getRevokeIdentityJoinMethod(), getCallOptions()), request, responseObserver);
     }
@@ -301,8 +301,8 @@ public final class AuthServiceGrpc {
      * 查询自己组织的identity信息
      * </pre>
      */
-    public void getNodeIdentity(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse> responseObserver) {
+    public void getNodeIdentity(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetNodeIdentityMethod(), getCallOptions()), request, responseObserver);
     }
@@ -312,8 +312,8 @@ public final class AuthServiceGrpc {
      * 查询全网全部已发布的 身份信息
      * </pre>
      */
-    public void getIdentityList(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse> responseObserver) {
+    public void getIdentityList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetIdentityListMethod(), getCallOptions()), request, responseObserver);
     }
@@ -338,7 +338,7 @@ public final class AuthServiceGrpc {
      * 申请准入网络
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode applyIdentityJoin(com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest request) {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode applyIdentityJoin(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getApplyIdentityJoinMethod(), getCallOptions(), request);
     }
@@ -348,7 +348,7 @@ public final class AuthServiceGrpc {
      * 注销准入网络
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode revokeIdentityJoin(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request) {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode revokeIdentityJoin(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getRevokeIdentityJoinMethod(), getCallOptions(), request);
     }
@@ -358,7 +358,7 @@ public final class AuthServiceGrpc {
      * 查询自己组织的identity信息
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse getNodeIdentity(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request) {
+    public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse getNodeIdentity(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetNodeIdentityMethod(), getCallOptions(), request);
     }
@@ -368,7 +368,7 @@ public final class AuthServiceGrpc {
      * 查询全网全部已发布的 身份信息
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse getIdentityList(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request) {
+    public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse getIdentityList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetIdentityListMethod(), getCallOptions(), request);
     }
@@ -393,8 +393,8 @@ public final class AuthServiceGrpc {
      * 申请准入网络
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> applyIdentityJoin(
-        com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> applyIdentityJoin(
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getApplyIdentityJoinMethod(), getCallOptions()), request);
     }
@@ -404,8 +404,8 @@ public final class AuthServiceGrpc {
      * 注销准入网络
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> revokeIdentityJoin(
-        com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> revokeIdentityJoin(
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getRevokeIdentityJoinMethod(), getCallOptions()), request);
     }
@@ -415,8 +415,8 @@ public final class AuthServiceGrpc {
      * 查询自己组织的identity信息
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse> getNodeIdentity(
-        com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse> getNodeIdentity(
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetNodeIdentityMethod(), getCallOptions()), request);
     }
@@ -426,8 +426,8 @@ public final class AuthServiceGrpc {
      * 查询全网全部已发布的 身份信息
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse> getIdentityList(
-        com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse> getIdentityList(
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetIdentityListMethod(), getCallOptions()), request);
     }
@@ -456,20 +456,20 @@ public final class AuthServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_APPLY_IDENTITY_JOIN:
-          serviceImpl.applyIdentityJoin((com.platon.rosettanet.admin.grpc.AuthRpcMessage.ApplyIdentityJoinRequest) request,
-              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode>) responseObserver);
+          serviceImpl.applyIdentityJoin((com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
           break;
         case METHODID_REVOKE_IDENTITY_JOIN:
-          serviceImpl.revokeIdentityJoin((com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams) request,
-              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode>) responseObserver);
+          serviceImpl.revokeIdentityJoin((com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
           break;
         case METHODID_GET_NODE_IDENTITY:
-          serviceImpl.getNodeIdentity((com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams) request,
-              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetNodeIdentityResponse>) responseObserver);
+          serviceImpl.getNodeIdentity((com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetNodeIdentityResponse>) responseObserver);
           break;
         case METHODID_GET_IDENTITY_LIST:
-          serviceImpl.getIdentityList((com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams) request,
-              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.AuthRpcMessage.GetIdentityListResponse>) responseObserver);
+          serviceImpl.getIdentityList((com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetIdentityListResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -493,7 +493,7 @@ public final class AuthServiceGrpc {
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return com.platon.rosettanet.admin.grpc.AuthRpcMessage.getDescriptor();
+      return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.getDescriptor();
     }
 
     @java.lang.Override

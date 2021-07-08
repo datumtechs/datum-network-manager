@@ -19,29 +19,29 @@ public final class PowerServiceGrpc {
   public static final String SERVICE_NAME = "rpcapi.PowerService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-      com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse> getGetPowerTotalDetailListMethod;
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> getGetPowerTotalDetailListMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetPowerTotalDetailList",
-      requestType = com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams.class,
-      responseType = com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-      com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse> getGetPowerTotalDetailListMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse> getGetPowerTotalDetailListMethod;
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> getGetPowerTotalDetailListMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> getGetPowerTotalDetailListMethod;
     if ((getGetPowerTotalDetailListMethod = PowerServiceGrpc.getGetPowerTotalDetailListMethod) == null) {
       synchronized (PowerServiceGrpc.class) {
         if ((getGetPowerTotalDetailListMethod = PowerServiceGrpc.getGetPowerTotalDetailListMethod) == null) {
           PowerServiceGrpc.getGetPowerTotalDetailListMethod = getGetPowerTotalDetailListMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetPowerTotalDetailList"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse.getDefaultInstance()))
               .setSchemaDescriptor(new PowerServiceMethodDescriptorSupplier("GetPowerTotalDetailList"))
               .build();
         }
@@ -50,29 +50,29 @@ public final class PowerServiceGrpc {
     return getGetPowerTotalDetailListMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-      com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse> getGetPowerSingleDetailListMethod;
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> getGetPowerSingleDetailListMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetPowerSingleDetailList",
-      requestType = com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams.class,
-      responseType = com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-      com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse> getGetPowerSingleDetailListMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse> getGetPowerSingleDetailListMethod;
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> getGetPowerSingleDetailListMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> getGetPowerSingleDetailListMethod;
     if ((getGetPowerSingleDetailListMethod = PowerServiceGrpc.getGetPowerSingleDetailListMethod) == null) {
       synchronized (PowerServiceGrpc.class) {
         if ((getGetPowerSingleDetailListMethod = PowerServiceGrpc.getGetPowerSingleDetailListMethod) == null) {
           PowerServiceGrpc.getGetPowerSingleDetailListMethod = getGetPowerSingleDetailListMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetPowerSingleDetailList"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse.getDefaultInstance()))
               .setSchemaDescriptor(new PowerServiceMethodDescriptorSupplier("GetPowerSingleDetailList"))
               .build();
         }
@@ -81,29 +81,29 @@ public final class PowerServiceGrpc {
     return getGetPowerSingleDetailListMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest,
-      com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse> getPublishPowerMethod;
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest,
+      com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse> getPublishPowerMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "PublishPower",
-      requestType = com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest.class,
-      responseType = com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest,
-      com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse> getPublishPowerMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest, com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse> getPublishPowerMethod;
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest,
+      com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse> getPublishPowerMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse> getPublishPowerMethod;
     if ((getPublishPowerMethod = PowerServiceGrpc.getPublishPowerMethod) == null) {
       synchronized (PowerServiceGrpc.class) {
         if ((getPublishPowerMethod = PowerServiceGrpc.getPublishPowerMethod) == null) {
           PowerServiceGrpc.getPublishPowerMethod = getPublishPowerMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest, com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "PublishPower"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse.getDefaultInstance()))
               .setSchemaDescriptor(new PowerServiceMethodDescriptorSupplier("PublishPower"))
               .build();
         }
@@ -112,29 +112,29 @@ public final class PowerServiceGrpc {
     return getPublishPowerMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest,
-      com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> getRevokePowerMethod;
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest,
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getRevokePowerMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "RevokePower",
-      requestType = com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest.class,
-      responseType = com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest,
-      com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> getRevokePowerMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest, com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> getRevokePowerMethod;
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest,
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getRevokePowerMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getRevokePowerMethod;
     if ((getRevokePowerMethod = PowerServiceGrpc.getRevokePowerMethod) == null) {
       synchronized (PowerServiceGrpc.class) {
         if ((getRevokePowerMethod = PowerServiceGrpc.getRevokePowerMethod) == null) {
           PowerServiceGrpc.getRevokePowerMethod = getRevokePowerMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest, com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "RevokePower"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.getDefaultInstance()))
               .setSchemaDescriptor(new PowerServiceMethodDescriptorSupplier("RevokePower"))
               .build();
         }
@@ -201,8 +201,8 @@ public final class PowerServiceGrpc {
      * 查看各个节点的总算力详情列表
      * </pre>
      */
-    public void getPowerTotalDetailList(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse> responseObserver) {
+    public void getPowerTotalDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetPowerTotalDetailListMethod(), responseObserver);
     }
 
@@ -211,8 +211,8 @@ public final class PowerServiceGrpc {
      * 查看某个节点各个单算力详情列表
      * </pre>
      */
-    public void getPowerSingleDetailList(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse> responseObserver) {
+    public void getPowerSingleDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetPowerSingleDetailListMethod(), responseObserver);
     }
 
@@ -221,8 +221,8 @@ public final class PowerServiceGrpc {
      * 启用算力 (发布算力)
      * </pre>
      */
-    public void publishPower(com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse> responseObserver) {
+    public void publishPower(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getPublishPowerMethod(), responseObserver);
     }
 
@@ -231,8 +231,8 @@ public final class PowerServiceGrpc {
      * 停用算力 (撤销算力)
      * </pre>
      */
-    public void revokePower(com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> responseObserver) {
+    public void revokePower(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRevokePowerMethod(), responseObserver);
     }
 
@@ -242,29 +242,29 @@ public final class PowerServiceGrpc {
             getGetPowerTotalDetailListMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-                com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse>(
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+                com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse>(
                   this, METHODID_GET_POWER_TOTAL_DETAIL_LIST)))
           .addMethod(
             getGetPowerSingleDetailListMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams,
-                com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse>(
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+                com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse>(
                   this, METHODID_GET_POWER_SINGLE_DETAIL_LIST)))
           .addMethod(
             getPublishPowerMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest,
-                com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse>(
+                com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest,
+                com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse>(
                   this, METHODID_PUBLISH_POWER)))
           .addMethod(
             getRevokePowerMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest,
-                com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode>(
+                com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest,
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>(
                   this, METHODID_REVOKE_POWER)))
           .build();
     }
@@ -294,8 +294,8 @@ public final class PowerServiceGrpc {
      * 查看各个节点的总算力详情列表
      * </pre>
      */
-    public void getPowerTotalDetailList(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse> responseObserver) {
+    public void getPowerTotalDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetPowerTotalDetailListMethod(), getCallOptions()), request, responseObserver);
     }
@@ -305,8 +305,8 @@ public final class PowerServiceGrpc {
      * 查看某个节点各个单算力详情列表
      * </pre>
      */
-    public void getPowerSingleDetailList(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse> responseObserver) {
+    public void getPowerSingleDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetPowerSingleDetailListMethod(), getCallOptions()), request, responseObserver);
     }
@@ -316,8 +316,8 @@ public final class PowerServiceGrpc {
      * 启用算力 (发布算力)
      * </pre>
      */
-    public void publishPower(com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse> responseObserver) {
+    public void publishPower(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getPublishPowerMethod(), getCallOptions()), request, responseObserver);
     }
@@ -327,8 +327,8 @@ public final class PowerServiceGrpc {
      * 停用算力 (撤销算力)
      * </pre>
      */
-    public void revokePower(com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> responseObserver) {
+    public void revokePower(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getRevokePowerMethod(), getCallOptions()), request, responseObserver);
     }
@@ -358,7 +358,7 @@ public final class PowerServiceGrpc {
      * 查看各个节点的总算力详情列表
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse getPowerTotalDetailList(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request) {
+    public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse getPowerTotalDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetPowerTotalDetailListMethod(), getCallOptions(), request);
     }
@@ -368,7 +368,7 @@ public final class PowerServiceGrpc {
      * 查看某个节点各个单算力详情列表
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse getPowerSingleDetailList(com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request) {
+    public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse getPowerSingleDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetPowerSingleDetailListMethod(), getCallOptions(), request);
     }
@@ -378,7 +378,7 @@ public final class PowerServiceGrpc {
      * 启用算力 (发布算力)
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse publishPower(com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest request) {
+    public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse publishPower(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getPublishPowerMethod(), getCallOptions(), request);
     }
@@ -388,7 +388,7 @@ public final class PowerServiceGrpc {
      * 停用算力 (撤销算力)
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode revokePower(com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest request) {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode revokePower(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getRevokePowerMethod(), getCallOptions(), request);
     }
@@ -418,8 +418,8 @@ public final class PowerServiceGrpc {
      * 查看各个节点的总算力详情列表
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse> getPowerTotalDetailList(
-        com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> getPowerTotalDetailList(
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetPowerTotalDetailListMethod(), getCallOptions()), request);
     }
@@ -429,8 +429,8 @@ public final class PowerServiceGrpc {
      * 查看某个节点各个单算力详情列表
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse> getPowerSingleDetailList(
-        com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> getPowerSingleDetailList(
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetPowerSingleDetailListMethod(), getCallOptions()), request);
     }
@@ -440,8 +440,8 @@ public final class PowerServiceGrpc {
      * 启用算力 (发布算力)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse> publishPower(
-        com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse> publishPower(
+        com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getPublishPowerMethod(), getCallOptions()), request);
     }
@@ -451,8 +451,8 @@ public final class PowerServiceGrpc {
      * 停用算力 (撤销算力)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode> revokePower(
-        com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> revokePower(
+        com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getRevokePowerMethod(), getCallOptions()), request);
     }
@@ -481,20 +481,20 @@ public final class PowerServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_GET_POWER_TOTAL_DETAIL_LIST:
-          serviceImpl.getPowerTotalDetailList((com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams) request,
-              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerTotalDetailListResponse>) responseObserver);
+          serviceImpl.getPowerTotalDetailList((com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse>) responseObserver);
           break;
         case METHODID_GET_POWER_SINGLE_DETAIL_LIST:
-          serviceImpl.getPowerSingleDetailList((com.platon.rosettanet.admin.grpc.CommonMessage.EmptyGetParams) request,
-              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.PowerRpcMessage.GetPowerSingleDetailListResponse>) responseObserver);
+          serviceImpl.getPowerSingleDetailList((com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse>) responseObserver);
           break;
         case METHODID_PUBLISH_POWER:
-          serviceImpl.publishPower((com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerRequest) request,
-              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.PowerRpcMessage.PublishPowerResponse>) responseObserver);
+          serviceImpl.publishPower((com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerResponse>) responseObserver);
           break;
         case METHODID_REVOKE_POWER:
-          serviceImpl.revokePower((com.platon.rosettanet.admin.grpc.PowerRpcMessage.RevokePowerRequest) request,
-              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.CommonMessage.SimpleResponseCode>) responseObserver);
+          serviceImpl.revokePower((com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -518,7 +518,7 @@ public final class PowerServiceGrpc {
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return com.platon.rosettanet.admin.grpc.PowerRpcMessage.getDescriptor();
+      return com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.getDescriptor();
     }
 
     @java.lang.Override

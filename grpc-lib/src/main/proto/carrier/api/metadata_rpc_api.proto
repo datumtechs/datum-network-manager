@@ -1,13 +1,13 @@
 syntax = "proto3";
-
-package rpcapi;
-
 // 生成类的包名
-option java_package = "com.platon.rosettanet.admin.grpc";
+option java_package = "com.platon.rosettanet.admin.grpc.service";
 //生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
 option java_outer_classname = "MetaDataRpcMessage";
 
+package rpcapi;
+
 import "carrier/api/common_message.proto";
+import "google/api/annotations.proto";
 
 
 //  ------------------------  metadata  ------------------------
@@ -101,26 +101,50 @@ message GetMetaDataDetailListByOwnerRequest {
 
 // ## 元数据 相关接口
 service MetaDataService {
-  //  // 查看全部元数据摘要列表 (不包含 列字段描述)
-  //  rpc GetMetaDataSummaryList (EmptyGetParams) returns (GetMetaDataSummaryListResponse);
-  //  // 查看指定状态的元数据摘要列表 (不包含 列字段描述)
-  //  rpc GetMetaDataSummaryByState (GetMetaDataSummaryByStateRequest) returns (GetMetaDataSummaryListResponse);
-  //  // 查看指定拥有者的元数据摘要列表 (不包含 列字段描述)
-  //  rpc GetMetaDataSummaryByOwner (GetMetaDataSummaryByOwnerRequest) returns (GetMetaDataSummaryListResponse);
+    //  // 查看全部元数据摘要列表 (不包含 列字段描述)
+    //  rpc GetMetaDataSummaryList (EmptyGetParams) returns (GetMetaDataSummaryListResponse);
+    //  // 查看指定状态的元数据摘要列表 (不包含 列字段描述)
+    //  rpc GetMetaDataSummaryByState (GetMetaDataSummaryByStateRequest) returns (GetMetaDataSummaryListResponse);
+    //  // 查看指定拥有者的元数据摘要列表 (不包含 列字段描述)
+    //  rpc GetMetaDataSummaryByOwner (GetMetaDataSummaryByOwnerRequest) returns (GetMetaDataSummaryListResponse);
 
-  // 查看单个元数据详情 (包含 列字段描述)
-  rpc GetMetaDataDetail (GetMetaDataDetailRequest) returns (GetMetaDataDetailResponse);
+    // 查看单个元数据详情 (包含 列字段描述)
+    rpc GetMetaDataDetail (GetMetaDataDetailRequest) returns (GetMetaDataDetailResponse) {
+        option (google.api.http) = {
+            post: "/carrier/v1/metadata/detail"
+            body: "*"
+        };
+    }
 
+    rpc GetMetaDataDetailList (EmptyGetParams) returns (GetMetaDataDetailListResponse) {
+        option (google.api.http) = {
+            post: "/carrier/v1/metadata/list"
+            body: "*"
+        };
+    }
 
-  rpc GetMetaDataDetailList (EmptyGetParams) returns (GetMetaDataDetailListResponse);
+    rpc GetMetaDataDetailListByOwner (GetMetaDataDetailListByOwnerRequest) returns (GetMetaDataDetailListResponse) {
+        option (google.api.http) = {
+            post: "/carrier/v1/metadata/listByOwner"
+            body: "*"
+        };
+    }
 
-  rpc GetMetaDataDetailListByOwner (GetMetaDataDetailListByOwnerRequest) returns (GetMetaDataDetailListResponse);
+    // 发布元数据  (新增和编辑 都是发布新的元数据) <底层根据 原始数据Id -- OriginId 来关联 新的MetaDataId>
+    rpc PublishMetaData (PublishMetaDataRequest) returns (PublishMetaDataResponse) {
+        option (google.api.http) = {
+            post: "/carrier/v1/metadata/publish"
+            body: "*"
+        };
+    }
+    // 撤销元数据 (从底层网络撤销)
+    rpc RevokeMetaData (RevokeMetaDataRequest) returns (SimpleResponseCode) {
+        option (google.api.http) = {
+            post: "/carrier/v1/metadata/revoke"
+            body: "*"
+        };
+    }
 
-  // 发布元数据  (新增和编辑 都是发布新的元数据) <底层根据 原始数据Id -- OriginId 来关联 新的MetaDataId>
-  rpc PublishMetaData (PublishMetaDataRequest) returns (PublishMetaDataResponse);
-  // 撤销元数据 (从底层网络撤销)
-  rpc RevokeMetaData (RevokeMetaDataRequest) returns (SimpleResponseCode);
-
-  // 分页拉取摘要列表
-  // 分页拉取详情列表
+    // 分页拉取摘要列表
+    // 分页拉取详情列表
 }

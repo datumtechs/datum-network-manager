@@ -1,7 +1,5 @@
 package com.platon.rosettanet.admin.grpc.service;
 
-import com.platon.rosettanet.admin.grpc.AuthRpcMessage;
-import com.platon.rosettanet.admin.grpc.CommonMessage;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import org.junit.Test;
