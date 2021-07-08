@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.aop;
 
+import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.enums.ResponseCodeEnum;
 import com.platon.rosettanet.admin.service.exception.ServiceException;
@@ -37,6 +38,12 @@ public class ErrorHandle {
     @ExceptionHandler(ServiceException.class)
     public JsonResponse handleServiceException(ServiceException exception){
         log.error("handleServiceException",exception);
+        return JsonResponse.fail(exception.getErrorMsg());
+    }
+
+    @ExceptionHandler(ApplicationException.class)
+    public JsonResponse handleApplicationException(ApplicationException exception){
+        log.error("handleApplicationException",exception);
         return JsonResponse.fail(exception.getErrorMsg());
     }
 

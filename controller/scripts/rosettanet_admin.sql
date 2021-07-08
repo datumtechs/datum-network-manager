@@ -43,7 +43,7 @@ DROP TABLE IF EXISTS local_org;;
 CREATE TABLE local_org(
     name VARCHAR(32) NOT NULL COMMENT '机构名称' ,
     identity_id VARCHAR(128)    COMMENT '机构身份标识ID',
-    carrier_uuid VARCHAR(128)    COMMENT '机构调度服务uuid' ,
+    carrier_node_id varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '机构调度服务node id，入网后可以获取到',
     carrier_IP VARCHAR(32)    COMMENT '调度服务IP地址' ,
     carrier_Port INT    COMMENT '调度服务端口号' ,
     carrier_conn_Status VARCHAR(10)    COMMENT '连接状态 enabled：可用, disabled:不可用' ,
@@ -59,7 +59,7 @@ CREATE TABLE global_org(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
     name VARCHAR(32)    COMMENT '机构名称' ,
     identity_id VARCHAR(128)    COMMENT '机构身份标识ID' ,
-    carrier_uuid VARCHAR(128)    COMMENT '机构调度服务uuid' ,
+    carrier_node_id varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组织中调度服务的 nodeId',
     status VARCHAR(10)    COMMENT '状态 enabled：可用, disabled:不可用' ,
     rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id),
@@ -67,11 +67,11 @@ CREATE TABLE global_org(
 ) COMMENT = '全网组织信息表，用于存储从全网同步过来的组织信息数据';;
 
 -- 此表数据有管理台添加
-DROP TABLE IF EXISTS local_power_host;;
-CREATE TABLE local_power_host(
+DROP TABLE IF EXISTS local_power_node;;
+CREATE TABLE local_power_node(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
     identity_id VARCHAR(128) NOT NULL COMMENT '组织身份ID',
-    uuid VARCHAR(128) COMMENT '发布后底层返回的host唯一ID' ,
+    node_id VARCHAR(128) COMMENT '发布后底层返回的host唯一ID' ,
     host_Name VARCHAR(32)    COMMENT '节点名称(同一个组织不可重复）' ,
     internal_IP VARCHAR(32)    COMMENT '节点内网IP' ,
     internal_Port INT    COMMENT '节点内网端口' ,
@@ -99,10 +99,11 @@ CREATE TABLE local_power_host(
 ) COMMENT = '本组织计算节点配置表 配置当前参与方的计算节点信息';;
 
 -- 此表数据有管理台添加
-DROP TABLE IF EXISTS local_data_host;;
-CREATE TABLE local_data_host(
+DROP TABLE IF EXISTS local_data_node;;
+CREATE TABLE local_data_node(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
     identity_id VARCHAR(128) NOT NULL COMMENT '组织身份ID',
+    node_id VARCHAR(128) COMMENT '发布后底层返回的host唯一ID' ,
     host_Name VARCHAR(32)    COMMENT '节点名称' ,
     internal_IP VARCHAR(32)    COMMENT '节点内部IP' ,
     internal_Port INT    COMMENT '节点内部端口' ,
@@ -129,6 +130,7 @@ DROP TABLE IF EXISTS local_data_file;;
 CREATE TABLE local_data_file(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
     identity_id VARCHAR(128) NOT NULL COMMENT '组织身份ID',
+    file_id varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID，上传文件成功后返回源文件ID',
     file_name VARCHAR(100) NOT NULL COMMENT '文件名称',
     file_path VARCHAR(100) NOT NULL COMMENT '文件存储路径',
     file_type VARCHAR(20) NOT NULL COMMENT '文件后缀/类型, csv',
@@ -152,7 +154,6 @@ CREATE TABLE local_data_file(
 DROP TABLE IF EXISTS local_meta_data_column;;
 CREATE TABLE local_meta_data_column(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
-    data_file_id INT NOT NULL COMMENT 'data_file的ID' ,
     meta_data_id VARCHAR(128)    COMMENT '元数据ID' ,
     column_idx INT    COMMENT '列索引' ,
     column_name VARCHAR(32)    COMMENT '列名' ,
@@ -164,13 +165,14 @@ CREATE TABLE local_meta_data_column(
     rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id),
     UNIQUE KEY (meta_data_id,column_idx)
-) COMMENT = '本组织数据文件表列详细表';;
+) COMMENT = '本组织数据文件表列详细表，描述源文件中每一列的列信息';;
 
 -- 此表数据调用调度服务的接口获取，rpc GetMetadataList(MetadataListRequest) returns (MetadataListResponse);
 DROP TABLE IF EXISTS global_data_file;;
 CREATE TABLE global_data_file(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
     identity_id VARCHAR(128) NOT NULL COMMENT '组织身份ID',
+    file_id varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID',
     file_name VARCHAR(100) NOT NULL COMMENT '文件名称',
     file_path VARCHAR(100) NOT NULL COMMENT '文件存储路径',
     file_type VARCHAR(20) NOT NULL COMMENT '文件后缀/类型, csv',
@@ -193,7 +195,6 @@ CREATE TABLE global_data_file(
 DROP TABLE IF EXISTS global_meta_data_column;;
 CREATE TABLE global_meta_data_column(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
-    data_file_id INT NOT NULL COMMENT 'data_file的ID' ,
     meta_data_id VARCHAR(128)    COMMENT '元数据ID' ,
     column_idx INT    COMMENT '列索引' ,
     column_name VARCHAR(32)    COMMENT '列名' ,
@@ -204,7 +205,7 @@ CREATE TABLE global_meta_data_column(
     rec_create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
     rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (id)
-) COMMENT = '全网数据文件表列详细表';;
+) COMMENT = '全网数据文件表列详细表，描述源文件中每一列的列信息';;
 
 -- 此表数据调用调度服务接口获取，rpc ListTask(TaskListRequest) returns (TaskListResponse);
 DROP TABLE IF EXISTS task;;
