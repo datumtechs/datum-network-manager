@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.dao;
 
-import com.platon.rosettanet.admin.dao.entity.LocalDateTime;
+
+import com.platon.rosettanet.admin.dao.entity.LocalComputeNode;
 
 public interface LocalComputeNodeMapper {
 
@@ -20,14 +21,14 @@ public interface LocalComputeNodeMapper {
 
     /**
      * 插入计算节点数据
-     * @param record
+     * @param localComputeNode
      * @return
      */
     int insertComputeNode(LocalComputeNode localComputeNode);
 
     /**
      * 修改计算节点数据
-     * @param record
+     *      * @param localComputeNode
      * @return
      */
     int updateComputeNode(LocalComputeNode localComputeNode);
