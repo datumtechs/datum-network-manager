@@ -47,8 +47,8 @@ public class LocalComputeNode {
 
     private Long usedBandwidth;
 
-    private LocalDateTime recCreateTime;
+    private LocalDateTime createTime;
 
-    private LocalDateTime recUpdateTime;
+    private LocalDateTime updateTime;
 
 }
