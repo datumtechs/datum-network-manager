@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NodeController {
 
-    @PostMapping("connectNode.json")
+    @PostMapping("connectNode")
     public JsonResponse connectNode(){
         return JsonResponse.success();
     }

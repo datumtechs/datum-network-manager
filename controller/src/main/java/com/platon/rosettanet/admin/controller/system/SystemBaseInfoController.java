@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SystemBaseInfoController {
 
-    @PostMapping("queryBaseInfo.json")
+    @PostMapping("queryBaseInfo")
     public JsonResponse<SystemQueryBaseInfoResp> queryBaseInfo(){
 
         return JsonResponse.success();

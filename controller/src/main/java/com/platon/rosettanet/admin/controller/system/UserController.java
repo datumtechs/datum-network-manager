@@ -29,7 +29,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @PostMapping("login.json")
+    @PostMapping("login")
     public JsonResponse<String> login(HttpServletRequest request,@Validated @RequestBody LoginReq req){
         HttpSession session = request.getSession(true);
         //校验验证码
@@ -60,7 +60,7 @@ public class UserController {
         return true;
     }
 
-    @PostMapping("logout.json")
+    @PostMapping("logout")
     public JsonResponse logout(HttpServletRequest request, @Validated @RequestBody LogoutReq req){
         HttpSession session = request.getSession();
         if(session != null){//将session致为失效
@@ -69,7 +69,7 @@ public class UserController {
         return JsonResponse.success();
     }
 
-    @PostMapping("applyOrgName.json")
+    @PostMapping("applyOrgName")
     public JsonResponse<String> applyOrgName(@RequestBody UserApplyOrgNameReq req){
         String orgId = userService.applyOrgName(req.getOrgName());
         if(StrUtil.isBlank(orgId)){
@@ -78,7 +78,7 @@ public class UserController {
         return JsonResponse.success(orgId);
     }
 
-    @GetMapping("verificationCode.json")
+    @GetMapping("verificationCode")
     public JsonResponse<String> getVerificationCode(HttpServletRequest request){
         int code = RandomUtil.randomInt(1000, 9999);
         //放入session中，方便后面登录校验验证码

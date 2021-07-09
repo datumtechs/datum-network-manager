@@ -29,7 +29,7 @@ public class IndexController {
     private IndexService indexService;
 
 
-    @PostMapping("overview.json")
+    @PostMapping("overview")
     public JsonResponse<IndexOverviewResp> overview(){
         return JsonResponse.success();
     }

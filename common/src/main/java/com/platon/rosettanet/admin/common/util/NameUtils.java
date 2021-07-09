@@ -26,4 +26,8 @@ public class NameUtils {
         }
         return false;
     }
+
+    public static void main(String[] args) {
+        System.out.println(isValidName("123456789abc"));
+    }
 }
