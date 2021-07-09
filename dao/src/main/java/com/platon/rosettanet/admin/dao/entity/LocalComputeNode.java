@@ -1,8 +1,10 @@
 package com.platon.rosettanet.admin.dao.entity;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
-@Date
+@Data
 public class LocalComputeNode {
 
     private Integer id;
