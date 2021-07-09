@@ -89,10 +89,10 @@ CREATE TABLE local_compute_node
     external_port  INT COMMENT '节点外网端口',
     start_time     DATETIME COMMENT '节点启用时间',
     remarks        VARCHAR(32) COMMENT '节点备注',
-    conn_status    VARCHAR(10)  not null default '0' COMMENT '节点状态 0:初始化, 1:可用, 2:不可用',
+    conn_status    VARCHAR(10)  not null default '0' COMMENT '节点状态 0:初始化, 1：可用, 2:不可用',
     conn_message   VARCHAR(32) COMMENT '节点(连接失败)信息',
     conn_time      DATETIME COMMENT '节点上一次连接时间',
-    status         VARCHAR(10)  not null default 'pending' COMMENT '算力状态，0:初始化 1:可用; 2:不可用',
+    status         VARCHAR(10)  not null default 'pending' COMMENT '算力状态，pending:初始化 enabled:可用; disabled:不可用',
     memory         BIGINT       NOT NULL DEFAULT 0 COMMENT '计算host内存, 字节',
     core           INT          NOT NULL DEFAULT 0 COMMENT '计算host core',
     bandwidth      BIGINT       NOT NULL DEFAULT 0 COMMENT '计算host带宽, bps',
@@ -100,10 +100,10 @@ CREATE TABLE local_compute_node
     used_core      INT                   DEFAULT 0 COMMENT '使用的core',
     used_bandwidth BIGINT                DEFAULT 0 COMMENT '使用的带宽, bps',
     create_time    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    update_time    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+    create_time    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
     PRIMARY KEY (id),
     KEY (node_id),
-    KEY (node_name)
+    KEY (host_name)
 ) COMMENT = '本组织计算节点配置表 配置当前参与方的计算节点信息';;
 
 -- 此表数据有管理台添加
