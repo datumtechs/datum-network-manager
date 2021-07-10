@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.DataNodeMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.DataNode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="node_id" jdbcType="VARCHAR" property="nodeId" />
+    <result column="host_Name" jdbcType="VARCHAR" property="hostName" />
+    <result column="internal_IP" jdbcType="VARCHAR" property="internalIp" />
+    <result column="internal_Port" jdbcType="INTEGER" property="internalPort" />
+    <result column="external_IP" jdbcType="VARCHAR" property="externalIp" />
+    <result column="external_Port" jdbcType="INTEGER" property="externalPort" />
+    <result column="conn_Status" jdbcType="VARCHAR" property="connStatus" />
+    <result column="conn_message" jdbcType="VARCHAR" property="connMessage" />
+    <result column="conn_Time" jdbcType="TIMESTAMP" property="connTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, identity_id, node_id, host_Name, internal_IP, internal_Port, external_IP, external_Port,
+    conn_Status, conn_message, conn_Time, status, remarks, rec_create_time, rec_update_time
+  </sql>
+  <select id="listNode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_data_node
+    <where>
+      <if test="keyword != null and keyword != ''">
+        host_Name like CONCAT(CONCAT('%',#{keyword}),'%')
+      </if>
+    </where>
+  </select>
+
+  <select id="getDataNodeIdByName" parameterType="java.lang.String" resultType="java.lang.String">
+    select
+    id
+    from local_data_node
+    where host_Name = #{hostName}
+    limit 1
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from local_data_node
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByNodeId" parameterType="java.lang.String">
+    delete from local_data_node
+    where node_id = #{nodeId}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.DataNode">
+    insert into local_data_node (id, identity_id, node_id,
+      host_Name, internal_IP, internal_Port,
+      external_IP, external_Port, conn_Status,
+      conn_message, conn_Time, status,
+      remarks, rec_create_time, rec_update_time
+    )
+    values (#{id,jdbcType=INTEGER}, #{identityId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR},
+      #{hostName,jdbcType=VARCHAR}, #{internalIp,jdbcType=VARCHAR}, #{internalPort,jdbcType=INTEGER},
+      #{externalIp,jdbcType=VARCHAR}, #{externalPort,jdbcType=INTEGER}, #{connStatus,jdbcType=VARCHAR},
+      #{connMessage,jdbcType=VARCHAR}, #{connTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
+      #{remarks,jdbcType=VARCHAR}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP}
+     )
+  </insert>
+  <update id="updateByNodeId" parameterType="com.platon.rosettanet.admin.dao.entity.DataNode">
+    update local_data_node
+    set
+      internal_IP = #{internalIp,jdbcType=VARCHAR},
+      internal_Port = #{internalPort,jdbcType=INTEGER},
+      external_IP = #{externalIp,jdbcType=VARCHAR},
+      external_Port = #{externalPort,jdbcType=INTEGER},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+    where node_Id = #{nodeId,jdbcType=INTEGER}
+  </update>
+</mapper>

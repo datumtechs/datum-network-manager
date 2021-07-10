@@ -14,7 +14,7 @@ public class IDUtils {
 
     /**
      * 生成 id，项目中需要生成ID的地方都可以使用，第一版可以先使用UUID过渡，后期更新ID生成策略
-     * @return 返回一个ID
+     * @return 返回一个32位字符的ID
      * @example 71a51fcac1164bdaa6af10286670d11d
      */
     public static String generate(){
@@ -26,7 +26,7 @@ public class IDUtils {
      * 生成 带前缀的id，项目中需要生成ID的地方都可以使用，第一版可以先使用UUID过渡，后期更新ID生成策略
      * @param prefix 前缀
      * @return 返回一个ID
-     * @example 71a51fcac1164bdaa6af10286670d11d
+     * @example identity_beff0bf738814a2794cb6fbefe55dc55
      */
     public static String generate(String prefix){
         String id = generate();

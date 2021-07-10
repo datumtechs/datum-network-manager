@@ -3,7 +3,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
     druid:
-      url: jdbc:mysql://192.168.9.191:3306/rosetta_admin?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://192.168.9.191:3306/rosettanet_admin?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
       username: platon
       password: platon
       initial-size: 10
@@ -32,9 +32,3 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-
-grpc:
-  client:
-    carrier-service:
-      host: 127.0.0.1
-      port: 9000

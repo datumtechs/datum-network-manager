@@ -20,6 +20,7 @@ public class ApplicationException extends RuntimeException{
 
     public ApplicationException(Throwable exception){
         super(exception);
+        this.errorMsg = exception.getMessage();
     }
 
     public ApplicationException(String errorMsg, Throwable exception){
