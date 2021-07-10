@@ -2,12 +2,17 @@ package com.platon.rosettanet.admin.dao.entity;
 
 import java.time.LocalDateTime;
 
-public class LocalPowerHost {
+/**
+ * @author lyf
+ * @Description 数据节点实体类
+ * @date 2021/7/8 17:29
+ */
+public class DataNode {
     private Integer id;
 
     private String identityId;
 
-    private String uuid;
+    private String nodeId;
 
     private String hostName;
 
@@ -19,10 +24,6 @@ public class LocalPowerHost {
 
     private Integer externalPort;
 
-    private LocalDateTime startTime;
-
-    private String remarks;
-
     private String connStatus;
 
     private String connMessage;
@@ -31,17 +32,7 @@ public class LocalPowerHost {
 
     private String status;
 
-    private Long memory;
-
-    private Integer core;
-
-    private Long bandwidth;
-
-    private Long usedMemory;
-
-    private Integer usedCore;
-
-    private Long usedBandwidth;
+    private String remarks;
 
     private LocalDateTime recCreateTime;
 
@@ -63,12 +54,12 @@ public class LocalPowerHost {
         this.identityId = identityId;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getNodeId() {
+        return nodeId;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setNodeId(String nodeId) {
+        this.nodeId = nodeId;
     }
 
     public String getHostName() {
@@ -111,22 +102,6 @@ public class LocalPowerHost {
         this.externalPort = externalPort;
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
     public String getConnStatus() {
         return connStatus;
     }
@@ -159,52 +134,12 @@ public class LocalPowerHost {
         this.status = status;
     }
 
-    public Long getMemory() {
-        return memory;
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setMemory(Long memory) {
-        this.memory = memory;
-    }
-
-    public Integer getCore() {
-        return core;
-    }
-
-    public void setCore(Integer core) {
-        this.core = core;
-    }
-
-    public Long getBandwidth() {
-        return bandwidth;
-    }
-
-    public void setBandwidth(Long bandwidth) {
-        this.bandwidth = bandwidth;
-    }
-
-    public Long getUsedMemory() {
-        return usedMemory;
-    }
-
-    public void setUsedMemory(Long usedMemory) {
-        this.usedMemory = usedMemory;
-    }
-
-    public Integer getUsedCore() {
-        return usedCore;
-    }
-
-    public void setUsedCore(Integer usedCore) {
-        this.usedCore = usedCore;
-    }
-
-    public Long getUsedBandwidth() {
-        return usedBandwidth;
-    }
-
-    public void setUsedBandwidth(Long usedBandwidth) {
-        this.usedBandwidth = usedBandwidth;
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public LocalDateTime getRecCreateTime() {
