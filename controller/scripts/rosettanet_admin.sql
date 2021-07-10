@@ -258,7 +258,9 @@ CREATE TABLE task_power_provider(
 DROP TABLE IF EXISTS task_data_provider;;
 CREATE TABLE task_data_provider(
     task_id VARCHAR(128) NOT NULL comment '任务ID,hash',
+    identity_id varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数据提供者组织身份ID',
     meta_data_id VARCHAR(128) NOT NULL COMMENT '参与任务的元数据ID',
+    meta_data_name VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '元数据名称',
     rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (task_ID, meta_data_id)
 ) COMMENT = '任务数据提供方表 存储某个任务数据提供方的信息';;
