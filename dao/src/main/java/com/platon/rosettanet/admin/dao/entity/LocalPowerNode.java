@@ -4,8 +4,12 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author houz
+ * 计算节点实体类
+ */
 @Data
-public class LocalComputeNode {
+public class LocalPowerNode {
 
     private Integer id;
 

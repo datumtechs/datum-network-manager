@@ -67,8 +67,8 @@ CREATE TABLE global_org(
 ) COMMENT = '全网组织信息表，用于存储从全网同步过来的组织信息数据';;
 
 -- 此表数据有管理台添加
-DROP TABLE IF EXISTS local_compute_node;;
-CREATE TABLE local_compute_node
+DROP TABLE IF EXISTS local_power_node;;
+CREATE TABLE local_power_node
 (
     id             INT          NOT NULL AUTO_INCREMENT COMMENT '序号',
     identity_id    VARCHAR(128) NOT NULL COMMENT '组织身份ID',
