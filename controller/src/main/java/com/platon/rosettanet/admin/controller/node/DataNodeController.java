@@ -40,7 +40,7 @@ public class DataNodeController {
     }
 
     @PostMapping("addDataNode")
-    public JsonResponse addDataNode(@Validated @RequestBody DataNodeAddReq dataNodeAddReq) {
+    public JsonResponse addDataNode(@Validated @RequestBody DataNodeAddReq dataNodeAddReq) throws Exception {
         DataNode dataNode = new DataNode();
         BeanUtils.copyProperties(dataNodeAddReq, dataNode);
         dataNode.setHostName(dataNodeAddReq.getNodeName());
@@ -65,7 +65,7 @@ public class DataNodeController {
     }
 
     @PostMapping("updateDataNode")
-    public JsonResponse updateDataNode(@Validated @RequestBody DataNodeUpdateReq dataNodeUpdateReq) {
+    public JsonResponse updateDataNode(@Validated @RequestBody DataNodeUpdateReq dataNodeUpdateReq) throws Exception {
         DataNode dataNode = new DataNode();
         BeanUtils.copyProperties(dataNodeUpdateReq, dataNode);
         dataNodeService.updateDataNode(dataNode);
@@ -73,7 +73,7 @@ public class DataNodeController {
     }
 
     @PostMapping("deleteDataNode")
-    public JsonResponse deleteDataNode(@Validated @RequestBody DataNodeDeleteReq dataNodeDeleteReq) {
+    public JsonResponse deleteDataNode(@Validated @RequestBody DataNodeDeleteReq dataNodeDeleteReq) throws Exception {
         dataNodeService.deleteDataNode(dataNodeDeleteReq.getNodeId());
         return JsonResponse.success();
     }

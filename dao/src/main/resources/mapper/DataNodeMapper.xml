@@ -71,7 +71,19 @@
       internal_Port = #{internalPort,jdbcType=INTEGER},
       external_IP = #{externalIp,jdbcType=VARCHAR},
       external_Port = #{externalPort,jdbcType=INTEGER},
+      conn_Status = #{connStatus,jdbcType=VARCHAR},
       rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
     where node_Id = #{nodeId,jdbcType=INTEGER}
+  </update>
+  <update id="batchUpdate" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update local_data_node
+      internal_IP = #{internalIp,jdbcType=VARCHAR},
+      internal_Port = #{internalPort,jdbcType=INTEGER},
+      external_IP = #{externalIp,jdbcType=VARCHAR},
+      external_Port = #{externalPort,jdbcType=INTEGER},
+      conn_Status = #{connStatus,jdbcType=VARCHAR},
+      where node_Id = #{item.id,jdbcType=INTEGER}
+    </foreach>
   </update>
 </mapper>
