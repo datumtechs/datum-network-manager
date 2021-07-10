@@ -1,79 +1,86 @@
 package com.platon.rosettanet.admin.service.impl;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.platon.rosettanet.admin.dao.LocalDataFileMapper;
 import com.platon.rosettanet.admin.dao.LocalMetaDataColumnMapper;
+import com.platon.rosettanet.admin.dao.LocalOrgMapper;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
-import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
+import com.platon.rosettanet.admin.dao.entity.LocalOrg;
+import com.platon.rosettanet.admin.grpc.client.DataProviderClient;
+import com.platon.rosettanet.admin.grpc.client.YarnClient;
+import com.platon.rosettanet.admin.grpc.entity.AvailableDataNodeResp;
+import com.platon.rosettanet.admin.grpc.entity.UploadDataResp;
 import com.platon.rosettanet.admin.service.LocalDataService;
+import com.platon.rosettanet.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileReader;
+import javax.annotation.Resource;
 import java.io.IOException;
-import java.io.LineNumberReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 @Slf4j
 @Service
-@Transactional
 public class LocalDataServiceImpl implements LocalDataService {
 
-    private final Path path = Paths.get("fileStorage");
-
-    @Autowired
+    @Resource
     private LocalDataFileMapper localDataFileMapper;
 
-    @Autowired
+    @Resource
     private LocalMetaDataColumnMapper localMetaDataColumnMapper;
+    @Resource
+    private YarnClient yarnClient;
+    @Resource
+    private DataProviderClient dataProviderClient;
+    @Resource
+    private LocalOrgMapper localOrgMapper;
 
     @Override
-    public List<LocalDataFile> listDataFile(int pageNo, int pageSize) {
-        int offset = (pageNo-1) * pageSize;
-        return localDataFileMapper.listDataFile(offset, pageSize);
+    public Page<LocalDataFile> listDataFile(int pageNo, int pageSize) {
+        Page<LocalDataFile> localDataFilePage = PageHelper.startPage(pageNo, pageSize);
+        localDataFileMapper.listDataFile();
+        return localDataFilePage;
     }
 
+    @Transactional
     @Override
-    public int listDataFileCount() {
-        return localDataFileMapper.listDataFileCount();
-    }
-
-    @Override
-    public void uploadFile(MultipartFile file, LocalDataFile localDataFile, List<LocalMetaDataColumn> localMetaDataColumnList) {
-        try {
-            Path destPath = this.path.resolve(file.getName());
-            file.transferTo(destPath);
-
-            long fileLength = localDataFile.getSize();
-            try (LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(destPath.toFile()))){
-                lineNumberReader.skip(fileLength);
-                long lines = lineNumberReader.getLineNumber();
-                if(localDataFile.getHasTitle() && lines >= 1){
-                    localDataFile.setRows(lines - 1);
-                }else{
-                    localDataFile.setRows(lines);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } catch (IOException e) {
-            log.error("Could not save the uploaded file:{}", file.getOriginalFilename(), e);
-            throw new RuntimeException("Could not save the uploaded file. Error:"+e.getMessage());
+    public void uploadFile(MultipartFile file,boolean hasTitle) {
+        //### 1.从调度服务获取数据节点的连接
+        LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
+        if(carrier == null){
+            new ServiceException("无可用的调度服务");
         }
-
-        //todo: generate metadataID
-        String metadataId = "0x0201213";
-        localDataFile.setMetaDataId(metadataId);
-        localDataFileMapper.insert(localDataFile);
-
-        localMetaDataColumnList.forEach(column -> {column.setMetaDataId(metadataId);});
-
-        localMetaDataColumnMapper.insertBatch(localMetaDataColumnList);
-
+        AvailableDataNodeResp availableDataNode = yarnClient.getAvailableDataNode(carrier.getCarrierIP(), carrier.getCarrierPort());
+        //### 2.上传源文件
+        UploadDataResp uploadDataResp = null;
+        String fileName = file.getOriginalFilename();
+        try {
+            uploadDataResp = dataProviderClient.uploadData(
+                    availableDataNode.getIp(),
+                    availableDataNode.getPort(),
+                    fileName,
+                    file.getBytes());
+        } catch (IOException e) {
+            throw new ServiceException("上传文件失败",e);
+        }
+        //### 3.将源文件信息存库
+        LocalDataFile localDataFile = new LocalDataFile();
+        /*localDataFile.setIdentityId();
+        localDataFile.setFileId(uploadDataResp.getFileId());
+        localDataFile.setFileName(fileName);
+        localDataFile.setFilePath(uploadDataResp.getFilePath());
+        localDataFile.setFileType("csv");
+        localDataFile.setResourceName();
+        localDataFile.setSize(file.getSize());
+        localDataFile.setRows();
+        localDataFile.setColumns();
+        localDataFile.setHasTitle();
+        localDataFile.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());
+        localDataFile.setMetaDataId();*/
+        localDataFile.setRecCreateTime(LocalDateTimeUtil.now());
+        int count = localDataFileMapper.insertSelective(localDataFile);
     }
 }

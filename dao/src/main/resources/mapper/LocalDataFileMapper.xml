@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="file_type" jdbcType="VARCHAR" property="fileType" />
@@ -19,41 +20,25 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, identity_id, file_name, file_path, file_type, resource_name, size, rows, columns, 
-    has_title, remarks, status, meta_data_id, rec_create_time, rec_update_time
+    id, identity_id, file_id,file_name, file_path, file_type, resource_name, size, `rows`, `columns`,
+    has_title, remarks, `status`, meta_data_id, rec_create_time, rec_update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+
+  <select id="listDataFile"  resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from local_data_file
-    where id = #{id,jdbcType=INTEGER}
+    order by file_name
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from local_data_file
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
-    insert into local_data_file (id, identity_id, file_name, 
-      file_path, file_type, resource_name, 
-      size, rows, columns, 
-      has_title, remarks, status, 
-      meta_data_id, rec_create_time, rec_update_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{identityId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
-      #{filePath,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, #{resourceName,jdbcType=VARCHAR}, 
-      #{size,jdbcType=BIGINT}, #{rows,jdbcType=BIGINT}, #{columns,jdbcType=INTEGER}, 
-      #{hasTitle,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{metaDataId,jdbcType=VARCHAR}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP}
-      )
-  </insert>
+
   <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
     insert into local_data_file
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="identityId != null">
         identity_id,
+      </if>
+      <if test="fileId != null">
+        file_id,
       </if>
       <if test="fileName != null">
         file_name,
@@ -71,10 +56,10 @@
         size,
       </if>
       <if test="rows != null">
-        rows,
+        `rows`,
       </if>
       <if test="columns != null">
-        columns,
+        `columns`,
       </if>
       <if test="hasTitle != null">
         has_title,
@@ -83,7 +68,7 @@
         remarks,
       </if>
       <if test="status != null">
-        status,
+        `status`,
       </if>
       <if test="metaDataId != null">
         meta_data_id,
@@ -96,130 +81,51 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="identityId != null">
-        #{identityId,jdbcType=VARCHAR},
+        #{identityId},
+      </if>
+      <if test="fileId != null">
+        #{fileId},
       </if>
       <if test="fileName != null">
-        #{fileName,jdbcType=VARCHAR},
+        #{fileName},
       </if>
       <if test="filePath != null">
-        #{filePath,jdbcType=VARCHAR},
+        #{filePath},
       </if>
       <if test="fileType != null">
-        #{fileType,jdbcType=VARCHAR},
+        #{fileType},
       </if>
       <if test="resourceName != null">
-        #{resourceName,jdbcType=VARCHAR},
+        #{resourceName},
       </if>
       <if test="size != null">
-        #{size,jdbcType=BIGINT},
+        #{size},
       </if>
       <if test="rows != null">
-        #{rows,jdbcType=BIGINT},
+        #{rows},
       </if>
       <if test="columns != null">
-        #{columns,jdbcType=INTEGER},
+        #{columns},
       </if>
       <if test="hasTitle != null">
-        #{hasTitle,jdbcType=BIT},
+        #{hasTitle},
       </if>
       <if test="remarks != null">
-        #{remarks,jdbcType=VARCHAR},
+        #{remarks},
       </if>
       <if test="status != null">
-        #{status,jdbcType=VARCHAR},
+        #{status},
       </if>
       <if test="metaDataId != null">
-        #{metaDataId,jdbcType=VARCHAR},
+        #{metaDataId},
       </if>
       <if test="recCreateTime != null">
-        #{recCreateTime,jdbcType=TIMESTAMP},
+        #{recCreateTime},
       </if>
       <if test="recUpdateTime != null">
-        #{recUpdateTime,jdbcType=TIMESTAMP},
+        #{recUpdateTime},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
-    update local_data_file
-    <set>
-      <if test="identityId != null">
-        identity_id = #{identityId,jdbcType=VARCHAR},
-      </if>
-      <if test="fileName != null">
-        file_name = #{fileName,jdbcType=VARCHAR},
-      </if>
-      <if test="filePath != null">
-        file_path = #{filePath,jdbcType=VARCHAR},
-      </if>
-      <if test="fileType != null">
-        file_type = #{fileType,jdbcType=VARCHAR},
-      </if>
-      <if test="resourceName != null">
-        resource_name = #{resourceName,jdbcType=VARCHAR},
-      </if>
-      <if test="size != null">
-        size = #{size,jdbcType=BIGINT},
-      </if>
-      <if test="rows != null">
-        rows = #{rows,jdbcType=BIGINT},
-      </if>
-      <if test="columns != null">
-        columns = #{columns,jdbcType=INTEGER},
-      </if>
-      <if test="hasTitle != null">
-        has_title = #{hasTitle,jdbcType=BIT},
-      </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="metaDataId != null">
-        meta_data_id = #{metaDataId,jdbcType=VARCHAR},
-      </if>
-      <if test="recCreateTime != null">
-        rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
-    update local_data_file
-    set identity_id = #{identityId,jdbcType=VARCHAR},
-      file_name = #{fileName,jdbcType=VARCHAR},
-      file_path = #{filePath,jdbcType=VARCHAR},
-      file_type = #{fileType,jdbcType=VARCHAR},
-      resource_name = #{resourceName,jdbcType=VARCHAR},
-      size = #{size,jdbcType=BIGINT},
-      rows = #{rows,jdbcType=BIGINT},
-      columns = #{columns,jdbcType=INTEGER},
-      has_title = #{hasTitle,jdbcType=BIT},
-      remarks = #{remarks,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      meta_data_id = #{metaDataId,jdbcType=VARCHAR},
-      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-
-  <select id="listDataFile"  resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from local_data_file
-    order by file_name
-    limit #{offset,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
-  </select>
-
-  <select id="listDataFileCount"  resultType="java.lang.Integer">
-    select count(id)
-    from local_data_file
-  </select>
 </mapper>

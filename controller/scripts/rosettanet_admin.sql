@@ -130,7 +130,7 @@ DROP TABLE IF EXISTS local_data_file;;
 CREATE TABLE local_data_file(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
     identity_id VARCHAR(128) NOT NULL COMMENT '组织身份ID',
-    file_id varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID，上传文件成功后返回源文件ID',
+    file_id varchar(128) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID，上传文件成功后返回源文件ID',
     file_name VARCHAR(100) NOT NULL COMMENT '文件名称',
     file_path VARCHAR(100) NOT NULL COMMENT '文件存储路径',
     file_type VARCHAR(20) NOT NULL COMMENT '文件后缀/类型, csv',
@@ -172,7 +172,7 @@ DROP TABLE IF EXISTS global_data_file;;
 CREATE TABLE global_data_file(
     id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
     identity_id VARCHAR(128) NOT NULL COMMENT '组织身份ID',
-    file_id varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID',
+    file_id varchar(128) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID',
     file_name VARCHAR(100) NOT NULL COMMENT '文件名称',
     file_path VARCHAR(100) NOT NULL COMMENT '文件存储路径',
     file_type VARCHAR(20) NOT NULL COMMENT '文件后缀/类型, csv',

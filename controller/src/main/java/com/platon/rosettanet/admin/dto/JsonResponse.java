@@ -70,6 +70,12 @@ public class JsonResponse<T> {
         return new JsonResponse(code.getCode(),message,null);
     }
 
+    /**
+     *
+     * @param page 分页信息+列表内容
+     * @param <T>
+     * @return
+     */
     public static <T> JsonResponse page(Page<T> page){
         JsonResponse jsonResponse = new JsonResponse();
         jsonResponse.setMsg(ResponseCodeEnum.SUCCESS.getMessage());
@@ -79,6 +85,25 @@ public class JsonResponse<T> {
         jsonResponse.setPageSize(page.getPageSize());
         jsonResponse.setTotal((int)page.getTotal());
         jsonResponse.setPageTotal(page.getPages());
+        return jsonResponse;
+    }
+
+    /**
+     *
+     * @param pageInfo 分页信息
+     * @param list 列表内容
+     * @param <T>
+     * @return
+     */
+    public static <T> JsonResponse page(Page pageInfo,List<T> list){
+        JsonResponse jsonResponse = new JsonResponse();
+        jsonResponse.setMsg(ResponseCodeEnum.SUCCESS.getMessage());
+        jsonResponse.setStatus(ResponseCodeEnum.SUCCESS.getCode());
+        jsonResponse.setList(list == null ? new ArrayList() : list);
+        jsonResponse.setPageNumber(pageInfo.getPageNum());
+        jsonResponse.setPageSize(pageInfo.getPageSize());
+        jsonResponse.setTotal((int)pageInfo.getTotal());
+        jsonResponse.setPageTotal(pageInfo.getPages());
         return jsonResponse;
     }
 
