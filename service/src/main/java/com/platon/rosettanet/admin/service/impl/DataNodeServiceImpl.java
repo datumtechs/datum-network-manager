@@ -70,7 +70,7 @@ public class DataNodeServiceImpl implements DataNodeService {
     @Override
     public boolean checkDataNodeName(DataNode dataNode) {
         String id = dataNodeMapper.getDataNodeIdByName(dataNode.getHostName());
-        if (StrUtil.isBlank(id) && !id.equals(dataNode.getId())) {
+        if (!StrUtil.isBlank(id) && !id.equals(dataNode.getId())) {
             return false;
         }
         return true;
@@ -93,7 +93,7 @@ public class DataNodeServiceImpl implements DataNodeService {
     }
 
     @Override
-    public int deleteDataNode(String nodeId) throws Exception {
+    public int deleteDataNode(String nodeId){
         LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
         if (carrier == null) {
             throw new ServiceException("无可用的调度服务");
@@ -104,29 +104,5 @@ public class DataNodeServiceImpl implements DataNodeService {
             throw new ServiceException("调度服务调用失败");
         }
         return dataNodeMapper.deleteByNodeId(nodeId);
-    }
-
-    public void refreshDataCodeTable() {
-        LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
-        if (carrier == null) {
-            log.info("获取数据节点列表,无可用的调度服务");
-            return;
-        }
-        log.info("获取数据节点列表,调度服务ip:" + carrier.getCarrierIP() + ",端口号：" + carrier.getCarrierPort());
-        QueryNodeResp resp = yarnClient.getDataNodeList(carrier.getCarrierIP(), carrier.getCarrierPort());
-        if (GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
-            log.info("获取数据节点列表,调度服务调用失败");
-            return;
-        }
-        List<DataNode> dataNodeList = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(dataNodeList)) {
-            resp.getNodeRespList().forEach(item -> {
-                DataNode dataNode = new DataNode();
-                BeanUtils.copyProperties(item, dataNode);
-                dataNodeList.add(dataNode);
-            });
-            dataNodeMapper.batchUpdate(dataNodeList);
-        }
-
     }
 }
