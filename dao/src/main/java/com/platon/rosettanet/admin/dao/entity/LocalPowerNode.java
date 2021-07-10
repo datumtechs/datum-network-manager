@@ -15,9 +15,9 @@ public class LocalPowerNode {
 
     private String identityId;
 
-    private String nodeId;
+    private String powerNodeId;
 
-    private String nodeName;
+    private String powerNodeName;
 
     private String internalIp;
 

@@ -1,19 +1,23 @@
 package com.platon.rosettanet.admin.dto.req;
 
-
 import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 
 /**
  * @author houzhuang
- * 新增计算节点请求参数
+ * 修改计算节点请求参数
  */
 @Data
-public class InsertPowerReq {
+public class PowerUpdateReq {
+
+    /** 计算节点ID */
+    @NotNull(message = "计算节点ID不能为空")
+    private String powerNdeId;
 
     /** 计算节点名称 */
     @NotNull(message = "计算节点名称不能为空")
-    private String nodeName;
+    private String powerNodeName;
 
     /** 节点内网IP */
     @NotNull(message = "内部IP不能为空")
