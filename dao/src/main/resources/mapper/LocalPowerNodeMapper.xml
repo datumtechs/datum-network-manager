@@ -5,8 +5,8 @@
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalPowerNode">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
-    <result column="node_id" jdbcType="VARCHAR" property="nodeId" />
-    <result column="node_name" jdbcType="VARCHAR" property="nodeName" />
+    <result column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
+    <result column="power_node_name" jdbcType="VARCHAR" property="powerNodeName" />
     <result column="internal_ip" jdbcType="VARCHAR" property="internalIp" />
     <result column="internal_port" jdbcType="INTEGER" property="internalPort" />
     <result column="external_ip" jdbcType="VARCHAR" property="externalIp" />
@@ -30,8 +30,8 @@
   <sql id="Base_Column_List">
     id,
     identity_id,
-    node_id,
-    node_Name,
+    power_node_id,
+    power_node_name,
     internal_ip,
     internal_port,
     external_ip,
@@ -59,12 +59,22 @@
     from
         local_power_node
     where
-        node_id = #{nodeId, jdbcType=VARCHAR}
+        power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+  </select>
+
+  <!-- 通过组织机构id查询计算节点-->
+  <select id="selectPowerListByIdentityId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from
+        local_power_node
+    where
+        identity_id = #{identityId, jdbcType=VARCHAR}
   </select>
 
   <!-- 根据节点id删除计算节点 -->
-  <delete id="deletePowerNodeByNodeId" parameterType="java.lang.String">
-    delete from local_power_node where node_id = #{nodeId, jdbcType=VARCHAR}
+  <delete id="deletePowerNode" parameterType="java.lang.String">
+    delete from local_power_node where power_node_id = #{powerNodeId, jdbcType=VARCHAR}
   </delete>
 
   <!-- 插入计算节点数据 -->
@@ -73,8 +83,8 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">id,</if>
       <if test="identityId != null">identity_id,</if>
-      <if test="nodeId != null">node_id,</if>
-      <if test="nodeName != null">node_name,</if>
+      <if test="powerNodeId != null">power_node_id,</if>
+      <if test="powerNodeName != null">power_node_name,</if>
       <if test="internalIp != null">internal_ip,</if>
       <if test="internalPort != null">internal_port,</if>
       <if test="externalIp != null">external_ip,</if>
@@ -97,8 +107,8 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null"> #{id, jdbcType=INTEGER},</if>
       <if test="identityId != null">#{identityId, jdbcType=VARCHAR},</if>
-      <if test="nodeId != null">#{nodeId, jdbcType=VARCHAR},</if>
-      <if test="nodeName != null">#{nodeName, jdbcType=VARCHAR},</if>
+      <if test="powerNodeId != null">#{powerNodeId, jdbcType=VARCHAR},</if>
+      <if test="powerNodeName != null">#{powerNodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">#{internalIp, jdbcType=VARCHAR},</if>
       <if test="internalPort != null">#{internalPort, jdbcType=INTEGER},</if>
       <if test="externalIp != null">#{externalIp, jdbcType=VARCHAR},</if>
@@ -125,7 +135,7 @@
     update local_power_node
     <set>
       <if test="identityId != null">identity_id = #{identityId, jdbcType=VARCHAR},</if>
-      <if test="nodeName != null">node_name = #{nodeName, jdbcType=VARCHAR},</if>
+      <if test="powerNodeName != null">power_node_name = #{powerNodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
       <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
       <if test="externalIp != null">external_ip = #{externalIp, jdbcType=VARCHAR},</if>
@@ -145,7 +155,7 @@
       <if test="createTime != null">create_time = #{createTime, jdbcType=TIMESTAMP},</if>
       <if test="updateTime != null">update_time = #{updateTime, jdbcType=TIMESTAMP},</if>
     </set>
-    where nodeId = #{nodeId, jdbcType=VARCHAR}
+    where power_node_id = #{powerNodeId, jdbcType=VARCHAR}
   </update>
 
   <!-- 根据id修改计算节点数据 -->
@@ -153,8 +163,8 @@
     update local_power_node
     <set>
       <if test="identityId != null">identity_id = #{identityId, jdbcType=VARCHAR},</if>
-      <if test="nodeId != null">node_id = #{nodeId, jdbcType=VARCHAR},</if>
-      <if test="nodeName != null">node_name = #{nodeName, jdbcType=VARCHAR},</if>
+      <if test="powerNodeId != null">power_node_id = #{powerNodeId, jdbcType=VARCHAR},</if>
+      <if test="powerNodeName != null">power_node_name = #{powerNodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
       <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
       <if test="externalIp != null">external_ip = #{externalIp, jdbcType=VARCHAR},</if>

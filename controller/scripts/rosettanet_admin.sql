@@ -72,8 +72,8 @@ CREATE TABLE local_power_node
 (
     id             INT          NOT NULL AUTO_INCREMENT COMMENT '序号',
     identity_id    VARCHAR(128) NOT NULL COMMENT '组织身份ID',
-    node_id        VARCHAR(128) COMMENT '发布后底层返回的host唯一ID',
-    node_name      VARCHAR(128) COMMENT '节点名称(同一个组织不可重复）',
+    power_node_id        VARCHAR(128) COMMENT '发布后底层返回的host唯一ID',
+    power_node_name      VARCHAR(32) COMMENT '节点名称(同一个组织不可重复）',
     internal_ip    VARCHAR(32) COMMENT '节点内网IP',
     internal_port  INT COMMENT '节点内网端口',
     external_ip    VARCHAR(32) COMMENT '节点外网IP',
@@ -93,8 +93,8 @@ CREATE TABLE local_power_node
     create_time    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT'最后更新时间',
     PRIMARY KEY (id),
-    KEY (node_id),
-	KEY (node_name)
+    KEY (power_node_id),
+	KEY (power_node_name)
 ) COMMENT = '本组织计算节点配置表 配置当前参与方的计算节点信息';;
 
 -- 此表数据有管理台添加
