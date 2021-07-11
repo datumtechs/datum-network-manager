@@ -69,4 +69,11 @@
     </trim>
     where meta_data_id = #{metaDataId,jdbcType=VARCHAR} and column_idx = #{columnIdx,jdbcType=INTEGER}
   </update>
+
+  <!--根据metaDataId删除指定的数据,released的数据不可删除 -->
+  <delete id="deleteByMetaDataId">
+    delete from local_meta_data_column
+    where meta_data_id = #{metaDataId}
+    and EXISTS (select 1 from local_data_file where meta_data_id = #{metaDataId} and `status` != 'released')
+  </delete>
 </mapper>

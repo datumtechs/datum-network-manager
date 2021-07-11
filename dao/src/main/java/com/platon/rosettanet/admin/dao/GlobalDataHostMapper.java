@@ -1,7 +1,5 @@
 package com.platon.rosettanet.admin.dao;
 
-import com.platon.rosettanet.admin.dao.entity.GlobalDataHost;
-
 public interface GlobalDataHostMapper {
     int deleteByPrimaryKey(Integer id);
 

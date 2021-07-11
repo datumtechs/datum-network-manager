@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.GlobalDataFileMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.GlobalDataFile">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
+    <result column="resource_name" jdbcType="VARCHAR" property="resourceName" />
+    <result column="size" jdbcType="BIGINT" property="size" />
+    <result column="rows" jdbcType="BIGINT" property="rows" />
+    <result column="columns" jdbcType="INTEGER" property="columns" />
+    <result column="has_title" jdbcType="TINYINT" property="hasTitle" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
+    <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, identity_id, file_id, file_name, file_path, file_type, resource_name, `size`, 
+    `rows`, `columns`, has_title, remarks, `status`, meta_data_id, rec_create_time, rec_update_time
+  </sql>
+
+  <!-- 获取所有文件信息-->
+  <select id="listDataFile"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from global_data_file
+    <if test="keyword != null">
+      where resource_name = #{keyword}
+    </if>
+    order by resource_name
+  </select>
+
+  <!-- 根据metaDataId查询出指定的数据-->
+  <select id="selectByMetaDataId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from global_data_file
+    where meta_data_id = #{metaDataId}
+  </select>
+</mapper>

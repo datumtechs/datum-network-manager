@@ -53,7 +53,7 @@ public interface LocalDataService {
     int update(LocalDataFileDetail req);
 
     /**
-     *
+     * 查询文件信息详情
      * @param metaDataId
      * @return
      */

@@ -7,17 +7,14 @@ import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.rosettanet.admin.common.context.LocalOrgCache;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.common.util.ExportFileUtil;
 import com.platon.rosettanet.admin.common.util.IDUtils;
 import com.platon.rosettanet.admin.dao.LocalDataFileMapper;
 import com.platon.rosettanet.admin.dao.LocalMetaDataColumnMapper;
-import com.platon.rosettanet.admin.dao.LocalOrgMapper;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
-import com.platon.rosettanet.admin.dao.entity.LocalOrg;
 import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.rosettanet.admin.dao.enums.LocalMetaDataColumnVisibleEnum;
 import com.platon.rosettanet.admin.grpc.client.DataProviderClient;
@@ -59,8 +56,6 @@ public class LocalDataServiceImpl implements LocalDataService {
     private YarnClient yarnClient;
     @Resource
     private DataProviderClient dataProviderClient;
-    @Resource
-    private LocalOrgMapper localOrgMapper;
     @Resource
     private MetaDataClient metaDataClient;
 
@@ -117,7 +112,7 @@ public class LocalDataServiceImpl implements LocalDataService {
     }
 
 
-
+    @Transactional
     @Override
     public int add(LocalDataFileDetail req) {
         AtomicInteger count = new AtomicInteger();
@@ -138,10 +133,15 @@ public class LocalDataServiceImpl implements LocalDataService {
         return count.get();
     }
 
+    @Transactional
     @Override
     public int delete(String metaDataId) {
-        LocalDataFile localDataFile = localDataFileMapper.selectByMetaDataId(metaDataId);
-        return 0;
+        int count = localDataFileMapper.deleteByMetaDataId(metaDataId);
+        if(count <= 0){
+            return 0;
+        }
+        count += localMetaDataColumnMapper.deleteByMetaDataId(metaDataId);
+        return count;
     }
 
     @SneakyThrows
@@ -158,6 +158,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         ExportFileUtil.exportCsv(localDataFile.getResourceName(),bytes,response);
     }
 
+    @Transactional
     @Override
     public int update(LocalDataFileDetail req) {
         AtomicInteger count = new AtomicInteger();
@@ -192,7 +193,13 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Override
     public int down(String metaDataId) {
         metaDataClient.revokeMetaData(metaDataId);
-        return 1;
+        //修改文件发布信息
+        LocalDataFile file = new LocalDataFile();
+        file.setMetaDataId(metaDataId);
+        file.setStatus(LocalDataFileStatusEnum.REVOKED.getStatus());
+        file.setRecUpdateTime(new Date());
+        int count = localDataFileMapper.updateByMetaDataIdSelective(file);
+        return count;
     }
 
     @Override
@@ -208,7 +215,14 @@ public class LocalDataServiceImpl implements LocalDataService {
         if(StrUtil.isBlank(id)){
             return 0;
         }
-        return 1;
+
+        //修改文件发布信息
+        LocalDataFile file = new LocalDataFile();
+        file.setMetaDataId(metaDataId);
+        file.setStatus(LocalDataFileStatusEnum.RELEASED.getStatus());
+        file.setRecUpdateTime(new Date());
+        int count = localDataFileMapper.updateByMetaDataIdSelective(file);
+        return count;
     }
 
     /**

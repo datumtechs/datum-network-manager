@@ -3,7 +3,6 @@
 <mapper namespace="com.platon.rosettanet.admin.dao.GlobalMetaDataColumnMapper">
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="data_file_id" jdbcType="INTEGER" property="dataFileId" />
     <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
     <result column="column_idx" jdbcType="INTEGER" property="columnIdx" />
     <result column="column_name" jdbcType="VARCHAR" property="columnName" />
@@ -15,150 +14,14 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, data_file_id, meta_data_id, column_idx, column_name, column_type, size, remarks, 
-    visible, rec_create_time, rec_update_time
+    id, meta_data_id, column_idx, `column_name`, column_type, `size`, remarks, visible, 
+    rec_create_time, rec_update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+
+  <select id="selectByMetaDataId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from global_meta_data_column
-    where id = #{id,jdbcType=INTEGER}
+    where meta_data_id = #{metaDataId}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from global_meta_data_column
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn">
-    insert into global_meta_data_column (id, data_file_id, meta_data_id, 
-      column_idx, column_name, column_type, 
-      size, remarks, visible, 
-      rec_create_time, rec_update_time)
-    values (#{id,jdbcType=INTEGER}, #{dataFileId,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR}, 
-      #{columnIdx,jdbcType=INTEGER}, #{columnName,jdbcType=VARCHAR}, #{columnType,jdbcType=VARCHAR}, 
-      #{size,jdbcType=BIGINT}, #{remarks,jdbcType=VARCHAR}, #{visible,jdbcType=VARCHAR}, 
-      #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn">
-    insert into global_meta_data_column
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="dataFileId != null">
-        data_file_id,
-      </if>
-      <if test="metaDataId != null">
-        meta_data_id,
-      </if>
-      <if test="columnIdx != null">
-        column_idx,
-      </if>
-      <if test="columnName != null">
-        column_name,
-      </if>
-      <if test="columnType != null">
-        column_type,
-      </if>
-      <if test="size != null">
-        size,
-      </if>
-      <if test="remarks != null">
-        remarks,
-      </if>
-      <if test="visible != null">
-        visible,
-      </if>
-      <if test="recCreateTime != null">
-        rec_create_time,
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="dataFileId != null">
-        #{dataFileId,jdbcType=INTEGER},
-      </if>
-      <if test="metaDataId != null">
-        #{metaDataId,jdbcType=VARCHAR},
-      </if>
-      <if test="columnIdx != null">
-        #{columnIdx,jdbcType=INTEGER},
-      </if>
-      <if test="columnName != null">
-        #{columnName,jdbcType=VARCHAR},
-      </if>
-      <if test="columnType != null">
-        #{columnType,jdbcType=VARCHAR},
-      </if>
-      <if test="size != null">
-        #{size,jdbcType=BIGINT},
-      </if>
-      <if test="remarks != null">
-        #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="visible != null">
-        #{visible,jdbcType=VARCHAR},
-      </if>
-      <if test="recCreateTime != null">
-        #{recCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="recUpdateTime != null">
-        #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn">
-    update global_meta_data_column
-    <set>
-      <if test="dataFileId != null">
-        data_file_id = #{dataFileId,jdbcType=INTEGER},
-      </if>
-      <if test="metaDataId != null">
-        meta_data_id = #{metaDataId,jdbcType=VARCHAR},
-      </if>
-      <if test="columnIdx != null">
-        column_idx = #{columnIdx,jdbcType=INTEGER},
-      </if>
-      <if test="columnName != null">
-        column_name = #{columnName,jdbcType=VARCHAR},
-      </if>
-      <if test="columnType != null">
-        column_type = #{columnType,jdbcType=VARCHAR},
-      </if>
-      <if test="size != null">
-        size = #{size,jdbcType=BIGINT},
-      </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="visible != null">
-        visible = #{visible,jdbcType=VARCHAR},
-      </if>
-      <if test="recCreateTime != null">
-        rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn">
-    update global_meta_data_column
-    set data_file_id = #{dataFileId,jdbcType=INTEGER},
-      meta_data_id = #{metaDataId,jdbcType=VARCHAR},
-      column_idx = #{columnIdx,jdbcType=INTEGER},
-      column_name = #{columnName,jdbcType=VARCHAR},
-      column_type = #{columnType,jdbcType=VARCHAR},
-      size = #{size,jdbcType=BIGINT},
-      remarks = #{remarks,jdbcType=VARCHAR},
-      visible = #{visible,jdbcType=VARCHAR},
-      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
 </mapper>

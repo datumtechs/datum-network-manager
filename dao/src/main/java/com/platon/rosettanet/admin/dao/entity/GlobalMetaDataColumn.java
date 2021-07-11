@@ -1,115 +1,69 @@
 package com.platon.rosettanet.admin.dao.entity;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-public class GlobalMetaDataColumn {
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * @author 
+ * 全网数据文件表列详细表
+ */
+@Getter
+@Setter
+@ToString
+public class GlobalMetaDataColumn implements Serializable {
+    /**
+     * 序号
+     */
     private Integer id;
 
-    private Integer dataFileId;
-
+    /**
+     * 元数据ID
+     */
     private String metaDataId;
 
+    /**
+     * 列索引
+     */
     private Integer columnIdx;
 
+    /**
+     * 列名
+     */
     private String columnName;
 
+    /**
+     * 列类型
+     */
     private String columnType;
 
+    /**
+     * 列大小（byte）
+     */
     private Long size;
 
+    /**
+     * 列描述
+     */
     private String remarks;
 
+    /**
+     * 是否对外可见 YES:可见，NO:不可见
+     */
     private String visible;
 
-    private LocalDateTime recCreateTime;
+    /**
+     * 创建时间
+     */
+    private Date recCreateTime;
 
-    private LocalDateTime recUpdateTime;
+    /**
+     * 最后更新时间
+     */
+    private Date recUpdateTime;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getDataFileId() {
-        return dataFileId;
-    }
-
-    public void setDataFileId(Integer dataFileId) {
-        this.dataFileId = dataFileId;
-    }
-
-    public String getMetaDataId() {
-        return metaDataId;
-    }
-
-    public void setMetaDataId(String metaDataId) {
-        this.metaDataId = metaDataId;
-    }
-
-    public Integer getColumnIdx() {
-        return columnIdx;
-    }
-
-    public void setColumnIdx(Integer columnIdx) {
-        this.columnIdx = columnIdx;
-    }
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-
-    public String getColumnType() {
-        return columnType;
-    }
-
-    public void setColumnType(String columnType) {
-        this.columnType = columnType;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public String getVisible() {
-        return visible;
-    }
-
-    public void setVisible(String visible) {
-        this.visible = visible;
-    }
-
-    public LocalDateTime getRecCreateTime() {
-        return recCreateTime;
-    }
-
-    public void setRecCreateTime(LocalDateTime recCreateTime) {
-        this.recCreateTime = recCreateTime;
-    }
-
-    public LocalDateTime getRecUpdateTime() {
-        return recUpdateTime;
-    }
-
-    public void setRecUpdateTime(LocalDateTime recUpdateTime) {
-        this.recUpdateTime = recUpdateTime;
-    }
+    private static final long serialVersionUID = 1L;
 }

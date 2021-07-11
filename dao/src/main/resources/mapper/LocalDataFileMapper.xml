@@ -32,7 +32,7 @@
     <if test="keyword != null">
         where resource_name = #{keyword}
     </if>
-    order by file_name
+    order by resource_name
   </select>
 
   <!-- 插入不为空的字段-->
@@ -145,6 +145,9 @@
       <if test="remarks != null">
         remarks = #{remarks,jdbcType=VARCHAR},
       </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
       <if test="recUpdateTime != null">
         rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
       </if>
@@ -158,4 +161,10 @@
     from local_data_file
     where meta_data_id = #{metaDataId}
   </select>
+
+  <!-- 根据metaDataId删除指定的数据,released的数据不可删除-->
+  <delete id="deleteByMetaDataId" parameterType="java.lang.String">
+    delete from local_data_file
+    where meta_data_id = #{metaDataId} and `status` != 'released'
+  </delete>
 </mapper>
