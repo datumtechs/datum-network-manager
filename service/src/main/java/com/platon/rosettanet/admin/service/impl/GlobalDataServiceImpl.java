@@ -34,8 +34,8 @@ public class GlobalDataServiceImpl implements GlobalDataService {
 
 
     @Override
-    public Page<GlobalDataFile> listDataFile(int pageNo, int pageSize, String keyword) {
-        Page<GlobalDataFile> globalDataFilePage = PageHelper.startPage(pageNo, pageSize);
+    public Page<GlobalDataFile> listDataFile(int pageNum, int pageSize, String keyword) {
+        Page<GlobalDataFile> globalDataFilePage = PageHelper.startPage(pageNum, pageSize);
         globalDataFileMapper.listDataFile(keyword);
         return globalDataFilePage;
     }

@@ -1,95 +1,65 @@
 package com.platon.rosettanet.admin.dao.entity;
 
-import java.time.LocalDateTime;
+import com.platon.rosettanet.admin.dao.BaseDomain;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-public class GlobalPower {
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * @author 
+ * 全网算力资源表 记录全网的算力资源信息
+ */
+@Getter
+@Setter
+@ToString
+public class GlobalPower extends BaseDomain implements Serializable {
+    /**
+     * 序号
+     */
     private Integer id;
 
+    /**
+     * 算力提供方身份标识
+     */
     private String identityId;
 
+    /**
+     * 总CPU
+     */
     private Integer totalCore;
 
+    /**
+     * 总内存
+     */
     private Long totalMemory;
 
+    /**
+     * 总带宽
+     */
     private Long totalBandwidth;
 
+    /**
+     * 已使用CPU信息
+     */
     private Integer usedCore;
 
+    /**
+     * 已使用内存
+     */
     private Long usedMemory;
 
+    /**
+     * 已使用带宽
+     */
     private Long usedBandwidth;
 
-    private LocalDateTime recUpdateTime;
+    /**
+     * 最后更新时间
+     */
+    private Date recUpdateTime;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getIdentityId() {
-        return identityId;
-    }
-
-    public void setIdentityId(String identityId) {
-        this.identityId = identityId;
-    }
-
-    public Integer getTotalCore() {
-        return totalCore;
-    }
-
-    public void setTotalCore(Integer totalCore) {
-        this.totalCore = totalCore;
-    }
-
-    public Long getTotalMemory() {
-        return totalMemory;
-    }
-
-    public void setTotalMemory(Long totalMemory) {
-        this.totalMemory = totalMemory;
-    }
-
-    public Long getTotalBandwidth() {
-        return totalBandwidth;
-    }
-
-    public void setTotalBandwidth(Long totalBandwidth) {
-        this.totalBandwidth = totalBandwidth;
-    }
-
-    public Integer getUsedCore() {
-        return usedCore;
-    }
-
-    public void setUsedCore(Integer usedCore) {
-        this.usedCore = usedCore;
-    }
-
-    public Long getUsedMemory() {
-        return usedMemory;
-    }
-
-    public void setUsedMemory(Long usedMemory) {
-        this.usedMemory = usedMemory;
-    }
-
-    public Long getUsedBandwidth() {
-        return usedBandwidth;
-    }
-
-    public void setUsedBandwidth(Long usedBandwidth) {
-        this.usedBandwidth = usedBandwidth;
-    }
-
-    public LocalDateTime getRecUpdateTime() {
-        return recUpdateTime;
-    }
-
-    public void setRecUpdateTime(LocalDateTime recUpdateTime) {
-        this.recUpdateTime = recUpdateTime;
-    }
+    private static final long serialVersionUID = 1L;
 }

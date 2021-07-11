@@ -291,19 +291,19 @@ CREATE TABLE task_org(
 
 -- 此表数据调用调度服务的接口获取，rpc GetPowerList(PowerListRequest) returns (PowerListResponse);
 DROP TABLE IF EXISTS global_power;;
-CREATE TABLE global_power(
-    id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
-    identity_id VARCHAR(128)    COMMENT '算力提供方身份标识' ,
-    total_core INT    COMMENT '总CPU' ,
-    total_Memory BIGINT    COMMENT '总内存' ,
-    total_Bandwidth BIGINT    COMMENT '总带宽' ,
-    used_core INT    COMMENT '已使用CPU信息' ,
-    used_Memory BIGINT    COMMENT '已使用内存' ,
-    used_Bandwidth BIGINT    COMMENT '已使用带宽' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
-    PRIMARY KEY (id),
-    UNIQUE KEY (identity_id)
-) COMMENT = '全网算力资源表 记录全网的算力资源信息';;
+CREATE TABLE `global_power` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `identity_id` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '算力提供方身份标识',
+  `total_core` int(11) NOT NULL DEFAULT '0' COMMENT '总CPU',
+  `total_Memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '总内存',
+  `total_Bandwidth` bigint(20) NOT NULL DEFAULT '0' COMMENT '总带宽',
+  `used_core` int(11) NOT NULL DEFAULT '0' COMMENT '已使用CPU信息',
+  `used_Memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '已使用内存',
+  `used_Bandwidth` bigint(20) NOT NULL DEFAULT '0' COMMENT '已使用带宽',
+  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `identity_id` (`identity_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='全网算力资源表 记录全网的算力资源信息';;
 
 
 -- 用view来代替, 统计首页需要展示的本组织的相关数据。
