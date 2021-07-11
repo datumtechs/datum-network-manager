@@ -6,21 +6,18 @@ import lombok.ToString;
 
 /**
  * @Author liushuyu
- * @Date 2021/7/9 14:29
+ * @Date 2021/7/9 17:27
  * @Version
  * @Desc
  */
 
-/**
- * 可用的数据节点的信息
- */
 @Getter
 @Setter
 @ToString
-public class AvailableDataNodeResp {
+public class DataProviderUploadDataResp {
 
-    //数据节点ip
-    public String ip;
-    //数据节点port
-    public int port;
+    //源文件id
+    private String fileId;
+    //源文件路径
+    private String filePath;
 }

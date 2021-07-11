@@ -24,13 +24,18 @@
     has_title, remarks, `status`, meta_data_id, rec_create_time, rec_update_time
   </sql>
 
+  <!-- 获取所有本组织文件信息-->
   <select id="listDataFile"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from local_data_file
+    <if test="keyword != null">
+        where resource_name = #{keyword}
+    </if>
     order by file_name
   </select>
 
+  <!-- 插入不为空的字段-->
   <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
     insert into local_data_file
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -128,4 +133,29 @@
       </if>
     </trim>
   </insert>
+
+
+  <!-- 根据metaDataId进行选择性更新-->
+  <update id="updateByMetaDataIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
+    update local_data_file
+    <set>
+      <if test="resourceName != null">
+        `resource_name` = #{resourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
+  </update>
+
+  <!-- 根据metaDataId查询出指定的数据-->
+  <select id="selectByMetaDataId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from local_data_file
+    where meta_data_id = #{metaDataId}
+  </select>
 </mapper>

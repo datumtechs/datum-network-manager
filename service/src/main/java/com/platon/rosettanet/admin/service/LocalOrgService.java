@@ -1,5 +1,7 @@
 package com.platon.rosettanet.admin.service;
 
+import com.platon.rosettanet.admin.dao.entity.LocalOrg;
+
 /**
  * @Author liushuyu
  * @Date 2021/7/10 10:36
@@ -13,6 +15,12 @@ public interface LocalOrgService {
      * @return
      */
     String getIdentityId();
+
+    /**
+     * 获取本组织信息
+     * @return
+     */
+    LocalOrg getLocalOrg();
 
     /**
      * 创建本组织信息

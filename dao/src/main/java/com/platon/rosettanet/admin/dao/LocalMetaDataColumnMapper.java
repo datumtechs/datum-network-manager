@@ -1,21 +1,32 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface LocalMetaDataColumnMapper {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(LocalMetaDataColumn record);
+    /**
+     * 根据metaDataId查询数据
+     * @param metaDataId
+     * @return
+     */
+    List<LocalMetaDataColumn> selectByMetaDataId(String metaDataId);
 
-    int insertSelective(LocalMetaDataColumn record);
+    /**
+     * 根据metadataId和列下表索引进行选择性更新数据
+     * @param record
+     * @return
+     */
+    int updateByMetaDataIdAndIndexSelective(LocalMetaDataColumn record);
 
-    LocalMetaDataColumn selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(LocalMetaDataColumn record);
-
-    int updateByPrimaryKey(LocalMetaDataColumn record);
-
-    void insertBatch(List<LocalMetaDataColumn> localMetaDataColumnList);
+    /**
+     * 批量插入
+     * @param columnList
+     * @return
+     */
+    int batchInsert(List<LocalMetaDataColumn> columnList);
 }

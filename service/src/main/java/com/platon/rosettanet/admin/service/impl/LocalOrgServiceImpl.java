@@ -2,6 +2,7 @@ package com.platon.rosettanet.admin.service.impl;
 
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.dao.LocalOrgMapper;
+import com.platon.rosettanet.admin.dao.entity.LocalOrg;
 import com.platon.rosettanet.admin.service.LocalOrgService;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,12 @@ public class LocalOrgServiceImpl implements LocalOrgService {
     @Override
     public String getIdentityId() {
         return localOrgMapper.selectIdentityId();
+    }
+
+    @Override
+    public LocalOrg getLocalOrg() {
+        LocalOrg localOrg = localOrgMapper.select();
+        return localOrg;
     }
 
     @Override

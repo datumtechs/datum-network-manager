@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Getter
@@ -43,8 +44,8 @@ public class LocalDataFile {
     //元数据ID,hash
     private String metaDataId;
     //创建时间
-    private LocalDateTime recCreateTime;
+    private Date recCreateTime;
     //最后更新时间
-    private LocalDateTime recUpdateTime;
+    private Date recUpdateTime;
 
 }

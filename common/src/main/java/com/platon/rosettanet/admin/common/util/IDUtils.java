@@ -11,6 +11,7 @@ import cn.hutool.core.util.RandomUtil;
  */
 public class IDUtils {
 
+    public static final String METADATA_ID_PREFIX = "metadata_id";
 
     /**
      * 生成 id，项目中需要生成ID的地方都可以使用，第一版可以先使用UUID过渡，后期更新ID生成策略

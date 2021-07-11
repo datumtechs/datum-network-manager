@@ -7,7 +7,12 @@ import java.util.List;
 
 public interface LocalDataFileMapper {
 
-    List<LocalDataFile> listDataFile();
+    /**
+     * 获取所有本组织文件信息
+     * @param keyword 关键字搜索，暂时按名称搜索，如果为空则返回所有
+     * @return
+     */
+    List<LocalDataFile> listDataFile(String keyword);
 
     /**
      * 插入不为空的字段
@@ -15,4 +20,17 @@ public interface LocalDataFileMapper {
      * @return
      */
     int insertSelective(LocalDataFile localDataFile);
+
+    /**
+     *根据metaDataId进行选择性更新
+     */
+    int updateByMetaDataIdSelective(LocalDataFile localDataFile);
+
+
+    /**
+     * 根据metaDataId查询出指定的数据
+     * @param metaDataId
+     * @return
+     */
+    LocalDataFile selectByMetaDataId(String metaDataId);
 }

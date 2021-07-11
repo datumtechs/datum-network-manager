@@ -2,9 +2,10 @@ package com.platon.rosettanet.admin.grpc.client;
 
 import cn.hutool.core.util.StrUtil;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.Descriptors;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
-import com.platon.rosettanet.admin.grpc.entity.UploadDataResp;
+import com.platon.rosettanet.admin.grpc.entity.DataProviderUploadDataResp;
 import com.platon.rosettanet.admin.grpc.service.DataProviderGrpc;
 import com.platon.rosettanet.admin.grpc.service.DataProviderRpcMessage;
 import io.grpc.Channel;
@@ -36,11 +37,11 @@ public class DataProviderClient {
      * @param dataNodeHost 数据节点IP
      * @param dataNodePort 数据节点端口
      */
-    public UploadDataResp uploadData(String dataNodeHost, int dataNodePort, String fileName, byte[] fileContent){
+    public DataProviderUploadDataResp uploadData(String dataNodeHost, int dataNodePort, String fileName, byte[] fileContent){
         //1.获取rpc连接
         Channel channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
         //2.构建response流观察者
-        UploadDataResp resp = new UploadDataResp();
+        DataProviderUploadDataResp resp = new DataProviderUploadDataResp();
         StreamObserver<DataProviderRpcMessage.UploadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.UploadReply>() {
             @Override
             public void onNext(DataProviderRpcMessage.UploadReply uploadReply) {
@@ -93,5 +94,77 @@ public class DataProviderClient {
          * 故将response转换后再放给service类使用
          */
         return resp;
+    }
+
+    /**
+     * 从数据节点下载文件
+     * @param dataNodeHost 数据节点IP
+     * @param dataNodePort 数据节点端口
+     * @param filePath 要下载文件的文件路径
+     */
+    public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath){
+        ByteString result = ByteString.EMPTY;
+        //1.获取rpc连接
+        Channel channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
+        //2.构建请求
+        DataProviderRpcMessage.DownloadRequest request = DataProviderRpcMessage.DownloadRequest
+                .newBuilder()
+                .setFilePath(filePath)
+                .build();
+
+        //3.构建response流观察者
+        DataProviderUploadDataResp resp = new DataProviderUploadDataResp();
+        StreamObserver<DataProviderRpcMessage.DownloadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.DownloadReply>() {
+            @Override
+            public void onNext(DataProviderRpcMessage.DownloadReply downloadReply) {
+                //5.处理response
+                boolean hasContent = downloadReply.hasContent();
+                if(hasContent){
+                    ByteString content = downloadReply.getContent();
+                    result.concat(content);
+                }
+
+                boolean hasStatus = downloadReply.hasStatus();
+                if(hasStatus){
+                    DataProviderRpcMessage.TaskStatus status = downloadReply.getStatus();
+                    /**
+                     * Start = 0;
+                     * Finished = 1;
+                     * Cancelled = 2;
+                     * Failed = 3;
+                     */
+                    switch (status.getNumber()){
+                        case 0:
+                            log.info("开始下载文件filePath:{}，状态:{}.......",filePath,"Start");
+                        case 1:
+                            log.info("下载完成文件filePath:{}，状态:{}.......",filePath,"Finished");
+                        case 2:
+                            throw new ApplicationException(StrUtil.format("下载文件失败：文件名:{},状态:{}",filePath,"Cancelled"));
+                        case 3:
+                            throw new ApplicationException(StrUtil.format("下载文件失败：文件名:{},状态:{}",filePath,"Failed"));
+                        default:
+                            break;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                throw new ApplicationException(StrUtil.format("下载文件失败：文件名:{}",filePath),throwable);
+            }
+
+            @Override
+            public void onCompleted() {
+                log.info("文件下载成功：{}",filePath);
+            }
+        };
+        //3.调用rpc
+        DataProviderGrpc.newStub(channel).downloadData(request,responseObserver);
+        /**
+         * 由于调度服务rpc接口也在开发阶段，如果直接返回调度服务的response，一旦response发生变化，则调用该方法的地方都需要修改
+         * 故将response转换后再放给service类使用
+         */
+        return result.toByteArray();
     }
 }

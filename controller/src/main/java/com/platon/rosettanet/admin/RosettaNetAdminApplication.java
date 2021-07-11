@@ -1,6 +1,8 @@
 package com.platon.rosettanet.admin;
 
+import com.platon.rosettanet.admin.common.context.LocalOrgCache;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
+import com.platon.rosettanet.admin.dao.entity.LocalOrg;
 import com.platon.rosettanet.admin.service.LocalOrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
@@ -36,12 +38,14 @@ public class RosettaNetAdminApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args){
         log.info("应用已启动，执行初始化操作.............");
+
+        LocalOrg localOrg = localOrgService.getLocalOrg();
+        LocalOrgCache.setLocalOrgInfo(localOrg);
+
         /**
          * 设置组织ID，供全局使用，如果未插入，则返回空
          */
-        String identityId = localOrgService.getIdentityId();
-        LocalOrgIdentityCache.setIdentityId(identityId);
-
+        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
         log.info("执行初始化操作执行完成.............");
     }
 }

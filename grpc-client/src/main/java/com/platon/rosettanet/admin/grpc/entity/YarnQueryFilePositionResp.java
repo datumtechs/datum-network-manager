@@ -6,7 +6,7 @@ import lombok.ToString;
 
 /**
  * @Author liushuyu
- * @Date 2021/7/9 17:27
+ * @Date 2021/7/10 17:58
  * @Version
  * @Desc
  */
@@ -14,10 +14,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UploadDataResp {
+public class YarnQueryFilePositionResp {
 
-    //源文件id
-    private String fileId;
-    //源文件路径
+    //数据节点IP
+    private String ip;
+    //数据节点端口
+    private int port;
+    //待下载文件的绝对路径
     private String filePath;
 }

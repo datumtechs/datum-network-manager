@@ -32,7 +32,7 @@ public class LocalDataPageResp {
     public static LocalDataPageResp from(LocalDataFile localDataFile){
         LocalDataPageResp localDataPageResp = new LocalDataPageResp();
         localDataPageResp.setFileId(localDataFile.getFileId());
-        localDataPageResp.setFileName(localDataFile.getFileName());
+        localDataPageResp.setFileName(localDataFile.getResourceName());
         localDataPageResp.setStatus(localDataFile.getStatus());
         localDataPageResp.setRemarks(localDataFile.getRemarks());
         localDataPageResp.setMetaDataId(localDataFile.getMetaDataId());

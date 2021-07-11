@@ -25,6 +25,12 @@
     where carrier_conn_Status = 'enabled' and carrier_status = 'enabled'
   </select>
 
+  <select id="select" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from local_org
+  </select>
+
+
   <select id="selectIdentityId" resultType="java.lang.String">
     select identity_id from local_org
   </select>
