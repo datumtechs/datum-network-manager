@@ -67,13 +67,13 @@ CREATE TABLE global_org(
 ) COMMENT = '全网组织信息表，用于存储从全网同步过来的组织信息数据';;
 
 -- 此表数据有管理台添加
-DROP TABLE IF EXISTS local_compute_node;;
-CREATE TABLE local_compute_node
+DROP TABLE IF EXISTS local_power_node;;
+CREATE TABLE local_power_node
 (
     id             INT          NOT NULL AUTO_INCREMENT COMMENT '序号',
     identity_id    VARCHAR(128) NOT NULL COMMENT '组织身份ID',
-    node_id        VARCHAR(128) COMMENT '发布后底层返回的host唯一ID',
-    node_name      VARCHAR(128) COMMENT '节点名称(同一个组织不可重复）',
+    power_node_id        VARCHAR(128) COMMENT '发布后底层返回的host唯一ID',
+    power_node_name      VARCHAR(32) COMMENT '节点名称(同一个组织不可重复）',
     internal_ip    VARCHAR(32) COMMENT '节点内网IP',
     internal_port  INT COMMENT '节点内网端口',
     external_ip    VARCHAR(32) COMMENT '节点外网IP',
@@ -93,8 +93,8 @@ CREATE TABLE local_compute_node
     create_time    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT'最后更新时间',
     PRIMARY KEY (id),
-    KEY (node_id),
-	KEY (node_name)
+    KEY (power_node_id),
+	KEY (power_node_name)
 ) COMMENT = '本组织计算节点配置表 配置当前参与方的计算节点信息';;
 
 -- 此表数据有管理台添加
@@ -258,7 +258,9 @@ CREATE TABLE task_power_provider(
 DROP TABLE IF EXISTS task_data_provider;;
 CREATE TABLE task_data_provider(
     task_id VARCHAR(128) NOT NULL comment '任务ID,hash',
+    identity_id varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数据提供者组织身份ID',
     meta_data_id VARCHAR(128) NOT NULL COMMENT '参与任务的元数据ID',
+    meta_data_name VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '元数据名称',
     rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (task_ID, meta_data_id)
 ) COMMENT = '任务数据提供方表 存储某个任务数据提供方的信息';;
@@ -272,6 +274,19 @@ CREATE TABLE task_result_consumer (
     rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
     PRIMARY KEY (task_ID, consumer_identity_id, producer_identity_id)
 ) COMMENT = '任务结果接收方表 任务结果接收方信息';;
+
+
+-- 此表数据调用调度服务从任务数据快照获取
+DROP TABLE IF EXISTS task_org;;
+CREATE TABLE task_org(
+    task_id varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID,hash',
+    identity_id varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '机构身份标识ID',
+    name VARCHAR(32)    COMMENT '机构名称' ,
+    carrier_node_id varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组织中调度服务的 nodeId',
+    status VARCHAR(10)    COMMENT '状态 enabled：可用, disabled:不可用' ,
+    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
+    PRIMARY KEY (task_ID, identity_id)
+) COMMENT = '任务组织信息表，用于存储从调度服务获取的任务数据快照中组织信息数据';;
 
 
 -- 此表数据调用调度服务的接口获取，rpc GetPowerList(PowerListRequest) returns (PowerListResponse);

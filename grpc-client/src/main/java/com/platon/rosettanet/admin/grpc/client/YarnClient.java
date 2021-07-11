@@ -1,10 +1,12 @@
 package com.platon.rosettanet.admin.grpc.client;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
+import com.platon.rosettanet.admin.dao.entity.DataNode;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
-import com.platon.rosettanet.admin.grpc.entity.YarnAvailableDataNodeResp;
-import com.platon.rosettanet.admin.grpc.entity.YarnQueryFilePositionResp;
+import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
+import com.platon.rosettanet.admin.grpc.entity.*;
 import com.platon.rosettanet.admin.grpc.service.CommonMessage;
 import com.platon.rosettanet.admin.grpc.service.YarnRpcMessage;
 import com.platon.rosettanet.admin.grpc.service.YarnServiceGrpc;
@@ -13,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author liushuyu
@@ -29,52 +33,133 @@ public class YarnClient {
     @Resource(name = "simpleChannelManager")
     private BaseChannelManager channelManager;
 
-    public void setDataNode(String internalIp, String internalPort, String externalIp, String externalPort) {
+    /**
+     * 调度新增数据节点
+     *
+     * @param scheduleServerHost 调度服务ip
+     * @param scheduleServerPort 调度服务端口号
+     * @param dataNode           数据节点实体类
+     * @return
+     */
+    public FormatSetDataNodeResp setDataNode(String scheduleServerHost, int scheduleServerPort, DataNode dataNode) {
         //1.获取rpc连接
         Channel channel = channelManager.buildChannel("localhost", 50051);
         //2.拼装request
-        YarnRpcMessage.SetDataNodeRequest setDataNodeRequest = YarnRpcMessage.SetDataNodeRequest
-                .newBuilder().setInternalIp(internalIp).setInternalPort(internalPort).setExternalIp(externalIp).setExternalPort(externalPort).build();
+        YarnRpcMessage.SetDataNodeRequest setDataNodeRequest = YarnRpcMessage.SetDataNodeRequest.newBuilder().
+                setInternalIp(dataNode.getInternalIp()).
+                setInternalPort(String.valueOf(dataNode.getInternalPort())).
+                setExternalIp(dataNode.getExternalIp()).
+                setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
         //3.调用rpc,获取response
         YarnRpcMessage.SetDataNodeResponse setDataNodeResponse = YarnServiceGrpc.newBlockingStub(channel).setDataNode(setDataNodeRequest);
         //4.处理response
-        System.out.println("###############" + setDataNodeResponse.getMsg());
-        System.out.println("111111111");
+        FormatSetDataNodeResp resp = new FormatSetDataNodeResp();
+        resp.setStatus(setDataNodeResponse.getStatus());
+        resp.setMsg(setDataNodeResponse.getMsg());
+        if (GrpcConstant.GRPC_SUCCESS_CODE == setDataNodeResponse.getStatus()) {
+            YarnRpcMessage.YarnRegisteredPeerDetail resDataNode = setDataNodeResponse.getDataNode();
+            if (ObjectUtil.isNotNull(resDataNode)) {
+                RegisteredNodeResp nodeResp = new RegisteredNodeResp();
+                nodeResp.setNodeId(resDataNode.getId());
+                nodeResp.setConnStatus(String.valueOf(resDataNode.getConnState()));
+                resp.setNodeResp(nodeResp);
+            }
+        }
+        return resp;
+
     }
 
-    public void UpdateDataNode(String id, String internalIp, String internalPort, String externalIp, String externalPort) {
+    /**
+     * 调度修改数据节点
+     *
+     * @param scheduleServerHost 调度服务ip
+     * @param scheduleServerPort 调度服务端口号
+     * @param dataNode           数据节点实体类
+     * @return
+     */
+    public FormatSetDataNodeResp updateDataNode(String scheduleServerHost, int scheduleServerPort, DataNode dataNode) {
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel("localhost", 50051);
+        Channel channel = channelManager.buildChannel(scheduleServerHost, scheduleServerPort);
         //2.拼装request
         YarnRpcMessage.UpdateDataNodeRequest request = YarnRpcMessage.UpdateDataNodeRequest
-                .newBuilder().setId(id).setInternalIp(internalIp).setInternalPort(internalPort).setExternalIp(externalIp).setExternalPort(externalPort).build();
+                .newBuilder().setId(dataNode.getNodeId()).
+                        setInternalIp(dataNode.getInternalIp()).
+                        setInternalPort(String.valueOf(dataNode.getInternalPort())).
+                        setExternalIp(dataNode.getExternalIp()).
+                        setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
         //3.调用rpc,获取response
         YarnRpcMessage.SetDataNodeResponse setDataNodeResponse = YarnServiceGrpc.newBlockingStub(channel).updateDataNode(request);
         //4.处理response
-        System.out.println("###############" + setDataNodeResponse.getMsg());
-        System.out.println("111111111");
+        FormatSetDataNodeResp resp = new FormatSetDataNodeResp();
+        resp.setStatus(setDataNodeResponse.getStatus());
+        resp.setMsg(setDataNodeResponse.getMsg());
+        if (GrpcConstant.GRPC_SUCCESS_CODE == setDataNodeResponse.getStatus()) {
+            YarnRpcMessage.YarnRegisteredPeerDetail resDataNode = setDataNodeResponse.getDataNode();
+            if (ObjectUtil.isNotNull(resDataNode)) {
+                RegisteredNodeResp nodeResp = new RegisteredNodeResp();
+                nodeResp.setNodeId(resDataNode.getId());
+                nodeResp.setConnStatus(String.valueOf(resDataNode.getConnState()));
+                resp.setNodeResp(nodeResp);
+            }
+        }
+        return resp;
     }
 
-    public void DeleteDataNode(String id) {
+    /**
+     * 调度删除数据节点
+     *
+     * @param scheduleServerHost 调度服务ip
+     * @param scheduleServerPort 调度服务端口号
+     * @return
+     */
+    public CommonResp deleteDataNode(String scheduleServerHost, int scheduleServerPort, String id) {
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel("localhost", 50051);
+        Channel channel = channelManager.buildChannel(scheduleServerHost, scheduleServerPort);
         //2.拼装request
         CommonMessage.DeleteRegisteredNodeRequest request = CommonMessage.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
         //3.调用rpc,获取response
         CommonMessage.SimpleResponseCode simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
         //4.处理response
-        System.out.println("111111111");
+        CommonResp resp = new CommonResp();
+        resp.setMsg(simpleResponseCode.getMsg());
+        resp.setStatus(simpleResponseCode.getStatus());
+        return resp;
     }
 
-    public void GetDataNodeList() {
+    /**
+     * 调度获取数据节点列表
+     *
+     * @param scheduleServerHost 调度服务ip
+     * @param scheduleServerPort 调度服务端口号
+     * @return
+     */
+    public QueryNodeResp getDataNodeList(String scheduleServerHost, int scheduleServerPort) {
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel("localhost", 50051);
+        Channel channel = channelManager.buildChannel(scheduleServerHost, scheduleServerPort);
         //2.拼装request
         CommonMessage.EmptyGetParams emptyGetParams = CommonMessage.EmptyGetParams.getDefaultInstance();
         //3.调用rpc,获取response
-        YarnRpcMessage.GetRegisteredNodeListResponse dataNodeList = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
+        YarnRpcMessage.GetRegisteredNodeListResponse dataNodeListResp = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
         //4.处理response
-        System.out.println("###############" + dataNodeList);
+        QueryNodeResp queryNodeResp = new QueryNodeResp();
+        queryNodeResp.setMsg(dataNodeListResp.getMsg());
+        queryNodeResp.setStatus(dataNodeListResp.getStatus());
+        List<RegisteredNodeResp> nodeRespList = new ArrayList<>();
+        if (GrpcConstant.GRPC_SUCCESS_CODE == dataNodeListResp.getStatus()) {
+            dataNodeListResp.getNodesList().forEach(item -> {
+                RegisteredNodeResp nodeResp = new RegisteredNodeResp();
+                nodeResp.setNodeId(item.getNodeDetail().getId());
+                nodeResp.setInternalIp(item.getNodeDetail().getInternalIp());
+                String internalPort = item.getNodeDetail().getInternalPort();
+                nodeResp.setInternalPort(internalPort == null ? null : Integer.valueOf(internalPort));
+                nodeResp.setExternalIp(item.getNodeDetail().getExternalIp());
+                String externalPort = item.getNodeDetail().getExternalPort();
+                nodeResp.setExternalPort(externalPort == null ? null : Integer.valueOf(externalPort));
+                nodeResp.setConnStatus(String.valueOf(item.getNodeDetail().getConnState()));
+                nodeRespList.add(nodeResp);
+            });
+        }
+        return queryNodeResp;
     }
 
 

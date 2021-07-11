@@ -55,4 +55,11 @@ public interface DataNodeMapper {
      * @return
      */
     int updateByNodeId(DataNode record);
+
+    /**
+     * 批量更新数据节点
+     * @param dataNodeList 数据节点服务列表
+     * @return
+     */
+    int batchUpdate(List<DataNode> dataNodeList);
 }

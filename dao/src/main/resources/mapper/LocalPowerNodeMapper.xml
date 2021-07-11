@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.LocalComputeNodeMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalComputeNode">
+<mapper namespace="com.platon.rosettanet.admin.dao.LocalPowerNodeMapper">
+
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalPowerNode">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
-    <result column="node_id" jdbcType="VARCHAR" property="nodeId" />
-    <result column="node_name" jdbcType="VARCHAR" property="nodeName" />
+    <result column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
+    <result column="power_node_name" jdbcType="VARCHAR" property="powerNodeName" />
     <result column="internal_ip" jdbcType="VARCHAR" property="internalIp" />
     <result column="internal_port" jdbcType="INTEGER" property="internalPort" />
     <result column="external_ip" jdbcType="VARCHAR" property="externalIp" />
@@ -25,11 +26,12 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
   <sql id="Base_Column_List">
     id,
     identity_id,
-    node_id,
-    node_Name,
+    power_node_id,
+    power_node_name,
     internal_ip,
     internal_port,
     external_ip,
@@ -50,29 +52,39 @@
     update_time
   </sql>
 
-  <!-- 通过Id查询计算节点 -->
-  <select id="selectComputeNodeById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <!-- 通过nodeId查询计算节点 -->
+  <select id="selectPowerDetailByNodeId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
         <include refid="Base_Column_List" />
     from
-        local_compute_node
+        local_power_node
     where
-        id = #{id,jdbcType=INTEGER}
+        power_node_id = #{powerNodeId, jdbcType=VARCHAR}
   </select>
 
-  <!-- 删除计算节点 -->
-  <delete id="deleteComputeNodeById" parameterType="java.lang.Integer">
-    delete from local_compute_node where id = #{id,jdbcType=INTEGER}
+  <!-- 通过组织机构id查询计算节点-->
+  <select id="selectPowerListByIdentityId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from
+        local_power_node
+    where
+        identity_id = #{identityId, jdbcType=VARCHAR}
+  </select>
+
+  <!-- 根据节点id删除计算节点 -->
+  <delete id="deletePowerNode" parameterType="java.lang.String">
+    delete from local_power_node where power_node_id = #{powerNodeId, jdbcType=VARCHAR}
   </delete>
 
   <!-- 插入计算节点数据 -->
-  <insert id="insertComputeNode" parameterType="com.platon.rosettanet.admin.dao.entity.LocalComputeNode">
-    insert into local_compute_node
+  <insert id="insertPowerNode" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerNode">
+    insert into local_power_node
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">id,</if>
       <if test="identityId != null">identity_id,</if>
-      <if test="nodeId != null">node_id,</if>
-      <if test="nodeName != null">node_name,</if>
+      <if test="powerNodeId != null">power_node_id,</if>
+      <if test="powerNodeName != null">power_node_name,</if>
       <if test="internalIp != null">internal_ip,</if>
       <if test="internalPort != null">internal_port,</if>
       <if test="externalIp != null">external_ip,</if>
@@ -95,8 +107,8 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null"> #{id, jdbcType=INTEGER},</if>
       <if test="identityId != null">#{identityId, jdbcType=VARCHAR},</if>
-      <if test="nodeId != null">#{nodeId, jdbcType=VARCHAR},</if>
-      <if test="nodeName != null">#{nodeName, jdbcType=VARCHAR},</if>
+      <if test="powerNodeId != null">#{powerNodeId, jdbcType=VARCHAR},</if>
+      <if test="powerNodeName != null">#{powerNodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">#{internalIp, jdbcType=VARCHAR},</if>
       <if test="internalPort != null">#{internalPort, jdbcType=INTEGER},</if>
       <if test="externalIp != null">#{externalIp, jdbcType=VARCHAR},</if>
@@ -117,13 +129,13 @@
       <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
     </trim>
   </insert>
-  <!-- 修改计算节点数据 -->
-  <update id="updateComputeNode" parameterType="com.platon.rosettanet.admin.dao.entity.LocalComputeNode">
-    update local_compute_node
+
+  <!-- 根据节点id修改计算节点数据 -->
+  <update id="updatePowerNodeByNodeId" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerNode">
+    update local_power_node
     <set>
       <if test="identityId != null">identity_id = #{identityId, jdbcType=VARCHAR},</if>
-      <if test="nodeId != null">node_id = #{nodeId, jdbcType=VARCHAR},</if>
-      <if test="nodeName != null">node_name = #{nodeName, jdbcType=VARCHAR},</if>
+      <if test="powerNodeName != null">power_node_name = #{powerNodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
       <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
       <if test="externalIp != null">external_ip = #{externalIp, jdbcType=VARCHAR},</if>
@@ -143,6 +155,35 @@
       <if test="createTime != null">create_time = #{createTime, jdbcType=TIMESTAMP},</if>
       <if test="updateTime != null">update_time = #{updateTime, jdbcType=TIMESTAMP},</if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+  </update>
+
+  <!-- 根据id修改计算节点数据 -->
+  <update id="updatePowerNodeById" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerNode">
+    update local_power_node
+    <set>
+      <if test="identityId != null">identity_id = #{identityId, jdbcType=VARCHAR},</if>
+      <if test="powerNodeId != null">power_node_id = #{powerNodeId, jdbcType=VARCHAR},</if>
+      <if test="powerNodeName != null">power_node_name = #{powerNodeName, jdbcType=VARCHAR},</if>
+      <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
+      <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
+      <if test="externalIp != null">external_ip = #{externalIp, jdbcType=VARCHAR},</if>
+      <if test="externalPort != null">external_port = #{externalPort, jdbcType=INTEGER},</if>
+      <if test="startTime != null">start_time = #{startTime, jdbcType=TIMESTAMP},</if>
+      <if test="remarks != null">remarks = #{remarks, jdbcType=VARCHAR},</if>
+      <if test="connStatus != null">conn_status = #{connStatus, jdbcType=VARCHAR},</if>
+      <if test="connMessage != null">conn_message = #{connMessage, jdbcType=VARCHAR},</if>
+      <if test="connTime != null">conn_time = #{connTime, jdbcType=TIMESTAMP},</if>
+      <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+      <if test="memory != null">memory = #{memory, jdbcType=BIGINT},</if>
+      <if test="core != null">core = #{core, jdbcType=INTEGER},</if>
+      <if test="bandwidth != null">bandwidth = #{bandwidth, jdbcType=BIGINT},</if>
+      <if test="usedMemory != null">used_memory = #{usedMemory, jdbcType=BIGINT},</if>
+      <if test="usedCore != null">used_core = #{usedCore, jdbcType=INTEGER},</if>
+      <if test="usedBandwidth != null">used_bandwidth = #{usedBandwidth, jdbcType=BIGINT},</if>
+      <if test="createTime != null">create_time = #{createTime, jdbcType=TIMESTAMP},</if>
+      <if test="updateTime != null">update_time = #{updateTime, jdbcType=TIMESTAMP},</if>
+    </set>
+    where id = #{id, jdbcType=INTEGER}
   </update>
 </mapper>
