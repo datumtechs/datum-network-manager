@@ -10,19 +10,15 @@ import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.LocalDataActionReq;
-import com.platon.rosettanet.admin.dto.req.LocalDataDetailReq;
-import com.platon.rosettanet.admin.dto.req.LocalDataDownLoadReq;
-import com.platon.rosettanet.admin.dto.req.LocalDataImportFileReq;
 import com.platon.rosettanet.admin.dto.resp.LocalDataPageResp;
 import com.platon.rosettanet.admin.service.LocalDataService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -38,6 +34,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
+@RequestMapping("/api/v1/resource/mydata/")
 public class LocalDataController {
 
     @Resource
@@ -46,6 +43,7 @@ public class LocalDataController {
     /**
      * 展示数据列表，带分页
      */
+    @GetMapping("metaDataList")
     public JsonResponse<LocalDataPageResp> page(int pageNum, int pageSize){
         Page<LocalDataFile> localDataFilePage = localDataService.listDataFile(pageNum, pageSize,null);
         List<LocalDataPageResp> respList = localDataFilePage.getResult().stream()
@@ -57,6 +55,7 @@ public class LocalDataController {
     /**
      * 根据关键字查询机构自身的元数据列表摘要信息
      */
+    @GetMapping("metaDataListByKeyWord")
     public JsonResponse<LocalDataPageResp> metaDataListByKeyWord(int pageNum, int pageSize,String keyword){
         Page<LocalDataFile> localDataFilePage = localDataService.listDataFile(pageNum, pageSize,keyword);
         List<LocalDataPageResp> respList = localDataFilePage.getResult().stream()
@@ -69,9 +68,8 @@ public class LocalDataController {
     /**
      * 导入文件，文件上传+新增元数据信息,进行解析并将解析后的数据返回给前端
      */
-    public JsonResponse<LocalDataFileDetail> importFile(@RequestBody @Validated LocalDataImportFileReq req) throws IOException {
-        MultipartFile file = req.getFile();
-        Boolean hasTitle = req.getHasTitle();
+    @PostMapping("uploadFile")
+    public JsonResponse<LocalDataFileDetail> importFile(MultipartFile file,Boolean hasTitle) throws IOException {
         //校验文件
         isValidFile(file);
         LocalDataFileDetail localDataFileDetail = localDataService.uploadFile(file, hasTitle);
@@ -97,6 +95,7 @@ public class LocalDataController {
     /**
      * 数据添加：只是更新数据库信息
      */
+    @PostMapping("addMetaData")
     public JsonResponse add(@RequestBody @Validated LocalDataFileDetail req){
         int count = localDataService.add(req);
         if(count <= 0){
@@ -108,14 +107,16 @@ public class LocalDataController {
     /**
      * 查看数据详情
      */
-    public JsonResponse<LocalDataFileDetail> detail(@RequestBody @Validated LocalDataDetailReq req){
-        LocalDataFileDetail detail = localDataService.detail(req.getMetaDataId());
+    @GetMapping("metaDataInfo")
+    public JsonResponse<LocalDataFileDetail> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
+        LocalDataFileDetail detail = localDataService.detail(metaDataId);
         return JsonResponse.success(detail);
     }
 
     /**
      * 修改数据信息
      */
+    @PostMapping("updateMetaData")
     public JsonResponse update(@RequestBody @Validated LocalDataFileDetail req){
         int count = localDataService.update(req);
         if(count <= 0){
@@ -128,7 +129,7 @@ public class LocalDataController {
      * 元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)
      * 删除源文件，当前版本直接真删除，包括元数据
      */
-    @PostMapping("/actionMetaData")
+    @PostMapping("actionMetaData")
     public JsonResponse actionMetaData(@RequestBody @Validated LocalDataActionReq req){
         int action = req.getAction();
         int count = 0;
@@ -155,8 +156,9 @@ public class LocalDataController {
     /**
      * 源文件下载
      */
-    public void downLoad(HttpServletResponse response, @RequestBody @Validated LocalDataDownLoadReq req){
-        localDataService.downLoad(response,req.getMetaDataId());
+    @GetMapping("download")
+    public void downLoad(HttpServletResponse response, @Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
+        localDataService.downLoad(response,metaDataId);
     }
 
 }

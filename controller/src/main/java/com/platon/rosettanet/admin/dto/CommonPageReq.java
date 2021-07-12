@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 public class CommonPageReq {
 
     @NotNull
-    private Integer pageNumber;//起始页号
+    private Integer pageNum;//起始页号
     @NotNull
     private Integer pageSize;//每页数据条数
 }

@@ -5,6 +5,8 @@ import com.platon.rosettanet.admin.dao.entity.GlobalPower;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.resp.GlobalPowerPageResp;
 import com.platon.rosettanet.admin.service.GlobalPowerService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
  */
 
 @RestController
+@RequestMapping("/api/v1/resource/powercenter/")
 public class GlobalPowerController {
 
 
@@ -28,6 +31,7 @@ public class GlobalPowerController {
     /**
      * 展示数据列表，带分页
      */
+    @GetMapping("powerList")
     public JsonResponse<GlobalPowerPageResp> page(int pageNum, int pageSize){
         Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(pageNum, pageSize,null);
         List<GlobalPowerPageResp> respList = globalPowerPage.getResult().stream()
@@ -39,6 +43,7 @@ public class GlobalPowerController {
     /**
      * 根据关键字查询全网算力信息
      */
+    @GetMapping("powerListByKeyWord")
     public JsonResponse<GlobalPowerPageResp> globalPowerListByKeyWord(int pageNum, int pageSize,String keyword){
         Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(pageNum, pageSize,keyword);
         List<GlobalPowerPageResp> respList = globalPowerPage.getResult().stream()
