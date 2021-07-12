@@ -4,14 +4,15 @@ import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.dao.entity.GlobalDataFile;
 import com.platon.rosettanet.admin.dao.entity.GlobalDataFileDetail;
 import com.platon.rosettanet.admin.dto.JsonResponse;
-import com.platon.rosettanet.admin.dto.req.GlobalDataDetailReq;
 import com.platon.rosettanet.admin.dto.resp.GlobalDataPageResp;
 import com.platon.rosettanet.admin.service.GlobalDataService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
+@RequestMapping("/api/v1/resource/datacenter/")
 public class GlobalDataController {
 
     @Resource
@@ -33,6 +35,7 @@ public class GlobalDataController {
     /**
      * 展示数据列表，带分页
      */
+    @GetMapping("metaDataList")
     public JsonResponse<GlobalDataPageResp> page(int pageNum, int pageSize){
         Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(pageNum, pageSize,null);
         List<GlobalDataPageResp> respList = globalDataFilePage.getResult().stream()
@@ -44,6 +47,7 @@ public class GlobalDataController {
     /**
      * 根据关键字查询元数据列表摘要信息
      */
+    @GetMapping("metaDataListByKeyWord")
     public JsonResponse<GlobalDataPageResp> metaDataListByKeyWord(int pageNum, int pageSize,String keyword){
         Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(pageNum, pageSize,keyword);
         List<GlobalDataPageResp> respList = globalDataFilePage.getResult().stream()
@@ -55,8 +59,9 @@ public class GlobalDataController {
     /**
      * 查看数据详情
      */
-    public JsonResponse<GlobalDataFileDetail> detail(@RequestBody @Validated GlobalDataDetailReq req){
-        GlobalDataFileDetail detail = globalDataService.detail(req.getMetaDataId());
+    @GetMapping("metaDataInfo")
+    public JsonResponse<GlobalDataFileDetail> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
+        GlobalDataFileDetail detail = globalDataService.detail(metaDataId);
         return JsonResponse.success(detail);
     }
 
