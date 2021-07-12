@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * @Version
  * @Desc
  */
-public class NameUtils {
+public class NameUtil {
 
     public static final String NAME_REG_STR = "^[\\u4e00-\\u9fa5a-zA-Z0-9]{0,12}$";
 

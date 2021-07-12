@@ -41,4 +41,194 @@
     from global_data_file
     where meta_data_id = #{metaDataId}
   </select>
+
+  <!-- 根据metaDataId进行选择性更新-->
+  <update id="updateByMetaDataIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.GlobalDataFile">
+    update global_data_file
+    <set>
+      <if test="resourceName != null">
+        `resource_name` = #{resourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
+  </update>
+
+  <!-- 批量更新数据，一次建议最多更新1000条-->
+  <update id="batchUpdateByMetaDataIdSelective">
+    <foreach collection="list" item="globalDataFile" separator=";">
+      update global_data_file
+      <set>
+        <if test="globalDataFile.identityId != null">
+          identity_id = #{globalDataFile.identityId,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.fileId != null">
+          file_id = #{globalDataFile.fileId,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.fileName != null">
+          file_name = #{globalDataFile.fileName,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.filePath != null">
+          file_path = #{globalDataFile.filePath,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.fileType != null">
+          file_type = #{globalDataFile.fileType,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.resourceName != null">
+          resource_name = #{globalDataFile.resourceName,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.size != null">
+          `size` = #{globalDataFile.size,jdbcType=BIGINT},
+        </if>
+        <if test="globalDataFile.rows != null">
+          `rows` = #{globalDataFile.rows,jdbcType=BIGINT},
+        </if>
+        <if test="globalDataFile.columns != null">
+          `columns` = #{globalDataFile.columns,jdbcType=INTEGER},
+        </if>
+        <if test="globalDataFile.hasTitle != null">
+          has_title = #{globalDataFile.hasTitle,jdbcType=TINYINT},
+        </if>
+        <if test="globalDataFile.remarks != null">
+          remarks = #{globalDataFile.remarks,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.status != null">
+          `status` = #{globalDataFile.status,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.metaDataId != null">
+          meta_data_id = #{globalDataFile.metaDataId,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.recCreateTime != null">
+          rec_create_time = #{globalDataFile.recCreateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="globalDataFile.recUpdateTime != null">
+          rec_update_time = #{globalDataFile.recUpdateTime,jdbcType=TIMESTAMP},
+        </if>
+      </set>
+      where meta_data_id = #{globalDataFile.metaDataId,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+
+  <select id="selectAllMetaDataId" resultType="java.lang.String">
+    select meta_data_id
+    from global_data_file
+  </select>
+
+  <!-- 批量删除数据，一次建议最多删除1000条-->
+  <delete id="batchDeleteByMetaDataId">
+    delete from global_data_file
+    where meta_data_id in
+    <foreach collection="list" item="metaDataId" separator="," open="(" close=")">
+      #{metaDataId}
+    </foreach>
+  </delete>
+
+  <!-- 批量新增数据，一次建议最多更新1000条-->
+  <insert id="batchAddSelective">
+    <foreach collection="list" item="globalDataFile" separator=";">
+      insert into global_data_file
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="globalDataFile.identityId != null">
+          identity_id,
+        </if>
+        <if test="globalDataFile.fileId != null">
+          file_id,
+        </if>
+        <if test="globalDataFile.fileName != null">
+          file_name,
+        </if>
+        <if test="globalDataFile.filePath != null">
+          file_path,
+        </if>
+        <if test="globalDataFile.fileType != null">
+          file_type,
+        </if>
+        <if test="globalDataFile.resourceName != null">
+          resource_name,
+        </if>
+        <if test="globalDataFile.size != null">
+          `size`,
+        </if>
+        <if test="globalDataFile.rows != null">
+          `rows`,
+        </if>
+        <if test="globalDataFile.columns != null">
+          `columns`,
+        </if>
+        <if test="globalDataFile.hasTitle != null">
+          has_title,
+        </if>
+        <if test="globalDataFile.remarks != null">
+          remarks,
+        </if>
+        <if test="globalDataFile.status != null">
+          `status`,
+        </if>
+        <if test="globalDataFile.metaDataId != null">
+          meta_data_id,
+        </if>
+        <if test="globalDataFile.recCreateTime != null">
+          rec_create_time,
+        </if>
+        <if test="globalDataFile.recUpdateTime != null">
+          rec_update_time,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="globalDataFile.identityId != null">
+          #{globalDataFile.identityId,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.fileId != null">
+          #{globalDataFile.fileId,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.fileName != null">
+          #{globalDataFile.fileName,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.filePath != null">
+          #{globalDataFile.filePath,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.fileType != null">
+          #{globalDataFile.fileType,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.resourceName != null">
+          #{globalDataFile.resourceName,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.size != null">
+          #{globalDataFile.size,jdbcType=BIGINT},
+        </if>
+        <if test="globalDataFile.rows != null">
+          #{globalDataFile.rows,jdbcType=BIGINT},
+        </if>
+        <if test="globalDataFile.columns != null">
+          #{globalDataFile.columns,jdbcType=INTEGER},
+        </if>
+        <if test="globalDataFile.hasTitle != null">
+          #{globalDataFile.hasTitle,jdbcType=TINYINT},
+        </if>
+        <if test="globalDataFile.remarks != null">
+          #{globalDataFile.remarks,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.status != null">
+          #{globalDataFile.status,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.metaDataId != null">
+          #{globalDataFile.metaDataId,jdbcType=VARCHAR},
+        </if>
+        <if test="globalDataFile.recCreateTime != null">
+          #{globalDataFile.recCreateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="globalDataFile.recUpdateTime != null">
+          #{globalDataFile.recUpdateTime,jdbcType=TIMESTAMP},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
 </mapper>

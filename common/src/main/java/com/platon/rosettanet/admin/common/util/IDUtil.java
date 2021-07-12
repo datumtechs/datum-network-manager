@@ -9,7 +9,7 @@ import cn.hutool.core.util.RandomUtil;
  * @Version
  * @Desc id 工具类
  */
-public class IDUtils {
+public class IDUtil {
 
     public static final String METADATA_ID_PREFIX = "metadata_id";
 

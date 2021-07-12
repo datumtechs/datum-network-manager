@@ -6,13 +6,12 @@ import com.platon.rosettanet.admin.dao.entity.LocalOrg;
 import com.platon.rosettanet.admin.service.LocalOrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 @EnableScheduling
@@ -20,7 +19,7 @@ import javax.annotation.Resource;
 @EnableTransactionManagement
 @MapperScan(basePackages = {"com.platon.rosettanet.admin.dao"})
 @Slf4j
-public class RosettaNetAdminApplication implements ApplicationRunner {
+public class RosettaNetAdminApplication {
 
     @Resource
     private LocalOrgService localOrgService;
@@ -32,11 +31,10 @@ public class RosettaNetAdminApplication implements ApplicationRunner {
 
     /**
      * 应用启动后做一些操作
-     * @param args
      * @throws Exception
      */
-    @Override
-    public void run(ApplicationArguments args){
+    @PostConstruct
+    public void init() {
         log.info("应用已启动，执行初始化操作.............");
 
         LocalOrg localOrg = localOrgService.getLocalOrg();

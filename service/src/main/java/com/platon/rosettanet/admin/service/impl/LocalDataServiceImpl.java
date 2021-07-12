@@ -9,7 +9,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.common.util.ExportFileUtil;
-import com.platon.rosettanet.admin.common.util.IDUtils;
+import com.platon.rosettanet.admin.common.util.IDUtil;
 import com.platon.rosettanet.admin.dao.LocalDataFileMapper;
 import com.platon.rosettanet.admin.dao.LocalMetaDataColumnMapper;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
@@ -41,7 +41,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.platon.rosettanet.admin.common.util.IDUtils.METADATA_ID_PREFIX;
+import static com.platon.rosettanet.admin.common.util.IDUtil.METADATA_ID_PREFIX;
 
 @Slf4j
 @Service
@@ -79,7 +79,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         localDataFile.setSize(file.getSize());
         localDataFile.setHasTitle(hasTitle);
         localDataFile.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());
-        localDataFile.setMetaDataId(IDUtils.generate(METADATA_ID_PREFIX));
+        localDataFile.setMetaDataId(IDUtil.generate(METADATA_ID_PREFIX));
         localDataFile.setRecCreateTime(new Date());
 
         //### 2.解析列信息

@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.aop;
 
+import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -51,14 +52,15 @@ public class ControllerInterceptor {
             }else {
                 Object[] args = joinPoint.getArgs();
                 for (int i = 0; i <args.length; i++) {
-                    if(args[i] instanceof String){
-                        log.info(StrUtil.format("request param-{}: {}",i,args[i]));
-                    }else if(args[i] instanceof ServletResponse){
+                    Object parameter = args[i];
+                    if(ClassUtil.isSimpleValueType(parameter.getClass())){
+                        log.info(StrUtil.format("request param-{}: {}",i,parameter));
+                    }else if(parameter instanceof ServletResponse){
                         log.info(StrUtil.format("request param-{}: {}",i,"ServletResponse"));
-                    }else if(args[i] instanceof ServletRequest){
+                    }else if(parameter instanceof ServletRequest){
                         log.info(StrUtil.format("request param-{}: {}",i,"ServletRequest"));
                     }else{
-                        log.info(StrUtil.format("request param-{}: {}",i, JSONUtil.toJsonStr(args[i])));
+                        log.info(StrUtil.format("request param-{}: {}",i, JSONUtil.toJsonStr(parameter)));
                     }
                 }
             }

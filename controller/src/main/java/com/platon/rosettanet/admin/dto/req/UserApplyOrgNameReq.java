@@ -1,6 +1,6 @@
 package com.platon.rosettanet.admin.dto.req;
 
-import com.platon.rosettanet.admin.common.util.NameUtils;
+import com.platon.rosettanet.admin.common.util.NameUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,6 +19,6 @@ import javax.validation.constraints.Pattern;
 @ToString
 public class UserApplyOrgNameReq {
 
-    @Pattern(regexp = NameUtils.NAME_REG_STR)
+    @Pattern(regexp = NameUtil.NAME_REG_STR)
     private String orgName;//身份标识名称
 }
