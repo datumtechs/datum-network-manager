@@ -97,6 +97,43 @@ CREATE TABLE local_power_node
 	KEY (power_node_name)
 ) COMMENT = '本组织计算节点配置表 配置当前参与方的计算节点信息';;
 
+-- 计算节点使用资源定时刷新数据
+DROP TABLE IF EXISTS local_power_details;;
+CREATE TABLE local_power_details
+(
+    id              INT NOT NULL AUTO_INCREMENT COMMENT '序号',
+    power_node_id   VARCHAR(128)       COMMENT '发布后底层返回的host唯一ID',
+	refresh_status  VARCHAR(2)         COMMENT '刷新时间标志（0：小时，1：天）',
+    used_memory     BIGINT DEFAULT 0   COMMENT '使用的内存, 字节',
+    used_core       INT DEFAULT 0      COMMENT '使用的core',
+    used_bandwidth  BIGINT DEFAULT 0   COMMENT '使用的带宽, bps',
+    create_time     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT'最后更新时间',
+    PRIMARY KEY (id),
+    KEY (power_node_id)
+) COMMENT = '计算节点使用资源定时刷新数据表（按时间段刷新）';;
+
+-- 计算节点参与任务信息
+DROP TABLE IF EXISTS local_power_join_task;;
+CREATE TABLE local_power_join_task
+(
+    id                INT NOT NULL AUTO_INCREMENT COMMENT '序号',
+	power_node_id     VARCHAR(128) COMMENT '计算节点power_node_id',
+    task_id           VARCHAR(128) COMMENT '任务id',
+	task_name         VARCHAR(32)  COMMENT '任务名称',
+    owner_identity_id VARCHAR(128) COMMENT '发起方身份',
+    task_start_time   DATETIME     COMMENT '发起时间',
+    result_side       VARCHAR(32)  COMMENT '结果方',
+	coordinate_side   VARCHAR(32)  COMMENT '协作方',
+	used_memory       BIGINT       DEFAULT 0 COMMENT '使用的内存, 字节（占此节点总算力比）',
+    used_core         INT          DEFAULT 0 COMMENT '使用的core（占此节点总算力比）',
+    used_bandwidth    BIGINT       DEFAULT 0 COMMENT '使用的带宽, bps（占此节点总算力比）',
+    create_time       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time       TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT'最后更新时间',
+    PRIMARY KEY (id),
+    KEY (power_node_id)
+) COMMENT = '计算节点参与任务信息';;
+
 -- 此表数据有管理台添加
 DROP TABLE IF EXISTS local_data_node;;
 CREATE TABLE local_data_node(

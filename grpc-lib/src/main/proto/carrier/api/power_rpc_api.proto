@@ -178,7 +178,7 @@ service PowerService {
             body: "*"
         };
     }
-    // 查看某个节点各个单算力详情列表
+    // 查看所有组织各个单算力详情列表
     rpc GetPowerSingleDetailList (EmptyGetParams) returns (GetPowerSingleDetailListResponse) {
         option (google.api.http) = {
             post: "/carrier/v1/power/singleList"

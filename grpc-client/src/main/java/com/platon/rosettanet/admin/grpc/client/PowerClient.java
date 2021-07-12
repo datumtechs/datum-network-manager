@@ -1,11 +1,13 @@
 package com.platon.rosettanet.admin.grpc.client;
 
+import com.platon.rosettanet.admin.dao.entity.LocalPowerDetails;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.service.*;
 import io.grpc.Channel;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author liushuyu
@@ -97,14 +99,13 @@ public class PowerClient {
     }
 
     /**
-     * 查看单个算力详情 (包含 任务描述)
+     * 查看所有组织单个算力详情 (包含 任务描述)
      */
-    public String getPowerSingleDetail(String identityId, String powerId, Integer internalPort, Integer externalPort){
+    public String GetPowerSingleDetailList(){
 //        //1.获取rpc连接
 //        Channel channel = channelManager.buildChannel("localhost", 50051);
 //        //2.拼装request
 //        PowerRpcMessage.GetPowerSingleDetailRequest joinRequest = PowerRpcMessage.GetPowerSingleDetailRequest.newBuilder()
-//                .setIdentityId(identityId).setPowerId(powerId)
 //                .build();
 //        //3.调用rpc,获取response
 //        PowerRpcMessage.GetPowerSingleDetailResponse responseCode = PowerServiceGrpc.newBlockingStub(channel).getPowerSingleDetailList(joinRequest);
