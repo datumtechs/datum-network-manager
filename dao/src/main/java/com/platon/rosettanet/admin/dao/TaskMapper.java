@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.dao;
 import com.platon.rosettanet.admin.dao.entity.Task;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +20,14 @@ public interface TaskMapper {
 
     int updateByPrimaryKey(Task record);
 
-
-    List<Task> listTask(@Param("status")String status, @Param("role")int role, @Param("startDate") Date startDate, @Param("endDate")Date endDate);
+    List<Task> listTask(@Param("status")String status, @Param("role")int role, @Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp")Timestamp endTimestamp, @Param("keyWord") String keyWord, @Param("localIdentityId") String localIdentityId);
 
     Task selectTaskByTaskId(@Param("taskId")String taskId);
+
+    Integer selectAllTaskCount();
+
+    Integer selectTaskRunningCount();
+
+    Integer selectTaskRole(@Param("taskId")String taskId);
+
 }

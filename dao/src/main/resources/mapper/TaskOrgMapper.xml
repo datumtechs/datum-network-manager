@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.TaskOrgMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.TaskOrg">
+    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
+    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="carrier_node_id" jdbcType="VARCHAR" property="carrierNodeId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    task_id, identity_id, name, carrier_node_id, status, rec_update_time
+  </sql>
+
+
+
+  <select id="selectTaskOrgByIdentityId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from task_org
+    where task_id = #{taskId,jdbcType=VARCHAR}
+  </select>
+
+
+
+
+
+</mapper>

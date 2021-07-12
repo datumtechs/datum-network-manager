@@ -1,8 +1,10 @@
 package com.platon.rosettanet.admin.dao.entity;
 
+import com.platon.rosettanet.admin.dao.BaseDomain;
+
 import java.time.LocalDateTime;
 
-public class TaskResultReceiver {
+public class TaskResultReceiver extends BaseDomain {
     private String taskId;
 
     private String consumerIdentityId;

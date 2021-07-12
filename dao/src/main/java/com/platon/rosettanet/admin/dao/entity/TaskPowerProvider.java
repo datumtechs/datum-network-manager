@@ -1,8 +1,10 @@
 package com.platon.rosettanet.admin.dao.entity;
 
+import com.platon.rosettanet.admin.dao.BaseDomain;
+
 import java.time.LocalDateTime;
 
-public class TaskPowerProvider {
+public class TaskPowerProvider extends BaseDomain {
     private String taskId;
 
     private String identityId;

@@ -38,47 +38,88 @@
   <select id="selectTaskByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from tb_task
-    where task_Id = #{taskId,jdbcType=VARCHAR}
+    from task
+    where id = #{taskId,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectAllTaskCount" resultType="java.lang.Integer">
+     SELECT COUNT(t.id) FROM task AS t
+  </select>
+
+  <select id="selectTaskRunningCount" resultType="java.lang.Integer">
+     SELECT COUNT(t.id) FROM task AS t WHERE t.status = 'pending' OR t.status = 'running'
+  </select>
+
+
+
+  <select id="selectTaskRole" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT
+    CASE
+    WHEN t.owner_Identity_id = (SELECT identity_Id FROM local_org) THEN 1
+    WHEN tdp.identity_id = (SELECT identity_Id FROM local_org) THEN 2
+    WHEN tpp.identity_id = (SELECT identity_Id FROM local_org) THEN 3
+    WHEN trc.consumer_identity_id = (SELECT identity_Id FROM local_org) THEN 4
+    ELSE 0 END
+    AS role
+    FROM
+    task t
+    LEFT JOIN task_data_provider tdp ON t.id = tdp.task_Id
+    LEFT JOIN task_power_provider tpp ON t.id = tpp.task_Id
+    LEFT JOIN task_result_consumer trc ON t.id = trc.task_Id
+    WHERE t.id = = #{taskId,jdbcType=VARCHAR}
   </select>
 
 
   <select id="listTask" parameterType="map" resultType="com.platon.rosettanet.admin.dao.entity.Task">
     SELECT
-    tt.id,
-    tt.task_Id,
-    tt.task_Name,
-    tt.state,
-    tt.create_At,
-    CASE
-    WHEN tt.owner_Identity = (SELECT identity_Id FROM tb_base_config) THEN 1
-    WHEN ttdp.owner_Identity = (SELECT identity_Id FROM tb_base_config) THEN 2
-    WHEN ttpp.owner_Identity = (SELECT identity_Id FROM tb_base_config) THEN 3
-    WHEN ttrr.owner_Identity = (SELECT identity_Id FROM tb_base_config) THEN 4
-    ELSE 0 END
-    AS role
+    task_role.*
     FROM
-    tb_task tt
-    LEFT JOIN tb_task_data_provider ttdp ON tt.task_Id = ttdp.task_Id
-    LEFT JOIN tb_task_power_provider ttpp ON tt.task_Id = ttpp.task_Id
-    LEFT JOIN tb_task_result_receiver ttrr ON tt.task_Id = ttrr.task_Id;
+    (   SELECT
+        t.id,
+        t.task_Name,
+        t.`status`,
+        t.create_At,
+        CASE
+        WHEN t.owner_Identity_id = (SELECT identity_Id FROM local_org) THEN 1
+        WHEN tdp.identity_id = (SELECT identity_Id FROM local_org) THEN 2
+        WHEN tpp.identity_id = (SELECT identity_Id FROM local_org) THEN 3
+        WHEN trc.consumer_identity_id = (SELECT identity_Id FROM local_org) THEN 4
+        ELSE 0 END
+        AS role
+        FROM
+        task t
+        LEFT JOIN task_data_provider tdp ON t.id = tdp.task_Id
+        LEFT JOIN task_power_provider tpp ON t.id = tpp.task_Id
+        LEFT JOIN task_result_consumer trc ON t.id = trc.task_Id
+    ) AS task_role
     <where>
       <if test="status != null ">
-        tt.status = #{status,jdbcType=VARCHAR}
+        and status = #{status,jdbcType=VARCHAR}
       </if>
       <if test="role != null">
-        role = #{role,jdbcType=INTEGER}
+        and role = #{role,jdbcType=INTEGER}
       </if>
       <if test="startDate != null">
-        tt.create_At <![CDATA[>= ]]> #{startDate,jdbcType=DATE}
+         and create_At <![CDATA[>= ]]> #{startDate,jdbcType=TIMESTAMP}
       </if>
       <if test="endDate != null">
-        t.create_At <![CDATA[<= ]]> #{endDate,jdbcType=DATE}
+        and create_At <![CDATA[<= ]]> #{endDate,jdbcType=TIMESTAMP}
       </if>
+      <if test="keyWord != null and keyWord != ''">
+        and task_Name like CONCAT(CONCAT('%',#{keyWord}),'%')
+      </if>
+
     </where>
-    order by t.create_At
+    order by create_At
 
   </select>
+
+
+
+
+
+
 
 
 
