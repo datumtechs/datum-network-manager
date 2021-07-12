@@ -12,17 +12,13 @@ import com.platon.rosettanet.admin.grpc.client.YarnClient;
 import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
 import com.platon.rosettanet.admin.grpc.entity.CommonResp;
 import com.platon.rosettanet.admin.grpc.entity.FormatSetDataNodeResp;
-import com.platon.rosettanet.admin.grpc.entity.QueryNodeResp;
 import com.platon.rosettanet.admin.service.DataNodeService;
 import com.platon.rosettanet.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +38,14 @@ public class DataNodeServiceImpl implements DataNodeService {
     private LocalOrgMapper localOrgMapper;
 
 
+    /**
+     * 根据关键字分页查询数据节点
+     *
+     * @param pageNumber 起始页号
+     * @param pageSize   每页数据条数
+     * @param keyword    搜索关键字
+     * @return
+     */
     @Override
     public Page<DataNode> listNode(Integer pageNumber, Integer pageSize, String keyword) {
         Page<DataNode> taskPage = PageHelper.startPage(pageNumber, pageSize);
@@ -49,6 +53,12 @@ public class DataNodeServiceImpl implements DataNodeService {
         return taskPage;
     }
 
+    /**
+     * 新增数据节点
+     *
+     * @param dataNode
+     * @return
+     */
     @Override
     public int addDataNode(DataNode dataNode) {
         LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
@@ -67,6 +77,12 @@ public class DataNodeServiceImpl implements DataNodeService {
         return dataNodeMapper.insert(dataNode);
     }
 
+    /**
+     * 校验数据节点名称是否可用
+     *
+     * @param dataNode
+     * @return true可用，false不可用
+     */
     @Override
     public boolean checkDataNodeName(DataNode dataNode) {
         String id = dataNodeMapper.getDataNodeIdByName(dataNode.getHostName());
@@ -76,6 +92,12 @@ public class DataNodeServiceImpl implements DataNodeService {
         return true;
     }
 
+    /**
+     * 修改数据节点
+     *
+     * @param dataNode
+     * @return
+     */
     @Override
     public int updateDataNode(DataNode dataNode) {
         LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
@@ -92,8 +114,14 @@ public class DataNodeServiceImpl implements DataNodeService {
         return dataNodeMapper.updateByNodeId(dataNode);
     }
 
+    /**
+     * 删除数据节点
+     *
+     * @param nodeId
+     * @return
+     */
     @Override
-    public int deleteDataNode(String nodeId){
+    public int deleteDataNode(String nodeId) {
         LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
         if (carrier == null) {
             throw new ServiceException("无可用的调度服务");

@@ -8,14 +8,13 @@ import com.platon.rosettanet.admin.dto.req.*;
 import com.platon.rosettanet.admin.dto.resp.AvailableStatusResp;
 import com.platon.rosettanet.admin.service.DataNodeService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import javax.annotation.Resource;
 
 /**
  * @author lyf
@@ -26,7 +25,7 @@ import java.util.List;
 @RestController
 public class DataNodeController {
 
-    @Autowired
+    @Resource
     private DataNodeService dataNodeService;
 
     /**
@@ -39,6 +38,13 @@ public class DataNodeController {
         return JsonResponse.page(dataNodes);
     }
 
+    /**
+     * 新增数据节点
+     *
+     * @param dataNodeAddReq
+     * @return
+     * @throws Exception
+     */
     @PostMapping("addDataNode")
     public JsonResponse addDataNode(@Validated @RequestBody DataNodeAddReq dataNodeAddReq) throws Exception {
         DataNode dataNode = new DataNode();
@@ -51,6 +57,12 @@ public class DataNodeController {
         return JsonResponse.success(dataNodeService.addDataNode(dataNode));
     }
 
+    /**
+     * 校验数据节点名称是否可用
+     *
+     * @param checkDataNodeNameReq
+     * @return
+     */
     @PostMapping("checkDataNodeName")
     public JsonResponse checkDataNodeName(@Validated @RequestBody CheckDataNodeNameReq checkDataNodeNameReq) {
         DataNode dataNode = new DataNode();
@@ -64,6 +76,13 @@ public class DataNodeController {
         return JsonResponse.success(resp);
     }
 
+    /**
+     * 修改数据节点
+     *
+     * @param dataNodeUpdateReq
+     * @return
+     * @throws Exception
+     */
     @PostMapping("updateDataNode")
     public JsonResponse updateDataNode(@Validated @RequestBody DataNodeUpdateReq dataNodeUpdateReq) throws Exception {
         DataNode dataNode = new DataNode();
@@ -72,6 +91,13 @@ public class DataNodeController {
         return JsonResponse.success();
     }
 
+    /**
+     * 删除数据节点
+     *
+     * @param dataNodeDeleteReq
+     * @return
+     * @throws Exception
+     */
     @PostMapping("deleteDataNode")
     public JsonResponse deleteDataNode(@Validated @RequestBody DataNodeDeleteReq dataNodeDeleteReq) throws Exception {
         dataNodeService.deleteDataNode(dataNodeDeleteReq.getNodeId());
