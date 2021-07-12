@@ -31,8 +31,9 @@ public class DataNodeRefreshTask {
     private YarnClient yarnClient;
     @Resource
     private LocalOrgMapper localOrgMapper;
-    @Scheduled(fixedDelay=2000)
-    public void task(){
+
+    @Scheduled(fixedDelay = 2000)
+    public void task() {
         long begin = System.currentTimeMillis();
         LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
         if (carrier == null) {
@@ -52,9 +53,10 @@ public class DataNodeRefreshTask {
                 BeanUtils.copyProperties(item, dataNode);
                 dataNodeList.add(dataNode);
             });
+            //批量更新
             dataNodeMapper.batchUpdate(dataNodeList);
         }
         long end = System.currentTimeMillis();
-        System.out.println("调度更新数据节点列表任务耗时="+(end-begin));
+        System.out.println("调度更新数据节点列表任务耗时=" + (end - begin));
     }
 }
