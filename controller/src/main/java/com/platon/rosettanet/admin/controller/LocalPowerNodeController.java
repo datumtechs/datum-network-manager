@@ -96,7 +96,7 @@ public class LocalPowerNodeController {
      * @param powerSwitchReq
      * @return
      */
-    @PostMapping("/switchPower")
+    @PostMapping("/publishPower")
     public JsonResponse switchPower(PowerSwitchReq powerSwitchReq) {
         localPowerNodeService.publishPower(powerSwitchReq.getPowerNodeId());
         return JsonResponse.success("启用成功");
