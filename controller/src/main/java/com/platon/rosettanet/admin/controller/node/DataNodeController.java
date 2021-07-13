@@ -1,7 +1,6 @@
 package com.platon.rosettanet.admin.controller.node;
 
 import com.github.pagehelper.Page;
-import com.google.common.collect.Lists;
 import com.platon.rosettanet.admin.constant.ControllerConstants;
 import com.platon.rosettanet.admin.dao.entity.DataNode;
 import com.platon.rosettanet.admin.dto.JsonResponse;
@@ -10,7 +9,6 @@ import com.platon.rosettanet.admin.dto.resp.AvailableStatusResp;
 import com.platon.rosettanet.admin.dto.resp.LocalDataNodeQueryResp;
 import com.platon.rosettanet.admin.service.DataNodeService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author lyf
@@ -41,10 +39,8 @@ public class DataNodeController {
     public JsonResponse listNode(@Validated @RequestBody NodePageReq req) {
         Page<DataNode> dataNodes = dataNodeService.listNode(req.getPageNumber(), req.getPageSize(), req.getKeyword());
         List<DataNode> dataList = dataNodes.getResult();
-        List<LocalDataNodeQueryResp> respList = convert(dataList);
-        JsonResponse jsonResponse = JsonResponse.page(dataNodes);
-        jsonResponse.setList(respList);
-        return jsonResponse;
+        List<LocalDataNodeQueryResp> respList = dataList.stream().map(LocalDataNodeQueryResp::convert).collect(Collectors.toList());
+        return JsonResponse.page(dataNodes, respList);
     }
 
     /**
@@ -62,7 +58,8 @@ public class DataNodeController {
         if (!dataNodeService.checkDataNodeName(dataNode)) {
             return JsonResponse.fail("保存失败，节点名称已存在！");
         }
-        return JsonResponse.success(dataNodeService.addDataNode(dataNode));
+        dataNodeService.addDataNode(dataNode);
+        return JsonResponse.success();
     }
 
     /**
@@ -110,19 +107,6 @@ public class DataNodeController {
     public JsonResponse deleteDataNode(@Validated @RequestBody DataNodeDeleteReq dataNodeDeleteReq) throws Exception {
         dataNodeService.deleteDataNode(dataNodeDeleteReq.getNodeId());
         return JsonResponse.success();
-    }
-
-    public List<LocalDataNodeQueryResp> convert(List<DataNode> dataNodeList) {
-        List<LocalDataNodeQueryResp> voList = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(dataNodeList)) {
-            voList = Lists.transform(dataNodeList, entity -> {
-                LocalDataNodeQueryResp resp = new LocalDataNodeQueryResp();
-                BeanUtils.copyProperties(entity, resp);
-                resp.setNodeName(entity.getHostName());
-                return resp;
-            });
-        }
-        return voList;
     }
 
 }
