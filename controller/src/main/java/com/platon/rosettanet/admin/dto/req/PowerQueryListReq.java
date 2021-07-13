@@ -19,9 +19,11 @@ public class PowerQueryListReq {
     private String keyword;
 
     /** 每页数据条数 */
+    @NotNull(message = "每页数据条数不能为空")
     private int pageSize;
 
     /** 起始页号 */
+    @NotNull(message = "起始页号不能为空")
     private int pageNumber;
 
 }

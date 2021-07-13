@@ -25,6 +25,6 @@ public interface LocalPowerDetailsMapper {
      * @param powerNodeId
      * @return
      */
-    List<LocalPowerDetails> queryPowerDetails(@Param(value = "powerNodeId") String powerNodeId);
+    List<LocalPowerDetails> queryPowerDetails(String powerNodeId);
 
 }

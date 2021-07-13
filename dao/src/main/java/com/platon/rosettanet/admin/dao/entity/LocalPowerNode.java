@@ -31,8 +31,6 @@ public class LocalPowerNode {
 
     private String remarks;
 
-    private String connStatus;
-
     private String connMessage;
 
     private LocalDateTime connTime;
