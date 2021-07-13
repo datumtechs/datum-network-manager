@@ -1,9 +1,12 @@
 package com.platon.rosettanet.admin.controller.node;
 
 import com.platon.rosettanet.admin.dto.JsonResponse;
+import com.platon.rosettanet.admin.service.NodeService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @Author liushuyu
@@ -12,10 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
  * @Desc
  */
 
+/**
+ * 调度服务管理
+ */
+
 @RequestMapping("/api/v1/node/corenode/")
 @RestController
 public class NodeController {
 
+    @Resource
+    private NodeService nodeService;
 
     /**
      * 连接调度节点
@@ -23,6 +32,7 @@ public class NodeController {
      */
     @PostMapping("connectNode")
     public JsonResponse connectNode(){
+
         return JsonResponse.success();
     }
 

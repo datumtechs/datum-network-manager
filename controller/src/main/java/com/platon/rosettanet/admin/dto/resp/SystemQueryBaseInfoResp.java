@@ -1,8 +1,10 @@
 package com.platon.rosettanet.admin.dto.resp;
 
+import com.platon.rosettanet.admin.dao.entity.LocalOrg;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.beans.BeanUtils;
 
 /**
  * @Author liushuyu
@@ -15,6 +17,15 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SystemQueryBaseInfoResp {
-    private String nodeName;//机构识别名称
-    private String identityId;//机构身份标识
+
+    //机构名称
+    private String name;
+    //机构身份标识ID
+    private String identityId;
+
+    public static SystemQueryBaseInfoResp from(LocalOrg localOrg){
+        SystemQueryBaseInfoResp resp = new SystemQueryBaseInfoResp();
+        BeanUtils.copyProperties(localOrg,resp);
+        return resp;
+    }
 }
