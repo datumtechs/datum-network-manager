@@ -5,9 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.dao.DataNodeMapper;
-import com.platon.rosettanet.admin.dao.LocalOrgMapper;
 import com.platon.rosettanet.admin.dao.entity.DataNode;
-import com.platon.rosettanet.admin.dao.entity.LocalOrg;
 import com.platon.rosettanet.admin.grpc.client.YarnClient;
 import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
 import com.platon.rosettanet.admin.grpc.entity.CommonResp;
@@ -34,8 +32,6 @@ public class DataNodeServiceImpl implements DataNodeService {
     private DataNodeMapper dataNodeMapper;
     @Resource
     private YarnClient yarnClient;
-    @Resource
-    private LocalOrgMapper localOrgMapper;
 
 
     /**
@@ -61,12 +57,7 @@ public class DataNodeServiceImpl implements DataNodeService {
      */
     @Override
     public int addDataNode(DataNode dataNode) {
-        LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
-        if (carrier == null) {
-            throw new ServiceException("无可用的调度服务");
-        }
-        log.info("新增数据节点，调度服务ip:" + carrier.getCarrierIP() + ",端口号：" + carrier.getCarrierPort());
-        FormatSetDataNodeResp formatSetDataNodeResp = yarnClient.setDataNode(carrier.getCarrierIP(), carrier.getCarrierPort(), dataNode);
+        FormatSetDataNodeResp formatSetDataNodeResp = yarnClient.setDataNode(dataNode);
         if (GrpcConstant.GRPC_SUCCESS_CODE != formatSetDataNodeResp.getStatus()) {
             throw new ServiceException("调度服务调用失败");
         }
@@ -100,12 +91,7 @@ public class DataNodeServiceImpl implements DataNodeService {
      */
     @Override
     public int updateDataNode(DataNode dataNode) {
-        LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
-        if (carrier == null) {
-            throw new ServiceException("无可用的调度服务");
-        }
-        FormatSetDataNodeResp formatSetDataNodeResp = yarnClient.updateDataNode(carrier.getCarrierIP(), carrier.getCarrierPort(), dataNode);
-        log.info("修改数据节点，调度服务ip:" + carrier.getCarrierIP() + ",端口号：" + carrier.getCarrierPort());
+        FormatSetDataNodeResp formatSetDataNodeResp = yarnClient.updateDataNode(dataNode);
         if (GrpcConstant.GRPC_SUCCESS_CODE != formatSetDataNodeResp.getStatus()) {
             throw new ServiceException("调度服务调用失败");
         }
@@ -122,12 +108,7 @@ public class DataNodeServiceImpl implements DataNodeService {
      */
     @Override
     public int deleteDataNode(String nodeId) {
-        LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
-        if (carrier == null) {
-            throw new ServiceException("无可用的调度服务");
-        }
-        log.info("删除数据节点,调度服务ip:" + carrier.getCarrierIP() + ",端口号：" + carrier.getCarrierPort());
-        CommonResp commonResp = yarnClient.deleteDataNode(carrier.getCarrierIP(), carrier.getCarrierPort(), nodeId);
+        CommonResp commonResp = yarnClient.deleteDataNode(nodeId);
         if (GrpcConstant.GRPC_SUCCESS_CODE != commonResp.getStatus()) {
             throw new ServiceException("调度服务调用失败");
         }

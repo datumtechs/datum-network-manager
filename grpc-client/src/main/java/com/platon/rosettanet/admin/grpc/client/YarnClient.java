@@ -35,23 +35,22 @@ public class YarnClient {
 
     /**
      * 调度新增数据节点
-     *
-     * @param scheduleServerHost 调度服务ip
-     * @param scheduleServerPort 调度服务端口号
      * @param dataNode           数据节点实体类
      * @return
      */
-    public FormatSetDataNodeResp setDataNode(String scheduleServerHost, int scheduleServerPort, DataNode dataNode) {
+    public FormatSetDataNodeResp setDataNode(DataNode dataNode) {
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel("localhost", 50051);
+        Channel channel = channelManager.getScheduleServer();
         //2.拼装request
         YarnRpcMessage.SetDataNodeRequest setDataNodeRequest = YarnRpcMessage.SetDataNodeRequest.newBuilder().
                 setInternalIp(dataNode.getInternalIp()).
                 setInternalPort(String.valueOf(dataNode.getInternalPort())).
                 setExternalIp(dataNode.getExternalIp()).
                 setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
+        log.info("调用新增数据节点调度服务,参数:{}",setDataNodeRequest);
         //3.调用rpc,获取response
         YarnRpcMessage.SetDataNodeResponse setDataNodeResponse = YarnServiceGrpc.newBlockingStub(channel).setDataNode(setDataNodeRequest);
+        log.info("调用新增数据节点调度服务,返回结果:{}",setDataNodeResponse);
         //4.处理response
         FormatSetDataNodeResp resp = new FormatSetDataNodeResp();
         resp.setStatus(setDataNodeResponse.getStatus());
@@ -71,15 +70,12 @@ public class YarnClient {
 
     /**
      * 调度修改数据节点
-     *
-     * @param scheduleServerHost 调度服务ip
-     * @param scheduleServerPort 调度服务端口号
      * @param dataNode           数据节点实体类
      * @return
      */
-    public FormatSetDataNodeResp updateDataNode(String scheduleServerHost, int scheduleServerPort, DataNode dataNode) {
+    public FormatSetDataNodeResp updateDataNode(DataNode dataNode) {
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel(scheduleServerHost, scheduleServerPort);
+        Channel channel = channelManager.getScheduleServer();
         //2.拼装request
         YarnRpcMessage.UpdateDataNodeRequest request = YarnRpcMessage.UpdateDataNodeRequest
                 .newBuilder().setId(dataNode.getNodeId()).
@@ -87,8 +83,10 @@ public class YarnClient {
                         setInternalPort(String.valueOf(dataNode.getInternalPort())).
                         setExternalIp(dataNode.getExternalIp()).
                         setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
+        log.info("调用修改数据节点调度服务,参数:{}",request);
         //3.调用rpc,获取response
         YarnRpcMessage.SetDataNodeResponse setDataNodeResponse = YarnServiceGrpc.newBlockingStub(channel).updateDataNode(request);
+        log.info("调用修改数据节点调度服务,相应结果:{}",setDataNodeResponse);
         //4.处理response
         FormatSetDataNodeResp resp = new FormatSetDataNodeResp();
         resp.setStatus(setDataNodeResponse.getStatus());
@@ -107,18 +105,17 @@ public class YarnClient {
 
     /**
      * 调度删除数据节点
-     *
-     * @param scheduleServerHost 调度服务ip
-     * @param scheduleServerPort 调度服务端口号
      * @return
      */
-    public CommonResp deleteDataNode(String scheduleServerHost, int scheduleServerPort, String id) {
+    public CommonResp deleteDataNode(String id) {
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel(scheduleServerHost, scheduleServerPort);
+        Channel channel = channelManager.getScheduleServer();
         //2.拼装request
         CommonMessage.DeleteRegisteredNodeRequest request = CommonMessage.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
+        log.info("调用删除数据节点调度服务,参数:{}",request);
         //3.调用rpc,获取response
         CommonMessage.SimpleResponseCode simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
+        log.info("调用删除数据节点调度服务,响应结果:{}",simpleResponseCode);
         //4.处理response
         CommonResp resp = new CommonResp();
         resp.setMsg(simpleResponseCode.getMsg());
@@ -128,18 +125,17 @@ public class YarnClient {
 
     /**
      * 调度获取数据节点列表
-     *
-     * @param scheduleServerHost 调度服务ip
-     * @param scheduleServerPort 调度服务端口号
      * @return
      */
-    public QueryNodeResp getDataNodeList(String scheduleServerHost, int scheduleServerPort) {
+    public QueryNodeResp getDataNodeList() {
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel(scheduleServerHost, scheduleServerPort);
+        Channel channel = channelManager.getScheduleServer();
         //2.拼装request
         CommonMessage.EmptyGetParams emptyGetParams = CommonMessage.EmptyGetParams.getDefaultInstance();
+        log.info("调用获取数据节点列表调度服务");
         //3.调用rpc,获取response
         YarnRpcMessage.GetRegisteredNodeListResponse dataNodeListResp = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
+        log.info("调用获取数据节点列表调度服务,响应结果:{}",dataNodeListResp);
         //4.处理response
         QueryNodeResp queryNodeResp = new QueryNodeResp();
         queryNodeResp.setMsg(dataNodeListResp.getMsg());
