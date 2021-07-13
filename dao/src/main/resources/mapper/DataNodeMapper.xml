@@ -37,7 +37,7 @@
 
   <select id="getDataNodeIdByName" parameterType="java.lang.String" resultType="java.lang.String">
     select
-    id
+    node_id
     from local_data_node
     where host_Name = #{hostName}
     limit 1
