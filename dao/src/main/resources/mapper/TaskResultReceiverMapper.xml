@@ -49,12 +49,30 @@
       and consumer_identity_id = #{consumerIdentityId,jdbcType=VARCHAR}
       and producer_identity_id = #{producerIdentityId,jdbcType=VARCHAR}
   </delete>
+
+
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.TaskResultReceiver">
     insert into task_result_consumer (task_id, consumer_identity_id, producer_identity_id, 
       rec_update_time)
     values (#{taskId,jdbcType=VARCHAR}, #{consumerIdentityId,jdbcType=VARCHAR}, #{producerIdentityId,jdbcType=VARCHAR}, 
       #{recUpdateTime,jdbcType=TIMESTAMP})
   </insert>
+
+
+
+  <insert id="insertBatch" parameterType="list">
+    replace into task_result_consumer (task_id, consumer_identity_id, producer_identity_id,
+       rec_update_time)
+    values
+    <foreach collection ="list" item="item" separator =",">
+      (#{taskId,jdbcType=VARCHAR}, #{consumerIdentityId,jdbcType=VARCHAR}, #{producerIdentityId,jdbcType=VARCHAR},
+      #{recUpdateTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+
+
+
+
   <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.TaskResultReceiver">
     insert into task_result_consumer
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -104,4 +122,16 @@
       and consumer_identity_id = #{consumerIdentityId,jdbcType=VARCHAR}
       and producer_identity_id = #{producerIdentityId,jdbcType=VARCHAR}
   </update>
+
+
+  <update id="batchUpdate" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update task_result_consumer
+      set rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      where task_id = #{taskId,jdbcType=VARCHAR}
+      and consumer_identity_id = #{consumerIdentityId,jdbcType=VARCHAR}
+      and producer_identity_id = #{producerIdentityId,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+
 </mapper>

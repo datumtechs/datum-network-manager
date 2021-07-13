@@ -2,7 +2,6 @@ package com.platon.rosettanet.admin.service;
 
 import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerDetails;
-import com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 
 import java.util.List;
@@ -35,25 +34,30 @@ public interface LocalPowerNodeService {
     int deletePowerNodeByNodeId(String powerNodeId);
 
     /**
-     * 根据nodeId查询计算节点详情
+     * 查询计算节点详情
      * @param powerNodeId
      * @return
      */
-    LocalPowerNode selectPowerDetailByNodeId(String powerNodeId);
+    LocalPowerNode queryPowerNodeDetails(String powerNodeId);
 
     /**
-     * 根据组织机构id查询计算节点服务列表
+     * 查询计算节点服务列表
      * @param identityId
      * @return
      */
     PageInfo queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize);
 
     /**
-     * 启用/停用算力
+     * 启用算力
      * @param powerNodeId
-     * @param status
      */
-    void switchPower(String powerNodeId, String status);
+    void publishPower(String powerNodeId);
+
+    /**
+     * 停用算力
+     * @param powerNodeId
+     */
+    void revokePower(String powerNodeId);
 
     /**
      * 查询计算节点使用资源

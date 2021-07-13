@@ -91,27 +91,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskEvent> listTaskEvent(String taskId) {
-
-        List<TaskEvent> taskEventList = new ArrayList<>();
-        List<TaskEvent> tbTaskEventList = taskEventMapper.listTbTaskEventByTaskId(taskId);
-        for (int i = 0; i < tbTaskEventList.size(); i++) {
-            TaskEvent tbTaskEvent = tbTaskEventList.get(i);
-            TaskEvent taskEvent = new TaskEvent();
-            taskEvent.setId(tbTaskEvent.getId());
-            taskEvent.setType(tbTaskEvent.getType());
-            taskEvent.setTaskId(tbTaskEvent.getTaskId());
-            taskEvent.setContent(tbTaskEvent.getContent());
-            taskEvent.setCreateAt(tbTaskEvent.getCreateAt());
-
-            //事件产生方身份信息
-            Owner owner = new Owner();
-            owner.setNodeIdentityId(taskEvent.getOwnerIdentity());
-            owner.setNodeName(taskEvent.getOwnerName());
-            taskEvent.setOwner(owner);
-
-            taskEventList.add(taskEvent);
-        }
-
-        return taskEventList;
+        return taskEventMapper.listTaskEventByTaskId(taskId);
     }
 }

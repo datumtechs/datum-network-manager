@@ -39,44 +39,46 @@
     select 
         <include refid="Base_Column_List" />
     from
-        local_power_details
+        local_power_join_task
     where
         power_node_id = #{powerNodeId, jdbcType=VARCHAR}
   </select>
 
   <!-- 插入计算节点数据 -->
-  <insert id="insertPowerJoinTask" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask">
-    insert into local_power_details
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">id,</if>
-      <if test="powerNodeId != null">power_node_id,</if>
-      <if test="taskId != null">task_id,</if>
-      <if test="taskName != null">task_name,</if>
-      <if test="ownerIdentityId != null">owner_identity_id,</if>
-      <if test="taskStartTime != null">task_start_time,</if>
-      <if test="resultSide != null">result_side,</if>
-      <if test="coordinateSide != null">coordinate_side,</if>
-      <if test="usedMemory != null">used_memory,</if>
-      <if test="usedCore != null">used_core,</if>
-      <if test="usedBandwidth != null">used_bandwidth,</if>
-      <if test="createTime != null">create_time,</if>
-      <if test="updateTime != null">update_time,</if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null"> #{id, jdbcType=INTEGER},</if>
-      <if test="powerNodeId != null">#{powerNodeId, jdbcType=VARCHAR},</if>
-      <if test="taskId != null">#{taskId, jdbcType=VARCHAR},</if>
-      <if test="taskName != null">#{taskName, jdbcType=VARCHAR},</if>
-      <if test="ownerIdentityId != null">#{ownerIdentityId, jdbcType=VARCHAR},</if>
-      <if test="taskStartTime != null">#{taskStartTime, jdbcType=TIMESTAMP},</if>
-      <if test="resultSide != null">#{resultSide, jdbcType=VARCHAR},</if>
-      <if test="coordinateSide != null">#{coordinateSide, jdbcType=VARCHAR},</if>
-      <if test="usedMemory != null">#{usedMemory, jdbcType=BIGINT},</if>
-      <if test="usedCore != null">#{usedCore, jdbcType=INTEGER},</if>
-      <if test="usedBandwidth != null">#{usedBandwidth, jdbcType=BIGINT},</if>
-      <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
-      <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
-    </trim>
+  <insert id="batchInsertPowerTask">
+    <foreach collection="list" item="localPowerTask" separator=";">
+      insert into local_power_join_task
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="id != null">id,</if>
+        <if test="powerNodeId != null">power_node_id,</if>
+        <if test="taskId != null">task_id,</if>
+        <if test="taskName != null">task_name,</if>
+        <if test="ownerIdentityId != null">owner_identity_id,</if>
+        <if test="taskStartTime != null">task_start_time,</if>
+        <if test="resultSide != null">result_side,</if>
+        <if test="coordinateSide != null">coordinate_side,</if>
+        <if test="usedMemory != null">used_memory,</if>
+        <if test="usedCore != null">used_core,</if>
+        <if test="usedBandwidth != null">used_bandwidth,</if>
+        <if test="createTime != null">create_time,</if>
+        <if test="updateTime != null">update_time,</if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null"> #{id, jdbcType=INTEGER},</if>
+        <if test="powerNodeId != null">#{powerNodeId, jdbcType=VARCHAR},</if>
+        <if test="taskId != null">#{taskId, jdbcType=VARCHAR},</if>
+        <if test="taskName != null">#{taskName, jdbcType=VARCHAR},</if>
+        <if test="ownerIdentityId != null">#{ownerIdentityId, jdbcType=VARCHAR},</if>
+        <if test="taskStartTime != null">#{taskStartTime, jdbcType=TIMESTAMP},</if>
+        <if test="resultSide != null">#{resultSide, jdbcType=VARCHAR},</if>
+        <if test="coordinateSide != null">#{coordinateSide, jdbcType=VARCHAR},</if>
+        <if test="usedMemory != null">#{usedMemory, jdbcType=BIGINT},</if>
+        <if test="usedCore != null">#{usedCore, jdbcType=INTEGER},</if>
+        <if test="usedBandwidth != null">#{usedBandwidth, jdbcType=BIGINT},</if>
+        <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
+        <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
+      </trim>
+    </foreach>
   </insert>
 
 </mapper>

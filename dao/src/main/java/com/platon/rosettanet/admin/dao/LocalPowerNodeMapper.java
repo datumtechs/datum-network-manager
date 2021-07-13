@@ -16,17 +16,17 @@ public interface LocalPowerNodeMapper {
 
     /**
      * 插入计算节点数据
-     * @param localComputeNode
+     * @param localPowerNode
      * @return
      */
-    int insertPowerNode(LocalPowerNode localComputeNode);
+    int insertPowerNode(LocalPowerNode localPowerNode);
 
     /**
-     * 根据节点id修改计算节点数据
-     * @param localComputeNode
+     * 根据节点id修改计算节点
+     * @param localPowerNode
      * @return
      */
-    int updatePowerNodeByNodeId(LocalPowerNode localComputeNode);
+    int updatePowerNodeByNodeId(LocalPowerNode localPowerNode);
 
     /**
      * 根据id修改计算节点数据
@@ -36,18 +36,18 @@ public interface LocalPowerNodeMapper {
     int updatePowerNodeById(LocalPowerNode localComputeNode);
 
     /**
-     * 根据id删除计算节点
+     * 根据计算id删除计算节点
      * @param powerNodeId
      * @return
      */
     int deletePowerNode(String powerNodeId);
 
     /**
-     * 根据powerNodeId查询计算节点详情
+     * 查询计算节点详情
      * @param powerNodeId
      * @return
      */
-    LocalPowerNode selectPowerDetailByNodeId(String powerNodeId);
+    LocalPowerNode queryPowerNodeDetails(String powerNodeId);
 
     /**
      * 查询计算节点服务列表

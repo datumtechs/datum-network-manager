@@ -19,4 +19,12 @@ public interface TaskDataReceiverMapper {
     int updateByPrimaryKey(TaskDataReceiver record);
 
     List<TaskDataReceiver> selectTaskDataWithOrgByTaskId(@Param("taskId") String taskId);
+
+    int batchUpdate(List<TaskDataReceiver> dataReceiverList);
+
+    int insertBatch(List<TaskDataReceiver> dataReceiverList);
+
+
+
+
 }
