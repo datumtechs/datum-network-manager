@@ -1,9 +1,15 @@
 package com.platon.rosettanet.admin.dto.resp;
 
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
+import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
+import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author liushuyu
@@ -27,6 +33,8 @@ public class LocalDataPageResp {
     private String remarks;
     //元数据ID,hash
     private String metaDataId;
+    //元数据摘要
+    private List<String> metaDataColumnList = new ArrayList<>();
 
 
     public static LocalDataPageResp from(LocalDataFile localDataFile){
@@ -36,6 +44,14 @@ public class LocalDataPageResp {
         localDataPageResp.setStatus(localDataFile.getStatus());
         localDataPageResp.setRemarks(localDataFile.getRemarks());
         localDataPageResp.setMetaDataId(localDataFile.getMetaDataId());
+
+        if(localDataFile instanceof LocalDataFileDetail){
+            LocalDataFileDetail detail = (LocalDataFileDetail)localDataFile;
+            List<String> metaDataColumnList = detail.getLocalMetaDataColumnList().stream()
+                    .map(LocalMetaDataColumn::getColumnName)
+                    .collect(Collectors.toList());
+            localDataPageResp.setMetaDataColumnList(metaDataColumnList);
+        }
         return localDataPageResp;
     }
 }

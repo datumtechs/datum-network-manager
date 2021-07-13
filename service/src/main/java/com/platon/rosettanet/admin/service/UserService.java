@@ -14,4 +14,6 @@ public interface UserService {
      * @return 申请成功后的组织ID
      */
     String applyOrgName(String orgName);
+
+    String login(String userName, String passwd);
 }

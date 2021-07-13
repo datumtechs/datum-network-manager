@@ -1,9 +1,7 @@
 package com.platon.rosettanet.admin.service.task;
 
 import com.platon.rosettanet.admin.dao.DataNodeMapper;
-import com.platon.rosettanet.admin.dao.LocalOrgMapper;
 import com.platon.rosettanet.admin.dao.entity.DataNode;
-import com.platon.rosettanet.admin.dao.entity.LocalOrg;
 import com.platon.rosettanet.admin.grpc.client.YarnClient;
 import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
 import com.platon.rosettanet.admin.grpc.entity.QueryNodeResp;
@@ -29,19 +27,12 @@ public class DataNodeRefreshTask {
     private DataNodeMapper dataNodeMapper;
     @Resource
     private YarnClient yarnClient;
-    @Resource
-    private LocalOrgMapper localOrgMapper;
 
     @Scheduled(fixedDelay = 2000)
     public void task() {
+        log.info("执行获取数据节点列表定时任务");
         long begin = System.currentTimeMillis();
-        LocalOrg carrier = localOrgMapper.selectAvailableCarrier();
-        if (carrier == null) {
-            log.info("获取数据节点列表,无可用的调度服务");
-            return;
-        }
-        log.info("获取数据节点列表,调度服务ip:" + carrier.getCarrierIP() + ",端口号：" + carrier.getCarrierPort());
-        QueryNodeResp resp = yarnClient.getDataNodeList(carrier.getCarrierIP(), carrier.getCarrierPort());
+        QueryNodeResp resp = yarnClient.getDataNodeList();
         if (GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
             log.info("获取数据节点列表,调度服务调用失败");
             return;

@@ -3,10 +3,10 @@ package com.platon.rosettanet.admin.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.rosettanet.admin.dao.GlobalDataFileMapper;
-import com.platon.rosettanet.admin.dao.GlobalDataFileMapper;
 import com.platon.rosettanet.admin.dao.GlobalMetaDataColumnMapper;
-import com.platon.rosettanet.admin.dao.LocalMetaDataColumnMapper;
-import com.platon.rosettanet.admin.dao.entity.*;
+import com.platon.rosettanet.admin.dao.entity.GlobalDataFile;
+import com.platon.rosettanet.admin.dao.entity.GlobalDataFileDetail;
+import com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn;
 import com.platon.rosettanet.admin.service.GlobalDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author liushuyu
@@ -37,6 +38,18 @@ public class GlobalDataServiceImpl implements GlobalDataService {
     public Page<GlobalDataFile> listDataFile(int pageNum, int pageSize, String keyword) {
         Page<GlobalDataFile> globalDataFilePage = PageHelper.startPage(pageNum, pageSize);
         globalDataFileMapper.listDataFile(keyword);
+        List<GlobalDataFileDetail> detailList = globalDataFilePage.stream()
+                .map(dataFile -> {
+                    List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByMetaDataId(dataFile.getMetaDataId());
+                    GlobalDataFileDetail detail = new GlobalDataFileDetail();
+                    BeanUtils.copyProperties(dataFile, detail);
+                    detail.setMetaDataColumnList(columnList);
+                    return detail;
+                })
+                .collect(Collectors.toList());
+        globalDataFilePage.clear();
+        //重新赋值
+        globalDataFilePage.addAll(detailList);
         return globalDataFilePage;
     }
 

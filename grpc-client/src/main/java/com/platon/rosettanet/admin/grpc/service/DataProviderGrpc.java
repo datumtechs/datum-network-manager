@@ -231,6 +231,37 @@ public final class DataProviderGrpc {
     return getSendSharesDataMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq,
+      com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply> getHandleTaskReadyGoMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "HandleTaskReadyGo",
+      requestType = com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq,
+      com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply> getHandleTaskReadyGoMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq, com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply> getHandleTaskReadyGoMethod;
+    if ((getHandleTaskReadyGoMethod = DataProviderGrpc.getHandleTaskReadyGoMethod) == null) {
+      synchronized (DataProviderGrpc.class) {
+        if ((getHandleTaskReadyGoMethod = DataProviderGrpc.getHandleTaskReadyGoMethod) == null) {
+          DataProviderGrpc.getHandleTaskReadyGoMethod = getHandleTaskReadyGoMethod =
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq, com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "HandleTaskReadyGo"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply.getDefaultInstance()))
+              .setSchemaDescriptor(new DataProviderMethodDescriptorSupplier("HandleTaskReadyGo"))
+              .build();
+        }
+      }
+    }
+    return getHandleTaskReadyGoMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -328,6 +359,13 @@ public final class DataProviderGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSendSharesDataMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void handleTaskReadyGo(com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getHandleTaskReadyGoMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -379,6 +417,13 @@ public final class DataProviderGrpc {
                 com.platon.rosettanet.admin.grpc.service.DataProviderRpcMessage.SendSharesDataRequest,
                 com.platon.rosettanet.admin.grpc.service.DataProviderRpcMessage.SendSharesDataReply>(
                   this, METHODID_SEND_SHARES_DATA)))
+          .addMethod(
+            getHandleTaskReadyGoMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq,
+                com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply>(
+                  this, METHODID_HANDLE_TASK_READY_GO)))
           .build();
     }
   }
@@ -452,6 +497,14 @@ public final class DataProviderGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getSendSharesDataMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void handleTaskReadyGo(com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getHandleTaskReadyGoMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -503,6 +556,13 @@ public final class DataProviderGrpc {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getSendSharesDataMethod(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply handleTaskReadyGo(com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getHandleTaskReadyGoMethod(), getCallOptions(), request);
+    }
   }
 
   /**
@@ -550,6 +610,14 @@ public final class DataProviderGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getSendSharesDataMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply> handleTaskReadyGo(
+        com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getHandleTaskReadyGoMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_GET_STATUS = 0;
@@ -557,8 +625,9 @@ public final class DataProviderGrpc {
   private static final int METHODID_DOWNLOAD_DATA = 2;
   private static final int METHODID_DELETE_DATA = 3;
   private static final int METHODID_SEND_SHARES_DATA = 4;
-  private static final int METHODID_UPLOAD_DATA = 5;
-  private static final int METHODID_BATCH_UPLOAD = 6;
+  private static final int METHODID_HANDLE_TASK_READY_GO = 5;
+  private static final int METHODID_UPLOAD_DATA = 6;
+  private static final int METHODID_BATCH_UPLOAD = 7;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -596,6 +665,10 @@ public final class DataProviderGrpc {
         case METHODID_SEND_SHARES_DATA:
           serviceImpl.sendSharesData((com.platon.rosettanet.admin.grpc.service.DataProviderRpcMessage.SendSharesDataRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.DataProviderRpcMessage.SendSharesDataReply>) responseObserver);
+          break;
+        case METHODID_HANDLE_TASK_READY_GO:
+          serviceImpl.handleTaskReadyGo((com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReply>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -671,6 +744,7 @@ public final class DataProviderGrpc {
               .addMethod(getDownloadDataMethod())
               .addMethod(getDeleteDataMethod())
               .addMethod(getSendSharesDataMethod())
+              .addMethod(getHandleTaskReadyGoMethod())
               .build();
         }
       }
