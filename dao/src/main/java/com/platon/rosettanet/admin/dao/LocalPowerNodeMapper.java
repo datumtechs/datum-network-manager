@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -49,11 +50,12 @@ public interface LocalPowerNodeMapper {
     LocalPowerNode selectPowerDetailByNodeId(String powerNodeId);
 
     /**
-     * 根据组织机构id查询计算节点详情
+     * 查询计算节点服务列表
      * @param identityId
+     * @param keyword
      * @return
      */
-    List<LocalPowerNode> selectPowerListByIdentityId(String identityId);
+    List<LocalPowerNode> queryPowerNodeList(@Param(value = "identityId")String identityId, @Param(value = "keyword")String keyword);
 
 
 }

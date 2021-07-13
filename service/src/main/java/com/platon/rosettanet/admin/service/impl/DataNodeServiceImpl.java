@@ -85,8 +85,8 @@ public class DataNodeServiceImpl implements DataNodeService {
      */
     @Override
     public boolean checkDataNodeName(DataNode dataNode) {
-        String id = dataNodeMapper.getDataNodeIdByName(dataNode.getHostName());
-        if (!StrUtil.isBlank(id) && !id.equals(dataNode.getId())) {
+        String dbNodeId = dataNodeMapper.getDataNodeIdByName(dataNode.getHostName());
+        if (!StrUtil.isBlank(dbNodeId) && !dbNodeId.equals(dataNode.getNodeId())) {
             return false;
         }
         return true;

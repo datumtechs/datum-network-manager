@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.LocalPowerJoinTaskMapper">
+
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
+    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="owner_identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
+    <result column="task_start_time" jdbcType="TIMESTAMP" property="taskStartTime" />
+    <result column="result_side" jdbcType="VARCHAR" property="resultSide" />
+    <result column="coordinate_side" jdbcType="VARCHAR" property="coordinateSide" />
+    <result column="used_memory" jdbcType="BIGINT" property="usedMemory" />
+    <result column="used_core" jdbcType="INTEGER" property="usedCore" />
+    <result column="used_bandwidth" jdbcType="BIGINT" property="usedBandwidth" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id,
+    power_node_id,
+    task_id,
+    task_name,
+    owner_identity_id,
+    task_start_time,
+    result_side,
+    coordinate_side,
+    used_memory,
+    used_core,
+    used_bandwidth,
+    create_time,
+    update_time
+  </sql>
+
+  <!-- 通过计算节点参数任务详情 -->
+  <select id="queryPowerJoinTaskList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+        <include refid="Base_Column_List" />
+    from
+        local_power_details
+    where
+        power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+  </select>
+
+  <!-- 插入计算节点数据 -->
+  <insert id="insertPowerJoinTask" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask">
+    insert into local_power_details
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">id,</if>
+      <if test="powerNodeId != null">power_node_id,</if>
+      <if test="taskId != null">task_id,</if>
+      <if test="taskName != null">task_name,</if>
+      <if test="ownerIdentityId != null">owner_identity_id,</if>
+      <if test="taskStartTime != null">task_start_time,</if>
+      <if test="resultSide != null">result_side,</if>
+      <if test="coordinateSide != null">coordinate_side,</if>
+      <if test="usedMemory != null">used_memory,</if>
+      <if test="usedCore != null">used_core,</if>
+      <if test="usedBandwidth != null">used_bandwidth,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null"> #{id, jdbcType=INTEGER},</if>
+      <if test="powerNodeId != null">#{powerNodeId, jdbcType=VARCHAR},</if>
+      <if test="taskId != null">#{taskId, jdbcType=VARCHAR},</if>
+      <if test="taskName != null">#{taskName, jdbcType=VARCHAR},</if>
+      <if test="ownerIdentityId != null">#{ownerIdentityId, jdbcType=VARCHAR},</if>
+      <if test="taskStartTime != null">#{taskStartTime, jdbcType=TIMESTAMP},</if>
+      <if test="resultSide != null">#{resultSide, jdbcType=VARCHAR},</if>
+      <if test="coordinateSide != null">#{coordinateSide, jdbcType=VARCHAR},</if>
+      <if test="usedMemory != null">#{usedMemory, jdbcType=BIGINT},</if>
+      <if test="usedCore != null">#{usedCore, jdbcType=INTEGER},</if>
+      <if test="usedBandwidth != null">#{usedBandwidth, jdbcType=BIGINT},</if>
+      <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
+      <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
+    </trim>
+  </insert>
+
+</mapper>

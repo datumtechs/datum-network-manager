@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.LocalPowerDetailsMapper">
+
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalPowerDetails">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
+    <result column="refresh_status" jdbcType="VARCHAR" property="refreshStatus" />
+    <result column="used_memory" jdbcType="BIGINT" property="usedMemory" />
+    <result column="used_core" jdbcType="INTEGER" property="usedCore" />
+    <result column="used_bandwidth" jdbcType="BIGINT" property="usedBandwidth" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id,
+    power_node_id,
+    refresh_status,
+    used_memory,
+    used_core,
+    used_bandwidth,
+    create_time,
+    update_time
+  </sql>
+
+  <!-- 通过nodeId查询计算节点 -->
+  <select id="queryPowerDetails" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+        <include refid="Base_Column_List" />
+    from
+        local_power_details
+    where
+        power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+    order by create_time desc;
+  </select>
+
+  <!-- 插入计算节点数据 -->
+  <insert id="insertPowerDetails" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerDetails">
+    insert into local_power_details
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">id,</if>
+      <if test="powerNodeId != null">power_node_id,</if>
+      <if test="refreshStatus != null">refresh_status,</if>
+      <if test="usedMemory != null">used_memory,</if>
+      <if test="usedCore != null">used_core,</if>
+      <if test="usedBandwidth != null">used_bandwidth,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null"> #{id, jdbcType=INTEGER},</if>
+      <if test="powerNodeId != null">#{powerNodeId, jdbcType=VARCHAR},</if>
+      <if test="refreshStatus != null">#{refreshStatus, jdbcType=VARCHAR},</if>
+      <if test="usedMemory != null">#{usedMemory, jdbcType=BIGINT},</if>
+      <if test="usedCore != null">#{usedCore, jdbcType=INTEGER},</if>
+      <if test="usedBandwidth != null">#{usedBandwidth, jdbcType=BIGINT},</if>
+      <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
+      <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
+    </trim>
+  </insert>
+
+</mapper>

@@ -1,12 +1,10 @@
 package com.platon.rosettanet.admin.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dto.JsonResponse;
-import com.platon.rosettanet.admin.dto.req.PowerAddReq;
-import com.platon.rosettanet.admin.dto.req.PowerDeleteReq;
-import com.platon.rosettanet.admin.dto.req.PowerListSelectReq;
-import com.platon.rosettanet.admin.dto.req.PowerUpdateReq;
+import com.platon.rosettanet.admin.dto.req.*;
 import com.platon.rosettanet.admin.service.LocalPowerNodeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,41 +54,63 @@ public class LocalPowerNodeController {
 
     /**
      * 删除计算节点
-     * @param powerAddReq
+     * @param powerDeleteReq
      * @return
      */
     @PostMapping("/deletePowerNode")
-    public JsonResponse deletePowerNode(PowerDeleteReq powerAddReq) {
+    public JsonResponse deletePowerNode(PowerDeleteReq powerDeleteReq) {
         // 删除计算节点
-        int count = localPowerNodeService.deletePowerNodeByNodeId(powerAddReq.getPowerNodeId());
+        int count = localPowerNodeService.deletePowerNodeByNodeId(powerDeleteReq.getPowerNodeId());
         if (count == 0) {
-            JsonResponse.fail("删除失败");
+            JsonResponse.fail("删除失败！");
         }
         return JsonResponse.success();
     }
 
     /**
      * 查询计算节点服务列表
-     * @param powerListSelectReq
+     * @param powerReq
      * @return
      */
-    @PostMapping("/listNode")
-    public JsonResponse selectPowerListByNodeId(PowerListSelectReq powerListSelectReq) {
-        // 查询计算节点详情
-        localPowerNodeService.selectPowerDetailByNodeId(powerListSelectReq.getIdentityId());
+    @PostMapping("/queryPowerNodeList")
+    public JsonResponse queryPowerNodeList(PowerQueryListReq powerReq) {
+        PageInfo PageInfo = localPowerNodeService.queryPowerNodeList(powerReq.getIdentityId(),
+                powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
+        return JsonResponse.success(PageInfo);
+    }
+
+    /**
+     * 启用/停用算力
+     * @param powerSwitchReq
+     * @return
+     */
+    @PostMapping("/switchPower")
+    public JsonResponse switchPower(PowerSwitchReq powerSwitchReq) {
+        localPowerNodeService.switchPower(powerSwitchReq.getPowerNodeId(), powerSwitchReq.getStatus());
         return JsonResponse.success();
     }
 
-//    /**
-//     * 根据节点id查询节点详情
-//     * @param selectPowerReq
-//     * @return
-//     */
-//    @PostMapping("/detailPowerNode")
-//    public JsonResponse selectPowerDetailByNodeId(PowerSelectReq selectPowerReq) {
-//        // 查询计算节点详情
-//        localPowerNodeService.selectPowerDetailByNodeId(selectPowerReq.getPowerNodeId());
-//        return JsonResponse.success();
-//    }
+    /**
+     * 查询计算节点使用资源
+     * @param powerNodeId
+     * @return
+     */
+    @PostMapping("/queryPowerNodeUseResource")
+    public JsonResponse queryPowerNodeUseResource(String powerNodeId) {
+        localPowerNodeService.queryPowerNodeUseResource(powerNodeId);
+        return JsonResponse.success();
+    }
+
+    /**
+     * 查询计算节点参数任务列表
+     * @param powerJoinTaskReq
+     * @return
+     */
+    @PostMapping("/queryPowerJoinTaskList")
+    public JsonResponse queryPowerJoinTaskList(PowerJoinTaskReq powerJoinTaskReq) {
+        PageInfo PageInfo = localPowerNodeService.queryPowerJoinTaskList(powerJoinTaskReq.getPowerNodeId(),
+                powerJoinTaskReq.getPageNumber(), powerJoinTaskReq.getPageSize());
+        return JsonResponse.success(PageInfo);
+    }
 
 }

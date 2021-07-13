@@ -13,7 +13,7 @@ public class PowerUpdateReq {
 
     /** 计算节点ID */
     @NotNull(message = "计算节点ID不能为空")
-    private String powerNdeId;
+    private String powerNodeId;
 
     /** 计算节点名称 */
     @NotNull(message = "计算节点名称不能为空")
