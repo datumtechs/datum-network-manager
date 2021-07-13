@@ -20,4 +20,8 @@ public interface TaskPowerProviderMapper {
 
     List<TaskPowerProvider>  selectTaskPowerWithOrgByTaskId(@Param("taskId") String taskId);
 
+    int batchUpdate(List<TaskPowerProvider> powerProviderList);
+
+    int insertBatch(List<TaskPowerProvider> powerProviderList);
+
 }

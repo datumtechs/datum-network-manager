@@ -21,4 +21,8 @@ public interface TaskResultReceiverMapper {
 
     int updateByPrimaryKey(TaskResultReceiver record);
 
+    int batchUpdate(List<TaskResultReceiver> resultReceiverList);
+
+    int insertBatch(List<TaskResultReceiver> resultReceiverList);
+
 }

@@ -42,12 +42,13 @@ public class TaskController {
     }
 
 
+    //单个任务事件列表
     @GetMapping("/taskEventList")
     public JsonResponse taskEventList(@RequestParam(required = true) String taskId){
 
         List<TaskEvent> taskEventList =  taskService.listTaskEvent(taskId);
-        Task tbTask = taskService.selectTaskByTaskId(taskId);
-        return JsonResponse.success(null, taskEventList);
+        Task task = taskService.selectTaskByTaskId(taskId);
+        return JsonResponse.success(taskEventList);
     }
 
 
