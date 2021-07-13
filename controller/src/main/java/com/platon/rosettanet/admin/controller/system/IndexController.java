@@ -1,14 +1,10 @@
 package com.platon.rosettanet.admin.controller.system;
 
-import com.github.pagehelper.Page;
-import com.platon.rosettanet.admin.dto.CommonPageReq;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.resp.IndexNodeListResp;
 import com.platon.rosettanet.admin.dto.resp.IndexOverviewResp;
 import com.platon.rosettanet.admin.service.IndexService;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,14 +25,22 @@ public class IndexController {
     private IndexService indexService;
 
 
-    @PostMapping("overview")
+    /**
+     * 查看当前系统的概览信息,即首页信息，该接口大部分内容为统计信息
+     * @return
+     */
+    @GetMapping("overview")
     public JsonResponse<IndexOverviewResp> overview(){
         return JsonResponse.success();
     }
 
-    /*@PostMapping("nodeList.json")
-    public JsonResponse<IndexNodeListResp> nodeList(@Validated @RequestBody CommonPageReq req){
-        Page<TbPowerNode> nodePage = indexService.nodeList(req.getPageNumber(), req.getPageSize());
-        return JsonResponse.page(nodePage);
-    }*/
+
+    /**
+     * 即首页信息计算节点列表
+     * @return
+     */
+    @GetMapping("nodeList.json")
+    public JsonResponse<IndexNodeListResp> nodeList(){
+        return JsonResponse.success();
+    }
 }

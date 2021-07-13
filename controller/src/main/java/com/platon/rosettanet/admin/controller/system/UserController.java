@@ -28,6 +28,12 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    /**
+     * 登陆接口，用于登陆系统，获取会话
+     * @param request
+     * @param req
+     * @return
+     */
     @PostMapping("login")
     public JsonResponse<String> login(HttpServletRequest request,@Validated @RequestBody LoginReq req){
         HttpSession session = request.getSession(true);
@@ -59,6 +65,11 @@ public class UserController {
         return true;
     }
 
+    /**
+     * 退出登录状态
+     * @param request
+     * @return
+     */
     @PostMapping("logout")
     public JsonResponse logout(HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -69,7 +80,7 @@ public class UserController {
     }
 
     /**
-     * 申请身份标识
+     * 申请身份标识，由系统生成后返回
      * @param req
      * @return
      */
@@ -82,6 +93,11 @@ public class UserController {
         return JsonResponse.success(orgId);
     }
 
+    /**
+     * 获取验证码
+     * @param request
+     * @return
+     */
     @GetMapping("verificationCode")
     public JsonResponse<String> getVerificationCode(HttpServletRequest request){
         int code = RandomUtil.randomInt(1000, 9999);
