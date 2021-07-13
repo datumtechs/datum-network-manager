@@ -43,7 +43,7 @@ public class GlobalDataRefreshTask {
         stopWatch.start("1.获取全网数据，包括本组织数据");
         List<GlobalDataFileDetail> detailList = metaDataClient.getMetaDataDetailList();
         stopWatch.stop();
-        //### 2.将数据入库
+        //### 2.将数据归类
         stopWatch.start("2.将数据归类");
         //2.1先获取所有已存在数据库中的metaDataId
         List<String> metaDataIdList = globalDataFileMapper.selectAllMetaDataId();
