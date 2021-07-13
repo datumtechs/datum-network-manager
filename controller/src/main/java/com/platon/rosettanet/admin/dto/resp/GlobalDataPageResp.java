@@ -1,9 +1,15 @@
 package com.platon.rosettanet.admin.dto.resp;
 
 import com.platon.rosettanet.admin.dao.entity.GlobalDataFile;
+import com.platon.rosettanet.admin.dao.entity.GlobalDataFileDetail;
+import com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author liushuyu
@@ -27,14 +33,24 @@ public class GlobalDataPageResp {
      * 组织身份ID
      */
     private String identityId;
+    //元数据摘要
+    private List<String> metaDataColumnList = new ArrayList<>();
 
 
     public static GlobalDataPageResp from(GlobalDataFile globalDataFile){
-        GlobalDataPageResp localDataPageResp = new GlobalDataPageResp();
-        localDataPageResp.setFileName(globalDataFile.getResourceName());
-        localDataPageResp.setRemarks(globalDataFile.getRemarks());
-        localDataPageResp.setMetaDataId(globalDataFile.getMetaDataId());
-        localDataPageResp.setIdentityId(globalDataFile.getIdentityId());
-        return localDataPageResp;
+        GlobalDataPageResp dataPageResp = new GlobalDataPageResp();
+        dataPageResp.setFileName(globalDataFile.getResourceName());
+        dataPageResp.setRemarks(globalDataFile.getRemarks());
+        dataPageResp.setMetaDataId(globalDataFile.getMetaDataId());
+        dataPageResp.setIdentityId(globalDataFile.getIdentityId());
+
+        if(globalDataFile instanceof GlobalDataFileDetail){
+            GlobalDataFileDetail detail = (GlobalDataFileDetail)globalDataFile;
+            List<String> metaDataColumnList = detail.getMetaDataColumnList().stream()
+                    .map(GlobalMetaDataColumn::getColumnName)
+                    .collect(Collectors.toList());
+            dataPageResp.setMetaDataColumnList(metaDataColumnList);
+        }
+        return dataPageResp;
     }
 }

@@ -7,6 +7,7 @@ import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.common.util.ExportFileUtil;
 import com.platon.rosettanet.admin.common.util.IDUtil;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static com.platon.rosettanet.admin.common.util.IDUtil.METADATA_ID_PREFIX;
 
@@ -63,6 +65,18 @@ public class LocalDataServiceImpl implements LocalDataService {
     public Page<LocalDataFile> listDataFile(int pageNo, int pageSize,String keyword) {
         Page<LocalDataFile> localDataFilePage = PageHelper.startPage(pageNo, pageSize);
         localDataFileMapper.listDataFile(keyword);
+        List<LocalDataFileDetail> detailList = localDataFilePage.stream()
+                .map(localDataFile -> {
+                    List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByMetaDataId(localDataFile.getMetaDataId());
+                    LocalDataFileDetail detail = new LocalDataFileDetail();
+                    BeanUtils.copyProperties(localDataFile, detail);
+                    detail.setLocalMetaDataColumnList(columnList);
+                    return detail;
+                })
+                .collect(Collectors.toList());
+        localDataFilePage.clear();
+        //重新赋值
+        localDataFilePage.addAll(detailList);
         return localDataFilePage;
     }
 
