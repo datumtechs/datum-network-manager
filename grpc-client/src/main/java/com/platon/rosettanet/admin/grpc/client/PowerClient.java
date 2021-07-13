@@ -172,6 +172,7 @@ public class PowerClient {
             // 算力拥有者信息
             CommonMessage.OrganizationIdentityInfo owner = powerResponse.getOwner();
             String identityId = owner.getIdentityId();
+            String orgName = owner.getName();
 //            //  总算力详情
 //            message PowerTotalDetail {
 //                ResourceUsedDetailShow information        = 1;                 // 算力实况
@@ -192,6 +193,7 @@ public class PowerClient {
             CommonMessage.ResourceUsedDetailShow information = powerDetail.getInformation();// 算力实况
             GlobalPower globalPower = new GlobalPower();
             globalPower.setIdentityId(identityId);
+            globalPower.setOrgName(orgName);
             globalPower.setTotalMemory(information.getTotalMem());
             globalPower.setUsedMemory(information.getUsedMem());
             globalPower.setTotalCore((int)information.getTotalProcessor());

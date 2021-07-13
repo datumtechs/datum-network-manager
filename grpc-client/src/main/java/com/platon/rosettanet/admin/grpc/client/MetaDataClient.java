@@ -153,7 +153,9 @@ public class MetaDataClient {
                     //元数据的拥有者
                     CommonMessage.OrganizationIdentityInfo owner = metaData.getOwner();
                     String identityId = owner.getIdentityId();
+                    String orgName = owner.getName();
                     detail.setIdentityId(identityId);
+                    detail.setOrgName(orgName);
                     //元文件详情主体
                     MetaDataRpcMessage.MetaDataDetailShow information = metaData.getInformation();
                     //            string meta_data_id = 1;           // 元数据Id
@@ -194,7 +196,6 @@ public class MetaDataClient {
                         metaDataColumn.setRemarks(columnDetail.getCcomment());
                         detail.getMetaDataColumnList().add(metaDataColumn);
                     });
-
                     return detail;
                 })
                 .collect(Collectors.toList());
