@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.platon.rosettanet.admin.constant.ControllerConstants;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.LoginReq;
-import com.platon.rosettanet.admin.dto.req.UserApplyOrgNameReq;
+import com.platon.rosettanet.admin.dto.req.UserApplyOrgIdentityReq;
 import com.platon.rosettanet.admin.service.UserService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -68,9 +68,14 @@ public class UserController {
         return JsonResponse.success();
     }
 
-    @PostMapping("applyOrgName")
-    public JsonResponse<String> applyOrgName(@RequestBody UserApplyOrgNameReq req){
-        String orgId = userService.applyOrgName(req.getOrgName());
+    /**
+     * 申请身份标识
+     * @param req
+     * @return
+     */
+    @PostMapping("applyOrgIdentity")
+    public JsonResponse<String> applyOrgIdentity(@RequestBody @Validated UserApplyOrgIdentityReq req){
+        String orgId = userService.applyOrgIdentity(req.getOrgName());
         if(StrUtil.isBlank(orgId)){
             return JsonResponse.fail("申请身份标识失败");
         }

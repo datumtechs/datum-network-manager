@@ -17,8 +17,8 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Setter
 @ToString
-public class UserApplyOrgNameReq {
+public class UserApplyOrgIdentityReq {
 
-    @Pattern(regexp = NameUtil.NAME_REG_STR)
+    @Pattern(regexp = NameUtil.NAME_REG_STR,message = "仅支持中英文与数字输入，最多12个字符")
     private String orgName;//身份标识名称
 }

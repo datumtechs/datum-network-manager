@@ -1,7 +1,6 @@
 package com.platon.rosettanet.admin.common.util;
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.RandomUtil;
 
 /**
  * @Author liushuyu
@@ -11,7 +10,8 @@ import cn.hutool.core.util.RandomUtil;
  */
 public class IDUtil {
 
-    public static final String METADATA_ID_PREFIX = "metadata_id";
+    public static final String METADATA_ID_PREFIX = "metadata_";
+    public static final String IDENTITY_ID_PREFIX = "identity_";
 
     /**
      * 生成 id，项目中需要生成ID的地方都可以使用，第一版可以先使用UUID过渡，后期更新ID生成策略

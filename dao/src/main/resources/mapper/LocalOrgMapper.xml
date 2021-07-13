@@ -35,6 +35,7 @@
     select identity_id from local_org
   </select>
 
+  <!-- 选择性插入字段-->
   <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalOrg">
     insert into local_org
     <trim prefix="(" suffix=")" suffixOverrides=",">

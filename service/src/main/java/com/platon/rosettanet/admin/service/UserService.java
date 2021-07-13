@@ -13,7 +13,7 @@ public interface UserService {
      * @param orgName 身份标识名称
      * @return 申请成功后的组织ID
      */
-    String applyOrgName(String orgName);
+    String applyOrgIdentity(String orgName);
 
     String login(String userName, String passwd);
 }
