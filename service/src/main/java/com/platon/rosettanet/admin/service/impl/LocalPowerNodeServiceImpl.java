@@ -1,6 +1,5 @@
 package com.platon.rosettanet.admin.service.impl;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.dao.LocalPowerDetailsMapper;
@@ -48,6 +47,14 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
                 powerNode.getInternalPort(), powerNode.getExternalPort());
         // 计算节点id
         powerNode.setPowerNodeId("");
+        // 状态
+        powerNode.setStatus(null);
+        // 内存
+        powerNode.setMemory(null);
+        // 核数
+        powerNode.setCore(null);
+        // 带宽
+        powerNode.setBandwidth(null);
         return localPowerNodeMapper.insertPowerNode(powerNode);
     }
 
@@ -56,14 +63,20 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         // 调用grpc返回powerNodeId
         String reposeStr = powerClient.updatePowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
                 powerNode.getInternalPort(), powerNode.getExternalPort());
-        // 计算节点id
-        powerNode.setPowerNodeId("");
+        // 状态
+        powerNode.setStatus(null);
+        // 内存
+        powerNode.setMemory(null);
+        // 核数
+        powerNode.setCore(null);
+        // 带宽
+        powerNode.setBandwidth(null);
         return localPowerNodeMapper.updatePowerNodeByNodeId(powerNode);
     }
 
     @Override
     public int deletePowerNodeByNodeId(String powerNodeId) {
-        // 调用grpc返回powerNodeId
+        // 调用grpc删除计算节点
         String resposeStr = powerClient.deletePowerNode(powerNodeId);
 //        if () {
 //            return 0 ;
@@ -73,8 +86,8 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public LocalPowerNode selectPowerDetailByNodeId(String powerNodeId) {
-        return localPowerNodeMapper.selectPowerDetailByNodeId(powerNodeId);
+    public LocalPowerNode queryPowerNodeDetails(String powerNodeId) {
+        return localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
     }
 
     @Override
@@ -87,31 +100,28 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public void switchPower(String powerNodeId, String status) {
-        // 停用算力
-        if ("N".equals(status)) {
-//        String reposeStr = powerClient.revokePower(powerNodeId, status);
-        }
-        // 启用算力
-        if ("D".equals(status)) {
+    public void publishPower(String powerNodeId) {
 //        String reposeStr = powerClient.publishPower(powerNodeId, status);
-        }
-
     }
 
     @Override
-    public List<LocalPowerDetails> queryPowerNodeUseResource(String powerNodeId) {
+    public void revokePower(String powerNodeId) {
+//        String reposeStr = powerClient.revokePower(powerNodeId, status);
+    }
+
+    @Override
+    public List queryPowerNodeUseResource(String powerNodeId) {
         List<LocalPowerDetails>  powerDetailsList = localPowerDetailsMapper.queryPowerDetails(powerNodeId);
         List detailsList = new ArrayList();
         if (!powerDetailsList.isEmpty()) {
             // 24小时
-            detailsList = hoursMethod(powerDetailsList, detailsList);
+            detailsList = this.hoursMethod(powerDetailsList, detailsList);
             // 7天
-            detailsList = sevenMethod(powerDetailsList, detailsList);
+            detailsList = this.sevenMethod(powerDetailsList, detailsList);
             // 15天
-            detailsList = fifteenMethod(powerDetailsList, detailsList);
+            detailsList = this.fifteenMethod(powerDetailsList, detailsList);
             // 30天记录
-            detailsList = thirtyMethod(powerDetailsList, detailsList);
+            detailsList = this.thirtyMethod(powerDetailsList, detailsList);
         }
         return detailsList;
     }
@@ -261,10 +271,9 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public PageInfo queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize) {
-        // 调用grpc查询计算节点服务列表
         PageHelper.startPage(pageNumber, pageSize);
         List<LocalPowerJoinTask> list = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNodeId);
-        PageInfo<LocalPowerNode> pageInfo = new PageInfo(list);
+        PageInfo<LocalPowerJoinTask> pageInfo = new PageInfo(list);
         return pageInfo;
     }
 
