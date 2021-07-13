@@ -47,7 +47,7 @@ public interface GlobalDataFileMapper {
 
     /**
      * 批量新增数据，一次建议最多更新1000条
-     * @param tempList
+     * @param localDataFileList
      * @return
      */
     int batchAddSelective(List<GlobalDataFile> localDataFileList);

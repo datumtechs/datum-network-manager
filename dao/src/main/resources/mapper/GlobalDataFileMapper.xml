@@ -124,11 +124,13 @@
 
   <!-- 批量删除数据，一次建议最多删除1000条-->
   <delete id="batchDeleteByMetaDataId">
-    delete from global_data_file
-    where meta_data_id in
-    <foreach collection="list" item="metaDataId" separator="," open="(" close=")">
-      #{metaDataId}
-    </foreach>
+    <if test="metaDataIdList.size() > 0">
+      delete from global_data_file
+      where meta_data_id in
+      <foreach collection="list" item="metaDataId" separator="," open="(" close=")">
+        #{metaDataId}
+      </foreach>
+    </if>
   </delete>
 
   <!-- 批量新增数据，一次建议最多更新1000条-->

@@ -35,4 +35,114 @@
     order by identity_id
   </select>
 
+
+  <!-- 批量新增数据，一次建议最多更新1000条-->
+  <insert id="batchAddSelective">
+    <foreach collection="list" item="globalPower" separator=";">
+      insert into global_power
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="globalPower.identityId != null">
+          identity_id,
+        </if>
+        <if test="globalPower.totalCore != null">
+          total_core,
+        </if>
+        <if test="globalPower.totalMemory != null">
+          total_Memory,
+        </if>
+        <if test="globalPower.totalBandwidth != null">
+          total_Bandwidth,
+        </if>
+        <if test="globalPower.usedCore != null">
+          used_core,
+        </if>
+        <if test="globalPower.usedMemory != null">
+          used_Memory,
+        </if>
+        <if test="globalPower.usedBandwidth != null">
+          used_Bandwidth,
+        </if>
+        <if test="globalPower.recUpdateTime != null">
+          rec_update_time,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="globalPower.identityId != null">
+          #{globalPower.identityId,jdbcType=VARCHAR},
+        </if>
+        <if test="globalPower.totalCore != null">
+          #{globalPower.totalCore,jdbcType=INTEGER},
+        </if>
+        <if test="globalPower.totalMemory != null">
+          #{globalPower.totalMemory,jdbcType=BIGINT},
+        </if>
+        <if test="globalPower.totalBandwidth != null">
+          #{globalPower.totalBandwidth,jdbcType=BIGINT},
+        </if>
+        <if test="globalPower.usedCore != null">
+          #{globalPower.usedCore,jdbcType=INTEGER},
+        </if>
+        <if test="globalPower.usedMemory != null">
+          #{globalPower.usedMemory,jdbcType=BIGINT},
+        </if>
+        <if test="globalPower.usedBandwidth != null">
+          #{globalPower.usedBandwidth,jdbcType=BIGINT},
+        </if>
+        <if test="globalPower.recUpdateTime != null">
+          #{globalPower.recUpdateTime,jdbcType=TIMESTAMP},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+
+
+  <!-- 批量更新数据，一次建议最多更新1000条-->
+  <update id="batchUpdateByIdentityIdSelective">
+    <foreach collection="list" item="globalPower" separator=";">
+      update global_power
+      <set>
+        <if test="globalPower.identityId != null">
+          identity_id = #{globalPower.identityId,jdbcType=VARCHAR},
+        </if>
+        <if test="globalPower.totalCore != null">
+          total_core = #{globalPower.totalCore,jdbcType=INTEGER},
+        </if>
+        <if test="globalPower.totalMemory != null">
+          total_Memory = #{globalPower.totalMemory,jdbcType=BIGINT},
+        </if>
+        <if test="globalPower.totalBandwidth != null">
+          total_Bandwidth = #{globalPower.totalBandwidth,jdbcType=BIGINT},
+        </if>
+        <if test="globalPower.usedCore != null">
+          used_core = #{globalPower.usedCore,jdbcType=INTEGER},
+        </if>
+        <if test="globalPower.usedMemory != null">
+          used_Memory = #{globalPower.usedMemory,jdbcType=BIGINT},
+        </if>
+        <if test="globalPower.usedBandwidth != null">
+          used_Bandwidth = #{globalPower.usedBandwidth,jdbcType=BIGINT},
+        </if>
+        <if test="globalPower.recUpdateTime != null">
+          rec_update_time = #{globalPower.recUpdateTime,jdbcType=TIMESTAMP},
+        </if>
+      </set>
+      where identity_id = #{globalPower.identityId}
+    </foreach>
+  </update>
+
+  <!-- 批量删除数据，一次建议最多删除1000条-->
+  <delete id="batchDeleteByIdentityId">
+    <if test="identityIdList.size() > 0">
+      delete from global_power
+      where identity_id in
+      <foreach collection="list" item="identityId" separator="," open="(" close=")">
+        #{identityId}
+      </foreach>
+    </if>
+  </delete>
+
+  <select id="selectAllIdentityId" resultType="java.lang.String">
+    select identity_id
+    from global_power
+  </select>
 </mapper>
