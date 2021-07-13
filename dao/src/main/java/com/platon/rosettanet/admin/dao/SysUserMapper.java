@@ -1,17 +1,12 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.SysUser;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface SysUserMapper {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(SysUser record);
+    SysUser selectByUserNameAndPwd(@Param("userName") String userName, @Param("password") String password);
 
-    int insertSelective(SysUser record);
-
-    SysUser selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(SysUser record);
-
-    int updateByPrimaryKey(SysUser record);
 }
