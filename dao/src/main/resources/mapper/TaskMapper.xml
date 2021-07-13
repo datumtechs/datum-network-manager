@@ -67,7 +67,7 @@
     LEFT JOIN task_data_provider tdp ON t.id = tdp.task_Id
     LEFT JOIN task_power_provider tpp ON t.id = tpp.task_Id
     LEFT JOIN task_result_consumer trc ON t.id = trc.task_Id
-    WHERE t.id = = #{taskId,jdbcType=VARCHAR}
+    WHERE t.id = #{taskId,jdbcType=VARCHAR}
   </select>
 
 
@@ -144,6 +144,30 @@
       #{costBandwidth,jdbcType=BIGINT}, #{algIdentityId,jdbcType=VARCHAR}, #{reviewed,jdbcType=BIT}, 
       #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
   </insert>
+
+
+  <insert id="insertBatch" parameterType="list">
+    replace into task (id, task_Name, owner_Identity_id,
+    create_At, start_At, auth_At,
+    auth_Status, end_At, status,
+    duration, cost_core, cost_Memory,
+    cost_Bandwidth, alg_Identity_id, reviewed,
+    rec_create_time, rec_update_time)
+    values
+    <foreach collection ="list" item="task" separator =",">
+      (#{id,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR},
+      #{createAt,jdbcType=TIMESTAMP}, #{startAt,jdbcType=TIMESTAMP}, #{authAt,jdbcType=TIMESTAMP},
+      #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
+      #{duration,jdbcType=TIMESTAMP}, #{costCore,jdbcType=INTEGER}, #{costMemory,jdbcType=BIGINT},
+      #{costBandwidth,jdbcType=BIGINT}, #{algIdentityId,jdbcType=VARCHAR}, #{reviewed,jdbcType=BIT},
+      #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+
+
+
+
+
   <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
     insert into task
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -327,4 +351,30 @@
       rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+
+
+  <update id="batchUpdate" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update task
+      set task_Name = #{taskName,jdbcType=VARCHAR},
+      owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
+      create_At = #{createAt,jdbcType=TIMESTAMP},
+      start_At = #{startAt,jdbcType=TIMESTAMP},
+      auth_At = #{authAt,jdbcType=TIMESTAMP},
+      auth_Status = #{authStatus,jdbcType=VARCHAR},
+      end_At = #{endAt,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=TIMESTAMP},
+      cost_core = #{costCore,jdbcType=INTEGER},
+      cost_Memory = #{costMemory,jdbcType=BIGINT},
+      cost_Bandwidth = #{costBandwidth,jdbcType=BIGINT},
+      alg_Identity_id = #{algIdentityId,jdbcType=VARCHAR},
+      reviewed = #{reviewed,jdbcType=BIT},
+      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      where id = #{id,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+
 </mapper>

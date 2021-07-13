@@ -8,7 +8,7 @@ package datasvc;
 
 import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
-
+import "fighter/common.proto";
 
 service DataProvider {
   rpc GetStatus(google.protobuf.Empty) returns (GetStatusReply) {
@@ -42,6 +42,13 @@ service DataProvider {
   rpc DeleteData(DownloadRequest) returns (UploadReply) {}
 
   rpc SendSharesData(SendSharesDataRequest) returns (SendSharesDataReply) {}
+
+  rpc HandleTaskReadyGo(common.TaskReadyGoReq) returns (common.TaskReadyGoReply) {
+    option(google.api.http) = {
+      post: "/data/handleTaskReadyGo"
+      body: "*"
+    };
+  }
 }
 
 message DownloadRequest {

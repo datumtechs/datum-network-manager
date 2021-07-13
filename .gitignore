@@ -6,5 +6,7 @@
 */logs/
 */target/
 */*.log
+logs
+log
 
 

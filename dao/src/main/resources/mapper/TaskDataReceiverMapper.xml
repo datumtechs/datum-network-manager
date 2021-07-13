@@ -4,10 +4,12 @@
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.TaskDataReceiver">
     <id column="task_id" jdbcType="VARCHAR" property="taskId" />
     <id column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
+    <id column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <id column="meta_data_name" jdbcType="VARCHAR" property="metaDataName" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    task_id, meta_data_id, rec_update_time
+    task_id, meta_data_id, rec_update_time, identity_id, meta_data_name
   </sql>
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     select 
@@ -44,12 +46,30 @@
     where task_id = #{taskId,jdbcType=VARCHAR}
       and meta_data_id = #{metaDataId,jdbcType=VARCHAR}
   </delete>
+
+
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.TaskDataReceiver">
     insert into task_data_provider (task_id, meta_data_id, rec_update_time
       )
     values (#{taskId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{recUpdateTime,jdbcType=TIMESTAMP}
       )
   </insert>
+
+
+  <insert id="insertBatch" parameterType="list">
+    replace into task (task_id, meta_data_id, rec_update_time, identity_id, meta_data_name)
+    values
+    <foreach collection ="list" item="item" separator =",">
+      (#{taskId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{recUpdateTime,jdbcType=TIMESTAMP},
+      #{identityId,jdbcType=VARCHAR}, #{metaDataName,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+
+
+
+
+
   <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.TaskDataReceiver">
     insert into task_data_provider
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -75,6 +95,9 @@
       </if>
     </trim>
   </insert>
+
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.TaskDataReceiver">
     update task_data_provider
     <set>
@@ -85,10 +108,28 @@
     where task_id = #{taskId,jdbcType=VARCHAR}
       and meta_data_id = #{metaDataId,jdbcType=VARCHAR}
   </update>
+
+
+
   <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.TaskDataReceiver">
     update task_data_provider
     set rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
     where task_id = #{taskId,jdbcType=VARCHAR}
       and meta_data_id = #{metaDataId,jdbcType=VARCHAR}
   </update>
+
+
+  <update id="batchUpdate" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update task_data_provider
+      set task_id = #{taskId,jdbcType=VARCHAR},
+      meta_data_id = #{metaDataId,jdbcType=VARCHAR},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
+      identity_id = #{identityId,jdbcType=VARCHAR},
+      meta_data_name = #{metaDataName,jdbcType=VARCHAR},
+      where task_id = #{taskId,jdbcType=VARCHAR}
+      and meta_data_id = #{metaDataId,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+
 </mapper>

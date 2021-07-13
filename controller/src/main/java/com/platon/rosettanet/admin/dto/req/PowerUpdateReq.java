@@ -15,10 +15,6 @@ public class PowerUpdateReq {
     @NotNull(message = "计算节点ID不能为空")
     private String powerNodeId;
 
-    /** 计算节点名称 */
-    @NotNull(message = "计算节点名称不能为空")
-    private String powerNodeName;
-
     /** 节点内网IP */
     @NotNull(message = "内部IP不能为空")
     private String internalIp;

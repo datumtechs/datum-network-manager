@@ -21,11 +21,21 @@
   </select>
 
 
-  <select id="listTbTaskEventByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from tb_task_event
-    where task_Id = #{taskId,jdbcType=VARCHAR}
+
+  <resultMap id="BaseResultMap_With_OrgName" type="com.platon.rosettanet.admin.dao.entity.TaskEvent" extends="BaseResultMap">
+    <result column="node_name" property="dynamicFields.nodeName" jdbcType="VARCHAR"/>
+    <result column="node_identityId" property="dynamicFields.nodeIdentityId" jdbcType="VARCHAR"/>
+    <result column="node_id" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <select id="listTaskEventByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OrgName">
+    SELECT
+	te.*, o.`name` AS node_name,
+	o.identity_id AS node_identityId,
+	o.carrier_node_id AS node_id
+    FROM task_event AS te
+    LEFT JOIN task_org AS o ON te.identity_id = o.identity_id
+    where task_id = #{taskId,jdbcType=VARCHAR}
   </select>
 
 
@@ -34,6 +44,8 @@
     delete from task_event
     where ID = #{id,jdbcType=BIGINT}
   </delete>
+
+
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.TaskEvent">
     insert into task_event (ID, task_id, event_type, 
       identity_id, event_at, event_content, 
@@ -42,6 +54,26 @@
       #{identityId,jdbcType=VARCHAR}, #{eventAt,jdbcType=TIMESTAMP}, #{eventContent,jdbcType=VARCHAR}, 
       #{recUpdateTime,jdbcType=TIMESTAMP})
   </insert>
+
+
+  <insert id="insertBatch" parameterType="list">
+    replace into task_event (ID, task_id, event_type,
+        identity_id, event_at, event_content,
+        rec_update_time)
+    values
+    <foreach collection ="list" item="item" separator =",">
+      (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=VARCHAR}, #{eventType,jdbcType=VARCHAR},
+      #{identityId,jdbcType=VARCHAR}, #{eventAt,jdbcType=TIMESTAMP}, #{eventContent,jdbcType=VARCHAR},
+      #{recUpdateTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+
+
+
+
+
+
+
   <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.TaskEvent">
     insert into task_event
     <trim prefix="(" suffix=")" suffixOverrides=",">

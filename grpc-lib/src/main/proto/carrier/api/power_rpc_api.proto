@@ -101,10 +101,10 @@ message PowerTask {
 //}
 
 
-message GetPowerSingleDetailRequest {
-  string identity_id = 1;
-  string power_id = 2;
-}
+//message GetPowerSingleDetailRequest {
+//  string identity_id = 1;
+//  string power_id = 2;
+//}
 //message GetPowerSingleDetailResponse {
 //  OrganizationIdentityInfo owner = 1;              // 算力的拥有者
 //  PowerTaskDetail          information = 2;        // 算力详情主体
@@ -163,13 +163,8 @@ service PowerService {
     //  // 查看指定拥有者的单个算力摘要 (不包含 任务描述)
     //  rpc GetPowerSingleSummaryByOwner (GetPowerSingleSummaryByOwnerRequest) returns (GetPowerSingleSummaryListResponse);
     //
-    // 查看单个算力详情 (包含 任务描述)
-    rpc GetPowerSingleDetail (GetPowerSingleDetailRequest) returns (GetPowerSingleDetailResponse){
-        option (google.api.http) = {
-            post: "/carrier/v1/power/singleDetail"
-            body: "*"
-        };
-    }
+    //  // 查看单个算力详情 (包含 任务描述)
+    //  rpc GetPowerSingleDetail (GetPowerSingleDetailRequest) returns (GetPowerSingleDetailResponse);
 
     // 查看各个节点的总算力详情列表
     rpc GetPowerTotalDetailList (EmptyGetParams) returns (GetPowerTotalDetailListResponse) {
@@ -178,7 +173,7 @@ service PowerService {
             body: "*"
         };
     }
-    // 查看所有组织各个单算力详情列表
+    // 查看某个节点各个单算力详情列表
     rpc GetPowerSingleDetailList (EmptyGetParams) returns (GetPowerSingleDetailListResponse) {
         option (google.api.http) = {
             post: "/carrier/v1/power/singleList"

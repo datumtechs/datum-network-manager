@@ -44,6 +44,8 @@
     where task_id = #{taskId,jdbcType=VARCHAR}
       and identity_id = #{identityId,jdbcType=VARCHAR}
   </delete>
+
+
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
     insert into task_power_provider (task_id, identity_id, used_core, 
       used_memory, used_Bandwidth, rec_update_time
@@ -52,6 +54,23 @@
       #{usedMemory,jdbcType=BIGINT}, #{usedBandwidth,jdbcType=BIGINT}, #{recUpdateTime,jdbcType=TIMESTAMP}
       )
   </insert>
+
+
+
+  <insert id="insertBatch" parameterType="list">
+    replace into task_power_provider (task_id, identity_id, used_core,
+       used_memory, used_Bandwidth, rec_update_time
+    )
+    values
+    <foreach collection ="list" item="item" separator =",">
+      (#{taskId,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{usedCore,jdbcType=INTEGER},
+      #{usedMemory,jdbcType=BIGINT}, #{usedBandwidth,jdbcType=BIGINT}, #{recUpdateTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+
+
+
+
   <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
     insert into task_power_provider
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -95,6 +114,8 @@
       </if>
     </trim>
   </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
     update task_power_provider
     <set>
@@ -114,6 +135,9 @@
     where task_id = #{taskId,jdbcType=VARCHAR}
       and identity_id = #{identityId,jdbcType=VARCHAR}
   </update>
+
+
+
   <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
     update task_power_provider
     set used_core = #{usedCore,jdbcType=INTEGER},
@@ -123,4 +147,18 @@
     where task_id = #{taskId,jdbcType=VARCHAR}
       and identity_id = #{identityId,jdbcType=VARCHAR}
   </update>
+
+
+  <update id="batchUpdate" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update task_power_provider
+      set used_core = #{usedCore,jdbcType=INTEGER},
+      used_memory = #{usedMemory,jdbcType=BIGINT},
+      used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      where task_id = #{taskId,jdbcType=VARCHAR}
+      and identity_id = #{identityId,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+
 </mapper>

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author houz
@@ -19,7 +21,7 @@ import java.time.LocalDateTime;
  * @date 2021/7/10 17:07
  */
 @Slf4j
-@Component
+//@Component
 public class PowerNodeRefreshTask {
 
     @Resource
@@ -83,23 +85,28 @@ public class PowerNodeRefreshTask {
             log.info("获取计算节点详情失败,无返回数据");
             return;
         }
+        List<LocalPowerJoinTask> localPowerJoinTaskList = new ArrayList();
         log.info("获取计算节点详情, 返回数据:{}", responseStr);
-        LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
-        localPowerJoinTask.setPowerNodeId(null);
-        localPowerJoinTask.setTaskId(null);
-        localPowerJoinTask.setTaskName(null);
-        localPowerJoinTask.setOwnerIdentityId(null);
-        localPowerJoinTask.setTaskStartTime(null);
-        localPowerJoinTask.setResultSide(null);
-        localPowerJoinTask.setCoordinateSide(null);
-        // 已使用带宽
-        localPowerJoinTask.setUsedBandwidth(null);
-        // 已使用核数
-        localPowerJoinTask.setUsedCore(null);
-        // 已使用内存
-        localPowerJoinTask.setUsedMemory(null);
+//        for() {
+            LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
+            localPowerJoinTask.setPowerNodeId(null);
+            localPowerJoinTask.setTaskId(null);
+            localPowerJoinTask.setTaskName(null);
+            localPowerJoinTask.setOwnerIdentityId(null);
+            localPowerJoinTask.setTaskStartTime(null);
+            localPowerJoinTask.setResultSide(null);
+            localPowerJoinTask.setCoordinateSide(null);
+            // 已使用带宽
+            localPowerJoinTask.setUsedBandwidth(null);
+            // 已使用核数
+            localPowerJoinTask.setUsedCore(null);
+            // 已使用内存
+            localPowerJoinTask.setUsedMemory(null);
+
+            localPowerJoinTaskList.add(localPowerJoinTask);
+//        }
         // 计算节点参与的任务列表
-        localPowerJoinTaskMapper.insertPowerJoinTask(localPowerJoinTask);
+        localPowerJoinTaskMapper.batchInsertPowerTask(localPowerJoinTaskList);
         // 定时任务结束
         long diffStart = System.currentTimeMillis() - startTime;
         log.info("执行时间:{}", diffStart);

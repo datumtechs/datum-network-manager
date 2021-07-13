@@ -80,10 +80,9 @@ CREATE TABLE local_power_node
     external_port  INT COMMENT '节点外网端口',
     start_time     DATETIME COMMENT '节点启用时间',
     remarks        VARCHAR(32) COMMENT '节点备注',
-    conn_status    VARCHAR(10)  not null default '0' COMMENT '节点状态 0:初始化, 1:可用, 2:不可用',
     conn_message   VARCHAR(32) COMMENT '节点(连接失败)信息',
     conn_time      DATETIME COMMENT '节点上一次连接时间',
-    status         VARCHAR(10)  not null default 'pending' COMMENT '算力状态，0:初始化 1:可用; 2:不可用',
+    status         VARCHAR(10)  not null COMMENT '节点状态，0:网络连接失败 1:算力未启用; 2:算力已启用（空闲）; 3:算力已占用',
     memory         BIGINT       NOT NULL DEFAULT 0 COMMENT '计算host内存, 字节',
     core           INT          NOT NULL DEFAULT 0 COMMENT '计算host core',
     bandwidth      BIGINT       NOT NULL DEFAULT 0 COMMENT '计算host带宽, bps',
@@ -118,7 +117,7 @@ DROP TABLE IF EXISTS local_power_join_task;;
 CREATE TABLE local_power_join_task
 (
     id                INT NOT NULL AUTO_INCREMENT COMMENT '序号',
-	power_node_id     VARCHAR(128) COMMENT '计算节点power_node_id',
+	power_node_id     VARCHAR(128) COMMENT '计算节点ID',
     task_id           VARCHAR(128) COMMENT '任务id',
 	task_name         VARCHAR(32)  COMMENT '任务名称',
     owner_identity_id VARCHAR(128) COMMENT '发起方身份',

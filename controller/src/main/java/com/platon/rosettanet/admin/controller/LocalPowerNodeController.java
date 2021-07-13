@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author houzhuang
@@ -31,10 +32,10 @@ public class LocalPowerNodeController {
      */
     @PostMapping("/addPowerNode")
     public JsonResponse addPowerNode(PowerAddReq powerAddReq) {
-        LocalPowerNode localComputeNode = new LocalPowerNode();
-        BeanUtils.copyProperties(powerAddReq, localComputeNode);
+        LocalPowerNode localPowerNode = new LocalPowerNode();
+        BeanUtils.copyProperties(powerAddReq, localPowerNode);
         // 新增计算节点
-        localPowerNodeService.insertPowerNode(localComputeNode);
+        localPowerNodeService.insertPowerNode(localPowerNode);
         return JsonResponse.success("新增成功");
     }
 
@@ -45,11 +46,11 @@ public class LocalPowerNodeController {
      */
     @PostMapping("/updatePowerNode")
     public JsonResponse updatePowerNode(PowerUpdateReq powerUpdateReq) {
-        LocalPowerNode localComputeNode = new LocalPowerNode();
-        BeanUtils.copyProperties(powerUpdateReq, localComputeNode);
+        LocalPowerNode localPowerNode = new LocalPowerNode();
+        BeanUtils.copyProperties(powerUpdateReq, localPowerNode);
         // 修改计算节点
-        localPowerNodeService.updatePowerNodeByNodeId(localComputeNode);
-        return JsonResponse.success();
+        localPowerNodeService.updatePowerNodeByNodeId(localPowerNode);
+        return JsonResponse.success("修改成功");
     }
 
     /**
@@ -68,6 +69,17 @@ public class LocalPowerNodeController {
     }
 
     /**
+     * 查询计算节点详情
+     * @param powerNodeId
+     * @return
+     */
+    @PostMapping("/queryPowerNodeDetails")
+    public JsonResponse queryPowerNodeDetails(String powerNodeId) {
+        LocalPowerNode localPowerNode = localPowerNodeService.queryPowerNodeDetails(powerNodeId);
+        return JsonResponse.success(localPowerNode);
+    }
+
+    /**
      * 查询计算节点服务列表
      * @param powerReq
      * @return
@@ -80,14 +92,25 @@ public class LocalPowerNodeController {
     }
 
     /**
-     * 启用/停用算力
+     * 启用算力
      * @param powerSwitchReq
      * @return
      */
     @PostMapping("/switchPower")
     public JsonResponse switchPower(PowerSwitchReq powerSwitchReq) {
-        localPowerNodeService.switchPower(powerSwitchReq.getPowerNodeId(), powerSwitchReq.getStatus());
-        return JsonResponse.success();
+        localPowerNodeService.publishPower(powerSwitchReq.getPowerNodeId());
+        return JsonResponse.success("启用成功");
+    }
+
+    /**
+     * 停用算力
+     * @param powerSwitchReq
+     * @return
+     */
+    @PostMapping("/revokePower")
+    public JsonResponse revokePower(PowerSwitchReq powerSwitchReq) {
+        localPowerNodeService.revokePower(powerSwitchReq.getPowerNodeId());
+        return JsonResponse.success("停用成功");
     }
 
     /**
@@ -97,8 +120,8 @@ public class LocalPowerNodeController {
      */
     @PostMapping("/queryPowerNodeUseResource")
     public JsonResponse queryPowerNodeUseResource(String powerNodeId) {
-        localPowerNodeService.queryPowerNodeUseResource(powerNodeId);
-        return JsonResponse.success();
+        List dataList = localPowerNodeService.queryPowerNodeUseResource(powerNodeId);
+        return JsonResponse.success(dataList);
     }
 
     /**

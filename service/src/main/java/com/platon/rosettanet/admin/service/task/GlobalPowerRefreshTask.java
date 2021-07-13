@@ -31,6 +31,9 @@ public class GlobalPowerRefreshTask {
     private PowerClient powerClient;
 
 
+    /**
+     * TODO 后续增加补偿和失败重试等机制
+     */
     @Scheduled(fixedDelay = 10000)
     public void task(){
         StopWatch stopWatch = new StopWatch("全网数据刷新计时");

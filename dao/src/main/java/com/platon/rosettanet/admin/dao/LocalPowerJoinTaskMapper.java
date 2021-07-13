@@ -16,10 +16,10 @@ public interface LocalPowerJoinTaskMapper {
 
     /**
      * 插入计算节点参与任务列表
-     * @param localPowerJoinTask
+     * @param localPowerJoinTaskList
      * @return
      */
-    int insertPowerJoinTask(LocalPowerJoinTask localPowerJoinTask);
+    int batchInsertPowerTask(List<LocalPowerJoinTask> localPowerJoinTaskList);
 
     /**
      * 查询计算节点参数任务列表

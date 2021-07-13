@@ -9,7 +9,7 @@ public class TaskPowerProvider extends BaseDomain {
 
     private String identityId;
 
-    private Integer usedCore;
+    private Long usedCore;
 
     private Long usedMemory;
 
@@ -33,11 +33,11 @@ public class TaskPowerProvider extends BaseDomain {
         this.identityId = identityId;
     }
 
-    public Integer getUsedCore() {
+    public Long getUsedCore() {
         return usedCore;
     }
 
-    public void setUsedCore(Integer usedCore) {
+    public void setUsedCore(Long usedCore) {
         this.usedCore = usedCore;
     }
 

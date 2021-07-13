@@ -30,4 +30,8 @@ public interface TaskMapper {
 
     Integer selectTaskRole(@Param("taskId")String taskId);
 
+    Integer batchUpdate(List<Task> taskList);
+
+    Integer insertBatch(List<Task> taskList);
+
 }

@@ -24,7 +24,7 @@ public class Task {
 
     private LocalDateTime duration;
 
-    private Integer costCore;
+    private Long costCore;
 
     private Long costMemory;
 
@@ -139,11 +139,11 @@ public class Task {
         this.duration = duration;
     }
 
-    public Integer getCostCore() {
+    public Long getCostCore() {
         return costCore;
     }
 
-    public void setCostCore(Integer costCore) {
+    public void setCostCore(Long costCore) {
         this.costCore = costCore;
     }
 

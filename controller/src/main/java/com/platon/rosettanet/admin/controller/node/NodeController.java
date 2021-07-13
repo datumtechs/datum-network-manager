@@ -16,8 +16,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NodeController {
 
+
+    /**
+     * 连接调度节点
+     * @return
+     */
     @PostMapping("connectNode")
     public JsonResponse connectNode(){
         return JsonResponse.success();
+    }
+
+    /**
+     * 通知调度服务，申请准入网络
+     */
+    @PostMapping("applyJoinNetwork")
+    public void applyJoinNetwork(){
+
+    }
+
+    /**
+     * 调用该接口后，其对应的调度服务从网络中退出，无法继续参与隐私网络中的相关任务项
+     */
+    @PostMapping("cancelJoinNetwork")
+    public void cancelJoinNetwork(){
+
     }
 }
