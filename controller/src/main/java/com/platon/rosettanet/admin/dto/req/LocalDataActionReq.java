@@ -25,6 +25,6 @@ public class LocalDataActionReq {
     private String metaDataId;
     //元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)
     @Pattern(regexp = "^[0,-1,1]$", message = "-1: 删除; 0: 下架; 1: 上架")
-    private int action;
+    private String action;
 
 }

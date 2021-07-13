@@ -131,22 +131,23 @@ public class LocalDataController {
      */
     @PostMapping("actionMetaData")
     public JsonResponse actionMetaData(@RequestBody @Validated LocalDataActionReq req){
-        int action = req.getAction();
+        String action = req.getAction();
         int count = 0;
         switch (action){
-            case -1://删除
-                count = localDataService.delete(req.getMetaDataId());
+            case "-1"://删除
+                //count = localDataService.delete(req.getMetaDataId());
                 break;
-            case 0://下架
-                count = localDataService.down(req.getMetaDataId());
+            case "0"://下架
+                //count = localDataService.down(req.getMetaDataId());
                 break;
-            case 1://上架
-                count = localDataService.up(req.getMetaDataId());
+            case "1"://上架
+                //count = localDataService.up(req.getMetaDataId());
                 break;
             default:
                 throw new ApplicationException(StrUtil.format("请输入正确的action：{}",action));
         }
-
+        //调试阶段
+        count = 1;
         if(count <= 0){
             JsonResponse.fail("操作失败");
         }

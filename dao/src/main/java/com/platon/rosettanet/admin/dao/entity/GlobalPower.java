@@ -15,7 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class GlobalPower extends BaseDomain implements Serializable {
+public class GlobalPower implements Serializable {
     /**
      * 序号
      */
@@ -25,6 +25,11 @@ public class GlobalPower extends BaseDomain implements Serializable {
      * 算力提供方身份标识
      */
     private String identityId;
+
+    /**
+     * 组织名称
+     */
+    private String orgName;
 
     /**
      * 总CPU

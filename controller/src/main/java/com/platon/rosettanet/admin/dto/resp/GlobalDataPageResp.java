@@ -33,6 +33,8 @@ public class GlobalDataPageResp {
      * 组织身份ID
      */
     private String identityId;
+    //组织名称
+    private String orgName;
     //元数据摘要
     private List<String> metaDataColumnList = new ArrayList<>();
 
@@ -43,6 +45,7 @@ public class GlobalDataPageResp {
         dataPageResp.setRemarks(globalDataFile.getRemarks());
         dataPageResp.setMetaDataId(globalDataFile.getMetaDataId());
         dataPageResp.setIdentityId(globalDataFile.getIdentityId());
+        dataPageResp.setOrgName(globalDataFile.getOrgName());
 
         if(globalDataFile instanceof GlobalDataFileDetail){
             GlobalDataFileDetail detail = (GlobalDataFileDetail)globalDataFile;

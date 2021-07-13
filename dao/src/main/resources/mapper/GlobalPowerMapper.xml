@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.GlobalPower">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
     <result column="total_core" jdbcType="INTEGER" property="totalCore" />
     <result column="total_Memory" jdbcType="BIGINT" property="totalMemory" />
     <result column="total_Bandwidth" jdbcType="BIGINT" property="totalBandwidth" />
@@ -13,22 +14,16 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
 
-  <resultMap id="BaseResultMapWithDynamicFields" type="com.platon.rosettanet.admin.dao.entity.GlobalPower" extends="BaseResultMap">
-    <result column="identity_name" property="dynamicFields.identityName" jdbcType="VARCHAR"/>
-  </resultMap>
-
   <sql id="Base_Column_List">
-    id, identity_id, total_core, total_Memory, total_Bandwidth, used_core, used_Memory, 
+    id, identity_id,org_name, total_core, total_Memory, total_Bandwidth, used_core, used_Memory,
     used_Bandwidth, rec_update_time
   </sql>
 
   <!-- 获取全网算力信息-->
-  <select id="listGlobalPower"  resultMap="BaseResultMapWithDynamicFields">
+  <select id="listGlobalPower"  resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />,
-    go.name as identity_name
-    from global_power gp
-    left join global_org go on gp.identity_id = go.identity_id
+    <include refid="Base_Column_List" />
+    from global_power
     <if test="keyword != null">
       where identity_id = #{keyword}
     </if>
@@ -43,6 +38,9 @@
       <trim prefix="(" suffix=")" suffixOverrides=",">
         <if test="globalPower.identityId != null">
           identity_id,
+        </if>
+        <if test="globalPower.orgName != null">
+          org_name,
         </if>
         <if test="globalPower.totalCore != null">
           total_core,
@@ -69,6 +67,9 @@
       <trim prefix="values (" suffix=")" suffixOverrides=",">
         <if test="globalPower.identityId != null">
           #{globalPower.identityId,jdbcType=VARCHAR},
+        </if>
+        <if test="globalPower.orgName != null">
+          #{globalPower.orgName,jdbcType=VARCHAR},
         </if>
         <if test="globalPower.totalCore != null">
           #{globalPower.totalCore,jdbcType=INTEGER},
@@ -103,6 +104,9 @@
       <set>
         <if test="globalPower.identityId != null">
           identity_id = #{globalPower.identityId,jdbcType=VARCHAR},
+        </if>
+        <if test="globalPower.orgName != null">
+          identity_id = #{globalPower.orgName,jdbcType=VARCHAR},
         </if>
         <if test="globalPower.totalCore != null">
           total_core = #{globalPower.totalCore,jdbcType=INTEGER},

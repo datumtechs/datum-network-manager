@@ -26,6 +26,11 @@ public class GlobalDataFile implements Serializable {
     private String identityId;
 
     /**
+     * 组织名称
+     */
+    private String orgName;
+
+    /**
      * 源文件ID
      */
     private String fileId;

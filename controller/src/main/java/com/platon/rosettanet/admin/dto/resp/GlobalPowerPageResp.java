@@ -20,7 +20,7 @@ import org.springframework.beans.BeanUtils;
 public class GlobalPowerPageResp {
 
     private String identityId;//身份标识
-    private String identityName;//算力提供方名称
+    private String orgName;//算力提供方名称
     private String status;//算力状态，0是空闲，1是已占用
     /**
      * 总CPU
@@ -56,7 +56,6 @@ public class GlobalPowerPageResp {
     public static GlobalPowerPageResp from(GlobalPower globalPower){
         GlobalPowerPageResp resp = new GlobalPowerPageResp();
         BeanUtils.copyProperties(globalPower,resp);
-        resp.setIdentityName((String)globalPower.getField("identityName"));
         if(globalPower.getUsedBandwidth() > 0
                 || globalPower.getUsedCore() > 0
                 || globalPower.getUsedMemory() > 0){
