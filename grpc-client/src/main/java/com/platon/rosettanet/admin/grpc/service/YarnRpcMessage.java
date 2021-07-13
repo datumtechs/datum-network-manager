@@ -28642,6 +28642,46 @@ public final class YarnRpcMessage {
      */
     com.google.protobuf.ByteString
         getFilePathBytes();
+
+    /**
+     * <pre>
+     * Fighter 的 grpc server IP
+     * </pre>
+     *
+     * <code>string ip = 3;</code>
+     * @return The ip.
+     */
+    java.lang.String getIp();
+    /**
+     * <pre>
+     * Fighter 的 grpc server IP
+     * </pre>
+     *
+     * <code>string ip = 3;</code>
+     * @return The bytes for ip.
+     */
+    com.google.protobuf.ByteString
+        getIpBytes();
+
+    /**
+     * <pre>
+     * Fighter 的 grpc server PORT
+     * </pre>
+     *
+     * <code>string port = 4;</code>
+     * @return The port.
+     */
+    java.lang.String getPort();
+    /**
+     * <pre>
+     * Fighter 的 grpc server PORT
+     * </pre>
+     *
+     * <code>string port = 4;</code>
+     * @return The bytes for port.
+     */
+    com.google.protobuf.ByteString
+        getPortBytes();
   }
   /**
    * Protobuf type {@code rpcapi.ReportUpFileSummaryRequest}
@@ -28658,6 +28698,8 @@ public final class YarnRpcMessage {
     private ReportUpFileSummaryRequest() {
       originId_ = "";
       filePath_ = "";
+      ip_ = "";
+      port_ = "";
     }
 
     @java.lang.Override
@@ -28700,6 +28742,18 @@ public final class YarnRpcMessage {
               java.lang.String s = input.readStringRequireUtf8();
 
               filePath_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              ip_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              port_ = s;
               break;
             }
             default: {
@@ -28826,6 +28880,98 @@ public final class YarnRpcMessage {
       }
     }
 
+    public static final int IP_FIELD_NUMBER = 3;
+    private volatile java.lang.Object ip_;
+    /**
+     * <pre>
+     * Fighter 的 grpc server IP
+     * </pre>
+     *
+     * <code>string ip = 3;</code>
+     * @return The ip.
+     */
+    @java.lang.Override
+    public java.lang.String getIp() {
+      java.lang.Object ref = ip_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ip_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Fighter 的 grpc server IP
+     * </pre>
+     *
+     * <code>string ip = 3;</code>
+     * @return The bytes for ip.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIpBytes() {
+      java.lang.Object ref = ip_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ip_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORT_FIELD_NUMBER = 4;
+    private volatile java.lang.Object port_;
+    /**
+     * <pre>
+     * Fighter 的 grpc server PORT
+     * </pre>
+     *
+     * <code>string port = 4;</code>
+     * @return The port.
+     */
+    @java.lang.Override
+    public java.lang.String getPort() {
+      java.lang.Object ref = port_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        port_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Fighter 的 grpc server PORT
+     * </pre>
+     *
+     * <code>string port = 4;</code>
+     * @return The bytes for port.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPortBytes() {
+      java.lang.Object ref = port_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        port_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -28846,6 +28992,12 @@ public final class YarnRpcMessage {
       if (!getFilePathBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, filePath_);
       }
+      if (!getIpBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, ip_);
+      }
+      if (!getPortBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, port_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -28860,6 +29012,12 @@ public final class YarnRpcMessage {
       }
       if (!getFilePathBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, filePath_);
+      }
+      if (!getIpBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, ip_);
+      }
+      if (!getPortBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, port_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -28880,6 +29038,10 @@ public final class YarnRpcMessage {
           .equals(other.getOriginId())) return false;
       if (!getFilePath()
           .equals(other.getFilePath())) return false;
+      if (!getIp()
+          .equals(other.getIp())) return false;
+      if (!getPort()
+          .equals(other.getPort())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -28895,6 +29057,10 @@ public final class YarnRpcMessage {
       hash = (53 * hash) + getOriginId().hashCode();
       hash = (37 * hash) + FILE_PATH_FIELD_NUMBER;
       hash = (53 * hash) + getFilePath().hashCode();
+      hash = (37 * hash) + IP_FIELD_NUMBER;
+      hash = (53 * hash) + getIp().hashCode();
+      hash = (37 * hash) + PORT_FIELD_NUMBER;
+      hash = (53 * hash) + getPort().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -29032,6 +29198,10 @@ public final class YarnRpcMessage {
 
         filePath_ = "";
 
+        ip_ = "";
+
+        port_ = "";
+
         return this;
       }
 
@@ -29060,6 +29230,8 @@ public final class YarnRpcMessage {
         com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportUpFileSummaryRequest result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportUpFileSummaryRequest(this);
         result.originId_ = originId_;
         result.filePath_ = filePath_;
+        result.ip_ = ip_;
+        result.port_ = port_;
         onBuilt();
         return result;
       }
@@ -29114,6 +29286,14 @@ public final class YarnRpcMessage {
         }
         if (!other.getFilePath().isEmpty()) {
           filePath_ = other.filePath_;
+          onChanged();
+        }
+        if (!other.getIp().isEmpty()) {
+          ip_ = other.ip_;
+          onChanged();
+        }
+        if (!other.getPort().isEmpty()) {
+          port_ = other.port_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -29333,6 +29513,198 @@ public final class YarnRpcMessage {
   checkByteStringIsUtf8(value);
         
         filePath_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object ip_ = "";
+      /**
+       * <pre>
+       * Fighter 的 grpc server IP
+       * </pre>
+       *
+       * <code>string ip = 3;</code>
+       * @return The ip.
+       */
+      public java.lang.String getIp() {
+        java.lang.Object ref = ip_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          ip_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server IP
+       * </pre>
+       *
+       * <code>string ip = 3;</code>
+       * @return The bytes for ip.
+       */
+      public com.google.protobuf.ByteString
+          getIpBytes() {
+        java.lang.Object ref = ip_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ip_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server IP
+       * </pre>
+       *
+       * <code>string ip = 3;</code>
+       * @param value The ip to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        ip_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server IP
+       * </pre>
+       *
+       * <code>string ip = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIp() {
+        
+        ip_ = getDefaultInstance().getIp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server IP
+       * </pre>
+       *
+       * <code>string ip = 3;</code>
+       * @param value The bytes for ip to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIpBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        ip_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object port_ = "";
+      /**
+       * <pre>
+       * Fighter 的 grpc server PORT
+       * </pre>
+       *
+       * <code>string port = 4;</code>
+       * @return The port.
+       */
+      public java.lang.String getPort() {
+        java.lang.Object ref = port_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          port_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server PORT
+       * </pre>
+       *
+       * <code>string port = 4;</code>
+       * @return The bytes for port.
+       */
+      public com.google.protobuf.ByteString
+          getPortBytes() {
+        java.lang.Object ref = port_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          port_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server PORT
+       * </pre>
+       *
+       * <code>string port = 4;</code>
+       * @param value The port to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPort(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server PORT
+       * </pre>
+       *
+       * <code>string port = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPort() {
+        
+        port_ = getDefaultInstance().getPort();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server PORT
+       * </pre>
+       *
+       * <code>string port = 4;</code>
+       * @param value The bytes for port to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPortBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        port_ = value;
         onChanged();
         return this;
       }
@@ -32685,76 +33057,77 @@ public final class YarnRpcMessage {
       "ort\030\005 \001(\t\022\025\n\rexternal_port\030\006 \001(\t\"F\n\026Repo" +
       "rtTaskEventRequest\022,\n\ntask_event\030\001 \001(\0132\030" +
       ".rpcapi.TaskEventDeclare\"\"\n ReportTaskRe" +
-      "sourceExpenseRequest\"B\n\032ReportUpFileSumm" +
+      "sourceExpenseRequest\"\\\n\032ReportUpFileSumm" +
       "aryRequest\022\021\n\torigin_id\030\001 \001(\t\022\021\n\tfile_pa" +
-      "th\030\002 \001(\t\"E\n\035QueryAvailableDataNodeReques" +
-      "t\022\021\n\tfile_size\030\001 \001(\004\022\021\n\tfile_type\030\002 \001(\t\"" +
-      ":\n\036QueryAvailableDataNodeResponse\022\n\n\002ip\030" +
-      "\001 \001(\t\022\014\n\004port\030\002 \001(\t\"-\n\030QueryFilePosition" +
-      "Request\022\021\n\torigin_id\030\001 \001(\t\"H\n\031QueryFileP" +
-      "ositionResponse\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030\002 \001(" +
-      "\t\022\021\n\tfile_path\030\003 \001(\t2\316\022\n\013YarnService\022h\n\013" +
-      "GetNodeInfo\022\026.rpcapi.EmptyGetParams\032\033.rp" +
-      "capi.GetNodeInfoResponse\"$\202\323\344\223\002\036\"\031/carri" +
-      "er/v1/yarn/nodeInfo:\001*\022}\n\022GetRegisteredP" +
-      "eers\022\026.rpcapi.EmptyGetParams\032\".rpcapi.Ge" +
-      "tRegisteredPeersResponse\"+\202\323\344\223\002%\" /carri" +
-      "er/v1/yarn/registeredPeers:\001*\022k\n\013SetSeed" +
-      "Node\022\032.rpcapi.SetSeedNodeRequest\032\033.rpcap" +
-      "i.SetSeedNodeResponse\"#\202\323\344\223\002\035\"\030/carrier/" +
-      "v1/yarn/setSeed:\001*\022t\n\016UpdateSeedNode\022\035.r" +
-      "pcapi.UpdateSeedNodeRequest\032\033.rpcapi.Set" +
-      "SeedNodeResponse\"&\202\323\344\223\002 \"\033/carrier/v1/ya" +
-      "rn/updateSeed:\001*\022y\n\016DeleteSeedNode\022#.rpc" +
-      "api.DeleteRegisteredNodeRequest\032\032.rpcapi" +
-      ".SimpleResponseCode\"&\202\323\344\223\002 \"\033/carrier/v1" +
-      "/yarn/deleteSeed:\001*\022p\n\017GetSeedNodeList\022\026" +
-      ".rpcapi.EmptyGetParams\032\037.rpcapi.GetSeedN" +
-      "odeListResponse\"$\202\323\344\223\002\036\"\031/carrier/v1/yar" +
-      "n/seedList:\001*\022o\n\013SetDataNode\022\032.rpcapi.Se" +
-      "tDataNodeRequest\032\033.rpcapi.SetDataNodeRes" +
-      "ponse\"\'\202\323\344\223\002!\"\034/carrier/v1/yarn/setDataN" +
-      "ode:\001*\022x\n\016UpdateDataNode\022\035.rpcapi.Update" +
-      "DataNodeRequest\032\033.rpcapi.SetDataNodeResp" +
-      "onse\"*\202\323\344\223\002$\"\037/carrier/v1/yarn/updateDat" +
-      "aNode:\001*\022}\n\016DeleteDataNode\022#.rpcapi.Dele" +
-      "teRegisteredNodeRequest\032\032.rpcapi.SimpleR" +
-      "esponseCode\"*\202\323\344\223\002$\"\037/carrier/v1/yarn/de" +
-      "leteDataNode:\001*\022z\n\017GetDataNodeList\022\026.rpc" +
-      "api.EmptyGetParams\032%.rpcapi.GetRegistere" +
-      "dNodeListResponse\"(\202\323\344\223\002\"\"\035/carrier/v1/y" +
-      "arn/dataNodeList:\001*\022k\n\nSetJobNode\022\031.rpca" +
-      "pi.SetJobNodeRequest\032\032.rpcapi.SetJobNode" +
-      "Response\"&\202\323\344\223\002 \"\033/carrier/v1/yarn/setJo" +
-      "bNode:\001*\022t\n\rUpdateJobNode\022\034.rpcapi.Updat" +
-      "eJobNodeRequest\032\032.rpcapi.SetJobNodeRespo" +
-      "nse\")\202\323\344\223\002#\"\036/carrier/v1/yarn/updateJobN" +
-      "ode:\001*\022{\n\rDeleteJobNode\022#.rpcapi.DeleteR" +
-      "egisteredNodeRequest\032\032.rpcapi.SimpleResp" +
-      "onseCode\")\202\323\344\223\002#\"\036/carrier/v1/yarn/delet" +
-      "eJobNode:\001*\022x\n\016GetJobNodeList\022\026.rpcapi.E" +
-      "mptyGetParams\032%.rpcapi.GetRegisteredNode" +
-      "ListResponse\"\'\202\323\344\223\002!\"\034/carrier/v1/yarn/j" +
-      "obNodeList:\001*\022z\n\017ReportTaskEvent\022\036.rpcap" +
-      "i.ReportTaskEventRequest\032\032.rpcapi.Simple" +
-      "ResponseCode\"+\202\323\344\223\002%\" /carrier/v1/yarn/r" +
-      "eportTaskEvent:\001*\022\230\001\n\031ReportTaskResource" +
-      "Expense\022(.rpcapi.ReportTaskResourceExpen" +
-      "seRequest\032\032.rpcapi.SimpleResponseCode\"5\202" +
-      "\323\344\223\002/\"*/carrier/v1/yarn/reportTaskResour" +
-      "ceExpense:\001*\022\206\001\n\023ReportUpFileSummary\022\".r" +
-      "pcapi.ReportUpFileSummaryRequest\032\032.rpcap" +
-      "i.SimpleResponseCode\"/\202\323\344\223\002)\"$/carrier/v" +
-      "1/yarn/reportUpFileSummary:\001*\022\233\001\n\026QueryA" +
-      "vailableDataNode\022%.rpcapi.QueryAvailable" +
-      "DataNodeRequest\032&.rpcapi.QueryAvailableD" +
-      "ataNodeResponse\"2\202\323\344\223\002,\"\'/carrier/v1/yar" +
-      "n/queryAvailableDataNode:\001*\022\207\001\n\021QueryFil" +
-      "ePosition\022 .rpcapi.QueryFilePositionRequ" +
-      "est\032!.rpcapi.QueryFilePositionResponse\"-" +
-      "\202\323\344\223\002\'\"\"/carrier/v1/yarn/queryFilePositi" +
-      "on:\001*B:\n(com.platon.rosettanet.admin.grp" +
-      "c.serviceB\016YarnRpcMessageb\006proto3"
+      "th\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\014\n\004port\030\004 \001(\t\"E\n\035Qu" +
+      "eryAvailableDataNodeRequest\022\021\n\tfile_size" +
+      "\030\001 \001(\004\022\021\n\tfile_type\030\002 \001(\t\":\n\036QueryAvaila" +
+      "bleDataNodeResponse\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030" +
+      "\002 \001(\t\"-\n\030QueryFilePositionRequest\022\021\n\tori" +
+      "gin_id\030\001 \001(\t\"H\n\031QueryFilePositionRespons" +
+      "e\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030\002 \001(\t\022\021\n\tfile_path" +
+      "\030\003 \001(\t2\316\022\n\013YarnService\022h\n\013GetNodeInfo\022\026." +
+      "rpcapi.EmptyGetParams\032\033.rpcapi.GetNodeIn" +
+      "foResponse\"$\202\323\344\223\002\036\"\031/carrier/v1/yarn/nod" +
+      "eInfo:\001*\022}\n\022GetRegisteredPeers\022\026.rpcapi." +
+      "EmptyGetParams\032\".rpcapi.GetRegisteredPee" +
+      "rsResponse\"+\202\323\344\223\002%\" /carrier/v1/yarn/reg" +
+      "isteredPeers:\001*\022k\n\013SetSeedNode\022\032.rpcapi." +
+      "SetSeedNodeRequest\032\033.rpcapi.SetSeedNodeR" +
+      "esponse\"#\202\323\344\223\002\035\"\030/carrier/v1/yarn/setSee" +
+      "d:\001*\022t\n\016UpdateSeedNode\022\035.rpcapi.UpdateSe" +
+      "edNodeRequest\032\033.rpcapi.SetSeedNodeRespon" +
+      "se\"&\202\323\344\223\002 \"\033/carrier/v1/yarn/updateSeed:" +
+      "\001*\022y\n\016DeleteSeedNode\022#.rpcapi.DeleteRegi" +
+      "steredNodeRequest\032\032.rpcapi.SimpleRespons" +
+      "eCode\"&\202\323\344\223\002 \"\033/carrier/v1/yarn/deleteSe" +
+      "ed:\001*\022p\n\017GetSeedNodeList\022\026.rpcapi.EmptyG" +
+      "etParams\032\037.rpcapi.GetSeedNodeListRespons" +
+      "e\"$\202\323\344\223\002\036\"\031/carrier/v1/yarn/seedList:\001*\022" +
+      "o\n\013SetDataNode\022\032.rpcapi.SetDataNodeReque" +
+      "st\032\033.rpcapi.SetDataNodeResponse\"\'\202\323\344\223\002!\"" +
+      "\034/carrier/v1/yarn/setDataNode:\001*\022x\n\016Upda" +
+      "teDataNode\022\035.rpcapi.UpdateDataNodeReques" +
+      "t\032\033.rpcapi.SetDataNodeResponse\"*\202\323\344\223\002$\"\037" +
+      "/carrier/v1/yarn/updateDataNode:\001*\022}\n\016De" +
+      "leteDataNode\022#.rpcapi.DeleteRegisteredNo" +
+      "deRequest\032\032.rpcapi.SimpleResponseCode\"*\202" +
+      "\323\344\223\002$\"\037/carrier/v1/yarn/deleteDataNode:\001" +
+      "*\022z\n\017GetDataNodeList\022\026.rpcapi.EmptyGetPa" +
+      "rams\032%.rpcapi.GetRegisteredNodeListRespo" +
+      "nse\"(\202\323\344\223\002\"\"\035/carrier/v1/yarn/dataNodeLi" +
+      "st:\001*\022k\n\nSetJobNode\022\031.rpcapi.SetJobNodeR" +
+      "equest\032\032.rpcapi.SetJobNodeResponse\"&\202\323\344\223" +
+      "\002 \"\033/carrier/v1/yarn/setJobNode:\001*\022t\n\rUp" +
+      "dateJobNode\022\034.rpcapi.UpdateJobNodeReques" +
+      "t\032\032.rpcapi.SetJobNodeResponse\")\202\323\344\223\002#\"\036/" +
+      "carrier/v1/yarn/updateJobNode:\001*\022{\n\rDele" +
+      "teJobNode\022#.rpcapi.DeleteRegisteredNodeR" +
+      "equest\032\032.rpcapi.SimpleResponseCode\")\202\323\344\223" +
+      "\002#\"\036/carrier/v1/yarn/deleteJobNode:\001*\022x\n" +
+      "\016GetJobNodeList\022\026.rpcapi.EmptyGetParams\032" +
+      "%.rpcapi.GetRegisteredNodeListResponse\"\'" +
+      "\202\323\344\223\002!\"\034/carrier/v1/yarn/jobNodeList:\001*\022" +
+      "z\n\017ReportTaskEvent\022\036.rpcapi.ReportTaskEv" +
+      "entRequest\032\032.rpcapi.SimpleResponseCode\"+" +
+      "\202\323\344\223\002%\" /carrier/v1/yarn/reportTaskEvent" +
+      ":\001*\022\230\001\n\031ReportTaskResourceExpense\022(.rpca" +
+      "pi.ReportTaskResourceExpenseRequest\032\032.rp" +
+      "capi.SimpleResponseCode\"5\202\323\344\223\002/\"*/carrie" +
+      "r/v1/yarn/reportTaskResourceExpense:\001*\022\206" +
+      "\001\n\023ReportUpFileSummary\022\".rpcapi.ReportUp" +
+      "FileSummaryRequest\032\032.rpcapi.SimpleRespon" +
+      "seCode\"/\202\323\344\223\002)\"$/carrier/v1/yarn/reportU" +
+      "pFileSummary:\001*\022\233\001\n\026QueryAvailableDataNo" +
+      "de\022%.rpcapi.QueryAvailableDataNodeReques" +
+      "t\032&.rpcapi.QueryAvailableDataNodeRespons" +
+      "e\"2\202\323\344\223\002,\"\'/carrier/v1/yarn/queryAvailab" +
+      "leDataNode:\001*\022\207\001\n\021QueryFilePosition\022 .rp" +
+      "capi.QueryFilePositionRequest\032!.rpcapi.Q" +
+      "ueryFilePositionResponse\"-\202\323\344\223\002\'\"\"/carri" +
+      "er/v1/yarn/queryFilePosition:\001*B:\n(com.p" +
+      "laton.rosettanet.admin.grpc.serviceB\016Yar" +
+      "nRpcMessageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -32912,7 +33285,7 @@ public final class YarnRpcMessage {
     internal_static_rpcapi_ReportUpFileSummaryRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_ReportUpFileSummaryRequest_descriptor,
-        new java.lang.String[] { "OriginId", "FilePath", });
+        new java.lang.String[] { "OriginId", "FilePath", "Ip", "Port", });
     internal_static_rpcapi_QueryAvailableDataNodeRequest_descriptor =
       getDescriptor().getMessageTypes().get(25);
     internal_static_rpcapi_QueryAvailableDataNodeRequest_fieldAccessorTable = new

@@ -11379,56 +11379,60 @@ public final class DataProviderRpcMessage {
     java.lang.String[] descriptorData = {
       "\n\026fighter/data_svc.proto\022\007datasvc\032\033googl" +
       "e/protobuf/empty.proto\032\034google/api/annot" +
-      "ations.proto\"$\n\017DownloadRequest\022\021\n\tfile_" +
-      "path\030\001 \001(\t\"Q\n\rDownloadReply\022%\n\006status\030\001 " +
-      "\001(\0162\023.datasvc.TaskStatusH\000\022\021\n\007content\030\002 " +
-      "\001(\014H\000B\006\n\004data\"|\n\010FileInfo\022\021\n\tfile_name\030\001" +
-      " \001(\t\022\021\n\tfile_type\030\002 \001(\t\022\023\n\013description\030\003" +
-      " \001(\t\022\017\n\007columns\030\004 \003(\t\022\022\n\ncol_dtypes\030\005 \003(" +
-      "\t\022\020\n\010keywords\030\006 \003(\t\"M\n\rUploadRequest\022!\n\004" +
-      "meta\030\001 \001(\0132\021.datasvc.FileInfoH\000\022\021\n\007conte" +
-      "nt\030\002 \001(\014H\000B\006\n\004data\"=\n\013UploadReply\022\n\n\002ok\030" +
-      "\001 \001(\010\022\017\n\007data_id\030\002 \001(\t\022\021\n\tfile_path\030\003 \001(" +
-      "\t\"\200\001\n\rListDataReply\022(\n\004data\030\001 \003(\0132\032.data" +
-      "svc.ListDataReply.Row\032E\n\003Row\022\017\n\007data_id\030" +
-      "\001 \001(\t\022\014\n\004info\030\002 \001(\t\022\021\n\tfile_name\030\003 \001(\t\022\014" +
-      "\n\004size\030\004 \001(\005\"|\n\022GetDataDetailReply\022\016\n\006n_" +
-      "rows\030\001 \001(\005\022/\n\005items\030\002 \003(\0132 .datasvc.GetD" +
-      "ataDetailReply.Item\032%\n\004Item\022\016\n\006column\030\001 " +
-      "\001(\t\022\r\n\005dtype\030\002 \001(\t\"\277\001\n\016GetStatusReply\022\021\n" +
-      "\tnode_type\030\001 \001(\t\022\017\n\007node_id\030\002 \001(\t\022\r\n\005sta" +
-      "te\030\003 \001(\t\022*\n\004info\030\004 \001(\0132\034.datasvc.GetStat" +
-      "usReply.Info\032N\n\004Info\022\014\n\004name\030\001 \001(\t\022\022\n\nto" +
-      "tal_disk\030\002 \001(\t\022\021\n\tused_disk\030\003 \001(\t\022\021\n\tidl" +
-      "e_disk\030\004 \001(\t\";\n\025SendSharesDataRequest\022\017\n" +
-      "\007data_id\030\001 \001(\t\022\021\n\treceivers\030\002 \003(\t\":\n\023Sen" +
-      "dSharesDataReply\022#\n\006status\030\001 \001(\0162\023.datas" +
-      "vc.TaskStatus*@\n\nTaskStatus\022\t\n\005Start\020\000\022\014" +
-      "\n\010Finished\020\001\022\r\n\tCancelled\020\002\022\n\n\006Failed\020\0032" +
-      "\350\004\n\014DataProvider\022U\n\tGetStatus\022\026.google.p" +
-      "rotobuf.Empty\032\027.datasvc.GetStatusReply\"\027" +
-      "\202\323\344\223\002\021\022\017/data/getStatus\022R\n\010ListData\022\026.go" +
-      "ogle.protobuf.Empty\032\026.datasvc.ListDataRe" +
-      "ply\"\026\202\323\344\223\002\020\022\016/data/listData\022Y\n\nUploadDat" +
-      "a\022\026.datasvc.UploadRequest\032\024.datasvc.Uplo" +
-      "adReply\"\033\202\323\344\223\002\025\"\020/data/uploadData:\001*(\001\022]" +
-      "\n\013BatchUpload\022\026.datasvc.UploadRequest\032\024." +
-      "datasvc.UploadReply\"\034\202\323\344\223\002\026\"\021/data/batch" +
-      "Upload:\001*(\0010\001\022a\n\014DownloadData\022\030.datasvc." +
-      "DownloadRequest\032\026.datasvc.DownloadReply\"" +
-      "\035\202\323\344\223\002\027\"\022/data/downLoadData:\001*0\001\022>\n\nDele" +
-      "teData\022\030.datasvc.DownloadRequest\032\024.datas" +
-      "vc.UploadReply\"\000\022P\n\016SendSharesData\022\036.dat" +
-      "asvc.SendSharesDataRequest\032\034.datasvc.Sen" +
-      "dSharesDataReply\"\000BB\n(com.platon.rosetta" +
-      "net.admin.grpc.serviceB\026DataProviderRpcM" +
-      "essageb\006proto3"
+      "ations.proto\032\024fighter/common.proto\"$\n\017Do" +
+      "wnloadRequest\022\021\n\tfile_path\030\001 \001(\t\"Q\n\rDown" +
+      "loadReply\022%\n\006status\030\001 \001(\0162\023.datasvc.Task" +
+      "StatusH\000\022\021\n\007content\030\002 \001(\014H\000B\006\n\004data\"|\n\010F" +
+      "ileInfo\022\021\n\tfile_name\030\001 \001(\t\022\021\n\tfile_type\030" +
+      "\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\017\n\007columns\030\004 " +
+      "\003(\t\022\022\n\ncol_dtypes\030\005 \003(\t\022\020\n\010keywords\030\006 \003(" +
+      "\t\"M\n\rUploadRequest\022!\n\004meta\030\001 \001(\0132\021.datas" +
+      "vc.FileInfoH\000\022\021\n\007content\030\002 \001(\014H\000B\006\n\004data" +
+      "\"=\n\013UploadReply\022\n\n\002ok\030\001 \001(\010\022\017\n\007data_id\030\002" +
+      " \001(\t\022\021\n\tfile_path\030\003 \001(\t\"\200\001\n\rListDataRepl" +
+      "y\022(\n\004data\030\001 \003(\0132\032.datasvc.ListDataReply." +
+      "Row\032E\n\003Row\022\017\n\007data_id\030\001 \001(\t\022\014\n\004info\030\002 \001(" +
+      "\t\022\021\n\tfile_name\030\003 \001(\t\022\014\n\004size\030\004 \001(\005\"|\n\022Ge" +
+      "tDataDetailReply\022\016\n\006n_rows\030\001 \001(\005\022/\n\005item" +
+      "s\030\002 \003(\0132 .datasvc.GetDataDetailReply.Ite" +
+      "m\032%\n\004Item\022\016\n\006column\030\001 \001(\t\022\r\n\005dtype\030\002 \001(\t" +
+      "\"\277\001\n\016GetStatusReply\022\021\n\tnode_type\030\001 \001(\t\022\017" +
+      "\n\007node_id\030\002 \001(\t\022\r\n\005state\030\003 \001(\t\022*\n\004info\030\004" +
+      " \001(\0132\034.datasvc.GetStatusReply.Info\032N\n\004In" +
+      "fo\022\014\n\004name\030\001 \001(\t\022\022\n\ntotal_disk\030\002 \001(\t\022\021\n\t" +
+      "used_disk\030\003 \001(\t\022\021\n\tidle_disk\030\004 \001(\t\";\n\025Se" +
+      "ndSharesDataRequest\022\017\n\007data_id\030\001 \001(\t\022\021\n\t" +
+      "receivers\030\002 \003(\t\":\n\023SendSharesDataReply\022#" +
+      "\n\006status\030\001 \001(\0162\023.datasvc.TaskStatus*@\n\nT" +
+      "askStatus\022\t\n\005Start\020\000\022\014\n\010Finished\020\001\022\r\n\tCa" +
+      "ncelled\020\002\022\n\n\006Failed\020\0032\323\005\n\014DataProvider\022U" +
+      "\n\tGetStatus\022\026.google.protobuf.Empty\032\027.da" +
+      "tasvc.GetStatusReply\"\027\202\323\344\223\002\021\022\017/data/getS" +
+      "tatus\022R\n\010ListData\022\026.google.protobuf.Empt" +
+      "y\032\026.datasvc.ListDataReply\"\026\202\323\344\223\002\020\022\016/data" +
+      "/listData\022Y\n\nUploadData\022\026.datasvc.Upload" +
+      "Request\032\024.datasvc.UploadReply\"\033\202\323\344\223\002\025\"\020/" +
+      "data/uploadData:\001*(\001\022]\n\013BatchUpload\022\026.da" +
+      "tasvc.UploadRequest\032\024.datasvc.UploadRepl" +
+      "y\"\034\202\323\344\223\002\026\"\021/data/batchUpload:\001*(\0010\001\022a\n\014D" +
+      "ownloadData\022\030.datasvc.DownloadRequest\032\026." +
+      "datasvc.DownloadReply\"\035\202\323\344\223\002\027\"\022/data/dow" +
+      "nLoadData:\001*0\001\022>\n\nDeleteData\022\030.datasvc.D" +
+      "ownloadRequest\032\024.datasvc.UploadReply\"\000\022P" +
+      "\n\016SendSharesData\022\036.datasvc.SendSharesDat" +
+      "aRequest\032\034.datasvc.SendSharesDataReply\"\000" +
+      "\022i\n\021HandleTaskReadyGo\022\026.common.TaskReady" +
+      "GoReq\032\030.common.TaskReadyGoReply\"\"\202\323\344\223\002\034\"" +
+      "\027/data/handleTaskReadyGo:\001*BB\n(com.plato" +
+      "n.rosettanet.admin.grpc.serviceB\026DataPro" +
+      "viderRpcMessageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.EmptyProto.getDescriptor(),
           com.platon.rosettanet.admin.grpc.service.AnnotationsProto.getDescriptor(),
+          com.platon.rosettanet.admin.grpc.service.Common.getDescriptor(),
         });
     internal_static_datasvc_DownloadRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -11515,6 +11519,7 @@ public final class DataProviderRpcMessage {
         .internalUpdateFileDescriptor(descriptor, registry);
     com.google.protobuf.EmptyProto.getDescriptor();
     com.platon.rosettanet.admin.grpc.service.AnnotationsProto.getDescriptor();
+    com.platon.rosettanet.admin.grpc.service.Common.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
