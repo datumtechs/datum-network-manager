@@ -136,24 +136,21 @@ CREATE TABLE local_power_join_task
 -- 此表数据有管理台添加
 DROP TABLE IF EXISTS local_data_node;;
 CREATE TABLE local_data_node(
-    id INT NOT NULL AUTO_INCREMENT  COMMENT '序号' ,
-    identity_id VARCHAR(128) NOT NULL COMMENT '组织身份ID',
-    node_id VARCHAR(128) COMMENT '发布后底层返回的host唯一ID' ,
-    host_Name VARCHAR(32)    COMMENT '节点名称' ,
-    internal_IP VARCHAR(32)    COMMENT '节点内部IP' ,
-    internal_Port INT    COMMENT '节点内部端口' ,
-    external_IP VARCHAR(32)    COMMENT '节点外部IP' ,
-    external_Port INT    COMMENT '节点外部端口' ,
-
-    conn_Status VARCHAR(10)  not null default 'pending' COMMENT '节点状态 pending:初始化, enabled：可用, disabled:不可用' ,
-    conn_message VARCHAR(32)    COMMENT '节点(连接失败)信息' ,
-    conn_Time DATETIME    COMMENT '节点上一次连接时间' ,
-
-    status VARCHAR(10)  DEFAULT 'disabled' COMMENT '节点状态 enabled：可用, disabled:不可用' ,
-
-    remarks VARCHAR(32)    COMMENT '节点备注' ,
-    rec_create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
+    id int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+    identity_id varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组织身份ID',
+    node_id varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
+    host_Name varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点名称',
+    internal_IP varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点内部IP',
+    internal_Port int(11) DEFAULT NULL COMMENT '节点内部端口',
+    external_IP varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点外部IP',
+    external_Port int(11) DEFAULT NULL COMMENT '节点外部端口',
+    conn_Status varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '-1' COMMENT '节点连接状态 -1: 未被调度服务连接上; 0: 连接上;',
+    conn_message varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点(连接失败)信息',
+    conn_Time datetime DEFAULT NULL COMMENT '节点上一次连接时间',
+    status varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'disabled' COMMENT '节点状态 enabled：可用, disabled:不可用',
+    remarks varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点备注',
+    rec_create_time timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    rec_update_time timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
     PRIMARY KEY (id)
 ) COMMENT = '本组织数据节点配置表 配置数据节点相关信息';;
 
