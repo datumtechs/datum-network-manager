@@ -23,5 +23,16 @@ public interface LocalOrgMapper {
      */
     LocalOrg select();
 
+    /**
+     * 查询组织身份标识
+     * @return
+     */
     String selectIdentityId();
+
+    /**
+     * 选择性更新
+     * @param localOrg
+     * @return
+     */
+    int updateSelective(LocalOrg localOrg);
 }

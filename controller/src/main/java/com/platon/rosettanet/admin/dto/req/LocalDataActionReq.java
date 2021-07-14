@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * @Author liushuyu
@@ -24,7 +24,6 @@ public class LocalDataActionReq {
     @NotBlank(message = "元数据ID不能为空")
     private String metaDataId;
     //元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)
-    @Pattern(regexp = "^[0,-1,1]$", message = "-1: 删除; 0: 下架; 1: 上架")
     private String action;
 
 }

@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.grpc.client;
 
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
+import com.platon.rosettanet.admin.grpc.entity.CommonResp;
 import com.platon.rosettanet.admin.grpc.service.AuthRpcMessage;
 import com.platon.rosettanet.admin.grpc.service.AuthServiceGrpc;
 import com.platon.rosettanet.admin.grpc.service.CommonMessage;
@@ -24,15 +25,50 @@ public class AuthClient {
     @Resource(name = "simpleChannelManager")
     private BaseChannelManager channelManager;
 
-    public void applyIdentityJoin(){
+
+    /**
+     * 申请准入网络
+     * @param identityId // 组织的身份标识Id
+     * @param name               // 组织名称
+     */
+    public CommonResp applyIdentityJoin(String identityId,String name){
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel("localhost", 50051);
+        Channel channel = channelManager.getScheduleServer();
         //2.拼装request
-        AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest.newBuilder().build();
+        CommonMessage.OrganizationIdentityInfo orgInfo = CommonMessage.OrganizationIdentityInfo
+                .newBuilder()
+                .setName(name)
+                .setIdentityId(identityId)
+                .build();
+        AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest
+                .newBuilder()
+                .setMember(orgInfo)
+                .build();
         //3.调用rpc,获取response
         CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
         //4.处理response
-        System.out.println("###############" + responseCode.getMsg());
-        System.out.println("111111111");
+        CommonResp resp = new CommonResp();
+        resp.setStatus(responseCode.getStatus());
+        resp.setMsg(responseCode.getMsg());
+        return resp;
+    }
+
+    /**
+     * 注销准入网络
+     */
+    public CommonResp revokeIdentityJoin(){
+        //1.获取rpc连接
+        Channel channel = channelManager.getScheduleServer();
+        //2.拼装request
+        CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
+                .newBuilder()
+                .build();
+        //3.调用rpc,获取response
+        CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
+        //4.处理response
+        CommonResp resp = new CommonResp();
+        resp.setStatus(responseCode.getStatus());
+        resp.setMsg(responseCode.getMsg());
+        return resp;
     }
 }

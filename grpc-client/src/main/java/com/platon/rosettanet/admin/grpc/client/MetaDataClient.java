@@ -16,6 +16,8 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.platon.rosettanet.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
+
 /**
  * @Author liushuyu
  * @Date 2021/7/8 18:29
@@ -93,7 +95,7 @@ public class MetaDataClient {
         //3.调用rpc,获取response
         MetaDataRpcMessage.PublishMetaDataResponse response = MetaDataServiceGrpc.newBlockingStub(channel).publishMetaData(request);
         //4.处理response
-        if (response.getStatus() != 0) {
+        if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new ApplicationException(StrUtil.format("元数据信息发布失败:{}",response.getMsg()));
         }
         return response.getMetaDataId();
@@ -124,7 +126,7 @@ public class MetaDataClient {
         //3.调用rpc,获取response
         CommonMessage.SimpleResponseCode response = MetaDataServiceGrpc.newBlockingStub(channel).revokeMetaData(request);
         //4.处理response
-        if (response.getStatus() != 0) {
+        if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new ApplicationException(StrUtil.format("元数据信息下架失败:{}",response.getMsg()));
         }
     }
@@ -143,7 +145,7 @@ public class MetaDataClient {
         //3.调用rpc,获取response
         MetaDataRpcMessage.GetMetaDataDetailListResponse response = MetaDataServiceGrpc.newBlockingStub(channel).getMetaDataDetailList(request);
         //4.处理response
-        if (response.getStatus() != 0) {
+        if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new ApplicationException(StrUtil.format("查询全网数据列表失败:{}",response.getMsg()));
         }
         List<MetaDataRpcMessage.GetMetaDataDetailResponse> metaDataList = response.getMetaDataListList();

@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.aop;
 
+import cn.hutool.core.util.StrUtil;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.enums.ResponseCodeEnum;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * 全局异常的处理
@@ -28,9 +30,9 @@ public class ErrorHandle {
     public JsonResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException exception){
         log.error("handleMethodArgumentNotValidException",exception);
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-        Map<String, String> errorMessage = new HashMap<>();
+        StringJoiner errorMessage = new StringJoiner(",");
         for (FieldError error : fieldErrors) {
-            errorMessage.put(error.getField(), error.getDefaultMessage());
+            errorMessage.add(StrUtil.format("{}={}",error.getField(), error.getDefaultMessage()));
         }
         return JsonResponse.fail(ResponseCodeEnum.FAIL, errorMessage.toString());
     }

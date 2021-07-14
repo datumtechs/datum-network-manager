@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.grpc.client;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
+import com.platon.rosettanet.admin.common.util.ExceptionUtil;
 import com.platon.rosettanet.admin.dao.entity.DataNode;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.platon.rosettanet.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
 
 /**
  * @Author liushuyu
@@ -55,7 +58,7 @@ public class YarnClient {
         FormatSetDataNodeResp resp = new FormatSetDataNodeResp();
         resp.setStatus(setDataNodeResponse.getStatus());
         resp.setMsg(setDataNodeResponse.getMsg());
-        if (GrpcConstant.GRPC_SUCCESS_CODE == setDataNodeResponse.getStatus()) {
+        if (GRPC_SUCCESS_CODE == setDataNodeResponse.getStatus()) {
             YarnRpcMessage.YarnRegisteredPeerDetail resDataNode = setDataNodeResponse.getDataNode();
             if (ObjectUtil.isNotNull(resDataNode)) {
                 RegisteredNodeResp nodeResp = new RegisteredNodeResp();
@@ -91,7 +94,7 @@ public class YarnClient {
         FormatSetDataNodeResp resp = new FormatSetDataNodeResp();
         resp.setStatus(setDataNodeResponse.getStatus());
         resp.setMsg(setDataNodeResponse.getMsg());
-        if (GrpcConstant.GRPC_SUCCESS_CODE == setDataNodeResponse.getStatus()) {
+        if (GRPC_SUCCESS_CODE == setDataNodeResponse.getStatus()) {
             YarnRpcMessage.YarnRegisteredPeerDetail resDataNode = setDataNodeResponse.getDataNode();
             if (ObjectUtil.isNotNull(resDataNode)) {
                 RegisteredNodeResp nodeResp = new RegisteredNodeResp();
@@ -141,7 +144,7 @@ public class YarnClient {
         queryNodeResp.setMsg(dataNodeListResp.getMsg());
         queryNodeResp.setStatus(dataNodeListResp.getStatus());
         List<RegisteredNodeResp> nodeRespList = new ArrayList<>();
-        if (GrpcConstant.GRPC_SUCCESS_CODE == dataNodeListResp.getStatus()) {
+        if (GRPC_SUCCESS_CODE == dataNodeListResp.getStatus()) {
             dataNodeListResp.getNodesList().forEach(item -> {
                 RegisteredNodeResp nodeResp = new RegisteredNodeResp();
                 nodeResp.setNodeId(item.getNodeDetail().getId());
@@ -222,6 +225,76 @@ public class YarnClient {
         resp.setIp(response.getIp());
         resp.setPort(Integer.parseInt(response.getPort()));
         resp.setFilePath(response.getFilePath());
+        return resp;
+    }
+
+
+    /**
+     * 尝试连接调度服务,连通则返回true，否则返回false
+     */
+    public boolean connectScheduleServer(String scheduleIP,int schedulePort){
+        try {
+            //1.获取rpc连接
+            Channel channel = channelManager.buildChannel(scheduleIP, schedulePort);
+            //2.拼装request
+            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
+                    .newBuilder()
+                    .build();
+            //3.调用rpc,获取response
+            YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
+        } catch (Throwable throwable) {
+            Class[] exceptionClassArray = new Class[]{java.net.ConnectException.class,java.net.UnknownHostException.class};
+            boolean result = ExceptionUtil.causeBy(throwable, exceptionClassArray);
+            if(result){//如果是ConnectException或者UnknownHostException则表示连接不通调度服务
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 查看自身调度服务信息
+     * @param scheduleIP 调度服务ip
+     * @param schedulePort 调度服务端口
+     */
+    public YarnGetNodeInfoResp getNodeInfo(String scheduleIP,int schedulePort){
+        YarnGetNodeInfoResp resp = new YarnGetNodeInfoResp();
+        try {
+            //1.获取rpc连接
+            Channel channel = channelManager.buildChannel(scheduleIP, schedulePort);
+            //2.拼装request
+            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
+                    .newBuilder()
+                    .build();
+            //3.调用rpc,获取response
+            YarnRpcMessage.GetNodeInfoResponse nodeInfo = YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
+            //4.处理response
+            if (nodeInfo.getStatus() != GRPC_SUCCESS_CODE) {
+                throw new ApplicationException(StrUtil.format("查看自身调度服务信息失败：status:{},message:{}",
+                        nodeInfo.getStatus(),
+                        nodeInfo.getMsg()));
+            }
+            /**
+             * 由于调度服务rpc接口也在开发阶段，如果直接返回调度服务的response，一旦response发生变化，则调用该方法的地方都需要修改
+             * 故将response转换后再放给service类使用
+             */
+            YarnRpcMessage.YarnNodeInfo information = nodeInfo.getInformation();
+            resp.setNodeId(information.getNodeId());
+            resp.setNodeType(information.getNodeType());
+            resp.setInternalIp(information.getInternalIp());
+            resp.setInternalPort(information.getInternalPort());
+            resp.setExternalIp(information.getExternalIp());
+            resp.setExternalPort(information.getExternalPort());
+            resp.setIdentityType(information.getIdentityType());
+            resp.setIdentityId(information.getIdentityId());
+            resp.setState(information.getState());
+            resp.setName(information.getName());
+            resp.setStatus(GRPC_SUCCESS_CODE);
+            resp.setMsg("成功");
+        } catch (Exception exception) {
+            resp.setStatus(1);
+            resp.setMsg("失败");
+        }
         return resp;
     }
 }

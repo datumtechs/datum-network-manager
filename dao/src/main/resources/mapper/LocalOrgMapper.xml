@@ -40,13 +40,13 @@
     insert into local_org
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
-        name,
+        `name`,
       </if>
       <if test="identityId != null">
         identity_id,
       </if>
-      <if test="carrierUuid != null">
-        carrier_uuid,
+      <if test="carrierNodeId != null">
+        carrier_Node_Id,
       </if>
       <if test="carrierIp != null">
         carrier_IP,
@@ -74,8 +74,8 @@
       <if test="identityId != null">
         #{identityId,jdbcType=VARCHAR},
       </if>
-      <if test="carrierUuid != null">
-        #{carrierUuid,jdbcType=VARCHAR},
+      <if test="carrierNodeId != null">
+        #{carrierNodeId,jdbcType=VARCHAR},
       </if>
       <if test="carrierIp != null">
         #{carrierIp,jdbcType=VARCHAR},
@@ -97,4 +97,37 @@
       </if>
     </trim>
   </insert>
+
+  <update id="updateSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalOrg">
+    update local_org
+    <set>
+      <if test="name != null">
+        `name` = #{name},
+      </if>
+      <if test="identityId != null">
+        identity_id = #{identityId},
+      </if>
+      <if test="carrierUuid != null">
+        carrier_node_id = #{carrierNodeId},
+      </if>
+      <if test="carrierIp != null">
+        carrier_IP = #{carrierIP},
+      </if>
+      <if test="carrierPort != null">
+        carrier_Port = #{carrierPort},
+      </if>
+      <if test="carrierConnStatus != null">
+        carrier_conn_Status = #{carrierConnStatus},
+      </if>
+      <if test="carrierConnTime != null">
+        carrier_conn_Time = #{carrierConnTime},
+      </if>
+      <if test="carrierStatus != null">
+        carrier_status = #{carrierStatus},
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time = #{recUpdateTime},
+      </if>
+    </set>
+  </update>
 </mapper>

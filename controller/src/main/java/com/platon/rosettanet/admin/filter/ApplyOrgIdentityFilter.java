@@ -1,27 +1,34 @@
 package com.platon.rosettanet.admin.filter;
 
 import cn.hutool.json.JSONUtil;
-import com.platon.rosettanet.admin.constant.ControllerConstants;
+import com.platon.rosettanet.admin.common.context.LocalOrgCache;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * 登录过滤器
- * */
+ * @Author liushuyu
+ * @Date 2021/7/14 15:05
+ * @Version
+ * @Desc
+ */
 
-//@Component("loginFilter")
-public class LoginFilter implements Filter {
+/**
+ * 身份标识申请过滤器，如果未申请身份标识，则无法调用本系统服务
+ */
 
-    private static String NO_LOGIN = "您还没有登录";
+//@Component
+public class ApplyOrgIdentityFilter  implements Filter {
+
+    private static String NO_APPLY_ORGIDENTITY = "您还没有申请身份标识";
 
     private static String[] excludeUrls = new String[]{"/api/v1/system/user/login",
-                                        "/api/v1/system/user/logout",
-                                        "/api/v1/system/user/verificationCode"};
+            "/api/v1/system/user/logout",
+            "/api/v1/system/user/verificationCode",
+            "/api/v1/system/user/applyOrgIdentity"};
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -33,13 +40,13 @@ public class LoginFilter implements Filter {
         if(!needFilter){  //需要放行的请求
             filterChain.doFilter(servletRequest,servletResponse);
         }else{ //进行拦截返回错误信息
-            HttpSession session = httpServletRequest.getSession();
-            if(session != null && session.getAttribute(ControllerConstants.USER_ID) != null){//已登录
+            Object localOrgInfo = LocalOrgCache.getLocalOrgInfo();
+            if(localOrgInfo != null){//已申请身份标识
                 filterChain.doFilter(servletRequest,servletResponse);
-            } else {//未登录，则返回错误信息
+            } else {//未申请身份标识，则返回错误信息
                 httpServletResponse.setContentType("application/json; charset=utf-8");
-                JsonResponse noLogin = JsonResponse.fail(NO_LOGIN);
-                httpServletResponse.getWriter().write(JSONUtil.toJsonStr(noLogin));
+                JsonResponse no_apply = JsonResponse.fail(NO_APPLY_ORGIDENTITY);
+                httpServletResponse.getWriter().write(JSONUtil.toJsonStr(no_apply));
                 httpServletResponse.setStatus(401);
                 return;
             }

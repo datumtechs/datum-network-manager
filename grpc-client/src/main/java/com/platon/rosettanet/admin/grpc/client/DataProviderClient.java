@@ -2,7 +2,6 @@ package com.platon.rosettanet.admin.grpc.client;
 
 import cn.hutool.core.util.StrUtil;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.Descriptors;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.entity.DataProviderUploadDataResp;
@@ -113,7 +112,6 @@ public class DataProviderClient {
                 .build();
 
         //3.构建response流观察者
-        DataProviderUploadDataResp resp = new DataProviderUploadDataResp();
         StreamObserver<DataProviderRpcMessage.DownloadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.DownloadReply>() {
             @Override
             public void onNext(DataProviderRpcMessage.DownloadReply downloadReply) {

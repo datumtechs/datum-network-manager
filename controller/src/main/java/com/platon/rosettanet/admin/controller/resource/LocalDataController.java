@@ -144,7 +144,7 @@ public class LocalDataController {
                 //count = localDataService.up(req.getMetaDataId());
                 break;
             default:
-                throw new ApplicationException(StrUtil.format("请输入正确的action：{}",action));
+                throw new ApplicationException(StrUtil.format("请输入正确的action[-1: 删除; 0: 下架; 1: 上架]：{}",action));
         }
         //调试阶段
         count = 1;
@@ -159,7 +159,7 @@ public class LocalDataController {
      */
     @GetMapping("download")
     public void downLoad(HttpServletResponse response, @Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
-        localDataService.downLoad(response,metaDataId);
+        //localDataService.downLoad(response,metaDataId);
     }
 
 }
