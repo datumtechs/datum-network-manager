@@ -1,8 +1,10 @@
 package com.platon.rosettanet.admin.dto.resp;
 
+import com.platon.rosettanet.admin.dao.entity.DataNode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.beans.BeanUtils;
 
 /**
  * @author lyf
@@ -28,5 +30,12 @@ public class LocalDataNodeQueryResp {
     private String externalIp;
 
     private Integer externalPort;
+
+    public static LocalDataNodeQueryResp convert(DataNode dataNode) {
+        LocalDataNodeQueryResp resp = new LocalDataNodeQueryResp();
+        BeanUtils.copyProperties(dataNode, resp);
+        resp.setNodeName(dataNode.getHostName());
+        return resp;
+    }
 
 }

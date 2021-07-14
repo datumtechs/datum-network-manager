@@ -15,9 +15,9 @@ public class PowerJoinTaskReq {
     @NotNull(message = "计算节点ID不能为空")
     private String powerNodeId;
 
-    /** 每页数据条数 */
-    private int pageSize;
-
     /** 起始页号 */
     private int pageNumber;
+
+    /** 每页数据条数 */
+    private int pageSize;
 }

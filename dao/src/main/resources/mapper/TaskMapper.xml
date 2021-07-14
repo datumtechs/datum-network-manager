@@ -21,7 +21,7 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, task_Name, owner_Identity_id, create_At, start_At, auth_At, auth_Status, end_At, 
+    id, task_Name, owner_Identity_id, create_At, start_At, auth_At, auth_Status, end_At,
     status, duration, cost_core, cost_Memory, cost_Bandwidth, alg_Identity_id, reviewed, 
     rec_create_time, rec_update_time
   </sql>
@@ -97,19 +97,18 @@
       <if test="status != null ">
         and status = #{status,jdbcType=VARCHAR}
       </if>
-      <if test="role != null">
+      <if test="role != -1">
         and role = #{role,jdbcType=INTEGER}
       </if>
-      <if test="startDate != null">
-         and create_At <![CDATA[>= ]]> #{startDate,jdbcType=TIMESTAMP}
+      <if test="startTimestamp != null">
+         and create_At <![CDATA[>= ]]> #{startTimestamp,jdbcType=TIMESTAMP}
       </if>
-      <if test="endDate != null">
-        and create_At <![CDATA[<= ]]> #{endDate,jdbcType=TIMESTAMP}
+      <if test="endTimestamp != null">
+        and create_At <![CDATA[<= ]]> #{endTimestamp,jdbcType=TIMESTAMP}
       </if>
       <if test="keyWord != null and keyWord != ''">
         and task_Name like CONCAT(CONCAT('%',#{keyWord}),'%')
       </if>
-
     </where>
     order by create_At
 
@@ -349,6 +348,15 @@
       reviewed = #{reviewed,jdbcType=BIT},
       rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
       rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+
+
+  <update id="updateTaskReviewedById" parameterType="java.util.Map">
+    update task
+    set reviewed = #{reviewed,jdbcType=BIT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 

@@ -39,14 +39,12 @@ public class TaskClient {
 
     /**
      * 查看全部任务详情列表
-     * @param rpcServerHost
-     * @param rpcServerPort
      * @return
      */
-    public TaskDataResp getTaskListData(String rpcServerHost, int rpcServerPort) {
+    public TaskDataResp getTaskListData() {
 
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel(rpcServerHost, rpcServerPort);
+        Channel channel = channelManager.getScheduleServer();
         //2.构造 request
         CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams.newBuilder().build();
         //3.调用rpc服务接口
@@ -69,15 +67,13 @@ public class TaskClient {
 
     /**
      * 查看某个任务的全部事件列表
-     * @param rpcServerHost
-     * @param rpcServerPort
      * @param taskId
      * @return
      */
-    public TaskEventDataResp getTaskEventListData(String rpcServerHost, int rpcServerPort, String taskId) {
+    public TaskEventDataResp getTaskEventListData(String taskId) {
 
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel(rpcServerHost, rpcServerPort);
+        Channel channel = channelManager.getScheduleServer();
         //2.构造 request
         TaskRpcMessage.GetTaskEventListRequest request = TaskRpcMessage.GetTaskEventListRequest.newBuilder().setTaskId(taskId).build();
         //3.调用rpc服务接口
