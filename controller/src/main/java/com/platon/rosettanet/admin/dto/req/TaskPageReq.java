@@ -16,10 +16,10 @@ import javax.validation.constraints.NotNull;
 public class TaskPageReq {
 
     @NotNull(message = "页码号不能为空")
-    Integer pageNumber;
+    int pageNumber;
 
     @NotNull(message = "每页数据条数不能为空")
-    Integer pageSize;
+    int pageSize;
 
     /**
      * 任务状态

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    Page<Task> listTask(String status, Integer role, Long startTimestamp, Long endTimestamp, String keyWord, Integer pageNumber, Integer pageSize);
+    Page<Task> listTask(String status, Integer role, Long startTimestamp, Long endTimestamp, String keyWord, int pageNumber, int pageSize);
 
     Integer selectAllTaskCount();
 

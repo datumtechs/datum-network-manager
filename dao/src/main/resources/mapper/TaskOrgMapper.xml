@@ -21,7 +21,7 @@
     select
     <include refid="Base_Column_List" />
     from task_org
-    where task_id = #{taskId,jdbcType=VARCHAR}
+    where identity_id = #{identityId,jdbcType=VARCHAR}
   </select>
 
 

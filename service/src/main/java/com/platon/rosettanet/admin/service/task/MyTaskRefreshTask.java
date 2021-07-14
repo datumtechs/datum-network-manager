@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Slf4j
 //@Component
-public class TaskRefreshTask {
+public class MyTaskRefreshTask {
 
     @Resource
     private TaskClient taskClient;
@@ -49,7 +49,7 @@ public class TaskRefreshTask {
     @Scheduled(fixedDelay = 2000)
     public void task() {
 
-        TaskDataResp resp = taskClient.getTaskListData("localhost", 80);
+        TaskDataResp resp = taskClient.getTaskListData();
         if (GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
             log.info("获取任务列表,调度服务调用失败");
             return;
@@ -81,7 +81,7 @@ public class TaskRefreshTask {
         //批量TaskEvent获取并更新DB
         List<TaskEvent> taskEventList = new ArrayList<>();
         for (int i = 0; i < taskList.size(); i++) {
-              List<TaskEvent> taskEvents = getRpcTaskEventByTaskId("localhost", 80, taskList.get(i).getId());
+              List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskList.get(i).getId());
               taskEventList.addAll(taskEvents);
         }
         taskEventMapper.insertBatch(taskEventList);
@@ -90,10 +90,9 @@ public class TaskRefreshTask {
     }
 
 
-    private List<TaskEvent> getRpcTaskEventByTaskId(String rpcServerHost, int rpcServerPort, String taskId){
+    private List<TaskEvent> getRpcTaskEventByTaskId(String taskId){
 
-        log.info("insertOrUpdateTaskEvent,调度服务ip:" + rpcServerHost + ",端口号：" + rpcServerPort);
-        TaskEventDataResp resp = taskClient.getTaskEventListData(rpcServerHost, rpcServerPort, taskId);
+        TaskEventDataResp resp = taskClient.getTaskEventListData(taskId);
         if (GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
             log.info("获取数据节点列表,调度服务调用失败");
             return null;
