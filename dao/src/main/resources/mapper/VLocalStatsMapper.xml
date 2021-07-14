@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.VLocalStatsMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.VLocalStats">
+    <result column="carrier_conn_status" jdbcType="VARCHAR" property="carrierConnStatus" />
+    <result column="data_node_count" jdbcType="BIGINT" property="dataNodeCount" />
+    <result column="power_node_count" jdbcType="BIGINT" property="powerNodeCount" />
+    <result column="total_core" jdbcType="DECIMAL" property="totalCore" />
+    <result column="total_memory" jdbcType="DECIMAL" property="totalMemory" />
+    <result column="total_bandwidth" jdbcType="DECIMAL" property="totalBandwidth" />
+    <result column="used_core" jdbcType="DECIMAL" property="usedCore" />
+    <result column="used_memory" jdbcType="DECIMAL" property="usedMemory" />
+    <result column="used_bandwidth" jdbcType="DECIMAL" property="usedBandwidth" />
+    <result column="released_data_file_count" jdbcType="BIGINT" property="releasedDataFileCount" />
+    <result column="unreleased_data_file_count" jdbcType="BIGINT" property="unreleasedDataFileCount" />
+    <result column="task_count" jdbcType="BIGINT" property="taskCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    carrier_conn_status,
+    data_node_count,
+    power_node_count,
+    total_core,total_memory,total_bandwidth,used_core,used_memory,used_bandwidth,
+    released_data_file_count,unreleased_data_file_count,
+    task_count
+  </sql>
+
+  <select id="selectLocalStats" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from v_local_stats
+  </select>
+</mapper>

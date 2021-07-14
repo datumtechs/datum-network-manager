@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.service;
 
 import com.github.pagehelper.Page;
+import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 
 /**
  * @Author liushuyu
@@ -10,5 +11,14 @@ import com.github.pagehelper.Page;
  */
 public interface IndexService {
 
-    //Page<TbPowerNode> nodeList(int pageNumber, int pageSize);
+    /**
+     * 获取本组织的统计数据
+     * @return
+     */
+    VLocalStats getOverview();
+
+    /**
+     * 获取本组织计算节点列表信息
+     */
+    void getPowerNodeList();
 }

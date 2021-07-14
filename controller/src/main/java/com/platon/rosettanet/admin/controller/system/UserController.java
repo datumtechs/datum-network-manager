@@ -21,6 +21,10 @@ import javax.servlet.http.HttpSession;
  * @Desc
  */
 
+/**
+ * 组织身份相关接口
+ */
+
 @RestController
 @RequestMapping("/api/v1/system/user/")
 public class UserController {

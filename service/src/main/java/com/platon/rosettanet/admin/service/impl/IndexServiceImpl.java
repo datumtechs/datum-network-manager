@@ -2,6 +2,8 @@ package com.platon.rosettanet.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.platon.rosettanet.admin.dao.VLocalStatsMapper;
+import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 import com.platon.rosettanet.admin.service.IndexService;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +20,17 @@ import java.util.List;
 @Service
 public class IndexServiceImpl implements IndexService {
 
-    /*@Resource
-    private TbPowerNodeMapper tbPowerNodeMapper;
+    @Resource
+    private VLocalStatsMapper localStatsMapper;
 
     @Override
-    public Page<TbPowerNode> nodeList(int pageNumber, int pageSize) {
-        Page<TbPowerNode> nodePage = PageHelper.startPage(pageNumber, pageSize);
-        List<TbPowerNode> tbPowerNodes = tbPowerNodeMapper.selectAll();
-        return nodePage;
-    }*/
+    public VLocalStats getOverview() {
+        VLocalStats vLocalStats = localStatsMapper.selectLocalStats();
+        return vLocalStats;
+    }
+
+    @Override
+    public void getPowerNodeList() {
+
+    }
 }

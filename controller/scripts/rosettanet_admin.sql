@@ -340,55 +340,82 @@ CREATE TABLE `global_power` (
 
 
 -- 用view来代替, 统计首页需要展示的本组织的相关数据。
--- 其中本地算力统计数，也可以由global_power中获取
-create or replace view v_local_stats as
-select dataHost.data_host_count, powerHost.power_host_count, powerStats.total_core, powerStats.total_memory, powerStats.total_bandwidth,
-    releasedFile.released_data_file_count, unreleasedFile.unreleased_data_file_count, runingTask.runingTaskCount
-from
--- 本地数据host数
-(
-    select count(id) as data_host_count
-    from local_data_host
-    where status='enabled'
+CREATE
+OR REPLACE VIEW v_local_stats AS SELECT
+	carrierNode.carrier_conn_status,
+	dataNode.data_node_count,
+	powerNode.power_node_count,
+	powerStats.total_core,
+	powerStats.total_memory,
+	powerStats.total_bandwidth,
+	powerStats.used_core,
+	powerStats.used_memory,
+	powerStats.used_bandwidth,
+	releasedFile.released_data_file_count,
+	unreleasedFile.unreleased_data_file_count,
+	runingTask.task_count
+FROM
+	-- 调度服务状态
+	(
+		SELECT
+			carrier_conn_Status
+		FROM
+			local_org
+	) carrierNode,
+	-- 本地数据节点数
+	(
+		SELECT
+			count(id) AS data_node_count
+		FROM
+			local_data_node
+	) dataNode,
+	-- 本地计算节点数
+	(
+		SELECT
+			count(id) AS power_node_count
+		FROM
+			local_power_node
+	) powerNode,
+	-- 本地算力统计数
+	(
+		SELECT
+			sum(core) AS total_core,
+			sum(memory) AS total_memory,
+			sum(bandwidth) AS total_bandwidth,
+			sum(used_core) AS used_core,
+			sum(used_memory) AS used_memory,
+			sum(used_bandwidth) AS used_bandwidth
+		FROM
+			local_power_node
+	) powerStats,
+	-- 本地已上架数据文件数
+	(
+		SELECT
+			count(id) AS released_data_file_count
+		FROM
+			local_data_file
+		WHERE
+			STATUS = 'released'
+	) releasedFile,
+	-- 本地未上架数据文件数
+	(
+		SELECT
+			count(id) AS unreleased_data_file_count
+		FROM
+			local_data_file
+		WHERE
+			STATUS != 'released'
+	) unreleasedFile,
+	-- 本组织算力参与的正在运行的任务
+	(
+		SELECT
+			count(task_id) task_count
+		FROM
+			local_power_join_task
+		GROUP BY
+			task_id
+	) runingTask;
 
-) dataHost,
-
--- 本地算力host数
-(
-    select count(id) as power_host_count
-    from local_power_host
-    where status='enabled'
-) powerHost,
-
--- 本地算力统计数
-(
-    select sum(core) as total_core, sum(memory) as total_memory, sum(bandwidth) as total_bandwidth
-    from local_power_host
-    where status='enabled'
-) powerStats,
-
--- 本地已上架数据文件数
-(
-    select count(id) as released_data_file_count
-    from local_data_file
-    where status='released'
-
-) releasedFile,
-
--- 本地未上架数据文件数
-(
-    select count(id) as unreleased_data_file_count
-    from local_data_file
-    where status!='released'
-
-) unreleasedFile,
-
--- 本组织算力参与的正在运行的任务
-(
-    select count(tpp.task_id) as runingTaskCount
-    from task_power_provider tpp, local_org lo, task t
-    where tpp.identity_id = lo.identity_id and tpp.task_id = t.id and t.status='running'
-
-) runingTask;;
+;
 
 DELIMITER ;
