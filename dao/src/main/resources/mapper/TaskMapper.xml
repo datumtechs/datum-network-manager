@@ -145,21 +145,21 @@
   </insert>
 
 
-  <insert id="insertBatch" parameterType="list">
-    replace into task (id, task_Name, owner_Identity_id,
+  <insert id="insertBatch" parameterType="java.util.List">
+    replace into task (`id`, task_Name, owner_Identity_id,
     create_At, start_At, auth_At,
     auth_Status, end_At, status,
     duration, cost_core, cost_Memory,
     cost_Bandwidth, alg_Identity_id, reviewed,
     rec_create_time, rec_update_time)
     values
-    <foreach collection ="list" item="task" separator =",">
-      (#{id,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR},
-      #{createAt,jdbcType=TIMESTAMP}, #{startAt,jdbcType=TIMESTAMP}, #{authAt,jdbcType=TIMESTAMP},
-      #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
-      #{duration,jdbcType=TIMESTAMP}, #{costCore,jdbcType=INTEGER}, #{costMemory,jdbcType=BIGINT},
-      #{costBandwidth,jdbcType=BIGINT}, #{algIdentityId,jdbcType=VARCHAR}, #{reviewed,jdbcType=BIT},
-      #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
+    <foreach collection ="list" item="item" index="index">
+      (#{item.id,jdbcType=VARCHAR}, #{item.taskName,jdbcType=VARCHAR}, #{item.ownerIdentityId,jdbcType=VARCHAR},
+      #{item.createAt,jdbcType=TIMESTAMP}, #{item.startAt,jdbcType=TIMESTAMP}, #{item.authAt,jdbcType=TIMESTAMP},
+      #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=VARCHAR},
+      #{item.duration,jdbcType=TIMESTAMP}, #{item.costCore,jdbcType=INTEGER}, #{item.costMemory,jdbcType=BIGINT},
+      #{item.costBandwidth,jdbcType=BIGINT}, #{item.algIdentityId,jdbcType=VARCHAR}, #{item.reviewed,jdbcType=BIT},
+      #{item.recCreateTime,jdbcType=TIMESTAMP}, #{item.recUpdateTime,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
 

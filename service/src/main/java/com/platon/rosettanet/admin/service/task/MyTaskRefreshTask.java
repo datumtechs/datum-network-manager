@@ -54,8 +54,9 @@ public class MyTaskRefreshTask {
             log.info("获取任务列表,调度服务调用失败");
             return;
         }
-
-        List<Task> taskList = filterTaskListPendingAndRunning(resp.getTaskList());
+        //int allTaskCount = taskMapper.selectAllTaskCount();
+        //List<Task> taskList = (allTaskCount == 0) ? resp.getTaskList() : filterTaskListPendingAndRunning(resp.getTaskList());
+        List<Task> taskList =  resp.getTaskList();
         List<TaskDataReceiver> dataReceiverList = new ArrayList<>();
         List<TaskPowerProvider> powerProviderList = new ArrayList<>();
         List<TaskResultReceiver> resultReceiverList = new ArrayList<>();

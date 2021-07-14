@@ -119,11 +119,11 @@ public class TaskClient {
             TaskRpcMessage.TaskDetailShow  taskDetail = taskDetailList.get(i).getInformation();
             String taskId =  taskDetail.getTaskId();
             String taskName =  taskDetail.getTaskName();
-            CommonMessage.OrganizationIdentityInfo owner = taskDetail.getOwner();
-            CommonMessage.OrganizationIdentityInfo algoSupplier = taskDetail.getAlgoSupplier();
+            CommonMessage.TaskOrganizationIdentityInfo owner = taskDetail.getOwner();
+            CommonMessage.TaskOrganizationIdentityInfo algoSupplier = taskDetail.getAlgoSupplier();
             List<TaskRpcMessage.TaskDataSupplierShow> dataSupplierList = taskDetail.getDataSupplierList();
             List<TaskRpcMessage.TaskPowerSupplierShow> powerSupplierList = taskDetail.getPowerSupplierList();
-            List<CommonMessage.OrganizationIdentityInfo> receiverList = taskDetail.getReceiversList();
+            List<CommonMessage.TaskOrganizationIdentityInfo> receiverList = taskDetail.getReceiversList();
             Long createAt = taskDetail.getCreateAt();
             Long startAt = taskDetail.getStartAt();
             Long endAt = taskDetail.getEndAt();
@@ -177,7 +177,7 @@ public class TaskClient {
 
             //任务结果方receiverList
             List<TaskResultReceiver> receivers = new ArrayList<>();
-            for (CommonMessage.OrganizationIdentityInfo receiver : receiverList) {
+            for (CommonMessage.TaskOrganizationIdentityInfo receiver : receiverList) {
                 TaskResultReceiver resultReceiver = new TaskResultReceiver();
                 resultReceiver.setTaskId(taskId);
                 resultReceiver.setConsumerIdentityId(receiver.getIdentityId());
