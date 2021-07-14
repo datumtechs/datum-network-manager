@@ -207,8 +207,8 @@ message ReportTaskResourceExpenseRequest {
 message ReportUpFileSummaryRequest {
     string origin_id = 1;    // 被成功上传的原始文件的 Id
     string file_path = 2;    // 被成功上传的原始文件的相对 path
-    string ip = 3;           // Fighter 的 grpc server IP
-    string port = 4;         // Fighter 的 grpc server PORT
+    string ip        = 3;           // Fighter 的 grpc server IP
+    string port      = 4;         // Fighter 的 grpc server PORT
 }
 
 

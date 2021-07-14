@@ -31,6 +31,12 @@ message OrganizationIdentityInfo  {
     string identity_id = 3;                    // 组织的身份标识Id
 }
 
+message TaskOrganizationIdentityInfo {
+    string party_id    = 1;                       // 任务里面定义的 (p0 -> pN 方 ...)
+    string name        = 2;                           // 组织名称
+    string node_id     = 3;                        // 组织中调度服务的 nodeId
+    string identity_id = 4;                    // 组织的身份标识Id
+}
 
 message DeleteRegisteredNodeRequest {
     string id  = 1;                            // 种子节点的唯一Id

@@ -2669,6 +2669,1168 @@ public final class CommonMessage {
 
   }
 
+  public interface TaskOrganizationIdentityInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.TaskOrganizationIdentityInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 任务里面定义的 (p0 -&gt; pN 方 ...)
+     * </pre>
+     *
+     * <code>string party_id = 1;</code>
+     * @return The partyId.
+     */
+    java.lang.String getPartyId();
+    /**
+     * <pre>
+     * 任务里面定义的 (p0 -&gt; pN 方 ...)
+     * </pre>
+     *
+     * <code>string party_id = 1;</code>
+     * @return The bytes for partyId.
+     */
+    com.google.protobuf.ByteString
+        getPartyIdBytes();
+
+    /**
+     * <pre>
+     * 组织名称
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The name.
+     */
+    java.lang.String getName();
+    /**
+     * <pre>
+     * 组织名称
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The bytes for name.
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <pre>
+     * 组织中调度服务的 nodeId
+     * </pre>
+     *
+     * <code>string node_id = 3;</code>
+     * @return The nodeId.
+     */
+    java.lang.String getNodeId();
+    /**
+     * <pre>
+     * 组织中调度服务的 nodeId
+     * </pre>
+     *
+     * <code>string node_id = 3;</code>
+     * @return The bytes for nodeId.
+     */
+    com.google.protobuf.ByteString
+        getNodeIdBytes();
+
+    /**
+     * <pre>
+     * 组织的身份标识Id
+     * </pre>
+     *
+     * <code>string identity_id = 4;</code>
+     * @return The identityId.
+     */
+    java.lang.String getIdentityId();
+    /**
+     * <pre>
+     * 组织的身份标识Id
+     * </pre>
+     *
+     * <code>string identity_id = 4;</code>
+     * @return The bytes for identityId.
+     */
+    com.google.protobuf.ByteString
+        getIdentityIdBytes();
+  }
+  /**
+   * Protobuf type {@code rpcapi.TaskOrganizationIdentityInfo}
+   */
+  public static final class TaskOrganizationIdentityInfo extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.TaskOrganizationIdentityInfo)
+      TaskOrganizationIdentityInfoOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TaskOrganizationIdentityInfo.newBuilder() to construct.
+    private TaskOrganizationIdentityInfo(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TaskOrganizationIdentityInfo() {
+      partyId_ = "";
+      name_ = "";
+      nodeId_ = "";
+      identityId_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TaskOrganizationIdentityInfo();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TaskOrganizationIdentityInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              partyId_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              nodeId_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              identityId_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_TaskOrganizationIdentityInfo_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_TaskOrganizationIdentityInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.class, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder.class);
+    }
+
+    public static final int PARTY_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object partyId_;
+    /**
+     * <pre>
+     * 任务里面定义的 (p0 -&gt; pN 方 ...)
+     * </pre>
+     *
+     * <code>string party_id = 1;</code>
+     * @return The partyId.
+     */
+    @java.lang.Override
+    public java.lang.String getPartyId() {
+      java.lang.Object ref = partyId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        partyId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务里面定义的 (p0 -&gt; pN 方 ...)
+     * </pre>
+     *
+     * <code>string party_id = 1;</code>
+     * @return The bytes for partyId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPartyIdBytes() {
+      java.lang.Object ref = partyId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        partyId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NAME_FIELD_NUMBER = 2;
+    private volatile java.lang.Object name_;
+    /**
+     * <pre>
+     * 组织名称
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The name.
+     */
+    @java.lang.Override
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 组织名称
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The bytes for name.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NODE_ID_FIELD_NUMBER = 3;
+    private volatile java.lang.Object nodeId_;
+    /**
+     * <pre>
+     * 组织中调度服务的 nodeId
+     * </pre>
+     *
+     * <code>string node_id = 3;</code>
+     * @return The nodeId.
+     */
+    @java.lang.Override
+    public java.lang.String getNodeId() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        nodeId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 组织中调度服务的 nodeId
+     * </pre>
+     *
+     * <code>string node_id = 3;</code>
+     * @return The bytes for nodeId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getNodeIdBytes() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nodeId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int IDENTITY_ID_FIELD_NUMBER = 4;
+    private volatile java.lang.Object identityId_;
+    /**
+     * <pre>
+     * 组织的身份标识Id
+     * </pre>
+     *
+     * <code>string identity_id = 4;</code>
+     * @return The identityId.
+     */
+    @java.lang.Override
+    public java.lang.String getIdentityId() {
+      java.lang.Object ref = identityId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        identityId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 组织的身份标识Id
+     * </pre>
+     *
+     * <code>string identity_id = 4;</code>
+     * @return The bytes for identityId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdentityIdBytes() {
+      java.lang.Object ref = identityId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        identityId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getPartyIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, partyId_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
+      }
+      if (!getNodeIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, nodeId_);
+      }
+      if (!getIdentityIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, identityId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getPartyIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, partyId_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
+      }
+      if (!getNodeIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, nodeId_);
+      }
+      if (!getIdentityIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, identityId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo other = (com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo) obj;
+
+      if (!getPartyId()
+          .equals(other.getPartyId())) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!getNodeId()
+          .equals(other.getNodeId())) return false;
+      if (!getIdentityId()
+          .equals(other.getIdentityId())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PARTY_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getPartyId().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + NODE_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getNodeId().hashCode();
+      hash = (37 * hash) + IDENTITY_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getIdentityId().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code rpcapi.TaskOrganizationIdentityInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.TaskOrganizationIdentityInfo)
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_TaskOrganizationIdentityInfo_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_TaskOrganizationIdentityInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.class, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        partyId_ = "";
+
+        name_ = "";
+
+        nodeId_ = "";
+
+        identityId_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_TaskOrganizationIdentityInfo_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo build() {
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo result = new com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo(this);
+        result.partyId_ = partyId_;
+        result.name_ = name_;
+        result.nodeId_ = nodeId_;
+        result.identityId_ = identityId_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance()) return this;
+        if (!other.getPartyId().isEmpty()) {
+          partyId_ = other.partyId_;
+          onChanged();
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (!other.getNodeId().isEmpty()) {
+          nodeId_ = other.nodeId_;
+          onChanged();
+        }
+        if (!other.getIdentityId().isEmpty()) {
+          identityId_ = other.identityId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object partyId_ = "";
+      /**
+       * <pre>
+       * 任务里面定义的 (p0 -&gt; pN 方 ...)
+       * </pre>
+       *
+       * <code>string party_id = 1;</code>
+       * @return The partyId.
+       */
+      public java.lang.String getPartyId() {
+        java.lang.Object ref = partyId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          partyId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务里面定义的 (p0 -&gt; pN 方 ...)
+       * </pre>
+       *
+       * <code>string party_id = 1;</code>
+       * @return The bytes for partyId.
+       */
+      public com.google.protobuf.ByteString
+          getPartyIdBytes() {
+        java.lang.Object ref = partyId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          partyId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务里面定义的 (p0 -&gt; pN 方 ...)
+       * </pre>
+       *
+       * <code>string party_id = 1;</code>
+       * @param value The partyId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPartyId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        partyId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务里面定义的 (p0 -&gt; pN 方 ...)
+       * </pre>
+       *
+       * <code>string party_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPartyId() {
+        
+        partyId_ = getDefaultInstance().getPartyId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务里面定义的 (p0 -&gt; pN 方 ...)
+       * </pre>
+       *
+       * <code>string party_id = 1;</code>
+       * @param value The bytes for partyId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPartyIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        partyId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <pre>
+       * 组织名称
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @return The name.
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 组织名称
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @return The bytes for name.
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 组织名称
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 组织名称
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 组织名称
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object nodeId_ = "";
+      /**
+       * <pre>
+       * 组织中调度服务的 nodeId
+       * </pre>
+       *
+       * <code>string node_id = 3;</code>
+       * @return The nodeId.
+       */
+      public java.lang.String getNodeId() {
+        java.lang.Object ref = nodeId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          nodeId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 组织中调度服务的 nodeId
+       * </pre>
+       *
+       * <code>string node_id = 3;</code>
+       * @return The bytes for nodeId.
+       */
+      public com.google.protobuf.ByteString
+          getNodeIdBytes() {
+        java.lang.Object ref = nodeId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nodeId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 组织中调度服务的 nodeId
+       * </pre>
+       *
+       * <code>string node_id = 3;</code>
+       * @param value The nodeId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 组织中调度服务的 nodeId
+       * </pre>
+       *
+       * <code>string node_id = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNodeId() {
+        
+        nodeId_ = getDefaultInstance().getNodeId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 组织中调度服务的 nodeId
+       * </pre>
+       *
+       * <code>string node_id = 3;</code>
+       * @param value The bytes for nodeId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object identityId_ = "";
+      /**
+       * <pre>
+       * 组织的身份标识Id
+       * </pre>
+       *
+       * <code>string identity_id = 4;</code>
+       * @return The identityId.
+       */
+      public java.lang.String getIdentityId() {
+        java.lang.Object ref = identityId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          identityId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 组织的身份标识Id
+       * </pre>
+       *
+       * <code>string identity_id = 4;</code>
+       * @return The bytes for identityId.
+       */
+      public com.google.protobuf.ByteString
+          getIdentityIdBytes() {
+        java.lang.Object ref = identityId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          identityId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 组织的身份标识Id
+       * </pre>
+       *
+       * <code>string identity_id = 4;</code>
+       * @param value The identityId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdentityId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        identityId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 组织的身份标识Id
+       * </pre>
+       *
+       * <code>string identity_id = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIdentityId() {
+        
+        identityId_ = getDefaultInstance().getIdentityId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 组织的身份标识Id
+       * </pre>
+       *
+       * <code>string identity_id = 4;</code>
+       * @param value The bytes for identityId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdentityIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        identityId_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.TaskOrganizationIdentityInfo)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.TaskOrganizationIdentityInfo)
+    private static final com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TaskOrganizationIdentityInfo>
+        PARSER = new com.google.protobuf.AbstractParser<TaskOrganizationIdentityInfo>() {
+      @java.lang.Override
+      public TaskOrganizationIdentityInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TaskOrganizationIdentityInfo(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TaskOrganizationIdentityInfo> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TaskOrganizationIdentityInfo> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface DeleteRegisteredNodeRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:rpcapi.DeleteRegisteredNodeRequest)
       com.google.protobuf.MessageOrBuilder {
@@ -4401,6 +5563,11 @@ public final class CommonMessage {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_OrganizationIdentityInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_TaskOrganizationIdentityInfo_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_TaskOrganizationIdentityInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -4432,12 +5599,14 @@ public final class CommonMessage {
       " \001(\004\">\n\tPurePower\022\013\n\003mem\030\001 \001(\004\022\021\n\tproces" +
       "sor\030\002 \001(\004\022\021\n\tbandwidth\030\003 \001(\004\"N\n\030Organiza" +
       "tionIdentityInfo\022\014\n\004name\030\001 \001(\t\022\017\n\007node_i" +
-      "d\030\002 \001(\t\022\023\n\013identity_id\030\003 \001(\t\")\n\033DeleteRe" +
-      "gisteredNodeRequest\022\n\n\002id\030\001 \001(\t\"\020\n\016Empty" +
-      "GetParams\"1\n\022SimpleResponseCode\022\016\n\006statu" +
-      "s\030\001 \001(\005\022\013\n\003msg\030\002 \001(\tB9\n(com.platon.roset" +
-      "tanet.admin.grpc.serviceB\rCommonMessageb" +
-      "\006proto3"
+      "d\030\002 \001(\t\022\023\n\013identity_id\030\003 \001(\t\"d\n\034TaskOrga" +
+      "nizationIdentityInfo\022\020\n\010party_id\030\001 \001(\t\022\014" +
+      "\n\004name\030\002 \001(\t\022\017\n\007node_id\030\003 \001(\t\022\023\n\013identit" +
+      "y_id\030\004 \001(\t\")\n\033DeleteRegisteredNodeReques" +
+      "t\022\n\n\002id\030\001 \001(\t\"\020\n\016EmptyGetParams\"1\n\022Simpl" +
+      "eResponseCode\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001" +
+      "(\tB9\n(com.platon.rosettanet.admin.grpc.s" +
+      "erviceB\rCommonMessageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -4461,20 +5630,26 @@ public final class CommonMessage {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_OrganizationIdentityInfo_descriptor,
         new java.lang.String[] { "Name", "NodeId", "IdentityId", });
-    internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor =
+    internal_static_rpcapi_TaskOrganizationIdentityInfo_descriptor =
       getDescriptor().getMessageTypes().get(3);
+    internal_static_rpcapi_TaskOrganizationIdentityInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_TaskOrganizationIdentityInfo_descriptor,
+        new java.lang.String[] { "PartyId", "Name", "NodeId", "IdentityId", });
+    internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_rpcapi_DeleteRegisteredNodeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor,
         new java.lang.String[] { "Id", });
     internal_static_rpcapi_EmptyGetParams_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_rpcapi_EmptyGetParams_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_EmptyGetParams_descriptor,
         new java.lang.String[] { });
     internal_static_rpcapi_SimpleResponseCode_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_rpcapi_SimpleResponseCode_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_SimpleResponseCode_descriptor,

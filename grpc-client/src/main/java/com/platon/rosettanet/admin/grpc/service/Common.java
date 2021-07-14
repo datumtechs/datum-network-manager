@@ -31,11 +31,19 @@ public final class Common {
         getTaskIdBytes();
 
     /**
+     * <pre>
+     * 目前即算法本身
+     * </pre>
+     *
      * <code>string contract_id = 2;</code>
      * @return The contractId.
      */
     java.lang.String getContractId();
     /**
+     * <pre>
+     * 目前即算法本身
+     * </pre>
+     *
      * <code>string contract_id = 2;</code>
      * @return The bytes for contractId.
      */
@@ -449,23 +457,23 @@ public final class Common {
 
       /**
        * <pre>
-       * 达成共识后为每方分配的唯一标识
+       * 达成共识后为每个参与方分配的唯一标识
        * </pre>
        *
-       * <code>string party = 3;</code>
-       * @return The party.
+       * <code>string party_id = 3;</code>
+       * @return The partyId.
        */
-      java.lang.String getParty();
+      java.lang.String getPartyId();
       /**
        * <pre>
-       * 达成共识后为每方分配的唯一标识
+       * 达成共识后为每个参与方分配的唯一标识
        * </pre>
        *
-       * <code>string party = 3;</code>
-       * @return The bytes for party.
+       * <code>string party_id = 3;</code>
+       * @return The bytes for partyId.
        */
       com.google.protobuf.ByteString
-          getPartyBytes();
+          getPartyIdBytes();
 
       /**
        * <pre>
@@ -505,7 +513,7 @@ public final class Common {
       }
       private Peer() {
         ip_ = "";
-        party_ = "";
+        partyId_ = "";
         name_ = "";
       }
 
@@ -553,7 +561,7 @@ public final class Common {
               case 26: {
                 java.lang.String s = input.readStringRequireUtf8();
 
-                party_ = s;
+                partyId_ = s;
                 break;
               }
               case 34: {
@@ -643,46 +651,46 @@ public final class Common {
         return port_;
       }
 
-      public static final int PARTY_FIELD_NUMBER = 3;
-      private volatile java.lang.Object party_;
+      public static final int PARTY_ID_FIELD_NUMBER = 3;
+      private volatile java.lang.Object partyId_;
       /**
        * <pre>
-       * 达成共识后为每方分配的唯一标识
+       * 达成共识后为每个参与方分配的唯一标识
        * </pre>
        *
-       * <code>string party = 3;</code>
-       * @return The party.
+       * <code>string party_id = 3;</code>
+       * @return The partyId.
        */
       @java.lang.Override
-      public java.lang.String getParty() {
-        java.lang.Object ref = party_;
+      public java.lang.String getPartyId() {
+        java.lang.Object ref = partyId_;
         if (ref instanceof java.lang.String) {
           return (java.lang.String) ref;
         } else {
           com.google.protobuf.ByteString bs = 
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          party_ = s;
+          partyId_ = s;
           return s;
         }
       }
       /**
        * <pre>
-       * 达成共识后为每方分配的唯一标识
+       * 达成共识后为每个参与方分配的唯一标识
        * </pre>
        *
-       * <code>string party = 3;</code>
-       * @return The bytes for party.
+       * <code>string party_id = 3;</code>
+       * @return The bytes for partyId.
        */
       @java.lang.Override
       public com.google.protobuf.ByteString
-          getPartyBytes() {
-        java.lang.Object ref = party_;
+          getPartyIdBytes() {
+        java.lang.Object ref = partyId_;
         if (ref instanceof java.lang.String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          party_ = b;
+          partyId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
@@ -755,8 +763,8 @@ public final class Common {
         if (port_ != 0) {
           output.writeInt32(2, port_);
         }
-        if (!getPartyBytes().isEmpty()) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 3, party_);
+        if (!getPartyIdBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 3, partyId_);
         }
         if (!getNameBytes().isEmpty()) {
           com.google.protobuf.GeneratedMessageV3.writeString(output, 4, name_);
@@ -777,8 +785,8 @@ public final class Common {
           size += com.google.protobuf.CodedOutputStream
             .computeInt32Size(2, port_);
         }
-        if (!getPartyBytes().isEmpty()) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, party_);
+        if (!getPartyIdBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, partyId_);
         }
         if (!getNameBytes().isEmpty()) {
           size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, name_);
@@ -802,8 +810,8 @@ public final class Common {
             .equals(other.getIp())) return false;
         if (getPort()
             != other.getPort()) return false;
-        if (!getParty()
-            .equals(other.getParty())) return false;
+        if (!getPartyId()
+            .equals(other.getPartyId())) return false;
         if (!getName()
             .equals(other.getName())) return false;
         if (!unknownFields.equals(other.unknownFields)) return false;
@@ -821,8 +829,8 @@ public final class Common {
         hash = (53 * hash) + getIp().hashCode();
         hash = (37 * hash) + PORT_FIELD_NUMBER;
         hash = (53 * hash) + getPort();
-        hash = (37 * hash) + PARTY_FIELD_NUMBER;
-        hash = (53 * hash) + getParty().hashCode();
+        hash = (37 * hash) + PARTY_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getPartyId().hashCode();
         hash = (37 * hash) + NAME_FIELD_NUMBER;
         hash = (53 * hash) + getName().hashCode();
         hash = (29 * hash) + unknownFields.hashCode();
@@ -966,7 +974,7 @@ public final class Common {
 
           port_ = 0;
 
-          party_ = "";
+          partyId_ = "";
 
           name_ = "";
 
@@ -998,7 +1006,7 @@ public final class Common {
           com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq.Peer result = new com.platon.rosettanet.admin.grpc.service.Common.TaskReadyGoReq.Peer(this);
           result.ip_ = ip_;
           result.port_ = port_;
-          result.party_ = party_;
+          result.partyId_ = partyId_;
           result.name_ = name_;
           onBuilt();
           return result;
@@ -1055,8 +1063,8 @@ public final class Common {
           if (other.getPort() != 0) {
             setPort(other.getPort());
           }
-          if (!other.getParty().isEmpty()) {
-            party_ = other.party_;
+          if (!other.getPartyId().isEmpty()) {
+            partyId_ = other.partyId_;
             onChanged();
           }
           if (!other.getName().isEmpty()) {
@@ -1199,22 +1207,22 @@ public final class Common {
           return this;
         }
 
-        private java.lang.Object party_ = "";
+        private java.lang.Object partyId_ = "";
         /**
          * <pre>
-         * 达成共识后为每方分配的唯一标识
+         * 达成共识后为每个参与方分配的唯一标识
          * </pre>
          *
-         * <code>string party = 3;</code>
-         * @return The party.
+         * <code>string party_id = 3;</code>
+         * @return The partyId.
          */
-        public java.lang.String getParty() {
-          java.lang.Object ref = party_;
+        public java.lang.String getPartyId() {
+          java.lang.Object ref = partyId_;
           if (!(ref instanceof java.lang.String)) {
             com.google.protobuf.ByteString bs =
                 (com.google.protobuf.ByteString) ref;
             java.lang.String s = bs.toStringUtf8();
-            party_ = s;
+            partyId_ = s;
             return s;
           } else {
             return (java.lang.String) ref;
@@ -1222,20 +1230,20 @@ public final class Common {
         }
         /**
          * <pre>
-         * 达成共识后为每方分配的唯一标识
+         * 达成共识后为每个参与方分配的唯一标识
          * </pre>
          *
-         * <code>string party = 3;</code>
-         * @return The bytes for party.
+         * <code>string party_id = 3;</code>
+         * @return The bytes for partyId.
          */
         public com.google.protobuf.ByteString
-            getPartyBytes() {
-          java.lang.Object ref = party_;
+            getPartyIdBytes() {
+          java.lang.Object ref = partyId_;
           if (ref instanceof String) {
             com.google.protobuf.ByteString b = 
                 com.google.protobuf.ByteString.copyFromUtf8(
                     (java.lang.String) ref);
-            party_ = b;
+            partyId_ = b;
             return b;
           } else {
             return (com.google.protobuf.ByteString) ref;
@@ -1243,54 +1251,54 @@ public final class Common {
         }
         /**
          * <pre>
-         * 达成共识后为每方分配的唯一标识
+         * 达成共识后为每个参与方分配的唯一标识
          * </pre>
          *
-         * <code>string party = 3;</code>
-         * @param value The party to set.
+         * <code>string party_id = 3;</code>
+         * @param value The partyId to set.
          * @return This builder for chaining.
          */
-        public Builder setParty(
+        public Builder setPartyId(
             java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
   
-          party_ = value;
+          partyId_ = value;
           onChanged();
           return this;
         }
         /**
          * <pre>
-         * 达成共识后为每方分配的唯一标识
+         * 达成共识后为每个参与方分配的唯一标识
          * </pre>
          *
-         * <code>string party = 3;</code>
+         * <code>string party_id = 3;</code>
          * @return This builder for chaining.
          */
-        public Builder clearParty() {
+        public Builder clearPartyId() {
           
-          party_ = getDefaultInstance().getParty();
+          partyId_ = getDefaultInstance().getPartyId();
           onChanged();
           return this;
         }
         /**
          * <pre>
-         * 达成共识后为每方分配的唯一标识
+         * 达成共识后为每个参与方分配的唯一标识
          * </pre>
          *
-         * <code>string party = 3;</code>
-         * @param value The bytes for party to set.
+         * <code>string party_id = 3;</code>
+         * @param value The bytes for partyId to set.
          * @return This builder for chaining.
          */
-        public Builder setPartyBytes(
+        public Builder setPartyIdBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
           
-          party_ = value;
+          partyId_ = value;
           onChanged();
           return this;
         }
@@ -1484,6 +1492,10 @@ public final class Common {
     public static final int CONTRACT_ID_FIELD_NUMBER = 2;
     private volatile java.lang.Object contractId_;
     /**
+     * <pre>
+     * 目前即算法本身
+     * </pre>
+     *
      * <code>string contract_id = 2;</code>
      * @return The contractId.
      */
@@ -1501,6 +1513,10 @@ public final class Common {
       }
     }
     /**
+     * <pre>
+     * 目前即算法本身
+     * </pre>
+     *
      * <code>string contract_id = 2;</code>
      * @return The bytes for contractId.
      */
@@ -2504,6 +2520,10 @@ public final class Common {
 
       private java.lang.Object contractId_ = "";
       /**
+       * <pre>
+       * 目前即算法本身
+       * </pre>
+       *
        * <code>string contract_id = 2;</code>
        * @return The contractId.
        */
@@ -2520,6 +2540,10 @@ public final class Common {
         }
       }
       /**
+       * <pre>
+       * 目前即算法本身
+       * </pre>
+       *
        * <code>string contract_id = 2;</code>
        * @return The bytes for contractId.
        */
@@ -2537,6 +2561,10 @@ public final class Common {
         }
       }
       /**
+       * <pre>
+       * 目前即算法本身
+       * </pre>
+       *
        * <code>string contract_id = 2;</code>
        * @param value The contractId to set.
        * @return This builder for chaining.
@@ -2552,6 +2580,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * 目前即算法本身
+       * </pre>
+       *
        * <code>string contract_id = 2;</code>
        * @return This builder for chaining.
        */
@@ -2562,6 +2594,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * 目前即算法本身
+       * </pre>
+       *
        * <code>string contract_id = 2;</code>
        * @param value The bytes for contractId to set.
        * @return This builder for chaining.
@@ -4315,18 +4351,18 @@ public final class Common {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024fighter/common.proto\022\006common\"\257\002\n\016TaskR" +
+      "\n\024fighter/common.proto\022\006common\"\262\002\n\016TaskR" +
       "eadyGoReq\022\017\n\007task_id\030\001 \001(\t\022\023\n\013contract_i" +
       "d\030\002 \001(\t\022\017\n\007data_id\030\003 \001(\t\022\020\n\010party_id\030\004 \001" +
       "(\t\022\016\n\006env_id\030\005 \001(\t\022*\n\005peers\030\006 \003(\0132\033.comm" +
       "on.TaskReadyGoReq.Peer\022\024\n\014contract_cfg\030\007" +
       " \001(\t\022\022\n\ndata_party\030\010 \003(\t\022\031\n\021computation_" +
-      "party\030\t \003(\t\022\024\n\014result_party\030\n \003(\t\032=\n\004Pee" +
-      "r\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\022\r\n\005party\030\003 \001" +
-      "(\t\022\014\n\004name\030\004 \001(\t\"+\n\020TaskReadyGoReply\022\n\n\002" +
-      "ok\030\001 \001(\010\022\013\n\003msg\030\002 \001(\tB2\n(com.platon.rose" +
-      "ttanet.admin.grpc.serviceB\006Commonb\006proto" +
-      "3"
+      "party\030\t \003(\t\022\024\n\014result_party\030\n \003(\t\032@\n\004Pee" +
+      "r\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030\002 \001(\005\022\020\n\010party_id\030" +
+      "\003 \001(\t\022\014\n\004name\030\004 \001(\t\"+\n\020TaskReadyGoReply\022" +
+      "\n\n\002ok\030\001 \001(\010\022\013\n\003msg\030\002 \001(\tB2\n(com.platon.r" +
+      "osettanet.admin.grpc.serviceB\006Commonb\006pr" +
+      "oto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -4343,7 +4379,7 @@ public final class Common {
     internal_static_common_TaskReadyGoReq_Peer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_common_TaskReadyGoReq_Peer_descriptor,
-        new java.lang.String[] { "Ip", "Port", "Party", "Name", });
+        new java.lang.String[] { "Ip", "Port", "PartyId", "Name", });
     internal_static_common_TaskReadyGoReply_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_common_TaskReadyGoReply_fieldAccessorTable = new

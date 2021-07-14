@@ -26,29 +26,29 @@ import "google/api/annotations.proto";
 
 // 任务详情 (供展示用)
 message TaskDetailShow {
-    string                            task_id        = 1;                         // 任务Id
-    string                            task_name      = 2;                       // 任务名称
-    OrganizationIdentityInfo          owner          = 3;                           // 任务发起发
-    OrganizationIdentityInfo          algo_supplier  = 4;                   // 算法提供方
-    repeated TaskDataSupplierShow     data_supplier  = 5;                   // 数据提供方
-    repeated TaskPowerSupplierShow    power_supplier = 6;                  // 算力提供方
-    repeated OrganizationIdentityInfo receivers      = 7;                       // 任务结果方
-    uint64                            create_at      = 8;                       // 任务发起时间
-    uint64                            start_at       = 9;                        // 任务启动时间
-    uint64                            end_at         = 10;                         // 任务结束时间
-    string                            state          = 11;                          // 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
-    TaskOperationCostDeclare          operation_cost = 12;                 // 任务所需资源声明
+    string                                task_id        = 1;                         // 任务Id
+    string                                task_name      = 2;                       // 任务名称
+    TaskOrganizationIdentityInfo          owner          = 3;                           // 任务发起发
+    TaskOrganizationIdentityInfo          algo_supplier  = 4;                   // 算法提供方 (目前就是和 任务发起方是同一个 ...)
+    repeated TaskDataSupplierShow         data_supplier  = 5;                   // 数据提供方
+    repeated TaskPowerSupplierShow        power_supplier = 6;                  // 算力提供方
+    repeated TaskOrganizationIdentityInfo receivers      = 7;                       // 任务结果方
+    uint64                                create_at      = 8;                       // 任务发起时间
+    uint64                                start_at       = 9;                        // 任务启动时间
+    uint64                                end_at         = 10;                         // 任务结束时间
+    string                                state          = 11;                          // 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
+    TaskOperationCostDeclare              operation_cost = 12;                 // 任务所需资源声明
 }
 // 任务数据提供方信息 (任务详情展示用)
 message TaskDataSupplierShow {
-    OrganizationIdentityInfo member_info    = 1;                         // 身份信息
-    string                   meta_data_id   = 2;                             // 元数据Id
-    string                   meta_data_name = 3;                           // 元数据名称
+    TaskOrganizationIdentityInfo member_info    = 1;                              // 身份信息
+    string                       meta_data_id   = 2;                             // 元数据Id
+    string                       meta_data_name = 3;                           // 元数据名称
 }
 // 任务算力提供方信息 (任务详情展示用)
 message TaskPowerSupplierShow {
-    OrganizationIdentityInfo member_info = 1;                         // 身份信息
-    ResourceUsedDetailShow   power_info  = 2;                          // 算力使用情况
+    TaskOrganizationIdentityInfo member_info = 1;                         // 身份信息
+    ResourceUsedDetailShow       power_info  = 2;                          // 算力使用情况
 }
 
 // 任务事件定义
@@ -71,8 +71,8 @@ message TaskEventDeclare {
 
 // 任务数据供应者信息 (任务详情定义用)
 message TaskDataSupplierDeclare {
-    OrganizationIdentityInfo member_info    = 1;                         // 身份信息
-    TaskMetaDataDeclare      meta_data_info = 2;                      // 任务使用的元数据信息
+    TaskOrganizationIdentityInfo member_info    = 1;                         // 身份信息
+    TaskMetaDataDeclare          meta_data_info = 2;                      // 任务使用的元数据信息
 }
 
 message TaskMetaDataDeclare {
@@ -81,8 +81,8 @@ message TaskMetaDataDeclare {
 }
 
 message TaskResultReceiverDeclare {
-    OrganizationIdentityInfo          member_info = 1;                       // 结果接收方身份信息
-    repeated OrganizationIdentityInfo providers   = 2;                         // 被接收结果的生成方身份信息
+    TaskOrganizationIdentityInfo          member_info = 1;                       // 结果接收方身份信息
+    repeated TaskOrganizationIdentityInfo providers   = 2;                         // 被接收结果的生成方身份信息
 }
 
 
@@ -149,10 +149,12 @@ message PublishTaskDeclareRequest {
     string                             task_name              = 1;                        //  任务名称
     TaskDataSupplierDeclare            owner                  = 2;                            //  任务发起者
     repeated TaskDataSupplierDeclare   partners               = 3;                         //  任务参与方
-    repeated TaskResultReceiverDeclare receivers              = 4;                        //  任务结果接受者
-    TaskOperationCostDeclare           operation_cost         = 5;                   //  任务所需资源声明
-    string                             calculate_contractcode = 6;           //  计算合约
-    string                             datasplit_contractcode = 7;           //  数据分片合约
+    repeated string                    power_party_ids        = 4;                  //  算力提供方未来要用的 标签
+    repeated TaskResultReceiverDeclare receivers              = 5;                        //  任务结果接受者
+    TaskOperationCostDeclare           operation_cost         = 6;                   //  任务所需资源声明
+    string                             calculate_contractcode = 7;           //  计算合约
+    string                             datasplit_contractcode = 8;           //  数据分片合约
+    string                             contract_extra_params  = 9;           //  合约调用的额外可变入参 (json 字符串, 根据算法来)
 }
 
 message PublishTaskDeclareResponse {
