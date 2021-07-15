@@ -7,6 +7,7 @@ import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.LoginReq;
 import com.platon.rosettanet.admin.dto.req.UserApplyOrgIdentityReq;
 import com.platon.rosettanet.admin.service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpSession;
  * 组织身份相关接口
  */
 
+@Api(tags = "组织身份相关接口")
 @RestController
 @RequestMapping("/api/v1/system/user/")
 public class UserController {

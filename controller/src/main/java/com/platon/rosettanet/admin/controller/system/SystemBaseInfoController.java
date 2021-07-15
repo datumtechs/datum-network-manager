@@ -4,6 +4,7 @@ import com.platon.rosettanet.admin.dao.entity.LocalOrg;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.resp.SystemQueryBaseInfoResp;
 import com.platon.rosettanet.admin.service.LocalOrgService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
  * @Desc
  */
 
+@Api(tags = "当前组织信息")
 @RequestMapping("/api/v1/system/")
 @RestController
 public class SystemBaseInfoController {

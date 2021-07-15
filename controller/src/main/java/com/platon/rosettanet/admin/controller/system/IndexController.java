@@ -6,6 +6,7 @@ import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.resp.IndexNodeListResp;
 import com.platon.rosettanet.admin.dto.resp.IndexOverviewResp;
 import com.platon.rosettanet.admin.service.IndexService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
  * 系统首页相关接口
  */
 
+@Api(tags = "系统概况")
 @RestController
 @RequestMapping("/api/v1/system/index/")
 public class IndexController {

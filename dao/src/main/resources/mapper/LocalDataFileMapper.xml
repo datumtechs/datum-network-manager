@@ -29,7 +29,7 @@
     select
     <include refid="Base_Column_List" />
     from local_data_file
-    <if test="keyword != null">
+    <if test="keyword != null and keyword != ''">
         where resource_name = #{keyword}
     </if>
     order by resource_name

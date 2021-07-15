@@ -6,6 +6,7 @@ import com.platon.rosettanet.admin.dao.entity.GlobalDataFileDetail;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.resp.GlobalDataPageResp;
 import com.platon.rosettanet.admin.service.GlobalDataService;
+import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
  */
 
 
-
+@Api(tags = "数据中心")
 @RestController
 @RequestMapping("/api/v1/resource/datacenter/")
 public class GlobalDataController {

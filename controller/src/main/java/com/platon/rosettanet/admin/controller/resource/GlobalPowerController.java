@@ -5,6 +5,7 @@ import com.platon.rosettanet.admin.dao.entity.GlobalPower;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.resp.GlobalPowerPageResp;
 import com.platon.rosettanet.admin.service.GlobalPowerService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
  * @Desc
  */
 
+@Api(tags = "算力中心")
 @RestController
 @RequestMapping("/api/v1/resource/powercenter/")
 public class GlobalPowerController {

@@ -2,6 +2,7 @@ package com.platon.rosettanet.admin.controller.node;
 
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.service.NodeService;
+import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import javax.validation.constraints.NotNull;
  * 调度服务管理
  */
 
+@Api(tags = "调度服务管理")
 @RequestMapping("/api/v1/node/corenode/")
 @RestController
 public class NodeController {
