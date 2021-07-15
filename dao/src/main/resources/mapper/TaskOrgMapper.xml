@@ -11,7 +11,7 @@
 
 
   <sql id="Base_Column_List">
-    task_id, identity_id, name, carrier_node_id, status, rec_update_time
+    task_id, identity_id, `name`, carrier_node_id, rec_update_time
   </sql>
 
 

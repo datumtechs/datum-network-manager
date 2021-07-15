@@ -21,7 +21,7 @@
 
 
 
-  <resultMap id="BaseResultMap_With_OrgName" type="com.platon.rosettanet.admin.dao.entity.TaskResultReceiver" extends="BaseResultMap">
+  <resultMap id="BaseResultMap_With_OrgName" type="com.platon.rosettanet.admin.dao.entity.TaskDataReceiver" extends="BaseResultMap">
     <result column="node_name" property="dynamicFields.nodeName" jdbcType="VARCHAR"/>
     <result column="node_identityId" property="dynamicFields.nodeIdentityId" jdbcType="VARCHAR"/>
     <result column="node_id" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>

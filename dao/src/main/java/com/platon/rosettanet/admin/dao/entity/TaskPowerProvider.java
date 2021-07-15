@@ -1,9 +1,15 @@
 package com.platon.rosettanet.admin.dao.entity;
 
 import com.platon.rosettanet.admin.dao.BaseDomain;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@ToString
 public class TaskPowerProvider extends BaseDomain {
     private String taskId;
 
@@ -17,51 +23,4 @@ public class TaskPowerProvider extends BaseDomain {
 
     private LocalDateTime recUpdateTime;
 
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
-    public String getIdentityId() {
-        return identityId;
-    }
-
-    public void setIdentityId(String identityId) {
-        this.identityId = identityId;
-    }
-
-    public Long getUsedCore() {
-        return usedCore;
-    }
-
-    public void setUsedCore(Long usedCore) {
-        this.usedCore = usedCore;
-    }
-
-    public Long getUsedMemory() {
-        return usedMemory;
-    }
-
-    public void setUsedMemory(Long usedMemory) {
-        this.usedMemory = usedMemory;
-    }
-
-    public Long getUsedBandwidth() {
-        return usedBandwidth;
-    }
-
-    public void setUsedBandwidth(Long usedBandwidth) {
-        this.usedBandwidth = usedBandwidth;
-    }
-
-    public LocalDateTime getRecUpdateTime() {
-        return recUpdateTime;
-    }
-
-    public void setRecUpdateTime(LocalDateTime recUpdateTime) {
-        this.recUpdateTime = recUpdateTime;
-    }
 }

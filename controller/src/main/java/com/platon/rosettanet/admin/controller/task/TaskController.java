@@ -8,6 +8,7 @@ import com.platon.rosettanet.admin.dto.req.TaskPageReq;
 import com.platon.rosettanet.admin.service.TaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +38,7 @@ public class TaskController {
 
 
     //查询任务数、进行中任务总数
+    @ApiOperation(value="查询任务数、进行中任务总数")
     @GetMapping("/taskTotalCount")
     public JsonResponse getTaskTotelCount(){
         Integer allTaskCount = taskService.selectAllTaskCount();
@@ -52,16 +54,18 @@ public class TaskController {
 
     //查询组织参与的单个任务详情
     @GetMapping("/taskInfo")
-    public JsonResponse getTaskDetails(@RequestParam String taskId) {
+    @ApiOperation(value="查询组织参与的单个任务详情")
+    public JsonResponse getTaskDetails(@ApiParam(name = "taskId",value = "任务id", type = "String", required = true) @RequestParam String taskId) {
         Task task = taskService.getTaskDetails(taskId);
         return JsonResponse.success(task);
     }
 
 
-    //单个任务事件列表
+    //单个任务事件日志列表
     @GetMapping("/taskEventList")
-    public JsonResponse taskEventList(@RequestParam(required = true) String taskId){
+    @ApiOperation(value="单个任务事件日志列表")
 
+    public JsonResponse taskEventList(@ApiParam(name = "taskId",value = "任务id", type = "String", required = true) @RequestParam(required = true) String taskId){
         List<TaskEvent> taskEventList =  taskService.listTaskEvent(taskId);
         Task task = taskService.selectTaskByTaskId(taskId);
         return JsonResponse.success(taskEventList);
