@@ -4,10 +4,10 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.platon.rosettanet.admin.dao.LocalPowerDetailsMapper;
+import com.platon.rosettanet.admin.dao.LocalPowerHistoryMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerJoinTaskMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerNodeMapper;
-import com.platon.rosettanet.admin.dao.entity.LocalPowerDetails;
+import com.platon.rosettanet.admin.dao.entity.LocalPowerHistory;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.grpc.client.PowerClient;
@@ -31,7 +31,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     /** 计算节点资源 */
     @Resource
-    LocalPowerDetailsMapper localPowerDetailsMapper;
+    LocalPowerHistoryMapper localPowerHistoryMapper;
 
     /** 计算节点资源 */
     @Resource
@@ -123,24 +123,24 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public List queryPowerNodeUseResource(String powerNodeId) {
-        List<LocalPowerDetails>  powerDetailsList = localPowerDetailsMapper.queryPowerDetails(powerNodeId);
-        List detailsList = new ArrayList();
-        if (!powerDetailsList.isEmpty()) {
+    public List queryPowerNodeUseHistory(String powerNodeId) {
+        List<LocalPowerHistory>  powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId);
+        List historyList = new ArrayList();
+        if (!powerHistoryList.isEmpty()) {
             // 24小时
-            detailsList = this.hoursMethod(powerDetailsList, detailsList);
+            historyList = this.hoursMethod(powerHistoryList, historyList);
             // 7天
-            detailsList = this.sevenMethod(powerDetailsList, detailsList);
+            historyList = this.sevenMethod(powerHistoryList, historyList);
             // 15天
-            detailsList = this.fifteenMethod(powerDetailsList, detailsList);
+            historyList = this.fifteenMethod(powerHistoryList, historyList);
             // 30天记录
-            detailsList = this.thirtyMethod(powerDetailsList, detailsList);
+            historyList = this.thirtyMethod(powerHistoryList, historyList);
         }
-        return detailsList;
+        return historyList;
     }
 
     /** 24小时记录 */
-    private List hoursMethod(List<LocalPowerDetails> powerDetailsList, List detailsList){
+    private List hoursMethod(List<LocalPowerHistory> powerHistoryList, List historyList){
         List cupList = new ArrayList();
         List memoryList = new ArrayList();
         List bandList = new ArrayList();
@@ -148,16 +148,16 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         Map cpuHoursMap = new HashMap(16);
         Map memoryHoursMap = new HashMap(16);
         Map bandHoursMap = new HashMap(16);
-        for(LocalPowerDetails powerDetails : powerDetailsList) {
-            if ("0".equals(powerDetails.getRefreshStatus())) {
+        for(LocalPowerHistory powerHistory : powerHistoryList) {
+            if ("0".equals(powerHistory.getRefreshStatus())) {
                 // 时间(小时)
-                timeList.add(DateUtil.format(powerDetails.getCreateTime(), "yyyy-MM-dd HH"));
+                timeList.add(DateUtil.format(powerHistory.getCreateTime(), "yyyy-MM-dd HH"));
                 // cpu
-                cupList.add(powerDetails.getUsedCore());
+                cupList.add(powerHistory.getUsedCore());
                 // 内存
-                memoryList.add(powerDetails.getUsedMemory());
+                memoryList.add(powerHistory.getUsedMemory());
                 // 带宽
-                bandList.add(powerDetails.getUsedBandwidth());
+                bandList.add(powerHistory.getUsedBandwidth());
             }
             if (timeList.size() >= 24) {
                 break;
@@ -169,14 +169,14 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         memoryHoursMap.put("hoursTime", timeList);
         bandHoursMap.put("bandList", bandList);
         bandHoursMap.put("hoursTime", timeList);
-        detailsList.add(cpuHoursMap);
-        detailsList.add(memoryHoursMap);
-        detailsList.add(bandHoursMap);
-        return detailsList;
+        historyList.add(cpuHoursMap);
+        historyList.add(memoryHoursMap);
+        historyList.add(bandHoursMap);
+        return historyList;
     }
 
     /** 7天记录 */
-    private List sevenMethod(List<LocalPowerDetails> powerDetailsList, List detailsList){
+    private List sevenMethod(List<LocalPowerHistory> powerHistoryList, List historyList){
         List cupList = new ArrayList();
         List memoryList = new ArrayList();
         List bandList = new ArrayList();
@@ -184,16 +184,16 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         Map cpuSevenMap = new HashMap(16);
         Map memorySevenMap = new HashMap(16);
         Map bandSevenMap = new HashMap(16);
-        for(LocalPowerDetails powerDetails : powerDetailsList) {
-            if ("1".equals(powerDetails.getRefreshStatus())) {
+        for(LocalPowerHistory powerHistory : powerHistoryList) {
+            if ("1".equals(powerHistory.getRefreshStatus())) {
                 // 时间NORM_DATE_FORMATTER
-                timeList.add(DateUtil.format(powerDetails.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
+                timeList.add(DateUtil.format(powerHistory.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
                 // cpu
-                cupList.add(powerDetails.getUsedCore());
+                cupList.add(powerHistory.getUsedCore());
                 // 内存
-                memoryList.add(powerDetails.getUsedMemory());
+                memoryList.add(powerHistory.getUsedMemory());
                 // 带宽
-                bandList.add(powerDetails.getUsedBandwidth());
+                bandList.add(powerHistory.getUsedBandwidth());
             }
             if (timeList.size() >= 7) {
                 break;
@@ -205,14 +205,14 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         memorySevenMap.put("sevenTime", timeList);
         bandSevenMap.put("bandList", bandList);
         bandSevenMap.put("sevenTime", timeList);
-        detailsList.add(cpuSevenMap);
-        detailsList.add(memorySevenMap);
-        detailsList.add(bandSevenMap);
-        return detailsList;
+        historyList.add(cpuSevenMap);
+        historyList.add(memorySevenMap);
+        historyList.add(bandSevenMap);
+        return historyList;
     }
 
     /** 15天记录 */
-    private List fifteenMethod(List<LocalPowerDetails> powerDetailsList, List detailsList){
+    private List fifteenMethod(List<LocalPowerHistory> powerHistoryList, List historyList){
         List cupList = new ArrayList();
         List memoryList = new ArrayList();
         List bandList = new ArrayList();
@@ -220,16 +220,16 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         Map cpuFifteenMap = new HashMap(16);
         Map memoryFifteenMap = new HashMap(16);
         Map bandFifteenMap = new HashMap(16);
-        for(LocalPowerDetails powerDetails : powerDetailsList) {
-            if ("1".equals(powerDetails.getRefreshStatus())) {
+        for(LocalPowerHistory powerHistory : powerHistoryList) {
+            if ("1".equals(powerHistory.getRefreshStatus())) {
                 // 时间(小时)
-                timeList.add(DateUtil.format(powerDetails.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
+                timeList.add(DateUtil.format(powerHistory.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
                 // cpu
-                cupList.add(powerDetails.getUsedCore());
+                cupList.add(powerHistory.getUsedCore());
                 // 内存
-                memoryList.add(powerDetails.getUsedMemory());
+                memoryList.add(powerHistory.getUsedMemory());
                 // 带宽
-                bandList.add(powerDetails.getUsedBandwidth());
+                bandList.add(powerHistory.getUsedBandwidth());
             }
             if (timeList.size() >= 15) {
                 break;
@@ -241,13 +241,13 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         memoryFifteenMap.put("fifteenTime", timeList);
         bandFifteenMap.put("bandList", bandList);
         bandFifteenMap.put("fifteenTime", timeList);
-        detailsList.add(cpuFifteenMap);
-        detailsList.add(memoryFifteenMap);
-        detailsList.add(bandFifteenMap);
-        return detailsList;
+        historyList.add(cpuFifteenMap);
+        historyList.add(memoryFifteenMap);
+        historyList.add(bandFifteenMap);
+        return historyList;
     }
     /** 30天记录 */
-    private List thirtyMethod(List<LocalPowerDetails> powerDetailsList, List detailsList){
+    private List thirtyMethod(List<LocalPowerHistory> powerHistoryList, List historyList){
         List cupList = new ArrayList();
         List memoryList = new ArrayList();
         List bandList = new ArrayList();
@@ -255,16 +255,16 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         Map cpuThirtyMap = new HashMap(16);
         Map memoryThirtyMap = new HashMap(16);
         Map bandThirtyMap = new HashMap(16);
-        for(LocalPowerDetails powerDetails : powerDetailsList) {
-            if ("1".equals(powerDetails.getRefreshStatus())) {
+        for(LocalPowerHistory powerHistory : powerHistoryList) {
+            if ("1".equals(powerHistory.getRefreshStatus())) {
                 // 时间(小时)
-                timeList.add(DateUtil.format(powerDetails.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
+                timeList.add(DateUtil.format(powerHistory.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
                 // cpu
-                cupList.add(powerDetails.getUsedCore());
+                cupList.add(powerHistory.getUsedCore());
                 // 内存
-                memoryList.add(powerDetails.getUsedMemory());
+                memoryList.add(powerHistory.getUsedMemory());
                 // 带宽
-                bandList.add(powerDetails.getUsedBandwidth());
+                bandList.add(powerHistory.getUsedBandwidth());
             }
             if (timeList.size() >= 30) {
                 break;
@@ -276,10 +276,10 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         memoryThirtyMap.put("thirtyTime", timeList);
         bandThirtyMap.put("bandList", bandList);
         bandThirtyMap.put("thirtyTime", timeList);
-        detailsList.add(cpuThirtyMap);
-        detailsList.add(memoryThirtyMap);
-        detailsList.add(bandThirtyMap);
-        return detailsList;
+        historyList.add(cpuThirtyMap);
+        historyList.add(memoryThirtyMap);
+        historyList.add(bandThirtyMap);
+        return historyList;
     }
 
     @Override
@@ -288,6 +288,12 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         List<LocalPowerJoinTask> list = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNodeId);
         PageInfo<LocalPowerJoinTask> pageInfo = new PageInfo(list);
         return pageInfo;
+    }
+
+    @Override
+    public int checkPowerNodeName(String powerNodeName) {
+        int count = localPowerNodeMapper.checkPowerNodeName(powerNodeName);
+        return count;
     }
 
 }

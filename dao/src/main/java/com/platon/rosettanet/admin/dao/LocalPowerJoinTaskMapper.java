@@ -1,6 +1,5 @@
 package com.platon.rosettanet.admin.dao;
 
-import com.platon.rosettanet.admin.dao.entity.LocalPowerDetails;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,6 @@
 package com.platon.rosettanet.admin.grpc.client;
 
 import com.platon.rosettanet.admin.dao.entity.GlobalPower;
-import com.platon.rosettanet.admin.dao.entity.LocalPowerDetails;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.service.*;
 import io.grpc.Channel;
@@ -101,7 +100,7 @@ public class PowerClient {
     }
 
     /**
-     * 查看所有组织单个算力详情 (包含 任务描述)
+     * 查看当前组织所有节点各个算力的详情 (包含 任务信息)
      */
     public String GetPowerSingleDetailList(){
 //        //1.获取rpc连接
