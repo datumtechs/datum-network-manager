@@ -1,7 +1,10 @@
 package com.platon.rosettanet.admin.service;
 
 import com.github.pagehelper.Page;
+import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
+
+import java.util.List;
 
 /**
  * @Author liushuyu
@@ -20,5 +23,5 @@ public interface IndexService {
     /**
      * 获取本组织计算节点列表信息
      */
-    void getPowerNodeList();
+    List<LocalPowerNode> getPowerNodeList();
 }

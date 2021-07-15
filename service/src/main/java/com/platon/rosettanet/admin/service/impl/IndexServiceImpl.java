@@ -1,8 +1,9 @@
 package com.platon.rosettanet.admin.service.impl;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
+import com.platon.rosettanet.admin.dao.LocalPowerNodeMapper;
 import com.platon.rosettanet.admin.dao.VLocalStatsMapper;
+import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 import com.platon.rosettanet.admin.service.IndexService;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class IndexServiceImpl implements IndexService {
 
     @Resource
     private VLocalStatsMapper localStatsMapper;
+    @Resource
+    private LocalPowerNodeMapper localPowerNodeMapper;
 
     @Override
     public VLocalStats getOverview() {
@@ -30,7 +33,9 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public void getPowerNodeList() {
-
+    public List<LocalPowerNode> getPowerNodeList() {
+        String identityId = LocalOrgIdentityCache.getIdentityId();
+        List<LocalPowerNode> localPowerNodes = localPowerNodeMapper.queryPowerNodeList(identityId, null);
+        return localPowerNodes;
     }
 }

@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.controller.system;
 
+import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.resp.IndexNodeListResp;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author liushuyu
@@ -47,8 +50,11 @@ public class IndexController {
      * @return
      */
     @GetMapping("nodeList")
-    public JsonResponse<IndexNodeListResp> nodeList(){
-        indexService.getPowerNodeList();
-        return JsonResponse.success();
+    public JsonResponse<List<IndexNodeListResp>> nodeList(){
+        List<LocalPowerNode> powerNodeList = indexService.getPowerNodeList();
+        List<IndexNodeListResp> respList= powerNodeList.stream()
+                .map(IndexNodeListResp::from)
+                .collect(Collectors.toList());
+        return JsonResponse.success(respList);
     }
 }
