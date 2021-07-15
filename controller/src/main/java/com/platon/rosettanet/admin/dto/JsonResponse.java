@@ -3,25 +3,40 @@ package com.platon.rosettanet.admin.dto;
 
 import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.enums.ResponseCodeEnum;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
+/**
+ * @author
+ * @param <T>
+ */
+@Data
+@ApiModel(value = "返回参数封装类")
 public class JsonResponse<T> {
-    private int status = 0;   //0表示成功，其它表示错误代码
+
+    @ApiModelProperty(value = "0表示成功，其它表示错误代码")
+    private int status = 0;
+
+    @ApiModelProperty(value = "返回内容提示")
     private String msg;
+
+    @ApiModelProperty(value = "返回数据")
     private T data;
-    private int total=0;          //列表查询满足条件总条数（用于分页）
-    private int pageTotal=0;      //	option	int	数据总页数
-    private int pageNumber=1;     //	option	int	第几页数据
-    private int pageSize=0;       //	option	int	分页请求每页数据条数
-    private List<T> list;       //返回报文JSON数组对象[{},{}...]
+
+    @ApiModelProperty(value = "列表查询满足条件总条数（用于分页）")
+    private int total=0;
+
+    @ApiModelProperty(value = "列表查询满足条件总页数")
+    private int pageTotal=0;
+
+    @ApiModelProperty(value = "第几页数据")
+    private int pageNumber=1;
+
+    @ApiModelProperty(value = "分页请求每页数据条数")
+    private int pageSize=0;
 
     public JsonResponse(){}
 
@@ -31,23 +46,12 @@ public class JsonResponse<T> {
         this.data = data;
     }
 
-    public JsonResponse(int status, String msg, T data, List<T> list) {
-        this.status = status;
-        this.msg = msg;
-        this.data = data;
-        this.list = list;
-    }
-
     public static JsonResponse success(){
         return new JsonResponse(ResponseCodeEnum.SUCCESS.getCode(), ResponseCodeEnum.SUCCESS.getMessage(),null);
     }
 
     public static <T> JsonResponse success(T data){
         return new JsonResponse(ResponseCodeEnum.SUCCESS.getCode(), ResponseCodeEnum.SUCCESS.getMessage(),data);
-    }
-
-    public static <T> JsonResponse success(T data, List<T> list){
-        return new JsonResponse(ResponseCodeEnum.SUCCESS.getCode(), ResponseCodeEnum.SUCCESS.getMessage(),data,list);
     }
 
     public static <T> JsonResponse success(ResponseCodeEnum responseCodeEnum, String message, T data){
@@ -80,7 +84,6 @@ public class JsonResponse<T> {
         JsonResponse jsonResponse = new JsonResponse();
         jsonResponse.setMsg(ResponseCodeEnum.SUCCESS.getMessage());
         jsonResponse.setStatus(ResponseCodeEnum.SUCCESS.getCode());
-        jsonResponse.setList(page.getResult() == null ? new ArrayList() : page.getResult());
         jsonResponse.setPageNumber(page.getPageNum());
         jsonResponse.setPageSize(page.getPageSize());
         jsonResponse.setTotal((int)page.getTotal());
@@ -99,7 +102,6 @@ public class JsonResponse<T> {
         JsonResponse jsonResponse = new JsonResponse();
         jsonResponse.setMsg(ResponseCodeEnum.SUCCESS.getMessage());
         jsonResponse.setStatus(ResponseCodeEnum.SUCCESS.getCode());
-        jsonResponse.setList(list == null ? new ArrayList() : list);
         jsonResponse.setPageNumber(pageInfo.getPageNum());
         jsonResponse.setPageSize(pageInfo.getPageSize());
         jsonResponse.setTotal((int)pageInfo.getTotal());

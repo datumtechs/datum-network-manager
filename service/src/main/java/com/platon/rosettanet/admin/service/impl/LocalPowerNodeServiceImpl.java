@@ -123,9 +123,9 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public List queryPowerNodeUseHistory(String powerNodeId) {
+    public List<Map> queryPowerNodeUseHistory(String powerNodeId) {
         List<LocalPowerHistory>  powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId);
-        List historyList = new ArrayList();
+        List<Map> historyList = new ArrayList();
         if (!powerHistoryList.isEmpty()) {
             // 24小时
             historyList = this.hoursMethod(powerHistoryList, historyList);

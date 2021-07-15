@@ -63,7 +63,7 @@ public interface LocalPowerNodeService {
      * 查询计算节点使用历史记录
      * @param powerNodeId
      */
-    List<LocalPowerHistory> queryPowerNodeUseHistory(String powerNodeId);
+    List queryPowerNodeUseHistory(String powerNodeId);
 
     /**
      * 查询计算节点参数的任务列表

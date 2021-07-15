@@ -2,12 +2,17 @@ package com.platon.rosettanet.admin.controller;
 
 
 import com.github.pagehelper.PageInfo;
+import com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.*;
+import com.platon.rosettanet.admin.dto.resp.LocalPowerNodeResp;
+import com.platon.rosettanet.admin.dto.resp.PowerJoinTaskResp;
 import com.platon.rosettanet.admin.service.LocalPowerNodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,14 +69,14 @@ public class LocalPowerNodeController {
 
     @PostMapping("/queryPowerNodeDetails")
     @ApiOperation(value="查询计算节点详情", response = JsonResponse.class)
-    public JsonResponse queryPowerNodeDetails(@Validated @RequestBody PowerQueryDetailsReq queryDetailsReq) {
+    public JsonResponse<LocalPowerNodeResp> queryPowerNodeDetails(@Validated @RequestBody PowerQueryDetailsReq queryDetailsReq) {
         LocalPowerNode localPowerNode = localPowerNodeService.queryPowerNodeDetails(queryDetailsReq.getPowerNodeId());
         return JsonResponse.success(localPowerNode);
     }
 
     @PostMapping("/queryPowerNodeList")
     @ApiOperation(value="查询计算节点服务列表", response = JsonResponse.class)
-    public JsonResponse queryPowerNodeList(@Validated @RequestBody PowerQueryListReq powerReq) {
+    public JsonResponse<LocalPowerNodeResp> queryPowerNodeList(@Validated @RequestBody PowerQueryListReq powerReq) {
         PageInfo PageInfo = localPowerNodeService.queryPowerNodeList(powerReq.getIdentityId(),
                 powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
         return JsonResponse.success(PageInfo);
@@ -92,7 +97,7 @@ public class LocalPowerNodeController {
     }
 
     @PostMapping("/queryPowerNodeUseHistory")
-    @ApiOperation(value="查询计算节点使用资源", response = JsonResponse.class)
+    @ApiOperation(value="查询计算节点历史记录", response = JsonResponse.class)
     public JsonResponse queryPowerNodeUseHistory(@Validated @RequestBody PowerHistoryReq powerHistoryReq) {
         List dataList = localPowerNodeService.queryPowerNodeUseHistory(powerHistoryReq.getPowerNodeId());
         return JsonResponse.success(dataList);
@@ -100,7 +105,7 @@ public class LocalPowerNodeController {
 
     @PostMapping("/queryPowerJoinTaskList")
     @ApiOperation(value="查询计算节点参与任务列表", response = JsonResponse.class)
-    public JsonResponse queryPowerJoinTaskList(@Validated @RequestBody PowerJoinTaskReq powerJoinTaskReq) {
+    public JsonResponse<PowerJoinTaskResp> queryPowerJoinTaskList(@Validated @RequestBody PowerJoinTaskReq powerJoinTaskReq) {
         PageInfo PageInfo = localPowerNodeService.queryPowerJoinTaskList(powerJoinTaskReq.getPowerNodeId(),
                 powerJoinTaskReq.getPageNumber(), powerJoinTaskReq.getPageSize());
         return JsonResponse.success(PageInfo);
