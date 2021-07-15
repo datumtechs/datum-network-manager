@@ -18,13 +18,19 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
 @Transactional //这个有看需要，测试方法如果要作为一个整体事务，则加上
 @Rollback(false) // 默认值：true, UT默认都会回滚数据库，不会增加新数据
 public class MockTaskDataTest {
+
+
+    private static final String NODE_NAME = "nodeName";
+    private static final String NODE_ID = "nodeId";
 
     @Resource
     private TaskMapper taskMapper;
@@ -39,6 +45,9 @@ public class MockTaskDataTest {
     private TaskResultReceiverMapper taskResultReceiverMapper;
 
     @Resource
+    private TaskOrgMapper taskOrgMapper;
+
+    @Resource
     private TaskEventMapper taskEventMapper;
 
 
@@ -50,6 +59,8 @@ public class MockTaskDataTest {
         List<TaskRpcMessage.GetTaskDetailResponse> taskDetailList = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
+
+            //owner
             CommonMessage.TaskOrganizationIdentityInfo ownerData = CommonMessage.TaskOrganizationIdentityInfo.newBuilder()
                     .setName("ownerName" + i)
                     .setIdentityId("ownerIdentityId" + i)
@@ -126,10 +137,11 @@ public class MockTaskDataTest {
 
 
         //数据拆解并持计划DB
-        List<Task> taskList =  taskDataResp.getTaskList();
+        List<Task> taskList = taskDataResp.getTaskList();
         List<TaskDataReceiver> dataReceiverList = new ArrayList<>();
         List<TaskPowerProvider> powerProviderList = new ArrayList<>();
         List<TaskResultReceiver> resultReceiverList = new ArrayList<>();
+        List<TaskOrg> taskOrgList = new ArrayList<>();
 
         if(!CollectionUtils.isEmpty(taskList)){
             for (int i = 0; i < taskList.size(); i++) {
@@ -137,16 +149,20 @@ public class MockTaskDataTest {
                 List<TaskDataReceiver> dataReceivers = taskData.getDataSupplier();
                 List<TaskPowerProvider> powerProviders = taskData.getPowerSupplier();
                 List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
+                List<TaskOrg> taskOrgs = getTaskOrgList(taskData);
                 //构造数据
                 dataReceiverList.addAll(dataReceivers);
                 powerProviderList.addAll(powerProviders);
                 resultReceiverList.addAll(resultReceivers);
+                taskOrgList.addAll(taskOrgs);
             }
+
             //批量更新DB
             taskMapper.insertBatch(taskList);
             taskDataReceiverMapper.insertBatch(dataReceiverList);
             taskPowerProviderMapper.insertBatch(powerProviderList);
             taskResultReceiverMapper.insertBatch(resultReceiverList);
+            taskOrgMapper.insertBatch(taskOrgList);
         }
 
         //批量TaskEvent获取并更新DB
@@ -160,6 +176,68 @@ public class MockTaskDataTest {
 
 
 
+    }
+
+
+    private List<TaskOrg> getTaskOrgList(Task taskData){
+
+        List<TaskOrg> taskOrgList = new ArrayList<>();
+
+        List<TaskDataReceiver> dataReceivers = taskData.getDataSupplier();
+        List<TaskPowerProvider> powerProviders = taskData.getPowerSupplier();
+        List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
+
+        TaskOrg owner = taskData.getOwner();
+        owner.setTaskId(taskData.getId());
+
+        TaskOrg algoSupplier = taskData.getAlgoSupplier();
+        algoSupplier.setTaskId(taskData.getId());
+
+        for (TaskDataReceiver dataReceiver : dataReceivers) {
+              String identityId = dataReceiver.getIdentityId();
+              Map<String,String> dynamicFields = dataReceiver.getDynamicFields();
+              String nodeName = dynamicFields.get(NODE_NAME);
+              String nodeId = dynamicFields.get(NODE_ID);
+
+              TaskOrg taskOrg = new TaskOrg();
+              taskOrg.setTaskId(taskData.getId());
+              taskOrg.setIdentityId(identityId);
+              taskOrg.setCarrierNodeId(nodeId);
+              taskOrg.setName(nodeName);
+              taskOrgList.add(taskOrg);
+        }
+
+        for (TaskPowerProvider taskPowerProvider : powerProviders) {
+            String identityId = taskPowerProvider.getIdentityId();
+            Map<String,String> dynamicFields = taskPowerProvider.getDynamicFields();
+            String nodeName = dynamicFields.get(NODE_NAME);
+            String nodeId = dynamicFields.get(NODE_ID);
+
+            TaskOrg taskOrg = new TaskOrg();
+            taskOrg.setTaskId(taskData.getId());
+            taskOrg.setIdentityId(identityId);
+            taskOrg.setCarrierNodeId(nodeId);
+            taskOrg.setName(nodeName);
+            taskOrgList.add(taskOrg);
+        }
+
+        for (TaskResultReceiver taskResultReceiver : resultReceivers) {
+            String identityId = taskResultReceiver.getConsumerIdentityId();
+            Map<String,String> dynamicFields = taskResultReceiver.getDynamicFields();
+            String nodeName = dynamicFields.get(NODE_NAME);
+            String nodeId = dynamicFields.get(NODE_ID);
+
+            TaskOrg taskOrg = new TaskOrg();
+            taskOrg.setTaskId(taskData.getId());
+            taskOrg.setIdentityId(identityId);
+            taskOrg.setCarrierNodeId(nodeId);
+            taskOrg.setName(nodeName);
+            taskOrgList.add(taskOrg);
+        }
+
+        taskOrgList.add(owner);
+        taskOrgList.add(algoSupplier);
+        return taskOrgList;
     }
 
 
@@ -214,6 +292,11 @@ public class MockTaskDataTest {
                 receiver.setMetaDataId(dataSupplier.getMetaDataId());
                 receiver.setIdentityId(dataSupplier.getMemberInfo().getIdentityId());
                 receiver.setMetaDataName(dataSupplier.getMetaDataName());
+                //动态数据
+                Map dynamicFields = new HashMap();
+                dynamicFields.put(NODE_NAME, dataSupplier.getMemberInfo().getName());
+                dynamicFields.put(NODE_ID, dataSupplier.getMemberInfo().getNodeId());
+                receiver.setDynamicFields(dynamicFields);
                 taskDataReceiverList.add(receiver);
             }
             task.setDataSupplier(taskDataReceiverList);
@@ -228,6 +311,12 @@ public class MockTaskDataTest {
                 powerProvider.setUsedCore(taskPowerSupplierShow.getPowerInfo().getUsedProcessor());
                 powerProvider.setUsedMemory(taskPowerSupplierShow.getPowerInfo().getUsedMem());
                 powerProvider.setUsedBandwidth(taskPowerSupplierShow.getPowerInfo().getUsedBandwidth());
+
+                //动态数据
+                Map dynamicFields = new HashMap();
+                dynamicFields.put(NODE_NAME, taskPowerSupplierShow.getMemberInfo().getName());
+                dynamicFields.put(NODE_ID, taskPowerSupplierShow.getMemberInfo().getNodeId());
+                powerProvider.setDynamicFields(dynamicFields);
                 taskPowerProviderList.add(powerProvider);
             }
             task.setPowerSupplier(taskPowerProviderList);
@@ -238,7 +327,14 @@ public class MockTaskDataTest {
                 TaskResultReceiver resultReceiver = new TaskResultReceiver();
                 resultReceiver.setTaskId(taskId);
                 resultReceiver.setConsumerIdentityId(receiver.getIdentityId());
-                //resultReceiver.setProducerIdentityId();
+                //待商榷？？
+                resultReceiver.setProducerIdentityId(receiver.getIdentityId());
+
+                //动态数据
+                Map dynamicFields = new HashMap();
+                dynamicFields.put(NODE_NAME, receiver.getName());
+                dynamicFields.put(NODE_ID, receiver.getNodeId());
+                resultReceiver.setDynamicFields(dynamicFields);
                 receivers.add(resultReceiver);
             }
             task.setReceivers(receivers);
