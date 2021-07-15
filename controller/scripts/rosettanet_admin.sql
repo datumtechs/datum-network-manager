@@ -241,26 +241,26 @@ CREATE TABLE global_meta_data_column(
 
 -- 此表数据调用调度服务接口获取，rpc ListTask(TaskListRequest) returns (TaskListResponse);
 DROP TABLE IF EXISTS task;;
-CREATE TABLE task(
-    id VARCHAR(128) NOT NULL  COMMENT '任务ID' ,
-    task_Name VARCHAR(32)    COMMENT '任务名称' ,
-    owner_Identity_id VARCHAR(128)    COMMENT '任务发起方身份' ,
-    create_At DATETIME    COMMENT '任务发起时间' ,
-    start_At DATETIME    COMMENT '任务启动时间' ,
-    auth_At DATETIME    COMMENT '任务授权时间' ,
-    auth_Status VARCHAR(10)    COMMENT '任务授权状态: pending:等待授权、denied:授权未通过' ,
-    end_At DATETIME    COMMENT '任务结束时间' ,
-    `status` VARCHAR(10)    COMMENT '任务状态 pending: 等在中; running: 计算中; failed: 失败; success: 成功)' ,
-    duration DATETIME    COMMENT '任务声明计算时间' ,
-    cost_core INT    COMMENT '任务声明所需CPU' ,
-    cost_Memory BIGINT    COMMENT '任务声明所需内存' ,
-    cost_Bandwidth BIGINT    COMMENT '任务声明所需带宽' ,
-    alg_Identity_id VARCHAR(32)    COMMENT '算法提供方身份ID' ,
-    reviewed Boolean COMMENT '任务是否被查看过' ,
-    rec_create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
-    PRIMARY KEY (id)
-) COMMENT = '全网任务表 用于同步本地任务数据以及全网的相关数据';;
+CREATE TABLE `task` (
+  `id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID',
+  `task_Name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务名称',
+  `owner_Identity_id` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务发起方身份',
+  `create_At` datetime DEFAULT NULL COMMENT '任务发起时间',
+  `start_At` datetime DEFAULT NULL COMMENT '任务启动时间',
+  `auth_At` datetime DEFAULT NULL COMMENT '任务授权时间',
+  `auth_Status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务授权状态: pending:等待授权、denied:授权未通过',
+  `end_At` datetime DEFAULT NULL COMMENT '任务结束时间',
+  `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务状态 pending: 等在中; running: 计算中; failed: 失败; success: 成功)',
+  `duration` datetime DEFAULT NULL COMMENT '任务声明计算时间',
+  `cost_core` int(11) DEFAULT '0' COMMENT '任务声明所需CPU',
+  `cost_Memory` bigint(20) DEFAULT '0' COMMENT '任务声明所需内存',
+  `cost_Bandwidth` bigint(20) DEFAULT '0' COMMENT '任务声明所需带宽',
+  `alg_Identity_id` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '算法提供方身份ID',
+  `reviewed` tinyint(1) DEFAULT '0' COMMENT '任务是否被查看过，默认为false(0)',
+  `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='全网任务表 用于同步本地任务数据以及全网的相关数据';;
 
 -- 此表数据调用调度服务接口获取，rpc ListTask(TaskListRequest) returns (TaskListResponse);
 DROP TABLE IF EXISTS task_event;;
