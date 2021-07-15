@@ -33,12 +33,3 @@ logging:
     file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15}[%line] - %msg%n'
   file:
     name: logs/admin.log
-
-# =============================== carrier service for logger ===================================
-grpc:
-  client:
-    carrier-service:
-      host: 127.0.0.1
-      port: 9000
-      enableKeepAlive: true
-      keepAliveWithoutCalls: true

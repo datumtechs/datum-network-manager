@@ -36,4 +36,11 @@ public interface LocalMetaDataColumnMapper {
      * @return
      */
     int deleteByMetaDataId(String metaDataId);
+
+    /**
+     * 根据Id进行选择性更新数据
+     * @param
+     * @return
+     */
+    int updateByIdSelective(LocalMetaDataColumn localMetaDataColumn);
 }

@@ -9,6 +9,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
+import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.common.util.ExportFileUtil;
 import com.platon.rosettanet.admin.common.util.IDUtil;
 import com.platon.rosettanet.admin.dao.LocalDataFileMapper;
@@ -128,17 +129,17 @@ public class LocalDataServiceImpl implements LocalDataService {
 
     @Transactional
     @Override
-    public int add(LocalDataFileDetail req) {
+    public int add(LocalDataFileDetail detail) {
         AtomicInteger count = new AtomicInteger();
         LocalDataFile localDataFile = new LocalDataFile();
-        BeanUtils.copyProperties(req,localDataFile);
+        BeanUtils.copyProperties(detail,localDataFile);
         localDataFile.setRecUpdateTime(new Date());
         count.getAndAdd(localDataFileMapper.updateByMetaDataIdSelective(localDataFile));
 
         /**
          * TODO 使用批量更新提升性能
          */
-        List<LocalMetaDataColumn> localMetaDataColumnList = req.getLocalMetaDataColumnList();
+        List<LocalMetaDataColumn> localMetaDataColumnList = detail.getLocalMetaDataColumnList();
         localMetaDataColumnList.forEach(localMetaDataColumn -> {
             localMetaDataColumn.setRecUpdateTime(new Date());
             count.getAndAdd(localMetaDataColumnMapper.updateByMetaDataIdAndIndexSelective(localMetaDataColumn));
@@ -175,19 +176,23 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Transactional
     @Override
     public int update(LocalDataFileDetail req) {
+        String newMetaDataId = IDUtil.generate(METADATA_ID_PREFIX);
         AtomicInteger count = new AtomicInteger();
         LocalDataFile localDataFile = new LocalDataFile();
         BeanUtils.copyProperties(req,localDataFile);
         localDataFile.setRecUpdateTime(new Date());
-        count.getAndAdd(localDataFileMapper.updateByMetaDataIdSelective(localDataFile));
+        //生成新的metaDataId
+        localDataFile.setMetaDataId(newMetaDataId);
+        count.getAndAdd(localDataFileMapper.updateByIdSelective(localDataFile));
 
         /**
          * TODO 使用批量更新提升性能
          */
         List<LocalMetaDataColumn> localMetaDataColumnList = req.getLocalMetaDataColumnList();
         localMetaDataColumnList.forEach(localMetaDataColumn -> {
+            localMetaDataColumn.setMetaDataId(newMetaDataId);
             localMetaDataColumn.setRecUpdateTime(new Date());
-            count.getAndAdd(localMetaDataColumnMapper.updateByMetaDataIdAndIndexSelective(localMetaDataColumn));
+            count.getAndAdd(localMetaDataColumnMapper.updateByIdSelective(localMetaDataColumn));
         });
 
         return count.get();
@@ -225,8 +230,8 @@ public class LocalDataServiceImpl implements LocalDataService {
         BeanUtils.copyProperties(localDataFile,detail);
         detail.setLocalMetaDataColumnList(columnList);
         //调用grpc
-        String id = metaDataClient.publishMetaData(detail);
-        if(StrUtil.isBlank(id)){
+        String publishMetaData = metaDataClient.publishMetaData(detail);
+        if(StrUtil.isBlank(publishMetaData)){
             return 0;
         }
 

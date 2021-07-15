@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 @ToString
 public class LocalDataPageResp {
 
+    //数据ID
+    private Integer id;
     //源文件名称
     private String fileName;
     //源文件Id
@@ -39,6 +41,7 @@ public class LocalDataPageResp {
 
     public static LocalDataPageResp from(LocalDataFile localDataFile){
         LocalDataPageResp localDataPageResp = new LocalDataPageResp();
+        localDataPageResp.setId(localDataFile.getId());
         localDataPageResp.setFileId(localDataFile.getFileId());
         localDataPageResp.setFileName(localDataFile.getResourceName());
         localDataPageResp.setStatus(localDataFile.getStatus());

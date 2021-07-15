@@ -10,8 +10,12 @@ import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.LocalDataActionReq;
+import com.platon.rosettanet.admin.dto.req.LocalDataAddReq;
+import com.platon.rosettanet.admin.dto.req.LocalDataUpdateReq;
+import com.platon.rosettanet.admin.dto.resp.LocalDataDetailResp;
 import com.platon.rosettanet.admin.dto.resp.LocalDataPageResp;
 import com.platon.rosettanet.admin.service.LocalDataService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -69,7 +74,8 @@ public class LocalDataController {
      * 导入文件，文件上传+新增元数据信息,进行解析并将解析后的数据返回给前端
      */
     @PostMapping("uploadFile")
-    public JsonResponse<LocalDataFileDetail> importFile(MultipartFile file,Boolean hasTitle) throws IOException {
+    public JsonResponse<LocalDataFileDetail> importFile(MultipartFile file,
+                                                        @Validated @NotNull(message = "hasTitle不为空")Boolean hasTitle) throws IOException {
         //校验文件
         isValidFile(file);
         LocalDataFileDetail localDataFileDetail = localDataService.uploadFile(file, hasTitle);
@@ -96,8 +102,10 @@ public class LocalDataController {
      * 数据添加：只是更新数据库信息
      */
     @PostMapping("addMetaData")
-    public JsonResponse add(@RequestBody @Validated LocalDataFileDetail req){
-        int count = localDataService.add(req);
+    public JsonResponse add(@RequestBody @Validated LocalDataAddReq req){
+        LocalDataFileDetail detail = new LocalDataFileDetail();
+        BeanUtils.copyProperties(req,detail);
+        int count = localDataService.add(detail);
         if(count <= 0){
             return JsonResponse.fail("添加失败");
         }
@@ -108,17 +116,20 @@ public class LocalDataController {
      * 查看数据详情
      */
     @GetMapping("metaDataInfo")
-    public JsonResponse<LocalDataFileDetail> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
+    public JsonResponse<LocalDataDetailResp> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
         LocalDataFileDetail detail = localDataService.detail(metaDataId);
-        return JsonResponse.success(detail);
+        LocalDataDetailResp resp = LocalDataDetailResp.from(detail);
+        return JsonResponse.success(resp);
     }
 
     /**
      * 修改数据信息
      */
     @PostMapping("updateMetaData")
-    public JsonResponse update(@RequestBody @Validated LocalDataFileDetail req){
-        int count = localDataService.update(req);
+    public JsonResponse update(@RequestBody @Validated LocalDataUpdateReq req){
+        LocalDataFileDetail detail = new LocalDataFileDetail();
+        BeanUtils.copyProperties(req,detail);
+        int count = localDataService.update(detail);
         if(count <= 0){
             return JsonResponse.fail("更新失败");
         }

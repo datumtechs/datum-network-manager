@@ -27,10 +27,10 @@ public interface LocalDataService {
 
     /**
      * 添加文件信息
-     * @param req
+     * @param detail
      * @return
      */
-    int add(LocalDataFileDetail req);
+    int add(LocalDataFileDetail detail);
 
     /**
      * 删除文件元数据
