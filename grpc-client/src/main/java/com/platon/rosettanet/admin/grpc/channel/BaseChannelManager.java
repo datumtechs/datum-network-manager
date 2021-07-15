@@ -47,14 +47,13 @@ public abstract class BaseChannelManager {
     public abstract Channel buildChannel(String ip,int port);
 
     public static String getKey(String ip, Integer port){
-        String portStr = null;
         if(StrUtil.isBlank(ip)){
             throw new ApplicationException("ip为空");
         }
         if(port == null){
-            portStr = "";
+            return ip;
         }
-        return ip.concat(":").concat(portStr);
+        return ip.concat(":").concat(String.valueOf(port));
     }
 
     /**
