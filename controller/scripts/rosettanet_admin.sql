@@ -311,15 +311,16 @@ CREATE TABLE task_result_consumer (
 
 -- 此表数据调用调度服务从任务数据快照获取
 DROP TABLE IF EXISTS task_org;;
-CREATE TABLE task_org(
-    task_id varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID,hash',
-    identity_id varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '机构身份标识ID',
-    name VARCHAR(32)    COMMENT '机构名称' ,
-    carrier_node_id varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组织中调度服务的 nodeId',
-    status VARCHAR(10)    COMMENT '状态 enabled：可用, disabled:不可用' ,
-    rec_update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间' ,
-    PRIMARY KEY (task_ID, identity_id)
-) COMMENT = '任务组织信息表，用于存储从调度服务获取的任务数据快照中组织信息数据';;
+CREATE TABLE `task_org` (
+  `task_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID,hashv',
+  `identity_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '机构身份标识ID',
+  `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '机构名称',
+  `carrier_node_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织中调度服务的 nodeId',
+  `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  PRIMARY KEY (`task_id`,`identity_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务组织信息表，用于存储从调度服务获取的任务数据快照中组织信息数据';
+
+;
 
 
 -- 此表数据调用调度服务的接口获取，rpc GetPowerList(PowerListRequest) returns (PowerListResponse);
