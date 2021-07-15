@@ -1,5 +1,8 @@
 package com.platon.rosettanet.admin.dto.req;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -7,22 +10,26 @@ import javax.validation.constraints.NotNull;
  * @Description 节点分页查询请求类
  * @date 2021/7/8 17:14
  */
+@ApiModel(value = "节点分页查询请求类")
 public class NodePageReq {
     /**
      * 起始页号
      */
+    @ApiModelProperty(name = "pageNumber", value = "起始页号", required = true)
     @NotNull(message = "起始页号不能为空")
     private Integer pageNumber;
 
     /**
      * 每页数据条数
      */
+    @ApiModelProperty(name = "pageSize", value = "每页数据条数", required = true)
     @NotNull(message = "每页数据条数不能为空")
     private Integer pageSize;
 
     /**
      * 搜索关键字
      */
+    @ApiModelProperty(name = "keyword", value = "关键字")
     private String keyword;
 
     public Integer getPageNumber() {
