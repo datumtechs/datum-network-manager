@@ -40,7 +40,7 @@ public class DataNodeController {
      */
     @ApiOperation(value = "数据节点分页查询", httpMethod = "POST")
     @PostMapping("listNode")
-    public JsonResponse listNode(@Validated @RequestBody NodePageReq req) {
+    public JsonResponse <LocalDataNodeQueryResp>listNode(@Validated @RequestBody NodePageReq req) {
         Page<DataNode> dataNodes = dataNodeService.listNode(req.getPageNumber(), req.getPageSize(), req.getKeyword());
         List<DataNode> dataList = dataNodes.getResult();
         List<LocalDataNodeQueryResp> respList = dataList.stream().map(LocalDataNodeQueryResp::convert).collect(Collectors.toList());
@@ -75,7 +75,7 @@ public class DataNodeController {
      */
     @ApiOperation(value = "校验数据节点名称是否可用", httpMethod = "POST")
     @PostMapping("checkDataNodeName")
-    public JsonResponse checkDataNodeName(@Validated @RequestBody CheckDataNodeNameReq checkDataNodeNameReq) {
+    public JsonResponse <AvailableStatusResp> checkDataNodeName(@Validated @RequestBody CheckDataNodeNameReq checkDataNodeNameReq) {
         DataNode dataNode = new DataNode();
         dataNode.setHostName(checkDataNodeNameReq.getNodeName());
         AvailableStatusResp resp = new AvailableStatusResp();

@@ -3,9 +3,7 @@ package com.platon.rosettanet.admin.dto.resp;
 import com.platon.rosettanet.admin.dao.entity.DataNode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -13,9 +11,8 @@ import org.springframework.beans.BeanUtils;
  * @Description 数据节点查询返回实体
  * @date 2021/7/13 13:50
  */
-@Getter
-@Setter
-@ToString
+
+@Data
 @ApiModel(value = "数据节点查询返回实体")
 public class LocalDataNodeQueryResp {
     @ApiModelProperty(name = "id",value = "流水id")
