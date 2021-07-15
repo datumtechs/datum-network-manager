@@ -1,8 +1,7 @@
-package com.platon.rosettanet.admin.controller;
+package com.platon.rosettanet.admin.controller.node;
 
 
 import com.github.pagehelper.PageInfo;
-import com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.*;
@@ -11,8 +10,6 @@ import com.platon.rosettanet.admin.dto.resp.PowerJoinTaskResp;
 import com.platon.rosettanet.admin.service.LocalPowerNodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +22,7 @@ import java.util.List;
 
 /**
  * @author houzhuang
- * 计算节点控制类
- */
+ * 计算节点控制类 */
 @RestController
 @RequestMapping("/api/v1/node/powernode")
 @Api(tags = "计算节点控制类")
