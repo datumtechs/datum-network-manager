@@ -1,8 +1,7 @@
 package com.platon.rosettanet.admin.dao.entity;
 
 import lombok.Data;
-
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author houz
@@ -23,8 +22,8 @@ public class LocalPowerDetails {
 
     private Long usedBandwidth;
 
-    private LocalDateTime createTime;
+    private Date createTime;
 
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
 }

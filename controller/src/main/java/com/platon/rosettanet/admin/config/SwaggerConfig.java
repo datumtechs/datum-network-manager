@@ -14,7 +14,6 @@ import springfox.documentation.spring.web.plugins.Docket;
  * swagger配置类
  */
 @Configuration
-//@EnableSwagger2
 public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {

@@ -59,7 +59,7 @@ public class LocalPowerNodeController {
         if (count == 0) {
             JsonResponse.fail("删除失败！");
         }
-        return JsonResponse.success();
+        return JsonResponse.success("删除成功！");
     }
 
     @PostMapping("/queryPowerNodeDetails")
@@ -99,7 +99,7 @@ public class LocalPowerNodeController {
     }
 
     @PostMapping("/queryPowerJoinTaskList")
-    @ApiOperation(value="查询计算节点参数任务列表", response = JsonResponse.class)
+    @ApiOperation(value="查询计算节点参与任务列表", response = JsonResponse.class)
     public JsonResponse queryPowerJoinTaskList(@Validated @RequestBody PowerJoinTaskReq powerJoinTaskReq) {
         PageInfo PageInfo = localPowerNodeService.queryPowerJoinTaskList(powerJoinTaskReq.getPowerNodeId(),
                 powerJoinTaskReq.getPageNumber(), powerJoinTaskReq.getPageSize());

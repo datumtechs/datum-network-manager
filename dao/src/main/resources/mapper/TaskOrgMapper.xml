@@ -6,7 +6,6 @@
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="carrier_node_id" jdbcType="VARCHAR" property="carrierNodeId" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
 
@@ -16,13 +15,23 @@
   </sql>
 
 
-
   <select id="selectTaskOrgByIdentityId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from task_org
     where identity_id = #{identityId,jdbcType=VARCHAR}
   </select>
+
+
+  <insert id="insertBatch" parameterType="list">
+    replace into task_org (task_id,identity_id, `name`,
+    carrier_node_id)
+    values
+    <foreach collection ="list" item="item" separator =",">
+      (#{item.taskId,jdbcType=VARCHAR},#{item.identityId,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},
+       #{item.carrierNodeId,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
 
 
 
