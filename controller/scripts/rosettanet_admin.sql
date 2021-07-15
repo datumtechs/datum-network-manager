@@ -82,7 +82,7 @@ CREATE TABLE local_power_node
     remarks        VARCHAR(32) COMMENT '节点备注',
     conn_message   VARCHAR(32) COMMENT '节点(连接失败)信息',
     conn_time      DATETIME COMMENT '节点上一次连接时间',
-    status         VARCHAR(10)  not null COMMENT '节点状态，0:网络连接失败 1:算力未启用; 2:算力已启用（空闲）; 3:算力已占用',
+    status         VARCHAR(10)  not null COMMENT '节点状态，0:网络连接失败; 1:算力未启用(网络已连接); 2:算力已启用（空闲）; 3:算力已占用(计算服务算力正在被任务占用)',
     memory         BIGINT       NOT NULL DEFAULT 0 COMMENT '计算host内存, 字节',
     core           INT          NOT NULL DEFAULT 0 COMMENT '计算host core',
     bandwidth      BIGINT       NOT NULL DEFAULT 0 COMMENT '计算host带宽, bps',
@@ -97,8 +97,8 @@ CREATE TABLE local_power_node
 ) COMMENT = '本组织计算节点配置表 配置当前参与方的计算节点信息';;
 
 -- 计算节点使用资源定时刷新数据
-DROP TABLE IF EXISTS local_power_details;;
-CREATE TABLE local_power_details
+DROP TABLE IF EXISTS local_power_history;;
+CREATE TABLE local_power_history
 (
     id              INT NOT NULL AUTO_INCREMENT COMMENT '序号',
     power_node_id   VARCHAR(128)       COMMENT '发布后底层返回的host唯一ID',

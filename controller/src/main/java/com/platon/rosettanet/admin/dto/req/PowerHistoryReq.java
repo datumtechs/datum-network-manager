@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(value = "查询节点历史资源请求参数")
-public class PowerHistoryResourcesReq {
+public class PowerHistoryReq {
 
     @NotNull(message = "计算节点ID不能为空")
     @ApiModelProperty(value = "计算节点ID", example = "", required = true)

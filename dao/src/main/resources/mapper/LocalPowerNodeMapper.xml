@@ -60,6 +60,11 @@
         power_node_id = #{powerNodeId, jdbcType=VARCHAR}
   </select>
 
+  <!-- 校验计算节点名称 -->
+  <select id="checkPowerNodeName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from local_power_node where power_node_Name = #{powerNodeName, jdbcType=VARCHAR}
+  </select>
+
   <!-- 通过组织机构id查询计算节点-->
   <select id="queryPowerNodeList" parameterType="java.lang.String" resultMap="BaseResultMap">
     select

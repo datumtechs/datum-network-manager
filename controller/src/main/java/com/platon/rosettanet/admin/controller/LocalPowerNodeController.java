@@ -57,7 +57,7 @@ public class LocalPowerNodeController {
         // 删除计算节点
         int count = localPowerNodeService.deletePowerNodeByNodeId(powerDeleteReq.getPowerNodeId());
         if (count == 0) {
-            JsonResponse.fail("删除失败！");
+            return JsonResponse.fail("删除失败！");
         }
         return JsonResponse.success("删除成功！");
     }
@@ -91,10 +91,10 @@ public class LocalPowerNodeController {
         return JsonResponse.success("停用成功");
     }
 
-    @PostMapping("/queryPowerNodeUseResource")
+    @PostMapping("/queryPowerNodeUseHistory")
     @ApiOperation(value="查询计算节点使用资源", response = JsonResponse.class)
-    public JsonResponse queryPowerNodeUseResource(@Validated @RequestBody PowerHistoryResourcesReq historyResourcesReq) {
-        List dataList = localPowerNodeService.queryPowerNodeUseResource(historyResourcesReq.getPowerNodeId());
+    public JsonResponse queryPowerNodeUseHistory(@Validated @RequestBody PowerHistoryReq powerHistoryReq) {
+        List dataList = localPowerNodeService.queryPowerNodeUseHistory(powerHistoryReq.getPowerNodeId());
         return JsonResponse.success(dataList);
     }
 
@@ -104,6 +104,17 @@ public class LocalPowerNodeController {
         PageInfo PageInfo = localPowerNodeService.queryPowerJoinTaskList(powerJoinTaskReq.getPowerNodeId(),
                 powerJoinTaskReq.getPageNumber(), powerJoinTaskReq.getPageSize());
         return JsonResponse.success(PageInfo);
+    }
+
+    @PostMapping("/checkPowerNodeName")
+    @ApiOperation(value="校验计算节点名称是否可用", response = JsonResponse.class)
+    public JsonResponse checkPowerNodeName(@Validated @RequestBody PowerCheckNameReq powerCheckNameReq) {
+        // 新增计算节点
+        int count = localPowerNodeService.checkPowerNodeName(powerCheckNameReq.getPowerNodeName());
+        if (count > 0) {
+            return JsonResponse.fail("校验失败");
+        }
+        return JsonResponse.success("校验成功");
     }
 
 }

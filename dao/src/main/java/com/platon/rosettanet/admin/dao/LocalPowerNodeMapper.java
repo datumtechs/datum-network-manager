@@ -57,5 +57,11 @@ public interface LocalPowerNodeMapper {
      */
     List<LocalPowerNode> queryPowerNodeList(@Param(value = "identityId")String identityId, @Param(value = "keyword")String keyword);
 
+    /**
+     * 计算节点名称校验
+     * @param powerNodeName
+     * @return
+     */
+    int checkPowerNodeName(String powerNodeName);
 
 }
