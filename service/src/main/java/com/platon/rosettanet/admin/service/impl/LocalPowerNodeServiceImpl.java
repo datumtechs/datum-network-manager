@@ -13,6 +13,7 @@ import com.platon.rosettanet.admin.service.LocalPowerNodeService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -43,18 +44,20 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public int insertPowerNode(LocalPowerNode powerNode) {
         // 调用grpc返回powerNodeId
-        String reposeStr = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
-                powerNode.getInternalPort(), powerNode.getExternalPort());
+//        String reposeStr = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
+//                powerNode.getInternalPort(), powerNode.getExternalPort());
         // 计算节点id
-        powerNode.setPowerNodeId("");
+        powerNode.setIdentityId(UUID.randomUUID().toString());
+        powerNode.setPowerNodeId(UUID.randomUUID().toString());
         // 状态
-        powerNode.setStatus(null);
+        powerNode.setStatus("");
+        powerNode.setStartTime(LocalDateTime.now());
         // 内存
-        powerNode.setMemory(null);
+        powerNode.setMemory(64L);
         // 核数
-        powerNode.setCore(null);
+        powerNode.setCore(4);
         // 带宽
-        powerNode.setBandwidth(null);
+        powerNode.setBandwidth(128L);
         return localPowerNodeMapper.insertPowerNode(powerNode);
     }
 
