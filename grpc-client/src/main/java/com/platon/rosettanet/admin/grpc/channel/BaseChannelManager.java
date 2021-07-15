@@ -66,7 +66,7 @@ public abstract class BaseChannelManager {
         LocalOrg localOrgInfo = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
         if(!"enabled".equals(localOrgInfo.getCarrierConnStatus())
                 || !"enabled".equals(localOrgInfo.getCarrierStatus())){
-            new ApplicationException("无可用的调度服务");
+            throw new ApplicationException("无可用的调度服务");
         }
         //1.获取rpc连接
         Channel channel = buildChannel(localOrgInfo.getCarrierIP(), localOrgInfo.getCarrierPort());
