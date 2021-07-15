@@ -89,7 +89,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         LocalDataFile localDataFile = new LocalDataFile();
         localDataFile.setIdentityId(LocalOrgIdentityCache.getIdentityId());
         localDataFile.setFileName(fileName);
-        localDataFile.setResourceName(fileName.substring(0,12)); //保存前12个字符作为资源名称
+        localDataFile.setResourceName(StrUtil.sub(fileName,0,12)); //保存前12个字符作为资源名称
         localDataFile.setFileType("csv");
         localDataFile.setSize(file.getSize());
         localDataFile.setHasTitle(hasTitle);
