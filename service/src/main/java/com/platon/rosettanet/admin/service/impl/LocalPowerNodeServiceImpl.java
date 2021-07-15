@@ -1,5 +1,7 @@
 package com.platon.rosettanet.admin.service.impl;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.dao.LocalPowerDetailsMapper;
@@ -12,7 +14,6 @@ import com.platon.rosettanet.admin.grpc.client.PowerClient;
 import com.platon.rosettanet.admin.service.LocalPowerNodeService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -23,8 +24,6 @@ import java.util.*;
 @Service
 public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
-    private static final SimpleDateFormat ymd = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat ymdh = new SimpleDateFormat("yyyy-MM-dd HH");
 
     /** 计算节点 */
     @Resource
@@ -47,7 +46,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 //        String reposeStr = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
 //                powerNode.getInternalPort(), powerNode.getExternalPort());
         // 计算节点id
-        powerNode.setIdentityId(UUID.randomUUID().toString());
+        powerNode.setIdentityId("100000001");
         powerNode.setPowerNodeId(UUID.randomUUID().toString());
         // 状态
         powerNode.setStatus("");
@@ -64,23 +63,24 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public int updatePowerNodeByNodeId(LocalPowerNode powerNode) {
         // 调用grpc返回powerNodeId
-        String reposeStr = powerClient.updatePowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
-                powerNode.getInternalPort(), powerNode.getExternalPort());
+//        String reposeStr = powerClient.updatePowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
+//                powerNode.getInternalPort(), powerNode.getExternalPort());
         // 状态
-        powerNode.setStatus(null);
+        powerNode.setStatus("");
+        powerNode.setStartTime(LocalDateTime.now());
         // 内存
-        powerNode.setMemory(null);
+        powerNode.setMemory(32L);
         // 核数
-        powerNode.setCore(null);
+        powerNode.setCore(8);
         // 带宽
-        powerNode.setBandwidth(null);
+        powerNode.setBandwidth(256L);
         return localPowerNodeMapper.updatePowerNodeByNodeId(powerNode);
     }
 
     @Override
     public int deletePowerNodeByNodeId(String powerNodeId) {
-        // 调用grpc删除计算节点
-        String resposeStr = powerClient.deletePowerNode(powerNodeId);
+//        // 调用grpc删除计算节点
+//        String resposeStr = powerClient.deletePowerNode(powerNodeId);
 //        if () {
 //            return 0 ;
 //        }
@@ -105,11 +105,21 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public void publishPower(String powerNodeId) {
 //        String reposeStr = powerClient.publishPower(powerNodeId, status);
+        LocalPowerNode localPowerNode = new LocalPowerNode();
+        localPowerNode.setPowerNodeId(powerNodeId);
+        // status=2表示算例已启用
+        localPowerNode.setStatus("2");
+        localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
 
     @Override
     public void revokePower(String powerNodeId) {
 //        String reposeStr = powerClient.revokePower(powerNodeId, status);
+        LocalPowerNode localPowerNode = new LocalPowerNode();
+        localPowerNode.setPowerNodeId(powerNodeId);
+        // status=1表示算例未启用
+        localPowerNode.setStatus("1");
+        localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
 
     @Override
@@ -141,7 +151,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         for(LocalPowerDetails powerDetails : powerDetailsList) {
             if ("0".equals(powerDetails.getRefreshStatus())) {
                 // 时间(小时)
-                timeList.add(ymdh.format(powerDetails.getCreateTime()));
+                timeList.add(DateUtil.format(powerDetails.getCreateTime(), "yyyy-MM-dd HH"));
                 // cpu
                 cupList.add(powerDetails.getUsedCore());
                 // 内存
@@ -153,11 +163,11 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
                 break;
             }
         }
-        cpuHoursMap.put("resource", cupList);
+        cpuHoursMap.put("cupList", cupList);
         cpuHoursMap.put("hoursTime", timeList);
-        memoryHoursMap.put("resource", memoryList);
+        memoryHoursMap.put("memoryList", memoryList);
         memoryHoursMap.put("hoursTime", timeList);
-        bandHoursMap.put("resource", bandList);
+        bandHoursMap.put("bandList", bandList);
         bandHoursMap.put("hoursTime", timeList);
         detailsList.add(cpuHoursMap);
         detailsList.add(memoryHoursMap);
@@ -176,8 +186,8 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         Map bandSevenMap = new HashMap(16);
         for(LocalPowerDetails powerDetails : powerDetailsList) {
             if ("1".equals(powerDetails.getRefreshStatus())) {
-                // 时间(小时)
-                timeList.add(ymd.format(powerDetails.getCreateTime()));
+                // 时间NORM_DATE_FORMATTER
+                timeList.add(DateUtil.format(powerDetails.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
                 // cpu
                 cupList.add(powerDetails.getUsedCore());
                 // 内存
@@ -189,11 +199,11 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
                 break;
             }
         }
-        cpuSevenMap.put("resource", cupList);
+        cpuSevenMap.put("cupList", cupList);
         cpuSevenMap.put("sevenTime", timeList);
-        memorySevenMap.put("resource", memoryList);
+        memorySevenMap.put("memoryList", memoryList);
         memorySevenMap.put("sevenTime", timeList);
-        bandSevenMap.put("resource", bandList);
+        bandSevenMap.put("bandList", bandList);
         bandSevenMap.put("sevenTime", timeList);
         detailsList.add(cpuSevenMap);
         detailsList.add(memorySevenMap);
@@ -213,7 +223,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         for(LocalPowerDetails powerDetails : powerDetailsList) {
             if ("1".equals(powerDetails.getRefreshStatus())) {
                 // 时间(小时)
-                timeList.add(ymd.format(powerDetails.getCreateTime()));
+                timeList.add(DateUtil.format(powerDetails.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
                 // cpu
                 cupList.add(powerDetails.getUsedCore());
                 // 内存
@@ -225,11 +235,11 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
                 break;
             }
         }
-        cpuFifteenMap.put("resource", cupList);
+        cpuFifteenMap.put("cupList", cupList);
         cpuFifteenMap.put("fifteenTime", timeList);
-        memoryFifteenMap.put("resource", memoryList);
+        memoryFifteenMap.put("memoryList", memoryList);
         memoryFifteenMap.put("fifteenTime", timeList);
-        bandFifteenMap.put("resource", bandList);
+        bandFifteenMap.put("bandList", bandList);
         bandFifteenMap.put("fifteenTime", timeList);
         detailsList.add(cpuFifteenMap);
         detailsList.add(memoryFifteenMap);
@@ -248,7 +258,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         for(LocalPowerDetails powerDetails : powerDetailsList) {
             if ("1".equals(powerDetails.getRefreshStatus())) {
                 // 时间(小时)
-                timeList.add(ymd.format(powerDetails.getCreateTime()));
+                timeList.add(DateUtil.format(powerDetails.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
                 // cpu
                 cupList.add(powerDetails.getUsedCore());
                 // 内存
@@ -260,11 +270,11 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
                 break;
             }
         }
-        cpuThirtyMap.put("resource", cupList);
+        cpuThirtyMap.put("cupList", cupList);
         cpuThirtyMap.put("thirtyTime", timeList);
-        memoryThirtyMap.put("resource", memoryList);
+        memoryThirtyMap.put("memoryList", memoryList);
         memoryThirtyMap.put("thirtyTime", timeList);
-        bandThirtyMap.put("resource", bandList);
+        bandThirtyMap.put("bandList", bandList);
         bandThirtyMap.put("thirtyTime", timeList);
         detailsList.add(cpuThirtyMap);
         detailsList.add(memoryThirtyMap);
