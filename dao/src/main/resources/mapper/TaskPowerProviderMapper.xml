@@ -63,8 +63,8 @@
     )
     values
     <foreach collection ="list" item="item" separator =",">
-      (#{taskId,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{usedCore,jdbcType=INTEGER},
-      #{usedMemory,jdbcType=BIGINT}, #{usedBandwidth,jdbcType=BIGINT}, #{recUpdateTime,jdbcType=TIMESTAMP})
+      (#{item.taskId,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR}, #{item.usedCore,jdbcType=INTEGER},
+      #{item.usedMemory,jdbcType=BIGINT}, #{item.usedBandwidth,jdbcType=BIGINT}, #{item.recUpdateTime,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
 

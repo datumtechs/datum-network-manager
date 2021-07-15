@@ -6,6 +6,8 @@ import com.platon.rosettanet.admin.dao.entity.TaskEvent;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.TaskPageReq;
 import com.platon.rosettanet.admin.service.TaskService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Api(value="计算任务controller",tags={"计算任务相关接口"})
 @RestController
 @RequestMapping("/api/v1/task/mytask")
 public class TaskController {
@@ -25,9 +28,10 @@ public class TaskController {
     private TaskService taskService;
 
     //根据条件查询组织参与的任务列表
+    @ApiOperation(value="条件查询组织参与的任务列表")
     @PostMapping("/taskListByQuery")
     public JsonResponse listMyTask(@Validated @RequestBody TaskPageReq taskPageReq){
-        Page<Task> taskPage =  taskService.listTask(taskPageReq.getStatus(),taskPageReq.getRole(),taskPageReq.getStartTimestamp(),taskPageReq.getEndTimestamp(), taskPageReq.getKeyWord(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
+        Page<Task> taskPage =  taskService.listTask(taskPageReq.getStatus(),taskPageReq.getRole(),taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getKeyWord(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
         return JsonResponse.page(taskPage);
     }
 

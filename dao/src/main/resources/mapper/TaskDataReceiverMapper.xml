@@ -57,11 +57,11 @@
 
 
   <insert id="insertBatch" parameterType="list">
-    replace into task (task_id, meta_data_id, rec_update_time, identity_id, meta_data_name)
+    replace into task_data_provider (task_id, meta_data_id, rec_update_time, identity_id, meta_data_name)
     values
     <foreach collection ="list" item="item" separator =",">
-      (#{taskId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{recUpdateTime,jdbcType=TIMESTAMP},
-      #{identityId,jdbcType=VARCHAR}, #{metaDataName,jdbcType=VARCHAR})
+      (#{item.taskId,jdbcType=VARCHAR}, #{item.metaDataId,jdbcType=VARCHAR}, #{item.recUpdateTime,jdbcType=TIMESTAMP},
+      #{item.identityId,jdbcType=VARCHAR}, #{item.metaDataName,jdbcType=VARCHAR})
     </foreach>
   </insert>
 

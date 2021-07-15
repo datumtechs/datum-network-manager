@@ -71,7 +71,7 @@
   </select>
 
 
-  <select id="listTask" parameterType="map" resultType="com.platon.rosettanet.admin.dao.entity.Task">
+  <select id="listTask" parameterType="map" resultMap="BaseResultMap">
     SELECT
     task_role.*
     FROM
@@ -80,6 +80,7 @@
         t.task_Name,
         t.`status`,
         t.create_At,
+        t.reviewed,
         CASE
         WHEN t.owner_Identity_id = (SELECT identity_Id FROM local_org) THEN 1
         WHEN tdp.identity_id = (SELECT identity_Id FROM local_org) THEN 2
@@ -150,15 +151,15 @@
     create_At, start_At, auth_At,
     auth_Status, end_At, status,
     duration, cost_core, cost_Memory,
-    cost_Bandwidth, alg_Identity_id, reviewed,
+    cost_Bandwidth, alg_Identity_id,
     rec_create_time, rec_update_time)
     values
-    <foreach collection ="list" item="item" index="index">
+    <foreach collection ="list" item="item" index="index" separator=",">
       (#{item.id,jdbcType=VARCHAR}, #{item.taskName,jdbcType=VARCHAR}, #{item.ownerIdentityId,jdbcType=VARCHAR},
       #{item.createAt,jdbcType=TIMESTAMP}, #{item.startAt,jdbcType=TIMESTAMP}, #{item.authAt,jdbcType=TIMESTAMP},
       #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=VARCHAR},
       #{item.duration,jdbcType=TIMESTAMP}, #{item.costCore,jdbcType=INTEGER}, #{item.costMemory,jdbcType=BIGINT},
-      #{item.costBandwidth,jdbcType=BIGINT}, #{item.algIdentityId,jdbcType=VARCHAR}, #{item.reviewed,jdbcType=BIT},
+      #{item.costBandwidth,jdbcType=BIGINT}, #{item.algIdentityId,jdbcType=VARCHAR},
       #{item.recCreateTime,jdbcType=TIMESTAMP}, #{item.recUpdateTime,jdbcType=TIMESTAMP})
     </foreach>
   </insert>

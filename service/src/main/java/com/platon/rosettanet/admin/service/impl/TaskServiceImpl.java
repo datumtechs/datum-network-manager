@@ -40,8 +40,8 @@ public class TaskServiceImpl implements TaskService {
         public Page<Task> listTask(String status, Integer role, Long startTimestamp, Long endTimestamp, String keyWord, int pageNumber, int pageSize) {
 
             Integer roleParam = (role == null) ? -1 : role;
-            Timestamp startTimestampParam = (startTimestamp == null) ? null : new Timestamp(startTimestamp);
-            Timestamp endTimestampParam = (endTimestamp == null) ? null : new Timestamp(endTimestamp);
+            Timestamp startTimestampParam = (startTimestamp == 0) ? null : new Timestamp(startTimestamp);
+            Timestamp endTimestampParam = (endTimestamp == 0) ? null : new Timestamp(endTimestamp);
 
             Page<Task> taskPage = PageHelper.startPage(pageNumber, pageSize);
             List<Task> taskList = taskMapper.listTask(status, roleParam, startTimestampParam, endTimestampParam, keyWord);

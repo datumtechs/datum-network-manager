@@ -65,8 +65,8 @@
        rec_update_time)
     values
     <foreach collection ="list" item="item" separator =",">
-      (#{taskId,jdbcType=VARCHAR}, #{consumerIdentityId,jdbcType=VARCHAR}, #{producerIdentityId,jdbcType=VARCHAR},
-      #{recUpdateTime,jdbcType=TIMESTAMP})
+      (#{item.taskId,jdbcType=VARCHAR}, #{item.consumerIdentityId,jdbcType=VARCHAR}, #{item.producerIdentityId,jdbcType=VARCHAR},
+      #{item.recUpdateTime,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
 
