@@ -2,11 +2,16 @@ package com.platon.rosettanet.admin.controller.resource;
 
 import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.dao.entity.GlobalPower;
+import com.platon.rosettanet.admin.dto.CommonPageReq;
 import com.platon.rosettanet.admin.dto.JsonResponse;
+import com.platon.rosettanet.admin.dto.req.GlobalPowerListByKeyWordReq;
 import com.platon.rosettanet.admin.dto.resp.GlobalPowerPageResp;
 import com.platon.rosettanet.admin.service.GlobalPowerService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,9 +38,10 @@ public class GlobalPowerController {
     /**
      * 展示数据列表，带分页
      */
+    @ApiOperation(value = "数据分页列表")
     @GetMapping("powerList")
-    public JsonResponse<GlobalPowerPageResp> page(int pageNum, int pageSize){
-        Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(pageNum, pageSize,null);
+    public JsonResponse<GlobalPowerPageResp> page(@RequestBody @Validated CommonPageReq req){
+        Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(req.getPageNumber(), req.getPageSize(),null);
         List<GlobalPowerPageResp> respList = globalPowerPage.getResult().stream()
                 .map(GlobalPowerPageResp::from)
                 .collect(Collectors.toList());
@@ -45,9 +51,10 @@ public class GlobalPowerController {
     /**
      * 根据关键字查询全网算力信息
      */
+    @ApiOperation(value = "关键字查询")
     @GetMapping("powerListByKeyWord")
-    public JsonResponse<GlobalPowerPageResp> globalPowerListByKeyWord(int pageNum, int pageSize,String keyword){
-        Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(pageNum, pageSize,keyword);
+    public JsonResponse<GlobalPowerPageResp> listByKeyWord(@RequestBody @Validated GlobalPowerListByKeyWordReq req){
+        Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(req.getPageNumber(), req.getPageSize(),req.getKeyword());
         List<GlobalPowerPageResp> respList = globalPowerPage.getResult().stream()
                 .map(GlobalPowerPageResp::from)
                 .collect(Collectors.toList());

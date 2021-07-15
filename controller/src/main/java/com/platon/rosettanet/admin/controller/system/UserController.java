@@ -4,10 +4,13 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.platon.rosettanet.admin.constant.ControllerConstants;
 import com.platon.rosettanet.admin.dto.JsonResponse;
-import com.platon.rosettanet.admin.dto.req.LoginReq;
+import com.platon.rosettanet.admin.dto.req.UserLoginReq;
 import com.platon.rosettanet.admin.dto.req.UserApplyOrgIdentityReq;
 import com.platon.rosettanet.admin.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +29,7 @@ import javax.servlet.http.HttpSession;
  * 组织身份相关接口
  */
 
-@Api(tags = "组织身份相关接口")
+@Api(tags = "用户登录相关接口")
 @RestController
 @RequestMapping("/api/v1/system/user/")
 public class UserController {
@@ -40,8 +43,9 @@ public class UserController {
      * @param req
      * @return
      */
+    @ApiOperation(value = "登陆")
     @PostMapping("login")
-    public JsonResponse<String> login(HttpServletRequest request,@Validated @RequestBody LoginReq req){
+    public JsonResponse<String> login(HttpServletRequest request,@Validated @RequestBody UserLoginReq req){
         HttpSession session = request.getSession(true);
         //校验验证码
         String codeInSession = (String)session.getAttribute(ControllerConstants.VERIFICATION_CODE);
@@ -76,6 +80,7 @@ public class UserController {
      * @param request
      * @return
      */
+    @ApiOperation(value = "退出登录状态")
     @PostMapping("logout")
     public JsonResponse logout(HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -90,6 +95,7 @@ public class UserController {
      * @param req
      * @return
      */
+    @ApiOperation(value = "申请身份标识")
     @PostMapping("applyOrgIdentity")
     public JsonResponse<String> applyOrgIdentity(@RequestBody @Validated UserApplyOrgIdentityReq req){
         String orgId = userService.applyOrgIdentity(req.getOrgName());
@@ -104,6 +110,7 @@ public class UserController {
      * @param request
      * @return
      */
+    @ApiOperation(value = "获取验证码")
     @GetMapping("verificationCode")
     public JsonResponse<String> getVerificationCode(HttpServletRequest request){
         int code = RandomUtil.randomInt(1000, 9999);

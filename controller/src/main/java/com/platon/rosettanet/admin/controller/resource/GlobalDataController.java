@@ -3,12 +3,18 @@ package com.platon.rosettanet.admin.controller.resource;
 import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.dao.entity.GlobalDataFile;
 import com.platon.rosettanet.admin.dao.entity.GlobalDataFileDetail;
+import com.platon.rosettanet.admin.dto.CommonPageReq;
 import com.platon.rosettanet.admin.dto.JsonResponse;
+import com.platon.rosettanet.admin.dto.req.GlobalDataMetaDataListByKeyWordReq;
 import com.platon.rosettanet.admin.dto.resp.GlobalDataPageResp;
 import com.platon.rosettanet.admin.service.GlobalDataService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,9 +42,10 @@ public class GlobalDataController {
     /**
      * 展示数据列表，带分页
      */
+    @ApiOperation(value = "数据列表分页查询")
     @GetMapping("metaDataList")
-    public JsonResponse<GlobalDataPageResp> page(int pageNum, int pageSize){
-        Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(pageNum, pageSize,null);
+    public JsonResponse<GlobalDataPageResp> page(@RequestBody @Validated CommonPageReq req){
+        Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(req.getPageNumber(), req.getPageSize(),null);
         List<GlobalDataPageResp> respList = globalDataFilePage.getResult().stream()
                 .map(GlobalDataPageResp::from)
                 .collect(Collectors.toList());
@@ -48,9 +55,10 @@ public class GlobalDataController {
     /**
      * 根据关键字查询元数据列表摘要信息
      */
+    @ApiOperation(value = "数据列表关键字查询")
     @GetMapping("metaDataListByKeyWord")
-    public JsonResponse<GlobalDataPageResp> metaDataListByKeyWord(int pageNum, int pageSize,String keyword){
-        Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(pageNum, pageSize,keyword);
+    public JsonResponse<GlobalDataPageResp> metaDataListByKeyWord(@RequestBody @Validated GlobalDataMetaDataListByKeyWordReq req){
+        Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(req.getPageNumber(), req.getPageSize(), req.getKeyword());
         List<GlobalDataPageResp> respList = globalDataFilePage.getResult().stream()
                 .map(GlobalDataPageResp::from)
                 .collect(Collectors.toList());
@@ -60,6 +68,10 @@ public class GlobalDataController {
     /**
      * 查看数据详情
      */
+    @ApiOperation(value = "查看数据详情")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "metaDataId",value = "元数据ID",required = true,dataTypeClass = String.class,paramType = "query",example = "mataData111"),
+    })
     @GetMapping("metaDataInfo")
     public JsonResponse<GlobalDataFileDetail> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
         GlobalDataFileDetail detail = globalDataService.detail(metaDataId);

@@ -1,6 +1,8 @@
 package com.platon.rosettanet.admin.dto.req;
 
 import com.platon.rosettanet.admin.common.util.NameUtil;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,8 +19,10 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Setter
 @ToString
+@ApiModel
 public class UserApplyOrgIdentityReq {
 
     @Pattern(regexp = NameUtil.NAME_REG_STR,message = "仅支持中英文与数字输入，最多12个字符")
+    @ApiModelProperty(value = "组织名称",required = true)
     private String orgName;//身份标识名称
 }

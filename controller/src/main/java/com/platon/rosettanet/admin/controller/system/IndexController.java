@@ -7,6 +7,7 @@ import com.platon.rosettanet.admin.dto.resp.IndexNodeListResp;
 import com.platon.rosettanet.admin.dto.resp.IndexOverviewResp;
 import com.platon.rosettanet.admin.service.IndexService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,7 @@ public class IndexController {
      * 查看当前系统的概览信息,即首页信息，该接口内容为统计信息
      * @return
      */
+    @ApiOperation(value = "首页信息统计信息")
     @GetMapping("overview")
     public JsonResponse<IndexOverviewResp> overview(){
         VLocalStats localStats = indexService.getOverview();
@@ -51,6 +53,7 @@ public class IndexController {
      * 即首页信息计算节点列表
      * @return
      */
+    @ApiOperation(value = "首页计算节点列表")
     @GetMapping("nodeList")
     public JsonResponse<List<IndexNodeListResp>> nodeList(){
         List<LocalPowerNode> powerNodeList = indexService.getPowerNodeList();

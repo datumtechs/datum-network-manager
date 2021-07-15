@@ -5,6 +5,7 @@ import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.resp.SystemQueryBaseInfoResp;
 import com.platon.rosettanet.admin.service.LocalOrgService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,7 @@ public class SystemBaseInfoController {
      * 登录后查询出当前组织信息
      * @return
      */
+    @ApiOperation(value = "查询出当前组织信息")
     @GetMapping("queryBaseInfo")
     public JsonResponse<SystemQueryBaseInfoResp> queryBaseInfo(){
         LocalOrg localOrg = localOrgService.getLocalOrg();
