@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.controller.node;
 
 import com.github.pagehelper.Page;
+import com.platon.rosettanet.admin.common.util.NameUtil;
 import com.platon.rosettanet.admin.constant.ControllerConstants;
 import com.platon.rosettanet.admin.dao.entity.DataNode;
 import com.platon.rosettanet.admin.dto.JsonResponse;
@@ -57,11 +58,15 @@ public class DataNodeController {
     @ApiOperation(value = "新增数据节点", httpMethod = "POST")
     @PostMapping("addDataNode")
     public JsonResponse addDataNode(@Validated @RequestBody DataNodeAddReq dataNodeAddReq) throws Exception {
+        //判断数据节点名称是否合法
+        if(!NameUtil.isValidName(dataNodeAddReq.getNodeName())){
+            return JsonResponse.fail("数据节点名称不合法");
+        }
         DataNode dataNode = new DataNode();
         BeanUtils.copyProperties(dataNodeAddReq, dataNode);
         dataNode.setHostName(dataNodeAddReq.getNodeName());
         if (!dataNodeService.checkDataNodeName(dataNode)) {
-            return JsonResponse.fail("保存失败，节点名称已存在！");
+            return JsonResponse.fail("数据节点名称已存在");
         }
         dataNodeService.addDataNode(dataNode);
         return JsonResponse.success();
