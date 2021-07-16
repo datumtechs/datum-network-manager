@@ -72,4 +72,11 @@ public interface LocalDataService {
      * @return
      */
     int up(String metaDataId);
+
+    /**
+     * 校验资源名称是否已经在数据库中存在
+     * @param resourceName
+     * @return
+     */
+    boolean isExistResourceName(String resourceName);
 }

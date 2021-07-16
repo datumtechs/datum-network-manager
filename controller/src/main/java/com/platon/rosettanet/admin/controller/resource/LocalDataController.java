@@ -6,6 +6,7 @@ import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
+import com.platon.rosettanet.admin.common.util.NameUtil;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dto.CommonPageReq;
@@ -15,6 +16,7 @@ import com.platon.rosettanet.admin.dto.req.LocalDataAddReq;
 import com.platon.rosettanet.admin.dto.req.LocalDataMetaDataListByKeyWordReq;
 import com.platon.rosettanet.admin.dto.req.LocalDataUpdateReq;
 import com.platon.rosettanet.admin.dto.resp.LocalDataDetailResp;
+import com.platon.rosettanet.admin.dto.resp.LocalDataImportFileResp;
 import com.platon.rosettanet.admin.dto.resp.LocalDataPageResp;
 import com.platon.rosettanet.admin.service.LocalDataService;
 import io.swagger.annotations.Api;
@@ -83,15 +85,16 @@ public class LocalDataController {
      */
     @ApiOperation(value = "导入文件")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "hasTitle",value = "是否包含表头",required = true,dataTypeClass = Boolean.class,paramType = "query",example = "true"),
+            @ApiImplicitParam(name = "hasTitle",value = "是否包含表头",required = true,paramType = "query",example = "true"),
     })
     @PostMapping("uploadFile")
-    public JsonResponse<LocalDataFileDetail> importFile(MultipartFile file,
+    public JsonResponse<LocalDataImportFileResp> importFile(MultipartFile file,
                                                         @Validated @NotNull(message = "hasTitle不为空")Boolean hasTitle) throws IOException {
         //校验文件
         isValidFile(file);
-        LocalDataFileDetail localDataFileDetail = localDataService.uploadFile(file, hasTitle);
-        return JsonResponse.success(localDataFileDetail);
+        LocalDataFileDetail detail = localDataService.uploadFile(file, hasTitle);
+        LocalDataImportFileResp resp = LocalDataImportFileResp.from(detail);
+        return JsonResponse.success(resp);
     }
 
     private void isValidFile(MultipartFile file) throws IOException {
@@ -130,7 +133,7 @@ public class LocalDataController {
      */
     @ApiOperation(value = "查看数据详情")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "metaDataId",value = "元数据ID",required = true,dataTypeClass = String.class,paramType = "query",example = "metaData11"),
+            @ApiImplicitParam(name = "metaDataId",value = "元数据ID",required = true,paramType = "query",example = "metaData11"),
     })
     @GetMapping("metaDataInfo")
     public JsonResponse<LocalDataDetailResp> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
@@ -165,19 +168,17 @@ public class LocalDataController {
         int count = 0;
         switch (action){
             case "-1"://删除
-                //count = localDataService.delete(req.getMetaDataId());
+                count = localDataService.delete(req.getMetaDataId());
                 break;
             case "0"://下架
-                //count = localDataService.down(req.getMetaDataId());
+                count = localDataService.down(req.getMetaDataId());
                 break;
             case "1"://上架
-                //count = localDataService.up(req.getMetaDataId());
+                count = localDataService.up(req.getMetaDataId());
                 break;
             default:
                 throw new ApplicationException(StrUtil.format("请输入正确的action[-1: 删除; 0: 下架; 1: 上架]：{}",action));
         }
-        //调试阶段
-        count = 1;
         if(count <= 0){
             JsonResponse.fail("操作失败");
         }
@@ -189,11 +190,31 @@ public class LocalDataController {
      */
     @ApiOperation(value = "源文件下载")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "metaDataId",value = "元数据ID",required = true,dataTypeClass = String.class,paramType = "query",example = "metaData11"),
+            @ApiImplicitParam(name = "metaDataId",value = "元数据ID",required = true,paramType = "query",example = "metaData11"),
     })
     @GetMapping("download")
     public void downLoad(HttpServletResponse response, @Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
-        //localDataService.downLoad(response,metaDataId);
+        localDataService.downLoad(response,metaDataId);
     }
 
+    /**
+     * 校验文件名称是否合法
+     */
+    @ApiOperation(value = "校验文件名称是否合法")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "resourceName",value = "文件名称",required = true,paramType = "query",example = "filename"),
+    })
+    @PostMapping("checkResourceName")
+    public JsonResponse<String> checkResourceName(String resourceName){
+        //判断格式是否对
+        if(!NameUtil.isValidName(resourceName)){
+            return JsonResponse.success("N");
+        }
+        //判断是否重复
+        boolean exist = localDataService.isExistResourceName(resourceName);
+        if(exist){
+            return JsonResponse.success("N");
+        }
+        return JsonResponse.success("Y");
+    }
 }

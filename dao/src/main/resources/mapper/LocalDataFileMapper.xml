@@ -192,6 +192,13 @@
     where id = #{id}
   </select>
 
+  <!-- 根据resourceName查询数据文件-->
+  <select id="selectByResourceName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from local_data_file
+    where resource_name = #{resourceName}
+  </select>
+
   <!-- 根据metaDataId删除指定的数据,released的数据不可删除-->
   <delete id="deleteByMetaDataId" parameterType="java.lang.String">
     delete from local_data_file

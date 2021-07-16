@@ -52,4 +52,11 @@ public interface LocalDataFileMapper {
      *根据Id进行选择性更新
      */
     int updateByIdSelective(LocalDataFile localDataFile);
+
+    /**
+     * 根据resourceName查询数据文件
+     * @param resourceName
+     * @return
+     */
+    LocalDataFile selectByResourceName(String resourceName);
 }

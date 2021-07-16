@@ -70,7 +70,7 @@ public class GlobalDataController {
      */
     @ApiOperation(value = "查看数据详情")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "metaDataId",value = "元数据ID",required = true,dataTypeClass = String.class,paramType = "query",example = "mataData111"),
+            @ApiImplicitParam(name = "metaDataId",value = "元数据ID",required = true,paramType = "query",example = "mataData111"),
     })
     @GetMapping("metaDataInfo")
     public JsonResponse<GlobalDataFileDetail> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){

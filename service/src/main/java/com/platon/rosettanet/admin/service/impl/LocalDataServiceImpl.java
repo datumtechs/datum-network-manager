@@ -244,6 +244,12 @@ public class LocalDataServiceImpl implements LocalDataService {
         return count;
     }
 
+    @Override
+    public boolean isExistResourceName(String resourceName) {
+        LocalDataFile localDataFile = localDataFileMapper.selectByResourceName(resourceName);
+        return localDataFile != null ? true : false;
+    }
+
     /**
      * 解析列信息
      * @param file
