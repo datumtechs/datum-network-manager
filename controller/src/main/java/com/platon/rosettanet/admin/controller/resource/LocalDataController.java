@@ -56,7 +56,7 @@ public class LocalDataController {
      */
     @ApiOperation(value = "数据列表分页查询")
     @PostMapping("metaDataList")
-    public JsonResponse<LocalDataPageResp> page(@RequestBody @Validated CommonPageReq req){
+    public JsonResponse<List<LocalDataPageResp>> page(@RequestBody @Validated CommonPageReq req){
         Page<LocalDataFile> localDataFilePage = localDataService.listDataFile(req.getPageNumber(), req.getPageSize(),null);
         List<LocalDataPageResp> respList = localDataFilePage.getResult().stream()
                 .map(LocalDataPageResp::from)
@@ -69,7 +69,7 @@ public class LocalDataController {
      */
     @ApiOperation(value = "数据列表关键字查询")
     @PostMapping("metaDataListByKeyWord")
-    public JsonResponse<LocalDataPageResp> metaDataListByKeyWord(@RequestBody @Validated LocalDataMetaDataListByKeyWordReq req){
+    public JsonResponse<List<LocalDataPageResp>> metaDataListByKeyWord(@RequestBody @Validated LocalDataMetaDataListByKeyWordReq req){
         Page<LocalDataFile> localDataFilePage = localDataService.listDataFile(req.getPageNumber(), req.getPageSize(),req.getKeyword());
         List<LocalDataPageResp> respList = localDataFilePage.getResult().stream()
                 .map(LocalDataPageResp::from)

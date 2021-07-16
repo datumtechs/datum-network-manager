@@ -44,7 +44,7 @@ public class GlobalDataController {
      */
     @ApiOperation(value = "数据列表分页查询")
     @GetMapping("metaDataList")
-    public JsonResponse<GlobalDataPageResp> page(@RequestBody @Validated CommonPageReq req){
+    public JsonResponse<List<GlobalDataPageResp>> page(@RequestBody @Validated CommonPageReq req){
         Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(req.getPageNumber(), req.getPageSize(),null);
         List<GlobalDataPageResp> respList = globalDataFilePage.getResult().stream()
                 .map(GlobalDataPageResp::from)
@@ -57,7 +57,7 @@ public class GlobalDataController {
      */
     @ApiOperation(value = "数据列表关键字查询")
     @GetMapping("metaDataListByKeyWord")
-    public JsonResponse<GlobalDataPageResp> metaDataListByKeyWord(@RequestBody @Validated GlobalDataMetaDataListByKeyWordReq req){
+    public JsonResponse<List<GlobalDataPageResp>> metaDataListByKeyWord(@RequestBody @Validated GlobalDataMetaDataListByKeyWordReq req){
         Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(req.getPageNumber(), req.getPageSize(), req.getKeyword());
         List<GlobalDataPageResp> respList = globalDataFilePage.getResult().stream()
                 .map(GlobalDataPageResp::from)

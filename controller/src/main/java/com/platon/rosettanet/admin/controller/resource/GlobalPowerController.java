@@ -40,7 +40,7 @@ public class GlobalPowerController {
      */
     @ApiOperation(value = "数据分页列表")
     @GetMapping("powerList")
-    public JsonResponse<GlobalPowerPageResp> page(@RequestBody @Validated CommonPageReq req){
+    public JsonResponse<List<GlobalPowerPageResp>> page(@RequestBody @Validated CommonPageReq req){
         Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(req.getPageNumber(), req.getPageSize(),null);
         List<GlobalPowerPageResp> respList = globalPowerPage.getResult().stream()
                 .map(GlobalPowerPageResp::from)
@@ -53,7 +53,7 @@ public class GlobalPowerController {
      */
     @ApiOperation(value = "关键字查询")
     @GetMapping("powerListByKeyWord")
-    public JsonResponse<GlobalPowerPageResp> listByKeyWord(@RequestBody @Validated GlobalPowerListByKeyWordReq req){
+    public JsonResponse<List<GlobalPowerPageResp>> listByKeyWord(@RequestBody @Validated GlobalPowerListByKeyWordReq req){
         Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(req.getPageNumber(), req.getPageSize(),req.getKeyword());
         List<GlobalPowerPageResp> respList = globalPowerPage.getResult().stream()
                 .map(GlobalPowerPageResp::from)

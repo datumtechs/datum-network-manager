@@ -24,24 +24,24 @@ public class AuthClientTest {
      * 启动一个服务
      * @throws Exception
      */
-    @Before
-    public void startService() throws Exception {
-        /* The port on which the server should run */
-        int port = 50051;
-        //这个部分启动server
-        NettyServerBuilder.forPort(port)
-                .addService(new AuthServiceImpl().bindService())
-                .build()
-                .start();
-        System.out.println("Server started, listening on " + port);
-    }
+//    @Before
+//    public void startService() throws Exception {
+//        /* The port on which the server should run */
+//        int port = 50051;
+//        //这个部分启动server
+//        NettyServerBuilder.forPort(port)
+//                .addService(new AuthServiceImpl().bindService())
+//                .build()
+//                .start();
+//        System.out.println("Server started, listening on " + port);
+//    }
 
     /**
      * 测试客户端
      */
     @Test
     public void test() {
-        Channel channel =  ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
+        Channel channel =  ManagedChannelBuilder.forAddress("192.168.21.78", 4000).usePlaintext().build();
 
         AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest.newBuilder().build();
         CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);

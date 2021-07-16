@@ -40,7 +40,7 @@ public class DataNodeController {
      */
     @ApiOperation(value = "数据节点分页查询", httpMethod = "POST")
     @PostMapping("listNode")
-    public JsonResponse <LocalDataNodeQueryResp>listNode(@Validated @RequestBody NodePageReq req) {
+    public JsonResponse <List<LocalDataNodeQueryResp>>listNode(@Validated @RequestBody NodePageReq req) {
         Page<DataNode> dataNodes = dataNodeService.listNode(req.getPageNumber(), req.getPageSize(), req.getKeyword());
         List<DataNode> dataList = dataNodes.getResult();
         List<LocalDataNodeQueryResp> respList = dataList.stream().map(LocalDataNodeQueryResp::convert).collect(Collectors.toList());

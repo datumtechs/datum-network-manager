@@ -5,7 +5,9 @@ import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.enums.ResponseCodeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +82,7 @@ public class JsonResponse<T> {
      * @param <T>
      * @return
      */
-    public static <T> JsonResponse page(Page<T> page) {
+    public static <T> JsonResponse<List<T>> page(Page<T> page) {
         JsonResponse jsonResponse = new JsonResponse();
         jsonResponse.setMsg(ResponseCodeEnum.SUCCESS.getMessage());
         jsonResponse.setStatus(ResponseCodeEnum.SUCCESS.getCode());
@@ -88,6 +90,7 @@ public class JsonResponse<T> {
         jsonResponse.setPageSize(page.getPageSize());
         jsonResponse.setTotal((int) page.getTotal());
         jsonResponse.setPageTotal(page.getPages());
+        jsonResponse.setData(page.getResult());
         return jsonResponse;
     }
 
@@ -97,7 +100,7 @@ public class JsonResponse<T> {
      * @param <T>
      * @return
      */
-    public static <T> JsonResponse page(Page pageInfo, List<T> list) {
+    public static <T> JsonResponse<List<T>> page(Page pageInfo, List<T> list) {
         JsonResponse jsonResponse = new JsonResponse();
         jsonResponse.setMsg(ResponseCodeEnum.SUCCESS.getMessage());
         jsonResponse.setStatus(ResponseCodeEnum.SUCCESS.getCode());
@@ -107,19 +110,5 @@ public class JsonResponse<T> {
         jsonResponse.setPageTotal(pageInfo.getPages());
         jsonResponse.setData(list == null ? new ArrayList<>() : list);
         return jsonResponse;
-    }
-
-    public void setPagination(int pageNo, int pageSize, int totalRows) {
-        //总记录数
-        this.total = totalRows;
-
-        //总页数，每页记录数用请求消息里的定义
-        int totalPages = (totalRows - 1) / pageSize + 1;
-
-        //总页数，每页记录数用请求消息里的定义
-        this.pageTotal = totalPages;
-
-        //当前数据是第几页，如果请求的页码小余重新计算的总记录数，则页码不变；否则页码就是总页数
-        this.pageNumber = Math.min(pageNo, pageTotal);
     }
 }
