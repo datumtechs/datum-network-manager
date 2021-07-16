@@ -24,8 +24,8 @@
     select
     <include refid="Base_Column_List" />
     from global_power
-    <if test="keyword != null">
-      where identity_id = #{keyword}
+    <if test="keyword != null and keyword != ''">
+      where org_name like concat('%',#{keyword},'%')
     </if>
     order by identity_id
   </select>

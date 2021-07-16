@@ -30,8 +30,8 @@
     select
     <include refid="Base_Column_List" />
     from global_data_file
-    <if test="keyword != null">
-      where resource_name = #{keyword}
+    <if test="keyword != null and keyword != ''">
+      where resource_name like concat('%',#{keyword},'%')
     </if>
     order by resource_name
   </select>
