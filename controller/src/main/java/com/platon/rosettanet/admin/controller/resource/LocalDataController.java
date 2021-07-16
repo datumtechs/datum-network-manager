@@ -121,6 +121,15 @@ public class LocalDataController {
     @ApiOperation(value = "添加数据")
     @PostMapping("addMetaData")
     public JsonResponse add(@RequestBody @Validated LocalDataAddReq req){
+        //判断格式是否对
+        if(!NameUtil.isValidName(req.getResourceName())){
+            return JsonResponse.fail("文件名称格式不合法");
+        }
+        //判断是否重复
+        boolean exist = localDataService.isExistResourceName(req.getResourceName());
+        if(exist){
+            return JsonResponse.fail("文件名称已存在");
+        }
         LocalDataFileDetail detail = new LocalDataFileDetail();
         BeanUtils.copyProperties(req,detail);
         int count = localDataService.add(detail);
