@@ -15,6 +15,8 @@ import java.util.List;
  * @author
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "返回参数封装类")
 public class JsonResponse<T> {
 
@@ -38,9 +40,6 @@ public class JsonResponse<T> {
 
     @ApiModelProperty(value = "分页请求每页数据条数")
     private int pageSize = 0;
-
-    public JsonResponse() {
-    }
 
     public JsonResponse(int status, String msg, T data) {
         this.status = status;

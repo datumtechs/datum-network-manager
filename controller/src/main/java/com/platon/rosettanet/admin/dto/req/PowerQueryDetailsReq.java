@@ -2,7 +2,9 @@ package com.platon.rosettanet.admin.dto.req;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,6 +13,8 @@ import javax.validation.constraints.NotNull;
  * 计算节点查询详情请求参数
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "计算节点查询详情请求参数")
 public class PowerQueryDetailsReq {
 
