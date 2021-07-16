@@ -19,4 +19,12 @@ public class ControllerConstants {
      */
     public static String STATUS_NOT_AVAILABLE = "D";
 
+
+    /**
+     * 组织节点信息字段
+     */
+    public static String NODE_NAME = "nodeName";
+    public static String NODE_IDENTITY_ID = "nodeIdentityId";
+    public static String NODE_ID = "nodeId";
+
 }

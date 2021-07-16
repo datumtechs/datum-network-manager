@@ -15,6 +15,13 @@
   </sql>
 
 
+  <select id="selectAllTaskOrg" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from task_org
+  </select>
+
+
   <select id="selectTaskOrgByIdentityId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
