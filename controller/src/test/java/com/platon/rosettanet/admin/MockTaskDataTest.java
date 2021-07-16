@@ -3,7 +3,9 @@ package com.platon.rosettanet.admin;
 import com.platon.rosettanet.admin.dao.*;
 import com.platon.rosettanet.admin.dao.entity.*;
 import com.platon.rosettanet.admin.dao.enums.TaskStatusEnum;
+import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
 import com.platon.rosettanet.admin.grpc.entity.TaskDataResp;
+import com.platon.rosettanet.admin.grpc.entity.TaskEventDataResp;
 import com.platon.rosettanet.admin.grpc.service.CommonMessage;
 import com.platon.rosettanet.admin.grpc.service.TaskRpcMessage;
 import org.junit.Test;
@@ -166,16 +168,33 @@ public class MockTaskDataTest {
         }
 
         //批量TaskEvent获取并更新DB
-        /*List<TaskEvent> taskEventList = new ArrayList<>();
+        List<TaskEvent> taskEventList = new ArrayList<>();
         for (int i = 0; i < taskList.size(); i++) {
             List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskList.get(i).getId());
             taskEventList.addAll(taskEvents);
         }
-        taskEventMapper.insertBatch(taskEventList);*/
+        taskEventMapper.insertBatch(taskEventList);
+    }
 
+    private List<TaskEvent> getRpcTaskEventByTaskId(String id) {
 
+        List<TaskOrg> allTaskOrgList = taskOrgMapper.selectAllTaskOrg();
 
-
+        List<TaskEvent> taskEventList = new ArrayList<>();
+        //构造taskEvent集合
+        for (int i = 0; i < 5; i++) {
+            TaskEvent taskEvent = new TaskEvent();
+            taskEvent.setTaskId(id);
+            taskEvent.setEventAt(LocalDateTime.ofEpochSecond(1626335083,0, ZoneOffset.ofHours(8)));
+            taskEvent.setEventContent("taskEventContent" + i);
+            taskEvent.setEventType("taskEventType");
+            String identityId = allTaskOrgList.get(i).getIdentityId();
+            identityId = (identityId == null) ? "" : identityId;
+            taskEvent.setIdentityId(identityId);
+            //添加
+            taskEventList.add(taskEvent);
+        }
+        return taskEventList;
     }
 
 

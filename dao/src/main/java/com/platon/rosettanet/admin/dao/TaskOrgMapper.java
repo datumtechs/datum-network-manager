@@ -12,4 +12,6 @@ public interface TaskOrgMapper {
 
     int insertBatch(List<TaskOrg> powerProviderList);
 
+    List<TaskOrg> selectAllTaskOrg();
+
 }

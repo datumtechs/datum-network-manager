@@ -57,14 +57,12 @@
 
 
   <insert id="insertBatch" parameterType="list">
-    replace into task_event (ID, task_id, event_type,
-        identity_id, event_at, event_content,
-        rec_update_time)
+    replace into task_event (task_id, event_type,
+        identity_id, event_at, event_content)
     values
     <foreach collection ="list" item="item" separator =",">
-      (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=VARCHAR}, #{eventType,jdbcType=VARCHAR},
-      #{identityId,jdbcType=VARCHAR}, #{eventAt,jdbcType=TIMESTAMP}, #{eventContent,jdbcType=VARCHAR},
-      #{recUpdateTime,jdbcType=TIMESTAMP})
+      (#{item.taskId,jdbcType=VARCHAR}, #{item.eventType,jdbcType=VARCHAR},
+      #{item.identityId,jdbcType=VARCHAR}, #{item.eventAt,jdbcType=TIMESTAMP}, #{item.eventContent,jdbcType=VARCHAR})
     </foreach>
   </insert>
 
