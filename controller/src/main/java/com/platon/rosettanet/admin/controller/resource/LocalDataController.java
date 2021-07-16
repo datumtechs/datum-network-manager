@@ -7,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.common.util.NameUtil;
+import com.platon.rosettanet.admin.constant.ControllerConstants;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dto.CommonPageReq;
@@ -15,6 +16,7 @@ import com.platon.rosettanet.admin.dto.req.LocalDataActionReq;
 import com.platon.rosettanet.admin.dto.req.LocalDataAddReq;
 import com.platon.rosettanet.admin.dto.req.LocalDataMetaDataListByKeyWordReq;
 import com.platon.rosettanet.admin.dto.req.LocalDataUpdateReq;
+import com.platon.rosettanet.admin.dto.resp.LocalDataCheckResourceNameResp;
 import com.platon.rosettanet.admin.dto.resp.LocalDataDetailResp;
 import com.platon.rosettanet.admin.dto.resp.LocalDataImportFileResp;
 import com.platon.rosettanet.admin.dto.resp.LocalDataPageResp;
@@ -205,16 +207,18 @@ public class LocalDataController {
             @ApiImplicitParam(name = "resourceName",value = "文件名称",required = true,paramType = "query",example = "filename"),
     })
     @PostMapping("checkResourceName")
-    public JsonResponse<String> checkResourceName(String resourceName){
+    public JsonResponse<LocalDataCheckResourceNameResp> checkResourceName(String resourceName){
+        LocalDataCheckResourceNameResp resp = new LocalDataCheckResourceNameResp();
         //判断格式是否对
         if(!NameUtil.isValidName(resourceName)){
-            return JsonResponse.success("N");
+            return JsonResponse.success(resp);
         }
         //判断是否重复
         boolean exist = localDataService.isExistResourceName(resourceName);
         if(exist){
-            return JsonResponse.success("N");
+            return JsonResponse.success(resp);
         }
-        return JsonResponse.success("Y");
+        resp.setStatus(ControllerConstants.STATUS_AVAILABLE);
+        return JsonResponse.success(resp);
     }
 }

@@ -9,15 +9,15 @@ package com.platon.rosettanet.admin.constant;
 public class ControllerConstants {
 
     public static String USER_ID = "userId";
-    public static String VERIFICATION_CODE = "VerificationCode";
+    public static String VERIFICATION_CODE = "verificationCode";
     /**
      * 可用状态
      */
-    public static String STATUS_AVAILABLE = "N";
+    public static String STATUS_AVAILABLE = "Y";
     /**
      * 不可用状态
      */
-    public static String STATUS_NOT_AVAILABLE = "D";
+    public static String STATUS_NOT_AVAILABLE = "N";
 
 
     /**

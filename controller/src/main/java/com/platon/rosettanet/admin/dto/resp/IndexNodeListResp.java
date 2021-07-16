@@ -3,6 +3,8 @@ package com.platon.rosettanet.admin.dto.resp;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,20 +19,34 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@ApiModel
 public class IndexNodeListResp {
 
+    @ApiModelProperty(name = "jobNodeId", value = "计算节点ID")
     private String jobNodeId;//计算节点ID
+    @ApiModelProperty(name = "jobNodeName", value = "计算节点名称")
     private String jobNodeName;//计算节点名称
+    @ApiModelProperty(name = "status", value = "计算节点状态：计算中、空闲中")
     private String status;//计算节点状态：计算中、空闲中
+    @ApiModelProperty(name = "totalProcessor", value = "计算节点提供的CPU总量")
     private Integer totalProcessor;//计算节点提供的CPU总量
+    @ApiModelProperty(name = "usedProcessor", value = "计算节点已使用的CPU总量")
     private Integer usedProcessor;//计算节点已使用的CPU总量
+    @ApiModelProperty(name = "totalMem", value = "计算节点提供的内存总量，单位：byte")
     private Long totalMem;//计算节点提供的内存总量，单位：byte
+    @ApiModelProperty(name = "usedMem", value = "计算节点已使用的内存总量，单位：byte")
     private Long usedMem;//计算节点已使用的内存总量，单位：byte
+    @ApiModelProperty(name = "totalBandwidth", value = "计算节点提供的带宽总量，单位：byte")
     private Long totalBandwidth;//计算节点提供的带宽总量，单位：byte
+    @ApiModelProperty(name = "usedBandwidth", value = "计算节点已使用的贷款总量，单位：byte")
     private Long usedBandwidth;//计算节点已使用的贷款总量，单位：byte
+    @ApiModelProperty(name = "startTime", value = "计算节点的启动时间，单位：秒级时间戳")
     private Integer startTime;//计算节点的启动时间，单位：秒级时间戳
 
     public static IndexNodeListResp from(LocalPowerNode localPowerNode) {
+        if(localPowerNode == null){
+            return null;
+        }
         IndexNodeListResp resp = new IndexNodeListResp();
         resp.setJobNodeId(localPowerNode.getPowerNodeId());
         resp.setJobNodeName(localPowerNode.getPowerNodeName());
