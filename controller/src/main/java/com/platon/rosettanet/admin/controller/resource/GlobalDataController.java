@@ -6,6 +6,7 @@ import com.platon.rosettanet.admin.dao.entity.GlobalDataFileDetail;
 import com.platon.rosettanet.admin.dto.CommonPageReq;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.GlobalDataMetaDataListByKeyWordReq;
+import com.platon.rosettanet.admin.dto.resp.GlobalDataDetailResp;
 import com.platon.rosettanet.admin.dto.resp.GlobalDataPageResp;
 import com.platon.rosettanet.admin.service.GlobalDataService;
 import io.swagger.annotations.Api;
@@ -73,9 +74,10 @@ public class GlobalDataController {
             @ApiImplicitParam(name = "metaDataId",value = "元数据ID",required = true,paramType = "query",example = "mataData111"),
     })
     @GetMapping("metaDataInfo")
-    public JsonResponse<GlobalDataFileDetail> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
+    public JsonResponse<GlobalDataDetailResp> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
         GlobalDataFileDetail detail = globalDataService.detail(metaDataId);
-        return JsonResponse.success(detail);
+        GlobalDataDetailResp resp = GlobalDataDetailResp.from(detail);
+        return JsonResponse.success(resp);
     }
 
 
