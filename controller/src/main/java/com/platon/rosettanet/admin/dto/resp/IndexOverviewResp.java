@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.dto.resp;
 
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
+import com.platon.rosettanet.admin.dao.enums.CarrierConnStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -20,8 +21,8 @@ import lombok.ToString;
 @ApiModel
 public class IndexOverviewResp {
 
-    @ApiModelProperty(name = "status", value = "调度服务状态：N 开启 D 关闭")
-    private String status;//调度服务状态：N 开启 D 关闭
+    @ApiModelProperty(name = "status", value = "调度服务状态：1 开启 0 关闭")
+    private String status;//调度服务状态：1 开启 0 关闭
     @ApiModelProperty(name = "dataNodeCount", value = "数据节点数量")
     private Integer dataNodeCount;//数据节点数量
     @ApiModelProperty(name = "powerNodeCount", value = "计算节点数量")
@@ -50,7 +51,11 @@ public class IndexOverviewResp {
             return null;
         }
         IndexOverviewResp resp = new IndexOverviewResp();
-        resp.setStatus(localStats.getCarrierConnStatus());
+        if(CarrierConnStatusEnum.ENABLED.getStatus().equals(localStats.getCarrierConnStatus())){
+            resp.setStatus("1");
+        } else {
+            resp.setStatus("0");
+        }
         resp.setDataNodeCount(localStats.getDataNodeCount());
         resp.setPowerNodeCount(localStats.getPowerNodeCount());
         resp.setPublishedDataCount(localStats.getReleasedDataFileCount());

@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.ZoneOffset;
+
 /**
  * @Author liushuyu
  * @Date 2021/7/3 14:59
@@ -41,7 +43,7 @@ public class IndexNodeListResp {
     @ApiModelProperty(name = "usedBandwidth", value = "计算节点已使用的贷款总量，单位：byte")
     private Long usedBandwidth;//计算节点已使用的贷款总量，单位：byte
     @ApiModelProperty(name = "startTime", value = "计算节点的启动时间，单位：秒级时间戳")
-    private Integer startTime;//计算节点的启动时间，单位：秒级时间戳
+    private Long startTime;//计算节点的启动时间，单位：秒级时间戳
 
     public static IndexNodeListResp from(LocalPowerNode localPowerNode) {
         if(localPowerNode == null){
@@ -50,6 +52,7 @@ public class IndexNodeListResp {
         IndexNodeListResp resp = new IndexNodeListResp();
         resp.setJobNodeId(localPowerNode.getPowerNodeId());
         resp.setJobNodeName(localPowerNode.getPowerNodeName());
+        //TODO 节点状态待确定
         resp.setStatus(localPowerNode.getStatus());
         resp.setTotalProcessor(localPowerNode.getCore());
         resp.setUsedProcessor(localPowerNode.getUsedCore());
@@ -57,7 +60,8 @@ public class IndexNodeListResp {
         resp.setUsedMem(localPowerNode.getUsedMemory());
         resp.setTotalBandwidth(localPowerNode.getBandwidth());
         resp.setUsedBandwidth(localPowerNode.getUsedBandwidth());
-        resp.setStartTime(localPowerNode.getStartTime().getSecond());
+        //TODO 时区问题
+        resp.setStartTime(localPowerNode.getStartTime() == null? null : localPowerNode.getStartTime().toEpochSecond(ZoneOffset.of("+8")));
         return resp;
     }
 }
