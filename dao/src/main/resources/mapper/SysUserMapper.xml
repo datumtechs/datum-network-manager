@@ -12,10 +12,10 @@
   <sql id="Base_Column_List">
     id, user_name, `password`, `status`, is_Master, rec_update_time
   </sql>
-  <select id="selectByUserNameAndPwd" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByUserNameAndPwd" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from sys_user
-    where user_name = #{userName} and `password` = #{password} and
+    where user_name = #{userName} and `password` = #{password}
   </select>
 </mapper>
