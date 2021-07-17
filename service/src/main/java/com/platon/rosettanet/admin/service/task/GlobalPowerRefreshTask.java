@@ -1,12 +1,14 @@
 package com.platon.rosettanet.admin.service.task;
 
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
+import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.common.util.BatchExecuteUtil;
 import com.platon.rosettanet.admin.dao.GlobalPowerMapper;
 import com.platon.rosettanet.admin.dao.entity.GlobalPower;
 import com.platon.rosettanet.admin.grpc.client.PowerClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
@@ -22,7 +24,7 @@ import java.util.List;
  */
 
 @Slf4j
-//@Component
+@Component
 public class GlobalPowerRefreshTask {
 
     @Resource
@@ -39,7 +41,13 @@ public class GlobalPowerRefreshTask {
         StopWatch stopWatch = new StopWatch("全网数据刷新计时");
         //### 1.获取全网算力，包括本组织算力
         stopWatch.start("1.获取全网算力，包括本组织算力");
-        List<GlobalPower> powerList = powerClient.getPowerTotalDetailList();
+        List<GlobalPower> powerList = null;
+        try{
+            powerList = powerClient.getPowerTotalDetailList();
+        } catch (ApplicationException exception){
+            log.info(exception.getErrorMsg());
+            return;
+        }
         stopWatch.stop();
         //### 2.将数据归类
         stopWatch.start("2.将数据归类");

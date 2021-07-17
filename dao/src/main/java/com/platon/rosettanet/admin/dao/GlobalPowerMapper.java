@@ -1,11 +1,10 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.GlobalPower;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-@Mapper
 public interface GlobalPowerMapper {
 
 
@@ -20,17 +19,17 @@ public interface GlobalPowerMapper {
      * @param globalPowerList
      * @return
      */
-    int batchAddSelective(List<GlobalPower> globalPowerList);
+    int batchAddSelective(@Param("globalPowerList") List<GlobalPower> globalPowerList);
 
     /**
      * 批量更新数据，一次建议最多更新1000条
      */
-    int batchUpdateByIdentityIdSelective(List<GlobalPower> globalPowerList);
+    int batchUpdateByIdentityIdSelective(@Param("globalPowerList") List<GlobalPower> globalPowerList);
 
     /**
      * 批量删除数据，一次建议最多删除1000条
      */
-    int batchDeleteByIdentityId(List<String> identityIdList);
+    int batchDeleteByIdentityId(@Param("identityIdList") List<String> identityIdList);
 
     /**
      * 获取所有已存在数据库中的IdentityId

@@ -1,12 +1,9 @@
 package com.platon.rosettanet.admin.dao;
 
-import com.platon.rosettanet.admin.dao.entity.GlobalDataFile;
 import com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
 public interface GlobalMetaDataColumnMapper {
 
 

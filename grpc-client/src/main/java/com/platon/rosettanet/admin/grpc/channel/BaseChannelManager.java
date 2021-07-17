@@ -29,7 +29,7 @@ public abstract class BaseChannelManager {
      * @param port
      * @return
      */
-    public Channel getChannel(String ip, Integer port){
+    public Channel getChannel(String ip, int port){
         String channelKey = getKey(ip,port);
         //1.先从缓存获取
         Channel channel = channelContainer.get(channelKey);
@@ -47,12 +47,16 @@ public abstract class BaseChannelManager {
      */
     public abstract Channel buildChannel(String ip,int port);
 
-    public static String getKey(String ip, Integer port){
+    /**
+     *
+     * @param ip
+     * @param port
+     * @throws ApplicationException
+     * @return
+     */
+    public static String getKey(String ip, int port) throws ApplicationException{
         if(StrUtil.isBlank(ip)){
             throw new ApplicationException("ip为空");
-        }
-        if(port == null){
-            return ip;
         }
         return ip.concat(":").concat(String.valueOf(port));
     }
@@ -60,12 +64,13 @@ public abstract class BaseChannelManager {
     /**
      * 获取调度服务连接
      * carrier_conn_Status = 'enabled' and carrier_status = 'enabled'
+     * @throws ApplicationException
      * @return
      */
-    public Channel getScheduleServer(){
+    public Channel getScheduleServer() throws ApplicationException{
         //获取调度服务的信息
         LocalOrg localOrgInfo = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-        if(CarrierConnStatusEnum.DISABLED.getStatus().equals(localOrgInfo.getCarrierConnStatus())){
+        if(!CarrierConnStatusEnum.ENABLED.getStatus().equals(localOrgInfo.getCarrierConnStatus())){
             throw new ApplicationException("无可用的调度服务",ApplicationException.ApplicationErrorEnum.CARRIER_INFO_NOT_CONFIGURED);
         }
         //1.获取rpc连接

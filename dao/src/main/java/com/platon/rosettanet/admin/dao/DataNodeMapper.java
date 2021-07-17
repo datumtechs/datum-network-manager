@@ -1,7 +1,6 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.DataNode;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
  * @Description 数据节点mapper接口
  * @date 2021/7/8 17:29
  */
-@Mapper
 public interface DataNodeMapper {
     /**
      * 根据关键字模糊查询节点名称相关节点

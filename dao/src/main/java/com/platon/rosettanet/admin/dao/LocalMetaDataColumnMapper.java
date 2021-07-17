@@ -1,11 +1,9 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
 public interface LocalMetaDataColumnMapper {
 
     /**

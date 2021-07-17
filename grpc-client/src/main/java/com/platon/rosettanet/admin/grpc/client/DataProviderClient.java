@@ -36,7 +36,7 @@ public class DataProviderClient {
      * @param dataNodeHost 数据节点IP
      * @param dataNodePort 数据节点端口
      */
-    public DataProviderUploadDataResp uploadData(String dataNodeHost, int dataNodePort, String fileName, byte[] fileContent){
+    public DataProviderUploadDataResp uploadData(String dataNodeHost, int dataNodePort, String fileName, byte[] fileContent) throws ApplicationException{
         //1.获取rpc连接
         Channel channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
         //2.构建response流观察者
@@ -101,7 +101,7 @@ public class DataProviderClient {
      * @param dataNodePort 数据节点端口
      * @param filePath 要下载文件的文件路径
      */
-    public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath){
+    public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath) throws ApplicationException{
         ByteString result = ByteString.EMPTY;
         //1.获取rpc连接
         Channel channel = channelManager.buildChannel(dataNodeHost, dataNodePort);

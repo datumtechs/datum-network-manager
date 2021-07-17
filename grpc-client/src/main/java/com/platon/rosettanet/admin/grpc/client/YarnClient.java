@@ -165,7 +165,7 @@ public class YarnClient {
     /**
      * 根据需要上传的文件大小和类型，获取可用的数据节点信息
      */
-    public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize,String fileType) {
+    public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize,String fileType) throws ApplicationException{
         if(StrUtil.isBlank(fileType)){
             fileType = "csv";
         }
@@ -198,7 +198,7 @@ public class YarnClient {
     /**
      * 查询需要下载的目标原始文件所在的 数据服务信息和文件的完整相对路径
      */
-    public YarnQueryFilePositionResp queryFilePosition(String fileId){
+    public YarnQueryFilePositionResp queryFilePosition(String fileId) throws ApplicationException{
         //1.获取rpc连接
         Channel channel = channelManager.getScheduleServer();
         //2.拼装request
@@ -293,7 +293,7 @@ public class YarnClient {
             resp.setMsg("成功");
         } catch (Exception exception) {
             resp.setStatus(1);
-            resp.setMsg("失败");
+            resp.setMsg(exception.getMessage());
         }
         return resp;
     }

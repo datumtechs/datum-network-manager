@@ -39,7 +39,7 @@ public class MetaDataClient {
      * @param fileDetail 文件详情
      * @return 上架成功后的元数据ID
      */
-    public String publishMetaData(LocalDataFileDetail fileDetail){
+    public String publishMetaData(LocalDataFileDetail fileDetail) throws ApplicationException{
         //1.获取rpc连接
         Channel channel = channelManager.getScheduleServer();
         //2.拼装request
@@ -106,7 +106,7 @@ public class MetaDataClient {
      * @param metaDataId 文件metaDataId
      * @return 上架成功后的元数据ID
      */
-    public void revokeMetaData(String metaDataId){
+    public void revokeMetaData(String metaDataId) throws ApplicationException{
         //1.获取rpc连接
         Channel channel = channelManager.getScheduleServer();
         //2.拼装request
@@ -135,7 +135,7 @@ public class MetaDataClient {
      * 查询全网数据列表
      * @return
      */
-    public List<GlobalDataFileDetail> getMetaDataDetailList(){
+    public List<GlobalDataFileDetail> getMetaDataDetailList() throws ApplicationException{
         //1.获取rpc连接
         Channel channel = channelManager.getScheduleServer();
         //2.拼装request
