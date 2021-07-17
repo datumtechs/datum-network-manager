@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface LocalMetaDataColumnMapper {
      * @param columnList
      * @return
      */
-    int batchInsert(List<LocalMetaDataColumn> columnList);
+    int batchInsert(@Param("columnList") List<LocalMetaDataColumn> columnList);
 
     /**
      * 根据metaDataId删除指定的数据,released的数据不可删除

@@ -65,7 +65,7 @@
 
   <!-- 批量更新数据，一次建议最多更新1000条-->
   <update id="batchUpdateByMetaDataIdSelective">
-    <foreach collection="list" item="globalDataFile" separator=";">
+    <foreach collection="localDataFileList" item="globalDataFile" separator=";">
       update global_data_file
       <set>
         <if test="globalDataFile.identityId != null">
@@ -131,7 +131,7 @@
     <if test="metaDataIdList.size() > 0">
       delete from global_data_file
       where meta_data_id in
-      <foreach collection="list" item="metaDataId" separator="," open="(" close=")">
+      <foreach collection="metaDataIdList" item="metaDataId" separator="," open="(" close=")">
         #{metaDataId}
       </foreach>
     </if>
@@ -139,7 +139,7 @@
 
   <!-- 批量新增数据，一次建议最多更新1000条-->
   <insert id="batchAddSelective">
-    <foreach collection="list" item="globalDataFile" separator=";">
+    <foreach collection="localDataFileList" item="globalDataFile" separator=";">
       insert into global_data_file
       <trim prefix="(" suffix=")" suffixOverrides=",">
         <if test="globalDataFile.identityId != null">

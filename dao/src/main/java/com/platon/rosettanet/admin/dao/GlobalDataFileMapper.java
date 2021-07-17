@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.GlobalDataFile;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -29,12 +30,12 @@ public interface GlobalDataFileMapper {
     /**
      * 批量更新数据，一次建议最多更新1000条
      */
-    int batchUpdateByMetaDataIdSelective(List<GlobalDataFile> localDataFileList);
+    int batchUpdateByMetaDataIdSelective(@Param("localDataFileList") List<GlobalDataFile> localDataFileList);
 
     /**
      * 批量删除数据，一次建议最多删除1000条
      */
-    int batchDeleteByMetaDataId(List<String> metaDataIdList);
+    int batchDeleteByMetaDataId(@Param("metaDataIdList") List<String> metaDataIdList);
 
     /**
      * 查询数据库中的所有metaDataId
@@ -47,5 +48,5 @@ public interface GlobalDataFileMapper {
      * @param localDataFileList
      * @return
      */
-    int batchAddSelective(List<GlobalDataFile> localDataFileList);
+    int batchAddSelective(@Param("localDataFileList") List<GlobalDataFile> localDataFileList);
 }

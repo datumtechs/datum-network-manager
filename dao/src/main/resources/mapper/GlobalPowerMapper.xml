@@ -139,7 +139,7 @@
     <if test="identityIdList.size() > 0">
       delete from global_power
       where identity_id in
-      <foreach collection="list" item="identityId" separator="," open="(" close=")">
+      <foreach collection="identityIdList" item="identityId" separator="," open="(" close=")">
         #{identityId}
       </foreach>
     </if>

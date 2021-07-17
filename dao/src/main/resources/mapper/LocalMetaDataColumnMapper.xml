@@ -31,7 +31,7 @@
       remarks, visible, rec_create_time, 
       rec_update_time)
     values
-    <foreach collection ="list" item="metaDataColumn" separator =",">
+    <foreach collection ="columnList" item="metaDataColumn" separator =",">
       (#{metaDataColumn.metaDataId,jdbcType=VARCHAR}, #{metaDataColumn.columnIdx,jdbcType=INTEGER},
       #{metaDataColumn.columnName,jdbcType=VARCHAR}, #{metaDataColumn.columnType,jdbcType=VARCHAR}, #{metaDataColumn.size,jdbcType=BIGINT},
       #{metaDataColumn.remarks,jdbcType=VARCHAR}, #{metaDataColumn.visible,jdbcType=VARCHAR}, #{metaDataColumn.recCreateTime,jdbcType=TIMESTAMP},

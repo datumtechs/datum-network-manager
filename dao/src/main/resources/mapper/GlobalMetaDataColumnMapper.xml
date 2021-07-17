@@ -31,7 +31,7 @@
     <if test="metaDataIdList.size() > 0">
       delete from global_meta_data_column
       where meta_data_id in
-      <foreach collection="list" item="metaDataId" separator="," open="(" close=")">
+      <foreach collection="metaDataIdList" item="metaDataId" separator="," open="(" close=")">
         #{metaDataId}
       </foreach>
     </if>
@@ -39,7 +39,7 @@
 
   <!-- 批量更新数据，一次建议最多更新1000条-->
   <update id="batchUpdateByMetaDataIdSelective">
-    <foreach collection="list" item="metaDataColumn" separator=";">
+    <foreach collection="columnList" item="metaDataColumn" separator=";">
       update global_meta_data_column
       <set>
         <if test="metaDataColumn.metaDataId != null">
@@ -76,7 +76,7 @@
 
   <!-- 批量新增数据，一次建议最多更新1000条-->
   <insert id="batchAddSelective">
-    <foreach collection="list" item="metaDataColumn" separator=";">
+    <foreach collection="columnList" item="metaDataColumn" separator=";">
       insert into global_meta_data_column
       <trim prefix="(" suffix=")" suffixOverrides=",">
         <if test="metaDataColumn.metaDataId != null">
