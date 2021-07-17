@@ -79,6 +79,37 @@ public final class TaskServiceGrpc {
     return getGetTaskEventListMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest,
+      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse> getGetTaskEventListByTaskIdsMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "GetTaskEventListByTaskIds",
+      requestType = com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest,
+      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse> getGetTaskEventListByTaskIdsMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse> getGetTaskEventListByTaskIdsMethod;
+    if ((getGetTaskEventListByTaskIdsMethod = TaskServiceGrpc.getGetTaskEventListByTaskIdsMethod) == null) {
+      synchronized (TaskServiceGrpc.class) {
+        if ((getGetTaskEventListByTaskIdsMethod = TaskServiceGrpc.getGetTaskEventListByTaskIdsMethod) == null) {
+          TaskServiceGrpc.getGetTaskEventListByTaskIdsMethod = getGetTaskEventListByTaskIdsMethod =
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetTaskEventListByTaskIds"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new TaskServiceMethodDescriptorSupplier("GetTaskEventListByTaskIds"))
+              .build();
+        }
+      }
+    }
+    return getGetTaskEventListByTaskIdsMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.PublishTaskDeclareRequest,
       com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.PublishTaskDeclareResponse> getPublishTaskDeclareMethod;
 
@@ -183,6 +214,16 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
+     * 查看某个任务的全部事件列表
+     * </pre>
+     */
+    public void getTaskEventListByTaskIds(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetTaskEventListByTaskIdsMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
      * 发布任务
      * </pre>
      */
@@ -207,6 +248,13 @@ public final class TaskServiceGrpc {
                 com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListRequest,
                 com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse>(
                   this, METHODID_GET_TASK_EVENT_LIST)))
+          .addMethod(
+            getGetTaskEventListByTaskIdsMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest,
+                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse>(
+                  this, METHODID_GET_TASK_EVENT_LIST_BY_TASK_IDS)))
           .addMethod(
             getPublishTaskDeclareMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
@@ -259,6 +307,17 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
+     * 查看某个任务的全部事件列表
+     * </pre>
+     */
+    public void getTaskEventListByTaskIds(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetTaskEventListByTaskIdsMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
      * 发布任务
      * </pre>
      */
@@ -304,6 +363,16 @@ public final class TaskServiceGrpc {
     public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse getTaskEventList(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetTaskEventListMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * 查看某个任务的全部事件列表
+     * </pre>
+     */
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse getTaskEventListByTaskIds(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetTaskEventListByTaskIdsMethod(), getCallOptions(), request);
     }
 
     /**
@@ -358,6 +427,17 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
+     * 查看某个任务的全部事件列表
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse> getTaskEventListByTaskIds(
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetTaskEventListByTaskIdsMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
      * 发布任务
      * </pre>
      */
@@ -370,7 +450,8 @@ public final class TaskServiceGrpc {
 
   private static final int METHODID_GET_TASK_DETAIL_LIST = 0;
   private static final int METHODID_GET_TASK_EVENT_LIST = 1;
-  private static final int METHODID_PUBLISH_TASK_DECLARE = 2;
+  private static final int METHODID_GET_TASK_EVENT_LIST_BY_TASK_IDS = 2;
+  private static final int METHODID_PUBLISH_TASK_DECLARE = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -395,6 +476,10 @@ public final class TaskServiceGrpc {
           break;
         case METHODID_GET_TASK_EVENT_LIST:
           serviceImpl.getTaskEventList((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListRequest) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse>) responseObserver);
+          break;
+        case METHODID_GET_TASK_EVENT_LIST_BY_TASK_IDS:
+          serviceImpl.getTaskEventListByTaskIds((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse>) responseObserver);
           break;
         case METHODID_PUBLISH_TASK_DECLARE:
@@ -464,6 +549,7 @@ public final class TaskServiceGrpc {
               .setSchemaDescriptor(new TaskServiceFileDescriptorSupplier())
               .addMethod(getGetTaskDetailListMethod())
               .addMethod(getGetTaskEventListMethod())
+              .addMethod(getGetTaskEventListByTaskIdsMethod())
               .addMethod(getPublishTaskDeclareMethod())
               .build();
         }

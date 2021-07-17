@@ -14312,6 +14312,644 @@ public final class TaskRpcMessage {
 
   }
 
+  public interface GetTaskEventListByTaskIdsRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.GetTaskEventListByTaskIdsRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated string task_ids = 1;</code>
+     * @return A list containing the taskIds.
+     */
+    java.util.List<java.lang.String>
+        getTaskIdsList();
+    /**
+     * <code>repeated string task_ids = 1;</code>
+     * @return The count of taskIds.
+     */
+    int getTaskIdsCount();
+    /**
+     * <code>repeated string task_ids = 1;</code>
+     * @param index The index of the element to return.
+     * @return The taskIds at the given index.
+     */
+    java.lang.String getTaskIds(int index);
+    /**
+     * <code>repeated string task_ids = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the taskIds at the given index.
+     */
+    com.google.protobuf.ByteString
+        getTaskIdsBytes(int index);
+  }
+  /**
+   * Protobuf type {@code rpcapi.GetTaskEventListByTaskIdsRequest}
+   */
+  public static final class GetTaskEventListByTaskIdsRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.GetTaskEventListByTaskIdsRequest)
+      GetTaskEventListByTaskIdsRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GetTaskEventListByTaskIdsRequest.newBuilder() to construct.
+    private GetTaskEventListByTaskIdsRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetTaskEventListByTaskIdsRequest() {
+      taskIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new GetTaskEventListByTaskIdsRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetTaskEventListByTaskIdsRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                taskIds_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              taskIds_.add(s);
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          taskIds_ = taskIds_.getUnmodifiableView();
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_GetTaskEventListByTaskIdsRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_GetTaskEventListByTaskIdsRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest.Builder.class);
+    }
+
+    public static final int TASK_IDS_FIELD_NUMBER = 1;
+    private com.google.protobuf.LazyStringList taskIds_;
+    /**
+     * <code>repeated string task_ids = 1;</code>
+     * @return A list containing the taskIds.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getTaskIdsList() {
+      return taskIds_;
+    }
+    /**
+     * <code>repeated string task_ids = 1;</code>
+     * @return The count of taskIds.
+     */
+    public int getTaskIdsCount() {
+      return taskIds_.size();
+    }
+    /**
+     * <code>repeated string task_ids = 1;</code>
+     * @param index The index of the element to return.
+     * @return The taskIds at the given index.
+     */
+    public java.lang.String getTaskIds(int index) {
+      return taskIds_.get(index);
+    }
+    /**
+     * <code>repeated string task_ids = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the taskIds at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getTaskIdsBytes(int index) {
+      return taskIds_.getByteString(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < taskIds_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, taskIds_.getRaw(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < taskIds_.size(); i++) {
+          dataSize += computeStringSizeNoTag(taskIds_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getTaskIdsList().size();
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest other = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest) obj;
+
+      if (!getTaskIdsList()
+          .equals(other.getTaskIdsList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getTaskIdsCount() > 0) {
+        hash = (37 * hash) + TASK_IDS_FIELD_NUMBER;
+        hash = (53 * hash) + getTaskIdsList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code rpcapi.GetTaskEventListByTaskIdsRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.GetTaskEventListByTaskIdsRequest)
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_GetTaskEventListByTaskIdsRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_GetTaskEventListByTaskIdsRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        taskIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_GetTaskEventListByTaskIdsRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest build() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest(this);
+        int from_bitField0_ = bitField0_;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          taskIds_ = taskIds_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.taskIds_ = taskIds_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest.getDefaultInstance()) return this;
+        if (!other.taskIds_.isEmpty()) {
+          if (taskIds_.isEmpty()) {
+            taskIds_ = other.taskIds_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureTaskIdsIsMutable();
+            taskIds_.addAll(other.taskIds_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.google.protobuf.LazyStringList taskIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureTaskIdsIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          taskIds_ = new com.google.protobuf.LazyStringArrayList(taskIds_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <code>repeated string task_ids = 1;</code>
+       * @return A list containing the taskIds.
+       */
+      public com.google.protobuf.ProtocolStringList
+          getTaskIdsList() {
+        return taskIds_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string task_ids = 1;</code>
+       * @return The count of taskIds.
+       */
+      public int getTaskIdsCount() {
+        return taskIds_.size();
+      }
+      /**
+       * <code>repeated string task_ids = 1;</code>
+       * @param index The index of the element to return.
+       * @return The taskIds at the given index.
+       */
+      public java.lang.String getTaskIds(int index) {
+        return taskIds_.get(index);
+      }
+      /**
+       * <code>repeated string task_ids = 1;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the taskIds at the given index.
+       */
+      public com.google.protobuf.ByteString
+          getTaskIdsBytes(int index) {
+        return taskIds_.getByteString(index);
+      }
+      /**
+       * <code>repeated string task_ids = 1;</code>
+       * @param index The index to set the value at.
+       * @param value The taskIds to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTaskIds(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureTaskIdsIsMutable();
+        taskIds_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string task_ids = 1;</code>
+       * @param value The taskIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addTaskIds(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureTaskIdsIsMutable();
+        taskIds_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string task_ids = 1;</code>
+       * @param values The taskIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllTaskIds(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureTaskIdsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, taskIds_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string task_ids = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTaskIds() {
+        taskIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string task_ids = 1;</code>
+       * @param value The bytes of the taskIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addTaskIdsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureTaskIdsIsMutable();
+        taskIds_.add(value);
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.GetTaskEventListByTaskIdsRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.GetTaskEventListByTaskIdsRequest)
+    private static final com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<GetTaskEventListByTaskIdsRequest>
+        PARSER = new com.google.protobuf.AbstractParser<GetTaskEventListByTaskIdsRequest>() {
+      @java.lang.Override
+      public GetTaskEventListByTaskIdsRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetTaskEventListByTaskIdsRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetTaskEventListByTaskIdsRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetTaskEventListByTaskIdsRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface GetTaskEventListResponseOrBuilder extends
       // @@protoc_insertion_point(interface_extends:rpcapi.GetTaskEventListResponse)
       com.google.protobuf.MessageOrBuilder {
@@ -15522,7 +16160,7 @@ public final class TaskRpcMessage {
      *  任务发起者
      * </pre>
      *
-     * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
      * @return Whether the owner field is set.
      */
     boolean hasOwner();
@@ -15531,18 +16169,18 @@ public final class TaskRpcMessage {
      *  任务发起者
      * </pre>
      *
-     * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
      * @return The owner.
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getOwner();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getOwner();
     /**
      * <pre>
      *  任务发起者
      * </pre>
      *
-     * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getOwnerOrBuilder();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getOwnerOrBuilder();
 
     /**
      * <pre>
@@ -15820,11 +16458,11 @@ public final class TaskRpcMessage {
               break;
             }
             case 18: {
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder subBuilder = null;
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder subBuilder = null;
               if (owner_ != null) {
                 subBuilder = owner_.toBuilder();
               }
-              owner_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.parser(), extensionRegistry);
+              owner_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(owner_);
                 owner_ = subBuilder.buildPartial();
@@ -15978,13 +16616,13 @@ public final class TaskRpcMessage {
     }
 
     public static final int OWNER_FIELD_NUMBER = 2;
-    private com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare owner_;
+    private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo owner_;
     /**
      * <pre>
      *  任务发起者
      * </pre>
      *
-     * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
      * @return Whether the owner field is set.
      */
     @java.lang.Override
@@ -15996,22 +16634,22 @@ public final class TaskRpcMessage {
      *  任务发起者
      * </pre>
      *
-     * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
      * @return The owner.
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getOwner() {
-      return owner_ == null ? com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.getDefaultInstance() : owner_;
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getOwner() {
+      return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : owner_;
     }
     /**
      * <pre>
      *  任务发起者
      * </pre>
      *
-     * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getOwnerOrBuilder() {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
       return getOwner();
     }
 
@@ -17017,15 +17655,15 @@ public final class TaskRpcMessage {
         return this;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare owner_;
+      private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo owner_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> ownerBuilder_;
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> ownerBuilder_;
       /**
        * <pre>
        *  任务发起者
        * </pre>
        *
-       * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
        * @return Whether the owner field is set.
        */
       public boolean hasOwner() {
@@ -17036,12 +17674,12 @@ public final class TaskRpcMessage {
        *  任务发起者
        * </pre>
        *
-       * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
        * @return The owner.
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getOwner() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getOwner() {
         if (ownerBuilder_ == null) {
-          return owner_ == null ? com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.getDefaultInstance() : owner_;
+          return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : owner_;
         } else {
           return ownerBuilder_.getMessage();
         }
@@ -17051,9 +17689,9 @@ public final class TaskRpcMessage {
        *  任务发起者
        * </pre>
        *
-       * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
        */
-      public Builder setOwner(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare value) {
+      public Builder setOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
         if (ownerBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -17071,10 +17709,10 @@ public final class TaskRpcMessage {
        *  任务发起者
        * </pre>
        *
-       * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
        */
       public Builder setOwner(
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder builderForValue) {
         if (ownerBuilder_ == null) {
           owner_ = builderForValue.build();
           onChanged();
@@ -17089,13 +17727,13 @@ public final class TaskRpcMessage {
        *  任务发起者
        * </pre>
        *
-       * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
        */
-      public Builder mergeOwner(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare value) {
+      public Builder mergeOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
         if (ownerBuilder_ == null) {
           if (owner_ != null) {
             owner_ =
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.newBuilder(owner_).mergeFrom(value).buildPartial();
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.newBuilder(owner_).mergeFrom(value).buildPartial();
           } else {
             owner_ = value;
           }
@@ -17111,7 +17749,7 @@ public final class TaskRpcMessage {
        *  任务发起者
        * </pre>
        *
-       * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
        */
       public Builder clearOwner() {
         if (ownerBuilder_ == null) {
@@ -17129,9 +17767,9 @@ public final class TaskRpcMessage {
        *  任务发起者
        * </pre>
        *
-       * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder getOwnerBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder getOwnerBuilder() {
         
         onChanged();
         return getOwnerFieldBuilder().getBuilder();
@@ -17141,14 +17779,14 @@ public final class TaskRpcMessage {
        *  任务发起者
        * </pre>
        *
-       * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getOwnerOrBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
         if (ownerBuilder_ != null) {
           return ownerBuilder_.getMessageOrBuilder();
         } else {
           return owner_ == null ?
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.getDefaultInstance() : owner_;
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : owner_;
         }
       }
       /**
@@ -17156,14 +17794,14 @@ public final class TaskRpcMessage {
        *  任务发起者
        * </pre>
        *
-       * <code>.rpcapi.TaskDataSupplierDeclare owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> 
           getOwnerFieldBuilder() {
         if (ownerBuilder_ == null) {
           ownerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder>(
                   getOwner(),
                   getParentForChildren(),
                   isClean());
@@ -19378,6 +20016,11 @@ public final class TaskRpcMessage {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_GetTaskEventListRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_GetTaskEventListByTaskIdsRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_GetTaskEventListByTaskIdsRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_GetTaskEventListResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -19445,32 +20088,37 @@ public final class TaskRpcMessage {
       "e\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0220\n\ttask_l" +
       "ist\030\003 \003(\0132\035.rpcapi.GetTaskDetailResponse" +
       "\"*\n\027GetTaskEventListRequest\022\017\n\007task_id\030\001" +
-      " \001(\t\"g\n\030GetTaskEventListResponse\022\016\n\006stat" +
-      "us\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022.\n\017task_event_list" +
-      "\030\003 \003(\0132\025.rpcapi.TaskEventShow\"\371\002\n\031Publis" +
-      "hTaskDeclareRequest\022\021\n\ttask_name\030\001 \001(\t\022." +
-      "\n\005owner\030\002 \001(\0132\037.rpcapi.TaskDataSupplierD" +
-      "eclare\0221\n\010partners\030\003 \003(\0132\037.rpcapi.TaskDa" +
-      "taSupplierDeclare\022\027\n\017power_party_ids\030\004 \003" +
-      "(\t\0224\n\treceivers\030\005 \003(\0132!.rpcapi.TaskResul" +
-      "tReceiverDeclare\0228\n\016operation_cost\030\006 \001(\013" +
-      "2 .rpcapi.TaskOperationCostDeclare\022\036\n\026ca" +
-      "lculate_contractcode\030\007 \001(\t\022\036\n\026datasplit_" +
-      "contractcode\030\010 \001(\t\022\035\n\025contract_extra_par" +
-      "ams\030\t \001(\t\"J\n\032PublishTaskDeclareResponse\022" +
-      "\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022\017\n\007task_id\030" +
-      "\003 \001(\t2\200\003\n\013TaskService\022p\n\021GetTaskDetailLi" +
-      "st\022\026.rpcapi.EmptyGetParams\032!.rpcapi.GetT" +
-      "askDetailListResponse\" \202\323\344\223\002\032\"\025/carrier/" +
-      "v1/task/list:\001*\022|\n\020GetTaskEventList\022\037.rp" +
-      "capi.GetTaskEventListRequest\032 .rpcapi.Ge" +
-      "tTaskEventListResponse\"%\202\323\344\223\002\037\"\032/carrier" +
-      "/v1/task/eventList:\001*\022\200\001\n\022PublishTaskDec" +
-      "lare\022!.rpcapi.PublishTaskDeclareRequest\032" +
-      "\".rpcapi.PublishTaskDeclareResponse\"#\202\323\344" +
-      "\223\002\035\"\030/carrier/v1/task/publish:\001*B:\n(com." +
-      "platon.rosettanet.admin.grpc.serviceB\016Ta" +
-      "skRpcMessageb\006proto3"
+      " \001(\t\"4\n GetTaskEventListByTaskIdsRequest" +
+      "\022\020\n\010task_ids\030\001 \003(\t\"g\n\030GetTaskEventListRe" +
+      "sponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022.\n\017t" +
+      "ask_event_list\030\003 \003(\0132\025.rpcapi.TaskEventS" +
+      "how\"\376\002\n\031PublishTaskDeclareRequest\022\021\n\ttas" +
+      "k_name\030\001 \001(\t\0223\n\005owner\030\002 \001(\0132$.rpcapi.Tas" +
+      "kOrganizationIdentityInfo\0221\n\010partners\030\003 " +
+      "\003(\0132\037.rpcapi.TaskDataSupplierDeclare\022\027\n\017" +
+      "power_party_ids\030\004 \003(\t\0224\n\treceivers\030\005 \003(\013" +
+      "2!.rpcapi.TaskResultReceiverDeclare\0228\n\016o" +
+      "peration_cost\030\006 \001(\0132 .rpcapi.TaskOperati" +
+      "onCostDeclare\022\036\n\026calculate_contractcode\030" +
+      "\007 \001(\t\022\036\n\026datasplit_contractcode\030\010 \001(\t\022\035\n" +
+      "\025contract_extra_params\030\t \001(\t\"J\n\032PublishT" +
+      "askDeclareResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003ms" +
+      "g\030\002 \001(\t\022\017\n\007task_id\030\003 \001(\t2\232\004\n\013TaskService" +
+      "\022p\n\021GetTaskDetailList\022\026.rpcapi.EmptyGetP" +
+      "arams\032!.rpcapi.GetTaskDetailListResponse" +
+      "\" \202\323\344\223\002\032\"\025/carrier/v1/task/list:\001*\022|\n\020Ge" +
+      "tTaskEventList\022\037.rpcapi.GetTaskEventList" +
+      "Request\032 .rpcapi.GetTaskEventListRespons" +
+      "e\"%\202\323\344\223\002\037\"\032/carrier/v1/task/eventList:\001*" +
+      "\022\227\001\n\031GetTaskEventListByTaskIds\022(.rpcapi." +
+      "GetTaskEventListByTaskIdsRequest\032 .rpcap" +
+      "i.GetTaskEventListResponse\".\202\323\344\223\002(\"#/car" +
+      "rier/v1/task/eventListByTaskIds:\001*\022\200\001\n\022P" +
+      "ublishTaskDeclare\022!.rpcapi.PublishTaskDe" +
+      "clareRequest\032\".rpcapi.PublishTaskDeclare" +
+      "Response\"#\202\323\344\223\002\035\"\030/carrier/v1/task/publi" +
+      "sh:\001*B:\n(com.platon.rosettanet.admin.grp" +
+      "c.serviceB\016TaskRpcMessageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -19550,20 +20198,26 @@ public final class TaskRpcMessage {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetTaskEventListRequest_descriptor,
         new java.lang.String[] { "TaskId", });
-    internal_static_rpcapi_GetTaskEventListResponse_descriptor =
+    internal_static_rpcapi_GetTaskEventListByTaskIdsRequest_descriptor =
       getDescriptor().getMessageTypes().get(12);
+    internal_static_rpcapi_GetTaskEventListByTaskIdsRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_GetTaskEventListByTaskIdsRequest_descriptor,
+        new java.lang.String[] { "TaskIds", });
+    internal_static_rpcapi_GetTaskEventListResponse_descriptor =
+      getDescriptor().getMessageTypes().get(13);
     internal_static_rpcapi_GetTaskEventListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetTaskEventListResponse_descriptor,
         new java.lang.String[] { "Status", "Msg", "TaskEventList", });
     internal_static_rpcapi_PublishTaskDeclareRequest_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_rpcapi_PublishTaskDeclareRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_PublishTaskDeclareRequest_descriptor,
         new java.lang.String[] { "TaskName", "Owner", "Partners", "PowerPartyIds", "Receivers", "OperationCost", "CalculateContractcode", "DatasplitContractcode", "ContractExtraParams", });
     internal_static_rpcapi_PublishTaskDeclareResponse_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_rpcapi_PublishTaskDeclareResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_PublishTaskDeclareResponse_descriptor,

@@ -115,8 +115,8 @@ message GetPowerTotalDetailResponse {
     OrganizationIdentityInfo owner = 1;                  // 算力拥有者信息
     PowerTotalDetail         power = 2;                  // 算力总详细
 }
-message GetPowerTotalDetailListResponse {全网的算力总详情列表
-    repeated GetPowerTotalDetailResponse power_list = 1;  //
+message GetPowerTotalDetailListResponse {
+    repeated GetPowerTotalDetailResponse power_list = 1;  // 全网的算力总详情列表
 }
 
 message PublishPowerRequest {
@@ -163,8 +163,8 @@ service PowerService {
     //  // 查看指定拥有者的单个算力摘要 (不包含 任务描述)
     //  rpc GetPowerSingleSummaryByOwner (GetPowerSingleSummaryByOwnerRequest) returns (GetPowerSingleSummaryListResponse);
     //
-    // 查看单个算力详情 (包含 任务描述)
-    rpc GetPowerSingleDetail (GetPowerSingleDetailRequest) returns (GetPowerSingleDetailResponse);
+    //  // 查看单个算力详情 (包含 任务描述)
+    //  rpc GetPowerSingleDetail (GetPowerSingleDetailRequest) returns (GetPowerSingleDetailResponse);
 
     // 查看各个节点的总算力详情列表
     rpc GetPowerTotalDetailList (EmptyGetParams) returns (GetPowerTotalDetailListResponse) {
