@@ -30,7 +30,7 @@ public class PowerClient {
      */
     public String addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel("localhost", 50051);
+        Channel channel = channelManager.getScheduleServer();
         //2.拼装request
         YarnRpcMessage.SetJobNodeRequest joinRequest = YarnRpcMessage.SetJobNodeRequest.newBuilder()
                 .setInternalIp(internalIp).setInternalPort(String.valueOf(internalPort))
@@ -49,7 +49,7 @@ public class PowerClient {
      */
     public String updatePowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel("localhost", 50051);
+        Channel channel = channelManager.getScheduleServer();
         //2.拼装request
         YarnRpcMessage.UpdateJobNodeRequest joinRequest = YarnRpcMessage.UpdateJobNodeRequest.newBuilder()
                 .setInternalIp(internalIp).setInternalPort(String.valueOf(internalPort))

@@ -2,6 +2,7 @@ package com.platon.rosettanet.admin.controller.node;
 
 
 import com.github.pagehelper.PageInfo;
+import com.platon.rosettanet.admin.common.util.NameUtil;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.*;
@@ -110,7 +111,9 @@ public class LocalPowerNodeController {
     @PostMapping("/checkPowerNodeName")
     @ApiOperation(value="校验计算节点名称是否可用", response = JsonResponse.class)
     public JsonResponse checkPowerNodeName(@Validated @RequestBody PowerCheckNameReq powerCheckNameReq) {
-        // 新增计算节点
+        if (NameUtil.isValidName(powerCheckNameReq.getPowerNodeName())) {
+            return JsonResponse.fail("名称不符合命名规则！");
+        }
         int count = localPowerNodeService.checkPowerNodeName(powerCheckNameReq.getPowerNodeName());
         if (count > 0) {
             return JsonResponse.fail("校验失败");
