@@ -21,8 +21,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         String[] excludeUrls = new String[]{
                 "/swagger-resources/**",
-                "/doc.html",
                 "/v2/api-docs",
+                "/**/*.js",
+                "/**/*.css",
+                "/**/*.html",
+                "/**/*.map",
                 "/api/v1/system/user/login",
                 "/api/v1/system/user/logout",
                 "/api/v1/system/user/verificationCode"};
