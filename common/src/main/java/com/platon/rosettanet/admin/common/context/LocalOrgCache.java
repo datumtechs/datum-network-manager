@@ -15,7 +15,7 @@ public class LocalOrgCache {
     public static Object getLocalOrgInfo(){
         Object localOrgInfo = AppContext.get(LOCAL_ORG);
         if(localOrgInfo == null){
-            throw new ApplicationException("使用平台功能需要申请身份标识，需要申请身份标识");
+            throw new ApplicationException("使用平台功能需要申请身份标识，需要申请身份标识", ApplicationException.ApplicationErrorEnum.IDENTITY_ID_MISSING);
         }
         return localOrgInfo;
     }

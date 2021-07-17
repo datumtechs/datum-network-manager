@@ -6,23 +6,23 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="carrier_node_id" jdbcType="VARCHAR" property="carrierNodeId" />
-    <result column="carrier_IP" jdbcType="VARCHAR" property="carrierIP" />
-    <result column="carrier_Port" jdbcType="INTEGER" property="carrierPort" />
-    <result column="carrier_conn_Status" jdbcType="VARCHAR" property="carrierConnStatus" />
-    <result column="carrier_conn_Time" jdbcType="TIMESTAMP" property="carrierConnTime" />
+    <result column="carrier_ip" jdbcType="VARCHAR" property="carrierIp" />
+    <result column="carrier_port" jdbcType="INTEGER" property="carrierPort" />
+    <result column="carrier_conn_status" jdbcType="VARCHAR" property="carrierConnStatus" />
+    <result column="carrier_conn_time" jdbcType="TIMESTAMP" property="carrierConnTime" />
     <result column="carrier_status" jdbcType="VARCHAR" property="carrierStatus" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    name, identity_id, carrier_node_id, carrier_IP, carrier_Port, carrier_conn_Status, carrier_conn_Time,
+    name, identity_id, carrier_node_id, carrier_ip, carrier_port, carrier_conn_status, carrier_conn_time,
     carrier_status, rec_update_time
   </sql>
 
   <select id="selectAvailableCarrier" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from local_org
-    where carrier_conn_Status = 'enabled' and carrier_status = 'enabled'
+    where carrier_conn_status = 'enabled' and carrier_status = 'enabled'
   </select>
 
   <select id="select" resultMap="BaseResultMap">
@@ -46,19 +46,19 @@
         identity_id,
       </if>
       <if test="carrierNodeId != null">
-        carrier_Node_Id,
+        carrier_node_id,
       </if>
       <if test="carrierIp != null">
-        carrier_IP,
+        carrier_ip,
       </if>
       <if test="carrierPort != null">
-        carrier_Port,
+        carrier_port,
       </if>
       <if test="carrierConnStatus != null">
-        carrier_conn_Status,
+        carrier_conn_status,
       </if>
       <if test="carrierConnTime != null">
-        carrier_conn_Time,
+        carrier_conn_time,
       </if>
       <if test="carrierStatus != null">
         carrier_status,
@@ -111,16 +111,16 @@
         carrier_node_id = #{carrierNodeId},
       </if>
       <if test="carrierIp != null">
-        carrier_IP = #{carrierIP},
+        carrier_ip = #{carrierIp},
       </if>
       <if test="carrierPort != null">
-        carrier_Port = #{carrierPort},
+        carrier_port = #{carrierPort},
       </if>
       <if test="carrierConnStatus != null">
-        carrier_conn_Status = #{carrierConnStatus},
+        carrier_conn_status = #{carrierConnStatus},
       </if>
       <if test="carrierConnTime != null">
-        carrier_conn_Time = #{carrierConnTime},
+        carrier_conn_time = #{carrierConnTime},
       </if>
       <if test="carrierStatus != null">
         carrier_status = #{carrierStatus},

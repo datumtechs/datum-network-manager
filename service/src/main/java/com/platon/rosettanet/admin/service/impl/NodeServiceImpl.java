@@ -52,7 +52,7 @@ public class NodeServiceImpl implements NodeService {
         }
         YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(ip, port);
         localOrg.setRecUpdateTime(new Date());
-        localOrg.setCarrierIP(ip);
+        localOrg.setCarrierIp(ip);
         localOrg.setCarrierPort(port);
         localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
         localOrg.setCarrierStatus(nodeInfo.getState());
@@ -77,7 +77,7 @@ public class NodeServiceImpl implements NodeService {
         }
 
         //入网成功，刷新数据库
-        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIP(), localOrg.getCarrierPort());
+        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         if(nodeInfo.getStatus() != GRPC_SUCCESS_CODE){
             log.info("获取调度服务节点信息失败：" + nodeInfo.getMsg());
         } else {
@@ -105,7 +105,7 @@ public class NodeServiceImpl implements NodeService {
         }
 
         //退网成功，刷新数据库
-        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIP(), localOrg.getCarrierPort());
+        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         if(nodeInfo.getStatus() != GRPC_SUCCESS_CODE){
             log.info("获取调度服务节点信息失败：" + nodeInfo.getMsg());
         } else {

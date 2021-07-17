@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringJoiner;
 
 /**
@@ -46,7 +44,15 @@ public class ErrorHandle {
     @ExceptionHandler(ApplicationException.class)
     public JsonResponse handleApplicationException(ApplicationException exception){
         log.error("handleApplicationException",exception);
-        return JsonResponse.fail(exception.getErrorMsg());
+        ApplicationException.ApplicationErrorEnum errorCode = exception.getErrorCode();
+        switch (errorCode){
+            case CARRIER_INFO_NOT_CONFIGURED:
+                return JsonResponse.fail(ResponseCodeEnum.CARRIER_INFO_NOT_CONFIGURED);
+            case IDENTITY_ID_MISSING:
+                return JsonResponse.fail(ResponseCodeEnum.IDENTITY_ID_MISSING);
+            default:
+                return JsonResponse.fail(exception.getErrorMsg());
+        }
     }
 
     @ExceptionHandler(Exception.class)

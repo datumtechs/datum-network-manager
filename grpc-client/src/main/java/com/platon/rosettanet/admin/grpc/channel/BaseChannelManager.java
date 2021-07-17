@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.platon.rosettanet.admin.common.context.LocalOrgCache;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.dao.entity.LocalOrg;
+import com.platon.rosettanet.admin.dao.enums.CarrierConnStatusEnum;
 import io.grpc.Channel;
 
 import java.util.Map;
@@ -64,12 +65,11 @@ public abstract class BaseChannelManager {
     public Channel getScheduleServer(){
         //获取调度服务的信息
         LocalOrg localOrgInfo = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-        if(!"enabled".equals(localOrgInfo.getCarrierConnStatus())
-                || !"enabled".equals(localOrgInfo.getCarrierStatus())){
-            throw new ApplicationException("无可用的调度服务");
+        if(CarrierConnStatusEnum.DISABLED.getStatus().equals(localOrgInfo.getCarrierConnStatus())){
+            throw new ApplicationException("无可用的调度服务",ApplicationException.ApplicationErrorEnum.CARRIER_INFO_NOT_CONFIGURED);
         }
         //1.获取rpc连接
-        Channel channel = buildChannel(localOrgInfo.getCarrierIP(), localOrgInfo.getCarrierPort());
+        Channel channel = buildChannel(localOrgInfo.getCarrierIp(), localOrgInfo.getCarrierPort());
         return channel;
     }
 }

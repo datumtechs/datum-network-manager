@@ -18,7 +18,7 @@ public class LocalOrg {
     //机构调度服务node id，入网后可以获取到
     private String carrierNodeId;
     //调度服务IP地址
-    private String carrierIP;
+    private String carrierIp;
     //调度服务端口号
     private Integer carrierPort;
     //连接状态 enabled：可用, disabled:不可用

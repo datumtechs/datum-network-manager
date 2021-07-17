@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.filter;
 import cn.hutool.json.JSONUtil;
 import com.platon.rosettanet.admin.common.context.LocalOrgCache;
 import com.platon.rosettanet.admin.dto.JsonResponse;
+import com.platon.rosettanet.admin.enums.ResponseCodeEnum;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +22,7 @@ import java.io.IOException;
  */
 
 //@Component
-public class ApplyOrgIdentityFilter  implements Filter {
-
-    private static String NO_APPLY_ORGIDENTITY = "您还没有申请身份标识";
+public class ApplyOrgIdentityFilter implements Filter {
 
     private static String[] excludeUrls = new String[]{"/api/v1/system/user/login",
             "/api/v1/system/user/logout",
@@ -45,9 +44,9 @@ public class ApplyOrgIdentityFilter  implements Filter {
                 filterChain.doFilter(servletRequest,servletResponse);
             } else {//未申请身份标识，则返回错误信息
                 httpServletResponse.setContentType("application/json; charset=utf-8");
-                JsonResponse no_apply = JsonResponse.fail(NO_APPLY_ORGIDENTITY);
+                JsonResponse no_apply = JsonResponse.fail(ResponseCodeEnum.IDENTITY_ID_MISSING);
                 httpServletResponse.getWriter().write(JSONUtil.toJsonStr(no_apply));
-                httpServletResponse.setStatus(401);
+                httpServletResponse.setStatus(200);
                 return;
             }
         }

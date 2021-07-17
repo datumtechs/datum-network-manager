@@ -41,7 +41,7 @@ public class AuthClientTest {
      */
     @Test
     public void test() {
-        Channel channel =  ManagedChannelBuilder.forAddress("192.168.21.78", 4000).usePlaintext().build();
+        Channel channel =  ManagedChannelBuilder.forAddress("192.168.21.164", 4444).usePlaintext().build();
 
         AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest.newBuilder().build();
         CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);

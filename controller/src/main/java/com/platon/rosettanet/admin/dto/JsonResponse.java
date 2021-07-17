@@ -22,7 +22,7 @@ import java.util.List;
 @ApiModel(value = "返回参数封装类")
 public class JsonResponse<T> {
 
-    @ApiModelProperty(value = "0表示成功，其它表示错误代码")
+    @ApiModelProperty(value = "0表示成功，500表示系统内部异常，1000表示用户未登录，1001表示未申请身份标识，1002表示无可用的调度服务")
     private int status = 0;
 
     @ApiModelProperty(value = "返回内容提示")
