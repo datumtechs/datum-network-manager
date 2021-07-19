@@ -64,7 +64,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.platon.rosettanet.admin.RosettaNetScanApplication</mainClass>
+                    <mainClass>com.platon.rosettanet.admin.RosettaNetAdminApplication</mainClass>
                     <layout>JAR</layout>
                 </configuration>
                 <executions>
