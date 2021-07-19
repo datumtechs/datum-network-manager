@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -61,6 +62,9 @@ public class DataNodeServiceImpl implements DataNodeService {
         if (GrpcConstant.GRPC_SUCCESS_CODE != formatSetDataNodeResp.getStatus()) {
             throw new ServiceException("调度服务调用失败");
         }
+        if(!checkDataNodeId(formatSetDataNodeResp.getNodeResp().getNodeId())){
+            throw new ServiceException("该属性节点已存在");
+        }
         dataNode.setNodeId(formatSetDataNodeResp.getNodeResp().getNodeId());
         dataNode.setConnStatus(formatSetDataNodeResp.getNodeResp().getConnStatus());
         dataNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
@@ -91,6 +95,9 @@ public class DataNodeServiceImpl implements DataNodeService {
      */
     @Override
     public int updateDataNode(DataNode dataNode) {
+        if(!checkDataNodeId(dataNode.getNodeId())){
+            throw new ServiceException("该属性节点已存在");
+        }
         FormatSetDataNodeResp formatSetDataNodeResp = yarnClient.updateDataNode(dataNode);
         if (GrpcConstant.GRPC_SUCCESS_CODE != formatSetDataNodeResp.getStatus()) {
             throw new ServiceException("调度服务调用失败");
@@ -113,5 +120,18 @@ public class DataNodeServiceImpl implements DataNodeService {
             throw new ServiceException("调度服务调用失败");
         }
         return dataNodeMapper.deleteByNodeId(nodeId);
+    }
+
+    /**
+     * 校验nodeId是否已存在
+     * @param nodeId
+     * @return true校验通过，不存在，false校验不通过，已存在
+     */
+    public boolean checkDataNodeId(String nodeId) {
+        DataNode dataNode = dataNodeMapper.selectByNodeId(nodeId);
+        if (ObjectUtil.isNotNull(dataNode)) {
+            return false;
+        }
+        return true;
     }
 }
