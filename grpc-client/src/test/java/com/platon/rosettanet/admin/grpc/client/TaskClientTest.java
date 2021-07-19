@@ -1,5 +1,8 @@
-package com.platon.rosettanet.admin.grpc.service;
+package com.platon.rosettanet.admin.grpc.client;
 
+import com.platon.rosettanet.admin.grpc.service.CommonMessage;
+import com.platon.rosettanet.admin.grpc.service.TaskRpcMessage;
+import com.platon.rosettanet.admin.grpc.service.TaskServiceGrpc;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder;

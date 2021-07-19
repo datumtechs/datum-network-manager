@@ -1,6 +1,9 @@
-package com.platon.rosettanet.admin.grpc.service;
+package com.platon.rosettanet.admin.grpc.client;
 
 import com.platon.rosettanet.admin.grpc.client.AuthClient;
+import com.platon.rosettanet.admin.grpc.service.AuthRpcMessage;
+import com.platon.rosettanet.admin.grpc.service.AuthServiceGrpc;
+import com.platon.rosettanet.admin.grpc.service.CommonMessage;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder;
@@ -17,7 +20,7 @@ import java.io.IOException;
  * @Version
  * @Desc
  */
-public class AuthClientTest {
+public class DemoClientTest {
 
 
     /**

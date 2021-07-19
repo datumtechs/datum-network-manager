@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2021/7/10 17:07
  */
 @Slf4j
-//@Component 暂时注释
+@Component
 public class DataNodeRefreshTask {
     @Resource
     private DataNodeMapper dataNodeMapper;
@@ -38,7 +38,7 @@ public class DataNodeRefreshTask {
             return;
         }
         List<DataNode> dataNodeList = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(dataNodeList)) {
+        if (!CollectionUtils.isEmpty(resp.getNodeRespList())) {
             resp.getNodeRespList().forEach(item -> {
                 DataNode dataNode = new DataNode();
                 BeanUtils.copyProperties(item, dataNode);
