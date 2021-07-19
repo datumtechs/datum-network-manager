@@ -3,7 +3,6 @@ package com.platon.rosettanet.admin.grpc.client;
 import com.platon.rosettanet.admin.dao.entity.*;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
-import com.platon.rosettanet.admin.grpc.entity.QueryNodeResp;
 import com.platon.rosettanet.admin.grpc.entity.TaskDataResp;
 import com.platon.rosettanet.admin.grpc.entity.TaskEventDataResp;
 import com.platon.rosettanet.admin.grpc.service.CommonMessage;
@@ -42,26 +41,30 @@ public class TaskClient {
      * @return
      */
     public TaskDataResp getTaskListData() {
-
         //1.获取rpc连接
-        Channel channel = channelManager.getScheduleServer();
-        //2.构造 request
-        CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams.newBuilder().build();
-        //3.调用rpc服务接口
-        TaskRpcMessage.GetTaskDetailListResponse taskDetailListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskDetailList(request);
-        //4.处理response
-        TaskDataResp taskDataResp = new TaskDataResp();
-        if(taskDetailListResponse != null){
-             taskDataResp.setStatus(taskDetailListResponse.getStatus());
-             taskDataResp.setMsg(taskDetailListResponse.getMsg());
-             List<TaskRpcMessage.GetTaskDetailResponse> taskDetailList = taskDetailListResponse.getTaskListList();
+        Channel channel = null;
+        try{
+            channel = channelManager.getScheduleServer();
+            //2.构造 request
+            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams.newBuilder().build();
+            //3.调用rpc服务接口
+            TaskRpcMessage.GetTaskDetailListResponse taskDetailListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskDetailList(request);
+            //4.处理response
+            TaskDataResp taskDataResp = new TaskDataResp();
+            if(taskDetailListResponse != null){
+                 taskDataResp.setStatus(taskDetailListResponse.getStatus());
+                 taskDataResp.setMsg(taskDetailListResponse.getMsg());
+                 List<TaskRpcMessage.GetTaskDetailResponse> taskDetailList = taskDetailListResponse.getTaskListList();
 
-             if(GrpcConstant.GRPC_SUCCESS_CODE == taskDetailListResponse.getStatus()){
-                 taskDataResp.setTaskList(dataConvertToTaskList(taskDetailList));
+                 if(GrpcConstant.GRPC_SUCCESS_CODE == taskDetailListResponse.getStatus()){
+                     taskDataResp.setTaskList(dataConvertToTaskList(taskDetailList));
+                 }
+
              }
-
-         }
-         return taskDataResp;
+             return taskDataResp;
+        } finally {
+            channelManager.closeChannel(channel);
+        }
     }
 
 
@@ -71,37 +74,41 @@ public class TaskClient {
      * @return
      */
     public TaskEventDataResp getTaskEventListData(String taskId) {
-
         //1.获取rpc连接
-        Channel channel = channelManager.getScheduleServer();
-        //2.构造 request
-        TaskRpcMessage.GetTaskEventListRequest request = TaskRpcMessage.GetTaskEventListRequest.newBuilder().setTaskId(taskId).build();
-        //3.调用rpc服务接口
-        TaskRpcMessage.GetTaskEventListResponse taskEventListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskEventList(request);
-        //4.处理response
-        TaskEventDataResp taskEventDataResp = new TaskEventDataResp();
-        if(taskEventListResponse != null){
-            taskEventDataResp.setStatus(taskEventListResponse.getStatus());
-            taskEventDataResp.setMsg(taskEventListResponse.getMsg());
-            List<TaskRpcMessage.TaskEventShow> taskEventShowList = taskEventListResponse.getTaskEventListList();
+        Channel channel = null;
+        try{
+            channel = channelManager.getScheduleServer();
+            //2.构造 request
+            TaskRpcMessage.GetTaskEventListRequest request = TaskRpcMessage.GetTaskEventListRequest.newBuilder().setTaskId(taskId).build();
+            //3.调用rpc服务接口
+            TaskRpcMessage.GetTaskEventListResponse taskEventListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskEventList(request);
+            //4.处理response
+            TaskEventDataResp taskEventDataResp = new TaskEventDataResp();
+            if(taskEventListResponse != null){
+                taskEventDataResp.setStatus(taskEventListResponse.getStatus());
+                taskEventDataResp.setMsg(taskEventListResponse.getMsg());
+                List<TaskRpcMessage.TaskEventShow> taskEventShowList = taskEventListResponse.getTaskEventListList();
 
-            if(GrpcConstant.GRPC_SUCCESS_CODE == taskEventListResponse.getStatus()){
-                List<TaskEvent> taskEventList = new ArrayList<>();
-                //构造taskEvent集合
-                for (TaskRpcMessage.TaskEventShow taskEvenShow : taskEventShowList) {
-                        TaskEvent taskEvent = new TaskEvent();
-                        taskEvent.setTaskId(taskEvenShow.getTaskId());
-                        taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt(),0, ZoneOffset.ofHours(8)));
-                        taskEvent.setEventContent(taskEvenShow.getContent());
-                        taskEvent.setEventType(taskEvenShow.getType());
-                        taskEvent.setIdentityId(taskEvenShow.getOwner().getIdentityId());
-                        //添加
-                        taskEventList.add(taskEvent);
+                if(GrpcConstant.GRPC_SUCCESS_CODE == taskEventListResponse.getStatus()){
+                    List<TaskEvent> taskEventList = new ArrayList<>();
+                    //构造taskEvent集合
+                    for (TaskRpcMessage.TaskEventShow taskEvenShow : taskEventShowList) {
+                            TaskEvent taskEvent = new TaskEvent();
+                            taskEvent.setTaskId(taskEvenShow.getTaskId());
+                            taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt(),0, ZoneOffset.ofHours(8)));
+                            taskEvent.setEventContent(taskEvenShow.getContent());
+                            taskEvent.setEventType(taskEvenShow.getType());
+                            taskEvent.setIdentityId(taskEvenShow.getOwner().getIdentityId());
+                            //添加
+                            taskEventList.add(taskEvent);
+                    }
+                    taskEventDataResp.setTaskEventList(taskEventList);
                 }
-                taskEventDataResp.setTaskEventList(taskEventList);
             }
+            return taskEventDataResp;
+        } finally {
+            channelManager.closeChannel(channel);
         }
-        return taskEventDataResp;
     }
 
 

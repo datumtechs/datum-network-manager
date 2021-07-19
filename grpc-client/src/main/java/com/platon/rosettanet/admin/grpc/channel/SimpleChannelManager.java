@@ -3,7 +3,10 @@ package com.platon.rosettanet.admin.grpc.channel;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author liushuyu
@@ -23,5 +26,22 @@ public class SimpleChannelManager extends BaseChannelManager{
                 .usePlaintext()
                 .build();
         return channel;
+    }
+
+
+    @SneakyThrows
+    public void closeChannel(Channel channel){
+        if(channel == null){
+            return;
+        }
+        if(channel instanceof ManagedChannel){
+            ManagedChannel managedChannel = (ManagedChannel)channel;
+            if(managedChannel.isTerminated()){
+                return;
+            }
+            managedChannel.shutdown();
+            managedChannel.awaitTermination(10, TimeUnit.SECONDS);
+            managedChannel.shutdownNow();
+        }
     }
 }

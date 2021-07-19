@@ -33,24 +33,30 @@ public class AuthClient {
      */
     public CommonResp applyIdentityJoin(String identityId,String name){
         //1.获取rpc连接
-        Channel channel = channelManager.getScheduleServer();
-        //2.拼装request
-        CommonMessage.OrganizationIdentityInfo orgInfo = CommonMessage.OrganizationIdentityInfo
-                .newBuilder()
-                .setName(name)
-                .setIdentityId(identityId)
-                .build();
-        AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest
-                .newBuilder()
-                .setMember(orgInfo)
-                .build();
-        //3.调用rpc,获取response
-        CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
-        //4.处理response
-        CommonResp resp = new CommonResp();
-        resp.setStatus(responseCode.getStatus());
-        resp.setMsg(responseCode.getMsg());
-        return resp;
+        Channel channel = null;
+        try{
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            CommonMessage.OrganizationIdentityInfo orgInfo = CommonMessage.OrganizationIdentityInfo
+                    .newBuilder()
+                    .setName(name)
+                    .setIdentityId(identityId)
+                    .build();
+            AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest
+                    .newBuilder()
+                    .setMember(orgInfo)
+                    .build();
+            //3.调用rpc,获取response
+            CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
+            //4.处理response
+            CommonResp resp = new CommonResp();
+            resp.setStatus(responseCode.getStatus());
+            resp.setMsg(responseCode.getMsg());
+            return resp;
+        }finally {
+            channelManager.closeChannel(channel);
+        }
+
     }
 
     /**
@@ -58,17 +64,22 @@ public class AuthClient {
      */
     public CommonResp revokeIdentityJoin(){
         //1.获取rpc连接
-        Channel channel = channelManager.getScheduleServer();
-        //2.拼装request
-        CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
-                .newBuilder()
-                .build();
-        //3.调用rpc,获取response
-        CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
-        //4.处理response
-        CommonResp resp = new CommonResp();
-        resp.setStatus(responseCode.getStatus());
-        resp.setMsg(responseCode.getMsg());
-        return resp;
+        Channel channel = null;
+        try{
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
+                    .newBuilder()
+                    .build();
+            //3.调用rpc,获取response
+            CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
+            //4.处理response
+            CommonResp resp = new CommonResp();
+            resp.setStatus(responseCode.getStatus());
+            resp.setMsg(responseCode.getMsg());
+            return resp;
+        }finally {
+            channelManager.closeChannel(channel);
+        }
     }
 }

@@ -77,4 +77,10 @@ public abstract class BaseChannelManager {
         Channel channel = buildChannel(localOrgInfo.getCarrierIp(), localOrgInfo.getCarrierPort());
         return channel;
     }
+
+    /**
+     * 关闭连接
+     * @param channel
+     */
+    public abstract void closeChannel(Channel channel);
 }

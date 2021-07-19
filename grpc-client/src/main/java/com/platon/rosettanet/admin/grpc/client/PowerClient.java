@@ -30,18 +30,22 @@ public class PowerClient {
      */
     public String addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
         //1.获取rpc连接
-        Channel channel = channelManager.getScheduleServer();
-        //2.拼装request
-        YarnRpcMessage.SetJobNodeRequest joinRequest = YarnRpcMessage.SetJobNodeRequest.newBuilder()
-                .setInternalIp(internalIp).setInternalPort(String.valueOf(internalPort))
-                .setExternalIp(externalIp).setExternalPort(String.valueOf(externalPort))
-                .build();
-        //3.调用rpc,获取response
-        YarnRpcMessage.SetJobNodeResponse responseCode = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
-        //4.处理response
-        System.out.println("addPowerNode-返回信息：" + responseCode.getMsg());
-        return responseCode.getMsg();
-
+        Channel channel = null;
+        try{
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            YarnRpcMessage.SetJobNodeRequest joinRequest = YarnRpcMessage.SetJobNodeRequest.newBuilder()
+                    .setInternalIp(internalIp).setInternalPort(String.valueOf(internalPort))
+                    .setExternalIp(externalIp).setExternalPort(String.valueOf(externalPort))
+                    .build();
+            //3.调用rpc,获取response
+            YarnRpcMessage.SetJobNodeResponse responseCode = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
+            //4.处理response
+            System.out.println("addPowerNode-返回信息：" + responseCode.getMsg());
+            return responseCode.getMsg();
+        } finally {
+            channelManager.closeChannel(channel);
+        }
     }
 
     /**
@@ -49,18 +53,22 @@ public class PowerClient {
      */
     public String updatePowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
         //1.获取rpc连接
-        Channel channel = channelManager.getScheduleServer();
-        //2.拼装request
-        YarnRpcMessage.UpdateJobNodeRequest joinRequest = YarnRpcMessage.UpdateJobNodeRequest.newBuilder()
-                .setInternalIp(internalIp).setInternalPort(String.valueOf(internalPort))
-                .setExternalIp(externalIp).setExternalPort(String.valueOf(externalPort))
-                .build();
-        //3.调用rpc,获取response
-        YarnRpcMessage.SetJobNodeResponse responseCode = YarnServiceGrpc.newBlockingStub(channel).updateJobNode(joinRequest);
-        //4.处理response
-        System.out.println("updatePowerNode-返回信息：" + responseCode.getMsg());
-        return responseCode.getMsg();
-
+        Channel channel = null;
+        try{
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            YarnRpcMessage.UpdateJobNodeRequest joinRequest = YarnRpcMessage.UpdateJobNodeRequest.newBuilder()
+                    .setInternalIp(internalIp).setInternalPort(String.valueOf(internalPort))
+                    .setExternalIp(externalIp).setExternalPort(String.valueOf(externalPort))
+                    .build();
+            //3.调用rpc,获取response
+            YarnRpcMessage.SetJobNodeResponse responseCode = YarnServiceGrpc.newBlockingStub(channel).updateJobNode(joinRequest);
+            //4.处理response
+            System.out.println("updatePowerNode-返回信息：" + responseCode.getMsg());
+            return responseCode.getMsg();
+        } finally {
+            channelManager.closeChannel(channel);
+        }
     }
 
     /**
@@ -121,16 +129,21 @@ public class PowerClient {
      */
     public String publishPower(CommonMessage.OrganizationIdentityInfo owner, String jobNodeId, CommonMessage.PurePower information){
         //1.获取rpc连接
-        Channel channel = channelManager.buildChannel("localhost", 50051);
-        //2.拼装request
-        PowerRpcMessage.PublishPowerRequest joinRequest = PowerRpcMessage.PublishPowerRequest.newBuilder()
-                .setOwner(owner).setJobNodeId(jobNodeId).setInformation(information)
-                .build();
-        //3.调用rpc,获取response
-        PowerRpcMessage.PublishPowerResponse responseCode = PowerServiceGrpc.newBlockingStub(channel).publishPower(joinRequest);
-        //4.处理response
-        System.out.println("publishPower-返回信息：" + responseCode.getMsg());
-        return responseCode.getMsg();
+        Channel channel = null;
+        try{
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            PowerRpcMessage.PublishPowerRequest joinRequest = PowerRpcMessage.PublishPowerRequest.newBuilder()
+                    .setOwner(owner).setJobNodeId(jobNodeId).setInformation(information)
+                    .build();
+            //3.调用rpc,获取response
+            PowerRpcMessage.PublishPowerResponse responseCode = PowerServiceGrpc.newBlockingStub(channel).publishPower(joinRequest);
+            //4.处理response
+            System.out.println("publishPower-返回信息：" + responseCode.getMsg());
+            return responseCode.getMsg();
+        } finally {
+            channelManager.closeChannel(channel);
+        }
     }
 
     /**
@@ -157,51 +170,56 @@ public class PowerClient {
      */
     public List<GlobalPower> getPowerTotalDetailList(){
         //1.获取rpc连接
-        Channel channel = channelManager.getScheduleServer();
-        //2.拼装request
-        CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
-                .newBuilder()
-                .build();
-        //3.调用rpc,获取response
-        PowerRpcMessage.GetPowerTotalDetailListResponse response = PowerServiceGrpc.newBlockingStub(channel).getPowerTotalDetailList(request);
-        //4.处理response
-        List<PowerRpcMessage.GetPowerTotalDetailResponse> powerList = response.getPowerListList();
-        List<GlobalPower> globalPowerList = new ArrayList<>();
-        powerList.forEach(powerResponse -> {
-            // 算力拥有者信息
-            CommonMessage.OrganizationIdentityInfo owner = powerResponse.getOwner();
-            String identityId = owner.getIdentityId();
-            String orgName = owner.getName();
-//            //  总算力详情
-//            message PowerTotalDetail {
-//                ResourceUsedDetailShow information        = 1;                 // 算力实况
-//                uint32                 total_task_count   = 2;            // 算力上总共执行的任务数 (已完成的和正在执行的)
-//                uint32                 current_task_count = 3;          // 算力上正在执行的任务数
-//                repeated PowerTask     tasks              = 4;                       // 算力上正在执行的任务详情信息
-//                string                 state              = 5;                       // 算力状态 (create: 还未发布的算力; release: 已发布的算力; revoke: 已撤销的算力)
-//            }
-            PowerRpcMessage.PowerTotalDetail powerDetail = powerResponse.getPower();
-//            message ResourceUsedDetailShow {
-//                uint64 total_mem       = 2;             // 服务系统的总内存 (单位: byte)
-//                uint64 used_mem        = 3;              // 服务系统的已用内存 (单位: byte)
-//                uint64 total_processor = 4;       // 服务的总内核数 (单位: 个)
-//                uint64 used_processor  = 5;        // 服务的已用内核数 (单位: 个)
-//                uint64 total_bandwidth = 6;       // 服务的总带宽数 (单位: bps)
-//                uint64 used_bandwidth  = 7;        // 服务的已用带宽数 (单位: bps)
-//            }
-            CommonMessage.ResourceUsedDetailShow information = powerDetail.getInformation();// 算力实况
-            GlobalPower globalPower = new GlobalPower();
-            globalPower.setIdentityId(identityId);
-            globalPower.setOrgName(orgName);
-            globalPower.setTotalMemory(information.getTotalMem());
-            globalPower.setUsedMemory(information.getUsedMem());
-            globalPower.setTotalCore((int)information.getTotalProcessor());
-            globalPower.setUsedCore((int)information.getUsedProcessor());
-            globalPower.setTotalBandwidth(information.getTotalBandwidth());
-            globalPower.setUsedBandwidth(information.getUsedBandwidth());
-            globalPowerList.add(globalPower);
-        });
-        return globalPowerList;
+        Channel channel = null;
+        try{
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
+                    .newBuilder()
+                    .build();
+            //3.调用rpc,获取response
+            PowerRpcMessage.GetPowerTotalDetailListResponse response = PowerServiceGrpc.newBlockingStub(channel).getPowerTotalDetailList(request);
+            //4.处理response
+            List<PowerRpcMessage.GetPowerTotalDetailResponse> powerList = response.getPowerListList();
+            List<GlobalPower> globalPowerList = new ArrayList<>();
+            powerList.forEach(powerResponse -> {
+                // 算力拥有者信息
+                CommonMessage.OrganizationIdentityInfo owner = powerResponse.getOwner();
+                String identityId = owner.getIdentityId();
+                String orgName = owner.getName();
+    //            //  总算力详情
+    //            message PowerTotalDetail {
+    //                ResourceUsedDetailShow information        = 1;                 // 算力实况
+    //                uint32                 total_task_count   = 2;            // 算力上总共执行的任务数 (已完成的和正在执行的)
+    //                uint32                 current_task_count = 3;          // 算力上正在执行的任务数
+    //                repeated PowerTask     tasks              = 4;                       // 算力上正在执行的任务详情信息
+    //                string                 state              = 5;                       // 算力状态 (create: 还未发布的算力; release: 已发布的算力; revoke: 已撤销的算力)
+    //            }
+                PowerRpcMessage.PowerTotalDetail powerDetail = powerResponse.getPower();
+    //            message ResourceUsedDetailShow {
+    //                uint64 total_mem       = 2;             // 服务系统的总内存 (单位: byte)
+    //                uint64 used_mem        = 3;              // 服务系统的已用内存 (单位: byte)
+    //                uint64 total_processor = 4;       // 服务的总内核数 (单位: 个)
+    //                uint64 used_processor  = 5;        // 服务的已用内核数 (单位: 个)
+    //                uint64 total_bandwidth = 6;       // 服务的总带宽数 (单位: bps)
+    //                uint64 used_bandwidth  = 7;        // 服务的已用带宽数 (单位: bps)
+    //            }
+                CommonMessage.ResourceUsedDetailShow information = powerDetail.getInformation();// 算力实况
+                GlobalPower globalPower = new GlobalPower();
+                globalPower.setIdentityId(identityId);
+                globalPower.setOrgName(orgName);
+                globalPower.setTotalMemory(information.getTotalMem());
+                globalPower.setUsedMemory(information.getUsedMem());
+                globalPower.setTotalCore((int)information.getTotalProcessor());
+                globalPower.setUsedCore((int)information.getUsedProcessor());
+                globalPower.setTotalBandwidth(information.getTotalBandwidth());
+                globalPower.setUsedBandwidth(information.getUsedBandwidth());
+                globalPowerList.add(globalPower);
+            });
+            return globalPowerList;
+        } finally {
+            channelManager.closeChannel(channel);
+        }
     }
 
 
