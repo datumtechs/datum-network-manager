@@ -60,4 +60,13 @@ public interface DataNodeMapper {
      * @return
      */
     int batchUpdate(List<DataNode> dataNodeList);
+
+
+    /**
+     * 根据nodeId查询数据节点
+     * @param nodeId
+     * @return
+     */
+    DataNode selectByNodeId(String nodeId);
+
 }

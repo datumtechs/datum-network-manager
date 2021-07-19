@@ -48,6 +48,12 @@
     from local_data_node
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByNodeId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_data_node
+    where node_id = #{nodeId}
+  </select>
   <delete id="deleteByNodeId" parameterType="java.lang.String">
     delete from local_data_node
     where node_id = #{nodeId}
@@ -85,7 +91,7 @@
       external_IP = #{item.externalIp,jdbcType=VARCHAR},
       external_Port = #{item.externalPort,jdbcType=INTEGER},
       conn_Status = #{item.connStatus,jdbcType=VARCHAR}
-      where node_Id = #{item.id,jdbcType=INTEGER}
+      where node_Id = #{item.nodeId,jdbcType=INTEGER}
     </foreach>
   </update>
 </mapper>
