@@ -69,4 +69,11 @@ public interface DataNodeMapper {
      */
     DataNode selectByNodeId(String nodeId);
 
+    /**
+     * 根据数据节点属性查询nodeId
+     * @param dataNode
+     * @return
+     */
+    DataNode selectByProperties(DataNode dataNode);
+
 }

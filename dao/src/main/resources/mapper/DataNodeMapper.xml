@@ -54,6 +54,18 @@
     from local_data_node
     where node_id = #{nodeId}
   </select>
+
+  <select id="selectByProperties" parameterType="com.platon.rosettanet.admin.dao.entity.DataNode" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_data_node
+    where
+    internal_IP = #{internalIp,jdbcType=VARCHAR}
+    and internal_Port = #{internalPort,jdbcType=INTEGER}
+    and external_IP = #{externalIp,jdbcType=VARCHAR}
+    and external_Port = #{externalPort,jdbcType=INTEGER}
+    limit 1
+  </select>
   <delete id="deleteByNodeId" parameterType="java.lang.String">
     delete from local_data_node
     where node_id = #{nodeId}
