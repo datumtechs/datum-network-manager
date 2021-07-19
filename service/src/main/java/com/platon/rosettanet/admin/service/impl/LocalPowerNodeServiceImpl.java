@@ -110,7 +110,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public void publishPower(String powerNodeId) {
-//        String reposeStr = powerClient.publishPower(powerNodeId);
+        powerClient.publishPower(powerNodeId);
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(powerNodeId);
         // status=2表示算例已启用
@@ -121,7 +121,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public void revokePower(String powerNodeId) {
-//        String reposeStr = powerClient.revokePower(powerNodeId, status);
+        powerClient.revokePower(powerNodeId);
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(powerNodeId);
         // status=1表示算例未启用
