@@ -2,8 +2,10 @@ package com.platon.rosettanet.admin.grpc.client;
 
 import com.platon.rosettanet.admin.dao.entity.GlobalPower;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
+import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
 import com.platon.rosettanet.admin.grpc.service.*;
 import io.grpc.Channel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -20,6 +22,7 @@ import java.util.List;
  */
 
 @Component
+@Slf4j
 public class PowerClient {
 
     @Resource(name = "simpleChannelManager")
@@ -28,7 +31,9 @@ public class PowerClient {
     /**
      * 新增计算节点返回nodeId
      */
-    public String addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
+    public YarnRpcMessage.YarnRegisteredPeerDetail addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
+        // 调用grpc开始
+        long startTime = System.currentTimeMillis();
         //1.获取rpc连接
         Channel channel = channelManager.getScheduleServer();
         //2.拼装request
@@ -37,66 +42,58 @@ public class PowerClient {
                 .setExternalIp(externalIp).setExternalPort(String.valueOf(externalPort))
                 .build();
         //3.调用rpc,获取response
-        YarnRpcMessage.SetJobNodeResponse responseCode = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
-        //4.处理response
-        System.out.println("addPowerNode-返回信息：" + responseCode.getMsg());
-        return responseCode.getMsg();
-
+        YarnRpcMessage.SetJobNodeResponse jobNodeResponse  = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
+        if (jobNodeResponse.getStatus() != 0 || !GrpcConstant.ok.equals(jobNodeResponse.getMsg())) {
+            throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+        }
+        return jobNodeResponse.getJobNode();
     }
 
     /**
      * 修改计算节点返回powerNodeId
      */
-    public String updatePowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
+    public YarnRpcMessage.YarnRegisteredPeerDetail updatePowerNode(String powerNodeId, String internalIp, String externalIp, Integer internalPort, Integer externalPort){
+        long startTime = System.currentTimeMillis();
         //1.获取rpc连接
         Channel channel = channelManager.getScheduleServer();
         //2.拼装request
         YarnRpcMessage.UpdateJobNodeRequest joinRequest = YarnRpcMessage.UpdateJobNodeRequest.newBuilder()
                 .setInternalIp(internalIp).setInternalPort(String.valueOf(internalPort))
                 .setExternalIp(externalIp).setExternalPort(String.valueOf(externalPort))
-                .build();
+                .setId(powerNodeId).build();
         //3.调用rpc,获取response
-        YarnRpcMessage.SetJobNodeResponse responseCode = YarnServiceGrpc.newBlockingStub(channel).updateJobNode(joinRequest);
+        YarnRpcMessage.SetJobNodeResponse jobNodeResponse = YarnServiceGrpc.newBlockingStub(channel).updateJobNode(joinRequest);
         //4.处理response
-        System.out.println("updatePowerNode-返回信息：" + responseCode.getMsg());
-        return responseCode.getMsg();
+        if (jobNodeResponse.getStatus() != 0 || !GrpcConstant.ok.equals(jobNodeResponse.getMsg())) {
+            throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+        }
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
+        return jobNodeResponse.getJobNode();
 
     }
 
     /**
      * 根据powerNodeId删除计算节点
      */
-    public String deletePowerNode(String powerNodeId){
-//        //1.获取rpc连接
-//        Channel channel = channelManager.buildChannel("localhost", 50051);
-//        //2.拼装request
-//        YarnRpcMessage.DeleteRegisteredNodeRequest joinRequest = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder()
-//                .setId(powerNodeId).build();
-//        //3.调用rpc,获取response
-//        YarnRpcMessage.SimpleResponseCode responseCode = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
-//        //4.处理response
-//        System.out.println("deletePowerNode-返回信息：" + responseCode.getMsg());
-//        return responseCode.getMsg();
-        return null;
-    }
-
-    /**
-     * 查询计算节点服务列表
-     * (暂不确定入参)
-     */
-    public String GetJobNodeList(String identityId){
-//        //1.获取rpc连接
-//        Channel channel = channelManager.buildChannel("localhost", 50051);
-//        //        //2.拼装request
-//        YarnRpcMessage.EmptyGetParams joinRequest = YarnRpcMessage.EmptyGetParams.newBuilder()
-//        .setIdentityId(identityId)
-//        .build();
-//        //3.调用rpc,获取response
-//        YarnRpcMessage.GetRegisteredNodeListResponse responseCode = YarnServiceGrpc.newBlockingStub(channel).getJobNodeList(joinRequest);
-//        //4.处理response
-//        System.out.println("GetJobNodeList-返回信息：" + responseCode.getMsg());
-//        return responseCode.getMsg();
-        return null;
+    public int deletePowerNode(String powerNodeId){
+        long startTime = System.currentTimeMillis();
+        //1.获取rpc连接
+        Channel channel = channelManager.getScheduleServer();
+        //2.拼装request
+        CommonMessage.DeleteRegisteredNodeRequest joinRequest = CommonMessage.DeleteRegisteredNodeRequest.newBuilder()
+                .setId(powerNodeId).build();
+        //3.调用rpc,获取response
+        CommonMessage.SimpleResponseCode simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
+        //4.处理response
+        if (simpleResponseCode.getStatus() != 0 || !GrpcConstant.ok.equals(simpleResponseCode.getMsg())) {
+            throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+        }
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode.toString());
+        return 1;
     }
 
     /**

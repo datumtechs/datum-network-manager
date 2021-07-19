@@ -10,4 +10,9 @@ public class GrpcConstant {
      * grpc响应码-成功
      */
     public static int GRPC_SUCCESS_CODE = 0;
+
+    /**
+     * OK
+     */
+    public static final String ok = "ok";
 }

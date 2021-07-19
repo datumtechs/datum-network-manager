@@ -38,7 +38,6 @@ public class LocalPowerNodeController {
     public JsonResponse addPowerNode(@Validated @RequestBody PowerAddReq powerAddReq) {
         LocalPowerNode localPowerNode = new LocalPowerNode();
         BeanUtils.copyProperties(powerAddReq, localPowerNode);
-        // 新增计算节点
         localPowerNodeService.insertPowerNode(localPowerNode);
         return JsonResponse.success("新增成功");
     }
@@ -48,7 +47,6 @@ public class LocalPowerNodeController {
     public JsonResponse updatePowerNode(@Validated @RequestBody PowerUpdateReq powerUpdateReq) {
         LocalPowerNode localPowerNode = new LocalPowerNode();
         BeanUtils.copyProperties(powerUpdateReq, localPowerNode);
-        // 修改计算节点
         localPowerNodeService.updatePowerNodeByNodeId(localPowerNode);
         return JsonResponse.success("修改成功");
     }
@@ -56,7 +54,6 @@ public class LocalPowerNodeController {
     @PostMapping("/deletePowerNode")
     @ApiOperation(value="删除计算节点", response = JsonResponse.class)
     public JsonResponse deletePowerNode(@Validated @RequestBody PowerDeleteReq powerDeleteReq) {
-        // 删除计算节点
         int count = localPowerNodeService.deletePowerNodeByNodeId(powerDeleteReq.getPowerNodeId());
         if (count == 0) {
             return JsonResponse.fail("删除失败！");
