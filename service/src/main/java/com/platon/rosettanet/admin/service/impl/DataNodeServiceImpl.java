@@ -62,8 +62,8 @@ public class DataNodeServiceImpl implements DataNodeService {
         if (GrpcConstant.GRPC_SUCCESS_CODE != formatSetDataNodeResp.getStatus()) {
             throw new ServiceException("调度服务调用失败");
         }
-        if(!checkDataNodeId(formatSetDataNodeResp.getNodeResp().getNodeId())){
-            throw new ServiceException("该属性节点已存在");
+        if (!checkDataNodeId(dataNode)) {
+            throw new ServiceException("相同属性数据节点已存在");
         }
         dataNode.setNodeId(formatSetDataNodeResp.getNodeResp().getNodeId());
         dataNode.setConnStatus(formatSetDataNodeResp.getNodeResp().getConnStatus());
@@ -95,8 +95,8 @@ public class DataNodeServiceImpl implements DataNodeService {
      */
     @Override
     public int updateDataNode(DataNode dataNode) {
-        if(!checkDataNodeId(dataNode.getNodeId())){
-            throw new ServiceException("该属性节点已存在");
+        if (!checkDataNodeId(dataNode)) {
+            throw new ServiceException("相同属性数据节点已存在");
         }
         FormatSetDataNodeResp formatSetDataNodeResp = yarnClient.updateDataNode(dataNode);
         if (GrpcConstant.GRPC_SUCCESS_CODE != formatSetDataNodeResp.getStatus()) {
@@ -123,13 +123,15 @@ public class DataNodeServiceImpl implements DataNodeService {
     }
 
     /**
-     * 校验nodeId是否已存在
-     * @param nodeId
+     * 校验具有相同属性的其他数据节点是否已存在
+     *
+     * @param queryDataNode 条件参数
      * @return true校验通过，不存在，false校验不通过，已存在
      */
-    public boolean checkDataNodeId(String nodeId) {
-        DataNode dataNode = dataNodeMapper.selectByNodeId(nodeId);
-        if (ObjectUtil.isNotNull(dataNode)) {
+    public boolean checkDataNodeId(DataNode queryDataNode) {
+        DataNode dataNode = dataNodeMapper.selectByProperties(queryDataNode);
+        //数据库存在符合条件的数据，且nodeId与当前数据不一致
+        if (ObjectUtil.isNotNull(dataNode) && !dataNode.getNodeId().equals(queryDataNode.getNodeId())) {
             return false;
         }
         return true;

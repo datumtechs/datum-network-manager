@@ -1,7 +1,6 @@
 package com.platon.rosettanet.admin.service;
 
 import com.github.pagehelper.PageInfo;
-import com.platon.rosettanet.admin.dao.entity.LocalPowerHistory;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 
 import java.util.List;
@@ -43,6 +42,9 @@ public interface LocalPowerNodeService {
     /**
      * 查询计算节点服务列表
      * @param identityId
+     * @param keyword
+     * @param pageNumber
+     * @param pageSize
      * @return
      */
     PageInfo queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize);

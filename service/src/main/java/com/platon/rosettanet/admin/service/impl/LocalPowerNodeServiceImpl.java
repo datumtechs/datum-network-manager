@@ -4,6 +4,7 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.dao.LocalPowerHistoryMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerJoinTaskMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerNodeMapper;
@@ -11,7 +12,9 @@ import com.platon.rosettanet.admin.dao.entity.LocalPowerHistory;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.grpc.client.PowerClient;
+import com.platon.rosettanet.admin.grpc.service.YarnRpcMessage;
 import com.platon.rosettanet.admin.service.LocalPowerNodeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -22,6 +25,7 @@ import java.util.*;
  * 计算节点业务实现类
  */
 @Service
+@Slf4j
 public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
 
@@ -42,48 +46,48 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public int insertPowerNode(LocalPowerNode powerNode) {
-        // 调用grpc返回powerNodeId
-//        String reposeStr = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
-//                powerNode.getInternalPort(), powerNode.getExternalPort());
+        // 调用grpc接口修改计算节点信息
+        YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
+                powerNode.getInternalPort(), powerNode.getExternalPort());
+        log.info("新增计算节点数据:{}", jobNode);
         // 计算节点id
-        powerNode.setIdentityId("100000001");
-        powerNode.setPowerNodeId(UUID.randomUUID().toString());
-        // 状态
-        powerNode.setStatus("");
-        powerNode.setStartTime(LocalDateTime.now());
+        powerNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
+        powerNode.setPowerNodeId(jobNode.getId());
+        // 状态1表示已连接，未启用
+        powerNode.setStatus(String.valueOf(jobNode.getConnState()));
         // 内存
-        powerNode.setMemory(64L);
+        powerNode.setMemory(0L);
         // 核数
-        powerNode.setCore(4);
+        powerNode.setCore(0);
         // 带宽
-        powerNode.setBandwidth(128L);
+        powerNode.setBandwidth(0L);
         return localPowerNodeMapper.insertPowerNode(powerNode);
     }
 
     @Override
     public int updatePowerNodeByNodeId(LocalPowerNode powerNode) {
-        // 调用grpc返回powerNodeId
-//        String reposeStr = powerClient.updatePowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
-//                powerNode.getInternalPort(), powerNode.getExternalPort());
+        // 调用grpc接口修改计算节点信息
+        YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.updatePowerNode(powerNode.getPowerNodeId(), powerNode.getInternalIp(), powerNode.getExternalIp(),
+                powerNode.getInternalPort(), powerNode.getExternalPort());
+        // 计算节点id
+        powerNode.setPowerNodeId(jobNode.getId());
         // 状态
-        powerNode.setStatus("");
-        powerNode.setStartTime(LocalDateTime.now());
+        powerNode.setStatus(String.valueOf(jobNode.getConnState()));
         // 内存
-        powerNode.setMemory(32L);
+        powerNode.setMemory(0L);
         // 核数
-        powerNode.setCore(8);
+        powerNode.setCore(0);
         // 带宽
-        powerNode.setBandwidth(256L);
+        powerNode.setBandwidth(0L);
         return localPowerNodeMapper.updatePowerNodeByNodeId(powerNode);
     }
 
     @Override
     public int deletePowerNodeByNodeId(String powerNodeId) {
-//        // 调用grpc删除计算节点
-//        String resposeStr = powerClient.deletePowerNode(powerNodeId);
-//        if () {
-//            return 0 ;
-//        }
+        // gRPC接口返回1表示删除成功，否则表示删除失败
+        if (1 != powerClient.deletePowerNode(powerNodeId)) {
+            return 0;
+        }
         return localPowerNodeMapper.deletePowerNode(powerNodeId);
 
     }
@@ -95,26 +99,29 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public PageInfo queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize) {
-        // 调用grpc查询计算节点服务列表
+        long startTime = System.currentTimeMillis();
         PageHelper.startPage(pageNumber, pageSize);
         List<LocalPowerNode> list = localPowerNodeMapper.queryPowerNodeList(identityId, keyword);
         PageInfo<LocalPowerNode> pageInfo = new PageInfo<>(list);
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("查询计算节点列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", pageInfo.toString());
         return pageInfo;
     }
 
     @Override
     public void publishPower(String powerNodeId) {
-//        String reposeStr = powerClient.publishPower(powerNodeId, status);
+        powerClient.publishPower(powerNodeId);
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(powerNodeId);
         // status=2表示算例已启用
         localPowerNode.setStatus("2");
+        localPowerNode.setStartTime(LocalDateTime.now());
         localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
 
     @Override
     public void revokePower(String powerNodeId) {
-//        String reposeStr = powerClient.revokePower(powerNodeId, status);
+        powerClient.revokePower(powerNodeId);
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(powerNodeId);
         // status=1表示算例未启用

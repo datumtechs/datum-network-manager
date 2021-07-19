@@ -2,8 +2,10 @@ package com.platon.rosettanet.admin.grpc.client;
 
 import com.platon.rosettanet.admin.dao.entity.GlobalPower;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
+import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
 import com.platon.rosettanet.admin.grpc.service.*;
 import io.grpc.Channel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -20,6 +22,7 @@ import java.util.List;
  */
 
 @Component
+@Slf4j
 public class PowerClient {
 
     @Resource(name = "simpleChannelManager")
@@ -28,10 +31,12 @@ public class PowerClient {
     /**
      * 新增计算节点返回nodeId
      */
-    public String addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
-        //1.获取rpc连接
+    public YarnRpcMessage.YarnRegisteredPeerDetail addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
+        long startTime = System.currentTimeMillis();
         Channel channel = null;
-        try{
+        YarnRpcMessage.SetJobNodeResponse jobNodeResponse = null;
+        try {
+            //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
             YarnRpcMessage.SetJobNodeRequest joinRequest = YarnRpcMessage.SetJobNodeRequest.newBuilder()
@@ -39,72 +44,125 @@ public class PowerClient {
                     .setExternalIp(externalIp).setExternalPort(String.valueOf(externalPort))
                     .build();
             //3.调用rpc,获取response
-            YarnRpcMessage.SetJobNodeResponse responseCode = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
-            //4.处理response
-            System.out.println("addPowerNode-返回信息：" + responseCode.getMsg());
-            return responseCode.getMsg();
-        } finally {
+            jobNodeResponse  = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
+            long diffTime = System.currentTimeMillis() - startTime;
+            log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
+            if (jobNodeResponse.getStatus() != 0 || !GrpcConstant.ok.equals(jobNodeResponse.getMsg())) {
+                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+            }
+        }finally {
             channelManager.closeChannel(channel);
         }
+        return jobNodeResponse.getJobNode();
     }
 
     /**
      * 修改计算节点返回powerNodeId
      */
-    public String updatePowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
-        //1.获取rpc连接
+    public YarnRpcMessage.YarnRegisteredPeerDetail updatePowerNode(String powerNodeId, String internalIp, String externalIp, Integer internalPort, Integer externalPort){
+        long startTime = System.currentTimeMillis();
         Channel channel = null;
+        YarnRpcMessage.SetJobNodeResponse jobNodeResponse = null;
         try{
+            //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
             YarnRpcMessage.UpdateJobNodeRequest joinRequest = YarnRpcMessage.UpdateJobNodeRequest.newBuilder()
                     .setInternalIp(internalIp).setInternalPort(String.valueOf(internalPort))
                     .setExternalIp(externalIp).setExternalPort(String.valueOf(externalPort))
-                    .build();
+                    .setId(powerNodeId).build();
             //3.调用rpc,获取response
-            YarnRpcMessage.SetJobNodeResponse responseCode = YarnServiceGrpc.newBlockingStub(channel).updateJobNode(joinRequest);
+            jobNodeResponse = YarnServiceGrpc.newBlockingStub(channel).updateJobNode(joinRequest);
             //4.处理response
-            System.out.println("updatePowerNode-返回信息：" + responseCode.getMsg());
-            return responseCode.getMsg();
+            if (jobNodeResponse.getStatus() != 0 || !GrpcConstant.ok.equals(jobNodeResponse.getMsg())) {
+                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+            }
         } finally {
             channelManager.closeChannel(channel);
         }
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
+        return jobNodeResponse.getJobNode();
     }
 
     /**
      * 根据powerNodeId删除计算节点
      */
-    public String deletePowerNode(String powerNodeId){
-//        //1.获取rpc连接
-//        Channel channel = channelManager.buildChannel("localhost", 50051);
-//        //2.拼装request
-//        YarnRpcMessage.DeleteRegisteredNodeRequest joinRequest = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder()
-//                .setId(powerNodeId).build();
-//        //3.调用rpc,获取response
-//        YarnRpcMessage.SimpleResponseCode responseCode = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
-//        //4.处理response
-//        System.out.println("deletePowerNode-返回信息：" + responseCode.getMsg());
-//        return responseCode.getMsg();
-        return null;
+    public int deletePowerNode(String powerNodeId){
+        long startTime = System.currentTimeMillis();
+        Channel channel = null;
+        CommonMessage.SimpleResponseCode simpleResponseCode = null;
+        try{
+            //1.获取rpc连接
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            CommonMessage.DeleteRegisteredNodeRequest joinRequest = CommonMessage.DeleteRegisteredNodeRequest.newBuilder()
+                    .setId(powerNodeId).build();
+            //3.调用rpc,获取response
+            simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
+            //4.处理response
+            if (simpleResponseCode.getStatus() != 0 || !GrpcConstant.ok.equals(simpleResponseCode.getMsg())) {
+                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+            }
+        } finally {
+            channelManager.closeChannel(channel);
+        }
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode.toString());
+        return 1;
     }
 
     /**
-     * 查询计算节点服务列表
-     * (暂不确定入参)
+     * 启用算力 (发布算力)
      */
-    public String GetJobNodeList(String identityId){
-//        //1.获取rpc连接
-//        Channel channel = channelManager.buildChannel("localhost", 50051);
-//        //        //2.拼装request
-//        YarnRpcMessage.EmptyGetParams joinRequest = YarnRpcMessage.EmptyGetParams.newBuilder()
-//        .setIdentityId(identityId)
-//        .build();
-//        //3.调用rpc,获取response
-//        YarnRpcMessage.GetRegisteredNodeListResponse responseCode = YarnServiceGrpc.newBlockingStub(channel).getJobNodeList(joinRequest);
-//        //4.处理response
-//        System.out.println("GetJobNodeList-返回信息：" + responseCode.getMsg());
-//        return responseCode.getMsg();
-        return null;
+    public void publishPower(String jobNodeId){
+        long startTime = System.currentTimeMillis();
+        Channel channel = null;
+        PowerRpcMessage.PublishPowerResponse publishPowerResponse = null;
+        try{
+            //1.获取rpc连接
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            PowerRpcMessage.PublishPowerRequest joinRequest = PowerRpcMessage.PublishPowerRequest.newBuilder()
+                  .setJobNodeId(jobNodeId).build();
+            //3.调用rpc,获取response
+            publishPowerResponse = PowerServiceGrpc.newBlockingStub(channel).publishPower(joinRequest);
+            //4.处理response
+            if (publishPowerResponse.getStatus() != 0 || !GrpcConstant.ok.equals(publishPowerResponse.getMsg())) {
+                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+            }
+        } finally {
+            channelManager.closeChannel(channel);
+        }
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("启用算力接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", publishPowerResponse.toString());
+    }
+
+    /**
+     * 停用算力 (撤销算力)
+     */
+    public void revokePower(String powerId){
+        long startTime = System.currentTimeMillis();
+        Channel channel = null;
+        CommonMessage.SimpleResponseCode revokePowerResponse = null;
+        try{
+            //1.获取rpc连接
+            channel = channelManager.buildChannel("localhost", 50051);
+            //2.拼装request
+            PowerRpcMessage.RevokePowerRequest joinRequest = PowerRpcMessage.RevokePowerRequest.newBuilder()
+                    .setPowerId(powerId)
+                    .build();
+            //3.调用rpc,获取response
+            revokePowerResponse = PowerServiceGrpc.newBlockingStub(channel).revokePower(joinRequest);
+            //4.处理response
+            if (revokePowerResponse.getStatus() != 0 || !GrpcConstant.ok.equals(revokePowerResponse.getMsg())) {
+                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+            }
+        } finally {
+            channelManager.closeChannel(channel);
+        }
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("停用算力接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", revokePowerResponse.toString());
     }
 
     /**
@@ -120,46 +178,6 @@ public class PowerClient {
 //        PowerRpcMessage.GetPowerSingleDetailResponse responseCode = PowerServiceGrpc.newBlockingStub(channel).getPowerSingleDetailList(joinRequest);
 //        //4.处理response
 //        System.out.println("getPowerSingleDetail-返回信息：" + responseCode.getMsg());
-//        return responseCode.getMsg();
-        return null;
-    }
-
-    /**
-     * 启用算力 (发布算力)
-     */
-    public String publishPower(CommonMessage.OrganizationIdentityInfo owner, String jobNodeId, CommonMessage.PurePower information){
-        //1.获取rpc连接
-        Channel channel = null;
-        try{
-            channel = channelManager.getScheduleServer();
-            //2.拼装request
-            PowerRpcMessage.PublishPowerRequest joinRequest = PowerRpcMessage.PublishPowerRequest.newBuilder()
-                    .setOwner(owner).setJobNodeId(jobNodeId).setInformation(information)
-                    .build();
-            //3.调用rpc,获取response
-            PowerRpcMessage.PublishPowerResponse responseCode = PowerServiceGrpc.newBlockingStub(channel).publishPower(joinRequest);
-            //4.处理response
-            System.out.println("publishPower-返回信息：" + responseCode.getMsg());
-            return responseCode.getMsg();
-        } finally {
-            channelManager.closeChannel(channel);
-        }
-    }
-
-    /**
-     * 停用算力 (撤销算力)
-     */
-    public String revokePower(CommonMessage.OrganizationIdentityInfo owner, String powerId){
-//        //1.获取rpc连接
-//        Channel channel = channelManager.buildChannel("localhost", 50051);
-//        //2.拼装request
-//        PowerRpcMessage.RevokePowerRequest joinRequest = PowerRpcMessage.RevokePowerRequest.newBuilder()
-//                .setOwner(owner).setPowerId(powerId)
-//                .build();
-//        //3.调用rpc,获取response
-//        PowerRpcMessage.SimpleResponseCode responseCode = PowerServiceGrpc.newBlockingStub(channel).revokePower(joinRequest);
-//        //4.处理response
-//        System.out.println("revokePower-返回信息：" + responseCode.getMsg());
 //        return responseCode.getMsg();
         return null;
     }

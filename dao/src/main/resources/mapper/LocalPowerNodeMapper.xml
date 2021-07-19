@@ -66,14 +66,14 @@
   </select>
 
   <!-- 通过组织机构id查询计算节点-->
-  <select id="queryPowerNodeList" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="queryPowerNodeList" resultMap="BaseResultMap">
     select
         <include refid="Base_Column_List" />
     from
         local_power_node
-    where
-        <if test="identityId != null and identityId != ''">identity_id = #{identityId, jdbcType=VARCHAR}</if>
-        <if test="keyword != null and keyword != ''">power_node_name like concat('%', #{keyword},'%'))</if>
+    where 1=1
+        <if test="identityId != null and identityId != ''"> and identity_id = #{identityId, jdbcType=VARCHAR}</if>
+        <if test="keyword != null and keyword != ''">and power_node_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')</if>
   </select>
 
   <!-- 根据节点id删除计算节点 -->

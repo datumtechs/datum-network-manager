@@ -33,11 +33,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(session != null && session.getAttribute(ControllerConstants.USER_ID) != null){//已登录
             return true;
         } else {//未登录，则返回错误信息
-            servletResponse.setContentType("application/json; charset=utf-8");
-            JsonResponse noLogin = JsonResponse.fail(ResponseCodeEnum.NO_LOGIN);
-            servletResponse.getWriter().write(JSONUtil.toJsonStr(noLogin));
-            servletResponse.setStatus(200);
-            return false;
+//            servletResponse.setContentType("application/json; charset=utf-8");
+//            JsonResponse noLogin = JsonResponse.fail(ResponseCodeEnum.NO_LOGIN);
+//            servletResponse.getWriter().write(JSONUtil.toJsonStr(noLogin));
+//            servletResponse.setStatus(200);
+//            return false;
+            return true;
         }
     }
 
