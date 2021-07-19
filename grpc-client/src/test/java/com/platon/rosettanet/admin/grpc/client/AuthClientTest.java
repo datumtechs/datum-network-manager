@@ -1,0 +1,37 @@
+package com.platon.rosettanet.admin.grpc.client;
+
+import cn.hutool.json.JSONUtil;
+import com.platon.rosettanet.admin.grpc.entity.CommonResp;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.annotation.Resource;
+
+/**
+ * @Author liushuyu
+ * @Date 2021/7/19 11:30
+ * @Version
+ * @Desc
+ */
+
+@Slf4j
+@RunWith(SpringRunner.class)
+@ActiveProfiles("dev")
+@SpringBootTest(classes = TestApplication.class)
+public class AuthClientTest extends BaseClientTest {
+
+    @Resource
+    AuthClient authClient;
+
+    @Test
+    public void testApplyIdentityJoin(){
+        String identityId = "";
+        String name = "";
+        CommonResp resp = authClient.applyIdentityJoin(identityId, name);
+        log.error(JSONUtil.toJsonStr(resp));
+    }
+}
