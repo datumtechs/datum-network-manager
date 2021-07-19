@@ -15,6 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Slf4j
 public class BaseClientTest {
 
+    protected static final String scheduleServerIp = "192.168.21.164";
+    protected static final int scheduleServerPort = 4444;
+
 
     /**
      * 初始化部分全局变量

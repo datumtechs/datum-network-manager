@@ -27,7 +27,7 @@ import java.util.List;
  */
 
 @Slf4j
-@Component
+//@Component
 public class GlobalDataRefreshTask {
 
     @Resource

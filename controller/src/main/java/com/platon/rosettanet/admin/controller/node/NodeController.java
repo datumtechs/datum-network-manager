@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.controller.node;
 
+import com.platon.rosettanet.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.service.NodeService;
 import io.swagger.annotations.Api;
@@ -44,10 +45,14 @@ public class NodeController {
             @ApiImplicitParam(name = "port",value = "调度节点端口",required = true,paramType = "query")
     })
     @PostMapping("connectNode")
-    public JsonResponse<String> connectNode(@Validated @NotBlank(message = "ip不能为空") String ip,
+    public JsonResponse connectNode(@Validated @NotBlank(message = "ip不能为空") String ip,
                                             @Validated @NotNull(message = "port不能为空") Integer port){
-        String status = nodeService.connectNode(ip,port);
-        return JsonResponse.success(status);
+        CarrierConnStatusEnum carrierConnStatusEnum = nodeService.connectNode(ip, port);
+        if(CarrierConnStatusEnum.ENABLED == carrierConnStatusEnum){
+           return JsonResponse.success();
+        } else {
+            return JsonResponse.fail("连接失败");
+        }
     }
 
     /**

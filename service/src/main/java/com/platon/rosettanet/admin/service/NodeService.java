@@ -1,5 +1,7 @@
 package com.platon.rosettanet.admin.service;
 
+import com.platon.rosettanet.admin.dao.enums.CarrierConnStatusEnum;
+
 /**
  * @Author liushuyu
  * @Date 2021/7/13 16:26
@@ -14,7 +16,7 @@ public interface NodeService {
      * @param port
      * @return
      */
-    String connectNode(String ip, int port);
+    CarrierConnStatusEnum connectNode(String ip, int port);
 
     /**
      * 通知调度服务，申请准入网络

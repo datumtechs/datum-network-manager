@@ -107,7 +107,7 @@
       <if test="identityId != null">
         identity_id = #{identityId},
       </if>
-      <if test="carrierUuid != null">
+      <if test="carrierNodeId != null">
         carrier_node_id = #{carrierNodeId},
       </if>
       <if test="carrierIp != null">

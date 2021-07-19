@@ -40,8 +40,8 @@ public class SimpleChannelManager extends BaseChannelManager{
                 return;
             }
             managedChannel.shutdown();
-            managedChannel.awaitTermination(10, TimeUnit.SECONDS);
-            managedChannel.shutdownNow();
+//            managedChannel.awaitTermination(10, TimeUnit.SECONDS);
+//            managedChannel.shutdownNow();
         }
     }
 }

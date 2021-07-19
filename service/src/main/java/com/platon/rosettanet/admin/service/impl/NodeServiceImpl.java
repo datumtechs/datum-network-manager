@@ -40,11 +40,11 @@ public class NodeServiceImpl implements NodeService {
     private YarnClient yarnClient;
 
     @Override
-    public String connectNode(String ip, int port) {
+    public CarrierConnStatusEnum connectNode(String ip, int port) {
         //### 1.尝试连接调度服务
         boolean success = yarnClient.connectScheduleServer(ip, port);
         if(!success){
-            return "N";
+            return CarrierConnStatusEnum.DISABLED;
         }
         LocalOrg localOrg = localOrgMapper.select();
         if(localOrg == null){
@@ -56,13 +56,13 @@ public class NodeServiceImpl implements NodeService {
         localOrg.setCarrierPort(port);
         localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
         localOrg.setCarrierStatus(nodeInfo.getState());
-        localOrg.setCarrierConnTime(new Date().toString());
+        localOrg.setCarrierConnTime(new Date());
         //入库
         int count = localOrgMapper.updateSelective(localOrg);
         //更新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
         LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
-        return "Y";
+        return CarrierConnStatusEnum.ENABLED;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class LocalOrg {
     //连接状态 enabled：可用, disabled:不可用
     private String carrierConnStatus;
     //服务连接时间
-    private String carrierConnTime;
+    private Date carrierConnTime;
     //调度服务的状态：active: 活跃; leave: 离开网络; join: 加入网络 unuseful: 不可用
     private String carrierStatus;
     //最后更新时间
