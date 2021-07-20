@@ -29,8 +29,8 @@ public class AuthClientTest extends BaseClientTest {
 
     @Test
     public void testApplyIdentityJoin(){
-        String identityId = "abc";
-        String name = "abc";
+        String identityId = "identityId_000001";
+        String name = "orgName_000001";
         CommonResp resp = authClient.applyIdentityJoin(identityId, name);
         log.error(JSONUtil.toJsonStr(resp));
     }

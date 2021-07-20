@@ -14,10 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
@@ -44,7 +41,7 @@ public class GlobalDataController {
      * 展示数据列表，带分页
      */
     @ApiOperation(value = "数据列表分页查询")
-    @GetMapping("metaDataList")
+    @PostMapping("metaDataList")
     public JsonResponse<List<GlobalDataPageResp>> page(@RequestBody @Validated CommonPageReq req){
         Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(req.getPageNumber(), req.getPageSize(),null);
         List<GlobalDataPageResp> respList = globalDataFilePage.getResult().stream()
@@ -57,7 +54,7 @@ public class GlobalDataController {
      * 根据关键字查询元数据列表摘要信息
      */
     @ApiOperation(value = "数据列表关键字查询")
-    @GetMapping("metaDataListByKeyWord")
+    @PostMapping("metaDataListByKeyWord")
     public JsonResponse<List<GlobalDataPageResp>> metaDataListByKeyWord(@RequestBody @Validated GlobalDataMetaDataListByKeyWordReq req){
         Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(req.getPageNumber(), req.getPageSize(), req.getKeyword());
         List<GlobalDataPageResp> respList = globalDataFilePage.getResult().stream()

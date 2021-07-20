@@ -40,7 +40,7 @@ public class DataProviderClient {
         //1.获取rpc连接
         Channel channel = null;
         try{
-            channelManager.buildChannel(dataNodeHost, dataNodePort);
+            channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
             //2.构建response流观察者
             DataProviderUploadDataResp resp = new DataProviderUploadDataResp();
             StreamObserver<DataProviderRpcMessage.UploadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.UploadReply>() {
@@ -112,7 +112,7 @@ public class DataProviderClient {
         //1.获取rpc连接
         Channel channel = null;
         try{
-            channelManager.buildChannel(dataNodeHost, dataNodePort);
+            channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
             //2.构建请求
             DataProviderRpcMessage.DownloadRequest request = DataProviderRpcMessage.DownloadRequest
                     .newBuilder()

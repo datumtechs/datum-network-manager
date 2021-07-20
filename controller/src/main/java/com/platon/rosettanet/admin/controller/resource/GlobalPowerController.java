@@ -10,10 +10,7 @@ import com.platon.rosettanet.admin.service.GlobalPowerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -39,7 +36,7 @@ public class GlobalPowerController {
      * 展示数据列表，带分页
      */
     @ApiOperation(value = "数据分页列表")
-    @GetMapping("powerList")
+    @PostMapping("powerList")
     public JsonResponse<List<GlobalPowerPageResp>> page(@RequestBody @Validated CommonPageReq req){
         Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(req.getPageNumber(), req.getPageSize(),null);
         List<GlobalPowerPageResp> respList = globalPowerPage.getResult().stream()
@@ -52,7 +49,7 @@ public class GlobalPowerController {
      * 根据关键字查询全网算力信息
      */
     @ApiOperation(value = "关键字查询")
-    @GetMapping("powerListByKeyWord")
+    @PostMapping("powerListByKeyWord")
     public JsonResponse<List<GlobalPowerPageResp>> listByKeyWord(@RequestBody @Validated GlobalPowerListByKeyWordReq req){
         Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(req.getPageNumber(), req.getPageSize(),req.getKeyword());
         List<GlobalPowerPageResp> respList = globalPowerPage.getResult().stream()
