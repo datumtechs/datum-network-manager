@@ -29,6 +29,13 @@ public interface LocalPowerNodeMapper {
     int updatePowerNodeByNodeId(LocalPowerNode localPowerNode);
 
     /**
+     * 批量修改计算节点
+     * @param localPowerNodeList
+     * @return
+     */
+    int batchUpdatePowerNode(List<LocalPowerNode> localPowerNodeList);
+
+    /**
      * 根据id修改计算节点数据
      * @param localComputeNode
      * @return

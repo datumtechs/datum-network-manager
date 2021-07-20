@@ -7,6 +7,7 @@ import com.platon.rosettanet.admin.common.util.NameUtil;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.*;
+import com.platon.rosettanet.admin.dto.resp.LocalPowerNodeListResp;
 import com.platon.rosettanet.admin.dto.resp.LocalPowerNodeResp;
 import com.platon.rosettanet.admin.dto.resp.PowerJoinTaskResp;
 import com.platon.rosettanet.admin.service.LocalPowerNodeService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,10 +73,19 @@ public class LocalPowerNodeController {
 
     @PostMapping("/queryPowerNodeList")
     @ApiOperation(value="查询计算节点服务列表", response = JsonResponse.class)
-    public JsonResponse<LocalPowerNodeResp> queryPowerNodeList(@Validated @RequestBody PowerQueryListReq powerReq) {
+    public JsonResponse<LocalPowerNodeListResp> queryPowerNodeList(@Validated @RequestBody PowerQueryListReq powerReq) {
         Page page = localPowerNodeService.queryPowerNodeList(powerReq.getIdentityId(),
                 powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
-        return JsonResponse.page(page);
+        // 处理返回数据
+        List<LocalPowerNodeListResp> localPowerNodeRespList = new ArrayList<>();
+        if (null != page && !page.getResult().isEmpty()) {
+            page.getResult().parallelStream().forEach(powerNode -> {
+                LocalPowerNodeListResp localPowerNodeListResp = new LocalPowerNodeListResp();
+                BeanUtils.copyProperties(powerNode, localPowerNodeListResp);
+                localPowerNodeRespList.add(localPowerNodeListResp);
+            });
+        }
+        return JsonResponse.page(page, localPowerNodeRespList);
     }
 
     @PostMapping("/publishPower")

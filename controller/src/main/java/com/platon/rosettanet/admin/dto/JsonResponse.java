@@ -82,7 +82,7 @@ public class JsonResponse<T> {
      * @param <T>
      * @return
      */
-    public static <T> JsonResponse<List<T>> page(Page<T> page) {
+    public static <T> JsonResponse page(Page<T> page) {
         JsonResponse jsonResponse = new JsonResponse();
         jsonResponse.setMsg(ResponseCodeEnum.SUCCESS.getMessage());
         jsonResponse.setStatus(ResponseCodeEnum.SUCCESS.getCode());
@@ -100,7 +100,7 @@ public class JsonResponse<T> {
      * @param <T>
      * @return
      */
-    public static <T> JsonResponse<List<T>> page(Page pageInfo, List<T> list) {
+    public static <T> JsonResponse page(Page pageInfo, List<T> list) {
         JsonResponse jsonResponse = new JsonResponse();
         jsonResponse.setMsg(ResponseCodeEnum.SUCCESS.getMessage());
         jsonResponse.setStatus(ResponseCodeEnum.SUCCESS.getCode());

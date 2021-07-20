@@ -117,8 +117,8 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(powerNodeId);
         localPowerNode.setPowerId(powerId);
-        // status=2表示算例已启用
-        localPowerNode.setConnStatus("2");
+        // status=1表示算例已启用
+        localPowerNode.setConnStatus("1");
         localPowerNode.setStartTime(LocalDateTime.now());
         localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
@@ -130,8 +130,8 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         localPowerNode.setPowerNodeId(powerNodeId);
         // 停用算力需把上次启动的算力id清空
         localPowerNode.setPowerId("");
-        // status=1表示算例未启用
-        localPowerNode.setConnStatus("1");
+        // status=0表示算例未启用
+        localPowerNode.setConnStatus("0");
         localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
 
