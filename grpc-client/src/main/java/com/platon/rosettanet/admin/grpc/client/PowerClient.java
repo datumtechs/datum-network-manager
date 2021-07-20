@@ -45,14 +45,15 @@ public class PowerClient {
                     .build();
             //3.调用rpc,获取response
             jobNodeResponse  = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
-            long diffTime = System.currentTimeMillis() - startTime;
-            log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
+            //4.处理response
             if (jobNodeResponse.getStatus() != 0 || !GrpcConstant.ok.equals(jobNodeResponse.getMsg())) {
                 throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
             }
         }finally {
             channelManager.closeChannel(channel);
         }
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
         return jobNodeResponse.getJobNode();
     }
 
@@ -110,6 +111,32 @@ public class PowerClient {
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode.toString());
         return 1;
+    }
+
+    /**
+     * 查询计算服务列表
+     */
+    public List getJobNodeList(){
+        long startTime = System.currentTimeMillis();
+        Channel channel = null;
+        YarnRpcMessage.GetRegisteredNodeListResponse jobNodeListResponse;
+        try{
+            //1.获取rpc连接
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            CommonMessage.EmptyGetParams jobNodeListRequest = CommonMessage.EmptyGetParams.newBuilder().build();
+            //3.调用rpc,获取response
+            jobNodeListResponse = YarnServiceGrpc.newBlockingStub(channel).getJobNodeList(jobNodeListRequest);
+            //4.处理response
+            if (jobNodeListResponse.getStatus() != 0 || !GrpcConstant.ok.equals(jobNodeListResponse.getMsg())) {
+                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+            }
+        } finally {
+            channelManager.closeChannel(channel);
+        }
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("查询计算服务列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeListResponse.toString());
+        return jobNodeListResponse.getNodesList();
     }
 
     /**
@@ -177,14 +204,13 @@ public class PowerClient {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams emptyGetParams = CommonMessage.EmptyGetParams.newBuilder()
-                    .build();
+            CommonMessage.EmptyGetParams emptyGetParams = CommonMessage.EmptyGetParams.newBuilder().build();
             //3.调用rpc,获取response
             getSingleDetailListResponse = PowerServiceGrpc.newBlockingStub(channel).getPowerSingleDetailList(emptyGetParams);
             //4.处理response
-//            if (getSingleDetailListResponse != 0 || !GrpcConstant.ok.equals(getSingleDetailListResponse.getMsg())) {
-//                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
-//            }
+            if (getSingleDetailListResponse.getStatus() != 0 || !GrpcConstant.ok.equals(getSingleDetailListResponse.getMsg())) {
+                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+            }
         } finally {
             channelManager.closeChannel(channel);
         }

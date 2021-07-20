@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.service;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 
@@ -47,7 +48,7 @@ public interface LocalPowerNodeService {
      * @param pageSize
      * @return
      */
-    PageInfo queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize);
+    Page queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize);
 
     /**
      * 启用算力
@@ -71,7 +72,7 @@ public interface LocalPowerNodeService {
      * 查询计算节点参数的任务列表
      * @param powerNodeId
      */
-    PageInfo queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize);
+    Page queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize);
 
 
     /**

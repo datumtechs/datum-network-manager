@@ -83,7 +83,7 @@ CREATE TABLE local_power_node
     conn_message   VARCHAR(32) COMMENT '节点(连接失败)信息',
     power_id       VARCHAR(128) COMMENT '节点启动后底层返回的算力ID',
     conn_time      DATETIME COMMENT '节点上一次连接时间',
-    conn_status    VARCHAR(10)  not null COMMENT '节点状态，-1:网络连接失败; 0:已连接 1:算力未启用(网络已连接); 2:算力已启用（空闲）; 3:算力已占用(计算服务算力正在被任务占用)',
+    conn_status    VARCHAR(10)  not null COMMENT '节点状态，-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用<计算服务>; 2: 算力被占用(计算服务算力正在被任务占用)',
     memory         BIGINT       NOT NULL DEFAULT 0 COMMENT '计算host内存, 字节',
     core           INT          NOT NULL DEFAULT 0 COMMENT '计算host core',
     bandwidth      BIGINT       NOT NULL DEFAULT 0 COMMENT '计算host带宽, bps',

@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.controller.node;
 
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.common.util.NameUtil;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
@@ -71,9 +72,9 @@ public class LocalPowerNodeController {
     @PostMapping("/queryPowerNodeList")
     @ApiOperation(value="查询计算节点服务列表", response = JsonResponse.class)
     public JsonResponse<LocalPowerNodeResp> queryPowerNodeList(@Validated @RequestBody PowerQueryListReq powerReq) {
-        PageInfo PageInfo = localPowerNodeService.queryPowerNodeList(powerReq.getIdentityId(),
+        Page page = localPowerNodeService.queryPowerNodeList(powerReq.getIdentityId(),
                 powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
-        return JsonResponse.success(PageInfo);
+        return JsonResponse.page(page);
     }
 
     @PostMapping("/publishPower")
@@ -100,9 +101,9 @@ public class LocalPowerNodeController {
     @PostMapping("/queryPowerJoinTaskList")
     @ApiOperation(value="查询计算节点参与任务列表", response = JsonResponse.class)
     public JsonResponse<PowerJoinTaskResp> queryPowerJoinTaskList(@Validated @RequestBody PowerJoinTaskReq powerJoinTaskReq) {
-        PageInfo PageInfo = localPowerNodeService.queryPowerJoinTaskList(powerJoinTaskReq.getPowerNodeId(),
+        Page page = localPowerNodeService.queryPowerJoinTaskList(powerJoinTaskReq.getPowerNodeId(),
                 powerJoinTaskReq.getPageNumber(), powerJoinTaskReq.getPageSize());
-        return JsonResponse.success(PageInfo);
+        return JsonResponse.page(page);
     }
 
     @PostMapping("/checkPowerNodeName")

@@ -30,8 +30,7 @@ public class LocalPowerNodeResp {
     @ApiModelProperty(value = "节点外网端口", example = "")
     private Integer externalPort;
 
-    @ApiModelProperty(value = "节点状态，-1:网络连接失败; 0:连接上; 1:算力未启用(网络已连接); " +
-            "2:算力已启用（空闲）; 3:算力已占用(计算服务算力正在被任务占用)", example = "")
+    @ApiModelProperty(value = "节点状态，-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用<计算服务>; 2: 算力被占用(计算服务算力正在被任务占用)", example = "")
     private String status;
 
 }
