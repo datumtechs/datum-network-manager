@@ -12,6 +12,7 @@ import com.platon.rosettanet.admin.dao.entity.LocalPowerHistory;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.grpc.client.PowerClient;
+import com.platon.rosettanet.admin.grpc.service.PowerRpcMessage;
 import com.platon.rosettanet.admin.grpc.service.YarnRpcMessage;
 import com.platon.rosettanet.admin.service.LocalPowerNodeService;
 import lombok.extern.slf4j.Slf4j;
@@ -94,6 +95,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public LocalPowerNode queryPowerNodeDetails(String powerNodeId) {
+        powerClient.getPowerSingleDetailList();
         return localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
     }
 

@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * 计算任务定时任务
  */
 @Slf4j
-@Component
+//@Component
 public class MyTaskRefreshTask {
 
     @Resource

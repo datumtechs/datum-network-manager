@@ -42,12 +42,12 @@ public class PowerNodeRefreshTask {
     public void powerHistory(){
         // 定时任务开始
         long startTime = System.currentTimeMillis();
-        String responseStr = powerClient.GetPowerSingleDetailList();
-        if (responseStr == null) {
-            log.info("获取计算节点详情失败,无返回数据");
-            return;
-        }
-        log.info("获取当前组织所有节点各个算力的详情, 返回数据:{}", responseStr);
+        powerClient.getPowerSingleDetailList();
+//        if (responseStr == null) {
+//            log.info("获取计算节点详情失败,无返回数据");
+//            return;
+//        }
+//        log.info("获取当前组织所有节点各个算力的详情, 返回数据:{}", responseStr);
         List<LocalPowerHistory> localPowerHistoryList = new ArrayList<>();
 //        for() {
             LocalPowerHistory localPowerHistory = new LocalPowerHistory();
@@ -87,13 +87,13 @@ public class PowerNodeRefreshTask {
         // 定时任务开始
         long startTime = System.currentTimeMillis();
         // 查看所有组织单个算力详情 (包含 任务描述)
-        String responseStr = powerClient.GetPowerSingleDetailList();
-        if (responseStr == null) {
-            log.info("获取计算节点详情失败,无返回数据");
-            return;
-        }
+//        String responseStr = powerClient.getPowerSingleDetailList();
+//        if (responseStr == null) {
+//            log.info("获取计算节点详情失败,无返回数据");
+//            return;
+//        }
         List<LocalPowerJoinTask> localPowerJoinTaskList = new ArrayList();
-        log.info("获取计算节点详情, 返回数据:{}", responseStr);
+//        log.info("获取计算节点详情, 返回数据:{}", responseStr);
 //        for() {
             LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
             localPowerJoinTask.setPowerNodeId(null);
