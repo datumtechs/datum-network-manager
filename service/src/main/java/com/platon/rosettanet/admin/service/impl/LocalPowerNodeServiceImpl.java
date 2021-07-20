@@ -2,12 +2,14 @@ package com.platon.rosettanet.admin.service.impl;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.dao.LocalPowerHistoryMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerJoinTaskMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerNodeMapper;
+import com.platon.rosettanet.admin.dao.entity.DataNode;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerHistory;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
@@ -95,19 +97,18 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public LocalPowerNode queryPowerNodeDetails(String powerNodeId) {
-        powerClient.getPowerSingleDetailList();
+        List<YarnRpcMessage.YarnRegisteredPeerDetail> list = powerClient.getJobNodeList();
         return localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
     }
 
     @Override
-    public PageInfo queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize) {
+    public Page queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize) {
         long startTime = System.currentTimeMillis();
-        PageHelper.startPage(pageNumber, pageSize);
-        List<LocalPowerNode> list = localPowerNodeMapper.queryPowerNodeList(identityId, keyword);
-        PageInfo<LocalPowerNode> pageInfo = new PageInfo<>(list);
+        Page<LocalPowerNode> page = PageHelper.startPage(pageNumber, pageSize);
+        localPowerNodeMapper.queryPowerNodeList(identityId, keyword);
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("查询计算节点列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", pageInfo.toString());
-        return pageInfo;
+        log.info("查询计算节点列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", page.toString());
+        return page;
     }
 
     @Override
@@ -295,11 +296,10 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public PageInfo queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize) {
-        PageHelper.startPage(pageNumber, pageSize);
-        List<LocalPowerJoinTask> list = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNodeId);
-        PageInfo<LocalPowerJoinTask> pageInfo = new PageInfo(list);
-        return pageInfo;
+    public Page queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize) {
+        Page<LocalPowerJoinTask> page = PageHelper.startPage(pageNumber, pageSize);
+        localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNodeId);
+        return page;
     }
 
     @Override
