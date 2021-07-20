@@ -22,8 +22,4 @@ public class PowerSwitchReq {
     @ApiModelProperty(value = "计算节点ID", example = "", required = true)
     private String powerNodeId;
 
-    @NotNull(message = "计算节点状态不能为空")
-    @ApiModelProperty(value = "计算节点状态", example = "", required = true)
-    private String status;
-
 }
