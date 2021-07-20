@@ -34,7 +34,7 @@ public class PowerClient {
     public YarnRpcMessage.YarnRegisteredPeerDetail addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        YarnRpcMessage.SetJobNodeResponse jobNodeResponse = null;
+        YarnRpcMessage.SetJobNodeResponse jobNodeResponse;
         try {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -62,7 +62,7 @@ public class PowerClient {
     public YarnRpcMessage.YarnRegisteredPeerDetail updatePowerNode(String powerNodeId, String internalIp, String externalIp, Integer internalPort, Integer externalPort){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        YarnRpcMessage.SetJobNodeResponse jobNodeResponse = null;
+        YarnRpcMessage.SetJobNodeResponse jobNodeResponse;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -91,7 +91,7 @@ public class PowerClient {
     public int deletePowerNode(String powerNodeId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        CommonMessage.SimpleResponseCode simpleResponseCode = null;
+        CommonMessage.SimpleResponseCode simpleResponseCode;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -115,10 +115,10 @@ public class PowerClient {
     /**
      * 启用算力 (发布算力)
      */
-    public void publishPower(String jobNodeId){
+    public String publishPower(String jobNodeId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        PowerRpcMessage.PublishPowerResponse publishPowerResponse = null;
+        PowerRpcMessage.PublishPowerResponse publishPowerResponse;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -136,6 +136,7 @@ public class PowerClient {
         }
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("启用算力接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", publishPowerResponse.toString());
+        return publishPowerResponse.getPowerId();
     }
 
     /**
@@ -144,7 +145,7 @@ public class PowerClient {
     public void revokePower(String powerId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        CommonMessage.SimpleResponseCode revokePowerResponse = null;
+        CommonMessage.SimpleResponseCode revokePowerResponse;
         try{
             //1.获取rpc连接
             channel = channelManager.buildChannel("localhost", 50051);

@@ -54,7 +54,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         powerNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
         powerNode.setPowerNodeId(jobNode.getId());
         // 状态1表示已连接，未启用
-        powerNode.setStatus(String.valueOf(jobNode.getConnState()));
+        powerNode.setConnStatus(String.valueOf(jobNode.getConnState()));
         // 内存
         powerNode.setMemory(0L);
         // 核数
@@ -72,7 +72,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         // 计算节点id
         powerNode.setPowerNodeId(jobNode.getId());
         // 状态
-        powerNode.setStatus(String.valueOf(jobNode.getConnState()));
+        powerNode.setConnStatus(String.valueOf(jobNode.getConnState()));
         // 内存
         powerNode.setMemory(0L);
         // 核数
@@ -110,11 +110,12 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public void publishPower(String powerNodeId) {
-        powerClient.publishPower(powerNodeId);
+        String powerId = powerClient.publishPower(powerNodeId);
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(powerNodeId);
+        localPowerNode.setPowerId(powerId);
         // status=2表示算例已启用
-        localPowerNode.setStatus("2");
+        localPowerNode.setConnStatus("2");
         localPowerNode.setStartTime(LocalDateTime.now());
         localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
@@ -124,8 +125,10 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         powerClient.revokePower(powerNodeId);
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(powerNodeId);
+        // 停用算力需把上次启动的算力id清空
+        localPowerNode.setPowerId("");
         // status=1表示算例未启用
-        localPowerNode.setStatus("1");
+        localPowerNode.setConnStatus("1");
         localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
 
