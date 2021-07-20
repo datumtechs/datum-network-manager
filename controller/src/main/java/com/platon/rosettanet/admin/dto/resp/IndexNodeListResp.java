@@ -53,7 +53,7 @@ public class IndexNodeListResp {
         resp.setJobNodeId(localPowerNode.getPowerNodeId());
         resp.setJobNodeName(localPowerNode.getPowerNodeName());
         //TODO 节点状态待确定
-        resp.setStatus(localPowerNode.getStatus());
+        resp.setStatus(localPowerNode.getConnStatus());
         resp.setTotalProcessor(localPowerNode.getCore());
         resp.setUsedProcessor(localPowerNode.getUsedCore());
         resp.setTotalMem(localPowerNode.getMemory());

@@ -24,6 +24,8 @@ public interface TaskMapper {
 
     List<Task> listTask(@Param("status")String status, @Param("role")Integer role, @Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp")Timestamp endTimestamp, @Param("keyWord") String keyWord);
 
+    List<String> selectListTaskByStatusWithSuccessAndFailed();
+
     Task selectTaskByTaskId(@Param("taskId")String taskId);
 
     Integer selectAllTaskCount();

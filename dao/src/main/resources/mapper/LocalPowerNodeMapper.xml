@@ -14,8 +14,9 @@
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="conn_message" jdbcType="VARCHAR" property="connMessage" />
+    <result column="power_id" jdbcType="VARCHAR" property="powerId" />
     <result column="conn_time" jdbcType="TIMESTAMP" property="connTime" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="conn_status" jdbcType="VARCHAR" property="connStatus" />
     <result column="memory" jdbcType="BIGINT" property="memory" />
     <result column="core" jdbcType="INTEGER" property="core" />
     <result column="bandwidth" jdbcType="BIGINT" property="bandwidth" />
@@ -38,8 +39,9 @@
     start_time,
     remarks,
     conn_message,
+    power_id,
     conn_time,
-    status,
+    conn_status,
     memory,
     core,
     bandwidth,
@@ -96,8 +98,9 @@
       <if test="startTime != null">start_time,</if>
       <if test="remarks != null">remarks,</if>
       <if test="connMessage != null">conn_message,</if>
+      <if test="powerId != null">power_id,</if>
       <if test="connTime != null">conn_time,</if>
-      <if test="status != null">status,</if>
+      <if test="connStatus != null">conn_status,</if>
       <if test="memory != null">memory,</if>
       <if test="core != null">core,</if>
       <if test="bandwidth != null">bandwidth,</if>
@@ -119,8 +122,9 @@
       <if test="startTime != null">#{startTime, jdbcType=TIMESTAMP},</if>
       <if test="remarks != null">#{remarks, jdbcType=VARCHAR},</if>
       <if test="connMessage != null">#{connMessage, jdbcType=VARCHAR},</if>
+      <if test="powerId != null">#{powerId, jdbcType=VARCHAR},</if>
       <if test="connTime != null">#{connTime, jdbcType=TIMESTAMP},</if>
-      <if test="status != null">#{status, jdbcType=VARCHAR},</if>
+      <if test="connStatus != null">#{connStatus, jdbcType=VARCHAR},</if>
       <if test="memory != null">#{memory, jdbcType=BIGINT},</if>
       <if test="core != null">#{core, jdbcType=INTEGER},</if>
       <if test="bandwidth != null">#{bandwidth, jdbcType=BIGINT},</if>
@@ -145,8 +149,9 @@
       <if test="startTime != null">start_time = #{startTime, jdbcType=TIMESTAMP},</if>
       <if test="remarks != null">remarks = #{remarks, jdbcType=VARCHAR},</if>
       <if test="connMessage != null">conn_message = #{connMessage, jdbcType=VARCHAR},</if>
+      <if test="powerId != null">power_id = #{powerId, jdbcType=VARCHAR},</if>
       <if test="connTime != null">conn_time = #{connTime, jdbcType=TIMESTAMP},</if>
-      <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+      <if test="connStatus != null">conn_status = #{connStatus, jdbcType=VARCHAR},</if>
       <if test="memory != null">memory = #{memory, jdbcType=BIGINT},</if>
       <if test="core != null">core = #{core, jdbcType=INTEGER},</if>
       <if test="bandwidth != null">bandwidth = #{bandwidth, jdbcType=BIGINT},</if>
@@ -173,8 +178,9 @@
       <if test="startTime != null">start_time = #{startTime, jdbcType=TIMESTAMP},</if>
       <if test="remarks != null">remarks = #{remarks, jdbcType=VARCHAR},</if>
       <if test="connMessage != null">conn_message = #{connMessage, jdbcType=VARCHAR},</if>
+      <if test="powerId != null">power_id = #{powerId, jdbcType=VARCHAR},</if>
       <if test="connTime != null">conn_time = #{connTime, jdbcType=TIMESTAMP},</if>
-      <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+      <if test="connStatus != null">conn_status = #{connStatus, jdbcType=VARCHAR},</if>
       <if test="memory != null">memory = #{memory, jdbcType=BIGINT},</if>
       <if test="core != null">core = #{core, jdbcType=INTEGER},</if>
       <if test="bandwidth != null">bandwidth = #{bandwidth, jdbcType=BIGINT},</if>

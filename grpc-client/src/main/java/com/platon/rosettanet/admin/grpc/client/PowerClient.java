@@ -34,7 +34,7 @@ public class PowerClient {
     public YarnRpcMessage.YarnRegisteredPeerDetail addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        YarnRpcMessage.SetJobNodeResponse jobNodeResponse = null;
+        YarnRpcMessage.SetJobNodeResponse jobNodeResponse;
         try {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -62,7 +62,7 @@ public class PowerClient {
     public YarnRpcMessage.YarnRegisteredPeerDetail updatePowerNode(String powerNodeId, String internalIp, String externalIp, Integer internalPort, Integer externalPort){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        YarnRpcMessage.SetJobNodeResponse jobNodeResponse = null;
+        YarnRpcMessage.SetJobNodeResponse jobNodeResponse;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -91,7 +91,7 @@ public class PowerClient {
     public int deletePowerNode(String powerNodeId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        CommonMessage.SimpleResponseCode simpleResponseCode = null;
+        CommonMessage.SimpleResponseCode simpleResponseCode;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -115,10 +115,10 @@ public class PowerClient {
     /**
      * 启用算力 (发布算力)
      */
-    public void publishPower(String jobNodeId){
+    public String publishPower(String jobNodeId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        PowerRpcMessage.PublishPowerResponse publishPowerResponse = null;
+        PowerRpcMessage.PublishPowerResponse publishPowerResponse;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -136,6 +136,7 @@ public class PowerClient {
         }
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("启用算力接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", publishPowerResponse.toString());
+        return publishPowerResponse.getPowerId();
     }
 
     /**
@@ -144,10 +145,10 @@ public class PowerClient {
     public void revokePower(String powerId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        CommonMessage.SimpleResponseCode revokePowerResponse = null;
+        CommonMessage.SimpleResponseCode revokePowerResponse;
         try{
             //1.获取rpc连接
-            channel = channelManager.buildChannel("localhost", 50051);
+            channel = channelManager.getScheduleServer();
             //2.拼装request
             PowerRpcMessage.RevokePowerRequest joinRequest = PowerRpcMessage.RevokePowerRequest.newBuilder()
                     .setPowerId(powerId)
@@ -166,20 +167,30 @@ public class PowerClient {
     }
 
     /**
-     * 查看当前组织所有节点各个算力的详情 (包含 任务信息)
+     * 查看当前组织各个算力的详情 (包含 任务信息)
      */
-    public String GetPowerSingleDetailList(){
-//        //1.获取rpc连接
-//        Channel channel = channelManager.buildChannel("localhost", 50051);
-//        //2.拼装request
-//        PowerRpcMessage.GetPowerSingleDetailRequest joinRequest = PowerRpcMessage.GetPowerSingleDetailRequest.newBuilder()
-//                .build();
-//        //3.调用rpc,获取response
-//        PowerRpcMessage.GetPowerSingleDetailResponse responseCode = PowerServiceGrpc.newBlockingStub(channel).getPowerSingleDetailList(joinRequest);
-//        //4.处理response
-//        System.out.println("getPowerSingleDetail-返回信息：" + responseCode.getMsg());
-//        return responseCode.getMsg();
-        return null;
+    public PowerRpcMessage.GetPowerSingleDetailListResponse getPowerSingleDetailList(){
+        long startTime = System.currentTimeMillis();
+        Channel channel = null;
+        PowerRpcMessage.GetPowerSingleDetailListResponse getSingleDetailListResponse;
+        try{
+            //1.获取rpc连接
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            CommonMessage.EmptyGetParams emptyGetParams = CommonMessage.EmptyGetParams.newBuilder()
+                    .build();
+            //3.调用rpc,获取response
+            getSingleDetailListResponse = PowerServiceGrpc.newBlockingStub(channel).getPowerSingleDetailList(emptyGetParams);
+            //4.处理response
+//            if (getSingleDetailListResponse != 0 || !GrpcConstant.ok.equals(getSingleDetailListResponse.getMsg())) {
+//                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+//            }
+        } finally {
+            channelManager.closeChannel(channel);
+        }
+        long diffTime = System.currentTimeMillis() - startTime;
+        log.info("查询当前组织各个节点的列表(包含任务列表)接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", getSingleDetailListResponse.toString());
+        return getSingleDetailListResponse;
     }
 
     /**

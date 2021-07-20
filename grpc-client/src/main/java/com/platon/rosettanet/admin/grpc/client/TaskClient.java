@@ -1,8 +1,10 @@
 package com.platon.rosettanet.admin.grpc.client;
 
+import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.dao.entity.*;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
+import com.platon.rosettanet.admin.grpc.entity.QueryNodeResp;
 import com.platon.rosettanet.admin.grpc.entity.TaskDataResp;
 import com.platon.rosettanet.admin.grpc.entity.TaskEventDataResp;
 import com.platon.rosettanet.admin.grpc.service.CommonMessage;
@@ -16,7 +18,9 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author liushuyu
@@ -31,9 +35,15 @@ import java.util.List;
 @Slf4j
 public class TaskClient {
 
+    public static String NODE_NAME = "nodeName";
+    public static String NODE_ID = "nodeId";
 
     @Resource(name = "simpleChannelManager")
     private BaseChannelManager channelManager;
+
+    public static  final String SERVER_HOST = "192.168.21.164";
+    public static  final int SERVER_IP = 4444;
+    private Channel channel;
 
 
     /**
@@ -41,47 +51,56 @@ public class TaskClient {
      * @return
      */
     public TaskDataResp getTaskListData() {
-        //1.获取rpc连接
-        Channel channel = null;
-        try{
+
+
+        try {
+            //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.构造 request
             CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams.newBuilder().build();
             //3.调用rpc服务接口
             TaskRpcMessage.GetTaskDetailListResponse taskDetailListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskDetailList(request);
+            log.debug("====> RPC客户端请求响应 [获取任务列表数据: getTaskDetailList]:" + taskDetailListResponse.toString());
+
             //4.处理response
             TaskDataResp taskDataResp = new TaskDataResp();
             if(taskDetailListResponse != null){
                  taskDataResp.setStatus(taskDetailListResponse.getStatus());
                  taskDataResp.setMsg(taskDetailListResponse.getMsg());
                  List<TaskRpcMessage.GetTaskDetailResponse> taskDetailList = taskDetailListResponse.getTaskListList();
-
+                 log.debug("====> RPC客户端请求响应 [获取任务列表数据: taskDetailList]:" + taskDetailList.toString());
                  if(GrpcConstant.GRPC_SUCCESS_CODE == taskDetailListResponse.getStatus()){
                      taskDataResp.setTaskList(dataConvertToTaskList(taskDetailList));
                  }
-
              }
-             return taskDataResp;
+            return taskDataResp;
+        } catch (ApplicationException e) {
+                 e.printStackTrace();
         } finally {
             channelManager.closeChannel(channel);
         }
+        return null;
     }
 
 
     /**
-     * 查看某个任务的全部事件列表
-     * @param taskId
+     * 批量获取多个任务的全部事件列表
+     * @param taskIds
      * @return
      */
-    public TaskEventDataResp getTaskEventListData(String taskId) {
-        //1.获取rpc连接
-        Channel channel = null;
-        try{
-            channel = channelManager.getScheduleServer();
+    public TaskEventDataResp getTaskEventListData(List<String> taskIds) {
+
+        try {
+            //1.获取rpc连接
+            if(channel == null){
+                 channel = channelManager.getScheduleServer();
+            }
             //2.构造 request
-            TaskRpcMessage.GetTaskEventListRequest request = TaskRpcMessage.GetTaskEventListRequest.newBuilder().setTaskId(taskId).build();
+            TaskRpcMessage.GetTaskEventListByTaskIdsRequest request = TaskRpcMessage.GetTaskEventListByTaskIdsRequest.newBuilder().addAllTaskIds(taskIds).build();
             //3.调用rpc服务接口
-            TaskRpcMessage.GetTaskEventListResponse taskEventListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskEventList(request);
+            TaskRpcMessage.GetTaskEventListResponse taskEventListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskEventListByTaskIds(request);
+            log.debug("====> RPC客户端 taskEventListResponse:" + taskEventListResponse.toString());
+
             //4.处理response
             TaskEventDataResp taskEventDataResp = new TaskEventDataResp();
             if(taskEventListResponse != null){
@@ -106,9 +125,12 @@ public class TaskClient {
                 }
             }
             return taskEventDataResp;
+        } catch (ApplicationException e) {
+            e.printStackTrace();
         } finally {
             channelManager.closeChannel(channel);
         }
+        return null;
     }
 
 
@@ -141,6 +163,16 @@ public class TaskClient {
             Task task = new Task();
             task.setId(taskId);
             task.setTaskName(taskName);
+            task.setCreateAt(LocalDateTime.ofEpochSecond(createAt,0, ZoneOffset.ofHours(8)));
+            task.setStartAt(LocalDateTime.ofEpochSecond(startAt,0, ZoneOffset.ofHours(8)));
+            task.setEndAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
+            task.setStatus(state);
+            task.setAuthAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
+            task.setOwnerIdentityId("123456789");
+            task.setCostCore(operationCost.getCostProcessor());
+            task.setCostMemory(operationCost.getCostMem());
+            task.setCostBandwidth(operationCost.getCostBandwidth());
+            task.setDuration(LocalDateTime.ofEpochSecond(operationCost.getDuration(),0, ZoneOffset.ofHours(8)));
 
             //任务发起发owner
             TaskOrg ownerData = new TaskOrg();
@@ -164,6 +196,7 @@ public class TaskClient {
                 receiver.setMetaDataId(dataSupplier.getMetaDataId());
                 receiver.setIdentityId(dataSupplier.getMemberInfo().getIdentityId());
                 receiver.setMetaDataName(dataSupplier.getMetaDataName());
+                receiver.setDynamicFields(getDynamicFields(dataSupplier.getMemberInfo().getName(), dataSupplier.getMemberInfo().getNodeId()));
                 taskDataReceiverList.add(receiver);
             }
             task.setDataSupplier(taskDataReceiverList);
@@ -171,13 +204,13 @@ public class TaskClient {
             //算力提供方powerSupplierList
             List<TaskPowerProvider> taskPowerProviderList = new ArrayList<>();
             for (TaskRpcMessage.TaskPowerSupplierShow taskPowerSupplierShow : powerSupplierList) {
-
                 TaskPowerProvider powerProvider = new TaskPowerProvider();
                 powerProvider.setTaskId(taskId);
                 powerProvider.setIdentityId(taskPowerSupplierShow.getMemberInfo().getIdentityId());
                 powerProvider.setUsedCore(taskPowerSupplierShow.getPowerInfo().getUsedProcessor());
                 powerProvider.setUsedMemory(taskPowerSupplierShow.getPowerInfo().getUsedMem());
                 powerProvider.setUsedBandwidth(taskPowerSupplierShow.getPowerInfo().getUsedBandwidth());
+                powerProvider.setDynamicFields(getDynamicFields(taskPowerSupplierShow.getMemberInfo().getName(), taskPowerSupplierShow.getMemberInfo().getNodeId()));
                 taskPowerProviderList.add(powerProvider);
             }
             task.setPowerSupplier(taskPowerProviderList);
@@ -188,26 +221,30 @@ public class TaskClient {
                 TaskResultReceiver resultReceiver = new TaskResultReceiver();
                 resultReceiver.setTaskId(taskId);
                 resultReceiver.setConsumerIdentityId(receiver.getIdentityId());
-                //resultReceiver.setProducerIdentityId();
+                //待商榷？？
+                resultReceiver.setProducerIdentityId(receiver.getIdentityId());
+                resultReceiver.setDynamicFields(getDynamicFields(receiver.getName(), receiver.getNodeId()));
                 receivers.add(resultReceiver);
             }
             task.setReceivers(receivers);
-
-            task.setCreateAt(LocalDateTime.ofEpochSecond(createAt,0, ZoneOffset.ofHours(8)));
-            task.setStartAt(LocalDateTime.ofEpochSecond(startAt,0, ZoneOffset.ofHours(8)));
-            task.setEndAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
-            task.setStatus(state);
-
-            //声明所需资源
-            task.setCostCore(operationCost.getCostProcessor());
-            task.setCostMemory(operationCost.getCostMem());
-            task.setCostBandwidth(operationCost.getCostBandwidth());
-            task.setDuration(LocalDateTime.ofEpochSecond(operationCost.getDuration(),0, ZoneOffset.ofHours(8)));
 
             //构造完毕添加数据
             taskList.add(task);
         }
         return taskList;
+    }
+
+    /**
+     * 动态数据
+     * @param nodeName
+     * @param nodeId
+     * @return
+     */
+    private Map getDynamicFields(String nodeName, String nodeId){
+        Map dynamicFields = new HashMap();
+        dynamicFields.put(NODE_NAME, nodeName);
+        dynamicFields.put(NODE_ID, nodeId);
+        return dynamicFields;
     }
 
 
