@@ -43,6 +43,13 @@
   </select>
 
 
+  <select id="selectListTaskByStatusWithSuccessAndFailed"  resultType="java.lang.String">
+    SELECT  t.id  FROM  task AS t
+    WHERE  t.`status` IN ('success', 'failed')
+  </select>
+
+
+
   <select id="selectAllTaskCount" resultType="java.lang.Integer">
      SELECT COUNT(t.id) FROM task AS t
   </select>

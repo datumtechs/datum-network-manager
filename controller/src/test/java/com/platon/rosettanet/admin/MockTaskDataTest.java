@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin;
 
+import com.platon.rosettanet.admin.constant.ControllerConstants;
 import com.platon.rosettanet.admin.dao.*;
 import com.platon.rosettanet.admin.dao.entity.*;
 import com.platon.rosettanet.admin.dao.enums.TaskStatusEnum;
@@ -288,6 +289,16 @@ public class MockTaskDataTest {
             Task task = new Task();
             task.setId(taskId);
             task.setTaskName(taskName);
+            task.setCreateAt(LocalDateTime.ofEpochSecond(createAt,0, ZoneOffset.ofHours(8)));
+            task.setStartAt(LocalDateTime.ofEpochSecond(startAt,0, ZoneOffset.ofHours(8)));
+            task.setEndAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
+            task.setStatus(state);
+            task.setAuthAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
+            task.setOwnerIdentityId("123456789");
+            task.setCostCore(operationCost.getCostProcessor());
+            task.setCostMemory(operationCost.getCostMem());
+            task.setCostBandwidth(operationCost.getCostBandwidth());
+            task.setDuration(LocalDateTime.ofEpochSecond(operationCost.getDuration(),0, ZoneOffset.ofHours(8)));
 
             //任务发起发owner
             TaskOrg ownerData = new TaskOrg();
@@ -311,11 +322,7 @@ public class MockTaskDataTest {
                 receiver.setMetaDataId(dataSupplier.getMetaDataId());
                 receiver.setIdentityId(dataSupplier.getMemberInfo().getIdentityId());
                 receiver.setMetaDataName(dataSupplier.getMetaDataName());
-                //动态数据
-                Map dynamicFields = new HashMap();
-                dynamicFields.put(NODE_NAME, dataSupplier.getMemberInfo().getName());
-                dynamicFields.put(NODE_ID, dataSupplier.getMemberInfo().getNodeId());
-                receiver.setDynamicFields(dynamicFields);
+                receiver.setDynamicFields(getDynamicFields(dataSupplier.getMemberInfo().getName(), dataSupplier.getMemberInfo().getNodeId()));
                 taskDataReceiverList.add(receiver);
             }
             task.setDataSupplier(taskDataReceiverList);
@@ -323,19 +330,13 @@ public class MockTaskDataTest {
             //算力提供方powerSupplierList
             List<TaskPowerProvider> taskPowerProviderList = new ArrayList<>();
             for (TaskRpcMessage.TaskPowerSupplierShow taskPowerSupplierShow : powerSupplierList) {
-
                 TaskPowerProvider powerProvider = new TaskPowerProvider();
                 powerProvider.setTaskId(taskId);
                 powerProvider.setIdentityId(taskPowerSupplierShow.getMemberInfo().getIdentityId());
                 powerProvider.setUsedCore(taskPowerSupplierShow.getPowerInfo().getUsedProcessor());
                 powerProvider.setUsedMemory(taskPowerSupplierShow.getPowerInfo().getUsedMem());
                 powerProvider.setUsedBandwidth(taskPowerSupplierShow.getPowerInfo().getUsedBandwidth());
-
-                //动态数据
-                Map dynamicFields = new HashMap();
-                dynamicFields.put(NODE_NAME, taskPowerSupplierShow.getMemberInfo().getName());
-                dynamicFields.put(NODE_ID, taskPowerSupplierShow.getMemberInfo().getNodeId());
-                powerProvider.setDynamicFields(dynamicFields);
+                powerProvider.setDynamicFields(getDynamicFields(taskPowerSupplierShow.getMemberInfo().getName(), taskPowerSupplierShow.getMemberInfo().getNodeId()));
                 taskPowerProviderList.add(powerProvider);
             }
             task.setPowerSupplier(taskPowerProviderList);
@@ -348,33 +349,29 @@ public class MockTaskDataTest {
                 resultReceiver.setConsumerIdentityId(receiver.getIdentityId());
                 //待商榷？？
                 resultReceiver.setProducerIdentityId(receiver.getIdentityId());
-
-                //动态数据
-                Map dynamicFields = new HashMap();
-                dynamicFields.put(NODE_NAME, receiver.getName());
-                dynamicFields.put(NODE_ID, receiver.getNodeId());
-                resultReceiver.setDynamicFields(dynamicFields);
+                resultReceiver.setDynamicFields(getDynamicFields(receiver.getName(), receiver.getNodeId()));
                 receivers.add(resultReceiver);
             }
             task.setReceivers(receivers);
-
-            task.setCreateAt(LocalDateTime.ofEpochSecond(createAt,0, ZoneOffset.ofHours(8)));
-            task.setStartAt(LocalDateTime.ofEpochSecond(startAt,0, ZoneOffset.ofHours(8)));
-            task.setEndAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
-            task.setStatus(state);
-            task.setAuthAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
-            task.setOwnerIdentityId("123456789");
-
-            //声明所需资源
-            task.setCostCore(operationCost.getCostProcessor());
-            task.setCostMemory(operationCost.getCostMem());
-            task.setCostBandwidth(operationCost.getCostBandwidth());
-            task.setDuration(LocalDateTime.ofEpochSecond(operationCost.getDuration(),0, ZoneOffset.ofHours(8)));
 
             //构造完毕添加数据
             taskList.add(task);
         }
         return taskList;
+    }
+
+
+    /**
+     * 动态数据
+     * @param nodeName
+     * @param nodeId
+     * @return
+     */
+    private Map getDynamicFields(String nodeName, String nodeId){
+        Map dynamicFields = new HashMap();
+        dynamicFields.put(ControllerConstants.NODE_NAME, nodeName);
+        dynamicFields.put(ControllerConstants.NODE_ID, nodeId);
+        return dynamicFields;
     }
 
 
