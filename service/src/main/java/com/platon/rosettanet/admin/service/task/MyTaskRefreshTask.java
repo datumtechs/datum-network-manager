@@ -18,12 +18,14 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * 计算任务定时任务
  */
 @Slf4j
-//@Component
+@Component
 public class MyTaskRefreshTask {
 
     @Resource
@@ -46,24 +48,39 @@ public class MyTaskRefreshTask {
 
 
 
-    @Scheduled(fixedDelay = 2000)
+    @Scheduled(fixedDelay = 10000)
     public void task() {
-
+        log.info("启动执行获取任务数据列表定时任务...........");
         TaskDataResp resp = taskClient.getTaskListData();
         if (GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
             log.info("获取任务列表,调度服务调用失败");
             return;
         }
-        //int allTaskCount = taskMapper.selectAllTaskCount();
-        //List<Task> taskList = (allTaskCount == 0) ? resp.getTaskList() : filterTaskListPendingAndRunning(resp.getTaskList());
-        List<Task> taskList =  resp.getTaskList();
+        if(!checkDataValidity(resp.getTaskList())){
+            log.info("RPC获取任务列表,任务数据为空");
+            return;
+        }
+
+        //1、筛选出需要更新Task Data
+        log.info("1、筛选出需要更新Task Data");
+        List<String> deleteTaskIds = taskMapper.selectListTaskByStatusWithSuccessAndFailed();
+        List<Task> allTaskList =  resp.getTaskList();
+        List<Task> updateTaskList = allTaskList.stream().filter(new Predicate<Task>() {
+                                                                @Override
+                                                                public boolean test(Task task) {
+                                                                    return !deleteTaskIds.contains(task.getId());
+                                                                }
+                                                        }).collect(Collectors.toList());
+
+        //2、整理收集待持久化数据
+        log.info("2、整理收集待持久化数据");
         List<TaskDataReceiver> dataReceiverList = new ArrayList<>();
         List<TaskPowerProvider> powerProviderList = new ArrayList<>();
         List<TaskResultReceiver> resultReceiverList = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(updateTaskList)){
 
-        if(!CollectionUtils.isEmpty(taskList)){
-            for (int i = 0; i < taskList.size(); i++) {
-                 Task taskData = taskList.get(i);
+            for (int i = 0; i < updateTaskList.size(); i++) {
+                 Task taskData = updateTaskList.get(i);
                  List<TaskDataReceiver> dataReceivers = taskData.getDataSupplier();
                  List<TaskPowerProvider> powerProviders = taskData.getPowerSupplier();
                  List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
@@ -72,33 +89,55 @@ public class MyTaskRefreshTask {
                  powerProviderList.addAll(powerProviders);
                  resultReceiverList.addAll(resultReceivers);
             }
-            //批量更新DB
-            taskMapper.insertBatch(taskList);
+        }
+
+        //3、批量更新DB
+        log.info("3、批量更新DB");
+        if (checkDataValidity(updateTaskList)) {
+            taskMapper.insertBatch(updateTaskList);
+        }
+        if (checkDataValidity(dataReceiverList)) {
             taskDataReceiverMapper.insertBatch(dataReceiverList);
+        }
+        if (checkDataValidity(powerProviderList)) {
             taskPowerProviderMapper.insertBatch(powerProviderList);
+        }
+        if (checkDataValidity(resultReceiverList)) {
             taskResultReceiverMapper.insertBatch(resultReceiverList);
         }
 
-        //批量TaskEvent获取并更新DB
+        //4、批量TaskEvent获取并更新DB
+        log.info("4、批量TaskEvent获取并更新DB");
+        List<String> taskIdList = updateTaskList.stream().map(Task -> Task.getId()).collect(Collectors.toList());
         List<TaskEvent> taskEventList = new ArrayList<>();
-        for (int i = 0; i < taskList.size(); i++) {
-              List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskList.get(i).getId());
-              taskEventList.addAll(taskEvents);
+        List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskIdList);
+        taskEventList.addAll(taskEvents);
+        if (checkDataValidity(taskEventList)) {
+            taskEventMapper.insertBatch(taskEventList);
         }
-        taskEventMapper.insertBatch(taskEventList);
-
+        log.info("结束执行获取任务数据列表定时任务...........");
 
     }
 
 
-    private List<TaskEvent> getRpcTaskEventByTaskId(String taskId){
+    private List<TaskEvent> getRpcTaskEventByTaskId(List<String> taskIds){
 
-        TaskEventDataResp resp = taskClient.getTaskEventListData(taskId);
+        TaskEventDataResp resp = taskClient.getTaskEventListData(taskIds);
         if (GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
             log.info("获取数据节点列表,调度服务调用失败");
             return null;
         }
         return resp.getTaskEventList();
+    }
+
+
+    /**
+     * 检查更新DB数据有效性
+     * @param data
+     * @return
+     */
+    private boolean checkDataValidity(List data){
+       return data != null && data.size() > 0;
     }
 
 
