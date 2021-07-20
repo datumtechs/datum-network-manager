@@ -16157,7 +16157,7 @@ public final class TaskRpcMessage {
 
     /**
      * <pre>
-     *  任务发起者
+     *  任务发起者 组织信息
      * </pre>
      *
      * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -16166,7 +16166,7 @@ public final class TaskRpcMessage {
     boolean hasOwner();
     /**
      * <pre>
-     *  任务发起者
+     *  任务发起者 组织信息
      * </pre>
      *
      * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -16175,7 +16175,7 @@ public final class TaskRpcMessage {
     com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getOwner();
     /**
      * <pre>
-     *  任务发起者
+     *  任务发起者 组织信息
      * </pre>
      *
      * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -16184,46 +16184,46 @@ public final class TaskRpcMessage {
 
     /**
      * <pre>
-     *  任务参与方
+     *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
      */
     java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> 
-        getPartnersList();
+        getDataSupplierList();
     /**
      * <pre>
-     *  任务参与方
+     *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getPartners(int index);
+    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getDataSupplier(int index);
     /**
      * <pre>
-     *  任务参与方
+     *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
      */
-    int getPartnersCount();
+    int getDataSupplierCount();
     /**
      * <pre>
-     *  任务参与方
+     *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
      */
     java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> 
-        getPartnersOrBuilderList();
+        getDataSupplierOrBuilderList();
     /**
      * <pre>
-     *  任务参与方
+     *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getPartnersOrBuilder(
+    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getDataSupplierOrBuilder(
         int index);
 
     /**
@@ -16412,7 +16412,7 @@ public final class TaskRpcMessage {
     }
     private PublishTaskDeclareRequest() {
       taskName_ = "";
-      partners_ = java.util.Collections.emptyList();
+      dataSupplier_ = java.util.Collections.emptyList();
       powerPartyIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       receivers_ = java.util.Collections.emptyList();
       calculateContractcode_ = "";
@@ -16472,10 +16472,10 @@ public final class TaskRpcMessage {
             }
             case 26: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                partners_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare>();
+                dataSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare>();
                 mutable_bitField0_ |= 0x00000001;
               }
-              partners_.add(
+              dataSupplier_.add(
                   input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.parser(), extensionRegistry));
               break;
             }
@@ -16544,7 +16544,7 @@ public final class TaskRpcMessage {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          partners_ = java.util.Collections.unmodifiableList(partners_);
+          dataSupplier_ = java.util.Collections.unmodifiableList(dataSupplier_);
         }
         if (((mutable_bitField0_ & 0x00000002) != 0)) {
           powerPartyIds_ = powerPartyIds_.getUnmodifiableView();
@@ -16619,7 +16619,7 @@ public final class TaskRpcMessage {
     private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo owner_;
     /**
      * <pre>
-     *  任务发起者
+     *  任务发起者 组织信息
      * </pre>
      *
      * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -16631,7 +16631,7 @@ public final class TaskRpcMessage {
     }
     /**
      * <pre>
-     *  任务发起者
+     *  任务发起者 组织信息
      * </pre>
      *
      * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -16643,7 +16643,7 @@ public final class TaskRpcMessage {
     }
     /**
      * <pre>
-     *  任务发起者
+     *  任务发起者 组织信息
      * </pre>
      *
      * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -16653,64 +16653,64 @@ public final class TaskRpcMessage {
       return getOwner();
     }
 
-    public static final int PARTNERS_FIELD_NUMBER = 3;
-    private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> partners_;
+    public static final int DATA_SUPPLIER_FIELD_NUMBER = 3;
+    private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> dataSupplier_;
     /**
      * <pre>
-     *  任务参与方
+     *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
      */
     @java.lang.Override
-    public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> getPartnersList() {
-      return partners_;
+    public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> getDataSupplierList() {
+      return dataSupplier_;
     }
     /**
      * <pre>
-     *  任务参与方
+     *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> 
-        getPartnersOrBuilderList() {
-      return partners_;
+        getDataSupplierOrBuilderList() {
+      return dataSupplier_;
     }
     /**
      * <pre>
-     *  任务参与方
+     *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
      */
     @java.lang.Override
-    public int getPartnersCount() {
-      return partners_.size();
+    public int getDataSupplierCount() {
+      return dataSupplier_.size();
     }
     /**
      * <pre>
-     *  任务参与方
+     *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getPartners(int index) {
-      return partners_.get(index);
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getDataSupplier(int index) {
+      return dataSupplier_.get(index);
     }
     /**
      * <pre>
-     *  任务参与方
+     *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getPartnersOrBuilder(
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getDataSupplierOrBuilder(
         int index) {
-      return partners_.get(index);
+      return dataSupplier_.get(index);
     }
 
     public static final int POWER_PARTY_IDS_FIELD_NUMBER = 4;
@@ -17020,8 +17020,8 @@ public final class TaskRpcMessage {
       if (owner_ != null) {
         output.writeMessage(2, getOwner());
       }
-      for (int i = 0; i < partners_.size(); i++) {
-        output.writeMessage(3, partners_.get(i));
+      for (int i = 0; i < dataSupplier_.size(); i++) {
+        output.writeMessage(3, dataSupplier_.get(i));
       }
       for (int i = 0; i < powerPartyIds_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, powerPartyIds_.getRaw(i));
@@ -17057,9 +17057,9 @@ public final class TaskRpcMessage {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getOwner());
       }
-      for (int i = 0; i < partners_.size(); i++) {
+      for (int i = 0; i < dataSupplier_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, partners_.get(i));
+          .computeMessageSize(3, dataSupplier_.get(i));
       }
       {
         int dataSize = 0;
@@ -17108,8 +17108,8 @@ public final class TaskRpcMessage {
         if (!getOwner()
             .equals(other.getOwner())) return false;
       }
-      if (!getPartnersList()
-          .equals(other.getPartnersList())) return false;
+      if (!getDataSupplierList()
+          .equals(other.getDataSupplierList())) return false;
       if (!getPowerPartyIdsList()
           .equals(other.getPowerPartyIdsList())) return false;
       if (!getReceiversList()
@@ -17142,9 +17142,9 @@ public final class TaskRpcMessage {
         hash = (37 * hash) + OWNER_FIELD_NUMBER;
         hash = (53 * hash) + getOwner().hashCode();
       }
-      if (getPartnersCount() > 0) {
-        hash = (37 * hash) + PARTNERS_FIELD_NUMBER;
-        hash = (53 * hash) + getPartnersList().hashCode();
+      if (getDataSupplierCount() > 0) {
+        hash = (37 * hash) + DATA_SUPPLIER_FIELD_NUMBER;
+        hash = (53 * hash) + getDataSupplierList().hashCode();
       }
       if (getPowerPartyIdsCount() > 0) {
         hash = (37 * hash) + POWER_PARTY_IDS_FIELD_NUMBER;
@@ -17292,7 +17292,7 @@ public final class TaskRpcMessage {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getPartnersFieldBuilder();
+          getDataSupplierFieldBuilder();
           getReceiversFieldBuilder();
         }
       }
@@ -17307,11 +17307,11 @@ public final class TaskRpcMessage {
           owner_ = null;
           ownerBuilder_ = null;
         }
-        if (partnersBuilder_ == null) {
-          partners_ = java.util.Collections.emptyList();
+        if (dataSupplierBuilder_ == null) {
+          dataSupplier_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
         } else {
-          partnersBuilder_.clear();
+          dataSupplierBuilder_.clear();
         }
         powerPartyIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -17366,14 +17366,14 @@ public final class TaskRpcMessage {
         } else {
           result.owner_ = ownerBuilder_.build();
         }
-        if (partnersBuilder_ == null) {
+        if (dataSupplierBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
-            partners_ = java.util.Collections.unmodifiableList(partners_);
+            dataSupplier_ = java.util.Collections.unmodifiableList(dataSupplier_);
             bitField0_ = (bitField0_ & ~0x00000001);
           }
-          result.partners_ = partners_;
+          result.dataSupplier_ = dataSupplier_;
         } else {
-          result.partners_ = partnersBuilder_.build();
+          result.dataSupplier_ = dataSupplierBuilder_.build();
         }
         if (((bitField0_ & 0x00000002) != 0)) {
           powerPartyIds_ = powerPartyIds_.getUnmodifiableView();
@@ -17452,29 +17452,29 @@ public final class TaskRpcMessage {
         if (other.hasOwner()) {
           mergeOwner(other.getOwner());
         }
-        if (partnersBuilder_ == null) {
-          if (!other.partners_.isEmpty()) {
-            if (partners_.isEmpty()) {
-              partners_ = other.partners_;
+        if (dataSupplierBuilder_ == null) {
+          if (!other.dataSupplier_.isEmpty()) {
+            if (dataSupplier_.isEmpty()) {
+              dataSupplier_ = other.dataSupplier_;
               bitField0_ = (bitField0_ & ~0x00000001);
             } else {
-              ensurePartnersIsMutable();
-              partners_.addAll(other.partners_);
+              ensureDataSupplierIsMutable();
+              dataSupplier_.addAll(other.dataSupplier_);
             }
             onChanged();
           }
         } else {
-          if (!other.partners_.isEmpty()) {
-            if (partnersBuilder_.isEmpty()) {
-              partnersBuilder_.dispose();
-              partnersBuilder_ = null;
-              partners_ = other.partners_;
+          if (!other.dataSupplier_.isEmpty()) {
+            if (dataSupplierBuilder_.isEmpty()) {
+              dataSupplierBuilder_.dispose();
+              dataSupplierBuilder_ = null;
+              dataSupplier_ = other.dataSupplier_;
               bitField0_ = (bitField0_ & ~0x00000001);
-              partnersBuilder_ = 
+              dataSupplierBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getPartnersFieldBuilder() : null;
+                   getDataSupplierFieldBuilder() : null;
             } else {
-              partnersBuilder_.addAllMessages(other.partners_);
+              dataSupplierBuilder_.addAllMessages(other.dataSupplier_);
             }
           }
         }
@@ -17660,7 +17660,7 @@ public final class TaskRpcMessage {
           com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> ownerBuilder_;
       /**
        * <pre>
-       *  任务发起者
+       *  任务发起者 组织信息
        * </pre>
        *
        * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -17671,7 +17671,7 @@ public final class TaskRpcMessage {
       }
       /**
        * <pre>
-       *  任务发起者
+       *  任务发起者 组织信息
        * </pre>
        *
        * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -17686,7 +17686,7 @@ public final class TaskRpcMessage {
       }
       /**
        * <pre>
-       *  任务发起者
+       *  任务发起者 组织信息
        * </pre>
        *
        * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -17706,7 +17706,7 @@ public final class TaskRpcMessage {
       }
       /**
        * <pre>
-       *  任务发起者
+       *  任务发起者 组织信息
        * </pre>
        *
        * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -17724,7 +17724,7 @@ public final class TaskRpcMessage {
       }
       /**
        * <pre>
-       *  任务发起者
+       *  任务发起者 组织信息
        * </pre>
        *
        * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -17746,7 +17746,7 @@ public final class TaskRpcMessage {
       }
       /**
        * <pre>
-       *  任务发起者
+       *  任务发起者 组织信息
        * </pre>
        *
        * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -17764,7 +17764,7 @@ public final class TaskRpcMessage {
       }
       /**
        * <pre>
-       *  任务发起者
+       *  任务发起者 组织信息
        * </pre>
        *
        * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -17776,7 +17776,7 @@ public final class TaskRpcMessage {
       }
       /**
        * <pre>
-       *  任务发起者
+       *  任务发起者 组织信息
        * </pre>
        *
        * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -17791,7 +17791,7 @@ public final class TaskRpcMessage {
       }
       /**
        * <pre>
-       *  任务发起者
+       *  任务发起者 组织信息
        * </pre>
        *
        * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
@@ -17810,316 +17810,316 @@ public final class TaskRpcMessage {
         return ownerBuilder_;
       }
 
-      private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> partners_ =
+      private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> dataSupplier_ =
         java.util.Collections.emptyList();
-      private void ensurePartnersIsMutable() {
+      private void ensureDataSupplierIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          partners_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare>(partners_);
+          dataSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare>(dataSupplier_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> partnersBuilder_;
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> dataSupplierBuilder_;
 
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> getPartnersList() {
-        if (partnersBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(partners_);
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> getDataSupplierList() {
+        if (dataSupplierBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(dataSupplier_);
         } else {
-          return partnersBuilder_.getMessageList();
+          return dataSupplierBuilder_.getMessageList();
         }
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public int getPartnersCount() {
-        if (partnersBuilder_ == null) {
-          return partners_.size();
+      public int getDataSupplierCount() {
+        if (dataSupplierBuilder_ == null) {
+          return dataSupplier_.size();
         } else {
-          return partnersBuilder_.getCount();
+          return dataSupplierBuilder_.getCount();
         }
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getPartners(int index) {
-        if (partnersBuilder_ == null) {
-          return partners_.get(index);
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getDataSupplier(int index) {
+        if (dataSupplierBuilder_ == null) {
+          return dataSupplier_.get(index);
         } else {
-          return partnersBuilder_.getMessage(index);
+          return dataSupplierBuilder_.getMessage(index);
         }
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public Builder setPartners(
+      public Builder setDataSupplier(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare value) {
-        if (partnersBuilder_ == null) {
+        if (dataSupplierBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensurePartnersIsMutable();
-          partners_.set(index, value);
+          ensureDataSupplierIsMutable();
+          dataSupplier_.set(index, value);
           onChanged();
         } else {
-          partnersBuilder_.setMessage(index, value);
+          dataSupplierBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public Builder setPartners(
+      public Builder setDataSupplier(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder builderForValue) {
-        if (partnersBuilder_ == null) {
-          ensurePartnersIsMutable();
-          partners_.set(index, builderForValue.build());
+        if (dataSupplierBuilder_ == null) {
+          ensureDataSupplierIsMutable();
+          dataSupplier_.set(index, builderForValue.build());
           onChanged();
         } else {
-          partnersBuilder_.setMessage(index, builderForValue.build());
+          dataSupplierBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public Builder addPartners(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare value) {
-        if (partnersBuilder_ == null) {
+      public Builder addDataSupplier(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare value) {
+        if (dataSupplierBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensurePartnersIsMutable();
-          partners_.add(value);
+          ensureDataSupplierIsMutable();
+          dataSupplier_.add(value);
           onChanged();
         } else {
-          partnersBuilder_.addMessage(value);
+          dataSupplierBuilder_.addMessage(value);
         }
         return this;
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public Builder addPartners(
+      public Builder addDataSupplier(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare value) {
-        if (partnersBuilder_ == null) {
+        if (dataSupplierBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensurePartnersIsMutable();
-          partners_.add(index, value);
+          ensureDataSupplierIsMutable();
+          dataSupplier_.add(index, value);
           onChanged();
         } else {
-          partnersBuilder_.addMessage(index, value);
+          dataSupplierBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public Builder addPartners(
+      public Builder addDataSupplier(
           com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder builderForValue) {
-        if (partnersBuilder_ == null) {
-          ensurePartnersIsMutable();
-          partners_.add(builderForValue.build());
+        if (dataSupplierBuilder_ == null) {
+          ensureDataSupplierIsMutable();
+          dataSupplier_.add(builderForValue.build());
           onChanged();
         } else {
-          partnersBuilder_.addMessage(builderForValue.build());
+          dataSupplierBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public Builder addPartners(
+      public Builder addDataSupplier(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder builderForValue) {
-        if (partnersBuilder_ == null) {
-          ensurePartnersIsMutable();
-          partners_.add(index, builderForValue.build());
+        if (dataSupplierBuilder_ == null) {
+          ensureDataSupplierIsMutable();
+          dataSupplier_.add(index, builderForValue.build());
           onChanged();
         } else {
-          partnersBuilder_.addMessage(index, builderForValue.build());
+          dataSupplierBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public Builder addAllPartners(
+      public Builder addAllDataSupplier(
           java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> values) {
-        if (partnersBuilder_ == null) {
-          ensurePartnersIsMutable();
+        if (dataSupplierBuilder_ == null) {
+          ensureDataSupplierIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, partners_);
+              values, dataSupplier_);
           onChanged();
         } else {
-          partnersBuilder_.addAllMessages(values);
+          dataSupplierBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public Builder clearPartners() {
-        if (partnersBuilder_ == null) {
-          partners_ = java.util.Collections.emptyList();
+      public Builder clearDataSupplier() {
+        if (dataSupplierBuilder_ == null) {
+          dataSupplier_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
-          partnersBuilder_.clear();
+          dataSupplierBuilder_.clear();
         }
         return this;
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public Builder removePartners(int index) {
-        if (partnersBuilder_ == null) {
-          ensurePartnersIsMutable();
-          partners_.remove(index);
+      public Builder removeDataSupplier(int index) {
+        if (dataSupplierBuilder_ == null) {
+          ensureDataSupplierIsMutable();
+          dataSupplier_.remove(index);
           onChanged();
         } else {
-          partnersBuilder_.remove(index);
+          dataSupplierBuilder_.remove(index);
         }
         return this;
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder getPartnersBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder getDataSupplierBuilder(
           int index) {
-        return getPartnersFieldBuilder().getBuilder(index);
+        return getDataSupplierFieldBuilder().getBuilder(index);
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getPartnersOrBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getDataSupplierOrBuilder(
           int index) {
-        if (partnersBuilder_ == null) {
-          return partners_.get(index);  } else {
-          return partnersBuilder_.getMessageOrBuilder(index);
+        if (dataSupplierBuilder_ == null) {
+          return dataSupplier_.get(index);  } else {
+          return dataSupplierBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
       public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> 
-           getPartnersOrBuilderList() {
-        if (partnersBuilder_ != null) {
-          return partnersBuilder_.getMessageOrBuilderList();
+           getDataSupplierOrBuilderList() {
+        if (dataSupplierBuilder_ != null) {
+          return dataSupplierBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(partners_);
+          return java.util.Collections.unmodifiableList(dataSupplier_);
         }
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder addPartnersBuilder() {
-        return getPartnersFieldBuilder().addBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder addDataSupplierBuilder() {
+        return getDataSupplierFieldBuilder().addBuilder(
             com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.getDefaultInstance());
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder addPartnersBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder addDataSupplierBuilder(
           int index) {
-        return getPartnersFieldBuilder().addBuilder(
+        return getDataSupplierFieldBuilder().addBuilder(
             index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.getDefaultInstance());
       }
       /**
        * <pre>
-       *  任务参与方
+       *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare partners = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder> 
-           getPartnersBuilderList() {
-        return getPartnersFieldBuilder().getBuilderList();
+           getDataSupplierBuilderList() {
+        return getDataSupplierFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
           com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> 
-          getPartnersFieldBuilder() {
-        if (partnersBuilder_ == null) {
-          partnersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+          getDataSupplierFieldBuilder() {
+        if (dataSupplierBuilder_ == null) {
+          dataSupplierBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder>(
-                  partners_,
+                  dataSupplier_,
                   ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
-          partners_ = null;
+          dataSupplier_ = null;
         }
-        return partnersBuilder_;
+        return dataSupplierBuilder_;
       }
 
       private com.google.protobuf.LazyStringList powerPartyIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -20092,33 +20092,33 @@ public final class TaskRpcMessage {
       "\022\020\n\010task_ids\030\001 \003(\t\"g\n\030GetTaskEventListRe" +
       "sponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022.\n\017t" +
       "ask_event_list\030\003 \003(\0132\025.rpcapi.TaskEventS" +
-      "how\"\376\002\n\031PublishTaskDeclareRequest\022\021\n\ttas" +
+      "how\"\203\003\n\031PublishTaskDeclareRequest\022\021\n\ttas" +
       "k_name\030\001 \001(\t\0223\n\005owner\030\002 \001(\0132$.rpcapi.Tas" +
-      "kOrganizationIdentityInfo\0221\n\010partners\030\003 " +
-      "\003(\0132\037.rpcapi.TaskDataSupplierDeclare\022\027\n\017" +
-      "power_party_ids\030\004 \003(\t\0224\n\treceivers\030\005 \003(\013" +
-      "2!.rpcapi.TaskResultReceiverDeclare\0228\n\016o" +
-      "peration_cost\030\006 \001(\0132 .rpcapi.TaskOperati" +
-      "onCostDeclare\022\036\n\026calculate_contractcode\030" +
-      "\007 \001(\t\022\036\n\026datasplit_contractcode\030\010 \001(\t\022\035\n" +
-      "\025contract_extra_params\030\t \001(\t\"J\n\032PublishT" +
-      "askDeclareResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003ms" +
-      "g\030\002 \001(\t\022\017\n\007task_id\030\003 \001(\t2\232\004\n\013TaskService" +
-      "\022p\n\021GetTaskDetailList\022\026.rpcapi.EmptyGetP" +
-      "arams\032!.rpcapi.GetTaskDetailListResponse" +
-      "\" \202\323\344\223\002\032\"\025/carrier/v1/task/list:\001*\022|\n\020Ge" +
-      "tTaskEventList\022\037.rpcapi.GetTaskEventList" +
-      "Request\032 .rpcapi.GetTaskEventListRespons" +
-      "e\"%\202\323\344\223\002\037\"\032/carrier/v1/task/eventList:\001*" +
-      "\022\227\001\n\031GetTaskEventListByTaskIds\022(.rpcapi." +
-      "GetTaskEventListByTaskIdsRequest\032 .rpcap" +
-      "i.GetTaskEventListResponse\".\202\323\344\223\002(\"#/car" +
-      "rier/v1/task/eventListByTaskIds:\001*\022\200\001\n\022P" +
-      "ublishTaskDeclare\022!.rpcapi.PublishTaskDe" +
-      "clareRequest\032\".rpcapi.PublishTaskDeclare" +
-      "Response\"#\202\323\344\223\002\035\"\030/carrier/v1/task/publi" +
-      "sh:\001*B:\n(com.platon.rosettanet.admin.grp" +
-      "c.serviceB\016TaskRpcMessageb\006proto3"
+      "kOrganizationIdentityInfo\0226\n\rdata_suppli" +
+      "er\030\003 \003(\0132\037.rpcapi.TaskDataSupplierDeclar" +
+      "e\022\027\n\017power_party_ids\030\004 \003(\t\0224\n\treceivers\030" +
+      "\005 \003(\0132!.rpcapi.TaskResultReceiverDeclare" +
+      "\0228\n\016operation_cost\030\006 \001(\0132 .rpcapi.TaskOp" +
+      "erationCostDeclare\022\036\n\026calculate_contract" +
+      "code\030\007 \001(\t\022\036\n\026datasplit_contractcode\030\010 \001" +
+      "(\t\022\035\n\025contract_extra_params\030\t \001(\t\"J\n\032Pub" +
+      "lishTaskDeclareResponse\022\016\n\006status\030\001 \001(\005\022" +
+      "\013\n\003msg\030\002 \001(\t\022\017\n\007task_id\030\003 \001(\t2\232\004\n\013TaskSe" +
+      "rvice\022p\n\021GetTaskDetailList\022\026.rpcapi.Empt" +
+      "yGetParams\032!.rpcapi.GetTaskDetailListRes" +
+      "ponse\" \202\323\344\223\002\032\"\025/carrier/v1/task/list:\001*\022" +
+      "|\n\020GetTaskEventList\022\037.rpcapi.GetTaskEven" +
+      "tListRequest\032 .rpcapi.GetTaskEventListRe" +
+      "sponse\"%\202\323\344\223\002\037\"\032/carrier/v1/task/eventLi" +
+      "st:\001*\022\227\001\n\031GetTaskEventListByTaskIds\022(.rp" +
+      "capi.GetTaskEventListByTaskIdsRequest\032 ." +
+      "rpcapi.GetTaskEventListResponse\".\202\323\344\223\002(\"" +
+      "#/carrier/v1/task/eventListByTaskIds:\001*\022" +
+      "\200\001\n\022PublishTaskDeclare\022!.rpcapi.PublishT" +
+      "askDeclareRequest\032\".rpcapi.PublishTaskDe" +
+      "clareResponse\"#\202\323\344\223\002\035\"\030/carrier/v1/task/" +
+      "publish:\001*B:\n(com.platon.rosettanet.admi" +
+      "n.grpc.serviceB\016TaskRpcMessageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -20215,7 +20215,7 @@ public final class TaskRpcMessage {
     internal_static_rpcapi_PublishTaskDeclareRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_PublishTaskDeclareRequest_descriptor,
-        new java.lang.String[] { "TaskName", "Owner", "Partners", "PowerPartyIds", "Receivers", "OperationCost", "CalculateContractcode", "DatasplitContractcode", "ContractExtraParams", });
+        new java.lang.String[] { "TaskName", "Owner", "DataSupplier", "PowerPartyIds", "Receivers", "OperationCost", "CalculateContractcode", "DatasplitContractcode", "ContractExtraParams", });
     internal_static_rpcapi_PublishTaskDeclareResponse_descriptor =
       getDescriptor().getMessageTypes().get(15);
     internal_static_rpcapi_PublishTaskDeclareResponse_fieldAccessorTable = new

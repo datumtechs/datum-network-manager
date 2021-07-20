@@ -55,7 +55,7 @@ message YarnRegisteredPeerDetail {
     string external_ip   = 3;                   // 计算or数据服务的外网 ip, 给 多方协作任务用
     string internal_port = 4;                 // 计算or数据服务的内网 port, 给 管理台用
     string external_port = 5;                 // 计算or数据服务的外网 port, 给 多方协作任务用
-    int32  conn_state    = 6;                    // 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力为启用<计算服务>; 2: 算力启用<计算服务>; 3: 算力被占用<计算服务算力正在被任务占用>)
+    int32  conn_state    = 6;                    // 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用<计算服务>; 2: 算力被占用<计算服务算力正在被任务占用>)
 }
 
 message SeedPeer {

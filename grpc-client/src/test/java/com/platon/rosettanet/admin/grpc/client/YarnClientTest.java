@@ -43,7 +43,11 @@ public class YarnClientTest extends BaseClientTest{
 
     @Test
     public void testGetAvailableDataNode(){
-        YarnAvailableDataNodeResp resp = yarnClient.getAvailableDataNode(1000000000000000000L, "csv");
+//        YarnAvailableDataNodeResp resp = yarnClient.getAvailableDataNode(1000000000000000000L, "csv");
+//        log.info(JSONUtil.toJsonStr(resp));
+
+        long size = 10*1024*1024*1024*1024*1024;
+        YarnAvailableDataNodeResp resp = yarnClient.getAvailableDataNode(size, "csv");
         log.info(JSONUtil.toJsonStr(resp));
     }
 

@@ -17,12 +17,12 @@ message ResourceUsedDetailShow {
     uint64 used_bandwidth  = 7;        // 服务的已用带宽数 (单位: bps)
 }
 
-// 算力的基本仨元素
-message PurePower {
-    uint64 mem       = 1;             // 系统的总内存 (单位: byte)
-    uint64 processor = 2;       // 系统的总核数 (单位: 个)
-    uint64 bandwidth = 3;       // 系统的总带宽 (单位: bps)
-}
+//// 算力的基本仨元素
+//message PurePower {
+//    uint64 mem       = 1;             // 系统的总内存 (单位: byte)
+//    uint64 processor = 2;       // 系统的总核数 (单位: 个)
+//    uint64 bandwidth = 3;       // 系统的总带宽 (单位: bps)
+//}
 
 // 组织(节点)唯一标识抽象
 message OrganizationIdentityInfo  {

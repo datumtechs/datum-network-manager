@@ -116,13 +116,14 @@ message GetPowerTotalDetailResponse {
     PowerTotalDetail         power = 2;                  // 算力总详细
 }
 message GetPowerTotalDetailListResponse {
-    repeated GetPowerTotalDetailResponse power_list = 1;  // 全网的算力总详情列表
+    int32                                status     = 1;                         // 响应码
+    string                               msg        = 2;
+    repeated GetPowerTotalDetailResponse power_list = 3;  // 全网的算力总详情列表
 }
 
+// 底层自己会拿到算力
 message PublishPowerRequest {
-    OrganizationIdentityInfo owner       = 1;           // 算力的拥有者
-    string                   job_node_id = 2;     // 计算服务id (节点内部的)
-    PurePower                information = 3;     // 发布的算力信息
+    string job_node_id = 1;     // 计算服务id (节点内部的)
 }
 
 message GetPowerSingleDetailResponse {
@@ -130,7 +131,9 @@ message GetPowerSingleDetailResponse {
     PowerSingleDetail        power = 2;                  // 算力单个摘要
 }
 message GetPowerSingleDetailListResponse {
-    repeated GetPowerSingleDetailResponse power_list = 1;  // 单个节点的算力总摘要列表
+    int32                                 status     = 1;                         // 响应码
+    string                                msg        = 2;
+    repeated GetPowerSingleDetailResponse power_list = 3;  // 单个节点的算力总摘要列表
 }
 
 message PublishPowerResponse {
@@ -140,8 +143,7 @@ message PublishPowerResponse {
 }
 
 message RevokePowerRequest {
-    OrganizationIdentityInfo owner    = 1;           // 算力的拥有者
-    string                   power_id = 2;        // 算力id
+    string power_id = 1;        // 算力id
 }
 
 // ## 算力 相关接口

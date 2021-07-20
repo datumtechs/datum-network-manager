@@ -150,14 +150,14 @@ message GetTaskEventListResponse {
 
 message PublishTaskDeclareRequest {
     string                             task_name              = 1;                        //  任务名称
-    TaskOrganizationIdentityInfo       owner                  = 2;                            //  任务发起者
-    repeated TaskDataSupplierDeclare   partners               = 3;                         //  任务参与方
+    TaskOrganizationIdentityInfo       owner                  = 2;                            //  任务发起者 组织信息
+    repeated TaskDataSupplierDeclare   data_supplier          = 3;                    //  任务的数据提供方, 包含发起者和参与方
     repeated string                    power_party_ids        = 4;                  //  算力提供方未来要用的 标签
     repeated TaskResultReceiverDeclare receivers              = 5;                        //  任务结果接受者
     TaskOperationCostDeclare           operation_cost         = 6;                   //  任务所需资源声明
     string                             calculate_contractcode = 7;           //  计算合约
     string                             datasplit_contractcode = 8;           //  数据分片合约
-    string                             contract_extra_params  = 9;           //  合约调用的额外可变入参 (json 字符串, 根据算法来)
+    string                             contract_extra_params  = 9;            //  合约调用的额外可变入参 (json 字符串, 根据算法来)
 }
 
 message PublishTaskDeclareResponse {

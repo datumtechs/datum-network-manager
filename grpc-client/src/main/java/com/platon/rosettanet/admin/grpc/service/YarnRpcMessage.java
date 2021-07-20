@@ -5673,7 +5673,7 @@ public final class YarnRpcMessage {
 
     /**
      * <pre>
-     * 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力为启用&lt;计算服务&gt;; 2: 算力启用&lt;计算服务&gt;; 3: 算力被占用&lt;计算服务算力正在被任务占用&gt;)
+     * 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用&lt;计算服务&gt;; 2: 算力被占用&lt;计算服务算力正在被任务占用&gt;)
      * </pre>
      *
      * <code>int32 conn_state = 6;</code>
@@ -6032,7 +6032,7 @@ public final class YarnRpcMessage {
     private int connState_;
     /**
      * <pre>
-     * 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力为启用&lt;计算服务&gt;; 2: 算力启用&lt;计算服务&gt;; 3: 算力被占用&lt;计算服务算力正在被任务占用&gt;)
+     * 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用&lt;计算服务&gt;; 2: 算力被占用&lt;计算服务算力正在被任务占用&gt;)
      * </pre>
      *
      * <code>int32 conn_state = 6;</code>
@@ -6913,7 +6913,7 @@ public final class YarnRpcMessage {
       private int connState_ ;
       /**
        * <pre>
-       * 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力为启用&lt;计算服务&gt;; 2: 算力启用&lt;计算服务&gt;; 3: 算力被占用&lt;计算服务算力正在被任务占用&gt;)
+       * 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用&lt;计算服务&gt;; 2: 算力被占用&lt;计算服务算力正在被任务占用&gt;)
        * </pre>
        *
        * <code>int32 conn_state = 6;</code>
@@ -6925,7 +6925,7 @@ public final class YarnRpcMessage {
       }
       /**
        * <pre>
-       * 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力为启用&lt;计算服务&gt;; 2: 算力启用&lt;计算服务&gt;; 3: 算力被占用&lt;计算服务算力正在被任务占用&gt;)
+       * 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用&lt;计算服务&gt;; 2: 算力被占用&lt;计算服务算力正在被任务占用&gt;)
        * </pre>
        *
        * <code>int32 conn_state = 6;</code>
@@ -6940,7 +6940,7 @@ public final class YarnRpcMessage {
       }
       /**
        * <pre>
-       * 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力为启用&lt;计算服务&gt;; 2: 算力启用&lt;计算服务&gt;; 3: 算力被占用&lt;计算服务算力正在被任务占用&gt;)
+       * 计算or数据服务的状态 (-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用&lt;计算服务&gt;; 2: 算力被占用&lt;计算服务算力正在被任务占用&gt;)
        * </pre>
        *
        * <code>int32 conn_state = 6;</code>

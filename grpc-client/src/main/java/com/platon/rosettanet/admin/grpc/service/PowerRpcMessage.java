@@ -6792,10 +6792,32 @@ public final class PowerRpcMessage {
 
     /**
      * <pre>
+     * 响应码
+     * </pre>
+     *
+     * <code>int32 status = 1;</code>
+     * @return The status.
+     */
+    int getStatus();
+
+    /**
+     * <code>string msg = 2;</code>
+     * @return The msg.
+     */
+    java.lang.String getMsg();
+    /**
+     * <code>string msg = 2;</code>
+     * @return The bytes for msg.
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
+
+    /**
+     * <pre>
      * 全网的算力总详情列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
      */
     java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse> 
         getPowerListList();
@@ -6804,7 +6826,7 @@ public final class PowerRpcMessage {
      * 全网的算力总详情列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
      */
     com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse getPowerList(int index);
     /**
@@ -6812,7 +6834,7 @@ public final class PowerRpcMessage {
      * 全网的算力总详情列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
      */
     int getPowerListCount();
     /**
@@ -6820,7 +6842,7 @@ public final class PowerRpcMessage {
      * 全网的算力总详情列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
      */
     java.util.List<? extends com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponseOrBuilder> 
         getPowerListOrBuilderList();
@@ -6829,7 +6851,7 @@ public final class PowerRpcMessage {
      * 全网的算力总详情列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
      */
     com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponseOrBuilder getPowerListOrBuilder(
         int index);
@@ -6847,6 +6869,7 @@ public final class PowerRpcMessage {
       super(builder);
     }
     private GetPowerTotalDetailListResponse() {
+      msg_ = "";
       powerList_ = java.util.Collections.emptyList();
     }
 
@@ -6881,7 +6904,18 @@ public final class PowerRpcMessage {
             case 0:
               done = true;
               break;
-            case 10: {
+            case 8: {
+
+              status_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              msg_ = s;
+              break;
+            }
+            case 26: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 powerList_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse>();
                 mutable_bitField0_ |= 0x00000001;
@@ -6925,14 +6959,67 @@ public final class PowerRpcMessage {
               com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse.class, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse.Builder.class);
     }
 
-    public static final int POWER_LIST_FIELD_NUMBER = 1;
+    public static final int STATUS_FIELD_NUMBER = 1;
+    private int status_;
+    /**
+     * <pre>
+     * 响应码
+     * </pre>
+     *
+     * <code>int32 status = 1;</code>
+     * @return The status.
+     */
+    @java.lang.Override
+    public int getStatus() {
+      return status_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 2;
+    private volatile java.lang.Object msg_;
+    /**
+     * <code>string msg = 2;</code>
+     * @return The msg.
+     */
+    @java.lang.Override
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        msg_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string msg = 2;</code>
+     * @return The bytes for msg.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int POWER_LIST_FIELD_NUMBER = 3;
     private java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse> powerList_;
     /**
      * <pre>
      * 全网的算力总详情列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
      */
     @java.lang.Override
     public java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse> getPowerListList() {
@@ -6943,7 +7030,7 @@ public final class PowerRpcMessage {
      * 全网的算力总详情列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponseOrBuilder> 
@@ -6955,7 +7042,7 @@ public final class PowerRpcMessage {
      * 全网的算力总详情列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
      */
     @java.lang.Override
     public int getPowerListCount() {
@@ -6966,7 +7053,7 @@ public final class PowerRpcMessage {
      * 全网的算力总详情列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse getPowerList(int index) {
@@ -6977,7 +7064,7 @@ public final class PowerRpcMessage {
      * 全网的算力总详情列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponseOrBuilder getPowerListOrBuilder(
@@ -6999,8 +7086,14 @@ public final class PowerRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (status_ != 0) {
+        output.writeInt32(1, status_);
+      }
+      if (!getMsgBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, msg_);
+      }
       for (int i = 0; i < powerList_.size(); i++) {
-        output.writeMessage(1, powerList_.get(i));
+        output.writeMessage(3, powerList_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -7011,9 +7104,16 @@ public final class PowerRpcMessage {
       if (size != -1) return size;
 
       size = 0;
+      if (status_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, status_);
+      }
+      if (!getMsgBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, msg_);
+      }
       for (int i = 0; i < powerList_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, powerList_.get(i));
+          .computeMessageSize(3, powerList_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -7030,6 +7130,10 @@ public final class PowerRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse other = (com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse) obj;
 
+      if (getStatus()
+          != other.getStatus()) return false;
+      if (!getMsg()
+          .equals(other.getMsg())) return false;
       if (!getPowerListList()
           .equals(other.getPowerListList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -7043,6 +7147,10 @@ public final class PowerRpcMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + STATUS_FIELD_NUMBER;
+      hash = (53 * hash) + getStatus();
+      hash = (37 * hash) + MSG_FIELD_NUMBER;
+      hash = (53 * hash) + getMsg().hashCode();
       if (getPowerListCount() > 0) {
         hash = (37 * hash) + POWER_LIST_FIELD_NUMBER;
         hash = (53 * hash) + getPowerListList().hashCode();
@@ -7181,6 +7289,10 @@ public final class PowerRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        status_ = 0;
+
+        msg_ = "";
+
         if (powerListBuilder_ == null) {
           powerList_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
@@ -7214,6 +7326,8 @@ public final class PowerRpcMessage {
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse buildPartial() {
         com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse result = new com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse(this);
         int from_bitField0_ = bitField0_;
+        result.status_ = status_;
+        result.msg_ = msg_;
         if (powerListBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             powerList_ = java.util.Collections.unmodifiableList(powerList_);
@@ -7271,6 +7385,13 @@ public final class PowerRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse other) {
         if (other == com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse.getDefaultInstance()) return this;
+        if (other.getStatus() != 0) {
+          setStatus(other.getStatus());
+        }
+        if (!other.getMsg().isEmpty()) {
+          msg_ = other.msg_;
+          onChanged();
+        }
         if (powerListBuilder_ == null) {
           if (!other.powerList_.isEmpty()) {
             if (powerList_.isEmpty()) {
@@ -7327,6 +7448,125 @@ public final class PowerRpcMessage {
       }
       private int bitField0_;
 
+      private int status_ ;
+      /**
+       * <pre>
+       * 响应码
+       * </pre>
+       *
+       * <code>int32 status = 1;</code>
+       * @return The status.
+       */
+      @java.lang.Override
+      public int getStatus() {
+        return status_;
+      }
+      /**
+       * <pre>
+       * 响应码
+       * </pre>
+       *
+       * <code>int32 status = 1;</code>
+       * @param value The status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatus(int value) {
+        
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 响应码
+       * </pre>
+       *
+       * <code>int32 status = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStatus() {
+        
+        status_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <code>string msg = 2;</code>
+       * @return The msg.
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          msg_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string msg = 2;</code>
+       * @return The bytes for msg.
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string msg = 2;</code>
+       * @param value The msg to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string msg = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMsg() {
+        
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string msg = 2;</code>
+       * @param value The bytes for msg to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse> powerList_ =
         java.util.Collections.emptyList();
       private void ensurePowerListIsMutable() {
@@ -7344,7 +7584,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse> getPowerListList() {
         if (powerListBuilder_ == null) {
@@ -7358,7 +7598,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public int getPowerListCount() {
         if (powerListBuilder_ == null) {
@@ -7372,7 +7612,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse getPowerList(int index) {
         if (powerListBuilder_ == null) {
@@ -7386,7 +7626,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public Builder setPowerList(
           int index, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse value) {
@@ -7407,7 +7647,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public Builder setPowerList(
           int index, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse.Builder builderForValue) {
@@ -7425,7 +7665,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public Builder addPowerList(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse value) {
         if (powerListBuilder_ == null) {
@@ -7445,7 +7685,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public Builder addPowerList(
           int index, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse value) {
@@ -7466,7 +7706,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public Builder addPowerList(
           com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse.Builder builderForValue) {
@@ -7484,7 +7724,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public Builder addPowerList(
           int index, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse.Builder builderForValue) {
@@ -7502,7 +7742,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public Builder addAllPowerList(
           java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse> values) {
@@ -7521,7 +7761,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public Builder clearPowerList() {
         if (powerListBuilder_ == null) {
@@ -7538,7 +7778,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public Builder removePowerList(int index) {
         if (powerListBuilder_ == null) {
@@ -7555,7 +7795,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse.Builder getPowerListBuilder(
           int index) {
@@ -7566,7 +7806,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponseOrBuilder getPowerListOrBuilder(
           int index) {
@@ -7580,7 +7820,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponseOrBuilder> 
            getPowerListOrBuilderList() {
@@ -7595,7 +7835,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse.Builder addPowerListBuilder() {
         return getPowerListFieldBuilder().addBuilder(
@@ -7606,7 +7846,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse.Builder addPowerListBuilder(
           int index) {
@@ -7618,7 +7858,7 @@ public final class PowerRpcMessage {
        * 全网的算力总详情列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerTotalDetailResponse power_list = 3;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailResponse.Builder> 
            getPowerListBuilderList() {
@@ -7697,37 +7937,10 @@ public final class PowerRpcMessage {
 
     /**
      * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return Whether the owner field is set.
-     */
-    boolean hasOwner();
-    /**
-     * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return The owner.
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner();
-    /**
-     * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder();
-
-    /**
-     * <pre>
      * 计算服务id (节点内部的)
      * </pre>
      *
-     * <code>string job_node_id = 2;</code>
+     * <code>string job_node_id = 1;</code>
      * @return The jobNodeId.
      */
     java.lang.String getJobNodeId();
@@ -7736,40 +7949,17 @@ public final class PowerRpcMessage {
      * 计算服务id (节点内部的)
      * </pre>
      *
-     * <code>string job_node_id = 2;</code>
+     * <code>string job_node_id = 1;</code>
      * @return The bytes for jobNodeId.
      */
     com.google.protobuf.ByteString
         getJobNodeIdBytes();
-
-    /**
-     * <pre>
-     * 发布的算力信息
-     * </pre>
-     *
-     * <code>.rpcapi.PurePower information = 3;</code>
-     * @return Whether the information field is set.
-     */
-    boolean hasInformation();
-    /**
-     * <pre>
-     * 发布的算力信息
-     * </pre>
-     *
-     * <code>.rpcapi.PurePower information = 3;</code>
-     * @return The information.
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower getInformation();
-    /**
-     * <pre>
-     * 发布的算力信息
-     * </pre>
-     *
-     * <code>.rpcapi.PurePower information = 3;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePowerOrBuilder getInformationOrBuilder();
   }
   /**
+   * <pre>
+   * 底层自己会拿到算力
+   * </pre>
+   *
    * Protobuf type {@code rpcapi.PublishPowerRequest}
    */
   public static final class PublishPowerRequest extends
@@ -7816,35 +8006,9 @@ public final class PowerRpcMessage {
               done = true;
               break;
             case 10: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder subBuilder = null;
-              if (owner_ != null) {
-                subBuilder = owner_.toBuilder();
-              }
-              owner_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(owner_);
-                owner_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
               jobNodeId_ = s;
-              break;
-            }
-            case 26: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.Builder subBuilder = null;
-              if (information_ != null) {
-                subBuilder = information_.toBuilder();
-              }
-              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(information_);
-                information_ = subBuilder.buildPartial();
-              }
-
               break;
             }
             default: {
@@ -7879,52 +8043,14 @@ public final class PowerRpcMessage {
               com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest.class, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest.Builder.class);
     }
 
-    public static final int OWNER_FIELD_NUMBER = 1;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo owner_;
-    /**
-     * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return Whether the owner field is set.
-     */
-    @java.lang.Override
-    public boolean hasOwner() {
-      return owner_ != null;
-    }
-    /**
-     * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return The owner.
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner() {
-      return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-    }
-    /**
-     * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-      return getOwner();
-    }
-
-    public static final int JOB_NODE_ID_FIELD_NUMBER = 2;
+    public static final int JOB_NODE_ID_FIELD_NUMBER = 1;
     private volatile java.lang.Object jobNodeId_;
     /**
      * <pre>
      * 计算服务id (节点内部的)
      * </pre>
      *
-     * <code>string job_node_id = 2;</code>
+     * <code>string job_node_id = 1;</code>
      * @return The jobNodeId.
      */
     @java.lang.Override
@@ -7945,7 +8071,7 @@ public final class PowerRpcMessage {
      * 计算服务id (节点内部的)
      * </pre>
      *
-     * <code>string job_node_id = 2;</code>
+     * <code>string job_node_id = 1;</code>
      * @return The bytes for jobNodeId.
      */
     @java.lang.Override
@@ -7963,44 +8089,6 @@ public final class PowerRpcMessage {
       }
     }
 
-    public static final int INFORMATION_FIELD_NUMBER = 3;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower information_;
-    /**
-     * <pre>
-     * 发布的算力信息
-     * </pre>
-     *
-     * <code>.rpcapi.PurePower information = 3;</code>
-     * @return Whether the information field is set.
-     */
-    @java.lang.Override
-    public boolean hasInformation() {
-      return information_ != null;
-    }
-    /**
-     * <pre>
-     * 发布的算力信息
-     * </pre>
-     *
-     * <code>.rpcapi.PurePower information = 3;</code>
-     * @return The information.
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower getInformation() {
-      return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.getDefaultInstance() : information_;
-    }
-    /**
-     * <pre>
-     * 发布的算力信息
-     * </pre>
-     *
-     * <code>.rpcapi.PurePower information = 3;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePowerOrBuilder getInformationOrBuilder() {
-      return getInformation();
-    }
-
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -8015,14 +8103,8 @@ public final class PowerRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (owner_ != null) {
-        output.writeMessage(1, getOwner());
-      }
       if (!getJobNodeIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, jobNodeId_);
-      }
-      if (information_ != null) {
-        output.writeMessage(3, getInformation());
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, jobNodeId_);
       }
       unknownFields.writeTo(output);
     }
@@ -8033,16 +8115,8 @@ public final class PowerRpcMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (owner_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getOwner());
-      }
       if (!getJobNodeIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, jobNodeId_);
-      }
-      if (information_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getInformation());
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, jobNodeId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8059,18 +8133,8 @@ public final class PowerRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest other = (com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest) obj;
 
-      if (hasOwner() != other.hasOwner()) return false;
-      if (hasOwner()) {
-        if (!getOwner()
-            .equals(other.getOwner())) return false;
-      }
       if (!getJobNodeId()
           .equals(other.getJobNodeId())) return false;
-      if (hasInformation() != other.hasInformation()) return false;
-      if (hasInformation()) {
-        if (!getInformation()
-            .equals(other.getInformation())) return false;
-      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -8082,16 +8146,8 @@ public final class PowerRpcMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasOwner()) {
-        hash = (37 * hash) + OWNER_FIELD_NUMBER;
-        hash = (53 * hash) + getOwner().hashCode();
-      }
       hash = (37 * hash) + JOB_NODE_ID_FIELD_NUMBER;
       hash = (53 * hash) + getJobNodeId().hashCode();
-      if (hasInformation()) {
-        hash = (37 * hash) + INFORMATION_FIELD_NUMBER;
-        hash = (53 * hash) + getInformation().hashCode();
-      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -8188,6 +8244,10 @@ public final class PowerRpcMessage {
       return builder;
     }
     /**
+     * <pre>
+     * 底层自己会拿到算力
+     * </pre>
+     *
      * Protobuf type {@code rpcapi.PublishPowerRequest}
      */
     public static final class Builder extends
@@ -8225,20 +8285,8 @@ public final class PowerRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (ownerBuilder_ == null) {
-          owner_ = null;
-        } else {
-          owner_ = null;
-          ownerBuilder_ = null;
-        }
         jobNodeId_ = "";
 
-        if (informationBuilder_ == null) {
-          information_ = null;
-        } else {
-          information_ = null;
-          informationBuilder_ = null;
-        }
         return this;
       }
 
@@ -8265,17 +8313,7 @@ public final class PowerRpcMessage {
       @java.lang.Override
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest buildPartial() {
         com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest result = new com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest(this);
-        if (ownerBuilder_ == null) {
-          result.owner_ = owner_;
-        } else {
-          result.owner_ = ownerBuilder_.build();
-        }
         result.jobNodeId_ = jobNodeId_;
-        if (informationBuilder_ == null) {
-          result.information_ = information_;
-        } else {
-          result.information_ = informationBuilder_.build();
-        }
         onBuilt();
         return result;
       }
@@ -8324,15 +8362,9 @@ public final class PowerRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest other) {
         if (other == com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.PublishPowerRequest.getDefaultInstance()) return this;
-        if (other.hasOwner()) {
-          mergeOwner(other.getOwner());
-        }
         if (!other.getJobNodeId().isEmpty()) {
           jobNodeId_ = other.jobNodeId_;
           onChanged();
-        }
-        if (other.hasInformation()) {
-          mergeInformation(other.getInformation());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -8363,168 +8395,13 @@ public final class PowerRpcMessage {
         return this;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo owner_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder> ownerBuilder_;
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       * @return Whether the owner field is set.
-       */
-      public boolean hasOwner() {
-        return ownerBuilder_ != null || owner_ != null;
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       * @return The owner.
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner() {
-        if (ownerBuilder_ == null) {
-          return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-        } else {
-          return ownerBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder setOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          owner_ = value;
-          onChanged();
-        } else {
-          ownerBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder setOwner(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder builderForValue) {
-        if (ownerBuilder_ == null) {
-          owner_ = builderForValue.build();
-          onChanged();
-        } else {
-          ownerBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder mergeOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
-          if (owner_ != null) {
-            owner_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.newBuilder(owner_).mergeFrom(value).buildPartial();
-          } else {
-            owner_ = value;
-          }
-          onChanged();
-        } else {
-          ownerBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder clearOwner() {
-        if (ownerBuilder_ == null) {
-          owner_ = null;
-          onChanged();
-        } else {
-          owner_ = null;
-          ownerBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder getOwnerBuilder() {
-        
-        onChanged();
-        return getOwnerFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-        if (ownerBuilder_ != null) {
-          return ownerBuilder_.getMessageOrBuilder();
-        } else {
-          return owner_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-        }
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder> 
-          getOwnerFieldBuilder() {
-        if (ownerBuilder_ == null) {
-          ownerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder>(
-                  getOwner(),
-                  getParentForChildren(),
-                  isClean());
-          owner_ = null;
-        }
-        return ownerBuilder_;
-      }
-
       private java.lang.Object jobNodeId_ = "";
       /**
        * <pre>
        * 计算服务id (节点内部的)
        * </pre>
        *
-       * <code>string job_node_id = 2;</code>
+       * <code>string job_node_id = 1;</code>
        * @return The jobNodeId.
        */
       public java.lang.String getJobNodeId() {
@@ -8544,7 +8421,7 @@ public final class PowerRpcMessage {
        * 计算服务id (节点内部的)
        * </pre>
        *
-       * <code>string job_node_id = 2;</code>
+       * <code>string job_node_id = 1;</code>
        * @return The bytes for jobNodeId.
        */
       public com.google.protobuf.ByteString
@@ -8565,7 +8442,7 @@ public final class PowerRpcMessage {
        * 计算服务id (节点内部的)
        * </pre>
        *
-       * <code>string job_node_id = 2;</code>
+       * <code>string job_node_id = 1;</code>
        * @param value The jobNodeId to set.
        * @return This builder for chaining.
        */
@@ -8584,7 +8461,7 @@ public final class PowerRpcMessage {
        * 计算服务id (节点内部的)
        * </pre>
        *
-       * <code>string job_node_id = 2;</code>
+       * <code>string job_node_id = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearJobNodeId() {
@@ -8598,7 +8475,7 @@ public final class PowerRpcMessage {
        * 计算服务id (节点内部的)
        * </pre>
        *
-       * <code>string job_node_id = 2;</code>
+       * <code>string job_node_id = 1;</code>
        * @param value The bytes for jobNodeId to set.
        * @return This builder for chaining.
        */
@@ -8612,161 +8489,6 @@ public final class PowerRpcMessage {
         jobNodeId_ = value;
         onChanged();
         return this;
-      }
-
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower information_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower, com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePowerOrBuilder> informationBuilder_;
-      /**
-       * <pre>
-       * 发布的算力信息
-       * </pre>
-       *
-       * <code>.rpcapi.PurePower information = 3;</code>
-       * @return Whether the information field is set.
-       */
-      public boolean hasInformation() {
-        return informationBuilder_ != null || information_ != null;
-      }
-      /**
-       * <pre>
-       * 发布的算力信息
-       * </pre>
-       *
-       * <code>.rpcapi.PurePower information = 3;</code>
-       * @return The information.
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower getInformation() {
-        if (informationBuilder_ == null) {
-          return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.getDefaultInstance() : information_;
-        } else {
-          return informationBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 发布的算力信息
-       * </pre>
-       *
-       * <code>.rpcapi.PurePower information = 3;</code>
-       */
-      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower value) {
-        if (informationBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          information_ = value;
-          onChanged();
-        } else {
-          informationBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 发布的算力信息
-       * </pre>
-       *
-       * <code>.rpcapi.PurePower information = 3;</code>
-       */
-      public Builder setInformation(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.Builder builderForValue) {
-        if (informationBuilder_ == null) {
-          information_ = builderForValue.build();
-          onChanged();
-        } else {
-          informationBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 发布的算力信息
-       * </pre>
-       *
-       * <code>.rpcapi.PurePower information = 3;</code>
-       */
-      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower value) {
-        if (informationBuilder_ == null) {
-          if (information_ != null) {
-            information_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.newBuilder(information_).mergeFrom(value).buildPartial();
-          } else {
-            information_ = value;
-          }
-          onChanged();
-        } else {
-          informationBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 发布的算力信息
-       * </pre>
-       *
-       * <code>.rpcapi.PurePower information = 3;</code>
-       */
-      public Builder clearInformation() {
-        if (informationBuilder_ == null) {
-          information_ = null;
-          onChanged();
-        } else {
-          information_ = null;
-          informationBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 发布的算力信息
-       * </pre>
-       *
-       * <code>.rpcapi.PurePower information = 3;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.Builder getInformationBuilder() {
-        
-        onChanged();
-        return getInformationFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 发布的算力信息
-       * </pre>
-       *
-       * <code>.rpcapi.PurePower information = 3;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePowerOrBuilder getInformationOrBuilder() {
-        if (informationBuilder_ != null) {
-          return informationBuilder_.getMessageOrBuilder();
-        } else {
-          return information_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.getDefaultInstance() : information_;
-        }
-      }
-      /**
-       * <pre>
-       * 发布的算力信息
-       * </pre>
-       *
-       * <code>.rpcapi.PurePower information = 3;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower, com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePowerOrBuilder> 
-          getInformationFieldBuilder() {
-        if (informationBuilder_ == null) {
-          informationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower, com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePower.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.PurePowerOrBuilder>(
-                  getInformation(),
-                  getParentForChildren(),
-                  isClean());
-          information_ = null;
-        }
-        return informationBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -9771,10 +9493,32 @@ public final class PowerRpcMessage {
 
     /**
      * <pre>
+     * 响应码
+     * </pre>
+     *
+     * <code>int32 status = 1;</code>
+     * @return The status.
+     */
+    int getStatus();
+
+    /**
+     * <code>string msg = 2;</code>
+     * @return The msg.
+     */
+    java.lang.String getMsg();
+    /**
+     * <code>string msg = 2;</code>
+     * @return The bytes for msg.
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
+
+    /**
+     * <pre>
      * 单个节点的算力总摘要列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
      */
     java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse> 
         getPowerListList();
@@ -9783,7 +9527,7 @@ public final class PowerRpcMessage {
      * 单个节点的算力总摘要列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
      */
     com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse getPowerList(int index);
     /**
@@ -9791,7 +9535,7 @@ public final class PowerRpcMessage {
      * 单个节点的算力总摘要列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
      */
     int getPowerListCount();
     /**
@@ -9799,7 +9543,7 @@ public final class PowerRpcMessage {
      * 单个节点的算力总摘要列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
      */
     java.util.List<? extends com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponseOrBuilder> 
         getPowerListOrBuilderList();
@@ -9808,7 +9552,7 @@ public final class PowerRpcMessage {
      * 单个节点的算力总摘要列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
      */
     com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponseOrBuilder getPowerListOrBuilder(
         int index);
@@ -9826,6 +9570,7 @@ public final class PowerRpcMessage {
       super(builder);
     }
     private GetPowerSingleDetailListResponse() {
+      msg_ = "";
       powerList_ = java.util.Collections.emptyList();
     }
 
@@ -9860,7 +9605,18 @@ public final class PowerRpcMessage {
             case 0:
               done = true;
               break;
-            case 10: {
+            case 8: {
+
+              status_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              msg_ = s;
+              break;
+            }
+            case 26: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 powerList_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse>();
                 mutable_bitField0_ |= 0x00000001;
@@ -9904,14 +9660,67 @@ public final class PowerRpcMessage {
               com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse.class, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse.Builder.class);
     }
 
-    public static final int POWER_LIST_FIELD_NUMBER = 1;
+    public static final int STATUS_FIELD_NUMBER = 1;
+    private int status_;
+    /**
+     * <pre>
+     * 响应码
+     * </pre>
+     *
+     * <code>int32 status = 1;</code>
+     * @return The status.
+     */
+    @java.lang.Override
+    public int getStatus() {
+      return status_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 2;
+    private volatile java.lang.Object msg_;
+    /**
+     * <code>string msg = 2;</code>
+     * @return The msg.
+     */
+    @java.lang.Override
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        msg_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string msg = 2;</code>
+     * @return The bytes for msg.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int POWER_LIST_FIELD_NUMBER = 3;
     private java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse> powerList_;
     /**
      * <pre>
      * 单个节点的算力总摘要列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
      */
     @java.lang.Override
     public java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse> getPowerListList() {
@@ -9922,7 +9731,7 @@ public final class PowerRpcMessage {
      * 单个节点的算力总摘要列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponseOrBuilder> 
@@ -9934,7 +9743,7 @@ public final class PowerRpcMessage {
      * 单个节点的算力总摘要列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
      */
     @java.lang.Override
     public int getPowerListCount() {
@@ -9945,7 +9754,7 @@ public final class PowerRpcMessage {
      * 单个节点的算力总摘要列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse getPowerList(int index) {
@@ -9956,7 +9765,7 @@ public final class PowerRpcMessage {
      * 单个节点的算力总摘要列表
      * </pre>
      *
-     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+     * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponseOrBuilder getPowerListOrBuilder(
@@ -9978,8 +9787,14 @@ public final class PowerRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (status_ != 0) {
+        output.writeInt32(1, status_);
+      }
+      if (!getMsgBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, msg_);
+      }
       for (int i = 0; i < powerList_.size(); i++) {
-        output.writeMessage(1, powerList_.get(i));
+        output.writeMessage(3, powerList_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -9990,9 +9805,16 @@ public final class PowerRpcMessage {
       if (size != -1) return size;
 
       size = 0;
+      if (status_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, status_);
+      }
+      if (!getMsgBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, msg_);
+      }
       for (int i = 0; i < powerList_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, powerList_.get(i));
+          .computeMessageSize(3, powerList_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -10009,6 +9831,10 @@ public final class PowerRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse other = (com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse) obj;
 
+      if (getStatus()
+          != other.getStatus()) return false;
+      if (!getMsg()
+          .equals(other.getMsg())) return false;
       if (!getPowerListList()
           .equals(other.getPowerListList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -10022,6 +9848,10 @@ public final class PowerRpcMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + STATUS_FIELD_NUMBER;
+      hash = (53 * hash) + getStatus();
+      hash = (37 * hash) + MSG_FIELD_NUMBER;
+      hash = (53 * hash) + getMsg().hashCode();
       if (getPowerListCount() > 0) {
         hash = (37 * hash) + POWER_LIST_FIELD_NUMBER;
         hash = (53 * hash) + getPowerListList().hashCode();
@@ -10160,6 +9990,10 @@ public final class PowerRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        status_ = 0;
+
+        msg_ = "";
+
         if (powerListBuilder_ == null) {
           powerList_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
@@ -10193,6 +10027,8 @@ public final class PowerRpcMessage {
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse buildPartial() {
         com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse result = new com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse(this);
         int from_bitField0_ = bitField0_;
+        result.status_ = status_;
+        result.msg_ = msg_;
         if (powerListBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             powerList_ = java.util.Collections.unmodifiableList(powerList_);
@@ -10250,6 +10086,13 @@ public final class PowerRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse other) {
         if (other == com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse.getDefaultInstance()) return this;
+        if (other.getStatus() != 0) {
+          setStatus(other.getStatus());
+        }
+        if (!other.getMsg().isEmpty()) {
+          msg_ = other.msg_;
+          onChanged();
+        }
         if (powerListBuilder_ == null) {
           if (!other.powerList_.isEmpty()) {
             if (powerList_.isEmpty()) {
@@ -10306,6 +10149,125 @@ public final class PowerRpcMessage {
       }
       private int bitField0_;
 
+      private int status_ ;
+      /**
+       * <pre>
+       * 响应码
+       * </pre>
+       *
+       * <code>int32 status = 1;</code>
+       * @return The status.
+       */
+      @java.lang.Override
+      public int getStatus() {
+        return status_;
+      }
+      /**
+       * <pre>
+       * 响应码
+       * </pre>
+       *
+       * <code>int32 status = 1;</code>
+       * @param value The status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatus(int value) {
+        
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 响应码
+       * </pre>
+       *
+       * <code>int32 status = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStatus() {
+        
+        status_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <code>string msg = 2;</code>
+       * @return The msg.
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          msg_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string msg = 2;</code>
+       * @return The bytes for msg.
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string msg = 2;</code>
+       * @param value The msg to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string msg = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMsg() {
+        
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string msg = 2;</code>
+       * @param value The bytes for msg to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse> powerList_ =
         java.util.Collections.emptyList();
       private void ensurePowerListIsMutable() {
@@ -10323,7 +10285,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse> getPowerListList() {
         if (powerListBuilder_ == null) {
@@ -10337,7 +10299,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public int getPowerListCount() {
         if (powerListBuilder_ == null) {
@@ -10351,7 +10313,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse getPowerList(int index) {
         if (powerListBuilder_ == null) {
@@ -10365,7 +10327,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public Builder setPowerList(
           int index, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse value) {
@@ -10386,7 +10348,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public Builder setPowerList(
           int index, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse.Builder builderForValue) {
@@ -10404,7 +10366,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public Builder addPowerList(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse value) {
         if (powerListBuilder_ == null) {
@@ -10424,7 +10386,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public Builder addPowerList(
           int index, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse value) {
@@ -10445,7 +10407,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public Builder addPowerList(
           com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse.Builder builderForValue) {
@@ -10463,7 +10425,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public Builder addPowerList(
           int index, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse.Builder builderForValue) {
@@ -10481,7 +10443,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public Builder addAllPowerList(
           java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse> values) {
@@ -10500,7 +10462,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public Builder clearPowerList() {
         if (powerListBuilder_ == null) {
@@ -10517,7 +10479,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public Builder removePowerList(int index) {
         if (powerListBuilder_ == null) {
@@ -10534,7 +10496,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse.Builder getPowerListBuilder(
           int index) {
@@ -10545,7 +10507,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponseOrBuilder getPowerListOrBuilder(
           int index) {
@@ -10559,7 +10521,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponseOrBuilder> 
            getPowerListOrBuilderList() {
@@ -10574,7 +10536,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse.Builder addPowerListBuilder() {
         return getPowerListFieldBuilder().addBuilder(
@@ -10585,7 +10547,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse.Builder addPowerListBuilder(
           int index) {
@@ -10597,7 +10559,7 @@ public final class PowerRpcMessage {
        * 单个节点的算力总摘要列表
        * </pre>
        *
-       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 1;</code>
+       * <code>repeated .rpcapi.GetPowerSingleDetailResponse power_list = 3;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailResponse.Builder> 
            getPowerListBuilderList() {
@@ -11556,37 +11518,10 @@ public final class PowerRpcMessage {
 
     /**
      * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return Whether the owner field is set.
-     */
-    boolean hasOwner();
-    /**
-     * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return The owner.
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner();
-    /**
-     * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder();
-
-    /**
-     * <pre>
      * 算力id
      * </pre>
      *
-     * <code>string power_id = 2;</code>
+     * <code>string power_id = 1;</code>
      * @return The powerId.
      */
     java.lang.String getPowerId();
@@ -11595,7 +11530,7 @@ public final class PowerRpcMessage {
      * 算力id
      * </pre>
      *
-     * <code>string power_id = 2;</code>
+     * <code>string power_id = 1;</code>
      * @return The bytes for powerId.
      */
     com.google.protobuf.ByteString
@@ -11648,19 +11583,6 @@ public final class PowerRpcMessage {
               done = true;
               break;
             case 10: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder subBuilder = null;
-              if (owner_ != null) {
-                subBuilder = owner_.toBuilder();
-              }
-              owner_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(owner_);
-                owner_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
               powerId_ = s;
@@ -11698,52 +11620,14 @@ public final class PowerRpcMessage {
               com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest.class, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest.Builder.class);
     }
 
-    public static final int OWNER_FIELD_NUMBER = 1;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo owner_;
-    /**
-     * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return Whether the owner field is set.
-     */
-    @java.lang.Override
-    public boolean hasOwner() {
-      return owner_ != null;
-    }
-    /**
-     * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return The owner.
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner() {
-      return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-    }
-    /**
-     * <pre>
-     * 算力的拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-      return getOwner();
-    }
-
-    public static final int POWER_ID_FIELD_NUMBER = 2;
+    public static final int POWER_ID_FIELD_NUMBER = 1;
     private volatile java.lang.Object powerId_;
     /**
      * <pre>
      * 算力id
      * </pre>
      *
-     * <code>string power_id = 2;</code>
+     * <code>string power_id = 1;</code>
      * @return The powerId.
      */
     @java.lang.Override
@@ -11764,7 +11648,7 @@ public final class PowerRpcMessage {
      * 算力id
      * </pre>
      *
-     * <code>string power_id = 2;</code>
+     * <code>string power_id = 1;</code>
      * @return The bytes for powerId.
      */
     @java.lang.Override
@@ -11796,11 +11680,8 @@ public final class PowerRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (owner_ != null) {
-        output.writeMessage(1, getOwner());
-      }
       if (!getPowerIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, powerId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, powerId_);
       }
       unknownFields.writeTo(output);
     }
@@ -11811,12 +11692,8 @@ public final class PowerRpcMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (owner_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getOwner());
-      }
       if (!getPowerIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, powerId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, powerId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -11833,11 +11710,6 @@ public final class PowerRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest other = (com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest) obj;
 
-      if (hasOwner() != other.hasOwner()) return false;
-      if (hasOwner()) {
-        if (!getOwner()
-            .equals(other.getOwner())) return false;
-      }
       if (!getPowerId()
           .equals(other.getPowerId())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -11851,10 +11723,6 @@ public final class PowerRpcMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasOwner()) {
-        hash = (37 * hash) + OWNER_FIELD_NUMBER;
-        hash = (53 * hash) + getOwner().hashCode();
-      }
       hash = (37 * hash) + POWER_ID_FIELD_NUMBER;
       hash = (53 * hash) + getPowerId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -11990,12 +11858,6 @@ public final class PowerRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (ownerBuilder_ == null) {
-          owner_ = null;
-        } else {
-          owner_ = null;
-          ownerBuilder_ = null;
-        }
         powerId_ = "";
 
         return this;
@@ -12024,11 +11886,6 @@ public final class PowerRpcMessage {
       @java.lang.Override
       public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest buildPartial() {
         com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest result = new com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest(this);
-        if (ownerBuilder_ == null) {
-          result.owner_ = owner_;
-        } else {
-          result.owner_ = ownerBuilder_.build();
-        }
         result.powerId_ = powerId_;
         onBuilt();
         return result;
@@ -12078,9 +11935,6 @@ public final class PowerRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest other) {
         if (other == com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest.getDefaultInstance()) return this;
-        if (other.hasOwner()) {
-          mergeOwner(other.getOwner());
-        }
         if (!other.getPowerId().isEmpty()) {
           powerId_ = other.powerId_;
           onChanged();
@@ -12114,168 +11968,13 @@ public final class PowerRpcMessage {
         return this;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo owner_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder> ownerBuilder_;
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       * @return Whether the owner field is set.
-       */
-      public boolean hasOwner() {
-        return ownerBuilder_ != null || owner_ != null;
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       * @return The owner.
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner() {
-        if (ownerBuilder_ == null) {
-          return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-        } else {
-          return ownerBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder setOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          owner_ = value;
-          onChanged();
-        } else {
-          ownerBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder setOwner(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder builderForValue) {
-        if (ownerBuilder_ == null) {
-          owner_ = builderForValue.build();
-          onChanged();
-        } else {
-          ownerBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder mergeOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
-          if (owner_ != null) {
-            owner_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.newBuilder(owner_).mergeFrom(value).buildPartial();
-          } else {
-            owner_ = value;
-          }
-          onChanged();
-        } else {
-          ownerBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder clearOwner() {
-        if (ownerBuilder_ == null) {
-          owner_ = null;
-          onChanged();
-        } else {
-          owner_ = null;
-          ownerBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder getOwnerBuilder() {
-        
-        onChanged();
-        return getOwnerFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-        if (ownerBuilder_ != null) {
-          return ownerBuilder_.getMessageOrBuilder();
-        } else {
-          return owner_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-        }
-      }
-      /**
-       * <pre>
-       * 算力的拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder> 
-          getOwnerFieldBuilder() {
-        if (ownerBuilder_ == null) {
-          ownerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder>(
-                  getOwner(),
-                  getParentForChildren(),
-                  isClean());
-          owner_ = null;
-        }
-        return ownerBuilder_;
-      }
-
       private java.lang.Object powerId_ = "";
       /**
        * <pre>
        * 算力id
        * </pre>
        *
-       * <code>string power_id = 2;</code>
+       * <code>string power_id = 1;</code>
        * @return The powerId.
        */
       public java.lang.String getPowerId() {
@@ -12295,7 +11994,7 @@ public final class PowerRpcMessage {
        * 算力id
        * </pre>
        *
-       * <code>string power_id = 2;</code>
+       * <code>string power_id = 1;</code>
        * @return The bytes for powerId.
        */
       public com.google.protobuf.ByteString
@@ -12316,7 +12015,7 @@ public final class PowerRpcMessage {
        * 算力id
        * </pre>
        *
-       * <code>string power_id = 2;</code>
+       * <code>string power_id = 1;</code>
        * @param value The powerId to set.
        * @return This builder for chaining.
        */
@@ -12335,7 +12034,7 @@ public final class PowerRpcMessage {
        * 算力id
        * </pre>
        *
-       * <code>string power_id = 2;</code>
+       * <code>string power_id = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearPowerId() {
@@ -12349,7 +12048,7 @@ public final class PowerRpcMessage {
        * 算力id
        * </pre>
        *
-       * <code>string power_id = 2;</code>
+       * <code>string power_id = 1;</code>
        * @param value The bytes for powerId to set.
        * @return This builder for chaining.
        */
@@ -12499,37 +12198,35 @@ public final class PowerRpcMessage {
       ".rpcapi.TaskOperationCostDeclare\"w\n\033GetP" +
       "owerTotalDetailResponse\022/\n\005owner\030\001 \001(\0132 " +
       ".rpcapi.OrganizationIdentityInfo\022\'\n\005powe" +
-      "r\030\002 \001(\0132\030.rpcapi.PowerTotalDetail\"Z\n\037Get" +
-      "PowerTotalDetailListResponse\0227\n\npower_li" +
-      "st\030\001 \003(\0132#.rpcapi.GetPowerTotalDetailRes" +
-      "ponse\"\203\001\n\023PublishPowerRequest\022/\n\005owner\030\001" +
-      " \001(\0132 .rpcapi.OrganizationIdentityInfo\022\023" +
-      "\n\013job_node_id\030\002 \001(\t\022&\n\013information\030\003 \001(\013" +
-      "2\021.rpcapi.PurePower\"y\n\034GetPowerSingleDet" +
-      "ailResponse\022/\n\005owner\030\001 \001(\0132 .rpcapi.Orga" +
-      "nizationIdentityInfo\022(\n\005power\030\002 \001(\0132\031.rp" +
-      "capi.PowerSingleDetail\"\\\n GetPowerSingle" +
-      "DetailListResponse\0228\n\npower_list\030\001 \003(\0132$" +
-      ".rpcapi.GetPowerSingleDetailResponse\"E\n\024" +
-      "PublishPowerResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003" +
-      "msg\030\002 \001(\t\022\020\n\010power_id\030\003 \001(\t\"W\n\022RevokePow" +
-      "erRequest\022/\n\005owner\030\001 \001(\0132 .rpcapi.Organi" +
-      "zationIdentityInfo\022\020\n\010power_id\030\002 \001(\t2\370\003\n" +
-      "\014PowerService\022\202\001\n\027GetPowerTotalDetailLis" +
-      "t\022\026.rpcapi.EmptyGetParams\032\'.rpcapi.GetPo" +
-      "werTotalDetailListResponse\"&\202\323\344\223\002 \"\033/car" +
-      "rier/v1/power/totalList:\001*\022\205\001\n\030GetPowerS" +
-      "ingleDetailList\022\026.rpcapi.EmptyGetParams\032" +
-      "(.rpcapi.GetPowerSingleDetailListRespons" +
-      "e\"\'\202\323\344\223\002!\"\034/carrier/v1/power/singleList:" +
-      "\001*\022o\n\014PublishPower\022\033.rpcapi.PublishPower" +
-      "Request\032\034.rpcapi.PublishPowerResponse\"$\202" +
-      "\323\344\223\002\036\"\031/carrier/v1/power/publish:\001*\022j\n\013R" +
-      "evokePower\022\032.rpcapi.RevokePowerRequest\032\032" +
-      ".rpcapi.SimpleResponseCode\"#\202\323\344\223\002\035\"\030/car" +
-      "rier/v1/power/revoke:\001*B;\n(com.platon.ro" +
-      "settanet.admin.grpc.serviceB\017PowerRpcMes" +
-      "sageb\006proto3"
+      "r\030\002 \001(\0132\030.rpcapi.PowerTotalDetail\"w\n\037Get" +
+      "PowerTotalDetailListResponse\022\016\n\006status\030\001" +
+      " \001(\005\022\013\n\003msg\030\002 \001(\t\0227\n\npower_list\030\003 \003(\0132#." +
+      "rpcapi.GetPowerTotalDetailResponse\"*\n\023Pu" +
+      "blishPowerRequest\022\023\n\013job_node_id\030\001 \001(\t\"y" +
+      "\n\034GetPowerSingleDetailResponse\022/\n\005owner\030" +
+      "\001 \001(\0132 .rpcapi.OrganizationIdentityInfo\022" +
+      "(\n\005power\030\002 \001(\0132\031.rpcapi.PowerSingleDetai" +
+      "l\"y\n GetPowerSingleDetailListResponse\022\016\n" +
+      "\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0228\n\npower_list" +
+      "\030\003 \003(\0132$.rpcapi.GetPowerSingleDetailResp" +
+      "onse\"E\n\024PublishPowerResponse\022\016\n\006status\030\001" +
+      " \001(\005\022\013\n\003msg\030\002 \001(\t\022\020\n\010power_id\030\003 \001(\t\"&\n\022R" +
+      "evokePowerRequest\022\020\n\010power_id\030\001 \001(\t2\370\003\n\014" +
+      "PowerService\022\202\001\n\027GetPowerTotalDetailList" +
+      "\022\026.rpcapi.EmptyGetParams\032\'.rpcapi.GetPow" +
+      "erTotalDetailListResponse\"&\202\323\344\223\002 \"\033/carr" +
+      "ier/v1/power/totalList:\001*\022\205\001\n\030GetPowerSi" +
+      "ngleDetailList\022\026.rpcapi.EmptyGetParams\032(" +
+      ".rpcapi.GetPowerSingleDetailListResponse" +
+      "\"\'\202\323\344\223\002!\"\034/carrier/v1/power/singleList:\001" +
+      "*\022o\n\014PublishPower\022\033.rpcapi.PublishPowerR" +
+      "equest\032\034.rpcapi.PublishPowerResponse\"$\202\323" +
+      "\344\223\002\036\"\031/carrier/v1/power/publish:\001*\022j\n\013Re" +
+      "vokePower\022\032.rpcapi.RevokePowerRequest\032\032." +
+      "rpcapi.SimpleResponseCode\"#\202\323\344\223\002\035\"\030/carr" +
+      "ier/v1/power/revoke:\001*B;\n(com.platon.ros" +
+      "ettanet.admin.grpc.serviceB\017PowerRpcMess" +
+      "ageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -12567,13 +12264,13 @@ public final class PowerRpcMessage {
     internal_static_rpcapi_GetPowerTotalDetailListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetPowerTotalDetailListResponse_descriptor,
-        new java.lang.String[] { "PowerList", });
+        new java.lang.String[] { "Status", "Msg", "PowerList", });
     internal_static_rpcapi_PublishPowerRequest_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_rpcapi_PublishPowerRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_PublishPowerRequest_descriptor,
-        new java.lang.String[] { "Owner", "JobNodeId", "Information", });
+        new java.lang.String[] { "JobNodeId", });
     internal_static_rpcapi_GetPowerSingleDetailResponse_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_rpcapi_GetPowerSingleDetailResponse_fieldAccessorTable = new
@@ -12585,7 +12282,7 @@ public final class PowerRpcMessage {
     internal_static_rpcapi_GetPowerSingleDetailListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetPowerSingleDetailListResponse_descriptor,
-        new java.lang.String[] { "PowerList", });
+        new java.lang.String[] { "Status", "Msg", "PowerList", });
     internal_static_rpcapi_PublishPowerResponse_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_rpcapi_PublishPowerResponse_fieldAccessorTable = new
@@ -12597,7 +12294,7 @@ public final class PowerRpcMessage {
     internal_static_rpcapi_RevokePowerRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_RevokePowerRequest_descriptor,
-        new java.lang.String[] { "Owner", "PowerId", });
+        new java.lang.String[] { "PowerId", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();
     registry.add(com.platon.rosettanet.admin.grpc.service.AnnotationsProto.http);
