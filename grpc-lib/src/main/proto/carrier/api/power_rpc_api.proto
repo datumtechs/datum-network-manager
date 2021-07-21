@@ -58,11 +58,13 @@ message PowerTotalDetail {
 // 算力上的任务信息
 message PowerTask {
     string                            task_id         = 1;              // 任务Id
-    OrganizationIdentityInfo          owner           = 2;                // 任务发起方身份信息
-    repeated OrganizationIdentityInfo patners         = 3;              // 任务协作方信息
-    repeated OrganizationIdentityInfo receivers       = 4;            // 任务结果接收方信息
-    TaskOperationCostDeclare          operation_cost  = 5;       // 任务所需的资源大小信息
-    TaskOperationCostDeclare          operation_spend = 6;      // 任务已经花费的资源大小信息
+    string                            task_name       = 2;            // 任务名称
+    OrganizationIdentityInfo          owner           = 3;                // 任务发起方身份信息
+    repeated OrganizationIdentityInfo patners         = 4;              // 任务协作方信息
+    repeated OrganizationIdentityInfo receivers       = 5;            // 任务结果接收方信息
+    TaskOperationCostDeclare          operation_cost  = 6;       // 任务所需的资源大小信息
+    TaskOperationCostDeclare          operation_spend = 7;      // 任务已经花费的资源大小信息
+    uint64                            createAt        = 8;             // 任务的发起时间
 }
 
 

@@ -11912,6 +11912,26 @@ public final class TaskRpcMessage {
      * <code>.rpcapi.TaskDetailShow information = 1;</code>
      */
     com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShowOrBuilder getInformationOrBuilder();
+
+    /**
+     * <pre>
+     * 我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)
+     * </pre>
+     *
+     * <code>string role = 2;</code>
+     * @return The role.
+     */
+    java.lang.String getRole();
+    /**
+     * <pre>
+     * 我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)
+     * </pre>
+     *
+     * <code>string role = 2;</code>
+     * @return The bytes for role.
+     */
+    com.google.protobuf.ByteString
+        getRoleBytes();
   }
   /**
    * Protobuf type {@code rpcapi.GetTaskDetailResponse}
@@ -11926,6 +11946,7 @@ public final class TaskRpcMessage {
       super(builder);
     }
     private GetTaskDetailResponse() {
+      role_ = "";
     }
 
     @java.lang.Override
@@ -11969,6 +11990,12 @@ public final class TaskRpcMessage {
                 information_ = subBuilder.buildPartial();
               }
 
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              role_ = s;
               break;
             }
             default: {
@@ -12041,6 +12068,52 @@ public final class TaskRpcMessage {
       return getInformation();
     }
 
+    public static final int ROLE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object role_;
+    /**
+     * <pre>
+     * 我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)
+     * </pre>
+     *
+     * <code>string role = 2;</code>
+     * @return The role.
+     */
+    @java.lang.Override
+    public java.lang.String getRole() {
+      java.lang.Object ref = role_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        role_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)
+     * </pre>
+     *
+     * <code>string role = 2;</code>
+     * @return The bytes for role.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getRoleBytes() {
+      java.lang.Object ref = role_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        role_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -12058,6 +12131,9 @@ public final class TaskRpcMessage {
       if (information_ != null) {
         output.writeMessage(1, getInformation());
       }
+      if (!getRoleBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, role_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -12070,6 +12146,9 @@ public final class TaskRpcMessage {
       if (information_ != null) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getInformation());
+      }
+      if (!getRoleBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, role_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -12091,6 +12170,8 @@ public final class TaskRpcMessage {
         if (!getInformation()
             .equals(other.getInformation())) return false;
       }
+      if (!getRole()
+          .equals(other.getRole())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -12106,6 +12187,8 @@ public final class TaskRpcMessage {
         hash = (37 * hash) + INFORMATION_FIELD_NUMBER;
         hash = (53 * hash) + getInformation().hashCode();
       }
+      hash = (37 * hash) + ROLE_FIELD_NUMBER;
+      hash = (53 * hash) + getRole().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -12245,6 +12328,8 @@ public final class TaskRpcMessage {
           information_ = null;
           informationBuilder_ = null;
         }
+        role_ = "";
+
         return this;
       }
 
@@ -12276,6 +12361,7 @@ public final class TaskRpcMessage {
         } else {
           result.information_ = informationBuilder_.build();
         }
+        result.role_ = role_;
         onBuilt();
         return result;
       }
@@ -12326,6 +12412,10 @@ public final class TaskRpcMessage {
         if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailResponse.getDefaultInstance()) return this;
         if (other.hasInformation()) {
           mergeInformation(other.getInformation());
+        }
+        if (!other.getRole().isEmpty()) {
+          role_ = other.role_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -12509,6 +12599,102 @@ public final class TaskRpcMessage {
           information_ = null;
         }
         return informationBuilder_;
+      }
+
+      private java.lang.Object role_ = "";
+      /**
+       * <pre>
+       * 我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)
+       * </pre>
+       *
+       * <code>string role = 2;</code>
+       * @return The role.
+       */
+      public java.lang.String getRole() {
+        java.lang.Object ref = role_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          role_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)
+       * </pre>
+       *
+       * <code>string role = 2;</code>
+       * @return The bytes for role.
+       */
+      public com.google.protobuf.ByteString
+          getRoleBytes() {
+        java.lang.Object ref = role_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          role_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)
+       * </pre>
+       *
+       * <code>string role = 2;</code>
+       * @param value The role to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRole(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        role_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)
+       * </pre>
+       *
+       * <code>string role = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRole() {
+        
+        role_ = getDefaultInstance().getRole();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)
+       * </pre>
+       *
+       * <code>string role = 2;</code>
+       * @param value The bytes for role to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRoleBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        role_ = value;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -20082,43 +20268,44 @@ public final class TaskRpcMessage {
       "i.TaskOrganizationIdentityInfo\"n\n\030TaskOp" +
       "erationCostDeclare\022\020\n\010cost_mem\030\001 \001(\004\022\026\n\016" +
       "cost_processor\030\002 \001(\004\022\026\n\016cost_bandwidth\030\003" +
-      " \001(\004\022\020\n\010duration\030\004 \001(\004\"D\n\025GetTaskDetailR" +
+      " \001(\004\022\020\n\010duration\030\004 \001(\004\"R\n\025GetTaskDetailR" +
       "esponse\022+\n\013information\030\001 \001(\0132\026.rpcapi.Ta" +
-      "skDetailShow\"j\n\031GetTaskDetailListRespons" +
-      "e\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0220\n\ttask_l" +
-      "ist\030\003 \003(\0132\035.rpcapi.GetTaskDetailResponse" +
-      "\"*\n\027GetTaskEventListRequest\022\017\n\007task_id\030\001" +
-      " \001(\t\"4\n GetTaskEventListByTaskIdsRequest" +
-      "\022\020\n\010task_ids\030\001 \003(\t\"g\n\030GetTaskEventListRe" +
-      "sponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022.\n\017t" +
-      "ask_event_list\030\003 \003(\0132\025.rpcapi.TaskEventS" +
-      "how\"\203\003\n\031PublishTaskDeclareRequest\022\021\n\ttas" +
-      "k_name\030\001 \001(\t\0223\n\005owner\030\002 \001(\0132$.rpcapi.Tas" +
-      "kOrganizationIdentityInfo\0226\n\rdata_suppli" +
-      "er\030\003 \003(\0132\037.rpcapi.TaskDataSupplierDeclar" +
-      "e\022\027\n\017power_party_ids\030\004 \003(\t\0224\n\treceivers\030" +
-      "\005 \003(\0132!.rpcapi.TaskResultReceiverDeclare" +
-      "\0228\n\016operation_cost\030\006 \001(\0132 .rpcapi.TaskOp" +
-      "erationCostDeclare\022\036\n\026calculate_contract" +
-      "code\030\007 \001(\t\022\036\n\026datasplit_contractcode\030\010 \001" +
-      "(\t\022\035\n\025contract_extra_params\030\t \001(\t\"J\n\032Pub" +
-      "lishTaskDeclareResponse\022\016\n\006status\030\001 \001(\005\022" +
-      "\013\n\003msg\030\002 \001(\t\022\017\n\007task_id\030\003 \001(\t2\232\004\n\013TaskSe" +
-      "rvice\022p\n\021GetTaskDetailList\022\026.rpcapi.Empt" +
-      "yGetParams\032!.rpcapi.GetTaskDetailListRes" +
-      "ponse\" \202\323\344\223\002\032\"\025/carrier/v1/task/list:\001*\022" +
-      "|\n\020GetTaskEventList\022\037.rpcapi.GetTaskEven" +
-      "tListRequest\032 .rpcapi.GetTaskEventListRe" +
-      "sponse\"%\202\323\344\223\002\037\"\032/carrier/v1/task/eventLi" +
-      "st:\001*\022\227\001\n\031GetTaskEventListByTaskIds\022(.rp" +
-      "capi.GetTaskEventListByTaskIdsRequest\032 ." +
-      "rpcapi.GetTaskEventListResponse\".\202\323\344\223\002(\"" +
-      "#/carrier/v1/task/eventListByTaskIds:\001*\022" +
-      "\200\001\n\022PublishTaskDeclare\022!.rpcapi.PublishT" +
-      "askDeclareRequest\032\".rpcapi.PublishTaskDe" +
-      "clareResponse\"#\202\323\344\223\002\035\"\030/carrier/v1/task/" +
-      "publish:\001*B:\n(com.platon.rosettanet.admi" +
-      "n.grpc.serviceB\016TaskRpcMessageb\006proto3"
+      "skDetailShow\022\014\n\004role\030\002 \001(\t\"j\n\031GetTaskDet" +
+      "ailListResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002" +
+      " \001(\t\0220\n\ttask_list\030\003 \003(\0132\035.rpcapi.GetTask" +
+      "DetailResponse\"*\n\027GetTaskEventListReques" +
+      "t\022\017\n\007task_id\030\001 \001(\t\"4\n GetTaskEventListBy" +
+      "TaskIdsRequest\022\020\n\010task_ids\030\001 \003(\t\"g\n\030GetT" +
+      "askEventListResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003" +
+      "msg\030\002 \001(\t\022.\n\017task_event_list\030\003 \003(\0132\025.rpc" +
+      "api.TaskEventShow\"\203\003\n\031PublishTaskDeclare" +
+      "Request\022\021\n\ttask_name\030\001 \001(\t\0223\n\005owner\030\002 \001(" +
+      "\0132$.rpcapi.TaskOrganizationIdentityInfo\022" +
+      "6\n\rdata_supplier\030\003 \003(\0132\037.rpcapi.TaskData" +
+      "SupplierDeclare\022\027\n\017power_party_ids\030\004 \003(\t" +
+      "\0224\n\treceivers\030\005 \003(\0132!.rpcapi.TaskResultR" +
+      "eceiverDeclare\0228\n\016operation_cost\030\006 \001(\0132 " +
+      ".rpcapi.TaskOperationCostDeclare\022\036\n\026calc" +
+      "ulate_contractcode\030\007 \001(\t\022\036\n\026datasplit_co" +
+      "ntractcode\030\010 \001(\t\022\035\n\025contract_extra_param" +
+      "s\030\t \001(\t\"J\n\032PublishTaskDeclareResponse\022\016\n" +
+      "\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022\017\n\007task_id\030\003 " +
+      "\001(\t2\232\004\n\013TaskService\022p\n\021GetTaskDetailList" +
+      "\022\026.rpcapi.EmptyGetParams\032!.rpcapi.GetTas" +
+      "kDetailListResponse\" \202\323\344\223\002\032\"\025/carrier/v1" +
+      "/task/list:\001*\022|\n\020GetTaskEventList\022\037.rpca" +
+      "pi.GetTaskEventListRequest\032 .rpcapi.GetT" +
+      "askEventListResponse\"%\202\323\344\223\002\037\"\032/carrier/v" +
+      "1/task/eventList:\001*\022\227\001\n\031GetTaskEventList" +
+      "ByTaskIds\022(.rpcapi.GetTaskEventListByTas" +
+      "kIdsRequest\032 .rpcapi.GetTaskEventListRes" +
+      "ponse\".\202\323\344\223\002(\"#/carrier/v1/task/eventLis" +
+      "tByTaskIds:\001*\022\200\001\n\022PublishTaskDeclare\022!.r" +
+      "pcapi.PublishTaskDeclareRequest\032\".rpcapi" +
+      ".PublishTaskDeclareResponse\"#\202\323\344\223\002\035\"\030/ca" +
+      "rrier/v1/task/publish:\001*B:\n(com.platon.r" +
+      "osettanet.admin.grpc.serviceB\016TaskRpcMes" +
+      "sageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -20185,7 +20372,7 @@ public final class TaskRpcMessage {
     internal_static_rpcapi_GetTaskDetailResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetTaskDetailResponse_descriptor,
-        new java.lang.String[] { "Information", });
+        new java.lang.String[] { "Information", "Role", });
     internal_static_rpcapi_GetTaskDetailListResponse_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_rpcapi_GetTaskDetailListResponse_fieldAccessorTable = new
