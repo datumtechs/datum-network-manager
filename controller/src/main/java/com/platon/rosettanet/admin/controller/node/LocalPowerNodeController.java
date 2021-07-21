@@ -2,7 +2,6 @@ package com.platon.rosettanet.admin.controller.node;
 
 
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.common.util.NameUtil;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dto.JsonResponse;

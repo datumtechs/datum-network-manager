@@ -1,5 +1,8 @@
 package com.platon.rosettanet.admin.service.task;
 
+import cn.hutool.Hutool;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import com.platon.rosettanet.admin.dao.LocalOrgMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerHistoryMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerJoinTaskMapper;
@@ -10,15 +13,15 @@ import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.grpc.client.PowerClient;
 import com.platon.rosettanet.admin.grpc.service.CommonMessage;
 import com.platon.rosettanet.admin.grpc.service.PowerRpcMessage;
+import com.platon.rosettanet.admin.grpc.service.TaskRpcMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author houz
@@ -40,8 +43,6 @@ public class PowerNodeRefreshTask {
 
     @Resource
     private PowerClient powerClient;
-    @Resource
-    private LocalOrgMapper localOrgMapper;
 
     /**
      *
@@ -111,21 +112,49 @@ public class PowerNodeRefreshTask {
             // 保存计算节点参与的任务列表
             if (!powerTaskList.isEmpty()) {
                 for(PowerRpcMessage.PowerTask powerTask : powerTaskList) {
+                    // 任务发起方身份信息
+                    CommonMessage.OrganizationIdentityInfo  ownerIdentityInfo = powerTask.getOwner();
+                    // 任务结果方
+                    List<CommonMessage.OrganizationIdentityInfo> receiversIdentityInfoList = powerTask.getReceiversList();
+                    // 任务协作方
+                    List<CommonMessage.OrganizationIdentityInfo> patnersIdentityInfoList = powerTask.getPatnersList();
+                    TaskRpcMessage.TaskOperationCostDeclare taskOperationCostDeclare = powerTask.getOperationCost();
                     LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
                     localPowerJoinTask.setPowerNodeId(detail.getJobNodeId());
-                    localPowerJoinTask.setTaskId(null);
-                    localPowerJoinTask.setTaskName(null);
-                    localPowerJoinTask.setOwnerIdentityId(null);
-                    localPowerJoinTask.setTaskStartTime(null);
-                    localPowerJoinTask.setResultSide(null);
-                    localPowerJoinTask.setCoordinateSide(null);
-                    // 已使用带宽
-                    localPowerJoinTask.setUsedBandwidth(null);
-                    // 已使用核数
-                    localPowerJoinTask.setUsedCore(null);
+                    localPowerJoinTask.setTaskId(powerTask.getTaskId());
+                    localPowerJoinTask.setTaskName(powerTask.getTaskName());
+                    // 发起方
+                    localPowerJoinTask.setOwnerIdentityId(ownerIdentityInfo.getIdentityId());
+                    localPowerJoinTask.setOwnerIdentityName(ownerIdentityInfo.getName());
+                    localPowerJoinTask.setTaskStartTime(DateUtil.date(powerTask.getCreateAt()));
+                    // 结果方
+                    if (!receiversIdentityInfoList.isEmpty()) {
+                        List idList = new ArrayList();
+                        List nameList = new ArrayList();
+                        for(CommonMessage.OrganizationIdentityInfo organizationIdentityInfo : receiversIdentityInfoList) {
+                            idList.add(organizationIdentityInfo.getIdentityId());
+                            nameList.add(organizationIdentityInfo.getName());
+                        }
+                        localPowerJoinTask.setResultSideId(StringUtils.collectionToDelimitedString(idList, ","));
+                        localPowerJoinTask.setResultSideName(StringUtils.collectionToDelimitedString(nameList,","));
+                    }
+                    // 协作方
+                    if (!patnersIdentityInfoList.isEmpty()) {
+                        List idList = new ArrayList();
+                        List nameList = new ArrayList();
+                        for(CommonMessage.OrganizationIdentityInfo organizationIdentityInfo : patnersIdentityInfoList) {
+                            idList.add(organizationIdentityInfo.getIdentityId());
+                            nameList.add(organizationIdentityInfo.getName());
+                        }
+                        localPowerJoinTask.setCoordinateSideId(StringUtils.collectionToDelimitedString(idList,","));
+                        localPowerJoinTask.setCoordinateSideName(StringUtils.collectionToDelimitedString(nameList,","));
+                    }
                     // 已使用内存
-                    localPowerJoinTask.setUsedMemory(null);
-
+                    localPowerJoinTask.setUsedMemory(taskOperationCostDeclare.getCostMem());
+                    // 已使用核数
+                    localPowerJoinTask.setUsedCore(Integer.parseInt(String.valueOf(taskOperationCostDeclare.getCostProcessor())));
+                    // 已使用带宽
+                    localPowerJoinTask.setUsedBandwidth(taskOperationCostDeclare.getCostBandwidth());
                     localPowerJoinTaskList.add(localPowerJoinTask);
                 }
             }

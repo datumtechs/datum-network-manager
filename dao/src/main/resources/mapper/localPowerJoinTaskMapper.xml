@@ -8,9 +8,12 @@
     <result column="task_id" jdbcType="VARCHAR" property="taskId" />
     <result column="task_name" jdbcType="VARCHAR" property="taskName" />
     <result column="owner_identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
+    <result column="owner_identity_name" jdbcType="VARCHAR" property="ownerIdentityName" />
     <result column="task_start_time" jdbcType="TIMESTAMP" property="taskStartTime" />
-    <result column="result_side" jdbcType="VARCHAR" property="resultSide" />
-    <result column="coordinate_side" jdbcType="VARCHAR" property="coordinateSide" />
+    <result column="result_side_id" jdbcType="VARCHAR" property="resultSideId" />
+    <result column="result_side_name" jdbcType="VARCHAR" property="resultSideName" />
+    <result column="coordinate_side_id" jdbcType="VARCHAR" property="coordinateSideId" />
+    <result column="coordinate_side_name" jdbcType="VARCHAR" property="coordinateSideName" />
     <result column="used_memory" jdbcType="BIGINT" property="usedMemory" />
     <result column="used_core" jdbcType="INTEGER" property="usedCore" />
     <result column="used_bandwidth" jdbcType="BIGINT" property="usedBandwidth" />
@@ -24,9 +27,12 @@
     task_id,
     task_name,
     owner_identity_id,
+    owner_identity_name,
     task_start_time,
-    result_side,
-    coordinate_side,
+    result_side_id,
+    result_side_name,
+    coordinate_side_id,
+    coordinate_side_name,
     used_memory,
     used_core,
     used_bandwidth,
@@ -54,9 +60,12 @@
         <if test="taskId != null">task_id,</if>
         <if test="taskName != null">task_name,</if>
         <if test="ownerIdentityId != null">owner_identity_id,</if>
+        <if test="ownerIdentityName != null">owner_identity_name,</if>
         <if test="taskStartTime != null">task_start_time,</if>
-        <if test="resultSide != null">result_side,</if>
-        <if test="coordinateSide != null">coordinate_side,</if>
+        <if test="resultSideId != null">result_side_id,</if>
+        <if test="resultSideName != null">result_side_name,</if>
+        <if test="coordinateSideId != null">coordinate_side_id,</if>
+        <if test="coordinateSideName != null">coordinate_side_name,</if>
         <if test="usedMemory != null">used_memory,</if>
         <if test="usedCore != null">used_core,</if>
         <if test="usedBandwidth != null">used_bandwidth,</if>
@@ -69,9 +78,12 @@
         <if test="taskId != null">#{taskId, jdbcType=VARCHAR},</if>
         <if test="taskName != null">#{taskName, jdbcType=VARCHAR},</if>
         <if test="ownerIdentityId != null">#{ownerIdentityId, jdbcType=VARCHAR},</if>
+        <if test="ownerIdentityName != null">#{ownerIdentityName, jdbcType=VARCHAR},</if>
         <if test="taskStartTime != null">#{taskStartTime, jdbcType=TIMESTAMP},</if>
-        <if test="resultSide != null">#{resultSide, jdbcType=VARCHAR},</if>
-        <if test="coordinateSide != null">#{coordinateSide, jdbcType=VARCHAR},</if>
+        <if test="resultSideId != null">#{resultSideId, jdbcType=VARCHAR},</if>
+        <if test="resultSideName != null">#{resultSideName, jdbcType=VARCHAR},</if>
+        <if test="coordinateSideId != null">#{coordinateSideId, jdbcType=VARCHAR},</if>
+        <if test="coordinateSideName != null">#{coordinateSideName, jdbcType=VARCHAR},</if>
         <if test="usedMemory != null">#{usedMemory, jdbcType=BIGINT},</if>
         <if test="usedCore != null">#{usedCore, jdbcType=INTEGER},</if>
         <if test="usedBandwidth != null">#{usedBandwidth, jdbcType=BIGINT},</if>

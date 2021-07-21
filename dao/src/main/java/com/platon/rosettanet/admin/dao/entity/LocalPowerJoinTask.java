@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.dao.entity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author houz
@@ -21,11 +22,17 @@ public class LocalPowerJoinTask {
 
     private String ownerIdentityId;
 
-    private LocalDateTime taskStartTime;
+    private String ownerIdentityName;
 
-    private String resultSide;
+    private Date taskStartTime;
 
-    private String coordinateSide;
+    private String resultSideName;
+
+    private String resultSideId;
+
+    private String coordinateSideId;
+
+    private String coordinateSideName;
 
     private Long usedMemory;
 

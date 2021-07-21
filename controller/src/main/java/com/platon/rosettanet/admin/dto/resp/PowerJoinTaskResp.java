@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author houz
@@ -27,16 +28,16 @@ public class PowerJoinTaskResp {
     private String taskName;
 
     @ApiModelProperty(value = "发起方身份")
-    private String ownerIdentityId;
+    private String ownerIdentityName;
 
     @ApiModelProperty(value = "发起时间")
-    private LocalDateTime taskStartTime;
+    private Date taskStartTime;
 
     @ApiModelProperty(value = "结果方")
-    private String resultSide;
+    private String resultSideName;
 
     @ApiModelProperty(value = "协作方")
-    private String coordinateSide;
+    private String coordinateSideName;
 
     @ApiModelProperty(value = "使用的内存")
     private Long usedMemory;
