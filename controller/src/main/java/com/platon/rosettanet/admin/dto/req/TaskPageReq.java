@@ -29,7 +29,7 @@ public class TaskPageReq {
     /**
      * 任务状态
      */
-    @ApiModelProperty(value = "任务状态,pending: 等在中; running: 计算中; failed: 失败; success: 成功", example = "success" , required = false)
+    @ApiModelProperty(value = "任务状态,没有选择传入空字符串,pending: 等在中; running: 计算中; failed: 失败; success: 成功", example = "success" , required = false)
     String status;
 
     /**
@@ -42,20 +42,20 @@ public class TaskPageReq {
      * 发起任务开始时间戳
      */
     @NotNull(message = "开始时间不能为空，没有就传0")
-    @ApiModelProperty(value = "发起任务开始时间戳，没有就传0", example = "1626250562", required = false)
+    @ApiModelProperty(value = "发起任务开始时间戳，没有就传0", example = "1623148140000", required = false)
     Long startTime;
 
     /**
      * 发起任务结束时间戳
      */
     @NotNull(message = "结束时间不能为空，没有就传0")
-    @ApiModelProperty(value = "发起任务结束时间戳，没有就传0", example = "1626250562", required = false)
+    @ApiModelProperty(value = "发起任务结束时间戳，没有就传0", example = "1624876140000", required = false)
     Long endTime;
 
     /**
      * 关键字
      */
-    @ApiModelProperty(value = "关键字搜索，依据名称搜索", example = "", required = false)
+    @ApiModelProperty(value = "关键字搜索，没有传入空字符串，依据名称搜索", example = "", required = false)
     String keyWord;
 
 

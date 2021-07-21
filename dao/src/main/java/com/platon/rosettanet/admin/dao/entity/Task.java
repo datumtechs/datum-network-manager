@@ -11,7 +11,9 @@ import java.util.List;
 
 @Data
 public class Task {
-    private String id;
+    private Integer id;
+
+    private String taskId;
 
     private String taskName;
 
@@ -60,8 +62,8 @@ public class Task {
     //算力提供方
     private List<TaskPowerProvider> powerSupplier;
 
-    //角色
-    private Integer role;
+    //我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)
+    private String role;
 
 
 

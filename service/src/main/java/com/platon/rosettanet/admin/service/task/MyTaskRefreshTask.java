@@ -18,14 +18,18 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static com.platon.rosettanet.admin.grpc.client.TaskClient.NODE_ID;
+import static com.platon.rosettanet.admin.grpc.client.TaskClient.NODE_NAME;
 
 /**
  * 计算任务定时任务
  */
 @Slf4j
-//@Component
+@Component
 public class MyTaskRefreshTask {
 
     @Resource
@@ -44,15 +48,18 @@ public class MyTaskRefreshTask {
     private TaskResultReceiverMapper taskResultReceiverMapper;
 
     @Resource
+    private TaskOrgMapper taskOrgMapper;
+
+    @Resource
     private TaskEventMapper taskEventMapper;
 
 
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 20000)
     public void task() {
         log.info("启动执行获取任务数据列表定时任务...........");
         TaskDataResp resp = taskClient.getTaskListData();
-        if (GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
+        if (resp == null || GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
             log.info("获取任务列表,调度服务调用失败");
             return;
         }
@@ -77,6 +84,8 @@ public class MyTaskRefreshTask {
         List<TaskDataReceiver> dataReceiverList = new ArrayList<>();
         List<TaskPowerProvider> powerProviderList = new ArrayList<>();
         List<TaskResultReceiver> resultReceiverList = new ArrayList<>();
+        List<TaskOrg> taskOrgList = new ArrayList<>();
+
         if(!CollectionUtils.isEmpty(updateTaskList)){
 
             for (int i = 0; i < updateTaskList.size(); i++) {
@@ -84,10 +93,13 @@ public class MyTaskRefreshTask {
                  List<TaskDataReceiver> dataReceivers = taskData.getDataSupplier();
                  List<TaskPowerProvider> powerProviders = taskData.getPowerSupplier();
                  List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
-                 //构造数据
+                 List<TaskOrg> taskOrgs = getTaskOrgList(taskData);
+
+                //构造数据
                  dataReceiverList.addAll(dataReceivers);
                  powerProviderList.addAll(powerProviders);
                  resultReceiverList.addAll(resultReceivers);
+                 taskOrgList.addAll(taskOrgs);
             }
         }
 
@@ -105,10 +117,14 @@ public class MyTaskRefreshTask {
         if (checkDataValidity(resultReceiverList)) {
             taskResultReceiverMapper.insertBatch(resultReceiverList);
         }
+        if(checkDataValidity(taskOrgList)){
+            taskOrgMapper.insertBatch(taskOrgList);
+        }
+
 
         //4、批量TaskEvent获取并更新DB
         log.info("4、批量TaskEvent获取并更新DB");
-        List<String> taskIdList = updateTaskList.stream().map(Task -> Task.getId()).collect(Collectors.toList());
+        List<String> taskIdList = updateTaskList.stream().map(Task -> Task.getTaskId()).collect(Collectors.toList());
         List<TaskEvent> taskEventList = new ArrayList<>();
         List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskIdList);
         taskEventList.addAll(taskEvents);
@@ -157,4 +173,72 @@ public class MyTaskRefreshTask {
         }
         return newTaskList;
     }
+
+
+    /**
+     * 组装TaskOrg Data
+     * @param taskData
+     * @return
+     */
+    private List<TaskOrg> getTaskOrgList(Task taskData){
+
+        List<TaskOrg> taskOrgList = new ArrayList<>();
+
+        List<TaskDataReceiver> dataReceivers = taskData.getDataSupplier();
+        List<TaskPowerProvider> powerProviders = taskData.getPowerSupplier();
+        List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
+
+        TaskOrg owner = taskData.getOwner();
+        owner.setTaskId(taskData.getTaskId());
+
+        TaskOrg algoSupplier = taskData.getAlgoSupplier();
+        algoSupplier.setTaskId(taskData.getTaskId());
+
+        for (TaskDataReceiver dataReceiver : dataReceivers) {
+            String identityId = dataReceiver.getIdentityId();
+            Map<String,String> dynamicFields = dataReceiver.getDynamicFields();
+            String nodeName = dynamicFields.get(NODE_NAME);
+            String nodeId = dynamicFields.get(NODE_ID);
+
+            TaskOrg taskOrg = new TaskOrg();
+            taskOrg.setTaskId(taskData.getTaskId());
+            taskOrg.setIdentityId(identityId);
+            taskOrg.setCarrierNodeId(nodeId);
+            taskOrg.setName(nodeName);
+            taskOrgList.add(taskOrg);
+        }
+
+        for (TaskPowerProvider taskPowerProvider : powerProviders) {
+            String identityId = taskPowerProvider.getIdentityId();
+            Map<String,String> dynamicFields = taskPowerProvider.getDynamicFields();
+            String nodeName = dynamicFields.get(NODE_NAME);
+            String nodeId = dynamicFields.get(NODE_ID);
+
+            TaskOrg taskOrg = new TaskOrg();
+            taskOrg.setTaskId(taskData.getTaskId());
+            taskOrg.setIdentityId(identityId);
+            taskOrg.setCarrierNodeId(nodeId);
+            taskOrg.setName(nodeName);
+            taskOrgList.add(taskOrg);
+        }
+
+        for (TaskResultReceiver taskResultReceiver : resultReceivers) {
+            String identityId = taskResultReceiver.getConsumerIdentityId();
+            Map<String,String> dynamicFields = taskResultReceiver.getDynamicFields();
+            String nodeName = dynamicFields.get(NODE_NAME);
+            String nodeId = dynamicFields.get(NODE_ID);
+
+            TaskOrg taskOrg = new TaskOrg();
+            taskOrg.setTaskId(taskData.getTaskId());
+            taskOrg.setIdentityId(identityId);
+            taskOrg.setCarrierNodeId(nodeId);
+            taskOrg.setName(nodeName);
+            taskOrgList.add(taskOrg);
+        }
+
+        taskOrgList.add(owner);
+        taskOrgList.add(algoSupplier);
+        return taskOrgList;
+    }
+
 }

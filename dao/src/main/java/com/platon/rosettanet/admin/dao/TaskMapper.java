@@ -20,9 +20,9 @@ public interface TaskMapper {
 
     int updateByPrimaryKey(Task record);
 
-    int updateTaskReviewedById(@Param("id")String taskId, @Param("reviewed") boolean reviewed);
+    int updateTaskReviewedById(@Param("taskId")String taskId, @Param("reviewed") boolean reviewed);
 
-    List<Task> listTask(@Param("status")String status, @Param("role")Integer role, @Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp")Timestamp endTimestamp, @Param("keyWord") String keyWord);
+    List<Task> listTask(@Param("status")String status, @Param("role")String role, @Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp")Timestamp endTimestamp, @Param("keyWord") String keyWord);
 
     List<String> selectListTaskByStatusWithSuccessAndFailed();
 
