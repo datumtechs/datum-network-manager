@@ -30,8 +30,9 @@
         <include refid="Base_Column_List" />
     from
         local_power_details
-    where
-        power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+    where 1=1
+        and power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+        and refresh_status = #{refreshStatus, jdbcType=VARCHAR}
     order by create_time desc;
   </select>
 

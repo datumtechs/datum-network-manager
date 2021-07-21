@@ -97,7 +97,6 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public LocalPowerNode queryPowerNodeDetails(String powerNodeId) {
-        List<YarnRpcMessage.YarnRegisteredPeerDetail> list = powerClient.getJobNodeList();
         return localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
     }
 
@@ -136,163 +135,72 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public List<Map> queryPowerNodeUseHistory(String powerNodeId) {
-        List<LocalPowerHistory>  powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId);
-        List<Map> historyList = new ArrayList();
-        if (!powerHistoryList.isEmpty()) {
-            // 24小时
-            historyList = this.hoursMethod(powerHistoryList, historyList);
-            // 7天
-            historyList = this.sevenMethod(powerHistoryList, historyList);
-            // 15天
-            historyList = this.fifteenMethod(powerHistoryList, historyList);
-            // 30天记录
-            historyList = this.thirtyMethod(powerHistoryList, historyList);
+    public List<Map> queryPowerNodeUseHistory(String powerNodeId, String resourceType, String timeType) {
+        // 24小时记录
+        if ("1".equals(timeType)) {
+            List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "0");
+            if (!powerHistoryList.isEmpty()) {
+                return this.historyMethod(powerHistoryList, resourceType, 24);
+            }
         }
-        return historyList;
+        // 7天记录
+        if ("7".equals(timeType)) {
+            List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
+            if (!powerHistoryList.isEmpty()) {
+                return this.historyMethod(powerHistoryList, resourceType, 7);
+            }
+        }
+        // 15天记录
+        if ("15".equals(timeType)) {
+            List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
+            if (!powerHistoryList.isEmpty()) {
+                return this.historyMethod(powerHistoryList, resourceType, 15);
+            }
+        }
+        // 30天记录
+        if ("24".equals(timeType)) {
+            List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
+            if (!powerHistoryList.isEmpty()) {
+                return this.historyMethod(powerHistoryList, resourceType, 24);
+            }
+        }
+        return new ArrayList<>();
     }
 
-    /** 24小时记录 */
-    private List hoursMethod(List<LocalPowerHistory> powerHistoryList, List historyList){
-        List cupList = new ArrayList();
-        List memoryList = new ArrayList();
-        List bandList = new ArrayList();
-        List timeList = new ArrayList();
-        Map cpuHoursMap = new HashMap(16);
-        Map memoryHoursMap = new HashMap(16);
-        Map bandHoursMap = new HashMap(16);
-        for(LocalPowerHistory powerHistory : powerHistoryList) {
-            if ("0".equals(powerHistory.getRefreshStatus())) {
-                // 时间(小时)
-                timeList.add(DateUtil.format(powerHistory.getCreateTime(), "yyyy-MM-dd HH"));
-                // cpu
+    /** 封装各个时间记录 */
+    private List historyMethod(List<LocalPowerHistory> powerHistoryList, String resourceType, int timeType){
+        // cpu
+        if ("1".equals(resourceType)) {
+            List cupList = new ArrayList();
+            for(LocalPowerHistory powerHistory : powerHistoryList) {
                 cupList.add(powerHistory.getUsedCore());
-                // 内存
-                memoryList.add(powerHistory.getUsedMemory());
-                // 带宽
-                bandList.add(powerHistory.getUsedBandwidth());
-            }
-            if (timeList.size() >= 24) {
-                break;
+                if (cupList.size() >= timeType) {
+                    return cupList;
+                }
             }
         }
-        cpuHoursMap.put("cupList", cupList);
-        cpuHoursMap.put("hoursTime", timeList);
-        memoryHoursMap.put("memoryList", memoryList);
-        memoryHoursMap.put("hoursTime", timeList);
-        bandHoursMap.put("bandList", bandList);
-        bandHoursMap.put("hoursTime", timeList);
-        historyList.add(cpuHoursMap);
-        historyList.add(memoryHoursMap);
-        historyList.add(bandHoursMap);
-        return historyList;
-    }
-
-    /** 7天记录 */
-    private List sevenMethod(List<LocalPowerHistory> powerHistoryList, List historyList){
-        List cupList = new ArrayList();
-        List memoryList = new ArrayList();
-        List bandList = new ArrayList();
-        List timeList = new ArrayList();
-        Map cpuSevenMap = new HashMap(16);
-        Map memorySevenMap = new HashMap(16);
-        Map bandSevenMap = new HashMap(16);
-        for(LocalPowerHistory powerHistory : powerHistoryList) {
-            if ("1".equals(powerHistory.getRefreshStatus())) {
-                // 时间NORM_DATE_FORMATTER
-                timeList.add(DateUtil.format(powerHistory.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
-                // cpu
-                cupList.add(powerHistory.getUsedCore());
-                // 内存
+        // 内存
+        if ("2".equals(resourceType)) {
+            List memoryList = new ArrayList();
+            for(LocalPowerHistory powerHistory : powerHistoryList) {
                 memoryList.add(powerHistory.getUsedMemory());
-                // 带宽
-                bandList.add(powerHistory.getUsedBandwidth());
-            }
-            if (timeList.size() >= 7) {
-                break;
+                if (memoryList.size() >= timeType) {
+                    return memoryList;
+                }
             }
         }
-        cpuSevenMap.put("cupList", cupList);
-        cpuSevenMap.put("sevenTime", timeList);
-        memorySevenMap.put("memoryList", memoryList);
-        memorySevenMap.put("sevenTime", timeList);
-        bandSevenMap.put("bandList", bandList);
-        bandSevenMap.put("sevenTime", timeList);
-        historyList.add(cpuSevenMap);
-        historyList.add(memorySevenMap);
-        historyList.add(bandSevenMap);
-        return historyList;
-    }
-
-    /** 15天记录 */
-    private List fifteenMethod(List<LocalPowerHistory> powerHistoryList, List historyList){
-        List cupList = new ArrayList();
-        List memoryList = new ArrayList();
-        List bandList = new ArrayList();
-        List timeList = new ArrayList();
-        Map cpuFifteenMap = new HashMap(16);
-        Map memoryFifteenMap = new HashMap(16);
-        Map bandFifteenMap = new HashMap(16);
-        for(LocalPowerHistory powerHistory : powerHistoryList) {
-            if ("1".equals(powerHistory.getRefreshStatus())) {
-                // 时间(小时)
-                timeList.add(DateUtil.format(powerHistory.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
-                // cpu
-                cupList.add(powerHistory.getUsedCore());
+        // 带宽
+        if ("3".equals(resourceType)) {
+            List bandList = new ArrayList();
+            for(LocalPowerHistory powerHistory : powerHistoryList) {
                 // 内存
-                memoryList.add(powerHistory.getUsedMemory());
-                // 带宽
-                bandList.add(powerHistory.getUsedBandwidth());
-            }
-            if (timeList.size() >= 15) {
-                break;
+                bandList.add(powerHistory.getUsedMemory());
+                if (bandList.size() >= timeType) {
+                    return bandList;
+                }
             }
         }
-        cpuFifteenMap.put("cupList", cupList);
-        cpuFifteenMap.put("fifteenTime", timeList);
-        memoryFifteenMap.put("memoryList", memoryList);
-        memoryFifteenMap.put("fifteenTime", timeList);
-        bandFifteenMap.put("bandList", bandList);
-        bandFifteenMap.put("fifteenTime", timeList);
-        historyList.add(cpuFifteenMap);
-        historyList.add(memoryFifteenMap);
-        historyList.add(bandFifteenMap);
-        return historyList;
-    }
-    /** 30天记录 */
-    private List thirtyMethod(List<LocalPowerHistory> powerHistoryList, List historyList){
-        List cupList = new ArrayList();
-        List memoryList = new ArrayList();
-        List bandList = new ArrayList();
-        List timeList = new ArrayList();
-        Map cpuThirtyMap = new HashMap(16);
-        Map memoryThirtyMap = new HashMap(16);
-        Map bandThirtyMap = new HashMap(16);
-        for(LocalPowerHistory powerHistory : powerHistoryList) {
-            if ("1".equals(powerHistory.getRefreshStatus())) {
-                // 时间(小时)
-                timeList.add(DateUtil.format(powerHistory.getCreateTime(), DatePattern.NORM_DATE_PATTERN));
-                // cpu
-                cupList.add(powerHistory.getUsedCore());
-                // 内存
-                memoryList.add(powerHistory.getUsedMemory());
-                // 带宽
-                bandList.add(powerHistory.getUsedBandwidth());
-            }
-            if (timeList.size() >= 30) {
-                break;
-            }
-        }
-        cpuThirtyMap.put("cupList", cupList);
-        cpuThirtyMap.put("thirtyTime", timeList);
-        memoryThirtyMap.put("memoryList", memoryList);
-        memoryThirtyMap.put("thirtyTime", timeList);
-        bandThirtyMap.put("bandList", bandList);
-        bandThirtyMap.put("thirtyTime", timeList);
-        historyList.add(cpuThirtyMap);
-        historyList.add(memoryThirtyMap);
-        historyList.add(bandThirtyMap);
-        return historyList;
+        return new ArrayList();
     }
 
     @Override

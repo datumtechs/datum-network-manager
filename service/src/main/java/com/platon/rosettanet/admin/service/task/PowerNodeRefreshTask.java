@@ -1,9 +1,6 @@
 package com.platon.rosettanet.admin.service.task;
 
-import cn.hutool.Hutool;
-import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
-import com.platon.rosettanet.admin.dao.LocalOrgMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerHistoryMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerJoinTaskMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerNodeMapper;
@@ -72,106 +69,141 @@ public class PowerNodeRefreshTask {
         for(PowerRpcMessage.GetPowerSingleDetailResponse powerSingleDetail : detailsList) {
             // 单个算力详情
             PowerRpcMessage.PowerSingleDetail detail = powerSingleDetail.getPower();
-            // 算力实况
-            CommonMessage.ResourceUsedDetailShow resourceUsedDetailShow = detail.getInformation();
-            // 参与的任务
-            List<PowerRpcMessage.PowerTask> powerTaskList = detail.getTasksList();
-            // 保存计算节点历史数据信息
-            // 判断当前时间是否是整点
-            if(System.currentTimeMillis()%3600000<60000){
-                LocalPowerHistory localPowerHistory = new LocalPowerHistory();
-                // 计算节点id
-                localPowerHistory.setPowerNodeId(detail.getJobNodeId());
-                // 已使用内存
-                localPowerHistory.setUsedMemory(resourceUsedDetailShow.getUsedMem());
-                // 已使用核数
-                localPowerHistory.setUsedCore(Integer.parseInt(String.valueOf(resourceUsedDetailShow.getUsedProcessor())));
-                // 已使用带宽
-                localPowerHistory.setUsedBandwidth(resourceUsedDetailShow.getTotalBandwidth());
-                // 当天0点
-                if (LocalDateTime.now().getHour() == 0) {
-                    // 刷新时间标志 1表示天
-                    localPowerHistory.setRefreshStatus("1");
-                    localPowerHistoryList.add(localPowerHistory);
-                }
-                // 刷新时间标志 0表示小时
-                localPowerHistory.setRefreshStatus("0");
-                localPowerHistoryList.add(localPowerHistory);
-            }
-            // 保存计算节点算力信息开始
-            LocalPowerNode localPowerNode = new LocalPowerNode();
-            localPowerNode.setPowerNodeId(detail.getJobNodeId());
-            localPowerNode.setMemory(resourceUsedDetailShow.getTotalMem());
-            localPowerNode.setCore(Integer.parseInt(String.valueOf(resourceUsedDetailShow.getTotalProcessor())));
-            localPowerNode.setBandwidth(resourceUsedDetailShow.getTotalBandwidth());
-            localPowerNode.setUsedMemory(resourceUsedDetailShow.getUsedMem());
-            localPowerNode.setUsedCore(Integer.parseInt(String.valueOf(resourceUsedDetailShow.getUsedProcessor())));
-            localPowerNode.setUsedBandwidth(resourceUsedDetailShow.getUsedBandwidth());
-            localPowerNodeList.add(localPowerNode);
+
+            // 保存计算节点历史数据信息, 判断当前时间是否是整点
+            localPowerHistoryList = this.savePowerHistory(detail, localPowerHistoryList);
+
+            // 保存当前节点算力信息
+            localPowerNodeList = this.saveLocalPowerNode(detail, localPowerNodeList);
 
             // 保存计算节点参与的任务列表
-            if (!powerTaskList.isEmpty()) {
-                for(PowerRpcMessage.PowerTask powerTask : powerTaskList) {
-                    // 任务发起方身份信息
-                    CommonMessage.OrganizationIdentityInfo  ownerIdentityInfo = powerTask.getOwner();
-                    // 任务结果方
-                    List<CommonMessage.OrganizationIdentityInfo> receiversIdentityInfoList = powerTask.getReceiversList();
-                    // 任务协作方
-                    List<CommonMessage.OrganizationIdentityInfo> patnersIdentityInfoList = powerTask.getPatnersList();
-                    TaskRpcMessage.TaskOperationCostDeclare taskOperationCostDeclare = powerTask.getOperationCost();
-                    LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
-                    localPowerJoinTask.setPowerNodeId(detail.getJobNodeId());
-                    localPowerJoinTask.setTaskId(powerTask.getTaskId());
-                    localPowerJoinTask.setTaskName(powerTask.getTaskName());
-                    // 发起方
-                    localPowerJoinTask.setOwnerIdentityId(ownerIdentityInfo.getIdentityId());
-                    localPowerJoinTask.setOwnerIdentityName(ownerIdentityInfo.getName());
-                    localPowerJoinTask.setTaskStartTime(DateUtil.date(powerTask.getCreateAt()));
-                    // 结果方
-                    if (!receiversIdentityInfoList.isEmpty()) {
-                        List idList = new ArrayList();
-                        List nameList = new ArrayList();
-                        for(CommonMessage.OrganizationIdentityInfo organizationIdentityInfo : receiversIdentityInfoList) {
-                            idList.add(organizationIdentityInfo.getIdentityId());
-                            nameList.add(organizationIdentityInfo.getName());
-                        }
-                        localPowerJoinTask.setResultSideId(StringUtils.collectionToDelimitedString(idList, ","));
-                        localPowerJoinTask.setResultSideName(StringUtils.collectionToDelimitedString(nameList,","));
-                    }
-                    // 协作方
-                    if (!patnersIdentityInfoList.isEmpty()) {
-                        List idList = new ArrayList();
-                        List nameList = new ArrayList();
-                        for(CommonMessage.OrganizationIdentityInfo organizationIdentityInfo : patnersIdentityInfoList) {
-                            idList.add(organizationIdentityInfo.getIdentityId());
-                            nameList.add(organizationIdentityInfo.getName());
-                        }
-                        localPowerJoinTask.setCoordinateSideId(StringUtils.collectionToDelimitedString(idList,","));
-                        localPowerJoinTask.setCoordinateSideName(StringUtils.collectionToDelimitedString(nameList,","));
-                    }
-                    // 已使用内存
-                    localPowerJoinTask.setUsedMemory(taskOperationCostDeclare.getCostMem());
-                    // 已使用核数
-                    localPowerJoinTask.setUsedCore(Integer.parseInt(String.valueOf(taskOperationCostDeclare.getCostProcessor())));
-                    // 已使用带宽
-                    localPowerJoinTask.setUsedBandwidth(taskOperationCostDeclare.getCostBandwidth());
-                    localPowerJoinTaskList.add(localPowerJoinTask);
-                }
-            }
+            localPowerJoinTaskList = this.savePowerTaskList(detail, localPowerJoinTaskList);
         }
-        /** 保存计算节点资源历史记录 */
+        // 保存计算节点资源历史记录
         if (!localPowerHistoryList.isEmpty()) {
             localPowerHistoryMapper.batchInsertPowerHistory(localPowerHistoryList);
         }
-        /** 保存计算节点信息 */
-        localPowerNodeMapper.batchUpdatePowerNode(localPowerNodeList);
-
-        /** 保存计算节点参与的任务列表 */
-        localPowerJoinTaskMapper.batchInsertPowerTask(localPowerJoinTaskList);
+        // 保存计算节点信息
+        if(!localPowerNodeList.isEmpty()) {
+            localPowerNodeMapper.batchUpdatePowerNode(localPowerNodeList);
+        }
+        // 保存计算节点参与的任务列表
+        if (!localPowerJoinTaskList.isEmpty()) {
+            localPowerJoinTaskMapper.batchInsertPowerTask(localPowerJoinTaskList);
+        }
 
         // 定时任务结束
         long diffStart = System.currentTimeMillis() - startTime;
         log.info("定时任务结束, 执行时间:{}", diffStart+"ms");
     }
 
+    /** 判断当前时间是否是整点, 是则保存计算节点历史数据信息，否不保存数据 */
+    private List<LocalPowerHistory> savePowerHistory(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerHistory> localPowerHistoryList){
+        // 算力实况
+        CommonMessage.ResourceUsedDetailShow resourceUsedDetailShow = detail.getInformation();
+        if(System.currentTimeMillis()%3600000<60000){
+            LocalPowerHistory localPowerHistory = new LocalPowerHistory();
+            // 计算节点id
+            localPowerHistory.setPowerNodeId(detail.getJobNodeId());
+            // 已使用内存
+            localPowerHistory.setUsedMemory(resourceUsedDetailShow.getUsedMem());
+            // 已使用核数
+            localPowerHistory.setUsedCore(Integer.parseInt(String.valueOf(resourceUsedDetailShow.getUsedProcessor())));
+            // 已使用带宽
+            localPowerHistory.setUsedBandwidth(resourceUsedDetailShow.getTotalBandwidth());
+            // 当天0点
+            if (LocalDateTime.now().getHour() == 0) {
+                // 刷新时间标志 1表示天
+                localPowerHistory.setRefreshStatus("1");
+                localPowerHistoryList.add(localPowerHistory);
+            }
+            // 刷新时间标志 0表示小时
+            localPowerHistory.setRefreshStatus("0");
+            localPowerHistoryList.add(localPowerHistory);
+        }
+        return localPowerHistoryList;
+    }
+
+    /** 保存当前节点算力信息 */
+    private List<LocalPowerNode> saveLocalPowerNode(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerNode> localPowerNodeList ){
+        // 算力实况
+        CommonMessage.ResourceUsedDetailShow resourceUsedDetailShow = detail.getInformation();
+        // 保存计算节点算力信息开始
+        LocalPowerNode localPowerNode = new LocalPowerNode();
+        localPowerNode.setPowerNodeId(detail.getJobNodeId());
+        localPowerNode.setMemory(resourceUsedDetailShow.getTotalMem());
+        localPowerNode.setCore(Integer.parseInt(String.valueOf(resourceUsedDetailShow.getTotalProcessor())));
+        localPowerNode.setBandwidth(resourceUsedDetailShow.getTotalBandwidth());
+        localPowerNode.setUsedMemory(resourceUsedDetailShow.getUsedMem());
+        localPowerNode.setUsedCore(Integer.parseInt(String.valueOf(resourceUsedDetailShow.getUsedProcessor())));
+        localPowerNode.setUsedBandwidth(resourceUsedDetailShow.getUsedBandwidth());
+        localPowerNodeList.add(localPowerNode);
+        return localPowerNodeList;
+    }
+
+    /** 保存节点参数任务数据 */
+    private List<LocalPowerJoinTask> savePowerTaskList(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerJoinTask> localPowerJoinTaskList){
+        // 参与的任务
+        List<PowerRpcMessage.PowerTask> powerTaskList = detail.getTasksList();
+        if (!powerTaskList.isEmpty()) {
+            for(PowerRpcMessage.PowerTask powerTask : powerTaskList) {
+                TaskRpcMessage.TaskOperationCostDeclare taskOperationCostDeclare = powerTask.getOperationCost();
+                LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
+                // 节点id
+                localPowerJoinTask.setPowerNodeId(detail.getJobNodeId());
+                // 任务id
+                localPowerJoinTask.setTaskId(powerTask.getTaskId());
+                // 任务名称
+                localPowerJoinTask.setTaskName(powerTask.getTaskName());
+                // 发起时间
+                localPowerJoinTask.setTaskStartTime(DateUtil.date(powerTask.getCreateAt()));
+                // 已使用内存
+                localPowerJoinTask.setUsedMemory(taskOperationCostDeclare.getCostMem());
+                // 已使用核数
+                localPowerJoinTask.setUsedCore(Integer.parseInt(String.valueOf(taskOperationCostDeclare.getCostProcessor())));
+                // 已使用带宽
+                localPowerJoinTask.setUsedBandwidth(taskOperationCostDeclare.getCostBandwidth());
+                // 保存发起方、结果方、协作方
+                localPowerJoinTask = this.saveOwnerAndReceiversAndCoordinate(powerTask, localPowerJoinTask);
+                localPowerJoinTaskList.add(localPowerJoinTask);
+            }
+        }
+        return localPowerJoinTaskList;
+    }
+
+    /** 保存发起方、结果方、协作方 */
+    private LocalPowerJoinTask saveOwnerAndReceiversAndCoordinate(PowerRpcMessage.PowerTask powerTask, LocalPowerJoinTask localPowerJoinTask){
+        // 任务发起方身份信息
+        CommonMessage.OrganizationIdentityInfo  ownerIdentityInfo = powerTask.getOwner();
+        // 任务结果方
+        List<CommonMessage.OrganizationIdentityInfo> receiversIdentityInfoList = powerTask.getReceiversList();
+        // 任务协作方
+        List<CommonMessage.OrganizationIdentityInfo> patnersIdentityInfoList = powerTask.getPatnersList();
+        // 发起方
+        localPowerJoinTask.setOwnerIdentityId(ownerIdentityInfo.getIdentityId());
+        localPowerJoinTask.setOwnerIdentityName(ownerIdentityInfo.getName());
+        // 结果方
+        if (!receiversIdentityInfoList.isEmpty()) {
+            List idList = new ArrayList();
+            List nameList = new ArrayList();
+            for(CommonMessage.OrganizationIdentityInfo organizationIdentityInfo : receiversIdentityInfoList) {
+                idList.add(organizationIdentityInfo.getIdentityId());
+                nameList.add(organizationIdentityInfo.getName());
+            }
+            localPowerJoinTask.setResultSideId(StringUtils.collectionToDelimitedString(idList, ","));
+            localPowerJoinTask.setResultSideName(StringUtils.collectionToDelimitedString(nameList,","));
+        }
+        // 协作方
+        if (!patnersIdentityInfoList.isEmpty()) {
+            List idList = new ArrayList();
+            List nameList = new ArrayList();
+            for(CommonMessage.OrganizationIdentityInfo organizationIdentityInfo : patnersIdentityInfoList) {
+                idList.add(organizationIdentityInfo.getIdentityId());
+                nameList.add(organizationIdentityInfo.getName());
+            }
+            localPowerJoinTask.setCoordinateSideId(StringUtils.collectionToDelimitedString(idList,","));
+            localPowerJoinTask.setCoordinateSideName(StringUtils.collectionToDelimitedString(nameList,","));
+        }
+        return localPowerJoinTask;
+    }
 }

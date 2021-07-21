@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 
 /**
  * @author houz
- * 计算节点详情返回参数
+ * 计算节点返回详情
  */
 @Data
-@ApiModel(value = "计算节点列表返回参数")
+@ApiModel(value = "计算节点返回详情")
 public class LocalPowerNodeResp {
 
     @ApiModelProperty(value = "序号id", example = "")
