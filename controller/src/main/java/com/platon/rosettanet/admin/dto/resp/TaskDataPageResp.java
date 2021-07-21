@@ -1,10 +1,10 @@
 package com.platon.rosettanet.admin.dto.resp;
 
 import com.platon.rosettanet.admin.dao.entity.Task;
+import com.platon.rosettanet.admin.dao.enums.RoleEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
@@ -12,8 +12,10 @@ import java.time.LocalDateTime;
 @ApiModel(value = "查询计算任务列表返回实体")
 public class TaskDataPageResp {
 
-    @ApiModelProperty(name = "id",value = "任务id")
-    private String id;
+    @ApiModelProperty(name = "id",value = "序号")
+    private Integer id;
+    @ApiModelProperty(name = "taskId",value = "任务id")
+    private String taskId;
     @ApiModelProperty(name = "taskName",value = "任务名称")
     private String taskName;
     @ApiModelProperty(name = "createAt",value = "任务发起时间 (时间戳)")
@@ -27,8 +29,37 @@ public class TaskDataPageResp {
 
     public static TaskDataPageResp convert(Task task){
         TaskDataPageResp resp = new TaskDataPageResp();
-        BeanUtils.copyProperties(task,resp);
+        resp.setId(task.getId());
+        resp.setTaskId(task.getTaskId());
+        resp.setTaskName(task.getTaskName());
+        resp.setStatus(task.getStatus());
+        resp.setReviewed(task.getReviewed());
+        resp.setRole(getRole(task.getRole()));
+        resp.setCreateAt(task.getCreateAt());
+        //BeanUtils.copyProperties(task,resp);
         return resp;
+    }
+
+
+
+    /**
+     *
+     * @param role
+     * @return
+     */
+    public static int getRole(String role){
+
+        if(RoleEnum.OWNER.getMessage().equals(role)){
+            return RoleEnum.OWNER.getCode();
+        }else if(RoleEnum.DATASUPPLIER.getMessage().equals(role)){
+            return RoleEnum.DATASUPPLIER.getCode();
+        }else if(RoleEnum.POWERSUPPLIER.getMessage().equals(role)){
+            return RoleEnum.POWERSUPPLIER.getCode();
+        }else if(RoleEnum.RECEIVER.getMessage().equals(role)){
+            return RoleEnum.RECEIVER.getCode();
+        }else {
+            return RoleEnum.UNDEFINED.getCode();
+        }
     }
 
 

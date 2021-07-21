@@ -4,7 +4,6 @@ import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.dao.entity.*;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
-import com.platon.rosettanet.admin.grpc.entity.QueryNodeResp;
 import com.platon.rosettanet.admin.grpc.entity.TaskDataResp;
 import com.platon.rosettanet.admin.grpc.entity.TaskEventDataResp;
 import com.platon.rosettanet.admin.grpc.service.CommonMessage;
@@ -56,19 +55,19 @@ public class TaskClient {
         try {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
+            //channel = channelManager.getChannel(SERVER_HOST,SERVER_IP);
             //2.构造 request
             CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams.newBuilder().build();
             //3.调用rpc服务接口
             TaskRpcMessage.GetTaskDetailListResponse taskDetailListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskDetailList(request);
-            log.debug("====> RPC客户端请求响应 [获取任务列表数据: getTaskDetailList]:" + taskDetailListResponse.toString());
-
+            log.debug("====> RPC客户端请求响应 [获取任务列表数据: getTaskDetailList]:" + taskDetailListResponse.getMsg() + " ,  taskList Size:" + taskDetailListResponse.getTaskListList().size());
             //4.处理response
             TaskDataResp taskDataResp = new TaskDataResp();
             if(taskDetailListResponse != null){
                  taskDataResp.setStatus(taskDetailListResponse.getStatus());
                  taskDataResp.setMsg(taskDetailListResponse.getMsg());
                  List<TaskRpcMessage.GetTaskDetailResponse> taskDetailList = taskDetailListResponse.getTaskListList();
-                 log.debug("====> RPC客户端请求响应 [获取任务列表数据: taskDetailList]:" + taskDetailList.toString());
+                 //log.debug("====> RPC客户端请求响应 [获取任务列表数据: taskDetailList]:" + taskDetailList.toString());
                  if(GrpcConstant.GRPC_SUCCESS_CODE == taskDetailListResponse.getStatus()){
                      taskDataResp.setTaskList(dataConvertToTaskList(taskDetailList));
                  }
@@ -77,7 +76,7 @@ public class TaskClient {
         } catch (ApplicationException e) {
                  e.printStackTrace();
         } finally {
-            channelManager.closeChannel(channel);
+            //channelManager.closeChannel(channel);
         }
         return null;
     }
@@ -99,7 +98,7 @@ public class TaskClient {
             TaskRpcMessage.GetTaskEventListByTaskIdsRequest request = TaskRpcMessage.GetTaskEventListByTaskIdsRequest.newBuilder().addAllTaskIds(taskIds).build();
             //3.调用rpc服务接口
             TaskRpcMessage.GetTaskEventListResponse taskEventListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskEventListByTaskIds(request);
-            log.debug("====> RPC客户端 taskEventListResponse:" + taskEventListResponse.toString());
+            log.debug("====> RPC客户端 taskEventListResponse:" + taskEventListResponse.getMsg() +" , taskEventList Size:"+ taskEventListResponse.getTaskEventListList().size());
 
             //4.处理response
             TaskEventDataResp taskEventDataResp = new TaskEventDataResp();
@@ -114,7 +113,7 @@ public class TaskClient {
                     for (TaskRpcMessage.TaskEventShow taskEvenShow : taskEventShowList) {
                             TaskEvent taskEvent = new TaskEvent();
                             taskEvent.setTaskId(taskEvenShow.getTaskId());
-                            taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt(),0, ZoneOffset.ofHours(8)));
+                            taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt()/1000,0, ZoneOffset.ofHours(8)));
                             taskEvent.setEventContent(taskEvenShow.getContent());
                             taskEvent.setEventType(taskEvenShow.getType());
                             taskEvent.setIdentityId(taskEvenShow.getOwner().getIdentityId());
@@ -146,6 +145,7 @@ public class TaskClient {
         List<Task> taskList = new ArrayList<>();
         for (int i = 0; i < taskDetailList.size(); i++) {
             TaskRpcMessage.TaskDetailShow  taskDetail = taskDetailList.get(i).getInformation();
+            String role = taskDetailList.get(i).getRole();
             String taskId =  taskDetail.getTaskId();
             String taskName =  taskDetail.getTaskName();
             CommonMessage.TaskOrganizationIdentityInfo owner = taskDetail.getOwner();
@@ -161,18 +161,19 @@ public class TaskClient {
 
             //构造Task
             Task task = new Task();
-            task.setId(taskId);
+            task.setTaskId(taskId);
             task.setTaskName(taskName);
-            task.setCreateAt(LocalDateTime.ofEpochSecond(createAt,0, ZoneOffset.ofHours(8)));
-            task.setStartAt(LocalDateTime.ofEpochSecond(startAt,0, ZoneOffset.ofHours(8)));
-            task.setEndAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
+            task.setRole(role);
+            task.setCreateAt(LocalDateTime.ofEpochSecond(createAt/1000,0, ZoneOffset.ofHours(8)));
+            task.setStartAt(LocalDateTime.ofEpochSecond(startAt/1000,0, ZoneOffset.ofHours(8)));
+            task.setEndAt(LocalDateTime.ofEpochSecond(endAt/1000,0, ZoneOffset.ofHours(8)));
             task.setStatus(state);
-            task.setAuthAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
-            task.setOwnerIdentityId("123456789");
+            task.setAuthAt(LocalDateTime.ofEpochSecond(endAt/1000,0, ZoneOffset.ofHours(8)));
+            task.setOwnerIdentityId(owner.getIdentityId());
             task.setCostCore(operationCost.getCostProcessor());
             task.setCostMemory(operationCost.getCostMem());
             task.setCostBandwidth(operationCost.getCostBandwidth());
-            task.setDuration(LocalDateTime.ofEpochSecond(operationCost.getDuration(),0, ZoneOffset.ofHours(8)));
+            task.setDuration(LocalDateTime.ofEpochSecond(operationCost.getDuration()/1000,0, ZoneOffset.ofHours(8)));
 
             //任务发起发owner
             TaskOrg ownerData = new TaskOrg();
@@ -246,6 +247,11 @@ public class TaskClient {
         dynamicFields.put(NODE_ID, nodeId);
         return dynamicFields;
     }
+
+
+
+
+
 
 
 

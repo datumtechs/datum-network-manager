@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.rosettanet.admin.dao.TaskMapper">
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.Task">
-    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="task_Id" jdbcType="VARCHAR" property="taskId" />
     <result column="task_Name" jdbcType="VARCHAR" property="taskName" />
     <result column="owner_Identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
     <result column="create_At" jdbcType="TIMESTAMP" property="createAt" />
@@ -11,6 +12,7 @@
     <result column="auth_Status" jdbcType="VARCHAR" property="authStatus" />
     <result column="end_At" jdbcType="TIMESTAMP" property="endAt" />
     <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="role" jdbcType="VARCHAR" property="role" />
     <result column="duration" jdbcType="TIMESTAMP" property="duration" />
     <result column="cost_core" jdbcType="INTEGER" property="costCore" />
     <result column="cost_Memory" jdbcType="BIGINT" property="costMemory" />
@@ -21,15 +23,15 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, task_Name, owner_Identity_id, create_At, start_At, auth_At, auth_Status, end_At,
-    status, duration, cost_core, cost_Memory, cost_Bandwidth, alg_Identity_id, reviewed, 
+    id, task_Id, task_Name, owner_Identity_id, create_At, start_At, auth_At, auth_Status, end_At,
+    `status`, `role`, duration, cost_core, cost_Memory, cost_Bandwidth, alg_Identity_id, reviewed,
     rec_create_time, rec_update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from task
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </select>
 
 
@@ -39,12 +41,12 @@
     select
     <include refid="Base_Column_List" />
     from task
-    where id = #{taskId,jdbcType=VARCHAR}
+    where task_Id = #{taskId,jdbcType=VARCHAR}
   </select>
 
 
   <select id="selectListTaskByStatusWithSuccessAndFailed"  resultType="java.lang.String">
-    SELECT  t.id  FROM  task AS t
+    SELECT  t.task_Id  FROM  task AS t
     WHERE  t.`status` IN ('success', 'failed')
   </select>
 
@@ -71,42 +73,30 @@
     AS role
     FROM
     task t
-    LEFT JOIN task_data_provider tdp ON t.id = tdp.task_Id
-    LEFT JOIN task_power_provider tpp ON t.id = tpp.task_Id
-    LEFT JOIN task_result_consumer trc ON t.id = trc.task_Id
-    WHERE t.id = #{taskId,jdbcType=VARCHAR}
+    LEFT JOIN task_data_provider tdp ON t.task_Id = tdp.task_Id
+    LEFT JOIN task_power_provider tpp ON t.task_Id = tpp.task_Id
+    LEFT JOIN task_result_consumer trc ON t.task_Id = trc.task_Id
+    WHERE t.task_Id = #{taskId,jdbcType=VARCHAR}
   </select>
 
 
   <select id="listTask" parameterType="map" resultMap="BaseResultMap">
     SELECT
-    task_role.*
+    t.id,
+    t.task_Id,
+    t.task_Name,
+    t.`status`,
+    t.create_At,
+    t.reviewed,
+    t.role
     FROM
-    (   SELECT
-        t.id,
-        t.task_Name,
-        t.`status`,
-        t.create_At,
-        t.reviewed,
-        CASE
-        WHEN t.owner_Identity_id = (SELECT identity_Id FROM local_org) THEN 1
-        WHEN tdp.identity_id = (SELECT identity_Id FROM local_org) THEN 2
-        WHEN tpp.identity_id = (SELECT identity_Id FROM local_org) THEN 3
-        WHEN trc.consumer_identity_id = (SELECT identity_Id FROM local_org) THEN 4
-        ELSE 0 END
-        AS role
-        FROM
-        task t
-        LEFT JOIN task_data_provider tdp ON t.id = tdp.task_Id
-        LEFT JOIN task_power_provider tpp ON t.id = tpp.task_Id
-        LEFT JOIN task_result_consumer trc ON t.id = trc.task_Id
-    ) AS task_role
+    task t
     <where>
-      <if test="status != null ">
+      <if test="status != null and status != ''">
         and status = #{status,jdbcType=VARCHAR}
       </if>
-      <if test="role != -1">
-        and role = #{role,jdbcType=INTEGER}
+      <if test="role != null and role != '' and role != 'undefined'">
+        and role = #{role,jdbcType=VARCHAR}
       </if>
       <if test="startTimestamp != null">
          and create_At <![CDATA[>= ]]> #{startTimestamp,jdbcType=TIMESTAMP}
@@ -138,13 +128,13 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
-    insert into task (id, task_Name, owner_Identity_id, 
+    insert into task (task_Id, task_Name, owner_Identity_id,
       create_At, start_At, auth_At, 
       auth_Status, end_At, status, 
       duration, cost_core, cost_Memory, 
       cost_Bandwidth, alg_Identity_id, reviewed, 
       rec_create_time, rec_update_time)
-    values (#{id,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR}, 
+    values (#{taskId,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR},
       #{createAt,jdbcType=TIMESTAMP}, #{startAt,jdbcType=TIMESTAMP}, #{authAt,jdbcType=TIMESTAMP}, 
       #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
       #{duration,jdbcType=TIMESTAMP}, #{costCore,jdbcType=INTEGER}, #{costMemory,jdbcType=BIGINT}, 
@@ -154,17 +144,17 @@
 
 
   <insert id="insertBatch" parameterType="java.util.List">
-    replace into task (`id`, task_Name, owner_Identity_id,
+    replace into task (task_Id, task_Name, owner_Identity_id,
     create_At, start_At, auth_At,
-    auth_Status, end_At, status,
+    auth_Status, end_At, status, role,
     duration, cost_core, cost_Memory,
     cost_Bandwidth, alg_Identity_id,
     rec_create_time, rec_update_time)
     values
     <foreach collection ="list" item="item" index="index" separator=",">
-      (#{item.id,jdbcType=VARCHAR}, #{item.taskName,jdbcType=VARCHAR}, #{item.ownerIdentityId,jdbcType=VARCHAR},
+      (#{item.taskId,jdbcType=VARCHAR}, #{item.taskName,jdbcType=VARCHAR}, #{item.ownerIdentityId,jdbcType=VARCHAR},
       #{item.createAt,jdbcType=TIMESTAMP}, #{item.startAt,jdbcType=TIMESTAMP}, #{item.authAt,jdbcType=TIMESTAMP},
-      #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=VARCHAR},
+      #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=VARCHAR}, #{item.role,jdbcType=VARCHAR},
       #{item.duration,jdbcType=TIMESTAMP}, #{item.costCore,jdbcType=INTEGER}, #{item.costMemory,jdbcType=BIGINT},
       #{item.costBandwidth,jdbcType=BIGINT}, #{item.algIdentityId,jdbcType=VARCHAR},
       #{item.recCreateTime,jdbcType=TIMESTAMP}, #{item.recUpdateTime,jdbcType=TIMESTAMP})
@@ -356,7 +346,7 @@
       reviewed = #{reviewed,jdbcType=BIT},
       rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
       rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=VARCHAR}
+    where task_Id = #{taskId,jdbcType=VARCHAR}
   </update>
 
 
@@ -365,7 +355,7 @@
   <update id="updateTaskReviewedById" parameterType="java.util.Map">
     update task
     set reviewed = #{reviewed,jdbcType=BIT}
-    where id = #{id,jdbcType=VARCHAR}
+    where task_Id = #{taskId,jdbcType=VARCHAR}
   </update>
 
 
@@ -389,7 +379,7 @@
       reviewed = #{reviewed,jdbcType=BIT},
       rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
       rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
-      where id = #{id,jdbcType=VARCHAR}
+      where task_Id = #{taskId,jdbcType=VARCHAR}
     </foreach>
   </update>
 
