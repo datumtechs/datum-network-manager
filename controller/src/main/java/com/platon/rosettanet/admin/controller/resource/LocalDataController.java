@@ -116,7 +116,7 @@ public class LocalDataController {
     }
 
     /**
-     * 数据添加：只是更新数据库信息
+     * 数据添加：实际只是更新数据库信息，在上一步导入文件的时候已经插入数据
      */
     @ApiOperation(value = "添加数据")
     @PostMapping("addMetaData")
@@ -128,7 +128,7 @@ public class LocalDataController {
         //判断是否重复
         boolean exist = localDataService.isExistResourceName(req.getResourceName());
         if(exist){
-            return JsonResponse.fail("文件名称已存在");
+            return JsonResponse.fail("文件名称已存在，请修改文件名称前12个字符，确保不会和已存在的文件前12个字符重复！！！");
         }
         LocalDataFileDetail detail = new LocalDataFileDetail();
         BeanUtils.copyProperties(req,detail);
