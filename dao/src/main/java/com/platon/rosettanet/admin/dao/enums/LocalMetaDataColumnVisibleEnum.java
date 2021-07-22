@@ -15,7 +15,7 @@ import lombok.Getter;
 
 @Getter
 public enum LocalMetaDataColumnVisibleEnum {
-    YES("YES","可见"),NO("NO","不可见"),;
+    YES("Y","可见"),NO("N","不可见"),;
 
     LocalMetaDataColumnVisibleEnum(String isVisible,String desc){
         this.isVisible = isVisible;

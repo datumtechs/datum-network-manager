@@ -28,7 +28,7 @@ public class IndexNodeListResp {
     private String jobNodeId;//计算节点ID
     @ApiModelProperty(name = "jobNodeName", value = "计算节点名称")
     private String jobNodeName;//计算节点名称
-    @ApiModelProperty(name = "status", value = "计算节点状态：计算中、空闲中")
+    @ApiModelProperty(name = "status", value = "计算节点状态：1计算中、0空闲中")
     private String status;//计算节点状态：计算中、空闲中
     @ApiModelProperty(name = "totalProcessor", value = "计算节点提供的CPU总量")
     private Integer totalProcessor;//计算节点提供的CPU总量
@@ -52,8 +52,12 @@ public class IndexNodeListResp {
         IndexNodeListResp resp = new IndexNodeListResp();
         resp.setJobNodeId(localPowerNode.getPowerNodeId());
         resp.setJobNodeName(localPowerNode.getPowerNodeName());
-        //TODO 节点状态待确定
-        resp.setStatus(localPowerNode.getConnStatus());
+        //TODO 节点状态待确定,节点状态，-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用<计算服务>; 2: 算力被占用(计算服务算力正在被任务占用)
+        if("2".equals(localPowerNode.getConnStatus())){//占用
+            resp.setStatus("1");
+        } else {
+            resp.setStatus("0");
+        }
         resp.setTotalProcessor(localPowerNode.getCore());
         resp.setUsedProcessor(localPowerNode.getUsedCore());
         resp.setTotalMem(localPowerNode.getMemory());

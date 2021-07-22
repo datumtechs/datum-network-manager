@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author liushuyu
@@ -38,8 +40,12 @@ public class DataProviderClient {
      */
     public DataProviderUploadDataResp uploadData(String dataNodeHost, int dataNodePort, String fileName, byte[] fileContent) throws ApplicationException{
         //1.获取rpc连接
+        CountDownLatch count = new CountDownLatch(1);
         Channel channel = null;
         try{
+            //TODO 调试
+//            dataNodeHost="192.168.16.151";
+//            dataNodePort=50011;
             channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
             //2.构建response流观察者
             DataProviderUploadDataResp resp = new DataProviderUploadDataResp();
@@ -60,11 +66,13 @@ public class DataProviderClient {
 
                 @Override
                 public void onError(Throwable throwable) {
+                    count.countDown();
                     throw new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName),throwable);
                 }
 
                 @Override
                 public void onCompleted() {
+                    count.countDown();
                     log.info("文件上传成功：{}",fileName);
                 }
             };
@@ -94,6 +102,15 @@ public class DataProviderClient {
              * 由于调度服务rpc接口也在开发阶段，如果直接返回调度服务的response，一旦response发生变化，则调用该方法的地方都需要修改
              * 故将response转换后再放给service类使用
              */
+            try {
+                //等待服务端数据返回
+                boolean await = count.await(60, TimeUnit.SECONDS);
+                if(!await){
+                    throw new ApplicationException(StrUtil.format("超过等待时间，上传文件失败：文件名:{}",fileName));
+                }
+            } catch (InterruptedException e) {
+                throw new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName),e);
+            }
             return resp;
         } finally {
             channelManager.closeChannel(channel);
@@ -109,6 +126,7 @@ public class DataProviderClient {
      */
     public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath) throws ApplicationException{
         ByteString result = ByteString.EMPTY;
+        CountDownLatch count = new CountDownLatch(1);
         //1.获取rpc连接
         Channel channel = null;
         try{
@@ -145,9 +163,9 @@ public class DataProviderClient {
                             case 1:
                                 log.info("下载完成文件filePath:{}，状态:{}.......",filePath,"Finished");
                             case 2:
-                                throw new ApplicationException(StrUtil.format("下载文件失败：文件名:{},状态:{}",filePath,"Cancelled"));
+                                throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Cancelled"));
                             case 3:
-                                throw new ApplicationException(StrUtil.format("下载文件失败：文件名:{},状态:{}",filePath,"Failed"));
+                                throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Failed"));
                             default:
                                 break;
                         }
@@ -157,11 +175,13 @@ public class DataProviderClient {
 
                 @Override
                 public void onError(Throwable throwable) {
-                    throw new ApplicationException(StrUtil.format("下载文件失败：文件名:{}",filePath),throwable);
+                    count.countDown();
+                    throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{}",filePath),throwable);
                 }
 
                 @Override
                 public void onCompleted() {
+                    count.countDown();
                     log.info("文件下载成功：{}",filePath);
                 }
             };
@@ -171,6 +191,15 @@ public class DataProviderClient {
              * 由于调度服务rpc接口也在开发阶段，如果直接返回调度服务的response，一旦response发生变化，则调用该方法的地方都需要修改
              * 故将response转换后再放给service类使用
              */
+            try {
+                //等待服务端数据返回
+                boolean await = count.await(60, TimeUnit.SECONDS);
+                if(!await){
+                    throw new ApplicationException(StrUtil.format("超过等待时间，下载文件失败：文件路劲:{}",filePath));
+                }
+            } catch (InterruptedException e) {
+                throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{}",filePath),e);
+            }
             return result.toByteArray();
         } finally {
             channelManager.closeChannel(channel);
