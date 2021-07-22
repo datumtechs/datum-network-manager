@@ -27,4 +27,10 @@ public interface LocalPowerJoinTaskMapper {
      */
     List<LocalPowerJoinTask> queryPowerJoinTaskList(@Param(value = "powerNodeId") String powerNodeId);
 
+    /**
+     * 清空表数据
+     * @return
+     */
+    int truncateTable();
+
 }

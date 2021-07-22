@@ -28,7 +28,7 @@ import java.util.*;
  * @date 2021/7/10 17:07
  */
 @Slf4j
-@Component
+//@Component
 public class PowerNodeRefreshTask {
 
     @Resource
@@ -121,6 +121,9 @@ public class PowerNodeRefreshTask {
         }
         // 新增计算节点参与的任务列表
         if (!localPowerJoinTaskList.isEmpty()) {
+            // 清空表数据
+            localPowerJoinTaskMapper.truncateTable();
+            // 每次新增最新的数据
             localPowerJoinTaskMapper.batchInsertPowerTask(localPowerJoinTaskList);
         }
         long diffStart = System.currentTimeMillis() - startTime;

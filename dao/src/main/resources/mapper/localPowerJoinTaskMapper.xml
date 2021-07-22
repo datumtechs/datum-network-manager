@@ -93,4 +93,9 @@
     </foreach>
   </insert>
 
+  <!-- 清空表数据-->
+  <update id="truncateTable">
+    truncate table all_stock_code
+  </update>
+
 </mapper>
