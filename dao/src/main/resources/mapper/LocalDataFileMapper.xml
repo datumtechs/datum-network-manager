@@ -32,11 +32,11 @@
     <if test="keyword != null and keyword != ''">
         where resource_name like concat('%',#{keyword},'%')
     </if>
-    order by resource_name
+    order by rec_update_time desc
   </select>
 
   <!-- 插入不为空的字段-->
-  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile" useGeneratedKeys="true" keyProperty="id">
     insert into local_data_file
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="identityId != null">
@@ -196,7 +196,7 @@
   <select id="selectByResourceName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from local_data_file
-    where resource_name = #{resourceName}
+    where resource_name = #{resourceName} and meta_data_id != #{metaDataId}
   </select>
 
   <!-- 根据metaDataId删除指定的数据,released的数据不可删除-->

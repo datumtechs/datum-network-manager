@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.controller.resource;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.csv.CsvData;
 import cn.hutool.core.text.csv.CsvReader;
 import cn.hutool.core.text.csv.CsvUtil;
@@ -113,6 +114,18 @@ public class LocalDataController {
         if(rowCount <= 0){
             throw new ApplicationException("CSV文件为空文件");
         }
+
+        //校验文件名
+        String originalFilename = file.getOriginalFilename();
+        String resourceName = StrUtil.sub(FileUtil.getPrefix(originalFilename),0,12);
+        if(!NameUtil.isValidName(resourceName)){
+            throw new ApplicationException("文件名称格式不合法:仅支持中英文与数字输入，最多12个字符");
+        }
+        //判断文件名称是否重复
+        boolean exist = localDataService.isExistResourceName(resourceName,null);
+        if(exist){
+            throw new ApplicationException("文件名称已存在，请修改文件名称前12个字符，确保不会和已存在的文件前12个字符重复！！！");
+        }
     }
 
     /**
@@ -123,10 +136,10 @@ public class LocalDataController {
     public JsonResponse add(@RequestBody @Validated LocalDataAddReq req){
         //判断格式是否对
         if(!NameUtil.isValidName(req.getResourceName())){
-            return JsonResponse.fail("文件名称格式不合法");
+            return JsonResponse.fail("文件名称格式不合法:仅支持中英文与数字输入，最多12个字符");
         }
         //判断是否重复
-        boolean exist = localDataService.isExistResourceName(req.getResourceName());
+        boolean exist = localDataService.isExistResourceName(req.getResourceName(),req.getMetaDataId());
         if(exist){
             return JsonResponse.fail("文件名称已存在，请修改文件名称前12个字符，确保不会和已存在的文件前12个字符重复！！！");
         }
@@ -214,16 +227,17 @@ public class LocalDataController {
     @ApiOperation(value = "校验文件名称是否合法")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "resourceName",value = "文件名称",required = true,paramType = "query",example = "filename"),
+            @ApiImplicitParam(name = "metaDataId",value = "需要排除的metaDataId",required = false,paramType = "query",example = "metaDataId11"),
     })
     @PostMapping("checkResourceName")
-    public JsonResponse<LocalDataCheckResourceNameResp> checkResourceName(String resourceName){
+    public JsonResponse<LocalDataCheckResourceNameResp> checkResourceName(String resourceName,String metaDataId){
         LocalDataCheckResourceNameResp resp = new LocalDataCheckResourceNameResp();
         //判断格式是否对
         if(!NameUtil.isValidName(resourceName)){
             return JsonResponse.success(resp);
         }
         //判断是否重复
-        boolean exist = localDataService.isExistResourceName(resourceName);
+        boolean exist = localDataService.isExistResourceName(resourceName,metaDataId);
         if(exist){
             return JsonResponse.success(resp);
         }

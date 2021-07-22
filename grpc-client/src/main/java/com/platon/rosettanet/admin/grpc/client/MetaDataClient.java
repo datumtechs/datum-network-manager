@@ -54,37 +54,39 @@ public class MetaDataClient {
                     .setIdentityId(localOrgInfo.getIdentityId())
                     .build();
             //2.2文件元数据信息
-            MetaDataRpcMessage.MetaDataSummary summary = MetaDataRpcMessage.MetaDataSummary
+            MetaDataRpcMessage.MetaDataSummary.Builder summaryBuilder = MetaDataRpcMessage.MetaDataSummary
                     .newBuilder()
                     .setMetaDataId(fileDetail.getMetaDataId())
                     .setOriginId(fileDetail.getFileId())
                     .setTableName(fileDetail.getResourceName())
-                    .setDesc(fileDetail.getRemarks())
                     .setFilePath(fileDetail.getFilePath())
                     .setRows(fileDetail.getRows().intValue()) // 源文件的行数
                     .setColumns(fileDetail.getColumns())
                     .setSize(fileDetail.getSize().intValue())
                     .setFileType(fileDetail.getFileType())
                     .setHasTitle(fileDetail.getHasTitle())
-                    .setState(fileDetail.getStatus())// 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
-                    .build();
-
+                    .setState(fileDetail.getStatus());// 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
+            if(StrUtil.isNotBlank(fileDetail.getRemarks())){
+                summaryBuilder.setDesc(fileDetail.getRemarks());
+            }
             MetaDataRpcMessage.MetaDataDetailShow.Builder builder = MetaDataRpcMessage.MetaDataDetailShow
                     .newBuilder()
-                    .setMetaDataSummary(summary);
+                    .setMetaDataSummary(summaryBuilder.build());
             //2.3构建文件元数据列信息
             List<LocalMetaDataColumn> columnList = fileDetail.getLocalMetaDataColumnList();
             for (int i = 0; i < columnList.size(); i++) {
                 LocalMetaDataColumn metaDataColumn = columnList.get(i);
-                MetaDataRpcMessage.MetaDataColumnDetail columnDetail = MetaDataRpcMessage.MetaDataColumnDetail
-                        .newBuilder()
-                        .setCindex(metaDataColumn.getColumnIdx())
-                        .setCname(metaDataColumn.getColumnName())
-                        .setCtype(metaDataColumn.getColumnType())
-                        .setCsize(metaDataColumn.getSize().intValue())
-                        .setCcomment(metaDataColumn.getRemarks())
-                        .build();
-                builder.setColumnMeta(i,columnDetail);
+                MetaDataRpcMessage.MetaDataColumnDetail.Builder columnDetailBuilder = MetaDataRpcMessage.MetaDataColumnDetail.newBuilder();
+                if (StrUtil.isNotBlank(metaDataColumn.getColumnName())){
+                    columnDetailBuilder.setCname(metaDataColumn.getColumnName());
+                }
+                if (StrUtil.isNotBlank(metaDataColumn.getColumnType())){
+                    columnDetailBuilder.setCtype(metaDataColumn.getColumnType());
+                }
+                if (StrUtil.isNotBlank(metaDataColumn.getRemarks())){
+                    columnDetailBuilder.setCcomment(metaDataColumn.getRemarks());
+                }
+                builder.addColumnMeta(columnDetailBuilder.build());
             }
             //2.4收集完成文件信息
             MetaDataRpcMessage.MetaDataDetailShow metaDataDetail = builder.build();

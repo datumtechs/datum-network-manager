@@ -74,9 +74,9 @@ public interface LocalDataService {
     int up(String metaDataId);
 
     /**
-     * 校验资源名称是否已经在数据库中存在
+     * 查询指定的metaDataId的resourceName是否在数据库中存在重复
      * @param resourceName
      * @return
      */
-    boolean isExistResourceName(String resourceName);
+    boolean isExistResourceName(String resourceName,String metaDataId);
 }

@@ -2,6 +2,7 @@ package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -54,9 +55,9 @@ public interface LocalDataFileMapper {
     int updateByIdSelective(LocalDataFile localDataFile);
 
     /**
-     * 根据resourceName查询数据文件
+     * 排除指定metaDataId之后，根据resourceName查询数据文件
      * @param resourceName
      * @return
      */
-    LocalDataFile selectByResourceName(String resourceName);
+    LocalDataFile selectByResourceName(@Param("resourceName") String resourceName, @Param("metaDataId") String metaDataId);
 }

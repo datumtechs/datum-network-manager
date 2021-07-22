@@ -193,7 +193,9 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Override
     public LocalDataFileDetail detail(String metaDataId) {
         LocalDataFile localDataFile = localDataFileMapper.selectByMetaDataId(metaDataId);
-
+        if(localDataFile == null){
+            return null;
+        }
         List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByMetaDataId(metaDataId);
         LocalDataFileDetail detail = new LocalDataFileDetail();
         BeanUtils.copyProperties(localDataFile,detail);
@@ -245,8 +247,8 @@ public class LocalDataServiceImpl implements LocalDataService {
     }
 
     @Override
-    public boolean isExistResourceName(String resourceName) {
-        LocalDataFile localDataFile = localDataFileMapper.selectByResourceName(resourceName);
+    public boolean isExistResourceName(String resourceName,String metaDataId) {
+        LocalDataFile localDataFile = localDataFileMapper.selectByResourceName(resourceName,metaDataId);
         return localDataFile != null ? true : false;
     }
 
@@ -264,11 +266,7 @@ public class LocalDataServiceImpl implements LocalDataService {
             detail.setFileName(fileName);
             //导入去掉.csv后缀的文件名称，保存前12个字符作为资源名称
             String resourceName = StrUtil.sub(FileUtil.getPrefix(fileName),0,12);
-            //校验资源文件名称唯一性
-            boolean exist = isExistResourceName(resourceName);
-            if(exist){
-                throw new ServiceException("请修改文件名称前12个字符，确保不会和已存在的文件前12个字符重复！！！");
-            }
+            //因为上层已做资源文件名称校验，故此处暂时不再做校验
             detail.setResourceName(resourceName);
             detail.setIdentityId(LocalOrgIdentityCache.getIdentityId());
             detail.setFileType(FileUtil.getSuffix(fileName));//获取文件类型

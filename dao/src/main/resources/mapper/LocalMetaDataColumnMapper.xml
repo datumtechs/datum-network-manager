@@ -25,7 +25,7 @@
   </select>
 
   <!-- 批量插入数据-->
-  <insert id="batchInsert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn">
+  <insert id="batchInsert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn" useGeneratedKeys="true" keyProperty="id">
     insert into local_meta_data_column (meta_data_id, column_idx,
       `column_name`, column_type, `size`, 
       remarks, visible, rec_create_time, 
