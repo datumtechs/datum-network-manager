@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.dao.*;
 import com.platon.rosettanet.admin.dao.entity.*;
+import com.platon.rosettanet.admin.dao.enums.RoleEnum;
 import com.platon.rosettanet.admin.dao.enums.TaskStatusEnum;
 import com.platon.rosettanet.admin.service.TaskService;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class TaskServiceImpl implements TaskService {
         @Override
         public Page<Task> listTask(String status, Integer role, Long startTimestamp, Long endTimestamp, String keyWord, int pageNumber, int pageSize) {
 
-            Integer roleParam = (role == null) ? -1 : role;
+            String roleParam = RoleEnum.getMessageByCode(role);
             Timestamp startTimestampParam = (startTimestamp == 0) ? null : new Timestamp(startTimestamp);
             Timestamp endTimestampParam = (endTimestamp == 0) ? null : new Timestamp(endTimestamp);
 
@@ -98,9 +99,6 @@ public class TaskServiceImpl implements TaskService {
         //算力提供方
         List<TaskPowerProvider> powerSupplierList = taskPowerProviderMapper.selectTaskPowerWithOrgByTaskId(taskId);
         task.setPowerSupplier(powerSupplierList);
-         //角色
-        Integer role = taskMapper.selectTaskRole(taskId);
-        task.setRole(role);
         //更新task查看状态
         taskMapper.updateTaskReviewedById(taskId,true);
         return task;

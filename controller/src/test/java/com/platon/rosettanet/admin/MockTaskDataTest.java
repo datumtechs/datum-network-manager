@@ -171,7 +171,7 @@ public class MockTaskDataTest {
         //批量TaskEvent获取并更新DB
         List<TaskEvent> taskEventList = new ArrayList<>();
         for (int i = 0; i < taskList.size(); i++) {
-            List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskList.get(i).getId());
+            List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskList.get(i).getTaskId());
             taskEventList.addAll(taskEvents);
         }
         taskEventMapper.insertBatch(taskEventList);
@@ -208,10 +208,10 @@ public class MockTaskDataTest {
         List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
 
         TaskOrg owner = taskData.getOwner();
-        owner.setTaskId(taskData.getId());
+        owner.setTaskId(taskData.getTaskId());
 
         TaskOrg algoSupplier = taskData.getAlgoSupplier();
-        algoSupplier.setTaskId(taskData.getId());
+        algoSupplier.setTaskId(taskData.getTaskId());
 
         for (TaskDataReceiver dataReceiver : dataReceivers) {
               String identityId = dataReceiver.getIdentityId();
@@ -220,7 +220,7 @@ public class MockTaskDataTest {
               String nodeId = dynamicFields.get(NODE_ID);
 
               TaskOrg taskOrg = new TaskOrg();
-              taskOrg.setTaskId(taskData.getId());
+              taskOrg.setTaskId(taskData.getTaskId());
               taskOrg.setIdentityId(identityId);
               taskOrg.setCarrierNodeId(nodeId);
               taskOrg.setName(nodeName);
@@ -234,7 +234,7 @@ public class MockTaskDataTest {
             String nodeId = dynamicFields.get(NODE_ID);
 
             TaskOrg taskOrg = new TaskOrg();
-            taskOrg.setTaskId(taskData.getId());
+            taskOrg.setTaskId(taskData.getTaskId());
             taskOrg.setIdentityId(identityId);
             taskOrg.setCarrierNodeId(nodeId);
             taskOrg.setName(nodeName);
@@ -248,7 +248,7 @@ public class MockTaskDataTest {
             String nodeId = dynamicFields.get(NODE_ID);
 
             TaskOrg taskOrg = new TaskOrg();
-            taskOrg.setTaskId(taskData.getId());
+            taskOrg.setTaskId(taskData.getTaskId());
             taskOrg.setIdentityId(identityId);
             taskOrg.setCarrierNodeId(nodeId);
             taskOrg.setName(nodeName);
@@ -287,14 +287,14 @@ public class MockTaskDataTest {
 
             //构造Task
             Task task = new Task();
-            task.setId(taskId);
+            task.setTaskId(taskId);
             task.setTaskName(taskName);
             task.setCreateAt(LocalDateTime.ofEpochSecond(createAt,0, ZoneOffset.ofHours(8)));
             task.setStartAt(LocalDateTime.ofEpochSecond(startAt,0, ZoneOffset.ofHours(8)));
             task.setEndAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
             task.setStatus(state);
             task.setAuthAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
-            task.setOwnerIdentityId("123456789");
+            task.setOwnerIdentityId(owner.getIdentityId());
             task.setCostCore(operationCost.getCostProcessor());
             task.setCostMemory(operationCost.getCostMem());
             task.setCostBandwidth(operationCost.getCostBandwidth());

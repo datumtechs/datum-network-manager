@@ -6,10 +6,10 @@ import lombok.Data;
 
 /**
  * @author houz
- * 计算节点详情返回参数
+ * 计算节点返回列表
  */
 @Data
-@ApiModel(value = "计算节点列表返回参数")
+@ApiModel(value = "计算节点返回列表")
 public class LocalPowerNodeListResp {
 
     @ApiModelProperty(value = "计算节点ID", example = "")

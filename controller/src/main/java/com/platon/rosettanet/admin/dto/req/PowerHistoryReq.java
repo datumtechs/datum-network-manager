@@ -22,5 +22,13 @@ public class PowerHistoryReq {
     @ApiModelProperty(value = "计算节点ID", example = "", required = true)
     private String powerNodeId;
 
+    @NotNull(message = "资源类型不能为空")
+    @ApiModelProperty(value = "资源类型（1:cpu, 2:memory, 3:bandwidth）", example = "", required = true)
+    private String resourceType;
+
+    @NotNull(message = "时间类型不能为空")
+    @ApiModelProperty(value = "时间类型4种（1、7、15、30）", example = "", required = true)
+    private String timeType;
+
 
 }

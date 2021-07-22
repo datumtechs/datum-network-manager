@@ -104,7 +104,8 @@ public class LocalPowerNodeController {
     @PostMapping("/queryPowerNodeUseHistory")
     @ApiOperation(value="查询计算节点历史记录", response = JsonResponse.class)
     public JsonResponse queryPowerNodeUseHistory(@Validated @RequestBody PowerHistoryReq powerHistoryReq) {
-        List dataList = localPowerNodeService.queryPowerNodeUseHistory(powerHistoryReq.getPowerNodeId());
+        List dataList = localPowerNodeService.queryPowerNodeUseHistory(powerHistoryReq.getPowerNodeId(),
+                powerHistoryReq.getResourceType(), powerHistoryReq.getTimeType());
         return JsonResponse.success(dataList);
     }
 

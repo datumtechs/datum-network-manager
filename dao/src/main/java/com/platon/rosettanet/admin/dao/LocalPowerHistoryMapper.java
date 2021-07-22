@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.LocalPowerHistory;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,6 +32,6 @@ public interface LocalPowerHistoryMapper {
      * @param powerNodeId
      * @return
      */
-    List<LocalPowerHistory> queryPowerHistory(String powerNodeId);
+    List<LocalPowerHistory> queryPowerHistory(@Param(value = "powerNodeId") String powerNodeId, @Param(value = "refreshStatus") String refreshStatus);
 
 }

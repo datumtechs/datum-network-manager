@@ -15,8 +15,11 @@ import java.util.List;
 @ApiModel(value = "任务详情实体类")
 public class TaskDataDetailResp {
 
-    @ApiModelProperty(name = "id",value = "任务id")
-    private String id;
+
+    @ApiModelProperty(name = "id",value = "序号")
+    private Integer id;
+    @ApiModelProperty(name = "taskId",value = "任务id")
+    private String taskId;
     @ApiModelProperty(name = "taskName",value = "任务名称")
     private String taskName;
     @ApiModelProperty(name = "createAt",value = "任务发起时间 (时间戳)")
@@ -59,8 +62,9 @@ public class TaskDataDetailResp {
     public static TaskDataDetailResp convert(Task task){
         TaskDataDetailResp resp = new TaskDataDetailResp();
         resp.setId(task.getId());
+        resp.setTaskId(task.getTaskId());
         resp.setTaskName(task.getTaskName());
-        resp.setRole(task.getRole());
+        resp.setRole(TaskDataPageResp.getRole(task.getRole()));
         resp.setStatus(task.getStatus());
         resp.setReviewed(task.getReviewed());
         resp.setCostBandwidth(task.getCostBandwidth());

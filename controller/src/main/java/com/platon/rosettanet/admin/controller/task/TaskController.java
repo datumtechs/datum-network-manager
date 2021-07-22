@@ -9,6 +9,7 @@ import com.platon.rosettanet.admin.dto.resp.TaskDataDetailResp;
 import com.platon.rosettanet.admin.dto.resp.TaskDataPageResp;
 import com.platon.rosettanet.admin.dto.resp.TaskDataResp;
 import com.platon.rosettanet.admin.dto.resp.TaskEventListResp;
+import com.platon.rosettanet.admin.enums.ResponseCodeEnum;
 import com.platon.rosettanet.admin.service.TaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,8 +50,13 @@ public class TaskController {
         TaskDataResp taskDataResp = new TaskDataResp();
         taskDataResp.setList(taskDataPageList);
         taskDataResp.setCountData(taskCountData);
-        JsonResponse.page(taskPage);
-        return JsonResponse.success(taskDataResp);
+
+        JsonResponse jsonResponse = JsonResponse.success(taskDataResp);
+        jsonResponse.setPageNumber(taskPage.getPageNum());
+        jsonResponse.setPageSize(taskPage.getPageSize());
+        jsonResponse.setPageTotal(taskPage.getPages());
+        jsonResponse.setTotal((int)taskPage.getTotal());
+        return jsonResponse;
     }
 
 
