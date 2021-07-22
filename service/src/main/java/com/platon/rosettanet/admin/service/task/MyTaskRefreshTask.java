@@ -29,7 +29,7 @@ import static com.platon.rosettanet.admin.grpc.client.TaskClient.NODE_NAME;
  * 计算任务定时任务
  */
 @Slf4j
-@Component
+//@Component
 public class MyTaskRefreshTask {
 
     @Resource

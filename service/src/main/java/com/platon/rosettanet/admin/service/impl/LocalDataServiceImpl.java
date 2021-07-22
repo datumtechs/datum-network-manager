@@ -271,7 +271,7 @@ public class LocalDataServiceImpl implements LocalDataService {
             }
             detail.setResourceName(resourceName);
             detail.setIdentityId(LocalOrgIdentityCache.getIdentityId());
-            detail.setFileType(FileTypeUtil.getType(file.getInputStream()));//获取类型，并判断合法性
+            detail.setFileType(FileUtil.getSuffix(fileName));//获取文件类型
             detail.setSize(file.getSize());
             detail.setHasTitle(hasTitle);
             detail.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());
