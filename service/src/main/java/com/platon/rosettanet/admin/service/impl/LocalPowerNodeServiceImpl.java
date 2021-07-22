@@ -1,22 +1,18 @@
 package com.platon.rosettanet.admin.service.impl;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.dao.LocalPowerHistoryMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerJoinTaskMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerNodeMapper;
-import com.platon.rosettanet.admin.dao.entity.DataNode;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerHistory;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.grpc.client.PowerClient;
-import com.platon.rosettanet.admin.grpc.service.PowerRpcMessage;
 import com.platon.rosettanet.admin.grpc.service.YarnRpcMessage;
 import com.platon.rosettanet.admin.service.LocalPowerNodeService;
+import com.platon.rosettanet.admin.service.constant.ServiceConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -137,28 +133,28 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public List<Map> queryPowerNodeUseHistory(String powerNodeId, String resourceType, String timeType) {
         // 24小时记录
-        if ("1".equals(timeType)) {
+        if (ServiceConstant.constant_1.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "0");
             if (!powerHistoryList.isEmpty()) {
                 return this.historyMethod(powerHistoryList, resourceType, 24);
             }
         }
         // 7天记录
-        if ("7".equals(timeType)) {
+        if (ServiceConstant.constant_7.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
             if (!powerHistoryList.isEmpty()) {
                 return this.historyMethod(powerHistoryList, resourceType, 7);
             }
         }
         // 15天记录
-        if ("15".equals(timeType)) {
+        if (ServiceConstant.constant_15.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
             if (!powerHistoryList.isEmpty()) {
                 return this.historyMethod(powerHistoryList, resourceType, 15);
             }
         }
         // 30天记录
-        if ("24".equals(timeType)) {
+        if (ServiceConstant.constant_30.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
             if (!powerHistoryList.isEmpty()) {
                 return this.historyMethod(powerHistoryList, resourceType, 24);
@@ -169,38 +165,35 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     /** 封装各个时间记录 */
     private List historyMethod(List<LocalPowerHistory> powerHistoryList, String resourceType, int timeType){
+        List resourceList = new ArrayList();
         // cpu
-        if ("1".equals(resourceType)) {
-            List cupList = new ArrayList();
+        if (ServiceConstant.constant_1.equals(resourceType)) {
             for(LocalPowerHistory powerHistory : powerHistoryList) {
-                cupList.add(powerHistory.getUsedCore());
-                if (cupList.size() >= timeType) {
-                    return cupList;
+                resourceList.add(powerHistory.getUsedCore());
+                if (resourceList.size() >= timeType) {
+                    break;
                 }
             }
         }
         // 内存
-        if ("2".equals(resourceType)) {
-            List memoryList = new ArrayList();
+        if (ServiceConstant.constant_2.equals(resourceType)) {
             for(LocalPowerHistory powerHistory : powerHistoryList) {
-                memoryList.add(powerHistory.getUsedMemory());
-                if (memoryList.size() >= timeType) {
-                    return memoryList;
+                resourceList.add(powerHistory.getUsedMemory());
+                if (resourceList.size() >= timeType) {
+                    break;
                 }
             }
         }
         // 带宽
-        if ("3".equals(resourceType)) {
-            List bandList = new ArrayList();
+        if (ServiceConstant.constant_3.equals(resourceType)) {
             for(LocalPowerHistory powerHistory : powerHistoryList) {
-                // 内存
-                bandList.add(powerHistory.getUsedMemory());
-                if (bandList.size() >= timeType) {
-                    return bandList;
+                resourceList.add(powerHistory.getUsedBandwidth());
+                if (resourceList.size() >= timeType) {
+                    break;
                 }
             }
         }
-        return new ArrayList();
+        return resourceList;
     }
 
     @Override

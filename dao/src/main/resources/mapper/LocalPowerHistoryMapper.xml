@@ -29,7 +29,7 @@
     select 
         <include refid="Base_Column_List" />
     from
-        local_power_details
+        local_power_history
     where 1=1
         and power_node_id = #{powerNodeId, jdbcType=VARCHAR}
         and refresh_status = #{refreshStatus, jdbcType=VARCHAR}
@@ -38,7 +38,7 @@
 
   <!-- 插入计算节点数据 -->
   <insert id="insertPowerHistory" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerHistory">
-    insert into local_power_details
+    insert into local_power_history
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">id,</if>
       <if test="powerNodeId != null">power_node_id,</if>
