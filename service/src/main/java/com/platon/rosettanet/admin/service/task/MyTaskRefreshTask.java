@@ -75,12 +75,14 @@ public class MyTaskRefreshTask {
         List<Task> updateTaskList = allTaskList.stream().filter(new Predicate<Task>() {
                                                                 @Override
                                                                 public boolean test(Task task) {
-                                                                    return !deleteTaskIds.contains(task.getId());
+                                                                    return !deleteTaskIds.contains(task.getTaskId());
                                                                 }
                                                         }).collect(Collectors.toList());
 
         //2、整理收集待持久化数据
         log.info("2、整理收集待持久化数据");
+        log.info("待持久化数据updateTaskList:" + updateTaskList.size());
+
         List<TaskDataReceiver> dataReceiverList = new ArrayList<>();
         List<TaskPowerProvider> powerProviderList = new ArrayList<>();
         List<TaskResultReceiver> resultReceiverList = new ArrayList<>();
