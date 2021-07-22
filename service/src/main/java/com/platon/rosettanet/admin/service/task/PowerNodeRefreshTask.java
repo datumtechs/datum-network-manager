@@ -11,6 +11,8 @@ import com.platon.rosettanet.admin.grpc.client.PowerClient;
 import com.platon.rosettanet.admin.grpc.service.CommonMessage;
 import com.platon.rosettanet.admin.grpc.service.PowerRpcMessage;
 import com.platon.rosettanet.admin.grpc.service.TaskRpcMessage;
+import com.platon.rosettanet.admin.grpc.service.YarnRpcMessage;
+import com.platon.rosettanet.admin.service.constant.ServiceConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -26,7 +28,7 @@ import java.util.*;
  * @date 2021/7/10 17:07
  */
 @Slf4j
-//@Component
+@Component
 public class PowerNodeRefreshTask {
 
     @Resource
@@ -46,15 +48,45 @@ public class PowerNodeRefreshTask {
      * 执行完毕上次任务后，间隔60秒执行下一次任务
      */
     @Scheduled(fixedDelay = 60000)
-    public void powerHistory(){
-        // 定时任务开始
+    public void refreshPowerData(){
+        long startTime = System.currentTimeMillis();
+
+        // 定时刷新节点列表数据
+        this.refreshPowerNodeList();
+
+        // 定时刷新节点及节点任务数据
+        this.refreshPowerNodeAndTask();
+
+        long diffStart = System.currentTimeMillis() - startTime;
+        log.info("refreshPowerData--定时任务执行结束, 执行时间:{}", diffStart+"ms");
+    }
+    /** 定时刷新节点列表 */
+    private void refreshPowerNodeList(){
+        YarnRpcMessage.GetRegisteredNodeListResponse powerNodeResponse = powerClient.getJobNodeList();
+        if(null != powerNodeResponse && !powerNodeResponse.getNodesList().isEmpty()) {
+            List localPowerNodeList = new ArrayList();
+            powerNodeResponse.getNodesList().parallelStream().forEach(powerNode -> {
+                LocalPowerNode localPowerNode = new LocalPowerNode();
+                YarnRpcMessage.YarnRegisteredPeerDetail  powerDetails = powerNode.getNodeDetail();
+                if (null != powerDetails) {
+                    localPowerNode.setPowerNodeId(powerDetails.getId());
+                    localPowerNode.setConnStatus(String.valueOf(powerDetails.getConnState()));
+                }
+            });
+            // 修改计算节点信息
+            if(!localPowerNodeList.isEmpty()) {
+                localPowerNodeMapper.batchUpdatePowerNode(localPowerNodeList);
+            }
+        }
+    }
+    /** 定时刷新节点及节点任务数据 */
+    private void refreshPowerNodeAndTask(){
         long startTime = System.currentTimeMillis();
         PowerRpcMessage.GetPowerSingleDetailListResponse getSingleDetailListResponse = powerClient.getPowerSingleDetailList();
         if (Objects.isNull(getSingleDetailListResponse)) {
             log.info("获取计算节点详情失败,无返回数据");
             return;
         }
-        log.info("获取当前组织所有节点各个算力的详情, 返回数据:{}", getSingleDetailListResponse.toString());
         List<PowerRpcMessage.GetPowerSingleDetailResponse> detailsList = getSingleDetailListResponse.getPowerListList();
         if (detailsList.isEmpty()) {
             log.info("获取计算节点详情失败,无返回数据");
@@ -79,29 +111,28 @@ public class PowerNodeRefreshTask {
             // 保存计算节点参与的任务列表
             localPowerJoinTaskList = this.savePowerTaskList(detail, localPowerJoinTaskList);
         }
-        // 保存计算节点资源历史记录
+        // 新增计算节点资源历史记录
         if (!localPowerHistoryList.isEmpty()) {
             localPowerHistoryMapper.batchInsertPowerHistory(localPowerHistoryList);
         }
-        // 保存计算节点信息
+        // 修改计算节点信息
         if(!localPowerNodeList.isEmpty()) {
             localPowerNodeMapper.batchUpdatePowerNode(localPowerNodeList);
         }
-        // 保存计算节点参与的任务列表
+        // 新增计算节点参与的任务列表
         if (!localPowerJoinTaskList.isEmpty()) {
             localPowerJoinTaskMapper.batchInsertPowerTask(localPowerJoinTaskList);
         }
-
-        // 定时任务结束
         long diffStart = System.currentTimeMillis() - startTime;
-        log.info("定时任务结束, 执行时间:{}", diffStart+"ms");
+        log.info("refreshPowerNodeAndTask--定时刷新节点及节点任务数据结束, 执行时间:{}", diffStart+"ms");
     }
+
 
     /** 判断当前时间是否是整点, 是则保存计算节点历史数据信息，否不保存数据 */
     private List<LocalPowerHistory> savePowerHistory(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerHistory> localPowerHistoryList){
         // 算力实况
         CommonMessage.ResourceUsedDetailShow resourceUsedDetailShow = detail.getInformation();
-        if(System.currentTimeMillis()%3600000<60000){
+        if(System.currentTimeMillis() % ServiceConstant.int_3600000 < ServiceConstant.int_60000){
             LocalPowerHistory localPowerHistory = new LocalPowerHistory();
             // 计算节点id
             localPowerHistory.setPowerNodeId(detail.getJobNodeId());
@@ -110,7 +141,7 @@ public class PowerNodeRefreshTask {
             // 已使用核数
             localPowerHistory.setUsedCore(Integer.parseInt(String.valueOf(resourceUsedDetailShow.getUsedProcessor())));
             // 已使用带宽
-            localPowerHistory.setUsedBandwidth(resourceUsedDetailShow.getTotalBandwidth());
+            localPowerHistory.setUsedBandwidth(resourceUsedDetailShow.getUsedBandwidth());
             // 当天0点
             if (LocalDateTime.now().getHour() == 0) {
                 // 刷新时间标志 1表示天
@@ -131,6 +162,7 @@ public class PowerNodeRefreshTask {
         // 保存计算节点算力信息开始
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(detail.getJobNodeId());
+        localPowerNode.setPowerId(detail.getPowerId());
         localPowerNode.setMemory(resourceUsedDetailShow.getTotalMem());
         localPowerNode.setCore(Integer.parseInt(String.valueOf(resourceUsedDetailShow.getTotalProcessor())));
         localPowerNode.setBandwidth(resourceUsedDetailShow.getTotalBandwidth());
