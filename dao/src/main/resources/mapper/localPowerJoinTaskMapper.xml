@@ -52,45 +52,50 @@
 
   <!-- 插入计算节点数据 -->
   <insert id="batchInsertPowerTask">
-    <foreach collection="list" item="localPowerTask" separator=";">
+    <foreach collection="list" item="item" separator=";">
       insert into local_power_join_task
       <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="id != null">id,</if>
-        <if test="powerNodeId != null">power_node_id,</if>
-        <if test="taskId != null">task_id,</if>
-        <if test="taskName != null">task_name,</if>
-        <if test="ownerIdentityId != null">owner_identity_id,</if>
-        <if test="ownerIdentityName != null">owner_identity_name,</if>
-        <if test="taskStartTime != null">task_start_time,</if>
-        <if test="resultSideId != null">result_side_id,</if>
-        <if test="resultSideName != null">result_side_name,</if>
-        <if test="coordinateSideId != null">coordinate_side_id,</if>
-        <if test="coordinateSideName != null">coordinate_side_name,</if>
-        <if test="usedMemory != null">used_memory,</if>
-        <if test="usedCore != null">used_core,</if>
-        <if test="usedBandwidth != null">used_bandwidth,</if>
-        <if test="createTime != null">create_time,</if>
-        <if test="updateTime != null">update_time,</if>
+        <if test="item.id != null">id,</if>
+        <if test="item.powerNodeId != null">power_node_id,</if>
+        <if test="item.taskId != null">task_id,</if>
+        <if test="item.taskName != null">task_name,</if>
+        <if test="item.ownerIdentityId != null">owner_identity_id,</if>
+        <if test="item.ownerIdentityName != null">owner_identity_name,</if>
+        <if test="item.taskStartTime != null">task_start_time,</if>
+        <if test="item.resultSideId != null">result_side_id,</if>
+        <if test="item.resultSideName != null">result_side_name,</if>
+        <if test="item.coordinateSideId != null">coordinate_side_id,</if>
+        <if test="item.coordinateSideName != null">coordinate_side_name,</if>
+        <if test="item.usedMemory != null">used_memory,</if>
+        <if test="item.usedCore != null">used_core,</if>
+        <if test="item.usedBandwidth != null">used_bandwidth,</if>
+        <if test="item.createTime != null">create_time,</if>
+        <if test="item.updateTime != null">update_time,</if>
       </trim>
       <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="id != null"> #{id, jdbcType=INTEGER},</if>
-        <if test="powerNodeId != null">#{powerNodeId, jdbcType=VARCHAR},</if>
-        <if test="taskId != null">#{taskId, jdbcType=VARCHAR},</if>
-        <if test="taskName != null">#{taskName, jdbcType=VARCHAR},</if>
-        <if test="ownerIdentityId != null">#{ownerIdentityId, jdbcType=VARCHAR},</if>
-        <if test="ownerIdentityName != null">#{ownerIdentityName, jdbcType=VARCHAR},</if>
-        <if test="taskStartTime != null">#{taskStartTime, jdbcType=TIMESTAMP},</if>
-        <if test="resultSideId != null">#{resultSideId, jdbcType=VARCHAR},</if>
-        <if test="resultSideName != null">#{resultSideName, jdbcType=VARCHAR},</if>
-        <if test="coordinateSideId != null">#{coordinateSideId, jdbcType=VARCHAR},</if>
-        <if test="coordinateSideName != null">#{coordinateSideName, jdbcType=VARCHAR},</if>
-        <if test="usedMemory != null">#{usedMemory, jdbcType=BIGINT},</if>
-        <if test="usedCore != null">#{usedCore, jdbcType=INTEGER},</if>
-        <if test="usedBandwidth != null">#{usedBandwidth, jdbcType=BIGINT},</if>
-        <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
-        <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
+        <if test="item.id != null"> #{item.id, jdbcType=INTEGER},</if>
+        <if test="item.powerNodeId != null">#{item.powerNodeId, jdbcType=VARCHAR},</if>
+        <if test="item.taskId != null">#{item.taskId, jdbcType=VARCHAR},</if>
+        <if test="item.taskName != null">#{item.taskName, jdbcType=VARCHAR},</if>
+        <if test="item.ownerIdentityId != null">#{item.ownerIdentityId, jdbcType=VARCHAR},</if>
+        <if test="item.ownerIdentityName != null">#{item.ownerIdentityName, jdbcType=VARCHAR},</if>
+        <if test="item.taskStartTime != null">#{item.taskStartTime, jdbcType=TIMESTAMP},</if>
+        <if test="item.resultSideId != null">#{item.resultSideId, jdbcType=VARCHAR},</if>
+        <if test="item.resultSideName != null">#{item.resultSideName, jdbcType=VARCHAR},</if>
+        <if test="item.coordinateSideId != null">#{item.coordinateSideId, jdbcType=VARCHAR},</if>
+        <if test="item.coordinateSideName != null">#{item.coordinateSideName, jdbcType=VARCHAR},</if>
+        <if test="item.usedMemory != null">#{item.usedMemory, jdbcType=BIGINT},</if>
+        <if test="item.usedCore != null">#{item.usedCore, jdbcType=INTEGER},</if>
+        <if test="item.usedBandwidth != null">#{item.usedBandwidth, jdbcType=BIGINT},</if>
+        <if test="item.createTime != null">#{item.createTime, jdbcType=TIMESTAMP},</if>
+        <if test="item.updateTime != null">#{item.updateTime, jdbcType=TIMESTAMP},</if>
       </trim>
     </foreach>
   </insert>
+
+  <!-- 清空表数据-->
+  <update id="truncateTable">
+    truncate table all_stock_code
+  </update>
 
 </mapper>

@@ -116,7 +116,7 @@ public class PowerClient {
     /**
      * 查询计算服务列表
      */
-    public List getJobNodeList(){
+    public YarnRpcMessage.GetRegisteredNodeListResponse getJobNodeList(){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
         YarnRpcMessage.GetRegisteredNodeListResponse jobNodeListResponse;
@@ -136,7 +136,7 @@ public class PowerClient {
         }
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("查询计算服务列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeListResponse.toString());
-        return jobNodeListResponse.getNodesList();
+        return jobNodeListResponse;
     }
 
     /**

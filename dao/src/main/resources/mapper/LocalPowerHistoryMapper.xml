@@ -63,27 +63,27 @@
 
   <!-- 批量插入计算节点数据 -->
   <insert id="batchInsertPowerHistory" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerHistory">
-    <foreach collection="list" item = "localPowerHistory" separator=",">
+    <foreach collection="list" item = "item" separator=";">
       insert into local_power_history
       <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="id != null">id,</if>
-        <if test="powerNodeId != null">power_node_id,</if>
-        <if test="refreshStatus != null">refresh_status,</if>
-        <if test="usedMemory != null">used_memory,</if>
-        <if test="usedCore != null">used_core,</if>
-        <if test="usedBandwidth != null">used_bandwidth,</if>
-        <if test="createTime != null">create_time,</if>
-        <if test="updateTime != null">update_time,</if>
+        <if test="item.id != null">id,</if>
+        <if test="item.powerNodeId != null">power_node_id,</if>
+        <if test="item.refreshStatus != null">refresh_status,</if>
+        <if test="item.usedMemory != null">used_memory,</if>
+        <if test="item.usedCore != null">used_core,</if>
+        <if test="item.usedBandwidth != null">used_bandwidth,</if>
+        <if test="item.createTime != null">create_time,</if>
+        <if test="item.updateTime != null">update_time,</if>
       </trim>
       <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="id != null"> #{id, jdbcType=INTEGER},</if>
-        <if test="powerNodeId != null">#{powerNodeId, jdbcType=VARCHAR},</if>
-        <if test="refreshStatus != null">#{refreshStatus, jdbcType=VARCHAR},</if>
-        <if test="usedMemory != null">#{usedMemory, jdbcType=BIGINT},</if>
-        <if test="usedCore != null">#{usedCore, jdbcType=INTEGER},</if>
-        <if test="usedBandwidth != null">#{usedBandwidth, jdbcType=BIGINT},</if>
-        <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
-        <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
+        <if test="item.id != null"> #{item.id, jdbcType=INTEGER},</if>
+        <if test="item.powerNodeId != null">#{item.powerNodeId, jdbcType=VARCHAR},</if>
+        <if test="item.refreshStatus != null">#{item.refreshStatus, jdbcType=VARCHAR},</if>
+        <if test="item.usedMemory != null">#{item.usedMemory, jdbcType=BIGINT},</if>
+        <if test="item.usedCore != null">#{item.usedCore, jdbcType=INTEGER},</if>
+        <if test="item.usedBandwidth != null">#{item.usedBandwidth, jdbcType=BIGINT},</if>
+        <if test="item.createTime != null">#{item.createTime, jdbcType=TIMESTAMP},</if>
+        <if test="item.updateTime != null">#{item.updateTime, jdbcType=TIMESTAMP},</if>
       </trim>
     </foreach>
   </insert>
