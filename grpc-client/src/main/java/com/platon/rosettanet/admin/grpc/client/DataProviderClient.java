@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @Author liushuyu
@@ -125,7 +126,7 @@ public class DataProviderClient {
      * @param filePath 要下载文件的文件路径
      */
     public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath) throws ApplicationException{
-        ByteString result = ByteString.EMPTY;
+        AtomicReference<ByteString> byteString = new AtomicReference<>(ByteString.EMPTY);
         CountDownLatch count = new CountDownLatch(1);
         //1.获取rpc连接
         Channel channel = null;
@@ -145,7 +146,8 @@ public class DataProviderClient {
                     boolean hasContent = downloadReply.hasContent();
                     if(hasContent){
                         ByteString content = downloadReply.getContent();
-                        result.concat(content);
+                        ByteString bs = byteString.get().concat(content);
+                        byteString.set(bs);
                     }
 
                     boolean hasStatus = downloadReply.hasStatus();
@@ -160,8 +162,10 @@ public class DataProviderClient {
                         switch (status.getNumber()){
                             case 0:
                                 log.info("开始下载文件filePath:{}，状态:{}.......",filePath,"Start");
+                                break;
                             case 1:
                                 log.info("下载完成文件filePath:{}，状态:{}.......",filePath,"Finished");
+                                break;
                             case 2:
                                 throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Cancelled"));
                             case 3:
@@ -200,7 +204,7 @@ public class DataProviderClient {
             } catch (InterruptedException e) {
                 throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{}",filePath),e);
             }
-            return result.toByteArray();
+            return byteString.get().toByteArray();
         } finally {
             channelManager.closeChannel(channel);
         }

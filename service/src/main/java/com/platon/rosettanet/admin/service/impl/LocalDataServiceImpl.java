@@ -139,11 +139,11 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Transactional
     @Override
     public int delete(String metaDataId) {
-        int count = localDataFileMapper.deleteByMetaDataId(metaDataId);
+        int count = localMetaDataColumnMapper.deleteByMetaDataId(metaDataId);
         if(count <= 0){
             return 0;
         }
-        count += localMetaDataColumnMapper.deleteByMetaDataId(metaDataId);
+        count += localDataFileMapper.deleteByMetaDataId(metaDataId);
         return count;
     }
 

@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.dto.resp;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
+import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class LocalDataPageResp {
     @ApiModelProperty(name = "fileId", value = "源文件Id")
     private String fileId;
     //元数据状态:已发布，未发布
-    @ApiModelProperty(name = "status", value = "元数据状态:已发布，未发布")
+    @ApiModelProperty(name = "status", value = "元数据状态:1已发布，0未发布")
     private String status;
     //元数据摘要：文件描述
     @ApiModelProperty(name = "remarks", value = "元数据摘要：文件描述")
@@ -57,7 +58,12 @@ public class LocalDataPageResp {
         localDataPageResp.setId(localDataFile.getId());
         localDataPageResp.setFileId(localDataFile.getFileId());
         localDataPageResp.setFileName(localDataFile.getResourceName());
-        localDataPageResp.setStatus(localDataFile.getStatus());
+        //元数据状态:1已发布，0未发布
+        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(localDataFile.getStatus())){
+            localDataPageResp.setStatus("1");
+        } else {
+            localDataPageResp.setStatus("0");
+        }
         localDataPageResp.setRemarks(localDataFile.getRemarks());
         localDataPageResp.setMetaDataId(localDataFile.getMetaDataId());
 
