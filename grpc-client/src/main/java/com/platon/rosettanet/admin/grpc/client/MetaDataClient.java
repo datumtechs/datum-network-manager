@@ -56,7 +56,6 @@ public class MetaDataClient {
             //2.2文件元数据信息
             MetaDataRpcMessage.MetaDataSummary.Builder summaryBuilder = MetaDataRpcMessage.MetaDataSummary
                     .newBuilder()
-                    .setMetaDataId(fileDetail.getMetaDataId())
                     .setOriginId(fileDetail.getFileId())
                     .setTableName(fileDetail.getResourceName())
                     .setFilePath(fileDetail.getFilePath())

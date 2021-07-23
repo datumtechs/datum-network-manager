@@ -193,15 +193,18 @@
   </select>
 
   <!-- 根据resourceName查询数据文件-->
-  <select id="selectByResourceName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByResourceName" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from local_data_file
-    where resource_name = #{resourceName} and meta_data_id != #{metaDataId}
+    where resource_name = #{resourceName}
+    <if test="id != null">
+      and id != #{id}
+    </if>
   </select>
 
   <!-- 根据metaDataId删除指定的数据,released的数据不可删除-->
-  <delete id="deleteByMetaDataId" parameterType="java.lang.String">
+  <delete id="deleteById" parameterType="java.lang.Integer">
     delete from local_data_file
-    where meta_data_id = #{metaDataId} and `status` != 'released'
+    where id = #{id} and `status` != 'released'
   </delete>
 </mapper>

@@ -15,12 +15,11 @@ public interface LocalMetaDataColumnMapper {
     List<LocalMetaDataColumn> selectByMetaDataId(String metaDataId);
 
     /**
-     * 根据metadataId和列下表索引进行选择性更新数据
-     * @param record
+     * 根据文件id查询数据
+     * @param fileId 关联的文件id
      * @return
      */
-    int updateByMetaDataIdAndIndexSelective(LocalMetaDataColumn record);
-
+    List<LocalMetaDataColumn> selectByFileId(Integer fileId);
 
     /**
      * 批量插入
@@ -30,11 +29,11 @@ public interface LocalMetaDataColumnMapper {
     int batchInsert(@Param("columnList") List<LocalMetaDataColumn> columnList);
 
     /**
-     * 根据metaDataId删除指定的数据,released的数据不可删除
-     * @param metaDataId
+     * 根据fileId删除指定的数据,released的数据不可删除
+     * @param fileId
      * @return
      */
-    int deleteByMetaDataId(String metaDataId);
+    int deleteByFileId(Integer fileId);
 
     /**
      * 根据Id进行选择性更新数据

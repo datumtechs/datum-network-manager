@@ -8,6 +8,7 @@ server:
     uri-encoding: UTF-8
     threads.max: 1000
     threads.min-spare: 30
+    max-swallow-size: -1
   port: 8080
   servlet:
     context-path: /rosettanet-admin

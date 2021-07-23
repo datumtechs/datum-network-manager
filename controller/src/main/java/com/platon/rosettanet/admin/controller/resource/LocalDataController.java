@@ -139,7 +139,7 @@ public class LocalDataController {
             return JsonResponse.fail("文件名称格式不合法:仅支持中英文与数字输入，最多12个字符");
         }
         //判断是否重复
-        boolean exist = localDataService.isExistResourceName(req.getResourceName(),req.getMetaDataId());
+        boolean exist = localDataService.isExistResourceName(req.getResourceName(),req.getId());
         if(exist){
             return JsonResponse.fail("文件名称已存在，请修改文件名称前12个字符，确保不会和已存在的文件前12个字符重复！！！");
         }
@@ -157,11 +157,11 @@ public class LocalDataController {
      */
     @ApiOperation(value = "查看数据详情")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "metaDataId",value = "元数据ID",required = true,paramType = "query",example = "metaData11"),
+            @ApiImplicitParam(name = "id",value = "文件id",required = true,paramType = "query",example = "1"),
     })
     @GetMapping("metaDataInfo")
-    public JsonResponse<LocalDataDetailResp> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
-        LocalDataFileDetail detail = localDataService.detail(metaDataId);
+    public JsonResponse<LocalDataDetailResp> detail(@Validated @NotBlank(message = "id不为空") Integer id){
+        LocalDataFileDetail detail = localDataService.detail(id);
         LocalDataDetailResp resp = LocalDataDetailResp.from(detail);
         return JsonResponse.success(resp);
     }
@@ -192,13 +192,13 @@ public class LocalDataController {
         int count = 0;
         switch (action){
             case "-1"://删除
-                count = localDataService.delete(req.getMetaDataId());
+                count = localDataService.delete(req.getId());
                 break;
             case "0"://下架
-                count = localDataService.down(req.getMetaDataId());
+                count = localDataService.down(req.getId());
                 break;
             case "1"://上架
-                count = localDataService.up(req.getMetaDataId());
+                count = localDataService.up(req.getId());
                 break;
             default:
                 throw new ApplicationException(StrUtil.format("请输入正确的action[-1: 删除; 0: 下架; 1: 上架]：{}",action));
@@ -214,11 +214,11 @@ public class LocalDataController {
      */
     @ApiOperation(value = "源文件下载")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "metaDataId",value = "元数据ID",required = true,paramType = "query",example = "metaData11"),
+            @ApiImplicitParam(name = "id",value = "文件id",required = true,paramType = "query",example = "1"),
     })
     @GetMapping("download")
-    public void downLoad(HttpServletResponse response, @Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
-        localDataService.downLoad(response,metaDataId);
+    public void downLoad(HttpServletResponse response, @Validated @NotBlank(message = "metaDataId不为空") Integer id){
+        localDataService.downLoad(response,id);
     }
 
     /**
@@ -227,17 +227,17 @@ public class LocalDataController {
     @ApiOperation(value = "校验文件名称是否合法")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "resourceName",value = "文件名称",required = true,paramType = "query",example = "filename"),
-            @ApiImplicitParam(name = "metaDataId",value = "需要排除的metaDataId",required = false,paramType = "query",example = "metaDataId11"),
+            @ApiImplicitParam(name = "id",value = "文件的id",required = true,paramType = "query",example = "1"),
     })
     @PostMapping("checkResourceName")
-    public JsonResponse<LocalDataCheckResourceNameResp> checkResourceName(String resourceName,String metaDataId){
+    public JsonResponse<LocalDataCheckResourceNameResp> checkResourceName(String resourceName,Integer id){
         LocalDataCheckResourceNameResp resp = new LocalDataCheckResourceNameResp();
         //判断格式是否对
         if(!NameUtil.isValidName(resourceName)){
             return JsonResponse.success(resp);
         }
         //判断是否重复
-        boolean exist = localDataService.isExistResourceName(resourceName,metaDataId);
+        boolean exist = localDataService.isExistResourceName(resourceName,id);
         if(exist){
             return JsonResponse.success(resp);
         }

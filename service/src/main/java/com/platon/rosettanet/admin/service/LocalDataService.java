@@ -34,16 +34,16 @@ public interface LocalDataService {
 
     /**
      * 删除文件元数据
-     * @param metaDataId
+     * @param id
      */
-    int delete(String metaDataId);
+    int delete(Integer id);
 
     /**
      * 从数据节点下载源文件
      * @param response
-     * @param metaDataId 源文件的metaDataId
+     * @param id 文件id
      */
-    void downLoad(HttpServletResponse response, String metaDataId);
+    void downLoad(HttpServletResponse response, Integer id);
 
     /**
      * 修改文件信息
@@ -54,29 +54,29 @@ public interface LocalDataService {
 
     /**
      * 查询文件信息详情
-     * @param metaDataId
+     * @param id
      * @return
      */
-    LocalDataFileDetail detail(String metaDataId);
+    LocalDataFileDetail detail(Integer id);
 
     /**
      * 下架文件元数据
-     * @param metaDataId
+     * @param id
      * @return
      */
-    int down(String metaDataId);
+    int down(Integer id);
 
     /**
      * 上架文件元数据
-     * @param metaDataId
+     * @param id
      * @return
      */
-    int up(String metaDataId);
+    int up(Integer id);
 
     /**
-     * 查询指定的metaDataId的resourceName是否在数据库中存在重复
+     * 查询指定的Id的resourceName是否在数据库中存在重复
      * @param resourceName
      * @return
      */
-    boolean isExistResourceName(String resourceName,String metaDataId);
+    boolean isExistResourceName(String resourceName,Integer id);
 }

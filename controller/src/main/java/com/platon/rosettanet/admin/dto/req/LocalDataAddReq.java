@@ -23,15 +23,15 @@ import java.util.List;
 @ApiModel
 public class LocalDataAddReq {
 
+    //数据库id
+    @ApiModelProperty(value = "数据库id",required = true)
+    private Integer id;
     //资源名称
     @ApiModelProperty(value = "资源名称",required = true)
     private String resourceName;
     //数据描述
     @ApiModelProperty(value = "数据描述",required = true)
     private String remarks;
-    //元数据ID,hash
-    @ApiModelProperty(value = "元数据ID",required = true)
-    private String metaDataId;
     //源文件列信息
     @ApiModelProperty(value = "源文件列信息",required = true)
     private List<LocalMetaDataColumn> localMetaDataColumnList = new ArrayList<>();
