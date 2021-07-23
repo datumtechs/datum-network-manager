@@ -89,7 +89,7 @@ public class PowerClient {
     /**
      * 根据powerNodeId删除计算节点
      */
-    public int deletePowerNode(String powerNodeId){
+    public void deletePowerNode(String powerNodeId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
         CommonMessage.SimpleResponseCode simpleResponseCode;
@@ -110,7 +110,6 @@ public class PowerClient {
         }
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode.toString());
-        return 1;
     }
 
     /**
