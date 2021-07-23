@@ -88,7 +88,7 @@ public class PowerNodeRefreshTask {
             return;
         }
         List<PowerRpcMessage.GetPowerSingleDetailResponse> detailsList = getSingleDetailListResponse.getPowerListList();
-        if (detailsList.isEmpty()) {
+        if (detailsList == null || detailsList.size() == 0) {
             log.info("获取计算节点详情失败,无返回数据");
             return;
         }
@@ -97,7 +97,7 @@ public class PowerNodeRefreshTask {
         // 计算节点
         List<LocalPowerNode> localPowerNodeList = new ArrayList<>();
         // 计算节点参数参与的任务
-        List<LocalPowerJoinTask> localPowerJoinTaskList = new ArrayList();
+        List<LocalPowerJoinTask> localPowerJoinTaskList = new ArrayList<>();
         for(PowerRpcMessage.GetPowerSingleDetailResponse powerSingleDetail : detailsList) {
             // 单个算力详情
             PowerRpcMessage.PowerSingleDetail detail = powerSingleDetail.getPower();
@@ -180,7 +180,7 @@ public class PowerNodeRefreshTask {
     private List<LocalPowerJoinTask> savePowerTaskList(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerJoinTask> localPowerJoinTaskList){
         // 参与的任务
         List<PowerRpcMessage.PowerTask> powerTaskList = detail.getTasksList();
-        if (!powerTaskList.isEmpty()) {
+        if (powerTaskList != null && powerTaskList.size() > 0) {
             for(PowerRpcMessage.PowerTask powerTask : powerTaskList) {
                 TaskRpcMessage.TaskOperationCostDeclare taskOperationCostDeclare = powerTask.getOperationCost();
                 LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
@@ -218,7 +218,7 @@ public class PowerNodeRefreshTask {
         localPowerJoinTask.setOwnerIdentityId(ownerIdentityInfo.getIdentityId());
         localPowerJoinTask.setOwnerIdentityName(ownerIdentityInfo.getName());
         // 结果方
-        if (!receiversIdentityInfoList.isEmpty()) {
+        if (receiversIdentityInfoList != null && receiversIdentityInfoList.size() > 0) {
             List idList = new ArrayList();
             List nameList = new ArrayList();
             for(CommonMessage.OrganizationIdentityInfo organizationIdentityInfo : receiversIdentityInfoList) {
@@ -229,7 +229,7 @@ public class PowerNodeRefreshTask {
             localPowerJoinTask.setResultSideName(StringUtils.collectionToDelimitedString(nameList,","));
         }
         // 协作方
-        if (!patnersIdentityInfoList.isEmpty()) {
+        if (patnersIdentityInfoList != null && patnersIdentityInfoList.size() > 0) {
             List idList = new ArrayList();
             List nameList = new ArrayList();
             for(CommonMessage.OrganizationIdentityInfo organizationIdentityInfo : patnersIdentityInfoList) {

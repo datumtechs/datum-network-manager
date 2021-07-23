@@ -141,28 +141,28 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         // 24小时记录
         if (ServiceConstant.constant_1.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "0");
-            if (!powerHistoryList.isEmpty()) {
+            if (powerHistoryList != null && powerHistoryList.size() > 0) {
                 return this.historyMethod(powerHistoryList, resourceType, 24);
             }
-        }
+        };
         // 7天记录
         if (ServiceConstant.constant_7.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
-            if (!powerHistoryList.isEmpty()) {
+            if (powerHistoryList != null && powerHistoryList.size() > 0) {
                 return this.historyMethod(powerHistoryList, resourceType, 7);
             }
         }
         // 15天记录
         if (ServiceConstant.constant_15.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
-            if (!powerHistoryList.isEmpty()) {
+            if (powerHistoryList != null && powerHistoryList.size() > 0) {
                 return this.historyMethod(powerHistoryList, resourceType, 15);
             }
         }
         // 30天记录
         if (ServiceConstant.constant_30.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
-            if (!powerHistoryList.isEmpty()) {
+            if (powerHistoryList != null && powerHistoryList.size() > 0) {
                 return this.historyMethod(powerHistoryList, resourceType, 24);
             }
         }
