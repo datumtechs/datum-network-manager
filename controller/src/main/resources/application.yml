@@ -2,13 +2,17 @@
 spring:
   profiles:
     active: dev
+  servlet:
+    multipart:
+      file-size-threshold: 1099511627776
+      max-file-size: 1099511627776
+      max-request-size: 1099511627776
 # ==================================== server conf  ==========================================
 server:
   tomcat:
     uri-encoding: UTF-8
     threads.max: 1000
     threads.min-spare: 30
-    max-swallow-size: -1
   port: 8080
   servlet:
     context-path: /rosettanet-admin
