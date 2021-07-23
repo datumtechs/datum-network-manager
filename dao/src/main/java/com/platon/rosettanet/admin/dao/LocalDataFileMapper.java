@@ -43,11 +43,11 @@ public interface LocalDataFileMapper {
     LocalDataFile selectById(Integer id);
 
     /**
-     * 根据metaDataId删除指定的数据,released的数据不可删除
-     * @param metaDataId
+     * 根据id删除指定的数据,released的数据不可删除
+     * @param id
      * @return
      */
-    int deleteByMetaDataId(String metaDataId);
+    int deleteById(Integer id);
 
     /**
      *根据Id进行选择性更新
@@ -59,5 +59,5 @@ public interface LocalDataFileMapper {
      * @param resourceName
      * @return
      */
-    LocalDataFile selectByResourceName(@Param("resourceName") String resourceName, @Param("metaDataId") String metaDataId);
+    LocalDataFile selectByResourceName(@Param("resourceName") String resourceName, @Param("id") Integer id);
 }

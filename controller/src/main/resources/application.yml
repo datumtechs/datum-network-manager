@@ -2,6 +2,11 @@
 spring:
   profiles:
     active: dev
+  servlet:
+    multipart:
+      file-size-threshold: 1099511627776
+      max-file-size: 1099511627776
+      max-request-size: 1099511627776
 # ==================================== server conf  ==========================================
 server:
   tomcat:

@@ -10,7 +10,6 @@ import cn.hutool.core.util.IdUtil;
  */
 public class IDUtil {
 
-    public static final String METADATA_ID_PREFIX = "metadata_";
     public static final String IDENTITY_ID_PREFIX = "identity_";
 
     /**

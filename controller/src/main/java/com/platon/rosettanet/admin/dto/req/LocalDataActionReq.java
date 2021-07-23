@@ -24,9 +24,9 @@ import java.util.regex.Matcher;
 public class LocalDataActionReq {
 
     //元数据Id
-    @NotBlank(message = "元数据ID不能为空")
-    @ApiModelProperty(value = "元数据ID",required = true)
-    private String metaDataId;
+    @NotBlank(message = "文件ID不能为空")
+    @ApiModelProperty(value = "文件ID",required = true)
+    private Integer id;
     //元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)
     @ApiModelProperty(value = "元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)",required = true)
     private String action;

@@ -3,6 +3,7 @@
 <mapper namespace="com.platon.rosettanet.admin.dao.LocalMetaDataColumnMapper">
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="file_id" jdbcType="INTEGER" property="fileId" />
     <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
     <result column="column_idx" jdbcType="INTEGER" property="columnIdx" />
     <result column="column_name" jdbcType="VARCHAR" property="columnName" />
@@ -14,7 +15,7 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, meta_data_id, column_idx, `column_name`, column_type, `size`, remarks, visible, 
+    id, file_id, meta_data_id, column_idx, `column_name`, column_type, `size`, remarks, visible,
     rec_create_time, rec_update_time
   </sql>
   <select id="selectByMetaDataId" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -24,51 +25,28 @@
     where meta_data_id = #{metaDataId}
   </select>
 
+  <!-- 根据文件id查询数据-->
+  <select id="selectByFileId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_meta_data_column
+    where file_id = #{fileId}
+  </select>
+
   <!-- 批量插入数据-->
   <insert id="batchInsert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn" useGeneratedKeys="true" keyProperty="id">
-    insert into local_meta_data_column (meta_data_id, column_idx,
+    insert into local_meta_data_column (file_id,meta_data_id, column_idx,
       `column_name`, column_type, `size`, 
       remarks, visible, rec_create_time, 
       rec_update_time)
     values
     <foreach collection ="columnList" item="metaDataColumn" separator =",">
-      (#{metaDataColumn.metaDataId,jdbcType=VARCHAR}, #{metaDataColumn.columnIdx,jdbcType=INTEGER},
+      (#{metaDataColumn.fileId},#{metaDataColumn.metaDataId,jdbcType=VARCHAR}, #{metaDataColumn.columnIdx,jdbcType=INTEGER},
       #{metaDataColumn.columnName,jdbcType=VARCHAR}, #{metaDataColumn.columnType,jdbcType=VARCHAR}, #{metaDataColumn.size,jdbcType=BIGINT},
       #{metaDataColumn.remarks,jdbcType=VARCHAR}, #{metaDataColumn.visible,jdbcType=VARCHAR}, #{metaDataColumn.recCreateTime,jdbcType=TIMESTAMP},
       #{metaDataColumn.recUpdateTime,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
-
-  <!-- 根据metaDataID 和列号修改数据-->
-  <update id="updateByMetaDataIdAndIndexSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn">
-    update local_meta_data_column
-    <trim suffixOverrides=",">
-      <set>
-        <if test="columnName != null">
-          `column_name` = #{columnName,jdbcType=VARCHAR},
-        </if>
-        <if test="columnType != null">
-          column_type = #{columnType,jdbcType=VARCHAR},
-        </if>
-        <if test="size != null">
-          `size` = #{size,jdbcType=BIGINT},
-        </if>
-        <if test="remarks != null">
-          remarks = #{remarks,jdbcType=VARCHAR},
-        </if>
-        <if test="visible != null">
-          visible = #{visible,jdbcType=VARCHAR},
-        </if>
-        <if test="recCreateTime != null">
-          rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-        </if>
-        <if test="recUpdateTime != null">
-          rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-        </if>
-      </set>
-    </trim>
-    where meta_data_id = #{metaDataId,jdbcType=VARCHAR} and column_idx = #{columnIdx,jdbcType=INTEGER}
-  </update>
 
   <!-- 根据ID修改数据-->
   <update id="updateByIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn">
@@ -105,9 +83,9 @@
   </update>
 
   <!--根据metaDataId删除指定的数据,released的数据不可删除 -->
-  <delete id="deleteByMetaDataId">
+  <delete id="deleteByFileId">
     delete from local_meta_data_column
-    where meta_data_id = #{metaDataId}
-    and EXISTS (select 1 from local_data_file where meta_data_id = #{metaDataId} and `status` != 'released')
+    where file_id = #{fileId}
+    and EXISTS (select 1 from local_data_file where id = #{fileId} and `status` != 'released')
   </delete>
 </mapper>
