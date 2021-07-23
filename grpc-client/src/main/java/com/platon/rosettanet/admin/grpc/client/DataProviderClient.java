@@ -50,12 +50,15 @@ public class DataProviderClient {
             channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
             //2.构建response流观察者
             DataProviderUploadDataResp resp = new DataProviderUploadDataResp();
+            AtomicReference<ApplicationException> ex = new AtomicReference<>();
             StreamObserver<DataProviderRpcMessage.UploadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.UploadReply>() {
                 @Override
                 public void onNext(DataProviderRpcMessage.UploadReply uploadReply) {
                     //5.处理response
                     if(!uploadReply.getOk()){
-                        throw new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName));
+                        ex.set(new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName)));
+                    } else {
+                        log.info("文件上传成功：{}",fileName);
                     }
                     //源文件ID
                     String dataId = uploadReply.getDataId();
@@ -68,13 +71,12 @@ public class DataProviderClient {
                 @Override
                 public void onError(Throwable throwable) {
                     count.countDown();
-                    throw new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName),throwable);
+                    ex.set(new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName),throwable));
                 }
 
                 @Override
                 public void onCompleted() {
                     count.countDown();
-                    log.info("文件上传成功：{}",fileName);
                 }
             };
             //3.调用rpc,获取request流观察者
@@ -112,6 +114,10 @@ public class DataProviderClient {
             } catch (InterruptedException e) {
                 throw new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName),e);
             }
+            //如果上传过程中出现异常，则抛异常
+            if(ex.get() != null){
+                throw ex.get();
+            }
             return resp;
         } finally {
             channelManager.closeChannel(channel);
@@ -139,6 +145,7 @@ public class DataProviderClient {
                     .build();
 
             //3.构建response流观察者
+            AtomicReference<ApplicationException> ex = new AtomicReference<>();
             StreamObserver<DataProviderRpcMessage.DownloadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.DownloadReply>() {
                 @Override
                 public void onNext(DataProviderRpcMessage.DownloadReply downloadReply) {
@@ -167,9 +174,11 @@ public class DataProviderClient {
                                 log.info("下载完成文件filePath:{}，状态:{}.......",filePath,"Finished");
                                 break;
                             case 2:
-                                throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Cancelled"));
+                                ex.set(new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Cancelled")));
+                                break;
                             case 3:
-                                throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Failed"));
+                                ex.set(new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Failed")));
+                                break;
                             default:
                                 break;
                         }
@@ -180,13 +189,12 @@ public class DataProviderClient {
                 @Override
                 public void onError(Throwable throwable) {
                     count.countDown();
-                    throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{}",filePath),throwable);
+                    ex.set(new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{}",filePath),throwable));
                 }
 
                 @Override
                 public void onCompleted() {
                     count.countDown();
-                    log.info("文件下载成功：{}",filePath);
                 }
             };
             //3.调用rpc
@@ -203,6 +211,10 @@ public class DataProviderClient {
                 }
             } catch (InterruptedException e) {
                 throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{}",filePath),e);
+            }
+            //如果下载过程中出现异常，则抛异常
+            if(ex.get() != null){
+                throw ex.get();
             }
             return byteString.get().toByteArray();
         } finally {
