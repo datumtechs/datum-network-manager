@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ import static com.platon.rosettanet.admin.grpc.client.TaskClient.NODE_NAME;
  * 计算任务定时任务
  */
 @Slf4j
-//@Component
+@Component
 public class MyTaskRefreshTask {
 
     @Resource
@@ -59,7 +60,7 @@ public class MyTaskRefreshTask {
     public void task() {
         log.info("启动执行获取任务数据列表定时任务...........");
         TaskDataResp resp = taskClient.getTaskListData();
-        if (resp == null || GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
+        if (Objects.isNull(resp) || GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
             log.info("获取任务列表,调度服务调用失败");
             return;
         }
@@ -155,7 +156,7 @@ public class MyTaskRefreshTask {
      * @return
      */
     private boolean checkDataValidity(List data){
-       return data != null && data.size() > 0;
+       return !Objects.isNull(data) && !CollectionUtils.isEmpty(data);
     }
 
 

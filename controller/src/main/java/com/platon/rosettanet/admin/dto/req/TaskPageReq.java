@@ -29,7 +29,7 @@ public class TaskPageReq {
     /**
      * 任务状态
      */
-    @ApiModelProperty(value = "任务状态,没有选择传入空字符串,pending: 等在中; running: 计算中; failed: 失败; success: 成功", example = "success" , required = false)
+    @ApiModelProperty(value = "任务状态,没有选择传入空字符串,pending: 等在中; failed: 失败; success: 成功", example = "success" , required = false)
     String status;
 
     /**

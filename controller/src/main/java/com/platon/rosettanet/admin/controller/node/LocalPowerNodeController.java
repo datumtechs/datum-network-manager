@@ -49,7 +49,10 @@ public class LocalPowerNodeController {
     public JsonResponse updatePowerNode(@Validated @RequestBody PowerUpdateReq powerUpdateReq) {
         LocalPowerNode localPowerNode = new LocalPowerNode();
         BeanUtils.copyProperties(powerUpdateReq, localPowerNode);
-        localPowerNodeService.updatePowerNodeByNodeId(localPowerNode);
+        int count = localPowerNodeService.updatePowerNodeByNodeId(localPowerNode);
+        if (count == 0) {
+            JsonResponse.fail("修改失败！");
+        }
         return JsonResponse.success("修改成功");
     }
 

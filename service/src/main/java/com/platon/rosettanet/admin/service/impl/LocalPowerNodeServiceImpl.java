@@ -65,6 +65,12 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public int updatePowerNodeByNodeId(LocalPowerNode powerNode) {
+        // 判断是否有正在进行中的任务
+        List powerTaskList = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNode.getPowerNodeId());
+        if (null != powerTaskList && powerTaskList.size() > 0) {
+            log.info("updatePowerNodeByNodeId--此节点有任务正在进行中:{}", powerTaskList.toString());
+            return 0;
+        }
         // 调用grpc接口修改计算节点信息
         YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.updatePowerNode(powerNode.getPowerNodeId(), powerNode.getInternalIp(), powerNode.getExternalIp(),
                 powerNode.getInternalPort(), powerNode.getExternalPort());
@@ -83,12 +89,16 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public int deletePowerNodeByNodeId(String powerNodeId) {
-        // gRPC接口返回1表示删除成功，否则表示删除失败
-        if (1 != powerClient.deletePowerNode(powerNodeId)) {
+        // 判断是否有正在进行中的任务
+        List powerTaskList = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNodeId);
+        if (null != powerTaskList && powerTaskList.size() > 0) {
+            log.info("updatePowerNodeByNodeId--此节点有任务正在进行中:{}", powerTaskList.toString());
             return 0;
         }
+        // 删除底层资源
+        powerClient.deletePowerNode(powerNodeId);
+        // 删除数据
         return localPowerNodeMapper.deletePowerNode(powerNodeId);
-
     }
 
     @Override
@@ -133,28 +143,28 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         // 24小时记录
         if (ServiceConstant.constant_1.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "0");
-            if (!powerHistoryList.isEmpty()) {
+            if (powerHistoryList != null && powerHistoryList.size() > 0) {
                 return this.historyMethod(powerHistoryList, resourceType, 24);
             }
-        }
+        };
         // 7天记录
         if (ServiceConstant.constant_7.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
-            if (!powerHistoryList.isEmpty()) {
+            if (powerHistoryList != null && powerHistoryList.size() > 0) {
                 return this.historyMethod(powerHistoryList, resourceType, 7);
             }
         }
         // 15天记录
         if (ServiceConstant.constant_15.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
-            if (!powerHistoryList.isEmpty()) {
+            if (powerHistoryList != null && powerHistoryList.size() > 0) {
                 return this.historyMethod(powerHistoryList, resourceType, 15);
             }
         }
         // 30天记录
         if (ServiceConstant.constant_30.equals(timeType)) {
             List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
-            if (!powerHistoryList.isEmpty()) {
+            if (powerHistoryList != null && powerHistoryList.size() > 0) {
                 return this.historyMethod(powerHistoryList, resourceType, 24);
             }
         }

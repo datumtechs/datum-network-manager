@@ -30,6 +30,7 @@ public interface LocalPowerHistoryMapper {
     /**
      * 查询计算节点资源详情
      * @param powerNodeId
+     * @param refreshStatus
      * @return
      */
     List<LocalPowerHistory> queryPowerHistory(@Param(value = "powerNodeId") String powerNodeId, @Param(value = "refreshStatus") String refreshStatus);

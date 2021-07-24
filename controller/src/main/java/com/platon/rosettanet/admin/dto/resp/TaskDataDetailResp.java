@@ -28,9 +28,9 @@ public class TaskDataDetailResp {
     private LocalDateTime startAt;
     @ApiModelProperty(name = "endAt",value = "任务结束时间 (时间戳)")
     private LocalDateTime endAt;
-    @ApiModelProperty(name = "status",value = "任务状态 (pending: 等在中 (授权中); running: 计算中 (授权通过, 还未结束计算); failed: 失败 (计算结束); success: 成功 (计算结束))")
+    @ApiModelProperty(name = "status",value = "任务状态 (pending: 等在中; failed: 失败 (计算结束); success: 成功 (计算结束))")
     private String status;
-    @ApiModelProperty(name = "duration",value = "任务运行耗时时长 (单位: ms)")
+    @ApiModelProperty(name = "duration",value = "任务所需资源声明，任务运行耗时时长 (单位: ms)")
     private LocalDateTime duration;
     @ApiModelProperty(name = "costCore",value = "任务所需的CPU资源 (单位: 个)")
     private Long costCore;

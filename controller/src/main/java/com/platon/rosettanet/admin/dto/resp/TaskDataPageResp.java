@@ -20,7 +20,7 @@ public class TaskDataPageResp {
     private String taskName;
     @ApiModelProperty(name = "createAt",value = "任务发起时间 (时间戳)")
     private LocalDateTime createAt;
-    @ApiModelProperty(name = "status", value = "任务状态 (pending: 等在中 (授权中); running: 计算中 (授权通过, 还未结束计算); failed: 失败 (计算结束); success: 成功 (计算结束))")
+    @ApiModelProperty(name = "status", value = "任务状态 (pending: 等在中; failed: 失败 (计算结束); success: 成功 (计算结束))")
     private String status;
     @ApiModelProperty(name = "reviewed", value = "是否查看过")
     private Boolean reviewed;
