@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,16 +23,16 @@ public class TaskDataDetailResp {
     private String taskId;
     @ApiModelProperty(name = "taskName",value = "任务名称")
     private String taskName;
-    @ApiModelProperty(name = "createAt",value = "任务发起时间 (时间戳)")
-    private LocalDateTime createAt;
-    @ApiModelProperty(name = "startAt",value = "任务开始计算时间 (时间戳)")
-    private LocalDateTime startAt;
-    @ApiModelProperty(name = "endAt",value = "任务结束时间 (时间戳)")
-    private LocalDateTime endAt;
+    @ApiModelProperty(name = "createAt",value = "任务发起时间 (时间戳)，单位ms")
+    private Long createAt;
+    @ApiModelProperty(name = "startAt",value = "任务开始计算时间 (时间戳)，单位ms")
+    private Long startAt;
+    @ApiModelProperty(name = "endAt",value = "任务结束时间 (时间戳)，单位ms")
+    private Long endAt;
     @ApiModelProperty(name = "status",value = "任务状态 (pending: 等在中; failed: 失败 (计算结束); success: 成功 (计算结束))")
     private String status;
     @ApiModelProperty(name = "duration",value = "任务所需资源声明，任务运行耗时时长 (单位: ms)")
-    private LocalDateTime duration;
+    private Long duration;
     @ApiModelProperty(name = "costCore",value = "任务所需的CPU资源 (单位: 个)")
     private Long costCore;
     @ApiModelProperty(name = "costMemory",value = "任务所需的内存资源 (单位: byte)")
@@ -70,10 +71,10 @@ public class TaskDataDetailResp {
         resp.setCostBandwidth(task.getCostBandwidth());
         resp.setCostCore(task.getCostCore());
         resp.setCostMemory(task.getCostMemory());
-        resp.setCreateAt(task.getCreateAt());
-        resp.setDuration(task.getDuration());
-        resp.setStartAt(task.getStartAt());
-        resp.setEndAt(task.getEndAt());
+        resp.setCreateAt(task.getCreateAt() == null ? null : task.getCreateAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        resp.setDuration(task.getDuration() == null ? null : task.getDuration().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        resp.setStartAt(task.getStartAt() == null ? null : task.getStartAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        resp.setEndAt(task.getEndAt() == null ? null : task.getEndAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
 
         //owner
         CommonTaskOrg owner = new CommonTaskOrg();

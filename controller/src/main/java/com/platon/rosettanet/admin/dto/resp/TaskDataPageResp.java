@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Data
 @ApiModel(value = "查询计算任务列表返回实体")
@@ -18,8 +19,8 @@ public class TaskDataPageResp {
     private String taskId;
     @ApiModelProperty(name = "taskName",value = "任务名称")
     private String taskName;
-    @ApiModelProperty(name = "createAt",value = "任务发起时间 (时间戳)")
-    private LocalDateTime createAt;
+    @ApiModelProperty(name = "createAt",value = "任务发起时间 (时间戳),单位ms")
+    private Long createAt;
     @ApiModelProperty(name = "status", value = "任务状态 (pending: 等在中; failed: 失败 (计算结束); success: 成功 (计算结束))")
     private String status;
     @ApiModelProperty(name = "reviewed", value = "是否查看过")
@@ -35,7 +36,7 @@ public class TaskDataPageResp {
         resp.setStatus(task.getStatus());
         resp.setReviewed(task.getReviewed());
         resp.setRole(getRole(task.getRole()));
-        resp.setCreateAt(task.getCreateAt());
+        resp.setCreateAt(task.getCreateAt() == null ? null :task.getCreateAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
         //BeanUtils.copyProperties(task,resp);
         return resp;
     }

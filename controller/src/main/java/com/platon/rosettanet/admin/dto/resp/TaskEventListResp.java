@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @ApiModel(value = "任务事件日志列表实体对象")
 @Data
@@ -32,14 +33,14 @@ public class TaskEventListResp {
     @ApiModelProperty(name = "eventContent", value = "事件内容")
     private String eventContent;
     //产生事件的时间
-    @ApiModelProperty(name = "eventAt", value = "产生事件的时间")
-    private LocalDateTime eventAt;
+    @ApiModelProperty(name = "eventAt", value = "产生事件的时间，单位ms")
+    private Long eventAt;
 
 
     public static TaskEventListResp convert(TaskEvent taskEvent){
         TaskEventListResp resp = new TaskEventListResp();
         resp.setId(taskEvent.getId());
-        resp.setEventAt(taskEvent.getEventAt());
+        resp.setEventAt(taskEvent.getEventAt() == null ? null : taskEvent.getEventAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
         resp.setEventContent(taskEvent.getEventContent());
         resp.setEventType(taskEvent.getEventType());
         resp.setIdentityId(taskEvent.getIdentityId());
