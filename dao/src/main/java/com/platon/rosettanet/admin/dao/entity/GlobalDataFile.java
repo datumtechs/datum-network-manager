@@ -73,7 +73,7 @@ public class GlobalDataFile implements Serializable {
     /**
      * 是否带标题
      */
-    private Byte hasTitle;
+    private Boolean hasTitle;
 
     /**
      * 数据描述

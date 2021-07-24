@@ -8,11 +8,11 @@ import java.util.List;
 public interface GlobalDataFileMapper {
 
     /**
-     * 根据metaDataId查询出指定的数据
-     * @param metaDataId
+     * 根据id查询出指定的数据
+     * @param id
      * @return
      */
-    GlobalDataFile selectByMetaDataId(String metaDataId);
+    GlobalDataFile selectById(Integer id);
 
 
     /**
@@ -30,7 +30,7 @@ public interface GlobalDataFileMapper {
     /**
      * 批量更新数据，一次建议最多更新1000条
      */
-    int batchUpdateByMetaDataIdSelective(@Param("localDataFileList") List<GlobalDataFile> localDataFileList);
+    int batchUpdateByFileIdSelective(@Param("localDataFileList") List<GlobalDataFile> localDataFileList);
 
     /**
      * 批量删除数据，一次建议最多删除1000条
@@ -38,10 +38,10 @@ public interface GlobalDataFileMapper {
     int batchDeleteByMetaDataId(@Param("metaDataIdList") List<String> metaDataIdList);
 
     /**
-     * 查询数据库中的所有metaDataId
+     * 查询数据库中的所有fileId
      * @return
      */
-    List<String> selectAllMetaDataId();
+    List<String> selectAllFileId();
 
     /**
      * 批量新增数据，一次建议最多更新1000条

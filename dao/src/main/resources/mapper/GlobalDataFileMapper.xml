@@ -36,11 +36,11 @@
     order by resource_name
   </select>
 
-  <!-- 根据metaDataId查询出指定的数据-->
-  <select id="selectByMetaDataId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <!-- 根据id查询出指定的数据-->
+  <select id="selectById" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from global_data_file
-    where meta_data_id = #{metaDataId}
+    where id = #{id}
   </select>
 
   <!-- 根据metaDataId进行选择性更新-->
@@ -64,7 +64,7 @@
   </update>
 
   <!-- 批量更新数据，一次建议最多更新1000条-->
-  <update id="batchUpdateByMetaDataIdSelective">
+  <update id="batchUpdateByFileIdSelective">
     <foreach collection="localDataFileList" item="globalDataFile" separator=";">
       update global_data_file
       <set>
@@ -117,12 +117,12 @@
           rec_update_time = #{globalDataFile.recUpdateTime,jdbcType=TIMESTAMP},
         </if>
       </set>
-      where meta_data_id = #{globalDataFile.metaDataId,jdbcType=VARCHAR}
+      where file_id = #{globalDataFile.fileId,jdbcType=VARCHAR}
     </foreach>
   </update>
 
-  <select id="selectAllMetaDataId" resultType="java.lang.String">
-    select meta_data_id
+  <select id="selectAllFileId" resultType="java.lang.String">
+    select file_id
     from global_data_file
   </select>
 

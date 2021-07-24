@@ -21,9 +21,9 @@ public class GlobalMetaDataColumn implements Serializable {
     private Integer id;
 
     /**
-     * 元数据ID
+     * 源文件id
      */
-    private String metaDataId;
+    private String fileId;
 
     /**
      * 列索引

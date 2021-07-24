@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class LocalDataAddReq {
 
     //数据库id
     @ApiModelProperty(value = "数据库id",required = true)
+    @NotNull
     private Integer id;
     //资源名称
     @ApiModelProperty(value = "资源名称",required = true)

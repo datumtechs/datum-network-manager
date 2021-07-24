@@ -160,7 +160,7 @@ public class LocalDataController {
             @ApiImplicitParam(name = "id",value = "文件id",required = true,paramType = "query",example = "1"),
     })
     @GetMapping("metaDataInfo")
-    public JsonResponse<LocalDataDetailResp> detail(@Validated @NotBlank(message = "id不为空") Integer id){
+    public JsonResponse<LocalDataDetailResp> detail(@Validated @NotNull(message = "id不为空") Integer id){
         LocalDataFileDetail detail = localDataService.detail(id);
         LocalDataDetailResp resp = LocalDataDetailResp.from(detail);
         return JsonResponse.success(resp);
@@ -217,7 +217,7 @@ public class LocalDataController {
             @ApiImplicitParam(name = "id",value = "文件id",required = true,paramType = "query",example = "1"),
     })
     @GetMapping("download")
-    public void downLoad(HttpServletResponse response, @Validated @NotBlank(message = "metaDataId不为空") Integer id){
+    public void downLoad(HttpServletResponse response, @Validated @NotNull(message = "id不为空") Integer id){
         localDataService.downLoad(response,id);
     }
 

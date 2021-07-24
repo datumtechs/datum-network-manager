@@ -9,6 +9,7 @@ import com.platon.rosettanet.admin.grpc.client.PowerClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
@@ -37,6 +38,7 @@ public class GlobalPowerRefreshTask {
      * TODO 后续增加补偿和失败重试等机制
      */
     @Scheduled(fixedDelay = 10000)
+    @Transactional
     public void task(){
         StopWatch stopWatch = new StopWatch("全网数据刷新计时");
         //### 1.获取全网算力，包括本组织算力

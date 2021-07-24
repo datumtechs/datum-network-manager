@@ -4,6 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import com.platon.rosettanet.admin.common.context.LocalOrgCache;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.dao.entity.*;
+import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
+import com.platon.rosettanet.admin.dao.enums.LocalMetaDataColumnVisibleEnum;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.service.CommonMessage;
 import com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage;
@@ -75,13 +77,19 @@ public class MetaDataClient {
             List<LocalMetaDataColumn> columnList = fileDetail.getLocalMetaDataColumnList();
             for (int i = 0; i < columnList.size(); i++) {
                 LocalMetaDataColumn metaDataColumn = columnList.get(i);
+                if(LocalMetaDataColumnVisibleEnum.NO.getIsVisible().equals(metaDataColumn.getVisible())){
+                    //如果不可见则不发布该列元数据
+                    continue;
+                }
                 MetaDataRpcMessage.MetaDataColumnDetail.Builder columnDetailBuilder = MetaDataRpcMessage.MetaDataColumnDetail.newBuilder();
+                columnDetailBuilder.setCindex(metaDataColumn.getColumnIdx());
                 if (StrUtil.isNotBlank(metaDataColumn.getColumnName())){
                     columnDetailBuilder.setCname(metaDataColumn.getColumnName());
                 }
                 if (StrUtil.isNotBlank(metaDataColumn.getColumnType())){
                     columnDetailBuilder.setCtype(metaDataColumn.getColumnType());
                 }
+                columnDetailBuilder.setCsize(metaDataColumn.getSize() == null ? 0 : metaDataColumn.getSize().intValue());
                 if (StrUtil.isNotBlank(metaDataColumn.getRemarks())){
                     columnDetailBuilder.setCcomment(metaDataColumn.getRemarks());
                 }
@@ -187,6 +195,7 @@ public class MetaDataClient {
                         MetaDataRpcMessage.MetaDataSummary summary = information.getMetaDataSummary();
                         detail.setMetaDataId(summary.getMetaDataId());
                         detail.setFileId(summary.getOriginId());
+                        detail.setFileName(summary.getTableName());
                         detail.setResourceName(summary.getTableName());
                         detail.setRemarks(summary.getDesc());
                         detail.setFilePath(summary.getFilePath());
@@ -194,8 +203,8 @@ public class MetaDataClient {
                         detail.setColumns(summary.getColumns());
                         detail.setSize(Long.valueOf(summary.getSize()));
                         detail.setFileType(summary.getFileType());
-                        detail.setHasTitle(summary.getHasTitle() == false ? (byte) 0 : (byte) 1);
-                        detail.setStatus(summary.getState());
+                        detail.setHasTitle(summary.getHasTitle());
+                        detail.setStatus(LocalDataFileStatusEnum.RELEASED.getStatus());
                         //            uint32 cindex   = 1;                         // 列的索引
                         //            string cname    = 2;                          // 列名
                         //            string ctype    = 3;                          // 列类型
@@ -203,11 +212,12 @@ public class MetaDataClient {
                         //            string ccomment = 5;                       // 列描述
                         information.getColumnMetaList().forEach(columnDetail -> {
                             GlobalMetaDataColumn metaDataColumn = new GlobalMetaDataColumn();
-                            metaDataColumn.setMetaDataId(summary.getMetaDataId());
+                            metaDataColumn.setFileId(summary.getOriginId());
                             metaDataColumn.setColumnIdx(columnDetail.getCindex());
                             metaDataColumn.setColumnName(columnDetail.getCname());
                             metaDataColumn.setColumnType(columnDetail.getCtype());
                             metaDataColumn.setSize(Long.valueOf(columnDetail.getCsize()));
+                            metaDataColumn.setVisible(LocalMetaDataColumnVisibleEnum.YES.getIsVisible());
                             metaDataColumn.setRemarks(columnDetail.getCcomment());
                             detail.getMetaDataColumnList().add(metaDataColumn);
                         });

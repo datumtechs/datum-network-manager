@@ -16,8 +16,8 @@ public interface GlobalDataService {
 
     /**
      * 获取数据详情
-     * @param metaDataId
+     * @param id
      * @return
      */
-    GlobalDataFileDetail detail(String metaDataId);
+    GlobalDataFileDetail detail(Integer id);
 }

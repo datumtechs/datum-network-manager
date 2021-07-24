@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotBlank;
-import java.util.regex.Matcher;
+import javax.validation.constraints.NotNull;
 
 /**
  * @Author liushuyu
@@ -24,7 +23,7 @@ import java.util.regex.Matcher;
 public class LocalDataActionReq {
 
     //元数据Id
-    @NotBlank(message = "文件ID不能为空")
+    @NotNull(message = "文件ID不能为空")
     @ApiModelProperty(value = "文件ID",required = true)
     private Integer id;
     //元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)

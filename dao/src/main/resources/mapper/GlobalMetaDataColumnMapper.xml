@@ -3,7 +3,7 @@
 <mapper namespace="com.platon.rosettanet.admin.dao.GlobalMetaDataColumnMapper">
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
+    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
     <result column="column_idx" jdbcType="INTEGER" property="columnIdx" />
     <result column="column_name" jdbcType="VARCHAR" property="columnName" />
     <result column="column_type" jdbcType="VARCHAR" property="columnType" />
@@ -14,37 +14,34 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, meta_data_id, column_idx, `column_name`, column_type, `size`, remarks, visible, 
+    id, file_id, column_idx, `column_name`, column_type, `size`, remarks, visible,
     rec_create_time, rec_update_time
   </sql>
 
   <!-- 根据metaDataId进行查询-->
-  <select id="selectByMetaDataId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByFileId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from global_meta_data_column
-    where meta_data_id = #{metaDataId}
+    where file_id = #{fileId}
   </select>
 
   <!-- 批量删除数据，一次建议最多删除1000条-->
-  <delete id="batchDeleteByMetaDataId">
-    <if test="metaDataIdList.size() > 0">
+  <delete id="batchDeleteByFileId">
+    <if test="fileIdList.size() > 0">
       delete from global_meta_data_column
-      where meta_data_id in
-      <foreach collection="metaDataIdList" item="metaDataId" separator="," open="(" close=")">
-        #{metaDataId}
+      where file_id in
+      <foreach collection="fileIdList" item="fileId" separator="," open="(" close=")">
+        #{fileId}
       </foreach>
     </if>
   </delete>
 
   <!-- 批量更新数据，一次建议最多更新1000条-->
-  <update id="batchUpdateByMetaDataIdSelective">
+  <update id="batchUpdateByFileIdSelective">
     <foreach collection="columnList" item="metaDataColumn" separator=";">
       update global_meta_data_column
       <set>
-        <if test="metaDataColumn.metaDataId != null">
-          meta_data_id = #{metaDataColumn.metaDataId,jdbcType=VARCHAR},
-        </if>
         <if test="metaDataColumn.columnIdx != null">
           column_idx = #{metaDataColumn.columnIdx,jdbcType=INTEGER},
         </if>
@@ -61,7 +58,7 @@
           remarks = #{metaDataColumn.remarks,jdbcType=VARCHAR},
         </if>
         <if test="metaDataColumn.visible != null">
-          visible = #{metaDataColumn.visible,jdbcType=VARCHAR},
+          `visible` = #{metaDataColumn.visible,jdbcType=VARCHAR},
         </if>
         <if test="metaDataColumn.recCreateTime != null">
           rec_create_time = #{metaDataColumn.recCreateTime,jdbcType=TIMESTAMP},
@@ -70,7 +67,7 @@
           rec_update_time = #{metaDataColumn.recUpdateTime,jdbcType=TIMESTAMP},
         </if>
       </set>
-      where meta_data_id = #{metaDataColumn.metaDataId}
+      where file_id = #{metaDataColumn.fileId}
     </foreach>
   </update>
 
@@ -79,8 +76,8 @@
     <foreach collection="columnList" item="metaDataColumn" separator=";">
       insert into global_meta_data_column
       <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="metaDataColumn.metaDataId != null">
-          meta_data_id,
+        <if test="metaDataColumn.fileId != null">
+          file_id,
         </if>
         <if test="metaDataColumn.columnIdx != null">
           column_idx,
@@ -98,7 +95,7 @@
           remarks,
         </if>
         <if test="metaDataColumn.visible != null">
-          visible,
+          `visible`,
         </if>
         <if test="metaDataColumn.recCreateTime != null">
           rec_create_time,
@@ -108,8 +105,8 @@
         </if>
       </trim>
       <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="metaDataColumn.metaDataId != null">
-          #{metaDataColumn.metaDataId,jdbcType=VARCHAR},
+        <if test="metaDataColumn.fileId != null">
+          #{metaDataColumn.fileId,jdbcType=VARCHAR},
         </if>
         <if test="metaDataColumn.columnIdx != null">
           #{metaDataColumn.columnIdx,jdbcType=INTEGER},

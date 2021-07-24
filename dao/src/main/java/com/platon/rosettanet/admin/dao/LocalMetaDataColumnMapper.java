@@ -8,18 +8,11 @@ import java.util.List;
 public interface LocalMetaDataColumnMapper {
 
     /**
-     * 根据metaDataId查询数据
-     * @param metaDataId
-     * @return
-     */
-    List<LocalMetaDataColumn> selectByMetaDataId(String metaDataId);
-
-    /**
      * 根据文件id查询数据
      * @param fileId 关联的文件id
      * @return
      */
-    List<LocalMetaDataColumn> selectByFileId(Integer fileId);
+    List<LocalMetaDataColumn> selectByFileId(String fileId);
 
     /**
      * 批量插入
@@ -33,7 +26,7 @@ public interface LocalMetaDataColumnMapper {
      * @param fileId
      * @return
      */
-    int deleteByFileId(Integer fileId);
+    int deleteByFileId(String fileId);
 
     /**
      * 根据Id进行选择性更新数据
@@ -41,4 +34,11 @@ public interface LocalMetaDataColumnMapper {
      * @return
      */
     int updateByIdSelective(LocalMetaDataColumn localMetaDataColumn);
+
+    /**
+     * 根据metaDataId 和 cindex修改数据
+     * @param
+     * @return
+     */
+    int updateByFileIdAndCindexSelective(LocalMetaDataColumn localMetaDataColumn);
 }

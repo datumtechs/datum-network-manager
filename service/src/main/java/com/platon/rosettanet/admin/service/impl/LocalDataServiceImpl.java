@@ -64,7 +64,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         localDataFileMapper.listDataFile(keyword);
         List<LocalDataFileDetail> detailList = localDataFilePage.stream()
                 .map(localDataFile -> {
-                    List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByFileId(localDataFile.getId());
+                    List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByFileId(localDataFile.getFileId());
                     LocalDataFileDetail detail = new LocalDataFileDetail();
                     BeanUtils.copyProperties(localDataFile, detail);
                     detail.setLocalMetaDataColumnList(columnList);
@@ -104,7 +104,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         int count = localDataFileMapper.insertSelective(detail);
         detail.getLocalMetaDataColumnList().stream().forEach(localMetaDataColumn -> {
             //关联文件ID
-            localMetaDataColumn.setFileId(detail.getId());
+            localMetaDataColumn.setFileId(detail.getFileId());
         });
         count += localMetaDataColumnMapper.batchInsert(detail.getLocalMetaDataColumnList());
         return detail;
@@ -140,7 +140,8 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Transactional
     @Override
     public int delete(Integer id) {
-        int count = localMetaDataColumnMapper.deleteByFileId(id);
+        LocalDataFile localDataFile = localDataFileMapper.selectById(id);
+        int count = localMetaDataColumnMapper.deleteByFileId(localDataFile.getFileId());
         if(count <= 0){
             return 0;
         }
@@ -194,7 +195,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         if(localDataFile == null){
             return null;
         }
-        List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByFileId(id);
+        List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByFileId(localDataFile.getFileId());
         LocalDataFileDetail detail = new LocalDataFileDetail();
         BeanUtils.copyProperties(localDataFile,detail);
         detail.setLocalMetaDataColumnList(columnList);
@@ -203,6 +204,7 @@ public class LocalDataServiceImpl implements LocalDataService {
 
     @Override
     public int down(Integer id) {
+        Date operateDate = new Date();
         LocalDataFile localDataFile = localDataFileMapper.selectById(id);
         //已发布状态的元数据不允许修改
         if(!LocalDataFileStatusEnum.RELEASED.getStatus().equals(localDataFile.getStatus())){
@@ -212,11 +214,11 @@ public class LocalDataServiceImpl implements LocalDataService {
         //修改文件发布信息
         LocalDataFile file = new LocalDataFile();
         file.setId(id);
-        file.setMetaDataId("");
         file.setStatus(LocalDataFileStatusEnum.REVOKED.getStatus());
-        file.setRecUpdateTime(new Date());
-        int count = localDataFileMapper.updateByIdSelective(file);
-        return count;
+        file.setRecUpdateTime(operateDate);
+        AtomicInteger count = new AtomicInteger();
+        count.getAndAdd(localDataFileMapper.updateByIdSelective(file));
+        return count.get();
     }
 
     @Override
@@ -228,7 +230,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(localDataFile.getStatus())){
             throw new ServiceException("元数据已上架");
         }
-        List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByFileId(id);
+        List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByFileId(localDataFile.getFileId());
         LocalDataFileDetail detail = new LocalDataFileDetail();
         BeanUtils.copyProperties(localDataFile,detail);
         detail.setLocalMetaDataColumnList(columnList);
@@ -245,11 +247,6 @@ public class LocalDataServiceImpl implements LocalDataService {
         file.setRecUpdateTime(operateDate);
         AtomicInteger count = new AtomicInteger();
         count.getAndAdd(localDataFileMapper.updateByIdSelective(file));
-        columnList.forEach(localMetaDataColumn -> {
-            localMetaDataColumn.setMetaDataId(publishMetaDataId);
-            localMetaDataColumn.setRecUpdateTime(operateDate);
-            count.getAndAdd(localMetaDataColumnMapper.updateByIdSelective(localMetaDataColumn));
-        });
         return count.get();
     }
 

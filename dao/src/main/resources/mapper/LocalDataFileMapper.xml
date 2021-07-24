@@ -136,7 +136,7 @@
 
 
   <!-- 根据metaDataId进行选择性更新-->
-  <update id="updateByMetaDataIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
+  <update id="updateByFileIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
     update local_data_file
     <set>
       <if test="resourceName != null">
@@ -152,7 +152,7 @@
         rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
+    where file_id = #{fileId,jdbcType=VARCHAR}
   </update>
 
   <!-- 根据Id进行选择性更新-->
@@ -177,13 +177,6 @@
     </set>
     where id = #{id}
   </update>
-
-  <!-- 根据metaDataId查询出指定的数据-->
-  <select id="selectByMetaDataId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from local_data_file
-    where meta_data_id = #{metaDataId}
-  </select>
 
   <!-- 根据Id查询出指定的数据-->
   <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">

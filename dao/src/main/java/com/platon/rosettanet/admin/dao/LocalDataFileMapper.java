@@ -25,15 +25,7 @@ public interface LocalDataFileMapper {
     /**
      *根据metaDataId进行选择性更新
      */
-    int updateByMetaDataIdSelective(LocalDataFile localDataFile);
-
-
-    /**
-     * 根据metaDataId查询出指定的数据
-     * @param metaDataId
-     * @return
-     */
-    LocalDataFile selectByMetaDataId(String metaDataId);
+    int updateByFileIdSelective(LocalDataFile localDataFile);
 
     /**
      * 根据Id查询出指定的数据

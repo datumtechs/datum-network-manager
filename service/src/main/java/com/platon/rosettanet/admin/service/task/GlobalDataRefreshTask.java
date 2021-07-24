@@ -11,13 +11,14 @@ import com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn;
 import com.platon.rosettanet.admin.grpc.client.MetaDataClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * @Author liushuyu
@@ -36,11 +37,13 @@ public class GlobalDataRefreshTask {
     private GlobalMetaDataColumnMapper globalMetaDataColumnMapper;
     @Resource
     private MetaDataClient metaDataClient;
+    protected static ArrayBlockingQueue<GlobalDataFileDetail> abq = new ArrayBlockingQueue<>(10000);
 
     /**
      * TODO 后续增加补偿和失败重试等机制
      */
     @Scheduled(fixedDelay = 10000)
+    @Transactional
     public void task(){
         StopWatch stopWatch = new StopWatch("全网数据刷新计时");
         //### 1.获取全网数据，包括本组织数据
@@ -55,26 +58,32 @@ public class GlobalDataRefreshTask {
         stopWatch.stop();
         //### 2.将数据归类
         stopWatch.start("2.将数据归类");
-        //2.1先获取所有已存在数据库中的metaDataId
-        List<String> metaDataIdList = globalDataFileMapper.selectAllMetaDataId();
+        //2.1先获取所有已存在数据库中的fileId
+        List<String> fileIdList = globalDataFileMapper.selectAllFileId();
         //需要更新的列表
         List<GlobalDataFileDetail> updateList = new ArrayList<>();
         //需要新增的列表
         List<GlobalDataFileDetail> addList = new ArrayList<>();
-        //需要删除的metaDataId列表
-        List<String> deleteList = new ArrayList<>(metaDataIdList);
+        //需要删除的fileId列表
+        List<String> deleteList = new ArrayList<>(fileIdList);
         String localOrg = LocalOrgIdentityCache.getIdentityId();
         detailList.stream()
                 .filter(detail -> {//先过滤掉本组织数据
                     if(localOrg.equals(detail.getIdentityId())){
+                        try {
+                            //将指定的元素插入此队列的尾部，如果该队列已满，则一直等到（阻塞）
+                            abq.put(detail);
+                        } catch (InterruptedException e) {
+                            log.error("本地组织数据放入队列失败",e);
+                        }
                         return false;
                     } else {
                         return true;
                     }
                 })
                 .forEach(detail -> {//数据归类 TODO 性能方面考虑
-                    deleteList.remove(detail.getMetaDataId());
-                    if(metaDataIdList.contains(detail.getMetaDataId())){//如果已存在数据库，则进行更新
+                    deleteList.remove(detail.getFileId());
+                    if(fileIdList.contains(detail.getFileId())){//如果已存在数据库，则进行更新
                         detail.setRecUpdateTime(new Date());
                         updateList.add(detail);
                     } else {//不存在，则表示是新增
@@ -129,17 +138,17 @@ public class GlobalDataRefreshTask {
 
         //批量更新
         BatchExecuteUtil.batchExecute(1000,localDataFileList,(tempList)->{
-            globalDataFileMapper.batchUpdateByMetaDataIdSelective(tempList);
+            globalDataFileMapper.batchUpdateByFileIdSelective(tempList);
         });
         BatchExecuteUtil.batchExecute(1000,columnList,(tempList)->{
-            globalMetaDataColumnMapper.batchUpdateByMetaDataIdSelective(tempList);
+            globalMetaDataColumnMapper.batchUpdateByFileIdSelective(tempList);
         });
     }
 
     private void batchDeleteByMetaDataId(List<String> deleteList){
         BatchExecuteUtil.batchExecute(1000,deleteList,(tempList)->{
             globalDataFileMapper.batchDeleteByMetaDataId(tempList);
-            globalMetaDataColumnMapper.batchDeleteByMetaDataId(tempList);
+            globalMetaDataColumnMapper.batchDeleteByFileId(tempList);
         });
     }
 

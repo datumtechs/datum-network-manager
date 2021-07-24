@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +29,7 @@ public class LocalDataUpdateReq {
      * 序号
      */
     @ApiModelProperty(value = "数据ID",required = true)
+    @NotNull
     private Integer id;
     //数据描述
     @ApiModelProperty(value = "数据描述",required = true)

@@ -40,7 +40,7 @@ public class GlobalDataServiceImpl implements GlobalDataService {
         globalDataFileMapper.listDataFile(keyword);
         List<GlobalDataFileDetail> detailList = globalDataFilePage.stream()
                 .map(dataFile -> {
-                    List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByMetaDataId(dataFile.getMetaDataId());
+                    List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByFileId(dataFile.getFileId());
                     GlobalDataFileDetail detail = new GlobalDataFileDetail();
                     BeanUtils.copyProperties(dataFile, detail);
                     detail.setMetaDataColumnList(columnList);
@@ -54,10 +54,10 @@ public class GlobalDataServiceImpl implements GlobalDataService {
     }
 
     @Override
-    public GlobalDataFileDetail detail(String metaDataId) {
-        GlobalDataFile globalDataFile = globalDataFileMapper.selectByMetaDataId(metaDataId);
+    public GlobalDataFileDetail detail(Integer id) {
+        GlobalDataFile globalDataFile = globalDataFileMapper.selectById(id);
 
-        List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByMetaDataId(metaDataId);
+        List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByFileId(globalDataFile.getFileId());
         GlobalDataFileDetail detail = new GlobalDataFileDetail();
         BeanUtils.copyProperties(globalDataFile,detail);
         detail.setMetaDataColumnList(columnList);

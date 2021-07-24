@@ -23,13 +23,8 @@ public class LocalMetaDataColumn implements Serializable {
     /**
      * 文件ID
      */
-    private Integer fileId;
+    private String fileId;
 
-
-    /**
-     * 元数据ID
-     */
-    private String metaDataId;
 
     /**
      * 列索引
