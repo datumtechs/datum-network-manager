@@ -76,7 +76,7 @@ public class LocalPowerNodeController {
     @PostMapping("/queryPowerNodeList")
     @ApiOperation(value="查询计算节点服务列表", response = JsonResponse.class)
     public JsonResponse<LocalPowerNodeListResp> queryPowerNodeList(@Validated @RequestBody PowerQueryListReq powerReq) {
-        Page page = localPowerNodeService.queryPowerNodeList(powerReq.getIdentityId(),
+        Page<LocalPowerNode> page = localPowerNodeService.queryPowerNodeList(powerReq.getIdentityId(),
                 powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
         // 处理返回数据
         List<LocalPowerNodeListResp> localPowerNodeRespList = new ArrayList<>();

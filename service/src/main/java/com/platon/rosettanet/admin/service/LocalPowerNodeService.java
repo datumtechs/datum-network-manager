@@ -47,7 +47,7 @@ public interface LocalPowerNodeService {
      * @param pageSize
      * @return
      */
-    Page queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize);
+    Page<LocalPowerNode> queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize);
 
     /**
      * 启用算力

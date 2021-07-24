@@ -14,18 +14,11 @@ public interface GlobalDataFileMapper {
      */
     GlobalDataFile selectById(Integer id);
 
-
     /**
      * 获取所有文件信息
      * @param keyword
      */
     List<GlobalDataFile> listDataFile(String keyword);
-
-
-    /**
-     *根据metaDataId进行选择性更新
-     */
-    int updateByMetaDataIdSelective(GlobalDataFile localDataFile);
 
     /**
      * 批量更新数据，一次建议最多更新1000条

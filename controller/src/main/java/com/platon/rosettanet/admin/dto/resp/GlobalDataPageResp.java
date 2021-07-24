@@ -26,6 +26,9 @@ import java.util.stream.Collectors;
 @ApiModel
 public class GlobalDataPageResp {
 
+    //数据库id
+    @ApiModelProperty(name = "id", value = "id")
+    private Integer id;
     //源文件名称
     @ApiModelProperty(name = "fileName", value = "源文件名称")
     private String fileName;
@@ -53,6 +56,7 @@ public class GlobalDataPageResp {
             return null;
         }
         GlobalDataPageResp dataPageResp = new GlobalDataPageResp();
+        dataPageResp.setId(globalDataFile.getId());
         dataPageResp.setFileName(globalDataFile.getResourceName());
         dataPageResp.setRemarks(globalDataFile.getRemarks());
         dataPageResp.setMetaDataId(globalDataFile.getMetaDataId());

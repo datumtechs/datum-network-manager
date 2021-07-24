@@ -33,4 +33,16 @@ public class LocalPowerNodeListResp {
     @ApiModelProperty(value = "节点状态，-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用<计算服务>; 2: 算力被占用(计算服务算力正在被任务占用)", example = "")
     private String connStatus;
 
+    @ApiModelProperty(value = "内存", example = "")
+    private Long memory;
+
+    @ApiModelProperty(value = "cpu", example = "")
+    private Integer core;
+
+    @ApiModelProperty(value = "带宽", example = "")
+    private Long bandwidth;
+
+    @ApiModelProperty(value = "备注", example = "")
+    private String remarks;
+
 }

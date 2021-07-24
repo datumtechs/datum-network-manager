@@ -107,7 +107,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public Page queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize) {
+    public Page<LocalPowerNode> queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize) {
         long startTime = System.currentTimeMillis();
         Page<LocalPowerNode> page = PageHelper.startPage(pageNumber, pageSize);
         localPowerNodeMapper.queryPowerNodeList(identityId, keyword);
