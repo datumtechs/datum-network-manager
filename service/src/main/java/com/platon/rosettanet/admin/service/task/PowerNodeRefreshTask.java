@@ -28,7 +28,7 @@ import java.util.*;
  * @date 2021/7/10 17:07
  */
 @Slf4j
-//@Component
+@Component
 public class PowerNodeRefreshTask {
 
     @Resource

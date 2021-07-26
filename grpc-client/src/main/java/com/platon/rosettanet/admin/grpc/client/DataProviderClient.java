@@ -44,9 +44,6 @@ public class DataProviderClient {
         CountDownLatch count = new CountDownLatch(1);
         Channel channel = null;
         try{
-            //TODO 调试
-            dataNodeHost="192.168.16.151";
-            dataNodePort=50011;
             channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
             //2.构建response流观察者
             DataProviderUploadDataResp resp = new DataProviderUploadDataResp();

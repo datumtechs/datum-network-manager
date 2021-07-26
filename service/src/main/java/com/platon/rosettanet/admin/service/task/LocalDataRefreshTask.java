@@ -1,16 +1,21 @@
 package com.platon.rosettanet.admin.service.task;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import com.platon.rosettanet.admin.dao.LocalDataFileMapper;
 import com.platon.rosettanet.admin.dao.LocalMetaDataColumnMapper;
 import com.platon.rosettanet.admin.dao.entity.GlobalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.rosettanet.admin.dao.enums.LocalMetaDataColumnVisibleEnum;
-import com.sun.xml.internal.bind.v2.TODO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 
@@ -26,8 +31,8 @@ import java.util.List;
  */
 
 @Slf4j
-//@Component
-public class LocalDataRefreshTask {
+@Component
+public class LocalDataRefreshTask implements ApplicationRunner {
 
     @Resource
     private LocalDataFileMapper localDataFileMapper;
@@ -35,8 +40,8 @@ public class LocalDataRefreshTask {
     private LocalMetaDataColumnMapper localMetaDataColumnMapper;
 
 
-    @PostConstruct
-    public void task(){
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
         while(true){
             GlobalDataFileDetail globalDataFileDetail = null;
             //获取并移除此队列的头部，如果没有元素则等待（阻塞）
@@ -91,4 +96,5 @@ public class LocalDataRefreshTask {
         });
         return dataFileDetail;
     }
+
 }

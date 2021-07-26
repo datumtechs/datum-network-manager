@@ -33,7 +33,7 @@
 
   <!-- 批量新增数据，一次建议最多更新1000条-->
   <insert id="batchAddSelective">
-    <foreach collection="list" item="globalPower" separator=";">
+    <foreach collection="globalPowerList" item="globalPower" separator=";">
       insert into global_power
       <trim prefix="(" suffix=")" suffixOverrides=",">
         <if test="globalPower.identityId != null">
@@ -99,14 +99,14 @@
 
   <!-- 批量更新数据，一次建议最多更新1000条-->
   <update id="batchUpdateByIdentityIdSelective">
-    <foreach collection="list" item="globalPower" separator=";">
+    <foreach collection="globalPowerList" item="globalPower" separator=";">
       update global_power
       <set>
         <if test="globalPower.identityId != null">
           identity_id = #{globalPower.identityId,jdbcType=VARCHAR},
         </if>
         <if test="globalPower.orgName != null">
-          identity_id = #{globalPower.orgName,jdbcType=VARCHAR},
+          org_name = #{globalPower.orgName,jdbcType=VARCHAR},
         </if>
         <if test="globalPower.totalCore != null">
           total_core = #{globalPower.totalCore,jdbcType=INTEGER},

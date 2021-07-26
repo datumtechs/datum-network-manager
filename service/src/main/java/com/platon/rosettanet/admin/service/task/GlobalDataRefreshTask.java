@@ -11,6 +11,7 @@ import com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn;
 import com.platon.rosettanet.admin.grpc.client.MetaDataClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author liushuyu
@@ -28,7 +30,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 
 @Slf4j
-//@Component
+@Component
 public class GlobalDataRefreshTask {
 
     @Resource
@@ -72,7 +74,7 @@ public class GlobalDataRefreshTask {
                     if(localOrg.equals(detail.getIdentityId())){
                         try {
                             //将指定的元素插入此队列的尾部，如果该队列已满，则一直等到（阻塞）
-                            abq.put(detail);
+                            abq.offer(detail,60, TimeUnit.SECONDS);
                         } catch (InterruptedException e) {
                             log.error("本地组织数据放入队列失败",e);
                         }
