@@ -170,6 +170,7 @@ public class TaskClient {
             task.setStatus(state);
             task.setAuthAt(LocalDateTime.ofEpochSecond(endAt/1000,0, ZoneOffset.ofHours(8)));
             task.setOwnerIdentityId(owner.getIdentityId());
+            task.setAlgIdentityId(algoSupplier.getIdentityId());
             task.setCostCore(operationCost.getCostProcessor());
             task.setCostMemory(operationCost.getCostMem());
             task.setCostBandwidth(operationCost.getCostBandwidth());

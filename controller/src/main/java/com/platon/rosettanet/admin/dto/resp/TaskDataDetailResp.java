@@ -79,7 +79,10 @@ public class TaskDataDetailResp {
         //owner
         CommonTaskOrg owner = new CommonTaskOrg();
         if(task.getOwner() != null){
-            BeanUtils.copyProperties(task.getOwner(),owner);
+            owner.setNodeName(task.getOwner().getName());
+            owner.setNodeIdentityId(task.getOwner().getIdentityId());
+            owner.setCarrierNodeId(task.getOwner().getCarrierNodeId());
+            //BeanUtils.copyProperties(task.getOwner(),owner);
         }
         resp.setOwner(owner);
 
@@ -115,7 +118,10 @@ public class TaskDataDetailResp {
         //algoSupplier
         CommonTaskOrg algoSupplier = new CommonTaskOrg();
         if(task.getAlgoSupplier() != null){
-            BeanUtils.copyProperties(task.getAlgoSupplier(),algoSupplier);
+            algoSupplier.setNodeName(task.getAlgoSupplier().getName());
+            algoSupplier.setCarrierNodeId(task.getAlgoSupplier().getCarrierNodeId());
+            algoSupplier.setNodeIdentityId(task.getAlgoSupplier().getIdentityId());
+            //BeanUtils.copyProperties(task.getAlgoSupplier(),algoSupplier);
         }
         resp.setAlgoSupplier(algoSupplier);
 
