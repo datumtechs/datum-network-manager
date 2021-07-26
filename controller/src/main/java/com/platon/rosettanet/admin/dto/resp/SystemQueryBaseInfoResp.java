@@ -50,6 +50,9 @@ public class SystemQueryBaseInfoResp {
     //最后更新时间
     @ApiModelProperty(name = "recUpdateTime", value = "最后更新时间,单位ms")
     private Long recUpdateTime;
+    //最后更新时间
+    @ApiModelProperty(name = "status", value = "组织入网状态：0未入网，1已入网")
+    private Integer status;
 
     public static SystemQueryBaseInfoResp from(LocalOrg localOrg){
         if(localOrg == null){

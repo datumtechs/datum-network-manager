@@ -33,13 +33,4 @@ public class LocalOrgServiceImpl implements LocalOrgService {
         LocalOrg localOrg = localOrgMapper.select();
         return localOrg;
     }
-
-    @Override
-    public void createLocalOrg() {
-        //创建本组织信息
-
-
-        //创建成功后，将组织信息放入缓存中
-        LocalOrgIdentityCache.setIdentityId("");
-    }
 }

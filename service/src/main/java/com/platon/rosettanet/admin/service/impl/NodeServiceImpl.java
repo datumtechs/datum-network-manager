@@ -5,7 +5,7 @@ import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.dao.LocalOrgMapper;
 import com.platon.rosettanet.admin.dao.entity.LocalOrg;
 import com.platon.rosettanet.admin.dao.enums.CarrierConnStatusEnum;
-import com.platon.rosettanet.admin.dao.enums.CarrierStatusEnum;
+import com.platon.rosettanet.admin.dao.enums.LocalOrgStatusEnum;
 import com.platon.rosettanet.admin.grpc.client.AuthClient;
 import com.platon.rosettanet.admin.grpc.client.YarnClient;
 import com.platon.rosettanet.admin.grpc.entity.CommonResp;
@@ -50,12 +50,12 @@ public class NodeServiceImpl implements NodeService {
         if(localOrg == null){
             throw new ServiceException("请先申请身份标识");
         }
-        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(ip, port);
+        //YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(ip, port);
+        //localOrg.setCarrierStatus(nodeInfo.getState());
         localOrg.setRecUpdateTime(new Date());
         localOrg.setCarrierIp(ip);
         localOrg.setCarrierPort(port);
         localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
-        localOrg.setCarrierStatus(nodeInfo.getState());
         localOrg.setCarrierConnTime(new Date());
         //入库
         int count = localOrgMapper.updateSelective(localOrg);
@@ -81,10 +81,14 @@ public class NodeServiceImpl implements NodeService {
         if(nodeInfo.getStatus() != GRPC_SUCCESS_CODE){
             log.info("获取调度服务节点信息失败：" + nodeInfo.getMsg());
         } else {
+            if(!localOrg.getIdentityId().equals(nodeInfo.getIdentityId())){
+                throw new ServiceException("入网失败：其他组织已通过该调度服务入网");
+            }
             localOrg.setCarrierNodeId(nodeInfo.getNodeId());
             localOrg.setCarrierStatus(nodeInfo.getState());
-            localOrgMapper.updateSelective(localOrg);
         }
+        localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
+        localOrgMapper.updateSelective(localOrg);
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
         LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
@@ -96,7 +100,7 @@ public class NodeServiceImpl implements NodeService {
         if(localOrg == null){
             throw new ServiceException("请先申请身份标识");
         }
-        if(CarrierStatusEnum.LEAVE.getStatus().equals(localOrg.getCarrierStatus())){//已离开网络
+        if(LocalOrgStatusEnum.LEAVE.getStatus().equals(localOrg.getStatus())){//已离开网络
             throw new ServiceException("还未入网，请先入网后再退网");
         }
         CommonResp resp = authClient.revokeIdentityJoin();
@@ -109,10 +113,11 @@ public class NodeServiceImpl implements NodeService {
         if(nodeInfo.getStatus() != GRPC_SUCCESS_CODE){
             log.info("获取调度服务节点信息失败：" + nodeInfo.getMsg());
         } else {
-            localOrg.setCarrierNodeId("");
             localOrg.setCarrierStatus(nodeInfo.getState());
-            localOrgMapper.updateSelective(localOrg);
         }
+        localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
+        localOrg.setCarrierNodeId("");
+        localOrgMapper.updateSelective(localOrg);
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
         LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());

@@ -11,12 +11,13 @@
     <result column="carrier_conn_status" jdbcType="VARCHAR" property="carrierConnStatus" />
     <result column="carrier_conn_time" jdbcType="TIMESTAMP" property="carrierConnTime" />
     <result column="carrier_status" jdbcType="VARCHAR" property="carrierStatus" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
 
   <sql id="Base_Column_List">
     name, identity_id, carrier_node_id, carrier_ip, carrier_port, carrier_conn_status, carrier_conn_time,
-    carrier_status, rec_update_time
+    carrier_status,`status`, rec_update_time
   </sql>
 
   <select id="selectAvailableCarrier" resultMap="BaseResultMap">
@@ -63,6 +64,9 @@
       <if test="carrierStatus != null">
         carrier_status,
       </if>
+      <if test="status != null">
+        `status`,
+      </if>
       <if test="recUpdateTime != null">
         rec_update_time,
       </if>
@@ -91,6 +95,9 @@
       </if>
       <if test="carrierStatus != null">
         #{carrierStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="recUpdateTime != null">
         #{recUpdateTime,jdbcType=TIMESTAMP},
@@ -124,6 +131,9 @@
       </if>
       <if test="carrierStatus != null">
         carrier_status = #{carrierStatus},
+      </if>
+      <if test="status != null">
+        `status` = #{status},
       </if>
       <if test="recUpdateTime != null">
         rec_update_time = #{recUpdateTime},

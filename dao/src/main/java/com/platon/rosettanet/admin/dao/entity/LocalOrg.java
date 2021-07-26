@@ -29,5 +29,6 @@ public class LocalOrg {
     private String carrierStatus;
     //最后更新时间
     private Date recUpdateTime;
-
+    //0未入网，1已入网
+    private Integer status;
 }

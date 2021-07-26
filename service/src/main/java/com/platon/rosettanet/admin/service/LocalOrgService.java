@@ -22,9 +22,4 @@ public interface LocalOrgService {
      */
     LocalOrg getLocalOrg();
 
-    /**
-     * 创建本组织信息
-     * @return
-     */
-    void createLocalOrg();
 }
