@@ -32,32 +32,32 @@ public class GlobalPower implements Serializable {
     private String orgName;
 
     /**
-     * 总CPU
+     * 总CPU，单位：个
      */
     private Integer totalCore;
 
     /**
-     * 总内存
+     * 总内存，单位：byte
      */
     private Long totalMemory;
 
     /**
-     * 总带宽
+     * 总带宽，单位：bps
      */
     private Long totalBandwidth;
 
     /**
-     * 已使用CPU信息
+     * 已使用CPU信息，单位：个
      */
     private Integer usedCore;
 
     /**
-     * 已使用内存
+     * 已使用内存，单位：byte
      */
     private Long usedMemory;
 
     /**
-     * 已使用带宽
+     * 已使用带宽，单位：bps
      */
     private Long usedBandwidth;
 

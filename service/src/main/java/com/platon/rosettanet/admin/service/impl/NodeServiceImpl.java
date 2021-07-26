@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
 import java.util.Date;
 
 import static com.platon.rosettanet.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
@@ -46,10 +45,13 @@ public class NodeServiceImpl implements NodeService {
         if(!success){
             return CarrierConnStatusEnum.DISABLED;
         }
-        LocalOrg localOrg = localOrgMapper.select();
-        if(localOrg == null){
-            throw new ServiceException("请先申请身份标识");
-        }
+        LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+//        if(localOrg == null){
+//            //刷新缓存
+//            LocalOrgCache.setLocalOrgInfo(null);
+//            LocalOrgIdentityCache.setIdentityId(null);
+//            throw new ServiceException("请先申请身份标识");
+//        }
         //YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(ip, port);
         //localOrg.setCarrierStatus(nodeInfo.getState());
         localOrg.setRecUpdateTime(new Date());
@@ -67,10 +69,13 @@ public class NodeServiceImpl implements NodeService {
 
     @Override
     public void applyJoinNetwork() {
-        LocalOrg localOrg = localOrgMapper.select();
-        if(localOrg == null){
-            throw new ServiceException("请先申请身份标识");
-        }
+        LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+//        if(localOrg == null){
+//            //刷新缓存
+//            LocalOrgCache.setLocalOrgInfo(null);
+//            LocalOrgIdentityCache.setIdentityId(null);
+//            throw new ServiceException("请先申请身份标识");
+//        }
         CommonResp resp = authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName());
         if(resp.getStatus() != GRPC_SUCCESS_CODE){
             throw new ServiceException("入网失败：" + resp.getMsg());
@@ -96,13 +101,16 @@ public class NodeServiceImpl implements NodeService {
 
     @Override
     public void cancelJoinNetwork() {
-        LocalOrg localOrg = localOrgMapper.select();
-        if(localOrg == null){
-            throw new ServiceException("请先申请身份标识");
-        }
-        if(LocalOrgStatusEnum.LEAVE.getStatus().equals(localOrg.getStatus())){//已离开网络
-            throw new ServiceException("还未入网，请先入网后再退网");
-        }
+        LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+//        if(localOrg == null){
+//            //刷新缓存
+//            LocalOrgCache.setLocalOrgInfo(null);
+//            LocalOrgIdentityCache.setIdentityId(null);
+//            throw new ServiceException("请先申请身份标识");
+//        }
+//        if(LocalOrgStatusEnum.LEAVE.getStatus().equals(localOrg.getStatus())){//已离开网络
+//            throw new ServiceException("还未入网，请先入网后再退网");
+//        }
         CommonResp resp = authClient.revokeIdentityJoin();
         if(resp.getStatus() != GRPC_SUCCESS_CODE){
             throw new ServiceException("退网失败：" + resp.getMsg());

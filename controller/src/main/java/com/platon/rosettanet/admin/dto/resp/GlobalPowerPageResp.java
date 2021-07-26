@@ -31,37 +31,37 @@ public class GlobalPowerPageResp {
     /**
      * 总CPU
      */
-    @ApiModelProperty(name = "totalCore", value = "总CPU")
+    @ApiModelProperty(name = "totalCore", value = "总CPU，单位：个")
     private Integer totalCore;
 
     /**
      * 总内存
      */
-    @ApiModelProperty(name = "totalMemory", value = "总内存")
+    @ApiModelProperty(name = "totalMemory", value = "总内存，单位：byte")
     private Long totalMemory;
 
     /**
      * 总带宽
      */
-    @ApiModelProperty(name = "totalBandwidth", value = "总带宽")
+    @ApiModelProperty(name = "totalBandwidth", value = "总带宽，单位：bps")
     private Long totalBandwidth;
 
     /**
      * 已使用CPU信息
      */
-    @ApiModelProperty(name = "usedCore", value = "已使用CPU信息")
+    @ApiModelProperty(name = "usedCore", value = "已使用CPU信息，单位：个")
     private Integer usedCore;
 
     /**
      * 已使用内存
      */
-    @ApiModelProperty(name = "usedMemory", value = "已使用内存")
+    @ApiModelProperty(name = "usedMemory", value = "已使用内存，单位：byte")
     private Long usedMemory;
 
     /**
      * 已使用带宽
      */
-    @ApiModelProperty(name = "usedBandwidth", value = "已使用带宽")
+    @ApiModelProperty(name = "usedBandwidth", value = "已使用带宽，单位：bps")
     private Long usedBandwidth;
 
 
