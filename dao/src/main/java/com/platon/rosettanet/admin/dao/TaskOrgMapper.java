@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TaskOrgMapper {
 
-    TaskOrg selectTaskOrgByIdentityId(@Param("identityId") String identityId);
+    TaskOrg selectTaskOrgByIdentityId(@Param("identityId") String identityId, @Param("taskId") String taskId);
 
     int insertBatch(List<TaskOrg> powerProviderList);
 

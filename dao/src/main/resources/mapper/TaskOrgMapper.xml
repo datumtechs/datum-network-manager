@@ -22,11 +22,12 @@
   </select>
 
 
-  <select id="selectTaskOrgByIdentityId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectTaskOrgByIdentityId" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from task_org
     where identity_id = #{identityId,jdbcType=VARCHAR}
+    and task_id = #{taskId,jdbcType=VARCHAR}
   </select>
 
 
