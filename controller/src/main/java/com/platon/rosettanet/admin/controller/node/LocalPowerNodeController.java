@@ -40,6 +40,10 @@ public class LocalPowerNodeController {
     public JsonResponse addPowerNode(@Validated @RequestBody PowerAddReq powerAddReq) {
         LocalPowerNode localPowerNode = new LocalPowerNode();
         BeanUtils.copyProperties(powerAddReq, localPowerNode);
+        // 校检名称
+        if (!NameUtil.isValidName(localPowerNode.getPowerNodeName())) {
+            return JsonResponse.fail("名称不符合命名规则！");
+        }
         localPowerNodeService.insertPowerNode(localPowerNode);
         return JsonResponse.success("新增成功");
     }
@@ -123,12 +127,12 @@ public class LocalPowerNodeController {
     @PostMapping("/checkPowerNodeName")
     @ApiOperation(value="校验计算节点名称是否可用", response = JsonResponse.class)
     public JsonResponse checkPowerNodeName(@Validated @RequestBody PowerCheckNameReq powerCheckNameReq) {
-        if (NameUtil.isValidName(powerCheckNameReq.getPowerNodeName())) {
+        if (!NameUtil.isValidName(powerCheckNameReq.getPowerNodeName())) {
             return JsonResponse.fail("名称不符合命名规则！");
         }
         int count = localPowerNodeService.checkPowerNodeName(powerCheckNameReq.getPowerNodeName());
         if (count > 0) {
-            return JsonResponse.fail("校验失败");
+            return JsonResponse.fail("名称已存在！");
         }
         return JsonResponse.success("校验成功");
     }

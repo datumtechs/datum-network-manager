@@ -41,7 +41,7 @@
     remarks,
     conn_message,
     power_id,
-    powerStatus,
+    power_status,
     conn_time,
     conn_status,
     memory,
