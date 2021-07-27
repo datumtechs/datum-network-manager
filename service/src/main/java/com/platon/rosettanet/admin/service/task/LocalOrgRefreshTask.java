@@ -39,7 +39,7 @@ import static com.platon.rosettanet.admin.grpc.constant.GrpcConstant.GRPC_SUCCES
  */
 
 @Slf4j
-@Component
+//@Component
 public class LocalOrgRefreshTask {
 
     @Resource

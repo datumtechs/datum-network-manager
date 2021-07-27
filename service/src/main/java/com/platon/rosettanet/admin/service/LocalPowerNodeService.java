@@ -16,21 +16,21 @@ public interface LocalPowerNodeService {
      * @param localPowerNode
      * @return
      */
-    int insertPowerNode(LocalPowerNode localPowerNode);
+    void insertPowerNode(LocalPowerNode localPowerNode);
 
     /**
      * 修改计算节点数据
      * @param localPowerNode
      * @return
      */
-    int updatePowerNodeByNodeId(LocalPowerNode localPowerNode);
+    void updatePowerNodeByNodeId(LocalPowerNode localPowerNode);
 
     /**
      * 根据节点id删除计算节点
      * @param powerNodeId
      * @return
      */
-    int deletePowerNodeByNodeId(String powerNodeId);
+    void deletePowerNodeByNodeId(String powerNodeId);
 
     /**
      * 查询计算节点详情
@@ -83,7 +83,7 @@ public interface LocalPowerNodeService {
      * @param powerNodeName
      * @return
      */
-    int checkPowerNodeName(String powerNodeName);
+    void checkPowerNodeName(String powerNodeName);
 
 
 }

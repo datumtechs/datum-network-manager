@@ -31,7 +31,7 @@ import java.util.List;
  */
 
 @Slf4j
-@Component
+//@Component
 public class LocalDataRefreshTask implements ApplicationRunner {
 
     @Resource

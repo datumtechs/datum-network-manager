@@ -12,6 +12,7 @@ import com.platon.rosettanet.admin.dto.resp.PowerJoinTaskResp;
 import com.platon.rosettanet.admin.service.LocalPowerNodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/node/powernode")
 @Api(tags = "计算节点控制类")
+@Slf4j
 public class LocalPowerNodeController {
 
     @Resource
@@ -38,36 +40,47 @@ public class LocalPowerNodeController {
     @PostMapping("/addPowerNode")
     @ApiOperation(value="新增计算节点", response = JsonResponse.class)
     public JsonResponse addPowerNode(@Validated @RequestBody PowerAddReq powerAddReq) {
-        LocalPowerNode localPowerNode = new LocalPowerNode();
-        BeanUtils.copyProperties(powerAddReq, localPowerNode);
-        // 校检名称
-        if (!NameUtil.isValidName(localPowerNode.getPowerNodeName())) {
-            return JsonResponse.fail("名称不符合命名规则！");
+        long startTime = System.currentTimeMillis();
+        try {
+            LocalPowerNode localPowerNode = new LocalPowerNode();
+            BeanUtils.copyProperties(powerAddReq, localPowerNode);
+            localPowerNodeService.insertPowerNode(localPowerNode);
+            return JsonResponse.success("新增成功");
+        } catch (Exception e) {
+            long diffTime = System.currentTimeMillis() - startTime;
+            log.error("addPowerNode接口, 执行时间:{}, 错误信息:{}", diffTime +"ms", e);
+            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "新增失败！");
         }
-        localPowerNodeService.insertPowerNode(localPowerNode);
-        return JsonResponse.success("新增成功");
     }
 
     @PostMapping("/updatePowerNode")
     @ApiOperation(value="修改计算节点", response = JsonResponse.class)
     public JsonResponse updatePowerNode(@Validated @RequestBody PowerUpdateReq powerUpdateReq) {
-        LocalPowerNode localPowerNode = new LocalPowerNode();
-        BeanUtils.copyProperties(powerUpdateReq, localPowerNode);
-        int count = localPowerNodeService.updatePowerNodeByNodeId(localPowerNode);
-        if (count == 0) {
-            JsonResponse.fail("修改失败！");
+        long startTime = System.currentTimeMillis();
+        try {
+            LocalPowerNode localPowerNode = new LocalPowerNode();
+            BeanUtils.copyProperties(powerUpdateReq, localPowerNode);
+            localPowerNodeService.updatePowerNodeByNodeId(localPowerNode);
+            return JsonResponse.success("修改成功！");
+        } catch (Exception e) {
+            long diffTime = System.currentTimeMillis() - startTime;
+            log.error("updatePowerNode接口, 执行时间:{}, 错误信息:{}", diffTime +"ms", e);
+            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "修改失败！");
         }
-        return JsonResponse.success("修改成功");
     }
 
     @PostMapping("/deletePowerNode")
     @ApiOperation(value="删除计算节点", response = JsonResponse.class)
     public JsonResponse deletePowerNode(@Validated @RequestBody PowerDeleteReq powerDeleteReq) {
-        int count = localPowerNodeService.deletePowerNodeByNodeId(powerDeleteReq.getPowerNodeId());
-        if (count == 0) {
-            return JsonResponse.fail("删除失败！");
+        long startTime = System.currentTimeMillis();
+        try {
+            localPowerNodeService.deletePowerNodeByNodeId(powerDeleteReq.getPowerNodeId());
+            return JsonResponse.success("删除成功！");
+        } catch (Exception e) {
+            long diffTime = System.currentTimeMillis() - startTime;
+            log.error("deletePowerNode接口, 执行时间:{}, 错误信息:{}", diffTime +"ms", e);
+            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "删除失败！");
         }
-        return JsonResponse.success("删除成功！");
     }
 
     @PostMapping("/queryPowerNodeDetails")
@@ -80,18 +93,27 @@ public class LocalPowerNodeController {
     @PostMapping("/queryPowerNodeList")
     @ApiOperation(value="查询计算节点服务列表", response = JsonResponse.class)
     public JsonResponse<LocalPowerNodeListResp> queryPowerNodeList(@Validated @RequestBody PowerQueryListReq powerReq) {
-        Page<LocalPowerNode> page = localPowerNodeService.queryPowerNodeList(powerReq.getIdentityId(),
-                powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
-        // 处理返回数据
-        List<LocalPowerNodeListResp> localPowerNodeRespList = new ArrayList<>();
-        if (null != page && !page.getResult().isEmpty()) {
-            page.getResult().parallelStream().forEach(powerNode -> {
-                LocalPowerNodeListResp localPowerNodeListResp = new LocalPowerNodeListResp();
-                BeanUtils.copyProperties(powerNode, localPowerNodeListResp);
-                localPowerNodeRespList.add(localPowerNodeListResp);
-            });
+        long startTime = System.currentTimeMillis();
+        try {
+            Page<LocalPowerNode> page = localPowerNodeService.queryPowerNodeList(powerReq.getIdentityId(),
+                    powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
+            // 处理返回数据
+            List<LocalPowerNodeListResp> localPowerNodeRespList = new ArrayList<>();
+            if (null != page && !page.getResult().isEmpty()) {
+                page.getResult().parallelStream().forEach(powerNode -> {
+                    LocalPowerNodeListResp localPowerNodeListResp = new LocalPowerNodeListResp();
+                    BeanUtils.copyProperties(powerNode, localPowerNodeListResp);
+                    localPowerNodeRespList.add(localPowerNodeListResp);
+                });
+            }
+            long diffTime = System.currentTimeMillis() - startTime;
+            log.info("queryPowerNodeList接口执行成功, 执行时间:{}, 返回参数:{}", diffTime +"ms", page.toString());
+            return JsonResponse.page(page, localPowerNodeRespList);
+        } catch (Exception e) {
+            long diffTime = System.currentTimeMillis() - startTime;
+            log.error("queryPowerNodeList接口执行失败, 执行时间:{}, 错误信息:{}", diffTime +"ms", e);
+            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "查询失败！");
         }
-        return JsonResponse.page(page, localPowerNodeRespList);
     }
 
     @PostMapping("/publishPower")
@@ -127,14 +149,15 @@ public class LocalPowerNodeController {
     @PostMapping("/checkPowerNodeName")
     @ApiOperation(value="校验计算节点名称是否可用", response = JsonResponse.class)
     public JsonResponse checkPowerNodeName(@Validated @RequestBody PowerCheckNameReq powerCheckNameReq) {
-        if (!NameUtil.isValidName(powerCheckNameReq.getPowerNodeName())) {
-            return JsonResponse.fail("名称不符合命名规则！");
+        long startTime = System.currentTimeMillis();
+        try {
+            localPowerNodeService.checkPowerNodeName(powerCheckNameReq.getPowerNodeName());
+            return JsonResponse.success("校验成功");
+        } catch (Exception e) {
+            long diffTime = System.currentTimeMillis() - startTime;
+            log.error("checkPowerNodeName接口执行失败, 执行时间:{}, 错误信息:{}", diffTime +"ms", e);
+            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "校验失败！");
         }
-        int count = localPowerNodeService.checkPowerNodeName(powerCheckNameReq.getPowerNodeName());
-        if (count > 0) {
-            return JsonResponse.fail("名称已存在！");
-        }
-        return JsonResponse.success("校验成功");
     }
 
 }

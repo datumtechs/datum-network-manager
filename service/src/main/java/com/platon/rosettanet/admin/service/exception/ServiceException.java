@@ -1,6 +1,9 @@
 package com.platon.rosettanet.admin.service.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author liushuyu
@@ -8,9 +11,10 @@ import lombok.Getter;
  * @Version
  * @Desc
  */
+@Data
+@NoArgsConstructor
 public class ServiceException extends RuntimeException{
 
-    @Getter
     private String errorMsg;
 
     public ServiceException(String errorMsg){

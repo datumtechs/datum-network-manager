@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
+import com.platon.rosettanet.admin.common.util.NameUtil;
 import com.platon.rosettanet.admin.dao.LocalPowerHistoryMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerJoinTaskMapper;
 import com.platon.rosettanet.admin.dao.LocalPowerNodeMapper;
@@ -13,6 +14,7 @@ import com.platon.rosettanet.admin.grpc.client.PowerClient;
 import com.platon.rosettanet.admin.grpc.service.YarnRpcMessage;
 import com.platon.rosettanet.admin.service.LocalPowerNodeService;
 import com.platon.rosettanet.admin.service.constant.ServiceConstant;
+import com.platon.rosettanet.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -44,7 +46,11 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     PowerClient powerClient;
 
     @Override
-    public int insertPowerNode(LocalPowerNode powerNode) {
+    public void insertPowerNode(LocalPowerNode powerNode) {
+        // 校检名称
+        if (!NameUtil.isValidName(powerNode.getPowerNodeName())) {
+            throw new ServiceException("名称不符合命名规则！");
+        }
         // 调用grpc接口修改计算节点信息
         YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
                 powerNode.getInternalPort(), powerNode.getExternalPort());
@@ -60,16 +66,23 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         powerNode.setCore(0);
         // 带宽
         powerNode.setBandwidth(0L);
-        return localPowerNodeMapper.insertPowerNode(powerNode);
+        int count = localPowerNodeMapper.insertPowerNode(powerNode);
+        if (count == 0) {
+            throw new ServiceException("新增失败！");
+        }
     }
 
     @Override
-    public int updatePowerNodeByNodeId(LocalPowerNode powerNode) {
+    public void updatePowerNodeByNodeId(LocalPowerNode powerNode) {
+        // 判断是否有算力进行中
+        if (localPowerNodeMapper.queryPowerNodeUsing(powerNode.getPowerNodeId()) > 0) {
+            throw new ServiceException("有正在进行中的算力，无法修改此节点！");
+        }
         // 判断是否有正在进行中的任务
         List powerTaskList = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNode.getPowerNodeId());
         if (null != powerTaskList && powerTaskList.size() > 0) {
             log.info("updatePowerNodeByNodeId--此节点有任务正在进行中:{}", powerTaskList.toString());
-            return 0;
+            throw new ServiceException("有任务进行中，无法修改此节点！");
         }
         // 调用grpc接口修改计算节点信息
         YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.updatePowerNode(powerNode.getPowerNodeId(), powerNode.getInternalIp(), powerNode.getExternalIp(),
@@ -84,21 +97,31 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         powerNode.setCore(0);
         // 带宽
         powerNode.setBandwidth(0L);
-        return localPowerNodeMapper.updatePowerNodeByNodeId(powerNode);
+        int count = localPowerNodeMapper.updatePowerNodeByNodeId(powerNode);
+        if (count == 0) {
+            throw new ServiceException("修改失败！");
+        }
     }
 
     @Override
-    public int deletePowerNodeByNodeId(String powerNodeId) {
+    public void deletePowerNodeByNodeId(String powerNodeId) {
+        // 判断是否有算力进行中
+        if (localPowerNodeMapper.queryPowerNodeUsing(powerNodeId) > 0) {
+            throw new ServiceException("有正在进行中的算力，无法删除此节点！");
+        }
         // 判断是否有正在进行中的任务
         List powerTaskList = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNodeId);
         if (null != powerTaskList && powerTaskList.size() > 0) {
             log.info("updatePowerNodeByNodeId--此节点有任务正在进行中:{}", powerTaskList.toString());
-            return 0;
+            throw new ServiceException("有任务进行中，无法删除此节点！");
         }
         // 删除底层资源
         powerClient.deletePowerNode(powerNodeId);
         // 删除数据
-        return localPowerNodeMapper.deletePowerNode(powerNodeId);
+        int count = localPowerNodeMapper.deletePowerNode(powerNodeId);
+        if (count == 0) {
+            throw new ServiceException("删除失败！");
+        }
     }
 
     @Override
@@ -108,11 +131,8 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public Page<LocalPowerNode> queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize) {
-        long startTime = System.currentTimeMillis();
         Page<LocalPowerNode> page = PageHelper.startPage(pageNumber, pageSize);
         localPowerNodeMapper.queryPowerNodeList(identityId, keyword);
-        long diffTime = System.currentTimeMillis() - startTime;
-        log.info("查询计算节点列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", page.toString());
         return page;
     }
 
@@ -210,9 +230,14 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public int checkPowerNodeName(String powerNodeName) {
+    public void checkPowerNodeName(String powerNodeName) {
+        if (!NameUtil.isValidName(powerNodeName)) {
+            throw new ServiceException("名称不符合命名规则！");
+        }
         int count = localPowerNodeMapper.checkPowerNodeName(powerNodeName);
-        return count;
+        if (count > 0) {
+            throw new ServiceException("名称已存在！");
+        }
     }
 
 }

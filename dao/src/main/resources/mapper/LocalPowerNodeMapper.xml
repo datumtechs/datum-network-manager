@@ -64,6 +64,19 @@
         power_node_id = #{powerNodeId, jdbcType=VARCHAR}
   </select>
 
+  <!-- 查询计算节点是否被占用 -->
+  <select id="queryPowerNodeUsing" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+        count(1)
+    from
+        local_power_node
+    where 1=1
+        and conn_status != "-1"
+        and power_status != "release"
+        and power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+
+  </select>
+
   <!-- 校验计算节点名称 -->
   <select id="checkPowerNodeName" parameterType="java.lang.String" resultType="java.lang.Integer">
     select count(1) from local_power_node where power_node_Name = #{powerNodeName, jdbcType=VARCHAR}
