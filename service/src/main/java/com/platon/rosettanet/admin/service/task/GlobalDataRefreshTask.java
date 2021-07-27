@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Slf4j
-//@Component
+@Component
 public class GlobalDataRefreshTask {
 
     @Resource
