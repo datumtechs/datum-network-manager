@@ -164,11 +164,11 @@ public class TaskDataDetailResp {
    @Data
     public static class PowerSupplier extends CommonTaskOrg{
         @ApiModelProperty(name = "usedBandwidth",value = "任务占用带宽信息")
-        private String usedBandwidth;
+        private Long usedBandwidth;
         @ApiModelProperty(name = "usedCore",value = "任务占用CPU信息")
-        private String usedCore;
+        private Long usedCore;
         @ApiModelProperty(name = "usedMemory",value = "任务占用内存信息")
-        private String usedMemory;
+        private Long usedMemory;
 
     }
 
