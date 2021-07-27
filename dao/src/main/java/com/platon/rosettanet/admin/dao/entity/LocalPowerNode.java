@@ -35,6 +35,8 @@ public class LocalPowerNode {
 
     private String powerId;
 
+    private String powerStatus;
+
     private LocalDateTime connTime;
 
     private String connStatus;

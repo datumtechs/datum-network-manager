@@ -166,6 +166,7 @@ public class PowerNodeRefreshTask {
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(detail.getJobNodeId());
         localPowerNode.setPowerId(detail.getPowerId());
+        localPowerNode.setPowerStatus(detail.getState());
         localPowerNode.setMemory(resourceUsedDetailShow.getTotalMem());
         localPowerNode.setCore(Integer.parseInt(String.valueOf(resourceUsedDetailShow.getTotalProcessor())));
         localPowerNode.setBandwidth(resourceUsedDetailShow.getTotalBandwidth());
