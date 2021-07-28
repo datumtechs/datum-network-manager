@@ -15,8 +15,8 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "停用算力请求参数")
-public class PowerSwitchReq {
+@ApiModel(value = "启用算力请求参数")
+public class PowerPublishReq {
 
     @NotNull(message = "计算节点ID不能为空")
     @ApiModelProperty(value = "计算节点ID", example = "", required = true)

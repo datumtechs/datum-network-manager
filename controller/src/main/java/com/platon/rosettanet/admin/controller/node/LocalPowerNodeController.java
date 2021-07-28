@@ -2,7 +2,6 @@ package com.platon.rosettanet.admin.controller.node;
 
 
 import com.github.pagehelper.Page;
-import com.platon.rosettanet.admin.common.util.NameUtil;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.*;
@@ -118,15 +117,15 @@ public class LocalPowerNodeController {
 
     @PostMapping("/publishPower")
     @ApiOperation(value="启用算力", response = JsonResponse.class)
-    public JsonResponse switchPower(@Validated @RequestBody PowerSwitchReq powerSwitchReq) {
-        localPowerNodeService.publishPower(powerSwitchReq.getPowerNodeId());
+    public JsonResponse switchPower(@Validated @RequestBody PowerPublishReq powerPublishReq) {
+        localPowerNodeService.publishPower(powerPublishReq.getPowerNodeId());
         return JsonResponse.success("启用成功");
     }
 
     @PostMapping("/revokePower")
     @ApiOperation(value="停用算力", response = JsonResponse.class)
-    public JsonResponse revokePower(@Validated @RequestBody PowerSwitchReq powerSwitchReq) {
-        localPowerNodeService.revokePower(powerSwitchReq.getPowerNodeId());
+    public JsonResponse revokePower(@Validated @RequestBody PowerRevokeReq powerRevokeReq) {
+        localPowerNodeService.revokePower(powerRevokeReq.getPowerId());
         return JsonResponse.success("停用成功");
     }
 
