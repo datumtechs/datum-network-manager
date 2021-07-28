@@ -21,7 +21,7 @@ import lombok.ToString;
 @ApiModel
 public class IndexOverviewResp {
 
-    @ApiModelProperty(name = "status", value = "调度服务状态：1 开启 0 关闭")
+    @ApiModelProperty(name = "status", value = "调度服务状态：enabled 开启 disabled 关闭")
     private String status;//调度服务状态：1 开启 0 关闭
     @ApiModelProperty(name = "dataNodeCount", value = "数据节点数量")
     private Integer dataNodeCount;//数据节点数量
