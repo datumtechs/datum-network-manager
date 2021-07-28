@@ -52,9 +52,9 @@ public class IndexOverviewResp {
         }
         IndexOverviewResp resp = new IndexOverviewResp();
         if(CarrierConnStatusEnum.ENABLED.getStatus().equals(localStats.getCarrierConnStatus())){
-            resp.setStatus("1");
+            resp.setStatus(CarrierConnStatusEnum.ENABLED.getStatus());
         } else {
-            resp.setStatus("0");
+            resp.setStatus(CarrierConnStatusEnum.DISABLED.getStatus());
         }
         resp.setDataNodeCount(localStats.getDataNodeCount());
         resp.setPowerNodeCount(localStats.getPowerNodeCount());
