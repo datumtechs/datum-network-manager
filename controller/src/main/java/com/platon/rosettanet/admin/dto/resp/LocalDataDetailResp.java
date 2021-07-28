@@ -2,6 +2,7 @@ package com.platon.rosettanet.admin.dto.resp;
 
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
+import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -63,8 +64,8 @@ public class LocalDataDetailResp {
     //数据描述
     @ApiModelProperty(name = "remarks", value = "数据描述")
     private String remarks;
-    //数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)
-    @ApiModelProperty(name = "status", value = "数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)")
+    //元数据状态:1已发布，0未发布
+    @ApiModelProperty(name = "status", value = "元数据状态:1已发布，0未发布")
     private String status;
     //元数据ID,hash
     @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
@@ -86,6 +87,12 @@ public class LocalDataDetailResp {
         }
         LocalDataDetailResp resp = new LocalDataDetailResp();
         BeanUtils.copyProperties(detail,resp);
+        //元数据状态:1已发布，0未发布
+        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(detail.getStatus())){
+            resp.setStatus("1");
+        } else {
+            resp.setStatus("0");
+        }
         resp.setRecCreateTime(detail.getRecCreateTime() == null? null : detail.getRecCreateTime().getTime());
         resp.setRecUpdateTime(detail.getRecUpdateTime() == null? null : detail.getRecUpdateTime().getTime());
         return resp;
