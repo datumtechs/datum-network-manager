@@ -71,6 +71,7 @@ public class PowerNodeRefreshTask {
                 if (null != powerDetails) {
                     localPowerNode.setPowerNodeId(powerDetails.getId());
                     localPowerNode.setConnStatus(String.valueOf(powerDetails.getConnState()));
+                    localPowerNodeList.add(localPowerNode);
                 }
             });
             // 修改计算节点信息
