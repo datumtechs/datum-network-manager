@@ -91,6 +91,7 @@
     where 1=1
         <if test="identityId != null and identityId != ''"> and identity_id = #{identityId, jdbcType=VARCHAR}</if>
         <if test="keyword != null and keyword != ''">and power_node_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')</if>
+    order by create_time desc
   </select>
 
   <!-- 根据节点id删除计算节点 -->
