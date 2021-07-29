@@ -107,7 +107,7 @@ public class GlobalDataRefreshTask {
         stopWatch.stop();
         //3.3批量删除
         stopWatch.start("3.3批量删除");
-        batchDeleteByMetaDataId(deleteList);
+        batchDeleteByFileId(deleteList);
         stopWatch.stop();
         log.info(stopWatch.prettyPrint());
 
@@ -147,9 +147,9 @@ public class GlobalDataRefreshTask {
         });
     }
 
-    private void batchDeleteByMetaDataId(List<String> deleteList){
+    private void batchDeleteByFileId(List<String> deleteList){
         BatchExecuteUtil.batchExecute(1000,deleteList,(tempList)->{
-            globalDataFileMapper.batchDeleteByMetaDataId(tempList);
+            globalDataFileMapper.batchDeleteByFileId(tempList);
             globalMetaDataColumnMapper.batchDeleteByFileId(tempList);
         });
     }
