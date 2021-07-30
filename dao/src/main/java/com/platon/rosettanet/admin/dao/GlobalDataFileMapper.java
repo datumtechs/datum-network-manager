@@ -28,7 +28,7 @@ public interface GlobalDataFileMapper {
     /**
      * 批量删除数据，一次建议最多删除1000条
      */
-    int batchDeleteByMetaDataId(@Param("metaDataIdList") List<String> metaDataIdList);
+    int batchDeleteByFileId(@Param("fileIdList") List<String> fileIdList);
 
     /**
      * 查询数据库中的所有fileId

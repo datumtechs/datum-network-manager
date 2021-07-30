@@ -127,12 +127,12 @@
   </select>
 
   <!-- 批量删除数据，一次建议最多删除1000条-->
-  <delete id="batchDeleteByMetaDataId">
-    <if test="metaDataIdList.size() > 0">
+  <delete id="batchDeleteByFileId">
+    <if test="fileIdList.size() > 0">
       delete from global_data_file
-      where meta_data_id in
-      <foreach collection="metaDataIdList" item="metaDataId" separator="," open="(" close=")">
-        #{metaDataId}
+      where file_id in
+      <foreach collection="fileIdList" item="fileId" separator="," open="(" close=")">
+        #{fileId}
       </foreach>
     </if>
   </delete>

@@ -6,8 +6,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Date;
 
 @Data
 @ApiModel(value = "查询计算任务列表返回实体")
@@ -27,6 +30,7 @@ public class TaskDataPageResp {
     private Boolean reviewed;
     @ApiModelProperty(name = "role", value = "我在任务中的角色 (0: 未定义; 1: 发起方; 2: 数据提供方; 3: 计算参与方; 4: 结果提供方)")
     private Integer role;
+
 
     public static TaskDataPageResp convert(Task task){
         TaskDataPageResp resp = new TaskDataPageResp();
