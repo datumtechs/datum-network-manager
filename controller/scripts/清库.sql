@@ -1,0 +1,20 @@
+use rosettanet_admin;
+
+TRUNCATE bootstrap_node;
+TRUNCATE global_data_file;
+TRUNCATE global_meta_data_column;
+TRUNCATE global_power;
+TRUNCATE local_data_file;
+TRUNCATE local_data_node;
+TRUNCATE local_meta_data_column;
+TRUNCATE local_org;
+TRUNCATE local_power_history;
+TRUNCATE local_power_join_task;
+TRUNCATE local_power_node;
+TRUNCATE sys_config;
+TRUNCATE task;
+TRUNCATE task_data_provider;
+TRUNCATE task_event;
+TRUNCATE task_org;
+TRUNCATE task_power_provider;
+TRUNCATE task_result_consumer;
