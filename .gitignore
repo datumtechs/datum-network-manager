@@ -8,5 +8,6 @@
 */*.log
 logs
 log
+/cer
 
 
