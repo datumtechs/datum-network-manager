@@ -85,7 +85,7 @@ CREATE TABLE `global_meta_data_column` (
 DROP TABLE IF EXISTS `global_power`;
 CREATE TABLE `global_power` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `identity_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '算力提供方身份标识',
+  `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '算力提供方身份标识',
   `org_name` varchar(128) CHARACTER SET utf8mb4 NOT NULL COMMENT '组织名称',
   `total_core` int(11) NOT NULL DEFAULT '0' COMMENT '总CPU，单位：个',
   `total_Memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '总内存，单位：byte',
@@ -230,7 +230,7 @@ CREATE TABLE `local_power_join_task` (
 DROP TABLE IF EXISTS `local_power_node`;
 CREATE TABLE `local_power_node` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `identity_id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
+  `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
   `power_node_id` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
   `power_node_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点名称(同一个组织不可重复）',
   `internal_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点内网IP',
@@ -310,7 +310,7 @@ CREATE TABLE `task` (
   `cost_core` int(11) DEFAULT '0' COMMENT '任务声明所需CPU',
   `cost_Memory` bigint(20) DEFAULT '0' COMMENT '任务声明所需内存',
   `cost_Bandwidth` bigint(20) DEFAULT '0' COMMENT '任务声明所需带宽',
-  `alg_Identity_id` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '算法提供方身份ID',
+  `alg_Identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '算法提供方身份ID',
   `reviewed` tinyint(1) DEFAULT '0' COMMENT '任务是否被查看过，默认为false(0)',
   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
