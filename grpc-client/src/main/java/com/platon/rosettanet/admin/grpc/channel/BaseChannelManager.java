@@ -6,6 +6,7 @@ import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.dao.entity.LocalOrg;
 import com.platon.rosettanet.admin.dao.enums.CarrierConnStatusEnum;
 import io.grpc.Channel;
+import io.grpc.ManagedChannel;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class BaseChannelManager {
 
     //Channel容器
-    private Map<String,Channel> channelContainer = new ConcurrentHashMap<>();;
+    private Map<String,ManagedChannel> channelContainer = new ConcurrentHashMap<>();;
 
 
     /**
@@ -29,14 +30,15 @@ public abstract class BaseChannelManager {
      * @param port
      * @return
      */
-    public Channel getChannel(String ip, int port){
+    public ManagedChannel getChannel(String ip, int port){
         String channelKey = getKey(ip,port);
         //1.先从缓存获取
-        Channel channel = channelContainer.get(channelKey);
+        ManagedChannel channel = channelContainer.get(channelKey);
         if(channel == null){
             //2.缓存不存在则新建连接，并放到缓存中,这时候需要考虑到多个线程并发更新的问题
             channel = buildChannel(ip,port);
             channelContainer.put(channelKey,channel);
+        } else {
         }
         return channel;
     }
@@ -45,7 +47,7 @@ public abstract class BaseChannelManager {
      * 构建一个连接,不走缓存
      * @return
      */
-    public abstract Channel buildChannel(String ip,int port);
+    public abstract ManagedChannel buildChannel(String ip,int port);
 
     /**
      *
@@ -67,14 +69,14 @@ public abstract class BaseChannelManager {
      * @throws ApplicationException
      * @return
      */
-    public Channel getScheduleServer() throws ApplicationException{
+    public ManagedChannel getScheduleServer() throws ApplicationException{
         //获取调度服务的信息
         LocalOrg localOrgInfo = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
         if(!CarrierConnStatusEnum.ENABLED.getStatus().equals(localOrgInfo.getCarrierConnStatus())){
             throw new ApplicationException("无可用的调度服务",ApplicationException.ApplicationErrorEnum.CARRIER_INFO_NOT_CONFIGURED);
         }
         //1.获取rpc连接
-        Channel channel = buildChannel(localOrgInfo.getCarrierIp(), localOrgInfo.getCarrierPort());
+        ManagedChannel channel = getChannel(localOrgInfo.getCarrierIp(), localOrgInfo.getCarrierPort());
         return channel;
     }
 

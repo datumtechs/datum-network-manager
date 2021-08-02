@@ -20,7 +20,7 @@ public class SimpleChannelManager extends BaseChannelManager{
 
 
     @Override
-    public Channel buildChannel(String ip,int port) {
+    public ManagedChannel buildChannel(String ip,int port) {
         ManagedChannel channel = ManagedChannelBuilder
                 .forAddress(ip, port)
                 .usePlaintext()
@@ -31,17 +31,18 @@ public class SimpleChannelManager extends BaseChannelManager{
 
     @SneakyThrows
     public void closeChannel(Channel channel){
-        if(channel == null){
-            return;
-        }
-        if(channel instanceof ManagedChannel){
-            ManagedChannel managedChannel = (ManagedChannel)channel;
-            if(managedChannel.isTerminated()){
-                return;
-            }
-            managedChannel.shutdown();
+//        if(channel == null){
+//            return;
+//        }
+//        if(channel instanceof ManagedChannel){
+//            ManagedChannel managedChannel = (ManagedChannel)channel;
+//            if(managedChannel.isTerminated()){
+//                return;
+//            }
+//            managedChannel.resetConnectBackoff();
+//            managedChannel.shutdown();
 //            managedChannel.awaitTermination(10, TimeUnit.SECONDS);
 //            managedChannel.shutdownNow();
-        }
+//        }
     }
 }
