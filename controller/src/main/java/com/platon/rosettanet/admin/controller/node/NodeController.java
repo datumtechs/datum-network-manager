@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.omg.CORBA.INTERNAL;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,8 +77,10 @@ public class NodeController {
      */
     @ApiOperation(value = "注销网络")
     @PostMapping("cancelJoinNetwork")
-    public JsonResponse cancelJoinNetwork(){
-        nodeService.cancelJoinNetwork();
-        return JsonResponse.success();
+    public JsonResponse<ApplyJoinResp> cancelJoinNetwork(){
+        ApplyJoinResp applyJoinResp = new ApplyJoinResp();
+        Integer status = nodeService.cancelJoinNetwork();
+        applyJoinResp.setStatus(status);
+        return JsonResponse.success(applyJoinResp);
     }
 }

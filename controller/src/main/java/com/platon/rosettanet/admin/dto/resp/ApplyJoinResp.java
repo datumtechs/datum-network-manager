@@ -7,7 +7,7 @@ import lombok.Data;
 
 /**
  * @author
- * 连接调度返回参数
+ * 入网退网返回参数
  */
 @Data
 @ApiModel(value = "入网返回参数")

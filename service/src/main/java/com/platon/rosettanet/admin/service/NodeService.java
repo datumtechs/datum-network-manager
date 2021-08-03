@@ -26,5 +26,5 @@ public interface NodeService {
     /**
      * 调用该接口后，其对应的调度服务从网络中退出，无法继续参与隐私网络中的相关任务项
      */
-    void cancelJoinNetwork();
+    Integer cancelJoinNetwork();
 }
