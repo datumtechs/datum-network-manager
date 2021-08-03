@@ -125,6 +125,25 @@ CREATE TABLE `local_data_file` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表，包含源文件的元数据信息';
 
 -- ----------------------------
+-- Table structure for local_seed_node
+-- ----------------------------
+DROP TABLE IF EXISTS `local_seed_node`;
+CREATE TABLE `local_seed_node` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组织身份ID',
+  `seed_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
+  `seed_node_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点名称',
+  `internal_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点内部IP',
+  `internal_port` int(11) DEFAULT NULL COMMENT '节点内部端口',
+  `conn_status` int(2) DEFAULT -1 COMMENT '节点状态 -1: 网络连接失败; 0: 网络连接成功',
+  `init_flag` int(2) DEFAULT NULL COMMENT '是否是初始节点(0:否, 1:是)',
+  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  PRIMARY KEY (`id`),
+  key `seed_node_id` (`seed_node_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织种子节点配置表 配置当前参与方的种子节点信息';
+
+-- ----------------------------
 -- Table structure for local_data_node
 -- ----------------------------
 DROP TABLE IF EXISTS `local_data_node`;
@@ -231,7 +250,7 @@ DROP TABLE IF EXISTS `local_power_node`;
 CREATE TABLE `local_power_node` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
-  `power_node_id` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
+  `power_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
   `power_node_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点名称(同一个组织不可重复）',
   `internal_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点内网IP',
   `internal_port` int(11) DEFAULT NULL COMMENT '节点内网端口',
@@ -242,7 +261,7 @@ CREATE TABLE `local_power_node` (
   `conn_time` datetime DEFAULT NULL COMMENT '节点上一次连接时间',
   `conn_status` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点状态，-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用<计算服务>; 2: 算力被占用(计算服务算力正在被任务占用)',
   `conn_message` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点(连接失败)信息',
-  `power_id` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点启动后底层返回的算力ID',
+  `power_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点启动后底层返回的算力ID',
   `power_status` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '算力状态 (create: 还未发布的算力; release: 已发布的算力; revoke: 已撤销的算力)',
   `memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '计算host内存, 字节',
   `core` int(11) NOT NULL DEFAULT '0' COMMENT '计算host core',
