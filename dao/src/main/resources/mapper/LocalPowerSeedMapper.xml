@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.LocalSeedNodeMapper">
+
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalSeedNode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="seed_node_id" jdbcType="VARCHAR" property="seedNodeId" />
+    <result column="seed_node_name" jdbcType="VARCHAR" property="seedNodeName" />
+    <result column="internal_ip" jdbcType="VARCHAR" property="internalIp" />
+    <result column="internal_port" jdbcType="INTEGER" property="internalPort" />
+    <result column="conn_status" jdbcType="INTEGER" property="connStatus" />
+    <result column="init_flag" jdbcType="INTEGER" property="initFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id,
+    identity_id,
+    seed_node_id,
+    seed_node_name,
+    internal_ip,
+    internal_port,
+    conn_status,
+    init_flag,
+    create_time,
+    update_time
+  </sql>
+
+  <!-- 查询种子节点详情 -->
+  <select id="querySeedNodeDetails" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+        <include refid="Base_Column_List" />
+    from
+        local_seed_node
+    where
+        seed_node_id = #{seedNodeId, jdbcType=VARCHAR}
+  </select>
+
+  <!-- 校验种子节点名称 -->
+  <select id="checkSeedNodeName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from local_seed_node where seed_node_Name = #{seedNodeName, jdbcType=VARCHAR}
+  </select>
+
+  <!-- 查询种子节点列表-->
+  <select id="querySeedNodeList" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List" />
+    from
+        local_seed_node
+    where 1=1
+        <if test="keyWord != null and keyWord != ''">
+         and (seed_node_name like concat('%', #{keyWord, jdbcType=VARCHAR}, '%')
+         or seed_node_id like concat('%', #{keyWord, jdbcType=VARCHAR}, '%')) </if>
+    order by conn_status asc, init_flag asc, create_time desc
+  </select>
+
+  <!-- 删除种子节点 -->
+  <delete id="deleteSeedNode" parameterType="java.lang.String">
+    delete from local_seed_node where seed_node_id = #{seedNodeId, jdbcType=VARCHAR}
+  </delete>
+
+  <!-- 插入种子节点数据 -->
+  <insert id="insertSeedNode" parameterType="com.platon.rosettanet.admin.dao.entity.LocalSeedNode">
+    insert into local_seed_node
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">id,</if>
+      <if test="identityId != null">identity_id,</if>
+      <if test="seedNodeId != null">seed_node_id,</if>
+      <if test="seedNodeName != null">seed_node_name,</if>
+      <if test="internalIp != null">internal_ip,</if>
+      <if test="internalPort != null">internal_port,</if>
+      <if test="connStatus != null">conn_status,</if>
+      <if test="initFlag != null">init_flag,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null"> #{id, jdbcType=INTEGER},</if>
+      <if test="identityId != null">#{identityId, jdbcType=VARCHAR},</if>
+      <if test="seedNodeId != null">#{seedNodeId, jdbcType=VARCHAR},</if>
+      <if test="seedNodeName != null">#{seedNodeName, jdbcType=VARCHAR},</if>
+      <if test="internalIp != null">#{internalIp, jdbcType=VARCHAR},</if>
+      <if test="internalPort != null">#{internalPort, jdbcType=INTEGER},</if>
+      <if test="connStatus != null">#{connStatus, jdbcType=INTEGER},</if>
+      <if test="initFlag != null">#{initFlag, jdbcType=INTEGER},</if>
+      <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
+      <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
+    </trim>
+  </insert>
+
+  <!-- 修改种子节点数据 -->
+  <update id="updateSeedNode" parameterType="com.platon.rosettanet.admin.dao.entity.LocalSeedNode">
+    update local_seed_node
+    <set>
+      <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
+      <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
+      <if test="connStatus != null">conn_status = #{connStatus, jdbcType=INTEGER},</if>
+      <if test="initFlag != null">init_flag = #{initFlag, jdbcType=INTEGER},</if>
+    </set>
+    where seed_node_id = #{seedNodeId, jdbcType=VARCHAR}
+  </update>
+
+  <!-- 批量修改种子节点-->
+  <update id="updateSeedNodeBatch" parameterType="java.util.List">
+    <foreach collection="list" item="item" separator=";">
+      update local_seed_node
+      <set>
+        <if test="item.internalIp != null">internal_ip = #{item.internalIp, jdbcType=VARCHAR},</if>
+        <if test="item.internalPort != null">internal_port = #{item.internalPort, jdbcType=INTEGER},</if>
+        <if test="item.connStatus != null">conn_status = #{item.connStatus, jdbcType=INTEGER},</if>
+        <if test="item.initFlag != null">init_flag = #{item.initFlag, jdbcType=INTEGER},</if>
+      </set>
+      where seed_node_id = #{item.seedNodeId, jdbcType=VARCHAR}
+    </foreach>
+  </update>
+
+</mapper>

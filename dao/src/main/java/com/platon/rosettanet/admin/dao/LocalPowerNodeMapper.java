@@ -37,10 +37,10 @@ public interface LocalPowerNodeMapper {
 
     /**
      * 根据id修改计算节点数据
-     * @param localComputeNode
+     * @param localPowerNode
      * @return
      */
-    int updatePowerNodeById(LocalPowerNode localComputeNode);
+    int updatePowerNodeById(LocalPowerNode localPowerNode);
 
     /**
      * 根据计算id删除计算节点
