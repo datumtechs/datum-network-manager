@@ -99,7 +99,7 @@ public class LocalPowerNodeController {
             // 处理返回数据
             List<LocalPowerNodeListResp> localPowerNodeRespList = new ArrayList<>();
             if (null != page && !page.getResult().isEmpty()) {
-                page.getResult().parallelStream().forEach(powerNode -> {
+                page.getResult().forEach(powerNode -> {
                     LocalPowerNodeListResp localPowerNodeListResp = new LocalPowerNodeListResp();
                     BeanUtils.copyProperties(powerNode, localPowerNodeListResp);
                     localPowerNodeRespList.add(localPowerNodeListResp);
