@@ -90,7 +90,7 @@ public class LocalPowerNodeController {
     }
 
     @PostMapping("/queryPowerNodeList")
-    @ApiOperation(value="查询计算节点服务列表", response = JsonResponse.class)
+    @ApiOperation(value="查询计算节点列表", response = JsonResponse.class)
     public JsonResponse<LocalPowerNodeListResp> queryPowerNodeList(@Validated @RequestBody PowerQueryListReq powerReq) {
         long startTime = System.currentTimeMillis();
         try {

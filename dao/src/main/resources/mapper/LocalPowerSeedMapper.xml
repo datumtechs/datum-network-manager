@@ -53,7 +53,7 @@
         <if test="keyWord != null and keyWord != ''">
          and (seed_node_name like concat('%', #{keyWord, jdbcType=VARCHAR}, '%')
          or seed_node_id like concat('%', #{keyWord, jdbcType=VARCHAR}, '%')) </if>
-    order by conn_status asc, init_flag asc, create_time desc
+    order by conn_status asc, init_flag desc, create_time desc
   </select>
 
   <!-- 删除种子节点 -->

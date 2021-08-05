@@ -24,15 +24,14 @@
   </sql>
   <select id="listNode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
+        <include refid="Base_Column_List" />
     from local_data_node
     <where>
       <if test="keyword != null and keyword != ''">
-        host_Name like CONCAT(CONCAT('%',#{keyword}),'%')
+        node_id like CONCAT('%',#{keyword},'%') or host_Name like CONCAT('%',#{keyword},'%')
       </if>
     </where>
-    ORDER BY
-    CASE conn_status WHEN 'enabled' THEN 1 ELSE 0 END
+    ORDER BY CASE conn_status WHEN 'enabled' THEN 1 ELSE 0 END
   </select>
 
   <select id="getDataNodeIdByName" parameterType="java.lang.String" resultType="java.lang.String">

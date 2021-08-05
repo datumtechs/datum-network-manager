@@ -19,7 +19,6 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "查询种子节点列表请求参数")
 public class SeedQueryListReq {
 
-    @NotNull
     @ApiModelProperty(value = "关键字(可以输入名称和ID)", example = "", required = true)
     private String keyWord;
 

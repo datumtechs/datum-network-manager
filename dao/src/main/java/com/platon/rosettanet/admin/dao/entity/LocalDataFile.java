@@ -41,6 +41,8 @@ public class LocalDataFile {
     private String remarks;
     //数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)
     private String status;
+    // 元数据发布时间
+    private Date publishTime;
     //元数据ID,hash
     private String metaDataId;
     //创建时间

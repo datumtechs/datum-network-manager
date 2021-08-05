@@ -5,11 +5,14 @@ import com.platon.rosettanet.admin.dao.entity.GlobalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.GlobalMetaDataColumn;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,35 +23,33 @@ import java.util.stream.Collectors;
  * @Desc
  */
 
-@Getter
-@Setter
-@ToString
-@ApiModel
+@Data
+@ApiModel(value = "全网数据列表返回参数")
 public class GlobalDataPageResp {
 
-    //数据库id
     @ApiModelProperty(name = "id", value = "id")
     private Integer id;
-    //源文件名称
+
     @ApiModelProperty(name = "fileName", value = "源文件名称")
     private String fileName;
-    //元数据摘要：文件描述
-    @ApiModelProperty(name = "remarks", value = "元数据摘要：文件描述")
-    private String remarks;
-    //元数据ID,hash
+
     @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
     private String metaDataId;
-    /**
-     * 组织身份ID
-     */
+
     @ApiModelProperty(name = "identityId", value = "组织身份ID")
     private String identityId;
-    //组织名称
+
     @ApiModelProperty(name = "orgName", value = "组织名称")
     private String orgName;
-    //元数据摘要
-    @ApiModelProperty(name = "metaDataColumnList", value = "元数据摘要")
-    private List<String> metaDataColumnList = new ArrayList<>();
+
+    @ApiModelProperty(name = "size", value = "数据大小")
+    private Long size;
+
+    @ApiModelProperty(name = "publishTime", value = "元数据发布时间")
+    private Date publishTime;
+
+//    @ApiModelProperty(name = "metaDataColumnList", value = "元数据摘要")
+//    private List<String> metaDataColumnList = new ArrayList<>();
 
 
     public static GlobalDataPageResp from(GlobalDataFile globalDataFile){
@@ -58,18 +59,19 @@ public class GlobalDataPageResp {
         GlobalDataPageResp dataPageResp = new GlobalDataPageResp();
         dataPageResp.setId(globalDataFile.getId());
         dataPageResp.setFileName(globalDataFile.getResourceName());
-        dataPageResp.setRemarks(globalDataFile.getRemarks());
+        dataPageResp.setSize(globalDataFile.getSize());
+        dataPageResp.setPublishTime(globalDataFile.getPublishTime());
         dataPageResp.setMetaDataId(globalDataFile.getMetaDataId());
         dataPageResp.setIdentityId(globalDataFile.getIdentityId());
         dataPageResp.setOrgName(globalDataFile.getOrgName());
 
-        if(globalDataFile instanceof GlobalDataFileDetail){
-            GlobalDataFileDetail detail = (GlobalDataFileDetail)globalDataFile;
-            List<String> metaDataColumnList = detail.getMetaDataColumnList().stream()
-                    .map(GlobalMetaDataColumn::getColumnName)
-                    .collect(Collectors.toList());
-            dataPageResp.setMetaDataColumnList(metaDataColumnList);
-        }
+//        if(globalDataFile instanceof GlobalDataFileDetail){
+//            GlobalDataFileDetail detail = (GlobalDataFileDetail)globalDataFile;
+//            List<String> metaDataColumnList = detail.getMetaDataColumnList().stream()
+//                    .map(GlobalMetaDataColumn::getColumnName)
+//                    .collect(Collectors.toList());
+//            dataPageResp.setMetaDataColumnList(metaDataColumnList);
+//        }
         return dataPageResp;
     }
 }

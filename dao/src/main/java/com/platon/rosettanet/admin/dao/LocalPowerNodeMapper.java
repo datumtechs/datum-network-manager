@@ -64,12 +64,11 @@ public interface LocalPowerNodeMapper {
     LocalPowerNode queryPowerNodeDetails(String powerNodeId);
 
     /**
-     * 查询计算节点服务列表
-     * @param identityId
+     * 查询计算节点列表
      * @param keyword
      * @return
      */
-    List<LocalPowerNode> queryPowerNodeList(@Param(value = "identityId")String identityId, @Param(value = "keyword")String keyword);
+    List<LocalPowerNode> queryPowerNodeList(String keyword);
 
     /**
      * 计算节点名称校验

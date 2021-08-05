@@ -86,6 +86,11 @@ public class GlobalDataFile implements Serializable {
     private String status;
 
     /**
+     * 元数据发布时间
+     */
+    private Date publishTime;
+
+    /**
      * 元数据ID,hash
      */
     private String metaDataId;

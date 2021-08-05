@@ -6,11 +6,13 @@ import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,33 +23,33 @@ import java.util.stream.Collectors;
  * @Desc
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 @ApiModel
 public class LocalDataPageResp {
 
-    //数据ID
     @ApiModelProperty(name = "id", value = "数据ID")
     private Integer id;
-    //源文件名称
+
     @ApiModelProperty(name = "fileName", value = "源文件名称")
     private String fileName;
-    //源文件Id
+
     @ApiModelProperty(name = "fileId", value = "源文件Id")
     private String fileId;
-    //元数据状态:已发布，未发布
+
     @ApiModelProperty(name = "status", value = "元数据状态:1已发布，0未发布")
     private String status;
-    //元数据摘要：文件描述
-    @ApiModelProperty(name = "remarks", value = "元数据摘要：文件描述")
-    private String remarks;
-    //元数据ID,hash
+
+    @ApiModelProperty(name = "size", value = "数据大小")
+    private Long size;
+
+    @ApiModelProperty(name = "size", value = "元数据最近更新时间")
+    private Date recUpdateTime;
+
     @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
     private String metaDataId;
-    //元数据摘要
-    @ApiModelProperty(name = "metaDataColumnList", value = "元数据摘要")
-    private List<String> metaDataColumnList = new ArrayList<>();
+
+//    @ApiModelProperty(name = "metaDataColumnList", value = "元数据摘要")
+//    private List<String> metaDataColumnList = new ArrayList<>();
 
 
     public static LocalDataPageResp from(LocalDataFile localDataFile){
@@ -64,16 +66,17 @@ public class LocalDataPageResp {
         } else {
             localDataPageResp.setStatus("0");
         }
-        localDataPageResp.setRemarks(localDataFile.getRemarks());
+        localDataPageResp.setSize(localDataFile.getSize());
+        localDataPageResp.setRecUpdateTime(localDataFile.getRecUpdateTime());
         localDataPageResp.setMetaDataId(localDataFile.getMetaDataId());
 
-        if(localDataFile instanceof LocalDataFileDetail){
-            LocalDataFileDetail detail = (LocalDataFileDetail)localDataFile;
-            List<String> metaDataColumnList = detail.getLocalMetaDataColumnList().stream()
-                    .map(LocalMetaDataColumn::getColumnName)
-                    .collect(Collectors.toList());
-            localDataPageResp.setMetaDataColumnList(metaDataColumnList);
-        }
+//        if(localDataFile instanceof LocalDataFileDetail){
+//            LocalDataFileDetail detail = (LocalDataFileDetail)localDataFile;
+//            List<String> metaDataColumnList = detail.getLocalMetaDataColumnList().stream()
+//                    .map(LocalMetaDataColumn::getColumnName)
+//                    .collect(Collectors.toList());
+//            localDataPageResp.setMetaDataColumnList(metaDataColumnList);
+//        }
         return localDataPageResp;
     }
 }

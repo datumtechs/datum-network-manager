@@ -215,6 +215,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         LocalDataFile file = new LocalDataFile();
         file.setId(id);
         file.setStatus(LocalDataFileStatusEnum.REVOKED.getStatus());
+        file.setPublishTime(null);
         file.setRecUpdateTime(operateDate);
         AtomicInteger count = new AtomicInteger();
         count.getAndAdd(localDataFileMapper.updateByIdSelective(file));
@@ -244,6 +245,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         file.setId(id);
         file.setMetaDataId(publishMetaDataId);
         file.setStatus(LocalDataFileStatusEnum.RELEASED.getStatus());
+        file.setPublishTime(new Date());
         file.setRecUpdateTime(operateDate);
         AtomicInteger count = new AtomicInteger();
         count.getAndAdd(localDataFileMapper.updateByIdSelective(file));

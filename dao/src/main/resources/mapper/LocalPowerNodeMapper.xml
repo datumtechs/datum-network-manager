@@ -89,9 +89,11 @@
     from
         local_power_node
     where 1=1
-        <if test="identityId != null and identityId != ''"> and identity_id = #{identityId, jdbcType=VARCHAR}</if>
-        <if test="keyword != null and keyword != ''">and power_node_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')</if>
-    order by create_time desc
+        <if test="keyword != null and keyword != ''">
+        and (power_node_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
+            or power_node_id like concat('%', #{keyword, jdbcType=VARCHAR}, '%'))
+        </if>
+    order by (case when conn_status = -1 THEN 0 ELSE 1 END), create_time desc
   </select>
 
   <!-- 根据节点id删除计算节点 -->
