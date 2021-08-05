@@ -78,7 +78,6 @@ public class TaskController {
     public JsonResponse<TaskEventListResp> taskEventList(@ApiParam(name = "taskId",value = "任务id", type = "String", required = true) @RequestParam(required = true) String taskId){
         List<TaskEvent> taskEventList = taskService.listTaskEvent(taskId);
         List<TaskEventListResp> taskEventListRespList = taskEventList.stream().map(TaskEventListResp::convert).collect(Collectors.toList());
-        Task task = taskService.selectTaskByTaskId(taskId);
         return JsonResponse.success(taskEventListRespList);
     }
 

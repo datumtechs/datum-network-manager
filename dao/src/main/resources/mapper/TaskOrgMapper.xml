@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.rosettanet.admin.dao.TaskOrgMapper">
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.TaskOrg">
-    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="carrier_node_id" jdbcType="VARCHAR" property="carrierNodeId" />
@@ -11,7 +10,7 @@
 
 
   <sql id="Base_Column_List">
-    task_id, identity_id, `name`, carrier_node_id, rec_update_time
+    identity_id, `name`, carrier_node_id, rec_update_time
   </sql>
 
 
@@ -27,16 +26,15 @@
     <include refid="Base_Column_List" />
     from task_org
     where identity_id = #{identityId,jdbcType=VARCHAR}
-    and task_id = #{taskId,jdbcType=VARCHAR}
   </select>
 
 
-  <insert id="insertBatch" parameterType="list">
-    replace into task_org (task_id,identity_id, `name`,
+  <insert id="insertBatch" parameterType="java.util.Set">
+    replace into task_org (identity_id, `name`,
     carrier_node_id)
     values
-    <foreach collection ="list" item="item" separator =",">
-      (#{item.taskId,jdbcType=VARCHAR},#{item.identityId,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},
+    <foreach collection ="powerProviderList" item="item" separator =",">
+      (#{item.identityId,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},
        #{item.carrierNodeId,jdbcType=VARCHAR})
     </foreach>
   </insert>

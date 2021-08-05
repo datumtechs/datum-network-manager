@@ -6,11 +6,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @ApiModel(value = "任务详情实体类")
@@ -94,10 +96,13 @@ public class TaskDataDetailResp {
             if(powerProvider != null){
                 BeanUtils.copyProperties(powerProvider,powerSupplier);
             }
-            powerSupplier.setCarrierNodeId(powerProvider.getDynamicFields().get(ControllerConstants.NODE_ID).toString());
-            powerSupplier.setNodeIdentityId(powerProvider.getDynamicFields().get(ControllerConstants.NODE_IDENTITY_ID).toString());
-            powerSupplier.setNodeName(powerProvider.getDynamicFields().get(ControllerConstants.NODE_NAME).toString());
-            powerSupplierList.add(powerSupplier);
+            if(!Objects.isNull(powerProvider.getDynamicFields()) && !CollectionUtils.isEmpty(powerProvider.getDynamicFields())){
+                powerSupplier.setCarrierNodeId(powerProvider.getDynamicFields().get(ControllerConstants.NODE_ID).toString());
+                powerSupplier.setNodeIdentityId(powerProvider.getDynamicFields().get(ControllerConstants.NODE_IDENTITY_ID).toString());
+                powerSupplier.setNodeName(powerProvider.getDynamicFields().get(ControllerConstants.NODE_NAME).toString());
+                powerSupplierList.add(powerSupplier);
+            }
+
         }
         resp.setPowerSupplier(powerSupplierList);
 
@@ -163,10 +168,16 @@ public class TaskDataDetailResp {
 
    @Data
     public static class PowerSupplier extends CommonTaskOrg{
+        @ApiModelProperty(name = "totalBandwidth",value = "任务总带宽信息")
+        private Long totalBandwidth;
         @ApiModelProperty(name = "usedBandwidth",value = "任务占用带宽信息")
         private Long usedBandwidth;
+        @ApiModelProperty(name = "totalCore",value = "任务总CPU信息")
+        private Long totalCore;
         @ApiModelProperty(name = "usedCore",value = "任务占用CPU信息")
         private Long usedCore;
+        @ApiModelProperty(name = "totalMemory",value = "任务总内存信息")
+        private Long totalMemory;
         @ApiModelProperty(name = "usedMemory",value = "任务占用内存信息")
         private Long usedMemory;
 

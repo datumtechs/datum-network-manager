@@ -16,10 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -87,7 +84,7 @@ public class MyTaskRefreshTask {
         List<TaskDataReceiver> dataReceiverList = new ArrayList<>();
         List<TaskPowerProvider> powerProviderList = new ArrayList<>();
         List<TaskResultReceiver> resultReceiverList = new ArrayList<>();
-        List<TaskOrg> taskOrgList = new ArrayList<>();
+        Set<TaskOrg> taskOrgList = new HashSet<>();
 
         if(!CollectionUtils.isEmpty(updateTaskList)){
 
@@ -96,7 +93,7 @@ public class MyTaskRefreshTask {
                  List<TaskDataReceiver> dataReceivers = taskData.getDataSupplier();
                  List<TaskPowerProvider> powerProviders = taskData.getPowerSupplier();
                  List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
-                 List<TaskOrg> taskOrgs = getTaskOrgList(taskData);
+                 Set<TaskOrg> taskOrgs = getTaskOrgList(taskData);
 
                 //构造数据
                  dataReceiverList.addAll(dataReceivers);
@@ -120,20 +117,23 @@ public class MyTaskRefreshTask {
         if (checkDataValidity(resultReceiverList)) {
             taskResultReceiverMapper.insertBatch(resultReceiverList);
         }
-        if(checkDataValidity(taskOrgList)){
+        if(checkDataValidity(Arrays.asList(taskOrgList))){
             taskOrgMapper.insertBatch(taskOrgList);
         }
 
 
         //4、批量TaskEvent获取并更新DB
-        log.info("4、批量TaskEvent获取并更新DB");
-        List<String> taskIdList = updateTaskList.stream().map(Task -> Task.getTaskId()).collect(Collectors.toList());
-        List<TaskEvent> taskEventList = new ArrayList<>();
-        List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskIdList);
-        taskEventList.addAll(taskEvents);
-        if (checkDataValidity(taskEventList)) {
-            taskEventMapper.insertBatch(taskEventList);
+        if(checkDataValidity(updateTaskList)){
+            log.info("4、批量TaskEvent获取并更新DB");
+            List<String> taskIdList = updateTaskList.stream().map(Task -> Task.getTaskId()).collect(Collectors.toList());
+            List<TaskEvent> taskEventList = new ArrayList<>();
+            List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskIdList);
+            taskEventList.addAll(taskEvents);
+            if (checkDataValidity(taskEventList)) {
+                taskEventMapper.insertBatch(taskEventList);
+            }
         }
+
         log.info("结束执行获取任务数据列表定时任务...........");
 
     }
@@ -179,23 +179,20 @@ public class MyTaskRefreshTask {
 
 
     /**
-     * 组装TaskOrg Data
+     * 组装TaskOrg Data，从各个参与方中获取组织信息(记得去重)
      * @param taskData
      * @return
      */
-    private List<TaskOrg> getTaskOrgList(Task taskData){
+    private Set<TaskOrg> getTaskOrgList(Task taskData){
 
-        List<TaskOrg> taskOrgList = new ArrayList<>();
+        Set<TaskOrg> taskOrgList = new HashSet<>();
 
         List<TaskDataReceiver> dataReceivers = taskData.getDataSupplier();
         List<TaskPowerProvider> powerProviders = taskData.getPowerSupplier();
         List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
 
         TaskOrg owner = taskData.getOwner();
-        owner.setTaskId(taskData.getTaskId());
-
         TaskOrg algoSupplier = taskData.getAlgoSupplier();
-        algoSupplier.setTaskId(taskData.getTaskId());
 
         for (TaskDataReceiver dataReceiver : dataReceivers) {
             String identityId = dataReceiver.getIdentityId();
@@ -204,7 +201,6 @@ public class MyTaskRefreshTask {
             String nodeId = dynamicFields.get(NODE_ID);
 
             TaskOrg taskOrg = new TaskOrg();
-            taskOrg.setTaskId(taskData.getTaskId());
             taskOrg.setIdentityId(identityId);
             taskOrg.setCarrierNodeId(nodeId);
             taskOrg.setName(nodeName);
@@ -218,7 +214,6 @@ public class MyTaskRefreshTask {
             String nodeId = dynamicFields.get(NODE_ID);
 
             TaskOrg taskOrg = new TaskOrg();
-            taskOrg.setTaskId(taskData.getTaskId());
             taskOrg.setIdentityId(identityId);
             taskOrg.setCarrierNodeId(nodeId);
             taskOrg.setName(nodeName);
@@ -232,7 +227,6 @@ public class MyTaskRefreshTask {
             String nodeId = dynamicFields.get(NODE_ID);
 
             TaskOrg taskOrg = new TaskOrg();
-            taskOrg.setTaskId(taskData.getTaskId());
             taskOrg.setIdentityId(identityId);
             taskOrg.setCarrierNodeId(nodeId);
             taskOrg.setName(nodeName);
