@@ -68,7 +68,7 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public void applyJoinNetwork() {
+    public Integer applyJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
 //        if(localOrg == null){
 //            //刷新缓存
@@ -97,10 +97,11 @@ public class NodeServiceImpl implements NodeService {
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
         LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
+        return localOrg.getStatus();
     }
 
     @Override
-    public void cancelJoinNetwork() {
+    public Integer cancelJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
 //        if(localOrg == null){
 //            //刷新缓存
@@ -129,5 +130,6 @@ public class NodeServiceImpl implements NodeService {
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
         LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
+        return localOrg.getStatus();
     }
 }

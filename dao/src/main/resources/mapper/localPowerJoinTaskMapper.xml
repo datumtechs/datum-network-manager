@@ -95,7 +95,7 @@
 
   <!-- 清空表数据-->
   <update id="truncateTable">
---     truncate table local_power_join_task
+    truncate table local_power_join_task
   </update>
 
 </mapper>

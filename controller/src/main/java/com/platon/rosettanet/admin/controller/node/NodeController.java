@@ -2,11 +2,14 @@ package com.platon.rosettanet.admin.controller.node;
 
 import com.platon.rosettanet.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.rosettanet.admin.dto.JsonResponse;
+import com.platon.rosettanet.admin.dto.resp.ApplyJoinResp;
+import com.platon.rosettanet.admin.dto.resp.ConnectNodeResp;
 import com.platon.rosettanet.admin.service.NodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.omg.CORBA.INTERNAL;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,11 +48,13 @@ public class NodeController {
             @ApiImplicitParam(name = "port",value = "调度节点端口",required = true,paramType = "query")
     })
     @PostMapping("connectNode")
-    public JsonResponse connectNode(@Validated @NotBlank(message = "ip不能为空") String ip,
-                                            @Validated @NotNull(message = "port不能为空") Integer port){
+    public JsonResponse<ConnectNodeResp> connectNode(@Validated @NotBlank(message = "ip不能为空") String ip,
+                                                     @Validated @NotNull(message = "port不能为空") Integer port){
+        ConnectNodeResp connectNodeResp = new ConnectNodeResp();
         CarrierConnStatusEnum carrierConnStatusEnum = nodeService.connectNode(ip, port);
         if(CarrierConnStatusEnum.ENABLED == carrierConnStatusEnum){
-           return JsonResponse.success();
+            connectNodeResp.setCarrierConnStatus(carrierConnStatusEnum.getStatus());
+           return JsonResponse.success(connectNodeResp);
         } else {
             return JsonResponse.fail("连接失败");
         }
@@ -60,9 +65,11 @@ public class NodeController {
      */
     @ApiOperation(value = "申请准入网络")
     @PostMapping("applyJoinNetwork")
-    public JsonResponse applyJoinNetwork(){
-        nodeService.applyJoinNetwork();
-        return JsonResponse.success();
+    public JsonResponse<ApplyJoinResp> applyJoinNetwork(){
+        ApplyJoinResp applyJoinResp = new ApplyJoinResp();
+        Integer status = nodeService.applyJoinNetwork();
+        applyJoinResp.setStatus(status);
+        return JsonResponse.success(applyJoinResp);
     }
 
     /**
@@ -70,8 +77,10 @@ public class NodeController {
      */
     @ApiOperation(value = "注销网络")
     @PostMapping("cancelJoinNetwork")
-    public JsonResponse cancelJoinNetwork(){
-        nodeService.cancelJoinNetwork();
-        return JsonResponse.success();
+    public JsonResponse<ApplyJoinResp> cancelJoinNetwork(){
+        ApplyJoinResp applyJoinResp = new ApplyJoinResp();
+        Integer status = nodeService.cancelJoinNetwork();
+        applyJoinResp.setStatus(status);
+        return JsonResponse.success(applyJoinResp);
     }
 }
