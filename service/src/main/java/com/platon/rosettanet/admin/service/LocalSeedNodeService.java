@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.service;
 
+import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.dao.entity.LocalSeedNode;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public interface LocalSeedNodeService {
      * @param pageSize
      * @return
      */
-    List<LocalSeedNode> querySeedNodeList(String keyWord, int pageNumber, int pageSize);
+    Page<LocalSeedNode> querySeedNodeList(String keyWord, int pageNumber, int pageSize);
 
     /**
      * 种子节点名称校验
