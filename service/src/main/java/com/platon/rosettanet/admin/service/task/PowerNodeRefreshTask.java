@@ -178,7 +178,7 @@ public class PowerNodeRefreshTask {
         return localPowerNodeList;
     }
 
-    /** 保存节点参数任务数据 */
+    /** 保存节点参与的任务列表 */
     private List<LocalPowerJoinTask> savePowerTaskList(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerJoinTask> localPowerJoinTaskList){
         // 参与的任务
         List<PowerRpcMessage.PowerTask> powerTaskList = detail.getTasksList();
