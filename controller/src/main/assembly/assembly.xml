@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+
+	<id>dist</id>
+
+	<formats>
+		<format>tar</format>
+	</formats>
+
+	<includeBaseDirectory>true</includeBaseDirectory>
+
+	<files>
+		<file>
+			<source>${basedir}/target/${project.build.finalName}.jar</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>${basedir}/scripts/jasypt.properties</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>${basedir}/scripts/jasypt-1.9.2.jar</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>${basedir}/scripts/restart.sh</source>
+			<fileMode>0755</fileMode>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>${basedir}/scripts/start.sh</source>
+			<fileMode>0755</fileMode>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>${basedir}/scripts/stop.sh</source>
+			<fileMode>0755</fileMode>
+			<outputDirectory>/</outputDirectory>
+		</file>
+		<file>
+			<source>${basedir}/src/main/resources/application-dev.yml</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+	</files>
+</assembly>
