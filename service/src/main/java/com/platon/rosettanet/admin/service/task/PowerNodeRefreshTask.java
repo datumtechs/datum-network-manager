@@ -149,6 +149,18 @@ public class PowerNodeRefreshTask {
             // 当天0点
             if (LocalDateTime.now().getHour() == 0) {
                 // 刷新时间标志 1表示天
+                int year = LocalDateTime.now().getYear();
+                int month = LocalDateTime.now().getMonthValue();
+                int day = LocalDateTime.now().getDayOfMonth() - 1;
+                StringBuilder sb = new StringBuilder();
+                String yearMonthDay =  sb.append(year).append((month < 10 ? "0"+ month : month)).append((day < 10 ? "0" + day : day)).toString();
+                Map dayMap = localPowerHistoryMapper.queryPowerHistoryDay(localPowerHistory.getPowerNodeId(), "0", yearMonthDay);
+                if(dayMap != null && dayMap.size() > 0) {
+                    localPowerHistory.setUsedCore(Integer.valueOf(dayMap.get("usedCore").toString()));
+                    localPowerHistory.setUsedMemory(Long.valueOf(dayMap.get("usedMemory").toString()));
+                    localPowerHistory.setUsedBandwidth(Long.valueOf(dayMap.get("usedBandwidth").toString()));
+
+                }
                 localPowerHistory.setRefreshStatus("1");
                 localPowerHistoryList.add(localPowerHistory);
             }
