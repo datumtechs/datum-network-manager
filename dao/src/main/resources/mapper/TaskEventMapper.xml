@@ -57,7 +57,7 @@
 
 
   <insert id="insertBatch" parameterType="list">
-    replace into task_event (task_id, event_type,
+    insert ignore into task_event (task_id, event_type,
         identity_id, event_at, event_content)
     values
     <foreach collection ="list" item="item" separator =",">

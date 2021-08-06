@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author houz
@@ -33,6 +34,18 @@ public interface LocalPowerHistoryMapper {
      * @param refreshStatus
      * @return
      */
-    List<LocalPowerHistory> queryPowerHistory(@Param(value = "powerNodeId") String powerNodeId, @Param(value = "refreshStatus") String refreshStatus);
+    List<LocalPowerHistory> queryPowerHistory(@Param(value = "powerNodeId") String powerNodeId,
+                                              @Param(value = "refreshStatus") String refreshStatus);
 
+
+    /**
+     * 查询某一天的计算历史资源
+     * @param powerNodeId
+     * @param refreshStatus
+     * @param timeFlag
+     * @return
+     */
+    Map queryPowerHistoryDay(@Param(value = "powerNodeId") String powerNodeId,
+                             @Param(value = "refreshStatus") String refreshStatus,
+                             @Param(value = "timeFlag") String timeFlag);
 }

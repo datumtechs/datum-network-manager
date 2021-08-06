@@ -210,8 +210,11 @@ public class TaskClient {
                 powerProvider.setTaskId(taskId);
                 powerProvider.setIdentityId(taskPowerSupplierShow.getMemberInfo().getIdentityId());
                 powerProvider.setUsedCore(taskPowerSupplierShow.getPowerInfo().getUsedProcessor());
+                powerProvider.setTotalCore(taskPowerSupplierShow.getPowerInfo().getTotalProcessor());
                 powerProvider.setUsedMemory(taskPowerSupplierShow.getPowerInfo().getUsedMem());
+                powerProvider.setTotalMemory(taskPowerSupplierShow.getPowerInfo().getTotalMem());
                 powerProvider.setUsedBandwidth(taskPowerSupplierShow.getPowerInfo().getUsedBandwidth());
+                powerProvider.setTotalBandwidth(taskPowerSupplierShow.getPowerInfo().getTotalBandwidth());
                 powerProvider.setDynamicFields(getDynamicFields(taskPowerSupplierShow.getMemberInfo().getName(), taskPowerSupplierShow.getMemberInfo().getNodeId()));
                 taskPowerProviderList.add(powerProvider);
             }

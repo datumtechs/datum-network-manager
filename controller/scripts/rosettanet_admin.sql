@@ -364,7 +364,8 @@ CREATE TABLE `task_event` (
   `event_at` datetime NOT NULL COMMENT '产生事件的时间',
   `event_content` varchar(512) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '事件内容',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `unique_index` (`task_id`,`event_type`) USING BTREE COMMENT '任务id与事件类型组成唯一索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务事件表';
 
 -- ----------------------------
@@ -372,12 +373,11 @@ CREATE TABLE `task_event` (
 -- ----------------------------
 DROP TABLE IF EXISTS `task_org`;
 CREATE TABLE `task_org` (
-  `task_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID,hashv',
-  `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '机构身份标识ID',
+  `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '机构身份标识ID(主键)',
   `name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '机构名称',
   `carrier_node_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织中调度服务的 nodeId',
   `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`task_id`,`identity_id`)
+  PRIMARY KEY (`identity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务组织信息表，用于存储从调度服务获取的任务数据快照中组织信息数据';
 
 -- ----------------------------
@@ -387,8 +387,11 @@ DROP TABLE IF EXISTS `task_power_provider`;
 CREATE TABLE `task_power_provider` (
   `task_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID,hash',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '算力提供者组织身份ID',
+  `total_core` int(11) DEFAULT '0' COMMENT '任务总CPU信息',
   `used_core` int(11) DEFAULT '0' COMMENT '任务占用CPU信息',
+  `total_memory` bigint(20) DEFAULT '0' COMMENT '任务总内存信息',
   `used_memory` bigint(20) DEFAULT '0' COMMENT '任务占用内存信息',
+  `total_Bandwidth` bigint(20) DEFAULT '0' COMMENT '任务总带宽信息',
   `used_Bandwidth` bigint(20) DEFAULT '0' COMMENT '任务占用带宽信息',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`task_id`,`identity_id`)

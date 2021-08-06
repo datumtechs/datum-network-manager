@@ -35,6 +35,19 @@
         and refresh_status = #{refreshStatus, jdbcType=VARCHAR}
     order by create_time desc;
   </select>
+  <!-- 查询某一天计算资源 -->
+  <select id="queryPowerHistoryDay" parameterType="java.lang.String" resultType="java.util.Map">
+    select
+        sum(used_core) as "usedCore",
+        sum(used_memory) as "usedMemory",
+        sum(used_bandwidth) as "usedBandwidth"
+    from
+        local_power_history
+    where 1=1
+        and power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+        and refresh_status = #{refreshStatus, jdbcType=VARCHAR}
+        and DATE_FORMAT(create_time, '%Y%m%d') = #{timeFlag, jdbcType=VARCHAR}
+  </select>
 
   <!-- 插入计算节点数据 -->
   <insert id="insertPowerHistory" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerHistory">

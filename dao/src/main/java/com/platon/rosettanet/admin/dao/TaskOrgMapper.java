@@ -5,12 +5,13 @@ import com.platon.rosettanet.admin.dao.entity.TaskPowerProvider;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TaskOrgMapper {
 
-    TaskOrg selectTaskOrgByIdentityId(@Param("identityId") String identityId, @Param("taskId") String taskId);
+    TaskOrg selectTaskOrgByIdentityId(@Param("identityId") String identityId);
 
-    int insertBatch(List<TaskOrg> powerProviderList);
+    int insertBatch(Set<TaskOrg> powerProviderList);
 
     List<TaskOrg> selectAllTaskOrg();
 

@@ -165,7 +165,7 @@ public class MockTaskDataTest {
             taskDataReceiverMapper.insertBatch(dataReceiverList);
             taskPowerProviderMapper.insertBatch(powerProviderList);
             taskResultReceiverMapper.insertBatch(resultReceiverList);
-            taskOrgMapper.insertBatch(taskOrgList);
+            //taskOrgMapper.insertBatch(taskOrgList);
         }
 
         //批量TaskEvent获取并更新DB
@@ -208,10 +208,8 @@ public class MockTaskDataTest {
         List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
 
         TaskOrg owner = taskData.getOwner();
-        owner.setTaskId(taskData.getTaskId());
 
         TaskOrg algoSupplier = taskData.getAlgoSupplier();
-        algoSupplier.setTaskId(taskData.getTaskId());
 
         for (TaskDataReceiver dataReceiver : dataReceivers) {
               String identityId = dataReceiver.getIdentityId();
@@ -220,7 +218,6 @@ public class MockTaskDataTest {
               String nodeId = dynamicFields.get(NODE_ID);
 
               TaskOrg taskOrg = new TaskOrg();
-              taskOrg.setTaskId(taskData.getTaskId());
               taskOrg.setIdentityId(identityId);
               taskOrg.setCarrierNodeId(nodeId);
               taskOrg.setName(nodeName);
@@ -234,7 +231,6 @@ public class MockTaskDataTest {
             String nodeId = dynamicFields.get(NODE_ID);
 
             TaskOrg taskOrg = new TaskOrg();
-            taskOrg.setTaskId(taskData.getTaskId());
             taskOrg.setIdentityId(identityId);
             taskOrg.setCarrierNodeId(nodeId);
             taskOrg.setName(nodeName);
@@ -248,7 +244,6 @@ public class MockTaskDataTest {
             String nodeId = dynamicFields.get(NODE_ID);
 
             TaskOrg taskOrg = new TaskOrg();
-            taskOrg.setTaskId(taskData.getTaskId());
             taskOrg.setIdentityId(identityId);
             taskOrg.setCarrierNodeId(nodeId);
             taskOrg.setName(nodeName);

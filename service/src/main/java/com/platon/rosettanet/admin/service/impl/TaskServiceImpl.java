@@ -85,10 +85,10 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskMapper.selectTaskByTaskId(taskId);
         task = (task == null) ? new Task() : task;
         //任务发起方身份信息
-        TaskOrg owner = taskOrgMapper.selectTaskOrgByIdentityId(task.getOwnerIdentityId(), task.getTaskId());
+        TaskOrg owner = taskOrgMapper.selectTaskOrgByIdentityId(task.getOwnerIdentityId());
         task.setOwner(owner);
         //算法提供方
-        TaskOrg algoSupplier = taskOrgMapper.selectTaskOrgByIdentityId(task.getAlgIdentityId(), task.getTaskId());
+        TaskOrg algoSupplier = taskOrgMapper.selectTaskOrgByIdentityId(task.getAlgIdentityId());
         task.setAlgoSupplier(algoSupplier);
         //结果接收方
         List<TaskResultReceiver> resultReceiverList = taskResultReceiverMapper.selectTaskResultWithOrgByTaskId(taskId);

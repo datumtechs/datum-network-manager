@@ -15,9 +15,15 @@ public class TaskPowerProvider extends BaseDomain {
 
     private String identityId;
 
+    private Long totalCore;
+
     private Long usedCore;
 
+    private Long totalMemory;
+
     private Long usedMemory;
+
+    private Long totalBandwidth;
 
     private Long usedBandwidth;
 
