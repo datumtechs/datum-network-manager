@@ -33,7 +33,7 @@
     replace into task_org (identity_id, `name`,
     carrier_node_id)
     values
-    <foreach collection ="powerProviderList" item="item" separator =",">
+    <foreach collection ="collection" item="item" separator =",">
       (#{item.identityId,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},
        #{item.carrierNodeId,jdbcType=VARCHAR})
     </foreach>

@@ -111,7 +111,7 @@ public class TaskDataDetailResp {
         List<TaskResultReceiver> taskResultReceiverList = task.getReceivers();
         for (TaskResultReceiver  resultReceiver : taskResultReceiverList) {
                 CommonTaskOrg receiver = new CommonTaskOrg();
-                if(resultReceiver != null){
+                if(!Objects.isNull(resultReceiver.getDynamicFields()) && !CollectionUtils.isEmpty(resultReceiver.getDynamicFields())){
                     receiver.setCarrierNodeId(resultReceiver.getDynamicFields().get(ControllerConstants.NODE_ID).toString());
                     receiver.setNodeIdentityId(resultReceiver.getDynamicFields().get(ControllerConstants.NODE_IDENTITY_ID).toString());
                     receiver.setNodeName(resultReceiver.getDynamicFields().get(ControllerConstants.NODE_NAME).toString());
@@ -135,7 +135,7 @@ public class TaskDataDetailResp {
         List<TaskDataReceiver> taskDataReceiverList = task.getDataSupplier();
         for (TaskDataReceiver dataReceiver : taskDataReceiverList) {
               DataSupplier  dataSupplier = new DataSupplier();
-              if(dataReceiver != null){
+              if(!Objects.isNull(dataReceiver.getDynamicFields()) && !CollectionUtils.isEmpty(dataReceiver.getDynamicFields())){
                   BeanUtils.copyProperties(dataReceiver, dataSupplier);
                   dataSupplier.setCarrierNodeId(dataReceiver.getDynamicFields().get(ControllerConstants.NODE_ID).toString());
                   dataSupplier.setNodeIdentityId(dataReceiver.getDynamicFields().get(ControllerConstants.NODE_IDENTITY_ID).toString());

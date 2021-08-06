@@ -46,8 +46,11 @@
 
 
   <select id="selectListTaskByStatusWithSuccessAndFailed"  resultType="java.lang.String">
-    SELECT  t.task_Id  FROM  task AS t
-    WHERE  t.`status` IN ('success', 'failed')
+    SELECT te.task_id FROM task_event AS te
+    WHERE te.task_id IN (
+        SELECT t.task_Id FROM task AS t
+        WHERE t.`status` IN ('success', 'failed')
+    );
   </select>
 
 
