@@ -55,6 +55,7 @@ CREATE TABLE `global_data_file` (
   `has_title` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否带标题,0表示不带，1表示带标题',
   `remarks` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数据描述',
   `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'created' COMMENT '数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
+  `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
@@ -106,23 +107,58 @@ CREATE TABLE `local_data_file` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
   `file_id` varchar(256) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID，上传文件成功后返回源文件ID',
-  `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据ID,hash',
   `file_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源文件名称',
   `file_path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件存储路径',
   `file_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件后缀/类型, csv',
-  `resource_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源文件的资源名称',
+  `resource_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数据名称',
   `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
   `rows` bigint(20) NOT NULL DEFAULT '0' COMMENT '数据行数(不算title)',
   `columns` int(11) NOT NULL DEFAULT '0' COMMENT '数据列数',
   `has_title` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否带标题,0表示不带，1表示带标题',
-  `remarks` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '数据描述',
-  `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'created' COMMENT '数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `resource_name` (`resource_name`),
   UNIQUE KEY `file_id` (`file_id`) USING HASH
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表，包含源文件的元数据信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表，数据信息表';
+
+-- ----------------------------
+-- Table structure for local_meta_data
+-- ----------------------------
+DROP TABLE IF EXISTS `local_meta_data`;
+CREATE TABLE `local_meta_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `file_id` varchar(256) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID，上传文件成功后返回源文件ID',
+  `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据ID,hash',
+  `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
+  `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'created' COMMENT '数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
+  `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
+  `remarks` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '数据描述',
+  `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `file_id` (`file_id`),
+	UNIQUE KEY `meta_data_id` (`meta_data_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织元数据文件表，文件的元数据信息';
+
+-- ----------------------------
+-- Table structure for local_meta_data_column
+-- ----------------------------
+DROP TABLE IF EXISTS `local_meta_data_column`;
+CREATE TABLE `local_meta_data_column` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `meta_id` int(11) NOT NULL COMMENT '元数据自增id',
+  `column_idx` int(11) DEFAULT NULL COMMENT '列索引',
+  `column_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '列名',
+  `column_type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '列类型',
+  `size` bigint(20) DEFAULT '0' COMMENT '列大小（byte）',
+  `remarks` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '列描述',
+  `visible` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '是否对外可见 Y:可见，N:不可见',
+  `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  PRIMARY KEY (`id`),
+  KEY (`meta_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表列详细表，描述源文件中每一列的列信息';
 
 -- ----------------------------
 -- Table structure for local_seed_node
@@ -165,24 +201,6 @@ CREATE TABLE `local_data_node` (
   `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据节点配置表 配置数据节点相关信息';
-
--- ----------------------------
--- Table structure for local_meta_data_column
--- ----------------------------
-DROP TABLE IF EXISTS `local_meta_data_column`;
-CREATE TABLE `local_meta_data_column` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `file_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件id',
-  `column_idx` int(11) DEFAULT NULL COMMENT '列索引',
-  `column_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '列名',
-  `column_type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '列类型',
-  `size` bigint(20) DEFAULT '0' COMMENT '列大小（byte）',
-  `remarks` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '列描述',
-  `visible` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '是否对外可见 Y:可见，N:不可见',
-  `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表列详细表，描述源文件中每一列的列信息';
 
 -- ----------------------------
 -- Table structure for local_org
