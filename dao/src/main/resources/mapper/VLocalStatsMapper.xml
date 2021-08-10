@@ -28,4 +28,99 @@
     select <include refid="Base_Column_List"/>
     from v_local_stats
   </select>
+  <!-- 查询总占用资源 -->
+  <select id="queryUsedTotalResource" resultType="java.util.HashMap">
+    select
+        sum(usedCore) as usedCore,
+        sum(usedMemory) as usedMemory,
+        sum(usedBandwidth) as usedBandwidth,
+        sum(memory) as totalMemory,
+        sum(core) as totalCore,
+        sum(bandwidth) as totalBandwidth
+    from
+        local_power_node
+  </select>
+
+  <!-- 查询我发布的数据 -->
+  <select id="queryMyPublishData" resultType="java.util.HashMap">
+    select
+        publish_time as publishTime,
+        sum(dateFile.size) / (1024 * 1024) as sizeTotal
+    from
+        (select
+            size as size,
+            DATE_FORMAT(publish_time,'%Y-%m') as publish_time,
+            rec_create_time as createTime
+        from
+            local_data_file
+        where
+            status = 'released') dateFile
+    group by dateFile.publish_time
+    order by dateFile.publish_time desc
+    limit 6
+  </select>
+
+  <!-- 查询我的计算任务概况 -->
+  <select id="queryMyPowerTaskStats" resultType="java.util.HashMap">
+    select
+       status as status,
+       count(status) as statusCount
+    from
+        task
+    group by status
+  </select>
+
+  <!-- 查询全网数据总量走势 -->
+  <select id="queryWholeNetDateTrend" resultType="java.util.HashMap">
+     select
+        publish_time as time,
+        sum(dateFile.size) / (1024 * 1024) as total
+    from
+        (select
+            size as size,
+            DATE_FORMAT(publish_time,'%Y-%m-%d') as publish_time
+        from
+            global_data_file
+        where
+            status = 'released') dateFile
+    group by dateFile.publish_time
+    order by dateFile.publish_time desc
+    limit 30
+  </select>
+  <!-- 查询全网算力总量走势 -->
+  <select id="queryWholeNetPowerTrend" resultType="java.util.HashMap">
+    select
+        update_time as time,
+        sum(dateFile.used_Memory) / (1024 * 1024) as total
+    from
+        (select
+            used_Memory as used_Memory,
+            DATE_FORMAT(rec_update_time,'%Y-%m-%d') as update_time
+        from
+            global_power
+        where
+            status = 'released') dateFile
+    group by dateFile.update_time
+    order by dateFile.update_time desc
+    limit 30
+  </select>
+
+  <!-- 查询全网数据总量环比-->
+  <select id="queryWholeNetDateTotalRatio" resultType="java.util.HashMap">
+    select
+        update_time as time,
+        sum(dateFile.used_Memory) / (1024 * 1024) as total
+    from
+        (select
+            used_Memory as used_Memory,
+            DATE_FORMAT(rec_update_time,'%Y%m') as update_time
+        from
+            global_data_file
+        where
+            status = 'released') dateFile
+    group by dateFile.update_time
+    order by dateFile.update_time desc
+    limit 30
+  </select>
+
 </mapper>
