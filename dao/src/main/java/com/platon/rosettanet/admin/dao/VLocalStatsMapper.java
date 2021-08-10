@@ -2,11 +2,12 @@ package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 
+import java.util.List;
 import java.util.Map;
 
 public interface VLocalStatsMapper {
 
-    VLocalStats selectLocalStats();
+//    VLocalStats selectLocalStats();
 
     /**
      * 查询总计算资源占用情况
@@ -42,5 +43,11 @@ public interface VLocalStatsMapper {
      * 查询全网数据总量环比
      * @return
      */
-    Map queryWholeNetDateTotalRatio();
+    List<Float> queryWholeNetDateWeekRatio();
+
+    /**
+     * 查询全网数据总量环比
+     * @return
+     */
+    List<Float> queryWholeNetDateMonthRatio();
 }

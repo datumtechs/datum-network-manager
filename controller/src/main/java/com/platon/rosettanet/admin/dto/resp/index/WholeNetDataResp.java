@@ -13,7 +13,7 @@ import lombok.Data;
 public class WholeNetDataResp {
 
     @ApiModelProperty(value = "时间标识")
-    private String timeFalg;
+    private String timeFlag;
 
     @ApiModelProperty(value = "总量")
     private Long total;

@@ -19,6 +19,9 @@ public class ServiceConstant {
     public static final String constant_15 = "15";
     public static final String constant_30 = "30";
 
+    public static final Integer integer_1 = 1;
+    public static final Integer integer_2 = 2;
+
     public static final int int_60000 = 60000;
     public static final int int_3600000 = 3600000;
 

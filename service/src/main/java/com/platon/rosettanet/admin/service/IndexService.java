@@ -15,45 +15,45 @@ import java.util.Map;
  */
 public interface IndexService {
 
-    /**
-     * 获取本组织的统计数据
-     * @return
-     */
-    VLocalStats getOverview();
-
-    /**
-     * 获取本组织计算节点列表信息
-     */
-    List<LocalPowerNode> getPowerNodeList();
+//    /**
+//     * 获取本组织的统计数据
+//     * @return
+//     */
+//    VLocalStats getOverview();
+//
+//    /**
+//     * 获取本组织计算节点列表信息
+//     */
+//    List<LocalPowerNode> getPowerNodeList();
 
     /**
      * 查询总计算资源占用情况
      * @return
      */
-    Map queryUsedTotalResource();
+    Map<String, Object> queryUsedTotalResource();
 
     /**
      * 查询我发布的数据
      * @return
      */
-    Map queryMyPublishData();
+    Map<String, Object> queryMyPublishData();
 
     /**
      * 查询我的计算任务概况
      * @return
      */
-    Map queryMyPowerTaskStats();
+    Map<String, Object> queryMyPowerTaskStats();
 
     /**
      * 查询全网数据或算力总量走势
      * @param flag
      * @return
      */
-    Map queryWholeNetDateAndPower(String flag);
+    Map<String, Object> queryWholeNetDateAndPower(String flag);
 
     /**
      * 查询全网数据总量环比
      * @return
      */
-    Map queryWholeNetDateTotalRatio();
+    Map<String, Object> queryWholeNetDateTotalRatio();
 }

@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.rosettanet.admin.dao.VLocalStatsMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.VLocalStats">
-    <result column="carrier_conn_status" jdbcType="VARCHAR" property="carrierConnStatus" />
-    <result column="data_node_count" jdbcType="BIGINT" property="dataNodeCount" />
-    <result column="power_node_count" jdbcType="BIGINT" property="powerNodeCount" />
-    <result column="total_core" jdbcType="DECIMAL" property="totalCore" />
-    <result column="total_memory" jdbcType="DECIMAL" property="totalMemory" />
-    <result column="total_bandwidth" jdbcType="DECIMAL" property="totalBandwidth" />
-    <result column="used_core" jdbcType="DECIMAL" property="usedCore" />
-    <result column="used_memory" jdbcType="DECIMAL" property="usedMemory" />
-    <result column="used_bandwidth" jdbcType="DECIMAL" property="usedBandwidth" />
-    <result column="released_data_file_count" jdbcType="BIGINT" property="releasedDataFileCount" />
-    <result column="unreleased_data_file_count" jdbcType="BIGINT" property="unreleasedDataFileCount" />
-    <result column="task_count" jdbcType="BIGINT" property="taskCount" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    carrier_conn_status,
-    data_node_count,
-    power_node_count,
-    total_core,total_memory,total_bandwidth,used_core,used_memory,used_bandwidth,
-    released_data_file_count,unreleased_data_file_count,
-    task_count
-  </sql>
+<!--  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.VLocalStats">-->
+<!--    <result column="carrier_conn_status" jdbcType="VARCHAR" property="carrierConnStatus" />-->
+<!--    <result column="data_node_count" jdbcType="BIGINT" property="dataNodeCount" />-->
+<!--    <result column="power_node_count" jdbcType="BIGINT" property="powerNodeCount" />-->
+<!--    <result column="total_core" jdbcType="DECIMAL" property="totalCore" />-->
+<!--    <result column="total_memory" jdbcType="DECIMAL" property="totalMemory" />-->
+<!--    <result column="total_bandwidth" jdbcType="DECIMAL" property="totalBandwidth" />-->
+<!--    <result column="used_core" jdbcType="DECIMAL" property="usedCore" />-->
+<!--    <result column="used_memory" jdbcType="DECIMAL" property="usedMemory" />-->
+<!--    <result column="used_bandwidth" jdbcType="DECIMAL" property="usedBandwidth" />-->
+<!--    <result column="released_data_file_count" jdbcType="BIGINT" property="releasedDataFileCount" />-->
+<!--    <result column="unreleased_data_file_count" jdbcType="BIGINT" property="unreleasedDataFileCount" />-->
+<!--    <result column="task_count" jdbcType="BIGINT" property="taskCount" />-->
+<!--  </resultMap>-->
+<!--  <sql id="Base_Column_List">-->
+<!--    carrier_conn_status,-->
+<!--    data_node_count,-->
+<!--    power_node_count,-->
+<!--    total_core,total_memory,total_bandwidth,used_core,used_memory,used_bandwidth,-->
+<!--    released_data_file_count,unreleased_data_file_count,-->
+<!--    task_count-->
+<!--  </sql>-->
 
-  <select id="selectLocalStats" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from v_local_stats
-  </select>
+<!--  <select id="selectLocalStats" resultMap="BaseResultMap">-->
+<!--    select <include refid="Base_Column_List"/>-->
+<!--    from v_local_stats-->
+<!--  </select>-->
+
   <!-- 查询总占用资源 -->
   <select id="queryUsedTotalResource" resultType="java.util.HashMap">
     select
@@ -52,7 +53,7 @@
             DATE_FORMAT(publish_time,'%Y-%m') as publish_time,
             rec_create_time as createTime
         from
-            local_data_file
+            local_meta_data
         where
             status = 'released') dateFile
     group by dateFile.publish_time
@@ -90,7 +91,6 @@
   <!-- 查询全网算力总量走势 -->
   <select id="queryWholeNetPowerTrend" resultType="java.util.HashMap">
     select
-        update_time as time,
         sum(dateFile.used_Memory) / (1024 * 1024) as total
     from
         (select
@@ -105,22 +105,30 @@
     limit 30
   </select>
 
-  <!-- 查询全网数据总量环比-->
-  <select id="queryWholeNetDateTotalRatio" resultType="java.util.HashMap">
+  <!-- 查询全网数据总量周环比-->
+  <select id="queryWholeNetDateWeekRatio" resultType="java.lang.Float">
     select
-        update_time as time,
-        sum(dateFile.used_Memory) / (1024 * 1024) as total
+        sum(size) / (1024 * 1024) as sizeTotal
     from
-        (select
-            used_Memory as used_Memory,
-            DATE_FORMAT(rec_update_time,'%Y%m') as update_time
-        from
-            global_data_file
-        where
-            status = 'released') dateFile
-    group by dateFile.update_time
-    order by dateFile.update_time desc
-    limit 30
+        global_data_file
+    where
+        status = 'released'
+    group by WEEK(publish_time, 1)
+    order by WEEK(publish_time, 1) desc
+    limit 2
+  </select>
+
+  <!-- 查询全网数据总量月环比-->
+  <select id="queryWholeNetDateMonthRatio" resultType="java.lang.Float">
+    select
+        sum(size) / (1024 * 1024) as sizeTotal
+    from
+        global_data_file
+    where
+        status = 'released'
+    group by M(publish_time, 1)
+    order by WEEK(publish_time, 1) desc
+    limit 2
   </select>
 
 </mapper>
