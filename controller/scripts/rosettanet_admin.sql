@@ -380,9 +380,8 @@ CREATE TABLE `task_event` (
   `event_at` datetime NOT NULL COMMENT '产生事件的时间',
   `event_content` varchar(512) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '事件内容',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `unique_index` (`task_id`,`event_type`) USING BTREE COMMENT '任务id与事件类型组成唯一索引'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务事件表';
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4631 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务事件表';
 
 -- ----------------------------
 -- Table structure for task_org
