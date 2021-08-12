@@ -121,9 +121,9 @@ public class PowerNodeRefreshTask {
             localPowerNodeMapper.batchUpdatePowerNode(localPowerNodeList);
         }
         // 新增计算节点参与的任务列表
+        // 先清空表数据，如有任务再添加
+        localPowerJoinTaskMapper.truncateTable();
         if (!localPowerJoinTaskList.isEmpty()) {
-            // 清空表数据
-            localPowerJoinTaskMapper.truncateTable();
             // 每次新增最新的数据
             localPowerJoinTaskMapper.batchInsertPowerTask(localPowerJoinTaskList);
         }

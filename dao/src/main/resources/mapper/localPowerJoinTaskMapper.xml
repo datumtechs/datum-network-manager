@@ -48,6 +48,7 @@
         local_power_join_task
     where
         power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+    order by task_start_time desc
   </select>
 
   <!-- 插入计算节点数据 -->
