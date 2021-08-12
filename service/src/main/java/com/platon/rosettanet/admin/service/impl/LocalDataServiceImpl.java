@@ -6,6 +6,7 @@ import cn.hutool.core.text.csv.CsvReader;
 import cn.hutool.core.text.csv.CsvRow;
 import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
@@ -34,7 +35,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,9 +93,12 @@ public class LocalDataServiceImpl implements LocalDataService {
                     availableDataNode.getIp(),
                     availableDataNode.getPort(),
                     detail.getFileName(),
-                    file.getBytes());
-        } catch (IOException e) {
+                    file);
+        } catch (Exception e) {
             throw new ServiceException("上传文件失败",e);
+        }
+        if(StringUtils.isEmpty(dataProviderUploadDataResp.getFileId()) || StringUtils.isEmpty(dataProviderUploadDataResp.getFilePath())) {
+            throw new ServiceException("上传文件失败文件ID或路径缺失");
         }
         //### 4.补充源文件信息
         detail.setFileId(dataProviderUploadDataResp.getFileId());
