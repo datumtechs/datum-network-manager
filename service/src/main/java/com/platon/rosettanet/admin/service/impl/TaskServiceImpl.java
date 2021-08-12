@@ -56,13 +56,17 @@ public class TaskServiceImpl implements TaskService {
                 public int compare(Task o1, Task o2) {
                     Boolean value1 = isTaskSucceeFailUnRead(o1);
                     Boolean value2 = isTaskSucceeFailUnRead(o2);
-                    if(1 == value1.compareTo(value2)){
-                        return 1;
-                    }else if(-1 == value1.compareTo(value2)){
+                    if(0 < value1.compareTo(value2)){
                         return -1;
-                    }else{
-                        return o1.getCreateAt().compareTo(o2.getCreateAt());
+                    }else if(0 > value1.compareTo(value2)){
+                        return 1;
                     }
+                    return 0;
+
+                   /* else{
+                          int compareValue = o1.getCreateAt().compareTo(o2.getCreateAt());
+                        return compareValue;
+                    }*/
                     //return value1.compareTo(value2);
                 }
             });
