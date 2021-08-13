@@ -31,7 +31,7 @@ import java.util.List;
  */
 
 @Slf4j
-@Component
+//@Component
 public class LocalDataRefreshTask implements ApplicationRunner {
 
     @Resource
@@ -76,15 +76,15 @@ public class LocalDataRefreshTask implements ApplicationRunner {
         dataFileDetail.setRows(globalDataFileDetail.getRows());
         dataFileDetail.setColumns(globalDataFileDetail.getColumns());
         dataFileDetail.setHasTitle(globalDataFileDetail.getHasTitle());
-        dataFileDetail.setRemarks(globalDataFileDetail.getRemarks());
+        /*dataFileDetail.setRemarks(globalDataFileDetail.getRemarks());
         dataFileDetail.setStatus(globalDataFileDetail.getStatus());
-        dataFileDetail.setMetaDataId(globalDataFileDetail.getMetaDataId());
+        dataFileDetail.setMetaDataId(globalDataFileDetail.getMetaDataId());*/
         dataFileDetail.setRecUpdateTime(operateDate);
         //设置列信息
         List<LocalMetaDataColumn> localMetaDataColumnList = dataFileDetail.getLocalMetaDataColumnList();
         globalDataFileDetail.getMetaDataColumnList().forEach(globalMetaDataColumn -> {
             LocalMetaDataColumn column = new LocalMetaDataColumn();
-            column.setFileId(dataFileDetail.getFileId());
+            //column.setFileId(dataFileDetail.getFileId());
             column.setColumnIdx(globalMetaDataColumn.getColumnIdx());
             column.setColumnName(globalMetaDataColumn.getColumnName());
             column.setColumnType(globalMetaDataColumn.getColumnType());

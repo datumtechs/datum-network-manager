@@ -2,6 +2,7 @@ package com.platon.rosettanet.admin.dto.resp;
 
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
+import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -87,6 +88,7 @@ public class LocalDataImportFileResp {
         }
         LocalDataImportFileResp resp = new LocalDataImportFileResp();
         BeanUtils.copyProperties(detail,resp);
+        resp.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());
         resp.setRecCreateTime(detail.getRecCreateTime() == null? null : detail.getRecCreateTime().getTime());
         resp.setRecUpdateTime(detail.getRecUpdateTime() == null? null : detail.getRecUpdateTime().getTime());
         return resp;

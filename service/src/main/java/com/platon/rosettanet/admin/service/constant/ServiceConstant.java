@@ -25,6 +25,11 @@ public class ServiceConstant {
     public static final int int_60000 = 60000;
     public static final int int_3600000 = 3600000;
 
-
+    /**
+     * 资源中心--我的数据源文件信息字段
+     */
+    public static String LOCAL_DATA_STATUS = "status";
+    public static String LOCAL_DATA_METADATA_ID = "metaDataId";
+    public static String LOCAL_DATA_REMARKS = "remarks";
 
 }

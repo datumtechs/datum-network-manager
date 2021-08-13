@@ -1,7 +1,6 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -52,4 +51,6 @@ public interface LocalDataFileMapper {
      * @return
      */
     LocalDataFile selectByResourceName(@Param("resourceName") String resourceName, @Param("id") Integer id);
+
+
 }

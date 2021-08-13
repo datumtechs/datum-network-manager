@@ -11,6 +11,7 @@ import com.platon.rosettanet.admin.common.util.NameUtil;
 import com.platon.rosettanet.admin.constant.ControllerConstants;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
+import com.platon.rosettanet.admin.dao.entity.LocalMetaData;
 import com.platon.rosettanet.admin.dto.CommonPageReq;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.LocalDataActionReq;
@@ -145,7 +146,10 @@ public class LocalDataController {
         }
         LocalDataFileDetail detail = new LocalDataFileDetail();
         BeanUtils.copyProperties(req,detail);
-        int count = localDataService.add(detail);
+
+        LocalMetaData metaData = new LocalMetaData();
+        metaData.setRemarks(req.getRemarks());
+        int count = localDataService.add(detail, metaData);
         if(count <= 0){
             return JsonResponse.fail("添加失败");
         }
@@ -174,7 +178,10 @@ public class LocalDataController {
     public JsonResponse update(@RequestBody @Validated LocalDataUpdateReq req){
         LocalDataFileDetail detail = new LocalDataFileDetail();
         BeanUtils.copyProperties(req,detail);
-        int count = localDataService.update(detail);
+
+        LocalMetaData metaData = new LocalMetaData();
+        metaData.setRemarks(req.getRemarks());
+        int count = localDataService.update(detail, metaData);
         if(count <= 0){
             return JsonResponse.fail("更新失败");
         }

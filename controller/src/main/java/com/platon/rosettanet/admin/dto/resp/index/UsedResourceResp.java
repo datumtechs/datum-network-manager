@@ -2,13 +2,7 @@ package com.platon.rosettanet.admin.dto.resp.index;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import javafx.beans.DefaultProperty;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.io.Serializable;
 
 /**
  * @author 

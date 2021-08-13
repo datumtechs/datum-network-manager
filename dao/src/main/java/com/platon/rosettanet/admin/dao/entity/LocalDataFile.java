@@ -1,18 +1,12 @@
 package com.platon.rosettanet.admin.dao.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.platon.rosettanet.admin.dao.BaseDomain;
+import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
-
-@Getter
-@Setter
-@ToString
-public class LocalDataFile {
-
+@Data
+public class LocalDataFile extends BaseDomain {
     /**
      * 序号
      */
@@ -37,14 +31,6 @@ public class LocalDataFile {
     private Integer columns;
     //是否带标题
     private Boolean hasTitle;
-    //数据描述
-    private String remarks;
-    //数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)
-    private String status;
-    // 元数据发布时间
-    private Date publishTime;
-    //元数据ID,hash
-    private String metaDataId;
     //创建时间
     private Date recCreateTime;
     //最后更新时间

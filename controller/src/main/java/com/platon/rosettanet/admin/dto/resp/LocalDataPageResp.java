@@ -14,6 +14,7 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -48,8 +49,8 @@ public class LocalDataPageResp {
     @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
     private String metaDataId;
 
-//    @ApiModelProperty(name = "metaDataColumnList", value = "元数据摘要")
-//    private List<String> metaDataColumnList = new ArrayList<>();
+    @ApiModelProperty(name = "metaDataColumnList", value = "元数据摘要")
+    private List<String> metaDataColumnList = new ArrayList<>();
 
 
     public static LocalDataPageResp from(LocalDataFile localDataFile){
@@ -60,23 +61,26 @@ public class LocalDataPageResp {
         localDataPageResp.setId(localDataFile.getId());
         localDataPageResp.setFileId(localDataFile.getFileId());
         localDataPageResp.setFileName(localDataFile.getResourceName());
+        Map dynamicFields = localDataFile.getDynamicFields();
+        String status = (String) dynamicFields.get("status");
+        String metaDataId = (String) dynamicFields.get("metaDataId");
         //元数据状态:1已发布，0未发布
-        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(localDataFile.getStatus())){
+        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(status)){
             localDataPageResp.setStatus("1");
         } else {
             localDataPageResp.setStatus("0");
         }
         localDataPageResp.setSize(localDataFile.getSize());
         localDataPageResp.setRecUpdateTime(localDataFile.getRecUpdateTime());
-        localDataPageResp.setMetaDataId(localDataFile.getMetaDataId());
+        localDataPageResp.setMetaDataId(metaDataId);
 
-//        if(localDataFile instanceof LocalDataFileDetail){
-//            LocalDataFileDetail detail = (LocalDataFileDetail)localDataFile;
-//            List<String> metaDataColumnList = detail.getLocalMetaDataColumnList().stream()
-//                    .map(LocalMetaDataColumn::getColumnName)
-//                    .collect(Collectors.toList());
-//            localDataPageResp.setMetaDataColumnList(metaDataColumnList);
-//        }
+        if(localDataFile instanceof LocalDataFileDetail){
+            LocalDataFileDetail detail = (LocalDataFileDetail)localDataFile;
+            List<String> metaDataColumnList = detail.getLocalMetaDataColumnList().stream()
+                    .map(LocalMetaDataColumn::getColumnName)
+                    .collect(Collectors.toList());
+            localDataPageResp.setMetaDataColumnList(metaDataColumnList);
+        }
         return localDataPageResp;
     }
 }

@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.service;
 import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
+import com.platon.rosettanet.admin.dao.entity.LocalMetaData;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +31,7 @@ public interface LocalDataService {
      * @param detail
      * @return
      */
-    int add(LocalDataFileDetail detail);
+    int add(LocalDataFileDetail detail, LocalMetaData metaData);
 
     /**
      * 删除文件元数据
@@ -50,7 +51,7 @@ public interface LocalDataService {
      * @param req
      * @return
      */
-    int update(LocalDataFileDetail req);
+    int update(LocalDataFileDetail req, LocalMetaData metaData);
 
     /**
      * 查询文件信息详情

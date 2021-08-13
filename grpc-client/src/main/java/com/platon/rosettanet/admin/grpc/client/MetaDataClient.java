@@ -65,11 +65,11 @@ public class MetaDataClient {
                     .setColumns(fileDetail.getColumns())
                     .setSize(fileDetail.getSize().intValue())
                     .setFileType(fileDetail.getFileType())
-                    .setHasTitle(fileDetail.getHasTitle())
-                    .setState(fileDetail.getStatus());// 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
-            if(StrUtil.isNotBlank(fileDetail.getRemarks())){
+                    .setHasTitle(fileDetail.getHasTitle());
+                    //.setState(fileDetail.getStatus());// 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
+           /* if(StrUtil.isNotBlank(fileDetail.getRemarks())){
                 summaryBuilder.setDesc(fileDetail.getRemarks());
-            }
+            }*/
             MetaDataRpcMessage.MetaDataDetailShow.Builder builder = MetaDataRpcMessage.MetaDataDetailShow
                     .newBuilder()
                     .setMetaDataSummary(summaryBuilder.build());

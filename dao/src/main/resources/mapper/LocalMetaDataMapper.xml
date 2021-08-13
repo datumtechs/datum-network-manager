@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.LocalMetaDataMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalMetaData">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
+    <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
+    <result column="size" jdbcType="BIGINT" property="size" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, file_id, meta_data_id, size, status, publish_time, remarks, rec_create_time, 
+    rec_update_time
+  </sql>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from local_meta_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="selectByFileId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_meta_data
+    where file_id = #{fileId,jdbcType=INTEGER}
+    order by id desc limit 1
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from local_meta_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into local_meta_data (id, file_id, meta_data_id, 
+      size, status, publish_time, 
+      remarks, rec_create_time, rec_update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{fileId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, 
+      #{size,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData">
+    insert into local_meta_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fileId != null">
+        file_id,
+      </if>
+      <if test="metaDataId != null">
+        meta_data_id,
+      </if>
+      <if test="size != null">
+        `size`,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="publishTime != null">
+        publish_time,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="recCreateTime != null">
+        rec_create_time,
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fileId != null">
+        #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="metaDataId != null">
+        #{metaDataId,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="recCreateTime != null">
+        #{recCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recUpdateTime != null">
+        #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData">
+    update local_meta_data
+    <set>
+      <if test="fileId != null">
+        file_id = #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="metaDataId != null">
+        meta_data_id = #{metaDataId,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        size = #{size,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="recCreateTime != null">
+        rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData">
+    update local_meta_data
+    set file_id = #{fileId,jdbcType=VARCHAR},
+      meta_data_id = #{metaDataId,jdbcType=VARCHAR},
+      size = #{size,jdbcType=BIGINT},
+      status = #{status,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+</mapper>

@@ -3,7 +3,7 @@
 <mapper namespace="com.platon.rosettanet.admin.dao.LocalMetaDataColumnMapper">
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
+    <result column="meta_id" jdbcType="INTEGER" property="metaId" />
     <result column="column_idx" jdbcType="INTEGER" property="columnIdx" />
     <result column="column_name" jdbcType="VARCHAR" property="columnName" />
     <result column="column_type" jdbcType="VARCHAR" property="columnType" />
@@ -14,27 +14,27 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_id, column_idx, `column_name`, column_type, `size`, remarks, `visible`,
+    id, meta_id, column_idx, `column_name`, column_type, `size`, remarks, `visible`,
     rec_create_time, rec_update_time
   </sql>
 
-  <!-- 根据文件id查询数据-->
-  <select id="selectByFileId" resultMap="BaseResultMap">
+  <!-- 根据metaId查询数据-->
+  <select id="selectByMetaId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from local_meta_data_column
-    where file_id = #{fileId}
+    where meta_id = #{metaId}
   </select>
 
   <!-- 批量插入数据-->
   <insert id="batchInsert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn" useGeneratedKeys="true" keyProperty="id">
-    insert into local_meta_data_column (file_id, column_idx,
-      `column_name`, column_type, `size`, 
-      remarks, visible, rec_create_time, 
-      rec_update_time)
+    insert into local_meta_data_column (meta_id, column_idx,
+    `column_name`, column_type, `size`,
+    remarks, visible, rec_create_time,
+    rec_update_time)
     values
     <foreach collection ="columnList" item="metaDataColumn" separator =",">
-      (#{metaDataColumn.fileId},#{metaDataColumn.columnIdx,jdbcType=INTEGER},
+      (#{metaDataColumn.metaId},#{metaDataColumn.columnIdx,jdbcType=INTEGER},
       #{metaDataColumn.columnName,jdbcType=VARCHAR}, #{metaDataColumn.columnType,jdbcType=VARCHAR}, #{metaDataColumn.size,jdbcType=BIGINT},
       #{metaDataColumn.remarks,jdbcType=VARCHAR}, #{metaDataColumn.visible,jdbcType=VARCHAR}, #{metaDataColumn.recCreateTime,jdbcType=TIMESTAMP},
       #{metaDataColumn.recUpdateTime,jdbcType=TIMESTAMP})
@@ -100,13 +100,13 @@
         </if>
       </set>
     </trim>
-    where file_id = #{fileId} and column_idx = #{columnIdx}
+    where meta_id = #{metaId} and column_idx = #{columnIdx}
   </update>
 
   <!--根据metaDataId删除指定的数据,released的数据不可删除 -->
-  <delete id="deleteByFileId">
+  <delete id="deleteByMetaId">
     delete from local_meta_data_column
-    where file_id = #{fileId}
-    and EXISTS (select 1 from local_data_file ldf where ldf.file_id = #{fileId} and ldf.`status` != 'released')
+    where meta_id = #{metaId}
+    and EXISTS (select 1 from local_meta_data lmd where lmd.id = #{metaId} and lmd.`status` != 'released')
   </delete>
 </mapper>

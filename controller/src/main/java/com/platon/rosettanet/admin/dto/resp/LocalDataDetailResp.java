@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.dto.resp;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
+import com.platon.rosettanet.admin.service.constant.ServiceConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author liushuyu
@@ -87,8 +89,14 @@ public class LocalDataDetailResp {
         }
         LocalDataDetailResp resp = new LocalDataDetailResp();
         BeanUtils.copyProperties(detail,resp);
+        Map dynamicFields = detail.getDynamicFields();
+        String status = (String) dynamicFields.get(ServiceConstant.LOCAL_DATA_STATUS);
+        String metaDataId = (String) dynamicFields.get(ServiceConstant.LOCAL_DATA_METADATA_ID);
+        String remarks = (String) dynamicFields.get(ServiceConstant.LOCAL_DATA_REMARKS);
+        resp.setRemarks(remarks);
+        resp.setMetaDataId(metaDataId);
         //元数据状态:1已发布，0未发布
-        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(detail.getStatus())){
+        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(status)){
             resp.setStatus("1");
         } else {
             resp.setStatus("0");

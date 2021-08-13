@@ -13,25 +13,21 @@
     <result column="rows" jdbcType="BIGINT" property="rows" />
     <result column="columns" jdbcType="INTEGER" property="columns" />
     <result column="has_title" jdbcType="BIT" property="hasTitle" />
-    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
-    <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
     <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, identity_id, file_id,file_name, file_path, file_type, resource_name, size, `rows`, `columns`,
-    has_title, remarks, `status`, publish_time, meta_data_id, rec_create_time, rec_update_time
+    id, identity_id, file_id,file_name, file_path, file_type, resource_name, `size`, `rows`, `columns`,
+    has_title, rec_create_time, rec_update_time
   </sql>
 
   <!-- 获取所有本组织文件信息-->
   <select id="listDataFile"  resultMap="BaseResultMap">
     select
-        <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />
     from local_data_file
     <if test="keyword != null and keyword != ''">
-        where resource_name like concat('%',#{keyword},'%')
+      where resource_name like concat('%',#{keyword},'%')
     </if>
     order by rec_update_time desc
   </select>
@@ -59,7 +55,7 @@
         resource_name,
       </if>
       <if test="size != null">
-        size,
+        `size`,
       </if>
       <if test="rows != null">
         `rows`,
@@ -69,18 +65,6 @@
       </if>
       <if test="hasTitle != null">
         has_title,
-      </if>
-      <if test="remarks != null">
-        remarks,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="publishTime != null">
-        publish_time,
-      </if>
-      <if test="metaDataId != null">
-        meta_data_id,
       </if>
       <if test="recCreateTime != null">
         rec_create_time,
@@ -120,18 +104,6 @@
       <if test="hasTitle != null">
         #{hasTitle},
       </if>
-      <if test="remarks != null">
-        #{remarks},
-      </if>
-      <if test="status != null">
-        #{status},
-      </if>
-      <if test="publishTime != null">
-        #{publishTime},
-      </if>
-      <if test="metaDataId != null">
-        #{metaDataId},
-      </if>
       <if test="recCreateTime != null">
         #{recCreateTime},
       </if>
@@ -149,15 +121,6 @@
       <if test="resourceName != null">
         `resource_name` = #{resourceName,jdbcType=VARCHAR},
       </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="publishTime != null">
-        publish_time = #{publishTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="recUpdateTime != null">
         rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
       </if>
@@ -172,22 +135,10 @@
       <if test="resourceName != null">
         `resource_name` = #{resourceName,jdbcType=VARCHAR},
       </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=VARCHAR},
-      </if>
-
-      <if test="publishTime != null">
-        publish_time = #{publishTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="recUpdateTime != null">
         rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="metaDataId != null">
-        meta_data_id = #{metaDataId},
-      </if>
+
     </set>
     where id = #{id}
   </update>
