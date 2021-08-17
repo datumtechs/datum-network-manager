@@ -52,5 +52,12 @@ public interface LocalDataFileMapper {
      */
     LocalDataFile selectByResourceName(@Param("resourceName") String resourceName, @Param("id") Integer id);
 
+    /**
+     * 排除指定metaDataId之后，根据resourceName查询数据文件
+     * @param fileId
+     * @return
+     */
+    LocalDataFile selectByFileId(@Param("fileId") String fileId);
+
 
 }

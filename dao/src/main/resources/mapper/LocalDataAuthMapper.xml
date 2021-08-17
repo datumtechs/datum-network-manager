@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.rosettanet.admin.dao.LocalDataAuthMapper">
+  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
+    <result column="owner_identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
+    <result column="owner_identity_name" jdbcType="VARCHAR" property="ownerIdentityName" />
+    <result column="auth_type" jdbcType="BIT" property="authType" />
+    <result column="auth_value_amount" jdbcType="INTEGER" property="authValueAmount" />
+    <result column="auth_value_start_at" jdbcType="TIMESTAMP" property="authValueStartAt" />
+    <result column="auth_value_end_at" jdbcType="TIMESTAMP" property="authValueEndAt" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="auth_at" jdbcType="TIMESTAMP" property="authAt" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
+    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, meta_data_id, owner_identity_id, owner_identity_name, auth_type, auth_value_amount, 
+    auth_value_start_at, auth_value_end_at, create_at, auth_at, status, rec_create_time, 
+    rec_update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from local_data_auth
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+  <resultMap id="BaseResultMap_With_FileName" type="com.platon.rosettanet.admin.dao.entity.LocalDataAuth" extends="BaseResultMap">
+    <result column="file_name" property="dynamicFields.fileName" jdbcType="VARCHAR"/>
+  </resultMap>
+
+
+  <select id="selectDataAuthList" resultMap="BaseResultMap_With_FileName">
+     SELECT
+          a.*, ldf.file_name AS file_name
+     FROM
+          (
+              SELECT
+                  lda.*, lma.file_id
+              FROM
+                  local_data_auth AS lda
+              LEFT JOIN local_meta_data AS lma ON lda.meta_data_id = lma.meta_data_id
+          ) AS a
+     LEFT JOIN local_data_file AS ldf ON a.file_id = ldf.file_id
+     WHERE 1 = 1
+          <if test="status != null and status == '1'">
+               and a.status = 3
+          </if>
+          <if test="status != null and status == '2'">
+               and a.status in (1,2)
+          </if>
+          <if test="keyword != null and keyword != ''">
+               and (ldf.file_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
+               or a.id like concat('%', #{keyword, jdbcType=VARCHAR}, '%'))
+          </if>
+     ORDER BY a.create_at DESC
+  </select>
+
+
+  <select id="selectFinishAuthCount" resultType="java.lang.Integer">
+       SELECT
+            COUNT(lda.id)
+        FROM
+            local_data_auth AS lda
+        WHERE
+            lda.`status` IN (1, 2)
+  </select>
+
+
+  <select id="selectUnfinishAuthCount" resultType="java.lang.Integer">
+        SELECT
+            COUNT(lda.id)
+        FROM
+            local_data_auth AS lda
+        WHERE
+            lda.`status` IN (3)
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from local_data_auth
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+    insert into local_data_auth (id, meta_data_id, owner_identity_id, 
+      owner_identity_name, auth_type, auth_value_amount, 
+      auth_value_start_at, auth_value_end_at, create_at, 
+      auth_at, status, rec_create_time, 
+      rec_update_time)
+    values (#{id,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR}, 
+      #{ownerIdentityName,jdbcType=VARCHAR}, #{authType,jdbcType=BIT}, #{authValueAmount,jdbcType=INTEGER}, 
+      #{authValueStartAt,jdbcType=TIMESTAMP}, #{authValueEndAt,jdbcType=TIMESTAMP}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{authAt,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}, #{recCreateTime,jdbcType=TIMESTAMP}, 
+      #{recUpdateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+    insert into local_data_auth
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="metaDataId != null">
+        meta_data_id,
+      </if>
+      <if test="ownerIdentityId != null">
+        owner_identity_id,
+      </if>
+      <if test="ownerIdentityName != null">
+        owner_identity_name,
+      </if>
+      <if test="authType != null">
+        auth_type,
+      </if>
+      <if test="authValueAmount != null">
+        auth_value_amount,
+      </if>
+      <if test="authValueStartAt != null">
+        auth_value_start_at,
+      </if>
+      <if test="authValueEndAt != null">
+        auth_value_end_at,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="authAt != null">
+        auth_at,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="recCreateTime != null">
+        rec_create_time,
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="metaDataId != null">
+        #{metaDataId,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdentityId != null">
+        #{ownerIdentityId,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdentityName != null">
+        #{ownerIdentityName,jdbcType=VARCHAR},
+      </if>
+      <if test="authType != null">
+        #{authType,jdbcType=BIT},
+      </if>
+      <if test="authValueAmount != null">
+        #{authValueAmount,jdbcType=INTEGER},
+      </if>
+      <if test="authValueStartAt != null">
+        #{authValueStartAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authValueEndAt != null">
+        #{authValueEndAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authAt != null">
+        #{authAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="recCreateTime != null">
+        #{recCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recUpdateTime != null">
+        #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+    update local_data_auth
+    <set>
+      <if test="metaDataId != null">
+        meta_data_id = #{metaDataId,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdentityId != null">
+        owner_identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerIdentityName != null">
+        owner_identity_name = #{ownerIdentityName,jdbcType=VARCHAR},
+      </if>
+      <if test="authType != null">
+        auth_type = #{authType,jdbcType=BIT},
+      </if>
+      <if test="authValueAmount != null">
+        auth_value_amount = #{authValueAmount,jdbcType=INTEGER},
+      </if>
+      <if test="authValueStartAt != null">
+        auth_value_start_at = #{authValueStartAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authValueEndAt != null">
+        auth_value_end_at = #{authValueEndAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authAt != null">
+        auth_at = #{authAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="recCreateTime != null">
+        rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recUpdateTime != null">
+        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+    update local_data_auth
+    set meta_data_id = #{metaDataId,jdbcType=VARCHAR},
+      owner_identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
+      owner_identity_name = #{ownerIdentityName,jdbcType=VARCHAR},
+      auth_type = #{authType,jdbcType=BIT},
+      auth_value_amount = #{authValueAmount,jdbcType=INTEGER},
+      auth_value_start_at = #{authValueStartAt,jdbcType=TIMESTAMP},
+      auth_value_end_at = #{authValueEndAt,jdbcType=TIMESTAMP},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      auth_at = #{authAt,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=BIT},
+      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

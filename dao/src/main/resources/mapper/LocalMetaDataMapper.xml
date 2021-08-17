@@ -13,7 +13,7 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_id, meta_data_id, size, status, publish_time, remarks, rec_create_time, 
+    id, file_id, meta_data_id, `size`, status, publish_time, remarks, rec_create_time,
     rec_update_time
   </sql>
 
@@ -32,6 +32,14 @@
     from local_meta_data
     where file_id = #{fileId,jdbcType=INTEGER}
     order by id desc limit 1
+  </select>
+
+
+  <select id="selectByMetaDataId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_meta_data
+    where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
   </select>
 
 

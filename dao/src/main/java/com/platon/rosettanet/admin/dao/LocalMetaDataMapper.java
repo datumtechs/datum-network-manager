@@ -13,6 +13,8 @@ public interface LocalMetaDataMapper {
 
     LocalMetaData selectByFileId(String fileId);
 
+    LocalMetaData selectByMetaDataId(String metaDataId);
+
     int updateByPrimaryKeySelective(LocalMetaData record);
 
     int updateByPrimaryKey(LocalMetaData record);
