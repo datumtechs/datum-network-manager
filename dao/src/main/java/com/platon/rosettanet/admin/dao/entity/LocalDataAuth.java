@@ -17,7 +17,7 @@ public class LocalDataAuth extends BaseDomain {
     //授权发起方名称
     private String ownerIdentityName;
     //授权方式(1：时间，2：次数)
-    private Boolean authType;
+    private Integer authType;
     //授权值(以授权次数)
     private Integer authValueAmount;
     //授权值开始时间
@@ -29,7 +29,7 @@ public class LocalDataAuth extends BaseDomain {
     //授权数据时间
     private Date authAt;
     //授权数据状态：1:同意， 2:拒绝 ，3:待授权，4:失效
-    private int status;
+    private Integer status;
     //创建时间
     private Date recCreateTime;
     //最后更新时间

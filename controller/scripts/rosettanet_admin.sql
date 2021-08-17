@@ -161,6 +161,28 @@ CREATE TABLE `local_meta_data_column` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表列详细表，描述源文件中每一列的列信息';
 
 -- ----------------------------
+-- Table structure for local_data_auth
+-- ----------------------------
+DROP TABLE IF EXISTS `local_data_auth`;
+CREATE TABLE `local_data_auth` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `meta_data_id` varchar(256) NOT NULL COMMENT '元数据ID',
+  `owner_identity_id` varchar(256) DEFAULT NULL COMMENT '授权发起方身份标识',
+  `owner_identity_name` varchar(256) DEFAULT NULL COMMENT '授权发起方名称',
+  `auth_type` int(4) DEFAULT NULL COMMENT '授权方式(1：时间，2：次数)',
+  `auth_value_amount` int(100) DEFAULT '0' COMMENT '授权值(以授权次数)',
+  `auth_value_start_at` datetime DEFAULT NULL COMMENT '授权值开始时间',
+  `auth_value_end_at` datetime DEFAULT NULL COMMENT '授权值结束时间',
+  `create_at` datetime DEFAULT NULL COMMENT '授权申请发起时间',
+  `auth_at` datetime DEFAULT NULL COMMENT '授权数据时间',
+  `status` int(4) DEFAULT '3' COMMENT '授权数据状态：1:同意， 2:拒绝 ，3:待授权，4:失效 ',
+  `rec_create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_meta_data_id` (`meta_data_id`) USING BTREE COMMENT '元数据ID唯一'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='本组织申请授权数据表';
+
+-- ----------------------------
 -- Table structure for local_seed_node
 -- ----------------------------
 DROP TABLE IF EXISTS `local_seed_node`;
