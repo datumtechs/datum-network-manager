@@ -11,8 +11,10 @@ import io.grpc.Channel;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.BufferedInputStream;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,7 +41,8 @@ public class DataProviderClient {
      * @param dataNodeHost 数据节点IP
      * @param dataNodePort 数据节点端口
      */
-    public DataProviderUploadDataResp uploadData(String dataNodeHost, int dataNodePort, String fileName, byte[] fileContent) throws ApplicationException{
+    public DataProviderUploadDataResp uploadData(String dataNodeHost, int dataNodePort, String fileName, MultipartFile file) throws Exception{
+        byte[] fileContent = file.getBytes();
         //1.获取rpc连接
         CountDownLatch count = new CountDownLatch(1);
         Channel channel = null;
@@ -51,11 +54,10 @@ public class DataProviderClient {
             StreamObserver<DataProviderRpcMessage.UploadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.UploadReply>() {
                 @Override
                 public void onNext(DataProviderRpcMessage.UploadReply uploadReply) {
+                    log.info("观察者模式执行了onNext-========================:{}", uploadReply.toString());
                     //5.处理response
                     if(!uploadReply.getOk()){
                         ex.set(new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName)));
-                    } else {
-                        log.info("文件上传成功：{}",fileName);
                     }
                     //源文件ID
                     String dataId = uploadReply.getDataId();
@@ -64,15 +66,15 @@ public class DataProviderClient {
                     resp.setFileId(dataId);
                     resp.setFilePath(filePath);
                 }
-
                 @Override
                 public void onError(Throwable throwable) {
+                    log.info("观察者模式执行了onError-========================:{}", throwable.toString());
                     count.countDown();
                     ex.set(new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName),throwable));
                 }
-
                 @Override
                 public void onCompleted() {
+                    log.info("观察者模式执行了onCompleted-========================:{}", "观察者模式执行了onCompleted");
                     count.countDown();
                 }
             };
@@ -80,13 +82,21 @@ public class DataProviderClient {
             StreamObserver<DataProviderRpcMessage.UploadRequest> requestObserver = DataProviderGrpc.newStub(channel).uploadData(responseObserver);
             //4.将请求内容塞入到请求流中
             //上传的时候FileInfo中填file_name就行，这里有个要求是先传content，再传meta，服务端以收到meta判断是否结束
-            //第一次传输
-            DataProviderRpcMessage.UploadRequest first = DataProviderRpcMessage.UploadRequest
-                    .newBuilder()
-                    .setContent(ByteString.copyFrom(fileContent))
-                    .build();
-            requestObserver.onNext(first);
-            //第二次传输
+            /** 第一次传输 */
+            // 定义4M字节数据大小
+            int MAX_BUFFER_SIZE = 4 * 1024 * 1024;
+            byte[] bytes = new byte[MAX_BUFFER_SIZE];
+            BufferedInputStream bufferInputStream = new BufferedInputStream(file.getInputStream());
+            //从文件中按字节读取内容，到文件尾部时read方法将返回-1
+            while (bufferInputStream.read(bytes) != -1) {
+                // 每次发送不大于4M数据
+                DataProviderRpcMessage.UploadRequest first = DataProviderRpcMessage.UploadRequest
+                        .newBuilder()
+                        .setContent(ByteString.copyFrom(bytes))
+                        .build();
+                requestObserver.onNext(first);
+            }
+            /** 第二次传输 */
             DataProviderRpcMessage.FileInfo fileInfo = DataProviderRpcMessage.FileInfo
                     .newBuilder()
                     .setFileName(fileName)
@@ -105,7 +115,7 @@ public class DataProviderClient {
             try {
                 //等待服务端数据返回
                 boolean await = count.await(60, TimeUnit.SECONDS);
-                if(!await){
+                    if(!await){
                     throw new ApplicationException(StrUtil.format("超过等待时间，上传文件失败：文件名:{}",fileName));
                 }
             } catch (InterruptedException e) {

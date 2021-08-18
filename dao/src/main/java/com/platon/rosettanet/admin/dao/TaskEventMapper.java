@@ -4,6 +4,7 @@ import com.platon.rosettanet.admin.dao.entity.TaskEvent;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TaskEventMapper {
     int deleteByPrimaryKey(Long id);
@@ -21,5 +22,9 @@ public interface TaskEventMapper {
     List<TaskEvent> listTaskEventByTaskId(@Param("taskId") String taskId);
 
     int insertBatch(List<TaskEvent> taskEventList);
+
+    int deleteBatch(List<String> taskIds);
+
+    int insertUpdateBatch(Map map);
 
 }

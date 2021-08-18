@@ -123,13 +123,15 @@ public class MyTaskRefreshTask {
 
 
         //4、批量TaskEvent获取并更新DB
-        if(checkDataValidity(updateTaskList)){
+        if(checkDataValidity(allTaskList)){
             log.info("4、批量TaskEvent获取并更新DB");
-            List<String> taskIdList = updateTaskList.stream().map(Task -> Task.getTaskId()).collect(Collectors.toList());
+            List<String> taskIdList = allTaskList.stream().map(Task -> Task.getTaskId()).collect(Collectors.toList());
             List<TaskEvent> taskEventList = new ArrayList<>();
             List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskIdList);
             taskEventList.addAll(taskEvents);
+
             if (checkDataValidity(taskEventList)) {
+                taskEventMapper.deleteBatch(taskIdList);
                 taskEventMapper.insertBatch(taskEventList);
             }
         }
