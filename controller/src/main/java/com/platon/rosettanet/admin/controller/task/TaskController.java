@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.controller.task;
 import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.dao.entity.Task;
 import com.platon.rosettanet.admin.dao.entity.TaskEvent;
+import com.platon.rosettanet.admin.dao.entity.TaskStatistics;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.TaskPageReq;
 import com.platon.rosettanet.admin.dto.resp.TaskDataDetailResp;
@@ -38,19 +39,10 @@ public class TaskController {
         //查询任务列表Data
         Page<Task> taskPage =  taskService.listTask(taskPageReq.getStatus(),taskPageReq.getRole(),taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getKeyWord(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
         List<TaskDataPageResp> taskDataPageList = taskPage.getResult().stream().map(TaskDataPageResp::convert).collect(Collectors.toList());
-
         //查询任务数量
-        Integer allTaskCount = taskService.selectAllTaskCount();
-        Integer taskRunningCount = taskService.selectTaskRunningCount();
-        Map taskCountData = new HashMap();
-        taskCountData.put("totalTaskCount", allTaskCount);
-        taskCountData.put("runningTaskCount", taskRunningCount);
-
+        TaskStatistics taskStatistics = taskService.selectTaskStatisticsCount();
         //封装响应数据
-        TaskDataResp taskDataResp = new TaskDataResp();
-        taskDataResp.setList(taskDataPageList);
-        taskDataResp.setCountData(taskCountData);
-
+        TaskDataResp taskDataResp = TaskDataResp.from(taskDataPageList, taskStatistics);
         JsonResponse jsonResponse = JsonResponse.success(taskDataResp);
         jsonResponse.setPageNumber(taskPage.getPageNum());
         jsonResponse.setPageSize(taskPage.getPageSize());

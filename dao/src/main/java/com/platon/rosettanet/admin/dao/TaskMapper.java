@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.entity.Task;
+import com.platon.rosettanet.admin.dao.entity.TaskStatistics;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.Timestamp;
@@ -31,6 +32,8 @@ public interface TaskMapper {
     Integer selectAllTaskCount();
 
     Integer selectTaskRunningCount();
+
+    TaskStatistics selectTaskStatisticsCount();
 
     Integer selectTaskRole(@Param("taskId")String taskId);
 

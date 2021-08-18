@@ -24,11 +24,15 @@ public class TaskDataPageResp {
     private String taskName;
     @ApiModelProperty(name = "createAt",value = "任务发起时间 (时间戳),单位ms")
     private Long createAt;
-    @ApiModelProperty(name = "status", value = "任务状态 (pending: 等在中; failed: 失败 (计算结束); success: 成功 (计算结束))")
+    @ApiModelProperty(name = "startAt",value = "任务启动时间 (时间戳),单位ms")
+    private Long startAt;
+    @ApiModelProperty(name = "endAt",value = "任务结束时间 (时间戳),单位ms")
+    private Long endAt;
+    @ApiModelProperty(name = "status", value = "任务状态 (pending: 等在中; running: 计算中;  failed: 失败 (计算结束); success: 成功 (计算结束))")
     private String status;
     @ApiModelProperty(name = "reviewed", value = "是否查看过")
     private Boolean reviewed;
-    @ApiModelProperty(name = "role", value = "我在任务中的角色 (0: 未定义; 1: 发起方; 2: 数据提供方; 3: 计算参与方; 4: 结果提供方)")
+    @ApiModelProperty(name = "role", value = "我在任务中的角色 (0: 未定义; 1: 任务发起方; 2: 数据提供方; 3: 算力提供方; 4: 结果提供方; 5: 算法提供方)")
     private Integer role;
 
 
@@ -41,7 +45,8 @@ public class TaskDataPageResp {
         resp.setReviewed(task.getReviewed());
         resp.setRole(getRole(task.getRole()));
         resp.setCreateAt(task.getCreateAt() == null ? null :task.getCreateAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
-        //BeanUtils.copyProperties(task,resp);
+        resp.setStartAt(task.getStartAt() == null ? null :task.getStartAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        resp.setEndAt(task.getEndAt() == null ? null :task.getEndAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
         return resp;
     }
 
@@ -62,6 +67,8 @@ public class TaskDataPageResp {
             return RoleEnum.POWERSUPPLIER.getCode();
         }else if(RoleEnum.RECEIVER.getMessage().equals(role)){
             return RoleEnum.RECEIVER.getCode();
+        }else if(RoleEnum.ALGOSUPPLIER.getMessage().equals(role)){
+            return RoleEnum.ALGOSUPPLIER.getCode();
         }else {
             return RoleEnum.UNDEFINED.getCode();
         }

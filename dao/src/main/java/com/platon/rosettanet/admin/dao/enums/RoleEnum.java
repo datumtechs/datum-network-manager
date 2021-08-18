@@ -8,7 +8,8 @@ public enum RoleEnum {
     OWNER(1, "owner", "任务发起方"),
     DATASUPPLIER(2, "dataSupplier","数据提供方"),
     POWERSUPPLIER(3, "powerSupplier","算力提供方"),
-    RECEIVER(4, "receiver", "结果接收方");
+    RECEIVER(4, "receiver", "结果接收方"),
+    ALGOSUPPLIER(5, "algoSupplier", "算法提供方");
 
     RoleEnum(int code, String message, String remark){
         this.code = code;

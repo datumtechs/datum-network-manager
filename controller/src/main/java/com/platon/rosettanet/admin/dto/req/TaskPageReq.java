@@ -29,13 +29,13 @@ public class TaskPageReq {
     /**
      * 任务状态
      */
-    @ApiModelProperty(value = "任务状态,没有选择传入空字符串,pending: 等在中; failed: 失败; success: 成功", example = "success" , required = false)
+    @ApiModelProperty(value = "任务状态,没有选择传入空字符串,pending: 等在中; running: 计算中; failed: 失败; success: 成功", example = "success" , required = false)
     String status;
 
     /**
      * 任务角色
      */
-    @ApiModelProperty(value = "任务角色,我在任务中的角色, 没有就传0 (0: 未定义; 1: 发起方; 2: 数据提供方; 3: 计算参与方; 4: 结果提供方)", example = "0", required = false)
+    @ApiModelProperty(value = "任务角色,我在任务中的角色, 没有就传0 (0: 未定义; 1: 任务发起方; 2: 数据提供方; 3: 算力提供方; 4: 结果接收方; 5:算法提供方)", example = "0", required = false)
     Integer role;
 
     /**

@@ -3,6 +3,8 @@ package com.platon.rosettanet.admin.service;
 import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.dao.entity.Task;
 import com.platon.rosettanet.admin.dao.entity.TaskEvent;
+import com.platon.rosettanet.admin.dao.entity.TaskStatistics;
+
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +15,9 @@ public interface TaskService {
     Integer selectAllTaskCount();
 
     Integer selectTaskRunningCount();
+
+    TaskStatistics selectTaskStatisticsCount();
+
 
     Task getTaskDetails(String taskId);
 

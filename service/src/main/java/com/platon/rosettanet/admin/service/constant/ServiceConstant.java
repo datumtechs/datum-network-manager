@@ -24,6 +24,8 @@ public class ServiceConstant {
 
     public static final int int_60000 = 60000;
     public static final int int_3600000 = 3600000;
+    public static final long TIME_HOUR_72 = 3 * 24 * 60 * 60 *1000;
+
 
     /**
      * 资源中心--我的数据源文件信息字段

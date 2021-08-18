@@ -60,6 +60,33 @@
      SELECT COUNT(t.id) FROM task AS t WHERE t.status = 'pending' OR t.status = 'running'
   </select>
 
+  <select id="selectTaskStatisticsCount" resultType="com.platon.rosettanet.admin.dao.entity.TaskStatistics">
+
+    SELECT total_task_count,task_success_count,task_failed_count,task_pending_count,task_running_count,ownerCount, dataSupplierCount, powerSupplierCount, receiverCount, algoSupplierCount
+    FROM (
+			(SELECT COUNT(t.id) AS total_task_count, 1 as a FROM task AS t) t1
+			LEFT JOIN
+			(SELECT COUNT(t.id) AS task_success_count,1 as a  FROM task AS t WHERE t.`status` = 'success') t2 ON t1.a=t2.a
+			LEFT JOIN
+			(SELECT COUNT(t.id) AS task_failed_count,1 as a FROM task AS t WHERE t.`status` = 'failed') t3 ON t1.a=t3.a
+			LEFT JOIN
+			(SELECT COUNT(t.id) AS task_pending_count,1 as a FROM task AS t WHERE t.`status` = 'pending') t4 ON t1.a=t4.a
+			LEFT JOIN
+			(SELECT COUNT(t.id) AS task_running_count,1 as a FROM task AS t WHERE t.`status` = 'running') t5 ON t1.a=t5.a
+			LEFT JOIN
+			(SELECT COUNT(t.id) AS ownerCount, 1 as a FROM task AS t WHERE t.role = 'owner') t6 ON t1.a = t6.a
+			LEFT JOIN
+			(SELECT COUNT(t.id) AS dataSupplierCount, 1 as a FROM task AS t WHERE t.role = 'dataSupplier') t7 ON t1.a = t7.a
+			LEFT JOIN
+			(SELECT COUNT(t.id) AS powerSupplierCount, 1 as a FROM task AS t WHERE t.role = 'powerSupplier') t8 ON t1.a = t8.a
+			LEFT JOIN
+			(SELECT COUNT(t.id) AS receiverCount, 1 as a FROM task AS t WHERE t.role = 'receiver') t9 ON t1.a = t9.a
+			LEFT JOIN
+			(SELECT COUNT(t.id) AS algoSupplierCount, 1 as a  FROM task AS t WHERE t.role = 'algoSupplier') t10 ON t1.a = t10.a
+     )
+  </select>
+
+
 
 
   <select id="selectTaskRole" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -111,16 +138,6 @@
     order by create_At DESC
 
   </select>
-
-
-
-
-
-
-
-
-
-
 
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
