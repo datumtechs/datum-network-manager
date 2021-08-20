@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaData;
+import com.platon.rosettanet.admin.dao.entity.Task;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,16 @@ public interface LocalDataService {
      * @return
      */
     Page<LocalDataFile> listDataFile(int pageNo, int pageSize,String keyword);
+
+    /**
+     * 获取本组织数据所参与的任务列表
+     * @param pageNo
+     * @param pageSize
+     * @param metaDataId
+     * @return
+     */
+    Page<Task> listDataJoinTask(int pageNo, int pageSize, String metaDataId, String keyword);
+
 
     /**
      * 上传源文件到数据节点

@@ -9,11 +9,12 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="industry" jdbcType="INTEGER" property="industry" />
     <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_id, meta_data_id, `size`, status, publish_time, remarks, rec_create_time,
+    id, file_id, meta_data_id, `size`, status, publish_time, remarks, industry, rec_create_time,
     rec_update_time
   </sql>
 
@@ -50,11 +51,11 @@
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into local_meta_data (id, file_id, meta_data_id, 
       size, status, publish_time, 
-      remarks, rec_create_time, rec_update_time
+      remarks, industry, rec_create_time, rec_update_time
       )
     values (#{id,jdbcType=INTEGER}, #{fileId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, 
       #{size,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, 
-      #{remarks,jdbcType=VARCHAR}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP}
+      #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData">
@@ -80,6 +81,9 @@
       </if>
       <if test="remarks != null">
         remarks,
+      </if>
+      <if test="industry != null">
+        industry,
       </if>
       <if test="recCreateTime != null">
         rec_create_time,
@@ -110,6 +114,9 @@
       <if test="remarks != null">
         #{remarks,jdbcType=VARCHAR},
       </if>
+      <if test="industry != null">
+        #{industry,jdbcType=INTEGER},
+      </if>
       <if test="recCreateTime != null">
         #{recCreateTime,jdbcType=TIMESTAMP},
       </if>
@@ -139,6 +146,9 @@
       <if test="remarks != null">
         remarks = #{remarks,jdbcType=VARCHAR},
       </if>
+      <if test="industry != null">
+        industry = #{industry,jdbcType=INTEGER},
+      </if>
       <if test="recCreateTime != null">
         rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
       </if>
@@ -156,6 +166,7 @@
       status = #{status,jdbcType=VARCHAR},
       publish_time = #{publishTime,jdbcType=TIMESTAMP},
       remarks = #{remarks,jdbcType=VARCHAR},
+      industry = #{industry,jdbcType=INTEGER},
       rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
       rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

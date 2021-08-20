@@ -31,12 +31,13 @@
 
   <resultMap id="BaseResultMap_With_FileName" type="com.platon.rosettanet.admin.dao.entity.LocalDataAuth" extends="BaseResultMap">
     <result column="file_name" property="dynamicFields.fileName" jdbcType="VARCHAR"/>
+    <result column="resource_name" property="dynamicFields.resourceName" jdbcType="VARCHAR"/>
   </resultMap>
 
 
   <select id="selectDataAuthList" resultMap="BaseResultMap_With_FileName">
      SELECT
-          a.*, ldf.file_name AS file_name
+          a.*, ldf.file_name AS file_name, ldf.resource_name AS resource_name
      FROM
           (
               SELECT
@@ -46,17 +47,18 @@
               LEFT JOIN local_meta_data AS lma ON lda.meta_data_id = lma.meta_data_id
           ) AS a
      LEFT JOIN local_data_file AS ldf ON a.file_id = ldf.file_id
-     WHERE 1 = 1
-          <if test="status != null and status == '1'">
-               and a.status = 3
-          </if>
-          <if test="status != null and status == '2'">
-               and a.status in (1,2)
-          </if>
-          <if test="keyword != null and keyword != ''">
-               and (ldf.file_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
-               or a.id like concat('%', #{keyword, jdbcType=VARCHAR}, '%'))
-          </if>
+     <where>
+         <if test="status != null and status == 1">
+           and a.status = 3
+         </if>
+         <if test="status != null and status == 2">
+           and a.status in (1,2)
+         </if>
+         <if test="keyword != null and keyword != ''">
+           and (ldf.resource_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
+           or a.id like concat('%', #{keyword, jdbcType=VARCHAR}, '%'))
+         </if>
+     </where>
      ORDER BY a.create_at DESC
   </select>
 

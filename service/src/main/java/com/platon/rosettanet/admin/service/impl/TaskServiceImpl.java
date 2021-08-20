@@ -105,7 +105,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getTaskDetails(String taskId) {
-        Task task = taskMapper.selectTaskByTaskId(taskId);
+        Task task = taskMapper.selectTaskByTaskId(taskId,null);
         task = (task == null) ? new Task() : task;
         //任务发起方身份信息
         TaskOrg owner = taskOrgMapper.selectTaskOrgByIdentityId(task.getOwnerIdentityId());
@@ -133,7 +133,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task selectTaskByTaskId(String taskId) {
-        return taskMapper.selectTaskByTaskId(taskId);
+        return taskMapper.selectTaskByTaskId(taskId,null);
     }
 
     @Override
@@ -174,7 +174,7 @@ public class TaskServiceImpl implements TaskService {
      */
     private boolean checkEndAtOver72Hour(Task task){
         boolean isOver = false;
-        if(!Objects.isNull(task.getStatus()) && isTaskSucceeFailUnRead(task)){
+        if(!Objects.isNull(task.getStatus()) && isTaskSucceeFailUnRead(task) && !Objects.isNull(task.getEndAt())){
             long currentTime = new Date().getTime();
             long endAtTime = task.getEndAt().toInstant(ZoneOffset.of("+8")).toEpochMilli();
             isOver = (currentTime - endAtTime) > ServiceConstant.TIME_HOUR_72;

@@ -66,6 +66,9 @@ public class LocalDataDetailResp {
     //数据描述
     @ApiModelProperty(name = "remarks", value = "数据描述")
     private String remarks;
+    //所属行业
+    @ApiModelProperty(name = "industry", value = "所属行业 1：金融业（银行）、2：金融业（保险）、3：金融业（证券）、4：金融业（其他）、5：ICT、 6：制造业、 7：能源业、 8：交通运输业、 9 ：医疗健康业、 10 ：公共服务业、 11：传媒广告业、 12 ：其他行业")
+    private Integer industry;
     //元数据状态:1已发布，0未发布
     @ApiModelProperty(name = "status", value = "元数据状态:1已发布，0未发布")
     private String status;
@@ -93,7 +96,9 @@ public class LocalDataDetailResp {
         String status = (String) dynamicFields.get(ServiceConstant.LOCAL_DATA_STATUS);
         String metaDataId = (String) dynamicFields.get(ServiceConstant.LOCAL_DATA_METADATA_ID);
         String remarks = (String) dynamicFields.get(ServiceConstant.LOCAL_DATA_REMARKS);
+        Integer industry = (Integer) dynamicFields.get(ServiceConstant.LOCAL_DATA_INDUSTRY);
         resp.setRemarks(remarks);
+        resp.setIndustry(industry);
         resp.setMetaDataId(metaDataId);
         //元数据状态:1已发布，0未发布
         if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(status)){

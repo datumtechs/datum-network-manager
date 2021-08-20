@@ -12,16 +12,11 @@ import com.platon.rosettanet.admin.constant.ControllerConstants;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaData;
+import com.platon.rosettanet.admin.dao.entity.Task;
 import com.platon.rosettanet.admin.dto.CommonPageReq;
 import com.platon.rosettanet.admin.dto.JsonResponse;
-import com.platon.rosettanet.admin.dto.req.LocalDataActionReq;
-import com.platon.rosettanet.admin.dto.req.LocalDataAddReq;
-import com.platon.rosettanet.admin.dto.req.LocalDataMetaDataListByKeyWordReq;
-import com.platon.rosettanet.admin.dto.req.LocalDataUpdateReq;
-import com.platon.rosettanet.admin.dto.resp.LocalDataCheckResourceNameResp;
-import com.platon.rosettanet.admin.dto.resp.LocalDataDetailResp;
-import com.platon.rosettanet.admin.dto.resp.LocalDataImportFileResp;
-import com.platon.rosettanet.admin.dto.resp.LocalDataPageResp;
+import com.platon.rosettanet.admin.dto.req.*;
+import com.platon.rosettanet.admin.dto.resp.*;
 import com.platon.rosettanet.admin.service.LocalDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -81,6 +76,18 @@ public class LocalDataController {
                 .map(LocalDataPageResp::from)
                 .collect(Collectors.toList());
         return JsonResponse.page(localDataFilePage,respList);
+    }
+
+
+    /**
+     * 根据数据id查询数据参与的任务信息列表
+     */
+    @ApiOperation(value = "数据参与的任务信息列表")
+    @PostMapping("queryDataJoinTaskList")
+    public JsonResponse<List<TaskDataPageResp>> queryDataJoinTaskList(@RequestBody @Validated LocalDataJoinTaskListReq req){
+        Page<Task> localDataJoinTaskPage = localDataService.listDataJoinTask(req.getPageNumber(), req.getPageSize(),req.getMetaDataId(),req.getKeyword());
+        List<TaskDataPageResp> taskDataPageList = localDataJoinTaskPage.getResult().stream().map(TaskDataPageResp::convert).collect(Collectors.toList());
+        return JsonResponse.page(localDataJoinTaskPage,taskDataPageList);
     }
 
 
@@ -149,6 +156,7 @@ public class LocalDataController {
 
         LocalMetaData metaData = new LocalMetaData();
         metaData.setRemarks(req.getRemarks());
+        metaData.setIndustry(req.getIndustry());
         int count = localDataService.add(detail, metaData);
         if(count <= 0){
             return JsonResponse.fail("添加失败");
@@ -181,6 +189,7 @@ public class LocalDataController {
 
         LocalMetaData metaData = new LocalMetaData();
         metaData.setRemarks(req.getRemarks());
+        metaData.setIndustry(req.getIndustry());
         int count = localDataService.update(detail, metaData);
         if(count <= 0){
             return JsonResponse.fail("更新失败");

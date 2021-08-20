@@ -79,6 +79,15 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
 
     @Override
     public int agreeAuth(int id) {
+
+        LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(id);
+        if(Objects.isNull(localDataAuth)){
+           throw new ServiceException("id可能无效,请检查");
+        }
+        if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
+            throw new ServiceException("此数据已经授权过,不能重复授权");
+        }
+
         Date time = new Date();
         LocalDataAuth dataAuth = new LocalDataAuth();
         dataAuth.setId(id);
@@ -92,6 +101,15 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
 
     @Override
     public int refuseAuth(int id) {
+
+        LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(id);
+        if(Objects.isNull(localDataAuth)){
+            throw new ServiceException("id可能无效,请检查");
+        }
+        if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
+            throw new ServiceException("此数据已经授权过,不能重复授权");
+        }
+
         Date time = new Date();
         LocalDataAuth dataAuth = new LocalDataAuth();
         dataAuth.setId(id);

@@ -6,11 +6,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -38,6 +37,11 @@ public class LocalDataAuthDetailResp {
         DataAuth authInfo = new DataAuth();
         BeanUtils.copyProperties(dataAuth, authInfo);
         authInfo.setFileName(dataFile.getFileName());
+        authInfo.setResourceName(dataFile.getResourceName());
+        authInfo.setCreateAt(getTime(dataAuth.getCreateAt()));
+        authInfo.setAuthAt(getTime(dataAuth.getAuthAt()));
+        authInfo.setAuthValueStartAt(getTime(dataAuth.getAuthValueStartAt()));
+        authInfo.setAuthValueEndAt(getTime(dataAuth.getAuthValueEndAt()));
 
         //基本信息
         MetaData basicDataInfo = new MetaData();
@@ -45,12 +49,20 @@ public class LocalDataAuthDetailResp {
         basicDataInfo.setFileSize(dataFile.getSize());
         basicDataInfo.setDataColumns(dataFile.getColumns());
         basicDataInfo.setDataRows(dataFile.getRows());
+        basicDataInfo.setPublishTime(getTime(metaData.getPublishTime()));
 
         LocalDataAuthDetailResp resp = new LocalDataAuthDetailResp();
         resp.setAuthInfo(authInfo);
         resp.setBasicDataInfo(basicDataInfo);
         resp.setLocalMetaDataColumnList(metaDataColumnList);
         return resp;
+    }
+
+    private static long getTime(Date date){
+        if(date == null){
+            return 0;
+        }
+        return date.getTime();
     }
 
 
@@ -64,8 +76,10 @@ public class LocalDataAuthDetailResp {
         private String ownerIdentityId;
         @ApiModelProperty(name = "ownerIdentityName", value = "授权发起方名称")
         private String ownerIdentityName;
-        @ApiModelProperty(name = "fileName", value = "数据名称")
+        @ApiModelProperty(name = "fileName", value = "源文件名称")
         private String fileName;
+        @ApiModelProperty(name = "resourceName", value = "数据名称")
+        private String resourceName;
         @ApiModelProperty(name = "authType", value = "授权方式(1：时间，2：次数)")
         private Integer authType;
         @ApiModelProperty(name = "authValueAmount", value = "授权值(以授权次数)")
@@ -97,6 +111,8 @@ public class LocalDataAuthDetailResp {
         private Long dataRows;
         @ApiModelProperty(name = "dataColumns", value = "字段数")
         private Integer dataColumns;
+        @ApiModelProperty(name = "industry", value = "所属行业 1：金融业（银行）、2：金融业（保险）、3：金融业（证券）、4：金融业（其他）、5：ICT、 6：制造业、 7：能源业、 8：交通运输业、 9 ：医疗健康业、 10 ：公共服务业、 11：传媒广告业、 12 ：其他行业")
+        private Integer industry;
         @ApiModelProperty(name = "remarks", value = "数据描述")
         private String remarks;
     }

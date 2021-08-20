@@ -27,8 +27,10 @@ public class LocalDataAuthPageResp {
     private Integer id;
     @ApiModelProperty(name = "metaDataId", value = "元数据Id")
     private String metaDataId;
-    @ApiModelProperty(name = "fileName", value = "数据名称")
+    @ApiModelProperty(name = "fileName", value = "源文件名称")
     private String fileName;
+    @ApiModelProperty(name = "resourceName", value = "数据名称")
+    private String resourceName;
     @ApiModelProperty(name = "ownerIdentityId", value = "授权发起方身份标识")
     private String ownerIdentityId;
     @ApiModelProperty(name = "ownerIdentityName", value = "授权发起方名称")
@@ -45,7 +47,7 @@ public class LocalDataAuthPageResp {
     private Long createAt;
     @ApiModelProperty(name = "authAt", value = "授权数据时间")
     private Long authAt;
-    @ApiModelProperty(name = "status", value = "授权数据状态：1:同意， 2:拒绝 ，3:待授权，4:失效")
+    @ApiModelProperty(name = "status", value = "授权数据状态：1:同意， 2:拒绝 ，3:待授权")
     private Integer status;
     //创建时间
     @ApiModelProperty(name = "recCreateTime", value = "创建时间,单位ms")
@@ -70,7 +72,9 @@ public class LocalDataAuthPageResp {
         localDataPageResp.setRecUpdateTime(getTime(localDataAuth.getRecUpdateTime()));
         //
         String fileName = (String) localDataAuth.getDynamicFields().get("fileName");
+        String resourceName = (String) localDataAuth.getDynamicFields().get("resourceName");
         localDataPageResp.setFileName(fileName);
+        localDataPageResp.setResourceName(resourceName);
         return localDataPageResp;
     }
 

@@ -11,15 +11,11 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.common.util.ExportFileUtil;
-import com.platon.rosettanet.admin.dao.LocalDataFileMapper;
-import com.platon.rosettanet.admin.dao.LocalMetaDataColumnMapper;
-import com.platon.rosettanet.admin.dao.LocalMetaDataMapper;
-import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
-import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
-import com.platon.rosettanet.admin.dao.entity.LocalMetaData;
-import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
+import com.platon.rosettanet.admin.dao.*;
+import com.platon.rosettanet.admin.dao.entity.*;
 import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.rosettanet.admin.dao.enums.LocalMetaDataColumnVisibleEnum;
+import com.platon.rosettanet.admin.dao.enums.TaskStatusEnum;
 import com.platon.rosettanet.admin.grpc.client.DataProviderClient;
 import com.platon.rosettanet.admin.grpc.client.MetaDataClient;
 import com.platon.rosettanet.admin.grpc.client.YarnClient;
@@ -34,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -41,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -59,6 +57,11 @@ public class LocalDataServiceImpl implements LocalDataService {
     private DataProviderClient dataProviderClient;
     @Resource
     private MetaDataClient metaDataClient;
+    @Resource
+    private TaskDataReceiverMapper taskDataReceiverMapper;
+    @Resource
+    private TaskMapper taskMapper;
+
 
     @Override
     public Page<LocalDataFile> listDataFile(int pageNo, int pageSize,String keyword) {
@@ -68,6 +71,7 @@ public class LocalDataServiceImpl implements LocalDataService {
                 .map(localDataFile -> {
                     LocalMetaData localMetaData = localMetaDataMapper.selectByFileId(localDataFile.getFileId());
                     List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByMetaId(localMetaData.getId());
+                    List<String> dataJoinTaskIdList = taskDataReceiverMapper.selectTaskByMetaDataId(localMetaData.getMetaDataId());
                     LocalDataFileDetail detail = new LocalDataFileDetail();
                     BeanUtils.copyProperties(localDataFile, detail);
                     detail.setLocalMetaDataColumnList(columnList);
@@ -75,6 +79,7 @@ public class LocalDataServiceImpl implements LocalDataService {
                     Map dynamicFields = new HashMap<>();
                     dynamicFields.put("status", localMetaData.getStatus());
                     dynamicFields.put("metaDataId", localMetaData.getMetaDataId());
+                    dynamicFields.put("dataJoinTaskCount", CollectionUtils.isEmpty(dataJoinTaskIdList) ? 0 : dataJoinTaskIdList.size());
                     detail.setDynamicFields(dynamicFields);
                     return detail;
                 })
@@ -84,6 +89,53 @@ public class LocalDataServiceImpl implements LocalDataService {
         localDataFilePage.addAll(detailList);
         return localDataFilePage;
     }
+
+    @Override
+    public Page<Task> listDataJoinTask(int pageNo, int pageSize, String metaDataId, String keyword) {
+        List<String> taskIdList = taskDataReceiverMapper.selectTaskByMetaDataId(metaDataId);
+
+        Page<Task> dataJoinTaskPage = PageHelper.startPage(pageNo, pageSize);
+        List<Task> taskList = taskIdList.stream().map(new Function<String, Task>() {
+            @Override
+            public Task apply(String taskId) {
+                return taskMapper.selectTaskByTaskId(taskId,keyword);
+            }
+        }).collect(Collectors.toList());
+
+       /* Page<Task> dataJoinTaskPage = new Page<Task>();
+        dataJoinTaskPage.setTotal(dataJoinTaskIdPage.getTotal());
+        dataJoinTaskPage.setPageNum(dataJoinTaskIdPage.getPageNum());
+        dataJoinTaskPage.setPageSize(dataJoinTaskIdPage.getPageSize());
+        dataJoinTaskPage.setPages(dataJoinTaskIdPage.getPages());
+        dataJoinTaskPage.addAll(taskList);*/
+
+
+
+        /**
+         * 排序规则：
+         * 1、进行中任务，即”等待中“和”计算中“的任务置顶，按照发起时间排列；
+         * 2、已结束任务，即“成功”和“失败”任务按照发起时间排列
+         */
+        Collections.sort(taskList, new Comparator<Task>() {
+            @Override
+            public int compare(Task o1, Task o2) {
+                Boolean value1 = isTaskStatusPendAndRunning(o1);
+                Boolean value2 = isTaskStatusPendAndRunning(o2);
+                //对描述1场景，进行排序
+                if(0 < value1.compareTo(value2)){
+                    return -1;
+                }else if(0 > value1.compareTo(value2)){
+                    return 1;
+                }
+                return o1.getCreateAt().compareTo(o2.getCreateAt());
+            }
+        });
+
+        return dataJoinTaskPage;
+    }
+
+
+
 
     @Transactional
     @Override
@@ -203,6 +255,7 @@ public class LocalDataServiceImpl implements LocalDataService {
             localMetaDataCreate.setSize(localDataFile.getSize());
             localMetaDataCreate.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());
             localMetaDataCreate.setRemarks(metaData.getRemarks());
+            localMetaDataCreate.setIndustry(metaData.getIndustry());
             localMetaDataCreate.setRecCreateTime(operateDateCreate);
             localMetaDataCreate.setRecUpdateTime(operateDateCreate);
             int id = localMetaDataMapper.insert(localMetaDataCreate);
@@ -241,6 +294,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         dynamicFields.put(ServiceConstant.LOCAL_DATA_STATUS, localMetaData.getStatus());
         dynamicFields.put(ServiceConstant.LOCAL_DATA_METADATA_ID, localMetaData.getMetaDataId());
         dynamicFields.put(ServiceConstant.LOCAL_DATA_REMARKS, localMetaData.getRemarks());
+        dynamicFields.put(ServiceConstant.LOCAL_DATA_INDUSTRY, localMetaData.getIndustry());
         detail.setDynamicFields(dynamicFields);
         return detail;
     }
@@ -398,4 +452,15 @@ public class LocalDataServiceImpl implements LocalDataService {
         localMetaData.setRecUpdateTime(operateDate);
         return localMetaData;
     }
+
+    /**
+     * 任务状态是否为PENDING/RUNNING
+     * @param task
+     * @return
+     */
+    private boolean isTaskStatusPendAndRunning(Task task){
+        String status = task.getStatus();
+        return TaskStatusEnum.PENDING.getStatus().equals(status) || TaskStatusEnum.RUNNING.getStatus().equals(status);
+    }
+
 }

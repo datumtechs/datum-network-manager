@@ -28,6 +28,7 @@
     from local_data_file
     <if test="keyword != null and keyword != ''">
       where resource_name like concat('%',#{keyword},'%')
+      or id like concat('%',#{keyword},'%')
     </if>
     order by rec_update_time desc
   </select>

@@ -27,7 +27,7 @@ public interface TaskMapper {
 
     List<String> selectListTaskByStatusWithSuccessAndFailed();
 
-    Task selectTaskByTaskId(@Param("taskId")String taskId);
+    Task selectTaskByTaskId(@Param("taskId")String taskId, @Param("keyword")String keyword);
 
     Integer selectAllTaskCount();
 

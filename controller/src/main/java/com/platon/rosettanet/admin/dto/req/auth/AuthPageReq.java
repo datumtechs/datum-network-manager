@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 
@@ -29,7 +30,7 @@ public class AuthPageReq {
      * 授权状态
      */
     @NotNull(message = "数据授权状态状态不能为空")
-    @ApiModelProperty(value = "数据授权状态, 1:待授权数据， 2:已授权数据(同意授权 + 拒绝授权)", example = "success" , required = false)
+    @ApiModelProperty(value = "数据授权状态, 1:待授权数据， 2:已授权数据(同意授权 + 拒绝授权)", example = "1" , required = true)
     Integer status;
 
 

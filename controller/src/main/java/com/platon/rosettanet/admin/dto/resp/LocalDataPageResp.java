@@ -46,6 +46,9 @@ public class LocalDataPageResp {
     @ApiModelProperty(name = "size", value = "元数据最近更新时间")
     private Date recUpdateTime;
 
+    @ApiModelProperty(name = "attendTaskCount", value = "参与任务数量")
+    private Integer attendTaskCount;
+
     @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
     private String metaDataId;
 
@@ -64,6 +67,7 @@ public class LocalDataPageResp {
         Map dynamicFields = localDataFile.getDynamicFields();
         String status = (String) dynamicFields.get("status");
         String metaDataId = (String) dynamicFields.get("metaDataId");
+        int dataJoinTaskCount = (int) dynamicFields.get("dataJoinTaskCount");
         //元数据状态:1已发布，0未发布
         if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(status)){
             localDataPageResp.setStatus("1");
@@ -73,6 +77,7 @@ public class LocalDataPageResp {
         localDataPageResp.setSize(localDataFile.getSize());
         localDataPageResp.setRecUpdateTime(localDataFile.getRecUpdateTime());
         localDataPageResp.setMetaDataId(metaDataId);
+        localDataPageResp.setAttendTaskCount(dataJoinTaskCount);
 
         if(localDataFile instanceof LocalDataFileDetail){
             LocalDataFileDetail detail = (LocalDataFileDetail)localDataFile;

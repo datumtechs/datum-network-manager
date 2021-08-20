@@ -14,6 +14,8 @@ public interface TaskDataReceiverMapper {
 
     TaskDataReceiver selectByPrimaryKey(@Param("taskId") String taskId, @Param("metaDataId") String metaDataId);
 
+    List<String> selectTaskByMetaDataId(@Param("metaDataId") String metaDataId);
+
     int updateByPrimaryKeySelective(TaskDataReceiver record);
 
     int updateByPrimaryKey(TaskDataReceiver record);

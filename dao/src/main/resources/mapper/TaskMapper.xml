@@ -37,11 +37,22 @@
 
 
 
-  <select id="selectTaskByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectTaskByTaskId" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from task
-    where task_Id = #{taskId,jdbcType=VARCHAR}
+    <where>
+      <if test="taskId != null and taskId !=''">
+        and task_Id = #{taskId,jdbcType=VARCHAR}
+      </if>
+      <if test="keyword != null and keyword != ''">
+        and (task_Name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
+        or task_Id like concat('%', #{keyword, jdbcType=VARCHAR}, '%'))
+      </if>
+
+    </where>
+
+
   </select>
 
 
@@ -60,19 +71,21 @@
      SELECT COUNT(t.id) FROM task AS t WHERE t.status = 'pending' OR t.status = 'running'
   </select>
 
+
+
   <select id="selectTaskStatisticsCount" resultType="com.platon.rosettanet.admin.dao.entity.TaskStatistics">
 
-    SELECT total_task_count,task_success_count,task_failed_count,task_pending_count,task_running_count,ownerCount, dataSupplierCount, powerSupplierCount, receiverCount, algoSupplierCount
+    SELECT totalTaskCount,taskSuccessCount,taskFailedCount,taskPendingCount,taskRunningCount,ownerCount, dataSupplierCount, powerSupplierCount, receiverCount, algoSupplierCount
     FROM (
-			(SELECT COUNT(t.id) AS total_task_count, 1 as a FROM task AS t) t1
+			(SELECT COUNT(t.id) AS totalTaskCount, 1 as a FROM task AS t) t1
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS task_success_count,1 as a  FROM task AS t WHERE t.`status` = 'success') t2 ON t1.a=t2.a
+			(SELECT COUNT(t.id) AS taskSuccessCount,1 as a  FROM task AS t WHERE t.`status` = 'success') t2 ON t1.a=t2.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS task_failed_count,1 as a FROM task AS t WHERE t.`status` = 'failed') t3 ON t1.a=t3.a
+			(SELECT COUNT(t.id) AS taskFailedCount,1 as a FROM task AS t WHERE t.`status` = 'failed') t3 ON t1.a=t3.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS task_pending_count,1 as a FROM task AS t WHERE t.`status` = 'pending') t4 ON t1.a=t4.a
+			(SELECT COUNT(t.id) AS taskPendingCount,1 as a FROM task AS t WHERE t.`status` = 'pending') t4 ON t1.a=t4.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS task_running_count,1 as a FROM task AS t WHERE t.`status` = 'running') t5 ON t1.a=t5.a
+			(SELECT COUNT(t.id) AS taskRunningCount,1 as a FROM task AS t WHERE t.`status` = 'running') t5 ON t1.a=t5.a
 			LEFT JOIN
 			(SELECT COUNT(t.id) AS ownerCount, 1 as a FROM task AS t WHERE t.role = 'owner') t6 ON t1.a = t6.a
 			LEFT JOIN
