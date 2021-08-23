@@ -141,6 +141,37 @@ public final class TaskServiceGrpc {
     return getPublishTaskDeclareMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest,
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getTerminateTaskMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "TerminateTask",
+      requestType = com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest,
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getTerminateTaskMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getTerminateTaskMethod;
+    if ((getTerminateTaskMethod = TaskServiceGrpc.getTerminateTaskMethod) == null) {
+      synchronized (TaskServiceGrpc.class) {
+        if ((getTerminateTaskMethod = TaskServiceGrpc.getTerminateTaskMethod) == null) {
+          TaskServiceGrpc.getTerminateTaskMethod = getTerminateTaskMethod =
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "TerminateTask"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.getDefaultInstance()))
+              .setSchemaDescriptor(new TaskServiceMethodDescriptorSupplier("TerminateTask"))
+              .build();
+        }
+      }
+    }
+    return getTerminateTaskMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -232,6 +263,16 @@ public final class TaskServiceGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getPublishTaskDeclareMethod(), responseObserver);
     }
 
+    /**
+     * <pre>
+     * 终止任务
+     * </pre>
+     */
+    public void terminateTask(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getTerminateTaskMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -262,6 +303,13 @@ public final class TaskServiceGrpc {
                 com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.PublishTaskDeclareRequest,
                 com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.PublishTaskDeclareResponse>(
                   this, METHODID_PUBLISH_TASK_DECLARE)))
+          .addMethod(
+            getTerminateTaskMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest,
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>(
+                  this, METHODID_TERMINATE_TASK)))
           .build();
     }
   }
@@ -326,6 +374,17 @@ public final class TaskServiceGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getPublishTaskDeclareMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     * <pre>
+     * 终止任务
+     * </pre>
+     */
+    public void terminateTask(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getTerminateTaskMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -383,6 +442,16 @@ public final class TaskServiceGrpc {
     public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.PublishTaskDeclareResponse publishTaskDeclare(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.PublishTaskDeclareRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getPublishTaskDeclareMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * 终止任务
+     * </pre>
+     */
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode terminateTask(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getTerminateTaskMethod(), getCallOptions(), request);
     }
   }
 
@@ -446,12 +515,24 @@ public final class TaskServiceGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getPublishTaskDeclareMethod(), getCallOptions()), request);
     }
+
+    /**
+     * <pre>
+     * 终止任务
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> terminateTask(
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getTerminateTaskMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_GET_TASK_DETAIL_LIST = 0;
   private static final int METHODID_GET_TASK_EVENT_LIST = 1;
   private static final int METHODID_GET_TASK_EVENT_LIST_BY_TASK_IDS = 2;
   private static final int METHODID_PUBLISH_TASK_DECLARE = 3;
+  private static final int METHODID_TERMINATE_TASK = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -485,6 +566,10 @@ public final class TaskServiceGrpc {
         case METHODID_PUBLISH_TASK_DECLARE:
           serviceImpl.publishTaskDeclare((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.PublishTaskDeclareRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.PublishTaskDeclareResponse>) responseObserver);
+          break;
+        case METHODID_TERMINATE_TASK:
+          serviceImpl.terminateTask((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -551,6 +636,7 @@ public final class TaskServiceGrpc {
               .addMethod(getGetTaskEventListMethod())
               .addMethod(getGetTaskEventListByTaskIdsMethod())
               .addMethod(getPublishTaskDeclareMethod())
+              .addMethod(getTerminateTaskMethod())
               .build();
         }
       }

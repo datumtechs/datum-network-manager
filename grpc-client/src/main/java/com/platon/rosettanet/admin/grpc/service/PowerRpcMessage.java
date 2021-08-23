@@ -23,7 +23,7 @@ public final class PowerRpcMessage {
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      * @return Whether the information field is set.
      */
     boolean hasInformation();
@@ -32,18 +32,18 @@ public final class PowerRpcMessage {
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      * @return The information.
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getInformation();
     /**
      * <pre>
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getInformationOrBuilder();
 
     /**
      * <pre>
@@ -224,11 +224,11 @@ public final class PowerRpcMessage {
               done = true;
               break;
             case 10: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder subBuilder = null;
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder subBuilder = null;
               if (information_ != null) {
                 subBuilder = information_.toBuilder();
               }
-              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.parser(), extensionRegistry);
+              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(information_);
                 information_ = subBuilder.buildPartial();
@@ -309,13 +309,13 @@ public final class PowerRpcMessage {
     }
 
     public static final int INFORMATION_FIELD_NUMBER = 1;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow information_;
+    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail information_;
     /**
      * <pre>
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      * @return Whether the information field is set.
      */
     @java.lang.Override
@@ -327,22 +327,22 @@ public final class PowerRpcMessage {
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      * @return The information.
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation() {
-      return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getInformation() {
+      return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : information_;
     }
     /**
      * <pre>
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder() {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getInformationOrBuilder() {
       return getInformation();
     }
 
@@ -1035,15 +1035,15 @@ public final class PowerRpcMessage {
       }
       private int bitField0_;
 
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow information_;
+      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail information_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> informationBuilder_;
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder> informationBuilder_;
       /**
        * <pre>
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        * @return Whether the information field is set.
        */
       public boolean hasInformation() {
@@ -1054,12 +1054,12 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        * @return The information.
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getInformation() {
         if (informationBuilder_ == null) {
-          return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
+          return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : information_;
         } else {
           return informationBuilder_.getMessage();
         }
@@ -1069,9 +1069,9 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
-      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
+      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail value) {
         if (informationBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1089,10 +1089,10 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
       public Builder setInformation(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder builderForValue) {
         if (informationBuilder_ == null) {
           information_ = builderForValue.build();
           onChanged();
@@ -1107,13 +1107,13 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
-      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
+      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail value) {
         if (informationBuilder_ == null) {
           if (information_ != null) {
             information_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.newBuilder(information_).mergeFrom(value).buildPartial();
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.newBuilder(information_).mergeFrom(value).buildPartial();
           } else {
             information_ = value;
           }
@@ -1129,7 +1129,7 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
       public Builder clearInformation() {
         if (informationBuilder_ == null) {
@@ -1147,9 +1147,9 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder getInformationBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder getInformationBuilder() {
         
         onChanged();
         return getInformationFieldBuilder().getBuilder();
@@ -1159,14 +1159,14 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getInformationOrBuilder() {
         if (informationBuilder_ != null) {
           return informationBuilder_.getMessageOrBuilder();
         } else {
           return information_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : information_;
         }
       }
       /**
@@ -1174,14 +1174,14 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder> 
           getInformationFieldBuilder() {
         if (informationBuilder_ == null) {
           informationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder>(
                   getInformation(),
                   getParentForChildren(),
                   isClean());
@@ -1937,7 +1937,7 @@ public final class PowerRpcMessage {
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      * @return Whether the information field is set.
      */
     boolean hasInformation();
@@ -1946,18 +1946,18 @@ public final class PowerRpcMessage {
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      * @return The information.
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getInformation();
     /**
      * <pre>
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getInformationOrBuilder();
 
     /**
      * <pre>
@@ -2096,11 +2096,11 @@ public final class PowerRpcMessage {
               done = true;
               break;
             case 10: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder subBuilder = null;
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder subBuilder = null;
               if (information_ != null) {
                 subBuilder = information_.toBuilder();
               }
-              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.parser(), extensionRegistry);
+              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(information_);
                 information_ = subBuilder.buildPartial();
@@ -2169,13 +2169,13 @@ public final class PowerRpcMessage {
     }
 
     public static final int INFORMATION_FIELD_NUMBER = 1;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow information_;
+    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail information_;
     /**
      * <pre>
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      * @return Whether the information field is set.
      */
     @java.lang.Override
@@ -2187,22 +2187,22 @@ public final class PowerRpcMessage {
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      * @return The information.
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation() {
-      return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getInformation() {
+      return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : information_;
     }
     /**
      * <pre>
      * 算力实况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+     * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder() {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getInformationOrBuilder() {
       return getInformation();
     }
 
@@ -2769,15 +2769,15 @@ public final class PowerRpcMessage {
       }
       private int bitField0_;
 
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow information_;
+      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail information_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> informationBuilder_;
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder> informationBuilder_;
       /**
        * <pre>
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        * @return Whether the information field is set.
        */
       public boolean hasInformation() {
@@ -2788,12 +2788,12 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        * @return The information.
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getInformation() {
         if (informationBuilder_ == null) {
-          return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
+          return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : information_;
         } else {
           return informationBuilder_.getMessage();
         }
@@ -2803,9 +2803,9 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
-      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
+      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail value) {
         if (informationBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2823,10 +2823,10 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
       public Builder setInformation(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder builderForValue) {
         if (informationBuilder_ == null) {
           information_ = builderForValue.build();
           onChanged();
@@ -2841,13 +2841,13 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
-      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
+      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail value) {
         if (informationBuilder_ == null) {
           if (information_ != null) {
             information_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.newBuilder(information_).mergeFrom(value).buildPartial();
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.newBuilder(information_).mergeFrom(value).buildPartial();
           } else {
             information_ = value;
           }
@@ -2863,7 +2863,7 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
       public Builder clearInformation() {
         if (informationBuilder_ == null) {
@@ -2881,9 +2881,9 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder getInformationBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder getInformationBuilder() {
         
         onChanged();
         return getInformationFieldBuilder().getBuilder();
@@ -2893,14 +2893,14 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getInformationOrBuilder() {
         if (informationBuilder_ != null) {
           return informationBuilder_.getMessageOrBuilder();
         } else {
           return information_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : information_;
         }
       }
       /**
@@ -2908,14 +2908,14 @@ public final class PowerRpcMessage {
        * 算力实况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 1;</code>
+       * <code>.rpcapi.ResourceUsedDetail information = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder> 
           getInformationFieldBuilder() {
         if (informationBuilder_ == null) {
           informationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder>(
                   getInformation(),
                   getParentForChildren(),
                   isClean());
@@ -12455,56 +12455,55 @@ public final class PowerRpcMessage {
       "\n\037carrier/api/power_rpc_api.proto\022\006rpcap" +
       "i\032 carrier/api/common_message.proto\032\036car" +
       "rier/api/task_rpc_api.proto\032\034google/api/" +
-      "annotations.proto\"\326\001\n\021PowerSingleDetail\022" +
-      "3\n\013information\030\001 \001(\0132\036.rpcapi.ResourceUs" +
-      "edDetailShow\022\023\n\013job_node_id\030\002 \001(\t\022\020\n\010pow" +
-      "er_id\030\003 \001(\t\022\030\n\020total_task_count\030\004 \001(\r\022\032\n" +
-      "\022current_task_count\030\005 \001(\r\022 \n\005tasks\030\006 \003(\013" +
-      "2\021.rpcapi.PowerTask\022\r\n\005state\030\007 \001(\t\"\256\001\n\020P" +
-      "owerTotalDetail\0223\n\013information\030\001 \001(\0132\036.r" +
-      "pcapi.ResourceUsedDetailShow\022\030\n\020total_ta" +
-      "sk_count\030\002 \001(\r\022\032\n\022current_task_count\030\003 \001" +
-      "(\r\022 \n\005tasks\030\004 \003(\0132\021.rpcapi.PowerTask\022\r\n\005" +
-      "state\030\005 \001(\t\"\317\002\n\tPowerTask\022\017\n\007task_id\030\001 \001" +
-      "(\t\022\021\n\ttask_name\030\002 \001(\t\022/\n\005owner\030\003 \001(\0132 .r" +
-      "pcapi.OrganizationIdentityInfo\0221\n\007patner" +
-      "s\030\004 \003(\0132 .rpcapi.OrganizationIdentityInf" +
-      "o\0223\n\treceivers\030\005 \003(\0132 .rpcapi.Organizati" +
-      "onIdentityInfo\0228\n\016operation_cost\030\006 \001(\0132 " +
-      ".rpcapi.TaskOperationCostDeclare\0229\n\017oper" +
-      "ation_spend\030\007 \001(\0132 .rpcapi.TaskOperation" +
-      "CostDeclare\022\020\n\010createAt\030\010 \001(\004\"w\n\033GetPowe" +
-      "rTotalDetailResponse\022/\n\005owner\030\001 \001(\0132 .rp" +
-      "capi.OrganizationIdentityInfo\022\'\n\005power\030\002" +
-      " \001(\0132\030.rpcapi.PowerTotalDetail\"w\n\037GetPow" +
-      "erTotalDetailListResponse\022\016\n\006status\030\001 \001(" +
-      "\005\022\013\n\003msg\030\002 \001(\t\0227\n\npower_list\030\003 \003(\0132#.rpc" +
-      "api.GetPowerTotalDetailResponse\"*\n\023Publi" +
-      "shPowerRequest\022\023\n\013job_node_id\030\001 \001(\t\"y\n\034G" +
-      "etPowerSingleDetailResponse\022/\n\005owner\030\001 \001" +
-      "(\0132 .rpcapi.OrganizationIdentityInfo\022(\n\005" +
-      "power\030\002 \001(\0132\031.rpcapi.PowerSingleDetail\"y" +
-      "\n GetPowerSingleDetailListResponse\022\016\n\006st" +
-      "atus\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0228\n\npower_list\030\003 " +
-      "\003(\0132$.rpcapi.GetPowerSingleDetailRespons" +
-      "e\"E\n\024PublishPowerResponse\022\016\n\006status\030\001 \001(" +
-      "\005\022\013\n\003msg\030\002 \001(\t\022\020\n\010power_id\030\003 \001(\t\"&\n\022Revo" +
-      "kePowerRequest\022\020\n\010power_id\030\001 \001(\t2\370\003\n\014Pow" +
-      "erService\022\202\001\n\027GetPowerTotalDetailList\022\026." +
-      "rpcapi.EmptyGetParams\032\'.rpcapi.GetPowerT" +
-      "otalDetailListResponse\"&\202\323\344\223\002 \"\033/carrier" +
-      "/v1/power/totalList:\001*\022\205\001\n\030GetPowerSingl" +
-      "eDetailList\022\026.rpcapi.EmptyGetParams\032(.rp" +
-      "capi.GetPowerSingleDetailListResponse\"\'\202" +
-      "\323\344\223\002!\"\034/carrier/v1/power/singleList:\001*\022o" +
-      "\n\014PublishPower\022\033.rpcapi.PublishPowerRequ" +
-      "est\032\034.rpcapi.PublishPowerResponse\"$\202\323\344\223\002" +
-      "\036\"\031/carrier/v1/power/publish:\001*\022j\n\013Revok" +
-      "ePower\022\032.rpcapi.RevokePowerRequest\032\032.rpc" +
-      "api.SimpleResponseCode\"#\202\323\344\223\002\035\"\030/carrier" +
-      "/v1/power/revoke:\001*B;\n(com.platon.rosett" +
-      "anet.admin.grpc.serviceB\017PowerRpcMessage" +
-      "b\006proto3"
+      "annotations.proto\"\322\001\n\021PowerSingleDetail\022" +
+      "/\n\013information\030\001 \001(\0132\032.rpcapi.ResourceUs" +
+      "edDetail\022\023\n\013job_node_id\030\002 \001(\t\022\020\n\010power_i" +
+      "d\030\003 \001(\t\022\030\n\020total_task_count\030\004 \001(\r\022\032\n\022cur" +
+      "rent_task_count\030\005 \001(\r\022 \n\005tasks\030\006 \003(\0132\021.r" +
+      "pcapi.PowerTask\022\r\n\005state\030\007 \001(\t\"\252\001\n\020Power" +
+      "TotalDetail\022/\n\013information\030\001 \001(\0132\032.rpcap" +
+      "i.ResourceUsedDetail\022\030\n\020total_task_count" +
+      "\030\002 \001(\r\022\032\n\022current_task_count\030\003 \001(\r\022 \n\005ta" +
+      "sks\030\004 \003(\0132\021.rpcapi.PowerTask\022\r\n\005state\030\005 " +
+      "\001(\t\"\317\002\n\tPowerTask\022\017\n\007task_id\030\001 \001(\t\022\021\n\tta" +
+      "sk_name\030\002 \001(\t\022/\n\005owner\030\003 \001(\0132 .rpcapi.Or" +
+      "ganizationIdentityInfo\0221\n\007patners\030\004 \003(\0132" +
+      " .rpcapi.OrganizationIdentityInfo\0223\n\trec" +
+      "eivers\030\005 \003(\0132 .rpcapi.OrganizationIdenti" +
+      "tyInfo\0228\n\016operation_cost\030\006 \001(\0132 .rpcapi." +
+      "TaskOperationCostDeclare\0229\n\017operation_sp" +
+      "end\030\007 \001(\0132 .rpcapi.TaskOperationCostDecl" +
+      "are\022\020\n\010createAt\030\010 \001(\004\"w\n\033GetPowerTotalDe" +
+      "tailResponse\022/\n\005owner\030\001 \001(\0132 .rpcapi.Org" +
+      "anizationIdentityInfo\022\'\n\005power\030\002 \001(\0132\030.r" +
+      "pcapi.PowerTotalDetail\"w\n\037GetPowerTotalD" +
+      "etailListResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg" +
+      "\030\002 \001(\t\0227\n\npower_list\030\003 \003(\0132#.rpcapi.GetP" +
+      "owerTotalDetailResponse\"*\n\023PublishPowerR" +
+      "equest\022\023\n\013job_node_id\030\001 \001(\t\"y\n\034GetPowerS" +
+      "ingleDetailResponse\022/\n\005owner\030\001 \001(\0132 .rpc" +
+      "api.OrganizationIdentityInfo\022(\n\005power\030\002 " +
+      "\001(\0132\031.rpcapi.PowerSingleDetail\"y\n GetPow" +
+      "erSingleDetailListResponse\022\016\n\006status\030\001 \001" +
+      "(\005\022\013\n\003msg\030\002 \001(\t\0228\n\npower_list\030\003 \003(\0132$.rp" +
+      "capi.GetPowerSingleDetailResponse\"E\n\024Pub" +
+      "lishPowerResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg" +
+      "\030\002 \001(\t\022\020\n\010power_id\030\003 \001(\t\"&\n\022RevokePowerR" +
+      "equest\022\020\n\010power_id\030\001 \001(\t2\370\003\n\014PowerServic" +
+      "e\022\202\001\n\027GetPowerTotalDetailList\022\026.rpcapi.E" +
+      "mptyGetParams\032\'.rpcapi.GetPowerTotalDeta" +
+      "ilListResponse\"&\202\323\344\223\002 \"\033/carrier/v1/powe" +
+      "r/totalList:\001*\022\205\001\n\030GetPowerSingleDetailL" +
+      "ist\022\026.rpcapi.EmptyGetParams\032(.rpcapi.Get" +
+      "PowerSingleDetailListResponse\"\'\202\323\344\223\002!\"\034/" +
+      "carrier/v1/power/singleList:\001*\022o\n\014Publis" +
+      "hPower\022\033.rpcapi.PublishPowerRequest\032\034.rp" +
+      "capi.PublishPowerResponse\"$\202\323\344\223\002\036\"\031/carr" +
+      "ier/v1/power/publish:\001*\022j\n\013RevokePower\022\032" +
+      ".rpcapi.RevokePowerRequest\032\032.rpcapi.Simp" +
+      "leResponseCode\"#\202\323\344\223\002\035\"\030/carrier/v1/powe" +
+      "r/revoke:\001*B;\n(com.platon.rosettanet.adm" +
+      "in.grpc.serviceB\017PowerRpcMessageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

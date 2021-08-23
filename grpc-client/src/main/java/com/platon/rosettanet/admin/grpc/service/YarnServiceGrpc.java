@@ -48,27 +48,27 @@ public final class YarnServiceGrpc {
     return getGetNodeInfoMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest,
       com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse> getGetRegisteredPeersMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetRegisteredPeers",
-      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest.class,
       responseType = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest,
       com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse> getGetRegisteredPeersMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse> getGetRegisteredPeersMethod;
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse> getGetRegisteredPeersMethod;
     if ((getGetRegisteredPeersMethod = YarnServiceGrpc.getGetRegisteredPeersMethod) == null) {
       synchronized (YarnServiceGrpc.class) {
         if ((getGetRegisteredPeersMethod = YarnServiceGrpc.getGetRegisteredPeersMethod) == null) {
           YarnServiceGrpc.getGetRegisteredPeersMethod = getGetRegisteredPeersMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetRegisteredPeers"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse.getDefaultInstance()))
               .setSchemaDescriptor(new YarnServiceMethodDescriptorSupplier("GetRegisteredPeers"))
@@ -141,27 +141,27 @@ public final class YarnServiceGrpc {
     return getUpdateSeedNodeMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest,
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest,
       com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteSeedNodeMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "DeleteSeedNode",
-      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.class,
       responseType = com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest,
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest,
       com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteSeedNodeMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteSeedNodeMethod;
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteSeedNodeMethod;
     if ((getDeleteSeedNodeMethod = YarnServiceGrpc.getDeleteSeedNodeMethod) == null) {
       synchronized (YarnServiceGrpc.class) {
         if ((getDeleteSeedNodeMethod = YarnServiceGrpc.getDeleteSeedNodeMethod) == null) {
           YarnServiceGrpc.getDeleteSeedNodeMethod = getDeleteSeedNodeMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DeleteSeedNode"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.getDefaultInstance()))
               .setSchemaDescriptor(new YarnServiceMethodDescriptorSupplier("DeleteSeedNode"))
@@ -265,27 +265,27 @@ public final class YarnServiceGrpc {
     return getUpdateDataNodeMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest,
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest,
       com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteDataNodeMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "DeleteDataNode",
-      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.class,
       responseType = com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest,
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest,
       com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteDataNodeMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteDataNodeMethod;
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteDataNodeMethod;
     if ((getDeleteDataNodeMethod = YarnServiceGrpc.getDeleteDataNodeMethod) == null) {
       synchronized (YarnServiceGrpc.class) {
         if ((getDeleteDataNodeMethod = YarnServiceGrpc.getDeleteDataNodeMethod) == null) {
           YarnServiceGrpc.getDeleteDataNodeMethod = getDeleteDataNodeMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DeleteDataNode"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.getDefaultInstance()))
               .setSchemaDescriptor(new YarnServiceMethodDescriptorSupplier("DeleteDataNode"))
@@ -389,27 +389,27 @@ public final class YarnServiceGrpc {
     return getUpdateJobNodeMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest,
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest,
       com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteJobNodeMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "DeleteJobNode",
-      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.class,
+      requestType = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.class,
       responseType = com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest,
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest,
       com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteJobNodeMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteJobNodeMethod;
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getDeleteJobNodeMethod;
     if ((getDeleteJobNodeMethod = YarnServiceGrpc.getDeleteJobNodeMethod) == null) {
       synchronized (YarnServiceGrpc.class) {
         if ((getDeleteJobNodeMethod = YarnServiceGrpc.getDeleteJobNodeMethod) == null) {
           YarnServiceGrpc.getDeleteJobNodeMethod = getDeleteJobNodeMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "DeleteJobNode"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.getDefaultInstance()))
               .setSchemaDescriptor(new YarnServiceMethodDescriptorSupplier("DeleteJobNode"))
@@ -673,7 +673,7 @@ public final class YarnServiceGrpc {
      * 查看自身调度服务的 peer注册信息
      * </pre>
      */
-    public void getRegisteredPeers(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+    public void getRegisteredPeers(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetRegisteredPeersMethod(), responseObserver);
     }
@@ -704,7 +704,7 @@ public final class YarnServiceGrpc {
      * 删除种子节点信息
      * </pre>
      */
-    public void deleteSeedNode(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request,
+    public void deleteSeedNode(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getDeleteSeedNodeMethod(), responseObserver);
     }
@@ -745,7 +745,7 @@ public final class YarnServiceGrpc {
      * 删除数据服务信息
      * </pre>
      */
-    public void deleteDataNode(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request,
+    public void deleteDataNode(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getDeleteDataNodeMethod(), responseObserver);
     }
@@ -786,7 +786,7 @@ public final class YarnServiceGrpc {
      * 删除计算服务信息
      * </pre>
      */
-    public void deleteJobNode(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request,
+    public void deleteJobNode(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getDeleteJobNodeMethod(), responseObserver);
     }
@@ -865,7 +865,7 @@ public final class YarnServiceGrpc {
             getGetRegisteredPeersMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest,
                 com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse>(
                   this, METHODID_GET_REGISTERED_PEERS)))
           .addMethod(
@@ -886,7 +886,7 @@ public final class YarnServiceGrpc {
             getDeleteSeedNodeMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest,
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest,
                 com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>(
                   this, METHODID_DELETE_SEED_NODE)))
           .addMethod(
@@ -914,7 +914,7 @@ public final class YarnServiceGrpc {
             getDeleteDataNodeMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest,
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest,
                 com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>(
                   this, METHODID_DELETE_DATA_NODE)))
           .addMethod(
@@ -942,7 +942,7 @@ public final class YarnServiceGrpc {
             getDeleteJobNodeMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest,
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest,
                 com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>(
                   this, METHODID_DELETE_JOB_NODE)))
           .addMethod(
@@ -1025,7 +1025,7 @@ public final class YarnServiceGrpc {
      * 查看自身调度服务的 peer注册信息
      * </pre>
      */
-    public void getRegisteredPeers(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+    public void getRegisteredPeers(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetRegisteredPeersMethod(), getCallOptions()), request, responseObserver);
@@ -1059,7 +1059,7 @@ public final class YarnServiceGrpc {
      * 删除种子节点信息
      * </pre>
      */
-    public void deleteSeedNode(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request,
+    public void deleteSeedNode(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getDeleteSeedNodeMethod(), getCallOptions()), request, responseObserver);
@@ -1104,7 +1104,7 @@ public final class YarnServiceGrpc {
      * 删除数据服务信息
      * </pre>
      */
-    public void deleteDataNode(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request,
+    public void deleteDataNode(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getDeleteDataNodeMethod(), getCallOptions()), request, responseObserver);
@@ -1149,7 +1149,7 @@ public final class YarnServiceGrpc {
      * 删除计算服务信息
      * </pre>
      */
-    public void deleteJobNode(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request,
+    public void deleteJobNode(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getDeleteJobNodeMethod(), getCallOptions()), request, responseObserver);
@@ -1256,7 +1256,7 @@ public final class YarnServiceGrpc {
      * 查看自身调度服务的 peer注册信息
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse getRegisteredPeers(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse getRegisteredPeers(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetRegisteredPeersMethod(), getCallOptions(), request);
     }
@@ -1287,7 +1287,7 @@ public final class YarnServiceGrpc {
      * 删除种子节点信息
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode deleteSeedNode(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request) {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode deleteSeedNode(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getDeleteSeedNodeMethod(), getCallOptions(), request);
     }
@@ -1328,7 +1328,7 @@ public final class YarnServiceGrpc {
      * 删除数据服务信息
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode deleteDataNode(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request) {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode deleteDataNode(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getDeleteDataNodeMethod(), getCallOptions(), request);
     }
@@ -1369,7 +1369,7 @@ public final class YarnServiceGrpc {
      * 删除计算服务信息
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode deleteJobNode(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request) {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode deleteJobNode(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getDeleteJobNodeMethod(), getCallOptions(), request);
     }
@@ -1471,7 +1471,7 @@ public final class YarnServiceGrpc {
      * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse> getRegisteredPeers(
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetRegisteredPeersMethod(), getCallOptions()), request);
     }
@@ -1505,7 +1505,7 @@ public final class YarnServiceGrpc {
      * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> deleteSeedNode(
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request) {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getDeleteSeedNodeMethod(), getCallOptions()), request);
     }
@@ -1550,7 +1550,7 @@ public final class YarnServiceGrpc {
      * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> deleteDataNode(
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request) {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getDeleteDataNodeMethod(), getCallOptions()), request);
     }
@@ -1595,7 +1595,7 @@ public final class YarnServiceGrpc {
      * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> deleteJobNode(
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest request) {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getDeleteJobNodeMethod(), getCallOptions()), request);
     }
@@ -1710,7 +1710,7 @@ public final class YarnServiceGrpc {
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetNodeInfoResponse>) responseObserver);
           break;
         case METHODID_GET_REGISTERED_PEERS:
-          serviceImpl.getRegisteredPeers((com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams) request,
+          serviceImpl.getRegisteredPeers((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersResponse>) responseObserver);
           break;
         case METHODID_SET_SEED_NODE:
@@ -1722,7 +1722,7 @@ public final class YarnServiceGrpc {
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetSeedNodeResponse>) responseObserver);
           break;
         case METHODID_DELETE_SEED_NODE:
-          serviceImpl.deleteSeedNode((com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest) request,
+          serviceImpl.deleteSeedNode((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
           break;
         case METHODID_GET_SEED_NODE_LIST:
@@ -1738,7 +1738,7 @@ public final class YarnServiceGrpc {
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetDataNodeResponse>) responseObserver);
           break;
         case METHODID_DELETE_DATA_NODE:
-          serviceImpl.deleteDataNode((com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest) request,
+          serviceImpl.deleteDataNode((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
           break;
         case METHODID_GET_DATA_NODE_LIST:
@@ -1754,7 +1754,7 @@ public final class YarnServiceGrpc {
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetJobNodeResponse>) responseObserver);
           break;
         case METHODID_DELETE_JOB_NODE:
-          serviceImpl.deleteJobNode((com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest) request,
+          serviceImpl.deleteJobNode((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
           break;
         case METHODID_GET_JOB_NODE_LIST:

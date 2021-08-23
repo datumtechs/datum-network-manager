@@ -14,6 +14,99 @@ public final class AuthServiceGrpc {
   public static final String SERVICE_NAME = "rpcapi.AuthService";
 
   // Static method descriptors that strictly reflect the proto.
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest,
+      com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse> getApplyMetaDataAuthorityMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "ApplyMetaDataAuthority",
+      requestType = com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest,
+      com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse> getApplyMetaDataAuthorityMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse> getApplyMetaDataAuthorityMethod;
+    if ((getApplyMetaDataAuthorityMethod = AuthServiceGrpc.getApplyMetaDataAuthorityMethod) == null) {
+      synchronized (AuthServiceGrpc.class) {
+        if ((getApplyMetaDataAuthorityMethod = AuthServiceGrpc.getApplyMetaDataAuthorityMethod) == null) {
+          AuthServiceGrpc.getApplyMetaDataAuthorityMethod = getApplyMetaDataAuthorityMethod =
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "ApplyMetaDataAuthority"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new AuthServiceMethodDescriptorSupplier("ApplyMetaDataAuthority"))
+              .build();
+        }
+      }
+    }
+    return getApplyMetaDataAuthorityMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest,
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getAuditMetaDataAuthorityMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "AuditMetaDataAuthority",
+      requestType = com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest,
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getAuditMetaDataAuthorityMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getAuditMetaDataAuthorityMethod;
+    if ((getAuditMetaDataAuthorityMethod = AuthServiceGrpc.getAuditMetaDataAuthorityMethod) == null) {
+      synchronized (AuthServiceGrpc.class) {
+        if ((getAuditMetaDataAuthorityMethod = AuthServiceGrpc.getAuditMetaDataAuthorityMethod) == null) {
+          AuthServiceGrpc.getAuditMetaDataAuthorityMethod = getAuditMetaDataAuthorityMethod =
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "AuditMetaDataAuthority"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.getDefaultInstance()))
+              .setSchemaDescriptor(new AuthServiceMethodDescriptorSupplier("AuditMetaDataAuthority"))
+              .build();
+        }
+      }
+    }
+    return getAuditMetaDataAuthorityMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse> getGetMetaDataAuthorityListMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "GetMetaDataAuthorityList",
+      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+      com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse> getGetMetaDataAuthorityListMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse> getGetMetaDataAuthorityListMethod;
+    if ((getGetMetaDataAuthorityListMethod = AuthServiceGrpc.getGetMetaDataAuthorityListMethod) == null) {
+      synchronized (AuthServiceGrpc.class) {
+        if ((getGetMetaDataAuthorityListMethod = AuthServiceGrpc.getGetMetaDataAuthorityListMethod) == null) {
+          AuthServiceGrpc.getGetMetaDataAuthorityListMethod = getGetMetaDataAuthorityListMethod =
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetMetaDataAuthorityList"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new AuthServiceMethodDescriptorSupplier("GetMetaDataAuthorityList"))
+              .build();
+        }
+      }
+    }
+    return getGetMetaDataAuthorityListMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest,
       com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getApplyIdentityJoinMethod;
 
@@ -188,6 +281,36 @@ public final class AuthServiceGrpc {
 
     /**
      * <pre>
+     * 数据授权申请
+     * </pre>
+     */
+    public void applyMetaDataAuthority(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getApplyMetaDataAuthorityMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
+     * 数据授权审核
+     * </pre>
+     */
+    public void auditMetaDataAuthority(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getAuditMetaDataAuthorityMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
+     * 获取数据授权申请列表
+     * </pre>
+     */
+    public void getMetaDataAuthorityList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetMetaDataAuthorityListMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
      * 申请准入网络
      * </pre>
      */
@@ -228,6 +351,27 @@ public final class AuthServiceGrpc {
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+          .addMethod(
+            getApplyMetaDataAuthorityMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest,
+                com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse>(
+                  this, METHODID_APPLY_META_DATA_AUTHORITY)))
+          .addMethod(
+            getAuditMetaDataAuthorityMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest,
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>(
+                  this, METHODID_AUDIT_META_DATA_AUTHORITY)))
+          .addMethod(
+            getGetMetaDataAuthorityListMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+                com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse>(
+                  this, METHODID_GET_META_DATA_AUTHORITY_LIST)))
           .addMethod(
             getApplyIdentityJoinMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
@@ -272,6 +416,39 @@ public final class AuthServiceGrpc {
     protected AuthServiceStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new AuthServiceStub(channel, callOptions);
+    }
+
+    /**
+     * <pre>
+     * 数据授权申请
+     * </pre>
+     */
+    public void applyMetaDataAuthority(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getApplyMetaDataAuthorityMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
+     * 数据授权审核
+     * </pre>
+     */
+    public void auditMetaDataAuthority(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getAuditMetaDataAuthorityMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
+     * 获取数据授权申请列表
+     * </pre>
+     */
+    public void getMetaDataAuthorityList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetMetaDataAuthorityListMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -335,6 +512,36 @@ public final class AuthServiceGrpc {
 
     /**
      * <pre>
+     * 数据授权申请
+     * </pre>
+     */
+    public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse applyMetaDataAuthority(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getApplyMetaDataAuthorityMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * 数据授权审核
+     * </pre>
+     */
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode auditMetaDataAuthority(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getAuditMetaDataAuthorityMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * 获取数据授权申请列表
+     * </pre>
+     */
+    public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse getMetaDataAuthorityList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetMetaDataAuthorityListMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
      * 申请准入网络
      * </pre>
      */
@@ -390,6 +597,39 @@ public final class AuthServiceGrpc {
 
     /**
      * <pre>
+     * 数据授权申请
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse> applyMetaDataAuthority(
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getApplyMetaDataAuthorityMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
+     * 数据授权审核
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> auditMetaDataAuthority(
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getAuditMetaDataAuthorityMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
+     * 获取数据授权申请列表
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse> getMetaDataAuthorityList(
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetMetaDataAuthorityListMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
      * 申请准入网络
      * </pre>
      */
@@ -433,10 +673,13 @@ public final class AuthServiceGrpc {
     }
   }
 
-  private static final int METHODID_APPLY_IDENTITY_JOIN = 0;
-  private static final int METHODID_REVOKE_IDENTITY_JOIN = 1;
-  private static final int METHODID_GET_NODE_IDENTITY = 2;
-  private static final int METHODID_GET_IDENTITY_LIST = 3;
+  private static final int METHODID_APPLY_META_DATA_AUTHORITY = 0;
+  private static final int METHODID_AUDIT_META_DATA_AUTHORITY = 1;
+  private static final int METHODID_GET_META_DATA_AUTHORITY_LIST = 2;
+  private static final int METHODID_APPLY_IDENTITY_JOIN = 3;
+  private static final int METHODID_REVOKE_IDENTITY_JOIN = 4;
+  private static final int METHODID_GET_NODE_IDENTITY = 5;
+  private static final int METHODID_GET_IDENTITY_LIST = 6;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -455,6 +698,18 @@ public final class AuthServiceGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
+        case METHODID_APPLY_META_DATA_AUTHORITY:
+          serviceImpl.applyMetaDataAuthority((com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityRequest) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyMetaDataAuthorityResponse>) responseObserver);
+          break;
+        case METHODID_AUDIT_META_DATA_AUTHORITY:
+          serviceImpl.auditMetaDataAuthority((com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetaDataAuthorityRequest) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
+          break;
+        case METHODID_GET_META_DATA_AUTHORITY_LIST:
+          serviceImpl.getMetaDataAuthorityList((com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetaDataAuthorityListResponse>) responseObserver);
+          break;
         case METHODID_APPLY_IDENTITY_JOIN:
           serviceImpl.applyIdentityJoin((com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.ApplyIdentityJoinRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
@@ -532,6 +787,9 @@ public final class AuthServiceGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new AuthServiceFileDescriptorSupplier())
+              .addMethod(getApplyMetaDataAuthorityMethod())
+              .addMethod(getAuditMetaDataAuthorityMethod())
+              .addMethod(getGetMetaDataAuthorityListMethod())
               .addMethod(getApplyIdentityJoinMethod())
               .addMethod(getRevokeIdentityJoinMethod())
               .addMethod(getGetNodeIdentityMethod())

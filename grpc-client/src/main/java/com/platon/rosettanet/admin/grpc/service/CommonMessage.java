@@ -14,8 +14,134 @@ public final class CommonMessage {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  public interface ResourceUsedDetailShowOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.ResourceUsedDetailShow)
+  /**
+   * Protobuf enum {@code rpcapi.UserType}
+   */
+  public enum UserType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>Unknown = 0;</code>
+     */
+    Unknown(0),
+    /**
+     * <code>ETH = 1;</code>
+     */
+    ETH(1),
+    /**
+     * <code>ATP = 2;</code>
+     */
+    ATP(2),
+    /**
+     * <code>LAT = 3;</code>
+     */
+    LAT(3),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>Unknown = 0;</code>
+     */
+    public static final int Unknown_VALUE = 0;
+    /**
+     * <code>ETH = 1;</code>
+     */
+    public static final int ETH_VALUE = 1;
+    /**
+     * <code>ATP = 2;</code>
+     */
+    public static final int ATP_VALUE = 2;
+    /**
+     * <code>LAT = 3;</code>
+     */
+    public static final int LAT_VALUE = 3;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static UserType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static UserType forNumber(int value) {
+      switch (value) {
+        case 0: return Unknown;
+        case 1: return ETH;
+        case 2: return ATP;
+        case 3: return LAT;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<UserType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        UserType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<UserType>() {
+            public UserType findValueByNumber(int number) {
+              return UserType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.CommonMessage.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final UserType[] VALUES = values();
+
+    public static UserType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private UserType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:rpcapi.UserType)
+  }
+
+  public interface ResourceUsedDetailOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.ResourceUsedDetail)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -23,50 +149,60 @@ public final class CommonMessage {
      * 服务系统的总内存 (单位: byte)
      * </pre>
      *
-     * <code>uint64 total_mem = 2;</code>
+     * <code>uint64 total_mem = 1;</code>
      * @return The totalMem.
      */
     long getTotalMem();
 
     /**
      * <pre>
-     * 服务系统的已用内存 (单位: byte)
-     * </pre>
-     *
-     * <code>uint64 used_mem = 3;</code>
-     * @return The usedMem.
-     */
-    long getUsedMem();
-
-    /**
-     * <pre>
      * 服务的总内核数 (单位: 个)
      * </pre>
      *
-     * <code>uint64 total_processor = 4;</code>
+     * <code>uint64 total_processor = 2;</code>
      * @return The totalProcessor.
      */
     long getTotalProcessor();
 
     /**
      * <pre>
-     * 服务的已用内核数 (单位: 个)
-     * </pre>
-     *
-     * <code>uint64 used_processor = 5;</code>
-     * @return The usedProcessor.
-     */
-    long getUsedProcessor();
-
-    /**
-     * <pre>
      * 服务的总带宽数 (单位: bps)
      * </pre>
      *
-     * <code>uint64 total_bandwidth = 6;</code>
+     * <code>uint64 total_bandwidth = 3;</code>
      * @return The totalBandwidth.
      */
     long getTotalBandwidth();
+
+    /**
+     * <pre>
+     * 服务的总磁盘空间 (单位: byte)
+     * </pre>
+     *
+     * <code>uint64 total_disk = 4;</code>
+     * @return The totalDisk.
+     */
+    long getTotalDisk();
+
+    /**
+     * <pre>
+     * 服务系统的已用内存 (单位: byte)
+     * </pre>
+     *
+     * <code>uint64 used_mem = 5;</code>
+     * @return The usedMem.
+     */
+    long getUsedMem();
+
+    /**
+     * <pre>
+     * 服务的已用内核数 (单位: 个)
+     * </pre>
+     *
+     * <code>uint64 used_processor = 6;</code>
+     * @return The usedProcessor.
+     */
+    long getUsedProcessor();
 
     /**
      * <pre>
@@ -77,31 +213,41 @@ public final class CommonMessage {
      * @return The usedBandwidth.
      */
     long getUsedBandwidth();
+
+    /**
+     * <pre>
+     * 服务的医用磁盘空间 (单位: byte)
+     * </pre>
+     *
+     * <code>uint64 used_disk = 8;</code>
+     * @return The usedDisk.
+     */
+    long getUsedDisk();
   }
   /**
    * <pre>
    * 系统本身资源抽象
    * </pre>
    *
-   * Protobuf type {@code rpcapi.ResourceUsedDetailShow}
+   * Protobuf type {@code rpcapi.ResourceUsedDetail}
    */
-  public static final class ResourceUsedDetailShow extends
+  public static final class ResourceUsedDetail extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.ResourceUsedDetailShow)
-      ResourceUsedDetailShowOrBuilder {
+      // @@protoc_insertion_point(message_implements:rpcapi.ResourceUsedDetail)
+      ResourceUsedDetailOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use ResourceUsedDetailShow.newBuilder() to construct.
-    private ResourceUsedDetailShow(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use ResourceUsedDetail.newBuilder() to construct.
+    private ResourceUsedDetail(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private ResourceUsedDetailShow() {
+    private ResourceUsedDetail() {
     }
 
     @java.lang.Override
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new ResourceUsedDetailShow();
+      return new ResourceUsedDetail();
     }
 
     @java.lang.Override
@@ -109,7 +255,7 @@ public final class CommonMessage {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private ResourceUsedDetailShow(
+    private ResourceUsedDetail(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -127,34 +273,44 @@ public final class CommonMessage {
             case 0:
               done = true;
               break;
-            case 16: {
+            case 8: {
 
               totalMem_ = input.readUInt64();
               break;
             }
-            case 24: {
-
-              usedMem_ = input.readUInt64();
-              break;
-            }
-            case 32: {
+            case 16: {
 
               totalProcessor_ = input.readUInt64();
               break;
             }
+            case 24: {
+
+              totalBandwidth_ = input.readUInt64();
+              break;
+            }
+            case 32: {
+
+              totalDisk_ = input.readUInt64();
+              break;
+            }
             case 40: {
 
-              usedProcessor_ = input.readUInt64();
+              usedMem_ = input.readUInt64();
               break;
             }
             case 48: {
 
-              totalBandwidth_ = input.readUInt64();
+              usedProcessor_ = input.readUInt64();
               break;
             }
             case 56: {
 
               usedBandwidth_ = input.readUInt64();
+              break;
+            }
+            case 64: {
+
+              usedDisk_ = input.readUInt64();
               break;
             }
             default: {
@@ -178,25 +334,25 @@ public final class CommonMessage {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_ResourceUsedDetailShow_descriptor;
+      return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_ResourceUsedDetail_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_ResourceUsedDetailShow_fieldAccessorTable
+      return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_ResourceUsedDetail_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.class, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder.class);
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.class, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder.class);
     }
 
-    public static final int TOTAL_MEM_FIELD_NUMBER = 2;
+    public static final int TOTAL_MEM_FIELD_NUMBER = 1;
     private long totalMem_;
     /**
      * <pre>
      * 服务系统的总内存 (单位: byte)
      * </pre>
      *
-     * <code>uint64 total_mem = 2;</code>
+     * <code>uint64 total_mem = 1;</code>
      * @return The totalMem.
      */
     @java.lang.Override
@@ -204,29 +360,14 @@ public final class CommonMessage {
       return totalMem_;
     }
 
-    public static final int USED_MEM_FIELD_NUMBER = 3;
-    private long usedMem_;
-    /**
-     * <pre>
-     * 服务系统的已用内存 (单位: byte)
-     * </pre>
-     *
-     * <code>uint64 used_mem = 3;</code>
-     * @return The usedMem.
-     */
-    @java.lang.Override
-    public long getUsedMem() {
-      return usedMem_;
-    }
-
-    public static final int TOTAL_PROCESSOR_FIELD_NUMBER = 4;
+    public static final int TOTAL_PROCESSOR_FIELD_NUMBER = 2;
     private long totalProcessor_;
     /**
      * <pre>
      * 服务的总内核数 (单位: 个)
      * </pre>
      *
-     * <code>uint64 total_processor = 4;</code>
+     * <code>uint64 total_processor = 2;</code>
      * @return The totalProcessor.
      */
     @java.lang.Override
@@ -234,34 +375,64 @@ public final class CommonMessage {
       return totalProcessor_;
     }
 
-    public static final int USED_PROCESSOR_FIELD_NUMBER = 5;
-    private long usedProcessor_;
-    /**
-     * <pre>
-     * 服务的已用内核数 (单位: 个)
-     * </pre>
-     *
-     * <code>uint64 used_processor = 5;</code>
-     * @return The usedProcessor.
-     */
-    @java.lang.Override
-    public long getUsedProcessor() {
-      return usedProcessor_;
-    }
-
-    public static final int TOTAL_BANDWIDTH_FIELD_NUMBER = 6;
+    public static final int TOTAL_BANDWIDTH_FIELD_NUMBER = 3;
     private long totalBandwidth_;
     /**
      * <pre>
      * 服务的总带宽数 (单位: bps)
      * </pre>
      *
-     * <code>uint64 total_bandwidth = 6;</code>
+     * <code>uint64 total_bandwidth = 3;</code>
      * @return The totalBandwidth.
      */
     @java.lang.Override
     public long getTotalBandwidth() {
       return totalBandwidth_;
+    }
+
+    public static final int TOTAL_DISK_FIELD_NUMBER = 4;
+    private long totalDisk_;
+    /**
+     * <pre>
+     * 服务的总磁盘空间 (单位: byte)
+     * </pre>
+     *
+     * <code>uint64 total_disk = 4;</code>
+     * @return The totalDisk.
+     */
+    @java.lang.Override
+    public long getTotalDisk() {
+      return totalDisk_;
+    }
+
+    public static final int USED_MEM_FIELD_NUMBER = 5;
+    private long usedMem_;
+    /**
+     * <pre>
+     * 服务系统的已用内存 (单位: byte)
+     * </pre>
+     *
+     * <code>uint64 used_mem = 5;</code>
+     * @return The usedMem.
+     */
+    @java.lang.Override
+    public long getUsedMem() {
+      return usedMem_;
+    }
+
+    public static final int USED_PROCESSOR_FIELD_NUMBER = 6;
+    private long usedProcessor_;
+    /**
+     * <pre>
+     * 服务的已用内核数 (单位: 个)
+     * </pre>
+     *
+     * <code>uint64 used_processor = 6;</code>
+     * @return The usedProcessor.
+     */
+    @java.lang.Override
+    public long getUsedProcessor() {
+      return usedProcessor_;
     }
 
     public static final int USED_BANDWIDTH_FIELD_NUMBER = 7;
@@ -279,6 +450,21 @@ public final class CommonMessage {
       return usedBandwidth_;
     }
 
+    public static final int USED_DISK_FIELD_NUMBER = 8;
+    private long usedDisk_;
+    /**
+     * <pre>
+     * 服务的医用磁盘空间 (单位: byte)
+     * </pre>
+     *
+     * <code>uint64 used_disk = 8;</code>
+     * @return The usedDisk.
+     */
+    @java.lang.Override
+    public long getUsedDisk() {
+      return usedDisk_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -294,22 +480,28 @@ public final class CommonMessage {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (totalMem_ != 0L) {
-        output.writeUInt64(2, totalMem_);
-      }
-      if (usedMem_ != 0L) {
-        output.writeUInt64(3, usedMem_);
+        output.writeUInt64(1, totalMem_);
       }
       if (totalProcessor_ != 0L) {
-        output.writeUInt64(4, totalProcessor_);
-      }
-      if (usedProcessor_ != 0L) {
-        output.writeUInt64(5, usedProcessor_);
+        output.writeUInt64(2, totalProcessor_);
       }
       if (totalBandwidth_ != 0L) {
-        output.writeUInt64(6, totalBandwidth_);
+        output.writeUInt64(3, totalBandwidth_);
+      }
+      if (totalDisk_ != 0L) {
+        output.writeUInt64(4, totalDisk_);
+      }
+      if (usedMem_ != 0L) {
+        output.writeUInt64(5, usedMem_);
+      }
+      if (usedProcessor_ != 0L) {
+        output.writeUInt64(6, usedProcessor_);
       }
       if (usedBandwidth_ != 0L) {
         output.writeUInt64(7, usedBandwidth_);
+      }
+      if (usedDisk_ != 0L) {
+        output.writeUInt64(8, usedDisk_);
       }
       unknownFields.writeTo(output);
     }
@@ -322,27 +514,35 @@ public final class CommonMessage {
       size = 0;
       if (totalMem_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(2, totalMem_);
-      }
-      if (usedMem_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(3, usedMem_);
+          .computeUInt64Size(1, totalMem_);
       }
       if (totalProcessor_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(4, totalProcessor_);
-      }
-      if (usedProcessor_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(5, usedProcessor_);
+          .computeUInt64Size(2, totalProcessor_);
       }
       if (totalBandwidth_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(6, totalBandwidth_);
+          .computeUInt64Size(3, totalBandwidth_);
+      }
+      if (totalDisk_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, totalDisk_);
+      }
+      if (usedMem_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(5, usedMem_);
+      }
+      if (usedProcessor_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(6, usedProcessor_);
       }
       if (usedBandwidth_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(7, usedBandwidth_);
+      }
+      if (usedDisk_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(8, usedDisk_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -354,23 +554,27 @@ public final class CommonMessage {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow)) {
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail)) {
         return super.equals(obj);
       }
-      com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow other = (com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow) obj;
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail other = (com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail) obj;
 
       if (getTotalMem()
           != other.getTotalMem()) return false;
-      if (getUsedMem()
-          != other.getUsedMem()) return false;
       if (getTotalProcessor()
           != other.getTotalProcessor()) return false;
-      if (getUsedProcessor()
-          != other.getUsedProcessor()) return false;
       if (getTotalBandwidth()
           != other.getTotalBandwidth()) return false;
+      if (getTotalDisk()
+          != other.getTotalDisk()) return false;
+      if (getUsedMem()
+          != other.getUsedMem()) return false;
+      if (getUsedProcessor()
+          != other.getUsedProcessor()) return false;
       if (getUsedBandwidth()
           != other.getUsedBandwidth()) return false;
+      if (getUsedDisk()
+          != other.getUsedDisk()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -385,89 +589,95 @@ public final class CommonMessage {
       hash = (37 * hash) + TOTAL_MEM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTotalMem());
-      hash = (37 * hash) + USED_MEM_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getUsedMem());
       hash = (37 * hash) + TOTAL_PROCESSOR_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTotalProcessor());
-      hash = (37 * hash) + USED_PROCESSOR_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getUsedProcessor());
       hash = (37 * hash) + TOTAL_BANDWIDTH_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getTotalBandwidth());
+      hash = (37 * hash) + TOTAL_DISK_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getTotalDisk());
+      hash = (37 * hash) + USED_MEM_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getUsedMem());
+      hash = (37 * hash) + USED_PROCESSOR_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getUsedProcessor());
       hash = (37 * hash) + USED_BANDWIDTH_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getUsedBandwidth());
+      hash = (37 * hash) + USED_DISK_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getUsedDisk());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseFrom(byte[] data)
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseDelimitedFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseDelimitedFrom(
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -480,7 +690,7 @@ public final class CommonMessage {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow prototype) {
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -500,26 +710,26 @@ public final class CommonMessage {
      * 系统本身资源抽象
      * </pre>
      *
-     * Protobuf type {@code rpcapi.ResourceUsedDetailShow}
+     * Protobuf type {@code rpcapi.ResourceUsedDetail}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.ResourceUsedDetailShow)
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder {
+        // @@protoc_insertion_point(builder_implements:rpcapi.ResourceUsedDetail)
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_ResourceUsedDetailShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_ResourceUsedDetail_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_ResourceUsedDetailShow_fieldAccessorTable
+        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_ResourceUsedDetail_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.class, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder.class);
+                com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.class, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder.class);
       }
 
-      // Construct using com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.newBuilder()
+      // Construct using com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -539,15 +749,19 @@ public final class CommonMessage {
         super.clear();
         totalMem_ = 0L;
 
-        usedMem_ = 0L;
-
         totalProcessor_ = 0L;
-
-        usedProcessor_ = 0L;
 
         totalBandwidth_ = 0L;
 
+        totalDisk_ = 0L;
+
+        usedMem_ = 0L;
+
+        usedProcessor_ = 0L;
+
         usedBandwidth_ = 0L;
+
+        usedDisk_ = 0L;
 
         return this;
       }
@@ -555,17 +769,17 @@ public final class CommonMessage {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_ResourceUsedDetailShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_ResourceUsedDetail_descriptor;
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance();
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow build() {
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow result = buildPartial();
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail build() {
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -573,14 +787,16 @@ public final class CommonMessage {
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow result = new com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow(this);
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail result = new com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail(this);
         result.totalMem_ = totalMem_;
-        result.usedMem_ = usedMem_;
         result.totalProcessor_ = totalProcessor_;
-        result.usedProcessor_ = usedProcessor_;
         result.totalBandwidth_ = totalBandwidth_;
+        result.totalDisk_ = totalDisk_;
+        result.usedMem_ = usedMem_;
+        result.usedProcessor_ = usedProcessor_;
         result.usedBandwidth_ = usedBandwidth_;
+        result.usedDisk_ = usedDisk_;
         onBuilt();
         return result;
       }
@@ -619,33 +835,39 @@ public final class CommonMessage {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow)other);
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance()) return this;
         if (other.getTotalMem() != 0L) {
           setTotalMem(other.getTotalMem());
-        }
-        if (other.getUsedMem() != 0L) {
-          setUsedMem(other.getUsedMem());
         }
         if (other.getTotalProcessor() != 0L) {
           setTotalProcessor(other.getTotalProcessor());
         }
-        if (other.getUsedProcessor() != 0L) {
-          setUsedProcessor(other.getUsedProcessor());
-        }
         if (other.getTotalBandwidth() != 0L) {
           setTotalBandwidth(other.getTotalBandwidth());
         }
+        if (other.getTotalDisk() != 0L) {
+          setTotalDisk(other.getTotalDisk());
+        }
+        if (other.getUsedMem() != 0L) {
+          setUsedMem(other.getUsedMem());
+        }
+        if (other.getUsedProcessor() != 0L) {
+          setUsedProcessor(other.getUsedProcessor());
+        }
         if (other.getUsedBandwidth() != 0L) {
           setUsedBandwidth(other.getUsedBandwidth());
+        }
+        if (other.getUsedDisk() != 0L) {
+          setUsedDisk(other.getUsedDisk());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -662,11 +884,11 @@ public final class CommonMessage {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow parsedMessage = null;
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow) e.getUnfinishedMessage();
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -682,7 +904,7 @@ public final class CommonMessage {
        * 服务系统的总内存 (单位: byte)
        * </pre>
        *
-       * <code>uint64 total_mem = 2;</code>
+       * <code>uint64 total_mem = 1;</code>
        * @return The totalMem.
        */
       @java.lang.Override
@@ -694,7 +916,7 @@ public final class CommonMessage {
        * 服务系统的总内存 (单位: byte)
        * </pre>
        *
-       * <code>uint64 total_mem = 2;</code>
+       * <code>uint64 total_mem = 1;</code>
        * @param value The totalMem to set.
        * @return This builder for chaining.
        */
@@ -709,55 +931,12 @@ public final class CommonMessage {
        * 服务系统的总内存 (单位: byte)
        * </pre>
        *
-       * <code>uint64 total_mem = 2;</code>
+       * <code>uint64 total_mem = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearTotalMem() {
         
         totalMem_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long usedMem_ ;
-      /**
-       * <pre>
-       * 服务系统的已用内存 (单位: byte)
-       * </pre>
-       *
-       * <code>uint64 used_mem = 3;</code>
-       * @return The usedMem.
-       */
-      @java.lang.Override
-      public long getUsedMem() {
-        return usedMem_;
-      }
-      /**
-       * <pre>
-       * 服务系统的已用内存 (单位: byte)
-       * </pre>
-       *
-       * <code>uint64 used_mem = 3;</code>
-       * @param value The usedMem to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUsedMem(long value) {
-        
-        usedMem_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 服务系统的已用内存 (单位: byte)
-       * </pre>
-       *
-       * <code>uint64 used_mem = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUsedMem() {
-        
-        usedMem_ = 0L;
         onChanged();
         return this;
       }
@@ -768,7 +947,7 @@ public final class CommonMessage {
        * 服务的总内核数 (单位: 个)
        * </pre>
        *
-       * <code>uint64 total_processor = 4;</code>
+       * <code>uint64 total_processor = 2;</code>
        * @return The totalProcessor.
        */
       @java.lang.Override
@@ -780,7 +959,7 @@ public final class CommonMessage {
        * 服务的总内核数 (单位: 个)
        * </pre>
        *
-       * <code>uint64 total_processor = 4;</code>
+       * <code>uint64 total_processor = 2;</code>
        * @param value The totalProcessor to set.
        * @return This builder for chaining.
        */
@@ -795,55 +974,12 @@ public final class CommonMessage {
        * 服务的总内核数 (单位: 个)
        * </pre>
        *
-       * <code>uint64 total_processor = 4;</code>
+       * <code>uint64 total_processor = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearTotalProcessor() {
         
         totalProcessor_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private long usedProcessor_ ;
-      /**
-       * <pre>
-       * 服务的已用内核数 (单位: 个)
-       * </pre>
-       *
-       * <code>uint64 used_processor = 5;</code>
-       * @return The usedProcessor.
-       */
-      @java.lang.Override
-      public long getUsedProcessor() {
-        return usedProcessor_;
-      }
-      /**
-       * <pre>
-       * 服务的已用内核数 (单位: 个)
-       * </pre>
-       *
-       * <code>uint64 used_processor = 5;</code>
-       * @param value The usedProcessor to set.
-       * @return This builder for chaining.
-       */
-      public Builder setUsedProcessor(long value) {
-        
-        usedProcessor_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 服务的已用内核数 (单位: 个)
-       * </pre>
-       *
-       * <code>uint64 used_processor = 5;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearUsedProcessor() {
-        
-        usedProcessor_ = 0L;
         onChanged();
         return this;
       }
@@ -854,7 +990,7 @@ public final class CommonMessage {
        * 服务的总带宽数 (单位: bps)
        * </pre>
        *
-       * <code>uint64 total_bandwidth = 6;</code>
+       * <code>uint64 total_bandwidth = 3;</code>
        * @return The totalBandwidth.
        */
       @java.lang.Override
@@ -866,7 +1002,7 @@ public final class CommonMessage {
        * 服务的总带宽数 (单位: bps)
        * </pre>
        *
-       * <code>uint64 total_bandwidth = 6;</code>
+       * <code>uint64 total_bandwidth = 3;</code>
        * @param value The totalBandwidth to set.
        * @return This builder for chaining.
        */
@@ -881,12 +1017,141 @@ public final class CommonMessage {
        * 服务的总带宽数 (单位: bps)
        * </pre>
        *
-       * <code>uint64 total_bandwidth = 6;</code>
+       * <code>uint64 total_bandwidth = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearTotalBandwidth() {
         
         totalBandwidth_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long totalDisk_ ;
+      /**
+       * <pre>
+       * 服务的总磁盘空间 (单位: byte)
+       * </pre>
+       *
+       * <code>uint64 total_disk = 4;</code>
+       * @return The totalDisk.
+       */
+      @java.lang.Override
+      public long getTotalDisk() {
+        return totalDisk_;
+      }
+      /**
+       * <pre>
+       * 服务的总磁盘空间 (单位: byte)
+       * </pre>
+       *
+       * <code>uint64 total_disk = 4;</code>
+       * @param value The totalDisk to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTotalDisk(long value) {
+        
+        totalDisk_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 服务的总磁盘空间 (单位: byte)
+       * </pre>
+       *
+       * <code>uint64 total_disk = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTotalDisk() {
+        
+        totalDisk_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long usedMem_ ;
+      /**
+       * <pre>
+       * 服务系统的已用内存 (单位: byte)
+       * </pre>
+       *
+       * <code>uint64 used_mem = 5;</code>
+       * @return The usedMem.
+       */
+      @java.lang.Override
+      public long getUsedMem() {
+        return usedMem_;
+      }
+      /**
+       * <pre>
+       * 服务系统的已用内存 (单位: byte)
+       * </pre>
+       *
+       * <code>uint64 used_mem = 5;</code>
+       * @param value The usedMem to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsedMem(long value) {
+        
+        usedMem_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 服务系统的已用内存 (单位: byte)
+       * </pre>
+       *
+       * <code>uint64 used_mem = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUsedMem() {
+        
+        usedMem_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long usedProcessor_ ;
+      /**
+       * <pre>
+       * 服务的已用内核数 (单位: 个)
+       * </pre>
+       *
+       * <code>uint64 used_processor = 6;</code>
+       * @return The usedProcessor.
+       */
+      @java.lang.Override
+      public long getUsedProcessor() {
+        return usedProcessor_;
+      }
+      /**
+       * <pre>
+       * 服务的已用内核数 (单位: 个)
+       * </pre>
+       *
+       * <code>uint64 used_processor = 6;</code>
+       * @param value The usedProcessor to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsedProcessor(long value) {
+        
+        usedProcessor_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 服务的已用内核数 (单位: 个)
+       * </pre>
+       *
+       * <code>uint64 used_processor = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUsedProcessor() {
+        
+        usedProcessor_ = 0L;
         onChanged();
         return this;
       }
@@ -933,6 +1198,49 @@ public final class CommonMessage {
         onChanged();
         return this;
       }
+
+      private long usedDisk_ ;
+      /**
+       * <pre>
+       * 服务的医用磁盘空间 (单位: byte)
+       * </pre>
+       *
+       * <code>uint64 used_disk = 8;</code>
+       * @return The usedDisk.
+       */
+      @java.lang.Override
+      public long getUsedDisk() {
+        return usedDisk_;
+      }
+      /**
+       * <pre>
+       * 服务的医用磁盘空间 (单位: byte)
+       * </pre>
+       *
+       * <code>uint64 used_disk = 8;</code>
+       * @param value The usedDisk to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsedDisk(long value) {
+        
+        usedDisk_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 服务的医用磁盘空间 (单位: byte)
+       * </pre>
+       *
+       * <code>uint64 used_disk = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUsedDisk() {
+        
+        usedDisk_ = 0L;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -946,41 +1254,41 @@ public final class CommonMessage {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:rpcapi.ResourceUsedDetailShow)
+      // @@protoc_insertion_point(builder_scope:rpcapi.ResourceUsedDetail)
     }
 
-    // @@protoc_insertion_point(class_scope:rpcapi.ResourceUsedDetailShow)
-    private static final com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:rpcapi.ResourceUsedDetail)
+    private static final com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow();
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail();
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getDefaultInstance() {
+    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<ResourceUsedDetailShow>
-        PARSER = new com.google.protobuf.AbstractParser<ResourceUsedDetailShow>() {
+    private static final com.google.protobuf.Parser<ResourceUsedDetail>
+        PARSER = new com.google.protobuf.AbstractParser<ResourceUsedDetail>() {
       @java.lang.Override
-      public ResourceUsedDetailShow parsePartialFrom(
+      public ResourceUsedDetail parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ResourceUsedDetailShow(input, extensionRegistry);
+        return new ResourceUsedDetail(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<ResourceUsedDetailShow> parser() {
+    public static com.google.protobuf.Parser<ResourceUsedDetail> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<ResourceUsedDetailShow> getParserForType() {
+    public com.google.protobuf.Parser<ResourceUsedDetail> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getDefaultInstanceForType() {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -3132,610 +3440,6 @@ public final class CommonMessage {
 
   }
 
-  public interface DeleteRegisteredNodeRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.DeleteRegisteredNodeRequest)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <pre>
-     * 种子节点的唯一Id
-     * </pre>
-     *
-     * <code>string id = 1;</code>
-     * @return The id.
-     */
-    java.lang.String getId();
-    /**
-     * <pre>
-     * 种子节点的唯一Id
-     * </pre>
-     *
-     * <code>string id = 1;</code>
-     * @return The bytes for id.
-     */
-    com.google.protobuf.ByteString
-        getIdBytes();
-  }
-  /**
-   * Protobuf type {@code rpcapi.DeleteRegisteredNodeRequest}
-   */
-  public static final class DeleteRegisteredNodeRequest extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.DeleteRegisteredNodeRequest)
-      DeleteRegisteredNodeRequestOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use DeleteRegisteredNodeRequest.newBuilder() to construct.
-    private DeleteRegisteredNodeRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private DeleteRegisteredNodeRequest() {
-      id_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new DeleteRegisteredNodeRequest();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private DeleteRegisteredNodeRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              id_ = s;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_DeleteRegisteredNodeRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.class, com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.Builder.class);
-    }
-
-    public static final int ID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object id_;
-    /**
-     * <pre>
-     * 种子节点的唯一Id
-     * </pre>
-     *
-     * <code>string id = 1;</code>
-     * @return The id.
-     */
-    @java.lang.Override
-    public java.lang.String getId() {
-      java.lang.Object ref = id_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        id_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 种子节点的唯一Id
-     * </pre>
-     *
-     * <code>string id = 1;</code>
-     * @return The bytes for id.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getIdBytes() {
-      java.lang.Object ref = id_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        id_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest)) {
-        return super.equals(obj);
-      }
-      com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest other = (com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest) obj;
-
-      if (!getId()
-          .equals(other.getId())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + ID_FIELD_NUMBER;
-      hash = (53 * hash) + getId().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code rpcapi.DeleteRegisteredNodeRequest}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.DeleteRegisteredNodeRequest)
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequestOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_DeleteRegisteredNodeRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.class, com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.Builder.class);
-      }
-
-      // Construct using com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        id_ = "";
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.CommonMessage.internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor;
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest build() {
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest result = new com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest(this);
-        result.id_ = id_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest.getDefaultInstance()) return this;
-        if (!other.getId().isEmpty()) {
-          id_ = other.id_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object id_ = "";
-      /**
-       * <pre>
-       * 种子节点的唯一Id
-       * </pre>
-       *
-       * <code>string id = 1;</code>
-       * @return The id.
-       */
-      public java.lang.String getId() {
-        java.lang.Object ref = id_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          id_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 种子节点的唯一Id
-       * </pre>
-       *
-       * <code>string id = 1;</code>
-       * @return The bytes for id.
-       */
-      public com.google.protobuf.ByteString
-          getIdBytes() {
-        java.lang.Object ref = id_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          id_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 种子节点的唯一Id
-       * </pre>
-       *
-       * <code>string id = 1;</code>
-       * @param value The id to set.
-       * @return This builder for chaining.
-       */
-      public Builder setId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        id_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 种子节点的唯一Id
-       * </pre>
-       *
-       * <code>string id = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearId() {
-        
-        id_ = getDefaultInstance().getId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 种子节点的唯一Id
-       * </pre>
-       *
-       * <code>string id = 1;</code>
-       * @param value The bytes for id to set.
-       * @return This builder for chaining.
-       */
-      public Builder setIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        id_ = value;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:rpcapi.DeleteRegisteredNodeRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:rpcapi.DeleteRegisteredNodeRequest)
-    private static final com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest();
-    }
-
-    public static com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<DeleteRegisteredNodeRequest>
-        PARSER = new com.google.protobuf.AbstractParser<DeleteRegisteredNodeRequest>() {
-      @java.lang.Override
-      public DeleteRegisteredNodeRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new DeleteRegisteredNodeRequest(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<DeleteRegisteredNodeRequest> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<DeleteRegisteredNodeRequest> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.DeleteRegisteredNodeRequest getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface EmptyGetParamsOrBuilder extends
       // @@protoc_insertion_point(interface_extends:rpcapi.EmptyGetParams)
       com.google.protobuf.MessageOrBuilder {
@@ -4849,10 +4553,10 @@ public final class CommonMessage {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_ResourceUsedDetailShow_descriptor;
+    internal_static_rpcapi_ResourceUsedDetail_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_ResourceUsedDetailShow_fieldAccessorTable;
+      internal_static_rpcapi_ResourceUsedDetail_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_OrganizationIdentityInfo_descriptor;
   private static final 
@@ -4863,11 +4567,6 @@ public final class CommonMessage {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_TaskOrganizationIdentityInfo_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_DeleteRegisteredNodeRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_EmptyGetParams_descriptor;
   private static final 
@@ -4888,31 +4587,32 @@ public final class CommonMessage {
   static {
     java.lang.String[] descriptorData = {
       "\n carrier/api/common_message.proto\022\006rpca" +
-      "pi\"\237\001\n\026ResourceUsedDetailShow\022\021\n\ttotal_m" +
-      "em\030\002 \001(\004\022\020\n\010used_mem\030\003 \001(\004\022\027\n\017total_proc" +
-      "essor\030\004 \001(\004\022\026\n\016used_processor\030\005 \001(\004\022\027\n\017t" +
-      "otal_bandwidth\030\006 \001(\004\022\026\n\016used_bandwidth\030\007" +
-      " \001(\004\"N\n\030OrganizationIdentityInfo\022\014\n\004name" +
-      "\030\001 \001(\t\022\017\n\007node_id\030\002 \001(\t\022\023\n\013identity_id\030\003" +
-      " \001(\t\"d\n\034TaskOrganizationIdentityInfo\022\020\n\010" +
-      "party_id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007node_id\030" +
-      "\003 \001(\t\022\023\n\013identity_id\030\004 \001(\t\")\n\033DeleteRegi" +
-      "steredNodeRequest\022\n\n\002id\030\001 \001(\t\"\020\n\016EmptyGe" +
-      "tParams\"1\n\022SimpleResponseCode\022\016\n\006status\030" +
-      "\001 \001(\005\022\013\n\003msg\030\002 \001(\tB9\n(com.platon.rosetta" +
-      "net.admin.grpc.serviceB\rCommonMessageb\006p" +
-      "roto3"
+      "pi\"\302\001\n\022ResourceUsedDetail\022\021\n\ttotal_mem\030\001" +
+      " \001(\004\022\027\n\017total_processor\030\002 \001(\004\022\027\n\017total_b" +
+      "andwidth\030\003 \001(\004\022\022\n\ntotal_disk\030\004 \001(\004\022\020\n\010us" +
+      "ed_mem\030\005 \001(\004\022\026\n\016used_processor\030\006 \001(\004\022\026\n\016" +
+      "used_bandwidth\030\007 \001(\004\022\021\n\tused_disk\030\010 \001(\004\"" +
+      "N\n\030OrganizationIdentityInfo\022\014\n\004name\030\001 \001(" +
+      "\t\022\017\n\007node_id\030\002 \001(\t\022\023\n\013identity_id\030\003 \001(\t\"" +
+      "d\n\034TaskOrganizationIdentityInfo\022\020\n\010party" +
+      "_id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007node_id\030\003 \001(\t" +
+      "\022\023\n\013identity_id\030\004 \001(\t\"\020\n\016EmptyGetParams\"" +
+      "1\n\022SimpleResponseCode\022\016\n\006status\030\001 \001(\005\022\013\n" +
+      "\003msg\030\002 \001(\t*2\n\010UserType\022\013\n\007Unknown\020\000\022\007\n\003E" +
+      "TH\020\001\022\007\n\003ATP\020\002\022\007\n\003LAT\020\003B9\n(com.platon.ros" +
+      "ettanet.admin.grpc.serviceB\rCommonMessag" +
+      "eb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_rpcapi_ResourceUsedDetailShow_descriptor =
+    internal_static_rpcapi_ResourceUsedDetail_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_rpcapi_ResourceUsedDetailShow_fieldAccessorTable = new
+    internal_static_rpcapi_ResourceUsedDetail_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_ResourceUsedDetailShow_descriptor,
-        new java.lang.String[] { "TotalMem", "UsedMem", "TotalProcessor", "UsedProcessor", "TotalBandwidth", "UsedBandwidth", });
+        internal_static_rpcapi_ResourceUsedDetail_descriptor,
+        new java.lang.String[] { "TotalMem", "TotalProcessor", "TotalBandwidth", "TotalDisk", "UsedMem", "UsedProcessor", "UsedBandwidth", "UsedDisk", });
     internal_static_rpcapi_OrganizationIdentityInfo_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_rpcapi_OrganizationIdentityInfo_fieldAccessorTable = new
@@ -4925,20 +4625,14 @@ public final class CommonMessage {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_TaskOrganizationIdentityInfo_descriptor,
         new java.lang.String[] { "PartyId", "Name", "NodeId", "IdentityId", });
-    internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_rpcapi_DeleteRegisteredNodeRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor,
-        new java.lang.String[] { "Id", });
     internal_static_rpcapi_EmptyGetParams_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_rpcapi_EmptyGetParams_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_EmptyGetParams_descriptor,
         new java.lang.String[] { });
     internal_static_rpcapi_SimpleResponseCode_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_rpcapi_SimpleResponseCode_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_SimpleResponseCode_descriptor,

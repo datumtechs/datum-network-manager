@@ -234,6 +234,9 @@ public final class MetaDataServiceGrpc {
     }
 
     /**
+     * <pre>
+     * 查看全网元数据列表
+     * </pre>
      */
     public void getMetaDataDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListResponse> responseObserver) {
@@ -241,6 +244,9 @@ public final class MetaDataServiceGrpc {
     }
 
     /**
+     * <pre>
+     * 查看某个组织元数据列表
+     * </pre>
      */
     public void getMetaDataDetailListByOwner(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListByOwnerRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListResponse> responseObserver) {
@@ -337,6 +343,9 @@ public final class MetaDataServiceGrpc {
     }
 
     /**
+     * <pre>
+     * 查看全网元数据列表
+     * </pre>
      */
     public void getMetaDataDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListResponse> responseObserver) {
@@ -345,6 +354,9 @@ public final class MetaDataServiceGrpc {
     }
 
     /**
+     * <pre>
+     * 查看某个组织元数据列表
+     * </pre>
      */
     public void getMetaDataDetailListByOwner(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListByOwnerRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListResponse> responseObserver) {
@@ -403,6 +415,9 @@ public final class MetaDataServiceGrpc {
     }
 
     /**
+     * <pre>
+     * 查看全网元数据列表
+     * </pre>
      */
     public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListResponse getMetaDataDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
@@ -410,6 +425,9 @@ public final class MetaDataServiceGrpc {
     }
 
     /**
+     * <pre>
+     * 查看某个组织元数据列表
+     * </pre>
      */
     public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListResponse getMetaDataDetailListByOwner(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListByOwnerRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
@@ -466,6 +484,9 @@ public final class MetaDataServiceGrpc {
     }
 
     /**
+     * <pre>
+     * 查看全网元数据列表
+     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListResponse> getMetaDataDetailList(
         com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
@@ -474,6 +495,9 @@ public final class MetaDataServiceGrpc {
     }
 
     /**
+     * <pre>
+     * 查看某个组织元数据列表
+     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListResponse> getMetaDataDetailListByOwner(
         com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.GetMetaDataDetailListByOwnerRequest request) {

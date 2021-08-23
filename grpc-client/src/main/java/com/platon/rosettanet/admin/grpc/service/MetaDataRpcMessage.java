@@ -60,7 +60,7 @@ public final class MetaDataRpcMessage {
 
     /**
      * <pre>
-     * 元数据名称 (表名)
+     * 元数据名称|数据名称 (表名)
      * </pre>
      *
      * <code>string table_name = 3;</code>
@@ -69,7 +69,7 @@ public final class MetaDataRpcMessage {
     java.lang.String getTableName();
     /**
      * <pre>
-     * 元数据名称 (表名)
+     * 元数据名称|数据名称 (表名)
      * </pre>
      *
      * <code>string table_name = 3;</code>
@@ -180,10 +180,30 @@ public final class MetaDataRpcMessage {
 
     /**
      * <pre>
+     * 元数据所属行业
+     * </pre>
+     *
+     * <code>string industry = 11;</code>
+     * @return The industry.
+     */
+    java.lang.String getIndustry();
+    /**
+     * <pre>
+     * 元数据所属行业
+     * </pre>
+     *
+     * <code>string industry = 11;</code>
+     * @return The bytes for industry.
+     */
+    com.google.protobuf.ByteString
+        getIndustryBytes();
+
+    /**
+     * <pre>
      * 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
      * </pre>
      *
-     * <code>string state = 11;</code>
+     * <code>string state = 12;</code>
      * @return The state.
      */
     java.lang.String getState();
@@ -192,7 +212,7 @@ public final class MetaDataRpcMessage {
      * 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
      * </pre>
      *
-     * <code>string state = 11;</code>
+     * <code>string state = 12;</code>
      * @return The bytes for state.
      */
     com.google.protobuf.ByteString
@@ -221,6 +241,7 @@ public final class MetaDataRpcMessage {
       desc_ = "";
       filePath_ = "";
       fileType_ = "";
+      industry_ = "";
       state_ = "";
     }
 
@@ -311,6 +332,12 @@ public final class MetaDataRpcMessage {
               break;
             }
             case 90: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              industry_ = s;
+              break;
+            }
+            case 98: {
               java.lang.String s = input.readStringRequireUtf8();
 
               state_ = s;
@@ -444,7 +471,7 @@ public final class MetaDataRpcMessage {
     private volatile java.lang.Object tableName_;
     /**
      * <pre>
-     * 元数据名称 (表名)
+     * 元数据名称|数据名称 (表名)
      * </pre>
      *
      * <code>string table_name = 3;</code>
@@ -465,7 +492,7 @@ public final class MetaDataRpcMessage {
     }
     /**
      * <pre>
-     * 元数据名称 (表名)
+     * 元数据名称|数据名称 (表名)
      * </pre>
      *
      * <code>string table_name = 3;</code>
@@ -684,14 +711,60 @@ public final class MetaDataRpcMessage {
       return hasTitle_;
     }
 
-    public static final int STATE_FIELD_NUMBER = 11;
+    public static final int INDUSTRY_FIELD_NUMBER = 11;
+    private volatile java.lang.Object industry_;
+    /**
+     * <pre>
+     * 元数据所属行业
+     * </pre>
+     *
+     * <code>string industry = 11;</code>
+     * @return The industry.
+     */
+    @java.lang.Override
+    public java.lang.String getIndustry() {
+      java.lang.Object ref = industry_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        industry_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 元数据所属行业
+     * </pre>
+     *
+     * <code>string industry = 11;</code>
+     * @return The bytes for industry.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIndustryBytes() {
+      java.lang.Object ref = industry_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        industry_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int STATE_FIELD_NUMBER = 12;
     private volatile java.lang.Object state_;
     /**
      * <pre>
      * 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
      * </pre>
      *
-     * <code>string state = 11;</code>
+     * <code>string state = 12;</code>
      * @return The state.
      */
     @java.lang.Override
@@ -712,7 +785,7 @@ public final class MetaDataRpcMessage {
      * 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
      * </pre>
      *
-     * <code>string state = 11;</code>
+     * <code>string state = 12;</code>
      * @return The bytes for state.
      */
     @java.lang.Override
@@ -774,8 +847,11 @@ public final class MetaDataRpcMessage {
       if (hasTitle_ != false) {
         output.writeBool(10, hasTitle_);
       }
+      if (!getIndustryBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, industry_);
+      }
       if (!getStateBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, state_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 12, state_);
       }
       unknownFields.writeTo(output);
     }
@@ -820,8 +896,11 @@ public final class MetaDataRpcMessage {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(10, hasTitle_);
       }
+      if (!getIndustryBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, industry_);
+      }
       if (!getStateBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, state_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, state_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -858,6 +937,8 @@ public final class MetaDataRpcMessage {
           .equals(other.getFileType())) return false;
       if (getHasTitle()
           != other.getHasTitle()) return false;
+      if (!getIndustry()
+          .equals(other.getIndustry())) return false;
       if (!getState()
           .equals(other.getState())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -892,6 +973,8 @@ public final class MetaDataRpcMessage {
       hash = (37 * hash) + HAS_TITLE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getHasTitle());
+      hash = (37 * hash) + INDUSTRY_FIELD_NUMBER;
+      hash = (53 * hash) + getIndustry().hashCode();
       hash = (37 * hash) + STATE_FIELD_NUMBER;
       hash = (53 * hash) + getState().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -1051,6 +1134,8 @@ public final class MetaDataRpcMessage {
 
         hasTitle_ = false;
 
+        industry_ = "";
+
         state_ = "";
 
         return this;
@@ -1089,6 +1174,7 @@ public final class MetaDataRpcMessage {
         result.size_ = size_;
         result.fileType_ = fileType_;
         result.hasTitle_ = hasTitle_;
+        result.industry_ = industry_;
         result.state_ = state_;
         onBuilt();
         return result;
@@ -1173,6 +1259,10 @@ public final class MetaDataRpcMessage {
         }
         if (other.getHasTitle() != false) {
           setHasTitle(other.getHasTitle());
+        }
+        if (!other.getIndustry().isEmpty()) {
+          industry_ = other.industry_;
+          onChanged();
         }
         if (!other.getState().isEmpty()) {
           state_ = other.state_;
@@ -1402,7 +1492,7 @@ public final class MetaDataRpcMessage {
       private java.lang.Object tableName_ = "";
       /**
        * <pre>
-       * 元数据名称 (表名)
+       * 元数据名称|数据名称 (表名)
        * </pre>
        *
        * <code>string table_name = 3;</code>
@@ -1422,7 +1512,7 @@ public final class MetaDataRpcMessage {
       }
       /**
        * <pre>
-       * 元数据名称 (表名)
+       * 元数据名称|数据名称 (表名)
        * </pre>
        *
        * <code>string table_name = 3;</code>
@@ -1443,7 +1533,7 @@ public final class MetaDataRpcMessage {
       }
       /**
        * <pre>
-       * 元数据名称 (表名)
+       * 元数据名称|数据名称 (表名)
        * </pre>
        *
        * <code>string table_name = 3;</code>
@@ -1462,7 +1552,7 @@ public final class MetaDataRpcMessage {
       }
       /**
        * <pre>
-       * 元数据名称 (表名)
+       * 元数据名称|数据名称 (表名)
        * </pre>
        *
        * <code>string table_name = 3;</code>
@@ -1476,7 +1566,7 @@ public final class MetaDataRpcMessage {
       }
       /**
        * <pre>
-       * 元数据名称 (表名)
+       * 元数据名称|数据名称 (表名)
        * </pre>
        *
        * <code>string table_name = 3;</code>
@@ -1955,13 +2045,109 @@ public final class MetaDataRpcMessage {
         return this;
       }
 
+      private java.lang.Object industry_ = "";
+      /**
+       * <pre>
+       * 元数据所属行业
+       * </pre>
+       *
+       * <code>string industry = 11;</code>
+       * @return The industry.
+       */
+      public java.lang.String getIndustry() {
+        java.lang.Object ref = industry_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          industry_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 元数据所属行业
+       * </pre>
+       *
+       * <code>string industry = 11;</code>
+       * @return The bytes for industry.
+       */
+      public com.google.protobuf.ByteString
+          getIndustryBytes() {
+        java.lang.Object ref = industry_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          industry_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 元数据所属行业
+       * </pre>
+       *
+       * <code>string industry = 11;</code>
+       * @param value The industry to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIndustry(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        industry_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据所属行业
+       * </pre>
+       *
+       * <code>string industry = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIndustry() {
+        
+        industry_ = getDefaultInstance().getIndustry();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据所属行业
+       * </pre>
+       *
+       * <code>string industry = 11;</code>
+       * @param value The bytes for industry to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIndustryBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        industry_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object state_ = "";
       /**
        * <pre>
        * 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
        * </pre>
        *
-       * <code>string state = 11;</code>
+       * <code>string state = 12;</code>
        * @return The state.
        */
       public java.lang.String getState() {
@@ -1981,7 +2167,7 @@ public final class MetaDataRpcMessage {
        * 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
        * </pre>
        *
-       * <code>string state = 11;</code>
+       * <code>string state = 12;</code>
        * @return The bytes for state.
        */
       public com.google.protobuf.ByteString
@@ -2002,7 +2188,7 @@ public final class MetaDataRpcMessage {
        * 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
        * </pre>
        *
-       * <code>string state = 11;</code>
+       * <code>string state = 12;</code>
        * @param value The state to set.
        * @return This builder for chaining.
        */
@@ -2021,7 +2207,7 @@ public final class MetaDataRpcMessage {
        * 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
        * </pre>
        *
-       * <code>string state = 11;</code>
+       * <code>string state = 12;</code>
        * @return This builder for chaining.
        */
       public Builder clearState() {
@@ -2035,7 +2221,7 @@ public final class MetaDataRpcMessage {
        * 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
        * </pre>
        *
-       * <code>string state = 11;</code>
+       * <code>string state = 12;</code>
        * @param value The bytes for state to set.
        * @return This builder for chaining.
        */
@@ -3267,8 +3453,8 @@ public final class MetaDataRpcMessage {
 
   }
 
-  public interface MetaDataDetailShowOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.MetaDataDetailShow)
+  public interface MetaDataDetailOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.MetaDataDetail)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -3309,24 +3495,34 @@ public final class MetaDataRpcMessage {
      */
     com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataColumnDetailOrBuilder getColumnMetaOrBuilder(
         int index);
+
+    /**
+     * <pre>
+     * 该元数据参与过得任务数 (已完成的和正在执行的)
+     * </pre>
+     *
+     * <code>uint32 total_task_count = 3;</code>
+     * @return The totalTaskCount.
+     */
+    int getTotalTaskCount();
   }
   /**
    * <pre>
    * 源文件的详情
    * </pre>
    *
-   * Protobuf type {@code rpcapi.MetaDataDetailShow}
+   * Protobuf type {@code rpcapi.MetaDataDetail}
    */
-  public static final class MetaDataDetailShow extends
+  public static final class MetaDataDetail extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.MetaDataDetailShow)
-      MetaDataDetailShowOrBuilder {
+      // @@protoc_insertion_point(message_implements:rpcapi.MetaDataDetail)
+      MetaDataDetailOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use MetaDataDetailShow.newBuilder() to construct.
-    private MetaDataDetailShow(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use MetaDataDetail.newBuilder() to construct.
+    private MetaDataDetail(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private MetaDataDetailShow() {
+    private MetaDataDetail() {
       columnMeta_ = java.util.Collections.emptyList();
     }
 
@@ -3334,7 +3530,7 @@ public final class MetaDataRpcMessage {
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new MetaDataDetailShow();
+      return new MetaDataDetail();
     }
 
     @java.lang.Override
@@ -3342,7 +3538,7 @@ public final class MetaDataRpcMessage {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private MetaDataDetailShow(
+    private MetaDataDetail(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3383,6 +3579,11 @@ public final class MetaDataRpcMessage {
                   input.readMessage(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataColumnDetail.parser(), extensionRegistry));
               break;
             }
+            case 24: {
+
+              totalTaskCount_ = input.readUInt32();
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -3407,15 +3608,15 @@ public final class MetaDataRpcMessage {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.internal_static_rpcapi_MetaDataDetailShow_descriptor;
+      return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.internal_static_rpcapi_MetaDataDetail_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.internal_static_rpcapi_MetaDataDetailShow_fieldAccessorTable
+      return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.internal_static_rpcapi_MetaDataDetail_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.class, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder.class);
+              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.class, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder.class);
     }
 
     public static final int META_DATA_SUMMARY_FIELD_NUMBER = 1;
@@ -3484,6 +3685,21 @@ public final class MetaDataRpcMessage {
       return columnMeta_.get(index);
     }
 
+    public static final int TOTAL_TASK_COUNT_FIELD_NUMBER = 3;
+    private int totalTaskCount_;
+    /**
+     * <pre>
+     * 该元数据参与过得任务数 (已完成的和正在执行的)
+     * </pre>
+     *
+     * <code>uint32 total_task_count = 3;</code>
+     * @return The totalTaskCount.
+     */
+    @java.lang.Override
+    public int getTotalTaskCount() {
+      return totalTaskCount_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -3504,6 +3720,9 @@ public final class MetaDataRpcMessage {
       for (int i = 0; i < columnMeta_.size(); i++) {
         output.writeMessage(2, columnMeta_.get(i));
       }
+      if (totalTaskCount_ != 0) {
+        output.writeUInt32(3, totalTaskCount_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3521,6 +3740,10 @@ public final class MetaDataRpcMessage {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, columnMeta_.get(i));
       }
+      if (totalTaskCount_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, totalTaskCount_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -3531,10 +3754,10 @@ public final class MetaDataRpcMessage {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow)) {
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail)) {
         return super.equals(obj);
       }
-      com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow other = (com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow) obj;
+      com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail other = (com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail) obj;
 
       if (hasMetaDataSummary() != other.hasMetaDataSummary()) return false;
       if (hasMetaDataSummary()) {
@@ -3543,6 +3766,8 @@ public final class MetaDataRpcMessage {
       }
       if (!getColumnMetaList()
           .equals(other.getColumnMetaList())) return false;
+      if (getTotalTaskCount()
+          != other.getTotalTaskCount()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3562,74 +3787,76 @@ public final class MetaDataRpcMessage {
         hash = (37 * hash) + COLUMN_META_FIELD_NUMBER;
         hash = (53 * hash) + getColumnMetaList().hashCode();
       }
+      hash = (37 * hash) + TOTAL_TASK_COUNT_FIELD_NUMBER;
+      hash = (53 * hash) + getTotalTaskCount();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseFrom(byte[] data)
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseDelimitedFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseDelimitedFrom(
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3642,7 +3869,7 @@ public final class MetaDataRpcMessage {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow prototype) {
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -3662,26 +3889,26 @@ public final class MetaDataRpcMessage {
      * 源文件的详情
      * </pre>
      *
-     * Protobuf type {@code rpcapi.MetaDataDetailShow}
+     * Protobuf type {@code rpcapi.MetaDataDetail}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.MetaDataDetailShow)
-        com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder {
+        // @@protoc_insertion_point(builder_implements:rpcapi.MetaDataDetail)
+        com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.internal_static_rpcapi_MetaDataDetailShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.internal_static_rpcapi_MetaDataDetail_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.internal_static_rpcapi_MetaDataDetailShow_fieldAccessorTable
+        return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.internal_static_rpcapi_MetaDataDetail_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.class, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder.class);
+                com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.class, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder.class);
       }
 
-      // Construct using com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.newBuilder()
+      // Construct using com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3712,23 +3939,25 @@ public final class MetaDataRpcMessage {
         } else {
           columnMetaBuilder_.clear();
         }
+        totalTaskCount_ = 0;
+
         return this;
       }
 
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.internal_static_rpcapi_MetaDataDetailShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.internal_static_rpcapi_MetaDataDetail_descriptor;
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.getDefaultInstance();
+      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow build() {
-        com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow result = buildPartial();
+      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail build() {
+        com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -3736,8 +3965,8 @@ public final class MetaDataRpcMessage {
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow result = new com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow(this);
+      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail result = new com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail(this);
         int from_bitField0_ = bitField0_;
         if (metaDataSummaryBuilder_ == null) {
           result.metaDataSummary_ = metaDataSummary_;
@@ -3753,6 +3982,7 @@ public final class MetaDataRpcMessage {
         } else {
           result.columnMeta_ = columnMetaBuilder_.build();
         }
+        result.totalTaskCount_ = totalTaskCount_;
         onBuilt();
         return result;
       }
@@ -3791,16 +4021,16 @@ public final class MetaDataRpcMessage {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow)other);
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.getDefaultInstance()) return this;
         if (other.hasMetaDataSummary()) {
           mergeMetaDataSummary(other.getMetaDataSummary());
         }
@@ -3830,6 +4060,9 @@ public final class MetaDataRpcMessage {
             }
           }
         }
+        if (other.getTotalTaskCount() != 0) {
+          setTotalTaskCount(other.getTotalTaskCount());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -3845,11 +4078,11 @@ public final class MetaDataRpcMessage {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow parsedMessage = null;
+        com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow) e.getUnfinishedMessage();
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -4218,6 +4451,49 @@ public final class MetaDataRpcMessage {
         }
         return columnMetaBuilder_;
       }
+
+      private int totalTaskCount_ ;
+      /**
+       * <pre>
+       * 该元数据参与过得任务数 (已完成的和正在执行的)
+       * </pre>
+       *
+       * <code>uint32 total_task_count = 3;</code>
+       * @return The totalTaskCount.
+       */
+      @java.lang.Override
+      public int getTotalTaskCount() {
+        return totalTaskCount_;
+      }
+      /**
+       * <pre>
+       * 该元数据参与过得任务数 (已完成的和正在执行的)
+       * </pre>
+       *
+       * <code>uint32 total_task_count = 3;</code>
+       * @param value The totalTaskCount to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTotalTaskCount(int value) {
+        
+        totalTaskCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 该元数据参与过得任务数 (已完成的和正在执行的)
+       * </pre>
+       *
+       * <code>uint32 total_task_count = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTotalTaskCount() {
+        
+        totalTaskCount_ = 0;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -4231,41 +4507,41 @@ public final class MetaDataRpcMessage {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:rpcapi.MetaDataDetailShow)
+      // @@protoc_insertion_point(builder_scope:rpcapi.MetaDataDetail)
     }
 
-    // @@protoc_insertion_point(class_scope:rpcapi.MetaDataDetailShow)
-    private static final com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:rpcapi.MetaDataDetail)
+    private static final com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow();
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail();
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow getDefaultInstance() {
+    public static com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<MetaDataDetailShow>
-        PARSER = new com.google.protobuf.AbstractParser<MetaDataDetailShow>() {
+    private static final com.google.protobuf.Parser<MetaDataDetail>
+        PARSER = new com.google.protobuf.AbstractParser<MetaDataDetail>() {
       @java.lang.Override
-      public MetaDataDetailShow parsePartialFrom(
+      public MetaDataDetail parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new MetaDataDetailShow(input, extensionRegistry);
+        return new MetaDataDetail(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<MetaDataDetailShow> parser() {
+    public static com.google.protobuf.Parser<MetaDataDetail> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<MetaDataDetailShow> getParserForType() {
+    public com.google.protobuf.Parser<MetaDataDetail> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow getDefaultInstanceForType() {
+    public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -5025,7 +5301,7 @@ public final class MetaDataRpcMessage {
      * 元文件详情主体
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 2;</code>
      * @return Whether the information field is set.
      */
     boolean hasInformation();
@@ -5034,18 +5310,18 @@ public final class MetaDataRpcMessage {
      * 元文件详情主体
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 2;</code>
      * @return The information.
      */
-    com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow getInformation();
+    com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail getInformation();
     /**
      * <pre>
      * 元文件详情主体
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 2;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder getInformationOrBuilder();
+    com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder getInformationOrBuilder();
   }
   /**
    * Protobuf type {@code rpcapi.GetMetaDataDetailResponse}
@@ -5106,11 +5382,11 @@ public final class MetaDataRpcMessage {
               break;
             }
             case 18: {
-              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder subBuilder = null;
+              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder subBuilder = null;
               if (information_ != null) {
                 subBuilder = information_.toBuilder();
               }
-              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.parser(), extensionRegistry);
+              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(information_);
                 information_ = subBuilder.buildPartial();
@@ -5189,13 +5465,13 @@ public final class MetaDataRpcMessage {
     }
 
     public static final int INFORMATION_FIELD_NUMBER = 2;
-    private com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow information_;
+    private com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail information_;
     /**
      * <pre>
      * 元文件详情主体
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 2;</code>
      * @return Whether the information field is set.
      */
     @java.lang.Override
@@ -5207,22 +5483,22 @@ public final class MetaDataRpcMessage {
      * 元文件详情主体
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 2;</code>
      * @return The information.
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow getInformation() {
-      return information_ == null ? com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.getDefaultInstance() : information_;
+    public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail getInformation() {
+      return information_ == null ? com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.getDefaultInstance() : information_;
     }
     /**
      * <pre>
      * 元文件详情主体
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 2;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder getInformationOrBuilder() {
+    public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder getInformationOrBuilder() {
       return getInformation();
     }
 
@@ -5726,15 +6002,15 @@ public final class MetaDataRpcMessage {
         return ownerBuilder_;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow information_;
+      private com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail information_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder> informationBuilder_;
+          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder> informationBuilder_;
       /**
        * <pre>
        * 元文件详情主体
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 2;</code>
        * @return Whether the information field is set.
        */
       public boolean hasInformation() {
@@ -5745,12 +6021,12 @@ public final class MetaDataRpcMessage {
        * 元文件详情主体
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 2;</code>
        * @return The information.
        */
-      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow getInformation() {
+      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail getInformation() {
         if (informationBuilder_ == null) {
-          return information_ == null ? com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.getDefaultInstance() : information_;
+          return information_ == null ? com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.getDefaultInstance() : information_;
         } else {
           return informationBuilder_.getMessage();
         }
@@ -5760,9 +6036,9 @@ public final class MetaDataRpcMessage {
        * 元文件详情主体
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 2;</code>
        */
-      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow value) {
+      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail value) {
         if (informationBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -5780,10 +6056,10 @@ public final class MetaDataRpcMessage {
        * 元文件详情主体
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 2;</code>
        */
       public Builder setInformation(
-          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder builderForValue) {
         if (informationBuilder_ == null) {
           information_ = builderForValue.build();
           onChanged();
@@ -5798,13 +6074,13 @@ public final class MetaDataRpcMessage {
        * 元文件详情主体
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 2;</code>
        */
-      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow value) {
+      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail value) {
         if (informationBuilder_ == null) {
           if (information_ != null) {
             information_ =
-              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.newBuilder(information_).mergeFrom(value).buildPartial();
+              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.newBuilder(information_).mergeFrom(value).buildPartial();
           } else {
             information_ = value;
           }
@@ -5820,7 +6096,7 @@ public final class MetaDataRpcMessage {
        * 元文件详情主体
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 2;</code>
        */
       public Builder clearInformation() {
         if (informationBuilder_ == null) {
@@ -5838,9 +6114,9 @@ public final class MetaDataRpcMessage {
        * 元文件详情主体
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 2;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder getInformationBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder getInformationBuilder() {
         
         onChanged();
         return getInformationFieldBuilder().getBuilder();
@@ -5850,14 +6126,14 @@ public final class MetaDataRpcMessage {
        * 元文件详情主体
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 2;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder getInformationOrBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder getInformationOrBuilder() {
         if (informationBuilder_ != null) {
           return informationBuilder_.getMessageOrBuilder();
         } else {
           return information_ == null ?
-              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.getDefaultInstance() : information_;
+              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.getDefaultInstance() : information_;
         }
       }
       /**
@@ -5865,14 +6141,14 @@ public final class MetaDataRpcMessage {
        * 元文件详情主体
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder> 
           getInformationFieldBuilder() {
         if (informationBuilder_ == null) {
           informationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder>(
                   getInformation(),
                   getParentForChildren(),
                   isClean());
@@ -5939,37 +6215,10 @@ public final class MetaDataRpcMessage {
 
     /**
      * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return Whether the owner field is set.
-     */
-    boolean hasOwner();
-    /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return The owner.
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner();
-    /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder();
-
-    /**
-     * <pre>
      * 元数据详情
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 1;</code>
      * @return Whether the information field is set.
      */
     boolean hasInformation();
@@ -5978,18 +6227,18 @@ public final class MetaDataRpcMessage {
      * 元数据详情
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 1;</code>
      * @return The information.
      */
-    com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow getInformation();
+    com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail getInformation();
     /**
      * <pre>
      * 元数据详情
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 1;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder getInformationOrBuilder();
+    com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder getInformationOrBuilder();
   }
   /**
    * Protobuf type {@code rpcapi.PublishMetaDataRequest}
@@ -6037,24 +6286,11 @@ public final class MetaDataRpcMessage {
               done = true;
               break;
             case 10: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder subBuilder = null;
-              if (owner_ != null) {
-                subBuilder = owner_.toBuilder();
-              }
-              owner_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(owner_);
-                owner_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 18: {
-              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder subBuilder = null;
+              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder subBuilder = null;
               if (information_ != null) {
                 subBuilder = information_.toBuilder();
               }
-              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.parser(), extensionRegistry);
+              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(information_);
                 information_ = subBuilder.buildPartial();
@@ -6094,52 +6330,14 @@ public final class MetaDataRpcMessage {
               com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.PublishMetaDataRequest.class, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.PublishMetaDataRequest.Builder.class);
     }
 
-    public static final int OWNER_FIELD_NUMBER = 1;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo owner_;
-    /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return Whether the owner field is set.
-     */
-    @java.lang.Override
-    public boolean hasOwner() {
-      return owner_ != null;
-    }
-    /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return The owner.
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner() {
-      return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-    }
-    /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-      return getOwner();
-    }
-
-    public static final int INFORMATION_FIELD_NUMBER = 2;
-    private com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow information_;
+    public static final int INFORMATION_FIELD_NUMBER = 1;
+    private com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail information_;
     /**
      * <pre>
      * 元数据详情
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 1;</code>
      * @return Whether the information field is set.
      */
     @java.lang.Override
@@ -6151,22 +6349,22 @@ public final class MetaDataRpcMessage {
      * 元数据详情
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 1;</code>
      * @return The information.
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow getInformation() {
-      return information_ == null ? com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.getDefaultInstance() : information_;
+    public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail getInformation() {
+      return information_ == null ? com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.getDefaultInstance() : information_;
     }
     /**
      * <pre>
      * 元数据详情
      * </pre>
      *
-     * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+     * <code>.rpcapi.MetaDataDetail information = 1;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder getInformationOrBuilder() {
+    public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder getInformationOrBuilder() {
       return getInformation();
     }
 
@@ -6184,11 +6382,8 @@ public final class MetaDataRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (owner_ != null) {
-        output.writeMessage(1, getOwner());
-      }
       if (information_ != null) {
-        output.writeMessage(2, getInformation());
+        output.writeMessage(1, getInformation());
       }
       unknownFields.writeTo(output);
     }
@@ -6199,13 +6394,9 @@ public final class MetaDataRpcMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (owner_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getOwner());
-      }
       if (information_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getInformation());
+          .computeMessageSize(1, getInformation());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6222,11 +6413,6 @@ public final class MetaDataRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.PublishMetaDataRequest other = (com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.PublishMetaDataRequest) obj;
 
-      if (hasOwner() != other.hasOwner()) return false;
-      if (hasOwner()) {
-        if (!getOwner()
-            .equals(other.getOwner())) return false;
-      }
       if (hasInformation() != other.hasInformation()) return false;
       if (hasInformation()) {
         if (!getInformation()
@@ -6243,10 +6429,6 @@ public final class MetaDataRpcMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasOwner()) {
-        hash = (37 * hash) + OWNER_FIELD_NUMBER;
-        hash = (53 * hash) + getOwner().hashCode();
-      }
       if (hasInformation()) {
         hash = (37 * hash) + INFORMATION_FIELD_NUMBER;
         hash = (53 * hash) + getInformation().hashCode();
@@ -6384,12 +6566,6 @@ public final class MetaDataRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (ownerBuilder_ == null) {
-          owner_ = null;
-        } else {
-          owner_ = null;
-          ownerBuilder_ = null;
-        }
         if (informationBuilder_ == null) {
           information_ = null;
         } else {
@@ -6422,11 +6598,6 @@ public final class MetaDataRpcMessage {
       @java.lang.Override
       public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.PublishMetaDataRequest buildPartial() {
         com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.PublishMetaDataRequest result = new com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.PublishMetaDataRequest(this);
-        if (ownerBuilder_ == null) {
-          result.owner_ = owner_;
-        } else {
-          result.owner_ = ownerBuilder_.build();
-        }
         if (informationBuilder_ == null) {
           result.information_ = information_;
         } else {
@@ -6480,9 +6651,6 @@ public final class MetaDataRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.PublishMetaDataRequest other) {
         if (other == com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.PublishMetaDataRequest.getDefaultInstance()) return this;
-        if (other.hasOwner()) {
-          mergeOwner(other.getOwner());
-        }
         if (other.hasInformation()) {
           mergeInformation(other.getInformation());
         }
@@ -6515,170 +6683,15 @@ public final class MetaDataRpcMessage {
         return this;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo owner_;
+      private com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail information_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder> ownerBuilder_;
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       * @return Whether the owner field is set.
-       */
-      public boolean hasOwner() {
-        return ownerBuilder_ != null || owner_ != null;
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       * @return The owner.
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner() {
-        if (ownerBuilder_ == null) {
-          return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-        } else {
-          return ownerBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder setOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          owner_ = value;
-          onChanged();
-        } else {
-          ownerBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder setOwner(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder builderForValue) {
-        if (ownerBuilder_ == null) {
-          owner_ = builderForValue.build();
-          onChanged();
-        } else {
-          ownerBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder mergeOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
-          if (owner_ != null) {
-            owner_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.newBuilder(owner_).mergeFrom(value).buildPartial();
-          } else {
-            owner_ = value;
-          }
-          onChanged();
-        } else {
-          ownerBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder clearOwner() {
-        if (ownerBuilder_ == null) {
-          owner_ = null;
-          onChanged();
-        } else {
-          owner_ = null;
-          ownerBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder getOwnerBuilder() {
-        
-        onChanged();
-        return getOwnerFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-        if (ownerBuilder_ != null) {
-          return ownerBuilder_.getMessageOrBuilder();
-        } else {
-          return owner_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-        }
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder> 
-          getOwnerFieldBuilder() {
-        if (ownerBuilder_ == null) {
-          ownerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder>(
-                  getOwner(),
-                  getParentForChildren(),
-                  isClean());
-          owner_ = null;
-        }
-        return ownerBuilder_;
-      }
-
-      private com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow information_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder> informationBuilder_;
+          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder> informationBuilder_;
       /**
        * <pre>
        * 元数据详情
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 1;</code>
        * @return Whether the information field is set.
        */
       public boolean hasInformation() {
@@ -6689,12 +6702,12 @@ public final class MetaDataRpcMessage {
        * 元数据详情
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 1;</code>
        * @return The information.
        */
-      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow getInformation() {
+      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail getInformation() {
         if (informationBuilder_ == null) {
-          return information_ == null ? com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.getDefaultInstance() : information_;
+          return information_ == null ? com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.getDefaultInstance() : information_;
         } else {
           return informationBuilder_.getMessage();
         }
@@ -6704,9 +6717,9 @@ public final class MetaDataRpcMessage {
        * 元数据详情
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 1;</code>
        */
-      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow value) {
+      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail value) {
         if (informationBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -6724,10 +6737,10 @@ public final class MetaDataRpcMessage {
        * 元数据详情
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 1;</code>
        */
       public Builder setInformation(
-          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder builderForValue) {
         if (informationBuilder_ == null) {
           information_ = builderForValue.build();
           onChanged();
@@ -6742,13 +6755,13 @@ public final class MetaDataRpcMessage {
        * 元数据详情
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 1;</code>
        */
-      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow value) {
+      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail value) {
         if (informationBuilder_ == null) {
           if (information_ != null) {
             information_ =
-              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.newBuilder(information_).mergeFrom(value).buildPartial();
+              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.newBuilder(information_).mergeFrom(value).buildPartial();
           } else {
             information_ = value;
           }
@@ -6764,7 +6777,7 @@ public final class MetaDataRpcMessage {
        * 元数据详情
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 1;</code>
        */
       public Builder clearInformation() {
         if (informationBuilder_ == null) {
@@ -6782,9 +6795,9 @@ public final class MetaDataRpcMessage {
        * 元数据详情
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 1;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder getInformationBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder getInformationBuilder() {
         
         onChanged();
         return getInformationFieldBuilder().getBuilder();
@@ -6794,14 +6807,14 @@ public final class MetaDataRpcMessage {
        * 元数据详情
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 1;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder getInformationOrBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder getInformationOrBuilder() {
         if (informationBuilder_ != null) {
           return informationBuilder_.getMessageOrBuilder();
         } else {
           return information_ == null ?
-              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.getDefaultInstance() : information_;
+              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.getDefaultInstance() : information_;
         }
       }
       /**
@@ -6809,14 +6822,14 @@ public final class MetaDataRpcMessage {
        * 元数据详情
        * </pre>
        *
-       * <code>.rpcapi.MetaDataDetailShow information = 2;</code>
+       * <code>.rpcapi.MetaDataDetail information = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder> 
           getInformationFieldBuilder() {
         if (informationBuilder_ == null) {
           informationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailShowOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetail.Builder, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.MetaDataDetailOrBuilder>(
                   getInformation(),
                   getParentForChildren(),
                   isClean());
@@ -7762,39 +7775,12 @@ public final class MetaDataRpcMessage {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return Whether the owner field is set.
-     */
-    boolean hasOwner();
-    /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return The owner.
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner();
-    /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder();
-
-    /**
-     * <code>string meta_data_id = 2;</code>
+     * <code>string meta_data_id = 1;</code>
      * @return The metaDataId.
      */
     java.lang.String getMetaDataId();
     /**
-     * <code>string meta_data_id = 2;</code>
+     * <code>string meta_data_id = 1;</code>
      * @return The bytes for metaDataId.
      */
     com.google.protobuf.ByteString
@@ -7847,19 +7833,6 @@ public final class MetaDataRpcMessage {
               done = true;
               break;
             case 10: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder subBuilder = null;
-              if (owner_ != null) {
-                subBuilder = owner_.toBuilder();
-              }
-              owner_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(owner_);
-                owner_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
               metaDataId_ = s;
@@ -7897,48 +7870,10 @@ public final class MetaDataRpcMessage {
               com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.RevokeMetaDataRequest.class, com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.RevokeMetaDataRequest.Builder.class);
     }
 
-    public static final int OWNER_FIELD_NUMBER = 1;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo owner_;
-    /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return Whether the owner field is set.
-     */
-    @java.lang.Override
-    public boolean hasOwner() {
-      return owner_ != null;
-    }
-    /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     * @return The owner.
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner() {
-      return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-    }
-    /**
-     * <pre>
-     * 元数据拥有者
-     * </pre>
-     *
-     * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-      return getOwner();
-    }
-
-    public static final int META_DATA_ID_FIELD_NUMBER = 2;
+    public static final int META_DATA_ID_FIELD_NUMBER = 1;
     private volatile java.lang.Object metaDataId_;
     /**
-     * <code>string meta_data_id = 2;</code>
+     * <code>string meta_data_id = 1;</code>
      * @return The metaDataId.
      */
     @java.lang.Override
@@ -7955,7 +7890,7 @@ public final class MetaDataRpcMessage {
       }
     }
     /**
-     * <code>string meta_data_id = 2;</code>
+     * <code>string meta_data_id = 1;</code>
      * @return The bytes for metaDataId.
      */
     @java.lang.Override
@@ -7987,11 +7922,8 @@ public final class MetaDataRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (owner_ != null) {
-        output.writeMessage(1, getOwner());
-      }
       if (!getMetaDataIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, metaDataId_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, metaDataId_);
       }
       unknownFields.writeTo(output);
     }
@@ -8002,12 +7934,8 @@ public final class MetaDataRpcMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (owner_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getOwner());
-      }
       if (!getMetaDataIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, metaDataId_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, metaDataId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8024,11 +7952,6 @@ public final class MetaDataRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.RevokeMetaDataRequest other = (com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.RevokeMetaDataRequest) obj;
 
-      if (hasOwner() != other.hasOwner()) return false;
-      if (hasOwner()) {
-        if (!getOwner()
-            .equals(other.getOwner())) return false;
-      }
       if (!getMetaDataId()
           .equals(other.getMetaDataId())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -8042,10 +7965,6 @@ public final class MetaDataRpcMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasOwner()) {
-        hash = (37 * hash) + OWNER_FIELD_NUMBER;
-        hash = (53 * hash) + getOwner().hashCode();
-      }
       hash = (37 * hash) + META_DATA_ID_FIELD_NUMBER;
       hash = (53 * hash) + getMetaDataId().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
@@ -8181,12 +8100,6 @@ public final class MetaDataRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (ownerBuilder_ == null) {
-          owner_ = null;
-        } else {
-          owner_ = null;
-          ownerBuilder_ = null;
-        }
         metaDataId_ = "";
 
         return this;
@@ -8215,11 +8128,6 @@ public final class MetaDataRpcMessage {
       @java.lang.Override
       public com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.RevokeMetaDataRequest buildPartial() {
         com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.RevokeMetaDataRequest result = new com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.RevokeMetaDataRequest(this);
-        if (ownerBuilder_ == null) {
-          result.owner_ = owner_;
-        } else {
-          result.owner_ = ownerBuilder_.build();
-        }
         result.metaDataId_ = metaDataId_;
         onBuilt();
         return result;
@@ -8269,9 +8177,6 @@ public final class MetaDataRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.RevokeMetaDataRequest other) {
         if (other == com.platon.rosettanet.admin.grpc.service.MetaDataRpcMessage.RevokeMetaDataRequest.getDefaultInstance()) return this;
-        if (other.hasOwner()) {
-          mergeOwner(other.getOwner());
-        }
         if (!other.getMetaDataId().isEmpty()) {
           metaDataId_ = other.metaDataId_;
           onChanged();
@@ -8305,164 +8210,9 @@ public final class MetaDataRpcMessage {
         return this;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo owner_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder> ownerBuilder_;
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       * @return Whether the owner field is set.
-       */
-      public boolean hasOwner() {
-        return ownerBuilder_ != null || owner_ != null;
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       * @return The owner.
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo getOwner() {
-        if (ownerBuilder_ == null) {
-          return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-        } else {
-          return ownerBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder setOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          owner_ = value;
-          onChanged();
-        } else {
-          ownerBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder setOwner(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder builderForValue) {
-        if (ownerBuilder_ == null) {
-          owner_ = builderForValue.build();
-          onChanged();
-        } else {
-          ownerBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder mergeOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
-          if (owner_ != null) {
-            owner_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.newBuilder(owner_).mergeFrom(value).buildPartial();
-          } else {
-            owner_ = value;
-          }
-          onChanged();
-        } else {
-          ownerBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public Builder clearOwner() {
-        if (ownerBuilder_ == null) {
-          owner_ = null;
-          onChanged();
-        } else {
-          owner_ = null;
-          ownerBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder getOwnerBuilder() {
-        
-        onChanged();
-        return getOwnerFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-        if (ownerBuilder_ != null) {
-          return ownerBuilder_.getMessageOrBuilder();
-        } else {
-          return owner_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.getDefaultInstance() : owner_;
-        }
-      }
-      /**
-       * <pre>
-       * 元数据拥有者
-       * </pre>
-       *
-       * <code>.rpcapi.OrganizationIdentityInfo owner = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder> 
-          getOwnerFieldBuilder() {
-        if (ownerBuilder_ == null) {
-          ownerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.OrganizationIdentityInfoOrBuilder>(
-                  getOwner(),
-                  getParentForChildren(),
-                  isClean());
-          owner_ = null;
-        }
-        return ownerBuilder_;
-      }
-
       private java.lang.Object metaDataId_ = "";
       /**
-       * <code>string meta_data_id = 2;</code>
+       * <code>string meta_data_id = 1;</code>
        * @return The metaDataId.
        */
       public java.lang.String getMetaDataId() {
@@ -8478,7 +8228,7 @@ public final class MetaDataRpcMessage {
         }
       }
       /**
-       * <code>string meta_data_id = 2;</code>
+       * <code>string meta_data_id = 1;</code>
        * @return The bytes for metaDataId.
        */
       public com.google.protobuf.ByteString
@@ -8495,7 +8245,7 @@ public final class MetaDataRpcMessage {
         }
       }
       /**
-       * <code>string meta_data_id = 2;</code>
+       * <code>string meta_data_id = 1;</code>
        * @param value The metaDataId to set.
        * @return This builder for chaining.
        */
@@ -8510,7 +8260,7 @@ public final class MetaDataRpcMessage {
         return this;
       }
       /**
-       * <code>string meta_data_id = 2;</code>
+       * <code>string meta_data_id = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearMetaDataId() {
@@ -8520,7 +8270,7 @@ public final class MetaDataRpcMessage {
         return this;
       }
       /**
-       * <code>string meta_data_id = 2;</code>
+       * <code>string meta_data_id = 1;</code>
        * @param value The bytes for metaDataId to set.
        * @return This builder for chaining.
        */
@@ -10348,10 +10098,10 @@ public final class MetaDataRpcMessage {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_MetaDataColumnDetail_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_MetaDataDetailShow_descriptor;
+    internal_static_rpcapi_MetaDataDetail_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_MetaDataDetailShow_fieldAccessorTable;
+      internal_static_rpcapi_MetaDataDetail_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_GetMetaDataDetailRequest_descriptor;
   private static final 
@@ -10398,54 +10148,52 @@ public final class MetaDataRpcMessage {
     java.lang.String[] descriptorData = {
       "\n\"carrier/api/metadata_rpc_api.proto\022\006rp" +
       "capi\032 carrier/api/common_message.proto\032\034" +
-      "google/api/annotations.proto\"\321\001\n\017MetaDat" +
+      "google/api/annotations.proto\"\343\001\n\017MetaDat" +
       "aSummary\022\024\n\014meta_data_id\030\001 \001(\t\022\021\n\torigin" +
       "_id\030\002 \001(\t\022\022\n\ntable_name\030\003 \001(\t\022\014\n\004desc\030\004 " +
       "\001(\t\022\021\n\tfile_path\030\005 \001(\t\022\014\n\004rows\030\006 \001(\r\022\017\n\007" +
       "columns\030\007 \001(\r\022\014\n\004size\030\010 \001(\r\022\021\n\tfile_type" +
-      "\030\t \001(\t\022\021\n\thas_title\030\n \001(\010\022\r\n\005state\030\013 \001(\t" +
-      "\"e\n\024MetaDataColumnDetail\022\016\n\006cindex\030\001 \001(\r" +
-      "\022\r\n\005cname\030\002 \001(\t\022\r\n\005ctype\030\003 \001(\t\022\r\n\005csize\030" +
-      "\004 \001(\r\022\020\n\010ccomment\030\005 \001(\t\"{\n\022MetaDataDetai" +
-      "lShow\0222\n\021meta_data_summary\030\001 \001(\0132\027.rpcap" +
-      "i.MetaDataSummary\0221\n\013column_meta\030\002 \003(\0132\034" +
-      ".rpcapi.MetaDataColumnDetail\"E\n\030GetMetaD" +
-      "ataDetailRequest\022\023\n\013identity_id\030\001 \001(\t\022\024\n" +
-      "\014meta_data_id\030\002 \001(\t\"}\n\031GetMetaDataDetail" +
-      "Response\022/\n\005owner\030\001 \001(\0132 .rpcapi.Organiz" +
-      "ationIdentityInfo\022/\n\013information\030\002 \001(\0132\032" +
-      ".rpcapi.MetaDataDetailShow\"z\n\026PublishMet" +
-      "aDataRequest\022/\n\005owner\030\001 \001(\0132 .rpcapi.Org" +
-      "anizationIdentityInfo\022/\n\013information\030\002 \001" +
-      "(\0132\032.rpcapi.MetaDataDetailShow\"L\n\027Publis" +
-      "hMetaDataResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg" +
-      "\030\002 \001(\t\022\024\n\014meta_data_id\030\003 \001(\t\"^\n\025RevokeMe" +
-      "taDataRequest\022/\n\005owner\030\001 \001(\0132 .rpcapi.Or" +
-      "ganizationIdentityInfo\022\024\n\014meta_data_id\030\002" +
-      " \001(\t\"w\n\035GetMetaDataDetailListResponse\022\016\n" +
-      "\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0229\n\016meta_data_" +
-      "list\030\003 \003(\0132!.rpcapi.GetMetaDataDetailRes" +
-      "ponse\":\n#GetMetaDataDetailListByOwnerReq" +
-      "uest\022\023\n\013identity_id\030\001 \001(\t2\246\005\n\017MetaDataSe" +
-      "rvice\022\200\001\n\021GetMetaDataDetail\022 .rpcapi.Get" +
-      "MetaDataDetailRequest\032!.rpcapi.GetMetaDa" +
-      "taDetailResponse\"&\202\323\344\223\002 \"\033/carrier/v1/me" +
-      "tadata/detail:\001*\022|\n\025GetMetaDataDetailLis" +
-      "t\022\026.rpcapi.EmptyGetParams\032%.rpcapi.GetMe" +
-      "taDataDetailListResponse\"$\202\323\344\223\002\036\"\031/carri" +
-      "er/v1/metadata/list:\001*\022\237\001\n\034GetMetaDataDe" +
-      "tailListByOwner\022+.rpcapi.GetMetaDataDeta" +
-      "ilListByOwnerRequest\032%.rpcapi.GetMetaDat" +
-      "aDetailListResponse\"+\202\323\344\223\002%\" /carrier/v1" +
-      "/metadata/listByOwner:\001*\022{\n\017PublishMetaD" +
-      "ata\022\036.rpcapi.PublishMetaDataRequest\032\037.rp" +
-      "capi.PublishMetaDataResponse\"\'\202\323\344\223\002!\"\034/c" +
-      "arrier/v1/metadata/publish:\001*\022s\n\016RevokeM" +
-      "etaData\022\035.rpcapi.RevokeMetaDataRequest\032\032" +
-      ".rpcapi.SimpleResponseCode\"&\202\323\344\223\002 \"\033/car" +
-      "rier/v1/metadata/revoke:\001*B>\n(com.platon" +
-      ".rosettanet.admin.grpc.serviceB\022MetaData" +
-      "RpcMessageb\006proto3"
+      "\030\t \001(\t\022\021\n\thas_title\030\n \001(\010\022\020\n\010industry\030\013 " +
+      "\001(\t\022\r\n\005state\030\014 \001(\t\"e\n\024MetaDataColumnDeta" +
+      "il\022\016\n\006cindex\030\001 \001(\r\022\r\n\005cname\030\002 \001(\t\022\r\n\005cty" +
+      "pe\030\003 \001(\t\022\r\n\005csize\030\004 \001(\r\022\020\n\010ccomment\030\005 \001(" +
+      "\t\"\221\001\n\016MetaDataDetail\0222\n\021meta_data_summar" +
+      "y\030\001 \001(\0132\027.rpcapi.MetaDataSummary\0221\n\013colu" +
+      "mn_meta\030\002 \003(\0132\034.rpcapi.MetaDataColumnDet" +
+      "ail\022\030\n\020total_task_count\030\003 \001(\r\"E\n\030GetMeta" +
+      "DataDetailRequest\022\023\n\013identity_id\030\001 \001(\t\022\024" +
+      "\n\014meta_data_id\030\002 \001(\t\"y\n\031GetMetaDataDetai" +
+      "lResponse\022/\n\005owner\030\001 \001(\0132 .rpcapi.Organi" +
+      "zationIdentityInfo\022+\n\013information\030\002 \001(\0132" +
+      "\026.rpcapi.MetaDataDetail\"E\n\026PublishMetaDa" +
+      "taRequest\022+\n\013information\030\001 \001(\0132\026.rpcapi." +
+      "MetaDataDetail\"L\n\027PublishMetaDataRespons" +
+      "e\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022\024\n\014meta_d" +
+      "ata_id\030\003 \001(\t\"-\n\025RevokeMetaDataRequest\022\024\n" +
+      "\014meta_data_id\030\001 \001(\t\"w\n\035GetMetaDataDetail" +
+      "ListResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(" +
+      "\t\0229\n\016meta_data_list\030\003 \003(\0132!.rpcapi.GetMe" +
+      "taDataDetailResponse\":\n#GetMetaDataDetai" +
+      "lListByOwnerRequest\022\023\n\013identity_id\030\001 \001(\t" +
+      "2\246\005\n\017MetaDataService\022\200\001\n\021GetMetaDataDeta" +
+      "il\022 .rpcapi.GetMetaDataDetailRequest\032!.r" +
+      "pcapi.GetMetaDataDetailResponse\"&\202\323\344\223\002 \"" +
+      "\033/carrier/v1/metadata/detail:\001*\022|\n\025GetMe" +
+      "taDataDetailList\022\026.rpcapi.EmptyGetParams" +
+      "\032%.rpcapi.GetMetaDataDetailListResponse\"" +
+      "$\202\323\344\223\002\036\"\031/carrier/v1/metadata/list:\001*\022\237\001" +
+      "\n\034GetMetaDataDetailListByOwner\022+.rpcapi." +
+      "GetMetaDataDetailListByOwnerRequest\032%.rp" +
+      "capi.GetMetaDataDetailListResponse\"+\202\323\344\223" +
+      "\002%\" /carrier/v1/metadata/listByOwner:\001*\022" +
+      "{\n\017PublishMetaData\022\036.rpcapi.PublishMetaD" +
+      "ataRequest\032\037.rpcapi.PublishMetaDataRespo" +
+      "nse\"\'\202\323\344\223\002!\"\034/carrier/v1/metadata/publis" +
+      "h:\001*\022s\n\016RevokeMetaData\022\035.rpcapi.RevokeMe" +
+      "taDataRequest\032\032.rpcapi.SimpleResponseCod" +
+      "e\"&\202\323\344\223\002 \"\033/carrier/v1/metadata/revoke:\001" +
+      "*B>\n(com.platon.rosettanet.admin.grpc.se" +
+      "rviceB\022MetaDataRpcMessageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -10458,19 +10206,19 @@ public final class MetaDataRpcMessage {
     internal_static_rpcapi_MetaDataSummary_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_MetaDataSummary_descriptor,
-        new java.lang.String[] { "MetaDataId", "OriginId", "TableName", "Desc", "FilePath", "Rows", "Columns", "Size", "FileType", "HasTitle", "State", });
+        new java.lang.String[] { "MetaDataId", "OriginId", "TableName", "Desc", "FilePath", "Rows", "Columns", "Size", "FileType", "HasTitle", "Industry", "State", });
     internal_static_rpcapi_MetaDataColumnDetail_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_rpcapi_MetaDataColumnDetail_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_MetaDataColumnDetail_descriptor,
         new java.lang.String[] { "Cindex", "Cname", "Ctype", "Csize", "Ccomment", });
-    internal_static_rpcapi_MetaDataDetailShow_descriptor =
+    internal_static_rpcapi_MetaDataDetail_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_rpcapi_MetaDataDetailShow_fieldAccessorTable = new
+    internal_static_rpcapi_MetaDataDetail_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_MetaDataDetailShow_descriptor,
-        new java.lang.String[] { "MetaDataSummary", "ColumnMeta", });
+        internal_static_rpcapi_MetaDataDetail_descriptor,
+        new java.lang.String[] { "MetaDataSummary", "ColumnMeta", "TotalTaskCount", });
     internal_static_rpcapi_GetMetaDataDetailRequest_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_rpcapi_GetMetaDataDetailRequest_fieldAccessorTable = new
@@ -10488,7 +10236,7 @@ public final class MetaDataRpcMessage {
     internal_static_rpcapi_PublishMetaDataRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_PublishMetaDataRequest_descriptor,
-        new java.lang.String[] { "Owner", "Information", });
+        new java.lang.String[] { "Information", });
     internal_static_rpcapi_PublishMetaDataResponse_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_rpcapi_PublishMetaDataResponse_fieldAccessorTable = new
@@ -10500,7 +10248,7 @@ public final class MetaDataRpcMessage {
     internal_static_rpcapi_RevokeMetaDataRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_RevokeMetaDataRequest_descriptor,
-        new java.lang.String[] { "Owner", "MetaDataId", });
+        new java.lang.String[] { "MetaDataId", });
     internal_static_rpcapi_GetMetaDataDetailListResponse_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_rpcapi_GetMetaDataDetailListResponse_fieldAccessorTable = new

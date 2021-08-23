@@ -14,6 +14,123 @@ public final class YarnRpcMessage {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  /**
+   * Protobuf enum {@code rpcapi.NodeType}
+   */
+  public enum NodeType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>SeedNode = 0;</code>
+     */
+    SeedNode(0),
+    /**
+     * <code>JobNode = 1;</code>
+     */
+    JobNode(1),
+    /**
+     * <code>DataNode = 2;</code>
+     */
+    DataNode(2),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>SeedNode = 0;</code>
+     */
+    public static final int SeedNode_VALUE = 0;
+    /**
+     * <code>JobNode = 1;</code>
+     */
+    public static final int JobNode_VALUE = 1;
+    /**
+     * <code>DataNode = 2;</code>
+     */
+    public static final int DataNode_VALUE = 2;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static NodeType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static NodeType forNumber(int value) {
+      switch (value) {
+        case 0: return SeedNode;
+        case 1: return JobNode;
+        case 2: return DataNode;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<NodeType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        NodeType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<NodeType>() {
+            public NodeType findValueByNumber(int number) {
+              return NodeType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final NodeType[] VALUES = values();
+
+    public static NodeType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private NodeType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:rpcapi.NodeType)
+  }
+
   public interface YarnNodeInfoOrBuilder extends
       // @@protoc_insertion_point(interface_extends:rpcapi.YarnNodeInfo)
       com.google.protobuf.MessageOrBuilder {
@@ -23,20 +140,19 @@ public final class YarnRpcMessage {
      * 服务node的类型
      * </pre>
      *
-     * <code>string node_type = 1;</code>
-     * @return The nodeType.
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The enum numeric value on the wire for nodeType.
      */
-    java.lang.String getNodeType();
+    int getNodeTypeValue();
     /**
      * <pre>
      * 服务node的类型
      * </pre>
      *
-     * <code>string node_type = 1;</code>
-     * @return The bytes for nodeType.
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The nodeType.
      */
-    com.google.protobuf.ByteString
-        getNodeTypeBytes();
+    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType();
 
     /**
      * <pre>
@@ -183,7 +299,7 @@ public final class YarnRpcMessage {
      * 调度服务系统本身资源信息
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+     * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
      * @return Whether the resourceUsed field is set.
      */
     boolean hasResourceUsed();
@@ -192,18 +308,18 @@ public final class YarnRpcMessage {
      * 调度服务系统本身资源信息
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+     * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
      * @return The resourceUsed.
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getResourceUsed();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getResourceUsed();
     /**
      * <pre>
      * 调度服务系统本身资源信息
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+     * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getResourceUsedOrBuilder();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getResourceUsedOrBuilder();
 
     /**
      * <pre>
@@ -350,7 +466,7 @@ public final class YarnRpcMessage {
       super(builder);
     }
     private YarnNodeInfo() {
-      nodeType_ = "";
+      nodeType_ = 0;
       nodeId_ = "";
       internalIp_ = "";
       externalIp_ = "";
@@ -395,10 +511,10 @@ public final class YarnRpcMessage {
             case 0:
               done = true;
               break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 8: {
+              int rawValue = input.readEnum();
 
-              nodeType_ = s;
+              nodeType_ = rawValue;
               break;
             }
             case 18: {
@@ -444,11 +560,11 @@ public final class YarnRpcMessage {
               break;
             }
             case 74: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder subBuilder = null;
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder subBuilder = null;
               if (resourceUsed_ != null) {
                 subBuilder = resourceUsed_.toBuilder();
               }
-              resourceUsed_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.parser(), extensionRegistry);
+              resourceUsed_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(resourceUsed_);
                 resourceUsed_ = subBuilder.buildPartial();
@@ -525,49 +641,30 @@ public final class YarnRpcMessage {
     }
 
     public static final int NODE_TYPE_FIELD_NUMBER = 1;
-    private volatile java.lang.Object nodeType_;
+    private int nodeType_;
     /**
      * <pre>
      * 服务node的类型
      * </pre>
      *
-     * <code>string node_type = 1;</code>
-     * @return The nodeType.
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The enum numeric value on the wire for nodeType.
      */
-    @java.lang.Override
-    public java.lang.String getNodeType() {
-      java.lang.Object ref = nodeType_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        nodeType_ = s;
-        return s;
-      }
+    @java.lang.Override public int getNodeTypeValue() {
+      return nodeType_;
     }
     /**
      * <pre>
      * 服务node的类型
      * </pre>
      *
-     * <code>string node_type = 1;</code>
-     * @return The bytes for nodeType.
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The nodeType.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getNodeTypeBytes() {
-      java.lang.Object ref = nodeType_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        nodeType_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType() {
+      @SuppressWarnings("deprecation")
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType result = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.valueOf(nodeType_);
+      return result == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.UNRECOGNIZED : result;
     }
 
     public static final int NODE_ID_FIELD_NUMBER = 2;
@@ -893,13 +990,13 @@ public final class YarnRpcMessage {
     }
 
     public static final int RESOURCE_USED_FIELD_NUMBER = 9;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow resourceUsed_;
+    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail resourceUsed_;
     /**
      * <pre>
      * 调度服务系统本身资源信息
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+     * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
      * @return Whether the resourceUsed field is set.
      */
     @java.lang.Override
@@ -911,22 +1008,22 @@ public final class YarnRpcMessage {
      * 调度服务系统本身资源信息
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+     * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
      * @return The resourceUsed.
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getResourceUsed() {
-      return resourceUsed_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : resourceUsed_;
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getResourceUsed() {
+      return resourceUsed_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : resourceUsed_;
     }
     /**
      * <pre>
      * 调度服务系统本身资源信息
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+     * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getResourceUsedOrBuilder() {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getResourceUsedOrBuilder() {
       return getResourceUsed();
     }
 
@@ -1156,8 +1253,8 @@ public final class YarnRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getNodeTypeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, nodeType_);
+      if (nodeType_ != com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.SeedNode.getNumber()) {
+        output.writeEnum(1, nodeType_);
       }
       if (!getNodeIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, nodeId_);
@@ -1204,8 +1301,9 @@ public final class YarnRpcMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (!getNodeTypeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, nodeType_);
+      if (nodeType_ != com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.SeedNode.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, nodeType_);
       }
       if (!getNodeIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, nodeId_);
@@ -1261,8 +1359,7 @@ public final class YarnRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnNodeInfo other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnNodeInfo) obj;
 
-      if (!getNodeType()
-          .equals(other.getNodeType())) return false;
+      if (nodeType_ != other.nodeType_) return false;
       if (!getNodeId()
           .equals(other.getNodeId())) return false;
       if (!getInternalIp()
@@ -1302,7 +1399,7 @@ public final class YarnRpcMessage {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + NODE_TYPE_FIELD_NUMBER;
-      hash = (53 * hash) + getNodeType().hashCode();
+      hash = (53 * hash) + nodeType_;
       hash = (37 * hash) + NODE_ID_FIELD_NUMBER;
       hash = (53 * hash) + getNodeId().hashCode();
       hash = (37 * hash) + INTERNAL_IP_FIELD_NUMBER;
@@ -1472,7 +1569,7 @@ public final class YarnRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        nodeType_ = "";
+        nodeType_ = 0;
 
         nodeId_ = "";
 
@@ -1618,9 +1715,8 @@ public final class YarnRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnNodeInfo other) {
         if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnNodeInfo.getDefaultInstance()) return this;
-        if (!other.getNodeType().isEmpty()) {
-          nodeType_ = other.nodeType_;
-          onChanged();
+        if (other.nodeType_ != 0) {
+          setNodeTypeValue(other.getNodeTypeValue());
         }
         if (!other.getNodeId().isEmpty()) {
           nodeId_ = other.nodeId_;
@@ -1743,63 +1839,29 @@ public final class YarnRpcMessage {
       }
       private int bitField0_;
 
-      private java.lang.Object nodeType_ = "";
+      private int nodeType_ = 0;
       /**
        * <pre>
        * 服务node的类型
        * </pre>
        *
-       * <code>string node_type = 1;</code>
-       * @return The nodeType.
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @return The enum numeric value on the wire for nodeType.
        */
-      public java.lang.String getNodeType() {
-        java.lang.Object ref = nodeType_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          nodeType_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override public int getNodeTypeValue() {
+        return nodeType_;
       }
       /**
        * <pre>
        * 服务node的类型
        * </pre>
        *
-       * <code>string node_type = 1;</code>
-       * @return The bytes for nodeType.
-       */
-      public com.google.protobuf.ByteString
-          getNodeTypeBytes() {
-        java.lang.Object ref = nodeType_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          nodeType_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 服务node的类型
-       * </pre>
-       *
-       * <code>string node_type = 1;</code>
-       * @param value The nodeType to set.
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @param value The enum numeric value on the wire for nodeType to set.
        * @return This builder for chaining.
        */
-      public Builder setNodeType(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setNodeTypeValue(int value) {
+        
         nodeType_ = value;
         onChanged();
         return this;
@@ -1809,32 +1871,44 @@ public final class YarnRpcMessage {
        * 服务node的类型
        * </pre>
        *
-       * <code>string node_type = 1;</code>
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @return The nodeType.
+       */
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType() {
+        @SuppressWarnings("deprecation")
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType result = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.valueOf(nodeType_);
+        return result == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @param value The nodeType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeType(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        nodeType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearNodeType() {
         
-        nodeType_ = getDefaultInstance().getNodeType();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 服务node的类型
-       * </pre>
-       *
-       * <code>string node_type = 1;</code>
-       * @param value The bytes for nodeType to set.
-       * @return This builder for chaining.
-       */
-      public Builder setNodeTypeBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        nodeType_ = value;
+        nodeType_ = 0;
         onChanged();
         return this;
       }
@@ -2511,15 +2585,15 @@ public final class YarnRpcMessage {
         return this;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow resourceUsed_;
+      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail resourceUsed_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> resourceUsedBuilder_;
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder> resourceUsedBuilder_;
       /**
        * <pre>
        * 调度服务系统本身资源信息
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+       * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
        * @return Whether the resourceUsed field is set.
        */
       public boolean hasResourceUsed() {
@@ -2530,12 +2604,12 @@ public final class YarnRpcMessage {
        * 调度服务系统本身资源信息
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+       * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
        * @return The resourceUsed.
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getResourceUsed() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getResourceUsed() {
         if (resourceUsedBuilder_ == null) {
-          return resourceUsed_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : resourceUsed_;
+          return resourceUsed_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : resourceUsed_;
         } else {
           return resourceUsedBuilder_.getMessage();
         }
@@ -2545,9 +2619,9 @@ public final class YarnRpcMessage {
        * 调度服务系统本身资源信息
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+       * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
        */
-      public Builder setResourceUsed(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
+      public Builder setResourceUsed(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail value) {
         if (resourceUsedBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2565,10 +2639,10 @@ public final class YarnRpcMessage {
        * 调度服务系统本身资源信息
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+       * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
        */
       public Builder setResourceUsed(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder builderForValue) {
         if (resourceUsedBuilder_ == null) {
           resourceUsed_ = builderForValue.build();
           onChanged();
@@ -2583,13 +2657,13 @@ public final class YarnRpcMessage {
        * 调度服务系统本身资源信息
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+       * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
        */
-      public Builder mergeResourceUsed(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
+      public Builder mergeResourceUsed(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail value) {
         if (resourceUsedBuilder_ == null) {
           if (resourceUsed_ != null) {
             resourceUsed_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.newBuilder(resourceUsed_).mergeFrom(value).buildPartial();
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.newBuilder(resourceUsed_).mergeFrom(value).buildPartial();
           } else {
             resourceUsed_ = value;
           }
@@ -2605,7 +2679,7 @@ public final class YarnRpcMessage {
        * 调度服务系统本身资源信息
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+       * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
        */
       public Builder clearResourceUsed() {
         if (resourceUsedBuilder_ == null) {
@@ -2623,9 +2697,9 @@ public final class YarnRpcMessage {
        * 调度服务系统本身资源信息
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+       * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder getResourceUsedBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder getResourceUsedBuilder() {
         
         onChanged();
         return getResourceUsedFieldBuilder().getBuilder();
@@ -2635,14 +2709,14 @@ public final class YarnRpcMessage {
        * 调度服务系统本身资源信息
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+       * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getResourceUsedOrBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getResourceUsedOrBuilder() {
         if (resourceUsedBuilder_ != null) {
           return resourceUsedBuilder_.getMessageOrBuilder();
         } else {
           return resourceUsed_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : resourceUsed_;
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : resourceUsed_;
         }
       }
       /**
@@ -2650,14 +2724,14 @@ public final class YarnRpcMessage {
        * 调度服务系统本身资源信息
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow resource_used = 9;</code>
+       * <code>.rpcapi.ResourceUsedDetail resource_used = 9;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder> 
           getResourceUsedFieldBuilder() {
         if (resourceUsedBuilder_ == null) {
           resourceUsedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder>(
                   getResourceUsed(),
                   getParentForChildren(),
                   isClean());
@@ -4701,20 +4775,19 @@ public final class YarnRpcMessage {
      * 计算or数据服务node的类型
      * </pre>
      *
-     * <code>string node_type = 1;</code>
-     * @return The nodeType.
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The enum numeric value on the wire for nodeType.
      */
-    java.lang.String getNodeType();
+    int getNodeTypeValue();
     /**
      * <pre>
      * 计算or数据服务node的类型
      * </pre>
      *
-     * <code>string node_type = 1;</code>
-     * @return The bytes for nodeType.
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The nodeType.
      */
-    com.google.protobuf.ByteString
-        getNodeTypeBytes();
+    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType();
 
     /**
      * <pre>
@@ -4760,7 +4833,7 @@ public final class YarnRpcMessage {
       super(builder);
     }
     private YarnRegisteredPeer() {
-      nodeType_ = "";
+      nodeType_ = 0;
     }
 
     @java.lang.Override
@@ -4793,10 +4866,10 @@ public final class YarnRpcMessage {
             case 0:
               done = true;
               break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
+            case 8: {
+              int rawValue = input.readEnum();
 
-              nodeType_ = s;
+              nodeType_ = rawValue;
               break;
             }
             case 18: {
@@ -4845,49 +4918,30 @@ public final class YarnRpcMessage {
     }
 
     public static final int NODE_TYPE_FIELD_NUMBER = 1;
-    private volatile java.lang.Object nodeType_;
+    private int nodeType_;
     /**
      * <pre>
      * 计算or数据服务node的类型
      * </pre>
      *
-     * <code>string node_type = 1;</code>
-     * @return The nodeType.
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The enum numeric value on the wire for nodeType.
      */
-    @java.lang.Override
-    public java.lang.String getNodeType() {
-      java.lang.Object ref = nodeType_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        nodeType_ = s;
-        return s;
-      }
+    @java.lang.Override public int getNodeTypeValue() {
+      return nodeType_;
     }
     /**
      * <pre>
      * 计算or数据服务node的类型
      * </pre>
      *
-     * <code>string node_type = 1;</code>
-     * @return The bytes for nodeType.
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The nodeType.
      */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getNodeTypeBytes() {
-      java.lang.Object ref = nodeType_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        nodeType_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType() {
+      @SuppressWarnings("deprecation")
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType result = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.valueOf(nodeType_);
+      return result == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.UNRECOGNIZED : result;
     }
 
     public static final int NODE_DETAIL_FIELD_NUMBER = 2;
@@ -4942,8 +4996,8 @@ public final class YarnRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getNodeTypeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, nodeType_);
+      if (nodeType_ != com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.SeedNode.getNumber()) {
+        output.writeEnum(1, nodeType_);
       }
       if (nodeDetail_ != null) {
         output.writeMessage(2, getNodeDetail());
@@ -4957,8 +5011,9 @@ public final class YarnRpcMessage {
       if (size != -1) return size;
 
       size = 0;
-      if (!getNodeTypeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, nodeType_);
+      if (nodeType_ != com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.SeedNode.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, nodeType_);
       }
       if (nodeDetail_ != null) {
         size += com.google.protobuf.CodedOutputStream
@@ -4979,8 +5034,7 @@ public final class YarnRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer) obj;
 
-      if (!getNodeType()
-          .equals(other.getNodeType())) return false;
+      if (nodeType_ != other.nodeType_) return false;
       if (hasNodeDetail() != other.hasNodeDetail()) return false;
       if (hasNodeDetail()) {
         if (!getNodeDetail()
@@ -4998,7 +5052,7 @@ public final class YarnRpcMessage {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + NODE_TYPE_FIELD_NUMBER;
-      hash = (53 * hash) + getNodeType().hashCode();
+      hash = (53 * hash) + nodeType_;
       if (hasNodeDetail()) {
         hash = (37 * hash) + NODE_DETAIL_FIELD_NUMBER;
         hash = (53 * hash) + getNodeDetail().hashCode();
@@ -5140,7 +5194,7 @@ public final class YarnRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        nodeType_ = "";
+        nodeType_ = 0;
 
         if (nodeDetailBuilder_ == null) {
           nodeDetail_ = null;
@@ -5228,9 +5282,8 @@ public final class YarnRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer other) {
         if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.getDefaultInstance()) return this;
-        if (!other.getNodeType().isEmpty()) {
-          nodeType_ = other.nodeType_;
-          onChanged();
+        if (other.nodeType_ != 0) {
+          setNodeTypeValue(other.getNodeTypeValue());
         }
         if (other.hasNodeDetail()) {
           mergeNodeDetail(other.getNodeDetail());
@@ -5264,63 +5317,29 @@ public final class YarnRpcMessage {
         return this;
       }
 
-      private java.lang.Object nodeType_ = "";
+      private int nodeType_ = 0;
       /**
        * <pre>
        * 计算or数据服务node的类型
        * </pre>
        *
-       * <code>string node_type = 1;</code>
-       * @return The nodeType.
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @return The enum numeric value on the wire for nodeType.
        */
-      public java.lang.String getNodeType() {
-        java.lang.Object ref = nodeType_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          nodeType_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+      @java.lang.Override public int getNodeTypeValue() {
+        return nodeType_;
       }
       /**
        * <pre>
        * 计算or数据服务node的类型
        * </pre>
        *
-       * <code>string node_type = 1;</code>
-       * @return The bytes for nodeType.
-       */
-      public com.google.protobuf.ByteString
-          getNodeTypeBytes() {
-        java.lang.Object ref = nodeType_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          nodeType_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算or数据服务node的类型
-       * </pre>
-       *
-       * <code>string node_type = 1;</code>
-       * @param value The nodeType to set.
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @param value The enum numeric value on the wire for nodeType to set.
        * @return This builder for chaining.
        */
-      public Builder setNodeType(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      public Builder setNodeTypeValue(int value) {
+        
         nodeType_ = value;
         onChanged();
         return this;
@@ -5330,32 +5349,44 @@ public final class YarnRpcMessage {
        * 计算or数据服务node的类型
        * </pre>
        *
-       * <code>string node_type = 1;</code>
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @return The nodeType.
+       */
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType() {
+        @SuppressWarnings("deprecation")
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType result = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.valueOf(nodeType_);
+        return result == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @param value The nodeType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeType(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        nodeType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearNodeType() {
         
-        nodeType_ = getDefaultInstance().getNodeType();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算or数据服务node的类型
-       * </pre>
-       *
-       * <code>string node_type = 1;</code>
-       * @param value The bytes for nodeType to set.
-       * @return This builder for chaining.
-       */
-      public Builder setNodeTypeBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        nodeType_ = value;
+        nodeType_ = 0;
         onChanged();
         return this;
       }
@@ -7031,10 +7062,30 @@ public final class YarnRpcMessage {
 
     /**
      * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The nodeId.
+     */
+    java.lang.String getNodeId();
+    /**
+     * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The bytes for nodeId.
+     */
+    com.google.protobuf.ByteString
+        getNodeIdBytes();
+
+    /**
+     * <pre>
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 2;</code>
+     * <code>string internal_ip = 3;</code>
      * @return The internalIp.
      */
     java.lang.String getInternalIp();
@@ -7043,7 +7094,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 2;</code>
+     * <code>string internal_ip = 3;</code>
      * @return The bytes for internalIp.
      */
     com.google.protobuf.ByteString
@@ -7054,7 +7105,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 3;</code>
+     * <code>string internal_port = 4;</code>
      * @return The internalPort.
      */
     java.lang.String getInternalPort();
@@ -7063,7 +7114,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 3;</code>
+     * <code>string internal_port = 4;</code>
      * @return The bytes for internalPort.
      */
     com.google.protobuf.ByteString
@@ -7074,7 +7125,7 @@ public final class YarnRpcMessage {
      * 是否被调度服务连接上 (-1: 未被调度服务连接上; 0: 连接上)
      * </pre>
      *
-     * <code>int32 conn_state = 4;</code>
+     * <code>int32 conn_state = 5;</code>
      * @return The connState.
      */
     int getConnState();
@@ -7093,6 +7144,7 @@ public final class YarnRpcMessage {
     }
     private SeedPeer() {
       id_ = "";
+      nodeId_ = "";
       internalIp_ = "";
       internalPort_ = "";
     }
@@ -7136,16 +7188,22 @@ public final class YarnRpcMessage {
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              internalIp_ = s;
+              nodeId_ = s;
               break;
             }
             case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
+              internalIp_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
               internalPort_ = s;
               break;
             }
-            case 32: {
+            case 40: {
 
               connState_ = input.readInt32();
               break;
@@ -7228,14 +7286,60 @@ public final class YarnRpcMessage {
       }
     }
 
-    public static final int INTERNAL_IP_FIELD_NUMBER = 2;
+    public static final int NODE_ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object nodeId_;
+    /**
+     * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The nodeId.
+     */
+    @java.lang.Override
+    public java.lang.String getNodeId() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        nodeId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The bytes for nodeId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getNodeIdBytes() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nodeId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int INTERNAL_IP_FIELD_NUMBER = 3;
     private volatile java.lang.Object internalIp_;
     /**
      * <pre>
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 2;</code>
+     * <code>string internal_ip = 3;</code>
      * @return The internalIp.
      */
     @java.lang.Override
@@ -7256,7 +7360,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 2;</code>
+     * <code>string internal_ip = 3;</code>
      * @return The bytes for internalIp.
      */
     @java.lang.Override
@@ -7274,14 +7378,14 @@ public final class YarnRpcMessage {
       }
     }
 
-    public static final int INTERNAL_PORT_FIELD_NUMBER = 3;
+    public static final int INTERNAL_PORT_FIELD_NUMBER = 4;
     private volatile java.lang.Object internalPort_;
     /**
      * <pre>
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 3;</code>
+     * <code>string internal_port = 4;</code>
      * @return The internalPort.
      */
     @java.lang.Override
@@ -7302,7 +7406,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 3;</code>
+     * <code>string internal_port = 4;</code>
      * @return The bytes for internalPort.
      */
     @java.lang.Override
@@ -7320,14 +7424,14 @@ public final class YarnRpcMessage {
       }
     }
 
-    public static final int CONN_STATE_FIELD_NUMBER = 4;
+    public static final int CONN_STATE_FIELD_NUMBER = 5;
     private int connState_;
     /**
      * <pre>
      * 是否被调度服务连接上 (-1: 未被调度服务连接上; 0: 连接上)
      * </pre>
      *
-     * <code>int32 conn_state = 4;</code>
+     * <code>int32 conn_state = 5;</code>
      * @return The connState.
      */
     @java.lang.Override
@@ -7352,14 +7456,17 @@ public final class YarnRpcMessage {
       if (!getIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
       }
+      if (!getNodeIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, nodeId_);
+      }
       if (!getInternalIpBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, internalIp_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, internalIp_);
       }
       if (!getInternalPortBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, internalPort_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, internalPort_);
       }
       if (connState_ != 0) {
-        output.writeInt32(4, connState_);
+        output.writeInt32(5, connState_);
       }
       unknownFields.writeTo(output);
     }
@@ -7373,15 +7480,18 @@ public final class YarnRpcMessage {
       if (!getIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
       }
+      if (!getNodeIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, nodeId_);
+      }
       if (!getInternalIpBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, internalIp_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, internalIp_);
       }
       if (!getInternalPortBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, internalPort_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, internalPort_);
       }
       if (connState_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, connState_);
+          .computeInt32Size(5, connState_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -7400,6 +7510,8 @@ public final class YarnRpcMessage {
 
       if (!getId()
           .equals(other.getId())) return false;
+      if (!getNodeId()
+          .equals(other.getNodeId())) return false;
       if (!getInternalIp()
           .equals(other.getInternalIp())) return false;
       if (!getInternalPort()
@@ -7419,6 +7531,8 @@ public final class YarnRpcMessage {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + ID_FIELD_NUMBER;
       hash = (53 * hash) + getId().hashCode();
+      hash = (37 * hash) + NODE_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getNodeId().hashCode();
       hash = (37 * hash) + INTERNAL_IP_FIELD_NUMBER;
       hash = (53 * hash) + getInternalIp().hashCode();
       hash = (37 * hash) + INTERNAL_PORT_FIELD_NUMBER;
@@ -7560,6 +7674,8 @@ public final class YarnRpcMessage {
         super.clear();
         id_ = "";
 
+        nodeId_ = "";
+
         internalIp_ = "";
 
         internalPort_ = "";
@@ -7593,6 +7709,7 @@ public final class YarnRpcMessage {
       public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer buildPartial() {
         com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer(this);
         result.id_ = id_;
+        result.nodeId_ = nodeId_;
         result.internalIp_ = internalIp_;
         result.internalPort_ = internalPort_;
         result.connState_ = connState_;
@@ -7646,6 +7763,10 @@ public final class YarnRpcMessage {
         if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.getDefaultInstance()) return this;
         if (!other.getId().isEmpty()) {
           id_ = other.id_;
+          onChanged();
+        }
+        if (!other.getNodeId().isEmpty()) {
+          nodeId_ = other.nodeId_;
           onChanged();
         }
         if (!other.getInternalIp().isEmpty()) {
@@ -7784,13 +7905,109 @@ public final class YarnRpcMessage {
         return this;
       }
 
+      private java.lang.Object nodeId_ = "";
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @return The nodeId.
+       */
+      public java.lang.String getNodeId() {
+        java.lang.Object ref = nodeId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          nodeId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @return The bytes for nodeId.
+       */
+      public com.google.protobuf.ByteString
+          getNodeIdBytes() {
+        java.lang.Object ref = nodeId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nodeId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @param value The nodeId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNodeId() {
+        
+        nodeId_ = getDefaultInstance().getNodeId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @param value The bytes for nodeId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object internalIp_ = "";
       /**
        * <pre>
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 2;</code>
+       * <code>string internal_ip = 3;</code>
        * @return The internalIp.
        */
       public java.lang.String getInternalIp() {
@@ -7810,7 +8027,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 2;</code>
+       * <code>string internal_ip = 3;</code>
        * @return The bytes for internalIp.
        */
       public com.google.protobuf.ByteString
@@ -7831,7 +8048,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 2;</code>
+       * <code>string internal_ip = 3;</code>
        * @param value The internalIp to set.
        * @return This builder for chaining.
        */
@@ -7850,7 +8067,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 2;</code>
+       * <code>string internal_ip = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearInternalIp() {
@@ -7864,7 +8081,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 2;</code>
+       * <code>string internal_ip = 3;</code>
        * @param value The bytes for internalIp to set.
        * @return This builder for chaining.
        */
@@ -7886,7 +8103,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 3;</code>
+       * <code>string internal_port = 4;</code>
        * @return The internalPort.
        */
       public java.lang.String getInternalPort() {
@@ -7906,7 +8123,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 3;</code>
+       * <code>string internal_port = 4;</code>
        * @return The bytes for internalPort.
        */
       public com.google.protobuf.ByteString
@@ -7927,7 +8144,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 3;</code>
+       * <code>string internal_port = 4;</code>
        * @param value The internalPort to set.
        * @return This builder for chaining.
        */
@@ -7946,7 +8163,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 3;</code>
+       * <code>string internal_port = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearInternalPort() {
@@ -7960,7 +8177,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 3;</code>
+       * <code>string internal_port = 4;</code>
        * @param value The bytes for internalPort to set.
        * @return This builder for chaining.
        */
@@ -7982,7 +8199,7 @@ public final class YarnRpcMessage {
        * 是否被调度服务连接上 (-1: 未被调度服务连接上; 0: 连接上)
        * </pre>
        *
-       * <code>int32 conn_state = 4;</code>
+       * <code>int32 conn_state = 5;</code>
        * @return The connState.
        */
       @java.lang.Override
@@ -7994,7 +8211,7 @@ public final class YarnRpcMessage {
        * 是否被调度服务连接上 (-1: 未被调度服务连接上; 0: 连接上)
        * </pre>
        *
-       * <code>int32 conn_state = 4;</code>
+       * <code>int32 conn_state = 5;</code>
        * @param value The connState to set.
        * @return This builder for chaining.
        */
@@ -8009,7 +8226,7 @@ public final class YarnRpcMessage {
        * 是否被调度服务连接上 (-1: 未被调度服务连接上; 0: 连接上)
        * </pre>
        *
-       * <code>int32 conn_state = 4;</code>
+       * <code>int32 conn_state = 5;</code>
        * @return This builder for chaining.
        */
       public Builder clearConnState() {
@@ -8066,5250 +8283,6 @@ public final class YarnRpcMessage {
 
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface YarnRegisteredJobNodeOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.YarnRegisteredJobNode)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <pre>
-     * 计算服务的唯一Id
-     * </pre>
-     *
-     * <code>string id = 2;</code>
-     * @return The id.
-     */
-    java.lang.String getId();
-    /**
-     * <pre>
-     * 计算服务的唯一Id
-     * </pre>
-     *
-     * <code>string id = 2;</code>
-     * @return The bytes for id.
-     */
-    com.google.protobuf.ByteString
-        getIdBytes();
-
-    /**
-     * <pre>
-     * 计算服务的内网 ip, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_ip = 3;</code>
-     * @return The internalIp.
-     */
-    java.lang.String getInternalIp();
-    /**
-     * <pre>
-     * 计算服务的内网 ip, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_ip = 3;</code>
-     * @return The bytes for internalIp.
-     */
-    com.google.protobuf.ByteString
-        getInternalIpBytes();
-
-    /**
-     * <pre>
-     * 计算服务的外网 ip, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_ip = 4;</code>
-     * @return The externalIp.
-     */
-    java.lang.String getExternalIp();
-    /**
-     * <pre>
-     * 计算服务的外网 ip, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_ip = 4;</code>
-     * @return The bytes for externalIp.
-     */
-    com.google.protobuf.ByteString
-        getExternalIpBytes();
-
-    /**
-     * <pre>
-     * 计算服务的内网 port, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_port = 5;</code>
-     * @return The internalPort.
-     */
-    java.lang.String getInternalPort();
-    /**
-     * <pre>
-     * 计算服务的内网 port, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_port = 5;</code>
-     * @return The bytes for internalPort.
-     */
-    com.google.protobuf.ByteString
-        getInternalPortBytes();
-
-    /**
-     * <pre>
-     * 计算服务的外网 port, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_port = 6;</code>
-     * @return The externalPort.
-     */
-    java.lang.String getExternalPort();
-    /**
-     * <pre>
-     * 计算服务的外网 port, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_port = 6;</code>
-     * @return The bytes for externalPort.
-     */
-    com.google.protobuf.ByteString
-        getExternalPortBytes();
-
-    /**
-     * <pre>
-     * 计算服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     * @return Whether the information field is set.
-     */
-    boolean hasInformation();
-    /**
-     * <pre>
-     * 计算服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     * @return The information.
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation();
-    /**
-     * <pre>
-     * 计算服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder();
-
-    /**
-     * <pre>
-     * 计算服务远行时长 (从加入网络中的时间点计算)
-     * </pre>
-     *
-     * <code>uint64 duration = 8;</code>
-     * @return The duration.
-     */
-    long getDuration();
-
-    /**
-     * <pre>
-     * 计算服务上的任务Id和个数
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-     * @return Whether the task field is set.
-     */
-    boolean hasTask();
-    /**
-     * <pre>
-     * 计算服务上的任务Id和个数
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-     * @return The task.
-     */
-    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds getTask();
-    /**
-     * <pre>
-     * 计算服务上的任务Id和个数
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIdsOrBuilder getTaskOrBuilder();
-  }
-  /**
-   * <pre>
-   * 调度服务上的 计算服务详情信息
-   * </pre>
-   *
-   * Protobuf type {@code rpcapi.YarnRegisteredJobNode}
-   */
-  public static final class YarnRegisteredJobNode extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.YarnRegisteredJobNode)
-      YarnRegisteredJobNodeOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use YarnRegisteredJobNode.newBuilder() to construct.
-    private YarnRegisteredJobNode(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private YarnRegisteredJobNode() {
-      id_ = "";
-      internalIp_ = "";
-      externalIp_ = "";
-      internalPort_ = "";
-      externalPort_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new YarnRegisteredJobNode();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private YarnRegisteredJobNode(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              id_ = s;
-              break;
-            }
-            case 26: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              internalIp_ = s;
-              break;
-            }
-            case 34: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              externalIp_ = s;
-              break;
-            }
-            case 42: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              internalPort_ = s;
-              break;
-            }
-            case 50: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              externalPort_ = s;
-              break;
-            }
-            case 58: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder subBuilder = null;
-              if (information_ != null) {
-                subBuilder = information_.toBuilder();
-              }
-              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(information_);
-                information_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 64: {
-
-              duration_ = input.readUInt64();
-              break;
-            }
-            case 74: {
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.Builder subBuilder = null;
-              if (task_ != null) {
-                subBuilder = task_.toBuilder();
-              }
-              task_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(task_);
-                task_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredJobNode_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredJobNode_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder.class);
-    }
-
-    public static final int ID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object id_;
-    /**
-     * <pre>
-     * 计算服务的唯一Id
-     * </pre>
-     *
-     * <code>string id = 2;</code>
-     * @return The id.
-     */
-    @java.lang.Override
-    public java.lang.String getId() {
-      java.lang.Object ref = id_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        id_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 计算服务的唯一Id
-     * </pre>
-     *
-     * <code>string id = 2;</code>
-     * @return The bytes for id.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getIdBytes() {
-      java.lang.Object ref = id_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        id_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int INTERNAL_IP_FIELD_NUMBER = 3;
-    private volatile java.lang.Object internalIp_;
-    /**
-     * <pre>
-     * 计算服务的内网 ip, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_ip = 3;</code>
-     * @return The internalIp.
-     */
-    @java.lang.Override
-    public java.lang.String getInternalIp() {
-      java.lang.Object ref = internalIp_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        internalIp_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 计算服务的内网 ip, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_ip = 3;</code>
-     * @return The bytes for internalIp.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getInternalIpBytes() {
-      java.lang.Object ref = internalIp_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        internalIp_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int EXTERNAL_IP_FIELD_NUMBER = 4;
-    private volatile java.lang.Object externalIp_;
-    /**
-     * <pre>
-     * 计算服务的外网 ip, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_ip = 4;</code>
-     * @return The externalIp.
-     */
-    @java.lang.Override
-    public java.lang.String getExternalIp() {
-      java.lang.Object ref = externalIp_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        externalIp_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 计算服务的外网 ip, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_ip = 4;</code>
-     * @return The bytes for externalIp.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getExternalIpBytes() {
-      java.lang.Object ref = externalIp_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        externalIp_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int INTERNAL_PORT_FIELD_NUMBER = 5;
-    private volatile java.lang.Object internalPort_;
-    /**
-     * <pre>
-     * 计算服务的内网 port, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_port = 5;</code>
-     * @return The internalPort.
-     */
-    @java.lang.Override
-    public java.lang.String getInternalPort() {
-      java.lang.Object ref = internalPort_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        internalPort_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 计算服务的内网 port, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_port = 5;</code>
-     * @return The bytes for internalPort.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getInternalPortBytes() {
-      java.lang.Object ref = internalPort_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        internalPort_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int EXTERNAL_PORT_FIELD_NUMBER = 6;
-    private volatile java.lang.Object externalPort_;
-    /**
-     * <pre>
-     * 计算服务的外网 port, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_port = 6;</code>
-     * @return The externalPort.
-     */
-    @java.lang.Override
-    public java.lang.String getExternalPort() {
-      java.lang.Object ref = externalPort_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        externalPort_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 计算服务的外网 port, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_port = 6;</code>
-     * @return The bytes for externalPort.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getExternalPortBytes() {
-      java.lang.Object ref = externalPort_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        externalPort_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int INFORMATION_FIELD_NUMBER = 7;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow information_;
-    /**
-     * <pre>
-     * 计算服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     * @return Whether the information field is set.
-     */
-    @java.lang.Override
-    public boolean hasInformation() {
-      return information_ != null;
-    }
-    /**
-     * <pre>
-     * 计算服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     * @return The information.
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation() {
-      return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
-    }
-    /**
-     * <pre>
-     * 计算服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder() {
-      return getInformation();
-    }
-
-    public static final int DURATION_FIELD_NUMBER = 8;
-    private long duration_;
-    /**
-     * <pre>
-     * 计算服务远行时长 (从加入网络中的时间点计算)
-     * </pre>
-     *
-     * <code>uint64 duration = 8;</code>
-     * @return The duration.
-     */
-    @java.lang.Override
-    public long getDuration() {
-      return duration_;
-    }
-
-    public static final int TASK_FIELD_NUMBER = 9;
-    private com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds task_;
-    /**
-     * <pre>
-     * 计算服务上的任务Id和个数
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-     * @return Whether the task field is set.
-     */
-    @java.lang.Override
-    public boolean hasTask() {
-      return task_ != null;
-    }
-    /**
-     * <pre>
-     * 计算服务上的任务Id和个数
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-     * @return The task.
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds getTask() {
-      return task_ == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.getDefaultInstance() : task_;
-    }
-    /**
-     * <pre>
-     * 计算服务上的任务Id和个数
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIdsOrBuilder getTaskOrBuilder() {
-      return getTask();
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, id_);
-      }
-      if (!getInternalIpBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, internalIp_);
-      }
-      if (!getExternalIpBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, externalIp_);
-      }
-      if (!getInternalPortBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, internalPort_);
-      }
-      if (!getExternalPortBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, externalPort_);
-      }
-      if (information_ != null) {
-        output.writeMessage(7, getInformation());
-      }
-      if (duration_ != 0L) {
-        output.writeUInt64(8, duration_);
-      }
-      if (task_ != null) {
-        output.writeMessage(9, getTask());
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, id_);
-      }
-      if (!getInternalIpBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, internalIp_);
-      }
-      if (!getExternalIpBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, externalIp_);
-      }
-      if (!getInternalPortBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, internalPort_);
-      }
-      if (!getExternalPortBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, externalPort_);
-      }
-      if (information_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, getInformation());
-      }
-      if (duration_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(8, duration_);
-      }
-      if (task_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(9, getTask());
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode)) {
-        return super.equals(obj);
-      }
-      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode) obj;
-
-      if (!getId()
-          .equals(other.getId())) return false;
-      if (!getInternalIp()
-          .equals(other.getInternalIp())) return false;
-      if (!getExternalIp()
-          .equals(other.getExternalIp())) return false;
-      if (!getInternalPort()
-          .equals(other.getInternalPort())) return false;
-      if (!getExternalPort()
-          .equals(other.getExternalPort())) return false;
-      if (hasInformation() != other.hasInformation()) return false;
-      if (hasInformation()) {
-        if (!getInformation()
-            .equals(other.getInformation())) return false;
-      }
-      if (getDuration()
-          != other.getDuration()) return false;
-      if (hasTask() != other.hasTask()) return false;
-      if (hasTask()) {
-        if (!getTask()
-            .equals(other.getTask())) return false;
-      }
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + ID_FIELD_NUMBER;
-      hash = (53 * hash) + getId().hashCode();
-      hash = (37 * hash) + INTERNAL_IP_FIELD_NUMBER;
-      hash = (53 * hash) + getInternalIp().hashCode();
-      hash = (37 * hash) + EXTERNAL_IP_FIELD_NUMBER;
-      hash = (53 * hash) + getExternalIp().hashCode();
-      hash = (37 * hash) + INTERNAL_PORT_FIELD_NUMBER;
-      hash = (53 * hash) + getInternalPort().hashCode();
-      hash = (37 * hash) + EXTERNAL_PORT_FIELD_NUMBER;
-      hash = (53 * hash) + getExternalPort().hashCode();
-      if (hasInformation()) {
-        hash = (37 * hash) + INFORMATION_FIELD_NUMBER;
-        hash = (53 * hash) + getInformation().hashCode();
-      }
-      hash = (37 * hash) + DURATION_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getDuration());
-      if (hasTask()) {
-        hash = (37 * hash) + TASK_FIELD_NUMBER;
-        hash = (53 * hash) + getTask().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * <pre>
-     * 调度服务上的 计算服务详情信息
-     * </pre>
-     *
-     * Protobuf type {@code rpcapi.YarnRegisteredJobNode}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.YarnRegisteredJobNode)
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredJobNode_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredJobNode_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder.class);
-      }
-
-      // Construct using com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        id_ = "";
-
-        internalIp_ = "";
-
-        externalIp_ = "";
-
-        internalPort_ = "";
-
-        externalPort_ = "";
-
-        if (informationBuilder_ == null) {
-          information_ = null;
-        } else {
-          information_ = null;
-          informationBuilder_ = null;
-        }
-        duration_ = 0L;
-
-        if (taskBuilder_ == null) {
-          task_ = null;
-        } else {
-          task_ = null;
-          taskBuilder_ = null;
-        }
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredJobNode_descriptor;
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode build() {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode(this);
-        result.id_ = id_;
-        result.internalIp_ = internalIp_;
-        result.externalIp_ = externalIp_;
-        result.internalPort_ = internalPort_;
-        result.externalPort_ = externalPort_;
-        if (informationBuilder_ == null) {
-          result.information_ = information_;
-        } else {
-          result.information_ = informationBuilder_.build();
-        }
-        result.duration_ = duration_;
-        if (taskBuilder_ == null) {
-          result.task_ = task_;
-        } else {
-          result.task_ = taskBuilder_.build();
-        }
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.getDefaultInstance()) return this;
-        if (!other.getId().isEmpty()) {
-          id_ = other.id_;
-          onChanged();
-        }
-        if (!other.getInternalIp().isEmpty()) {
-          internalIp_ = other.internalIp_;
-          onChanged();
-        }
-        if (!other.getExternalIp().isEmpty()) {
-          externalIp_ = other.externalIp_;
-          onChanged();
-        }
-        if (!other.getInternalPort().isEmpty()) {
-          internalPort_ = other.internalPort_;
-          onChanged();
-        }
-        if (!other.getExternalPort().isEmpty()) {
-          externalPort_ = other.externalPort_;
-          onChanged();
-        }
-        if (other.hasInformation()) {
-          mergeInformation(other.getInformation());
-        }
-        if (other.getDuration() != 0L) {
-          setDuration(other.getDuration());
-        }
-        if (other.hasTask()) {
-          mergeTask(other.getTask());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object id_ = "";
-      /**
-       * <pre>
-       * 计算服务的唯一Id
-       * </pre>
-       *
-       * <code>string id = 2;</code>
-       * @return The id.
-       */
-      public java.lang.String getId() {
-        java.lang.Object ref = id_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          id_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的唯一Id
-       * </pre>
-       *
-       * <code>string id = 2;</code>
-       * @return The bytes for id.
-       */
-      public com.google.protobuf.ByteString
-          getIdBytes() {
-        java.lang.Object ref = id_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          id_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的唯一Id
-       * </pre>
-       *
-       * <code>string id = 2;</code>
-       * @param value The id to set.
-       * @return This builder for chaining.
-       */
-      public Builder setId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        id_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的唯一Id
-       * </pre>
-       *
-       * <code>string id = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearId() {
-        
-        id_ = getDefaultInstance().getId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的唯一Id
-       * </pre>
-       *
-       * <code>string id = 2;</code>
-       * @param value The bytes for id to set.
-       * @return This builder for chaining.
-       */
-      public Builder setIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        id_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object internalIp_ = "";
-      /**
-       * <pre>
-       * 计算服务的内网 ip, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_ip = 3;</code>
-       * @return The internalIp.
-       */
-      public java.lang.String getInternalIp() {
-        java.lang.Object ref = internalIp_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          internalIp_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的内网 ip, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_ip = 3;</code>
-       * @return The bytes for internalIp.
-       */
-      public com.google.protobuf.ByteString
-          getInternalIpBytes() {
-        java.lang.Object ref = internalIp_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          internalIp_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的内网 ip, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_ip = 3;</code>
-       * @param value The internalIp to set.
-       * @return This builder for chaining.
-       */
-      public Builder setInternalIp(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        internalIp_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的内网 ip, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_ip = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearInternalIp() {
-        
-        internalIp_ = getDefaultInstance().getInternalIp();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的内网 ip, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_ip = 3;</code>
-       * @param value The bytes for internalIp to set.
-       * @return This builder for chaining.
-       */
-      public Builder setInternalIpBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        internalIp_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object externalIp_ = "";
-      /**
-       * <pre>
-       * 计算服务的外网 ip, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_ip = 4;</code>
-       * @return The externalIp.
-       */
-      public java.lang.String getExternalIp() {
-        java.lang.Object ref = externalIp_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          externalIp_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的外网 ip, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_ip = 4;</code>
-       * @return The bytes for externalIp.
-       */
-      public com.google.protobuf.ByteString
-          getExternalIpBytes() {
-        java.lang.Object ref = externalIp_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          externalIp_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的外网 ip, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_ip = 4;</code>
-       * @param value The externalIp to set.
-       * @return This builder for chaining.
-       */
-      public Builder setExternalIp(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        externalIp_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的外网 ip, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_ip = 4;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearExternalIp() {
-        
-        externalIp_ = getDefaultInstance().getExternalIp();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的外网 ip, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_ip = 4;</code>
-       * @param value The bytes for externalIp to set.
-       * @return This builder for chaining.
-       */
-      public Builder setExternalIpBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        externalIp_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object internalPort_ = "";
-      /**
-       * <pre>
-       * 计算服务的内网 port, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_port = 5;</code>
-       * @return The internalPort.
-       */
-      public java.lang.String getInternalPort() {
-        java.lang.Object ref = internalPort_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          internalPort_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的内网 port, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_port = 5;</code>
-       * @return The bytes for internalPort.
-       */
-      public com.google.protobuf.ByteString
-          getInternalPortBytes() {
-        java.lang.Object ref = internalPort_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          internalPort_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的内网 port, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_port = 5;</code>
-       * @param value The internalPort to set.
-       * @return This builder for chaining.
-       */
-      public Builder setInternalPort(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        internalPort_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的内网 port, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_port = 5;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearInternalPort() {
-        
-        internalPort_ = getDefaultInstance().getInternalPort();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的内网 port, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_port = 5;</code>
-       * @param value The bytes for internalPort to set.
-       * @return This builder for chaining.
-       */
-      public Builder setInternalPortBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        internalPort_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object externalPort_ = "";
-      /**
-       * <pre>
-       * 计算服务的外网 port, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_port = 6;</code>
-       * @return The externalPort.
-       */
-      public java.lang.String getExternalPort() {
-        java.lang.Object ref = externalPort_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          externalPort_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的外网 port, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_port = 6;</code>
-       * @return The bytes for externalPort.
-       */
-      public com.google.protobuf.ByteString
-          getExternalPortBytes() {
-        java.lang.Object ref = externalPort_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          externalPort_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的外网 port, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_port = 6;</code>
-       * @param value The externalPort to set.
-       * @return This builder for chaining.
-       */
-      public Builder setExternalPort(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        externalPort_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的外网 port, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_port = 6;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearExternalPort() {
-        
-        externalPort_ = getDefaultInstance().getExternalPort();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的外网 port, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_port = 6;</code>
-       * @param value The bytes for externalPort to set.
-       * @return This builder for chaining.
-       */
-      public Builder setExternalPortBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        externalPort_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow information_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> informationBuilder_;
-      /**
-       * <pre>
-       * 计算服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       * @return Whether the information field is set.
-       */
-      public boolean hasInformation() {
-        return informationBuilder_ != null || information_ != null;
-      }
-      /**
-       * <pre>
-       * 计算服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       * @return The information.
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation() {
-        if (informationBuilder_ == null) {
-          return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
-        } else {
-          return informationBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
-        if (informationBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          information_ = value;
-          onChanged();
-        } else {
-          informationBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public Builder setInformation(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder builderForValue) {
-        if (informationBuilder_ == null) {
-          information_ = builderForValue.build();
-          onChanged();
-        } else {
-          informationBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
-        if (informationBuilder_ == null) {
-          if (information_ != null) {
-            information_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.newBuilder(information_).mergeFrom(value).buildPartial();
-          } else {
-            information_ = value;
-          }
-          onChanged();
-        } else {
-          informationBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public Builder clearInformation() {
-        if (informationBuilder_ == null) {
-          information_ = null;
-          onChanged();
-        } else {
-          information_ = null;
-          informationBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder getInformationBuilder() {
-        
-        onChanged();
-        return getInformationFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 计算服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder() {
-        if (informationBuilder_ != null) {
-          return informationBuilder_.getMessageOrBuilder();
-        } else {
-          return information_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> 
-          getInformationFieldBuilder() {
-        if (informationBuilder_ == null) {
-          informationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder>(
-                  getInformation(),
-                  getParentForChildren(),
-                  isClean());
-          information_ = null;
-        }
-        return informationBuilder_;
-      }
-
-      private long duration_ ;
-      /**
-       * <pre>
-       * 计算服务远行时长 (从加入网络中的时间点计算)
-       * </pre>
-       *
-       * <code>uint64 duration = 8;</code>
-       * @return The duration.
-       */
-      @java.lang.Override
-      public long getDuration() {
-        return duration_;
-      }
-      /**
-       * <pre>
-       * 计算服务远行时长 (从加入网络中的时间点计算)
-       * </pre>
-       *
-       * <code>uint64 duration = 8;</code>
-       * @param value The duration to set.
-       * @return This builder for chaining.
-       */
-      public Builder setDuration(long value) {
-        
-        duration_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务远行时长 (从加入网络中的时间点计算)
-       * </pre>
-       *
-       * <code>uint64 duration = 8;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearDuration() {
-        
-        duration_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds task_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIdsOrBuilder> taskBuilder_;
-      /**
-       * <pre>
-       * 计算服务上的任务Id和个数
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-       * @return Whether the task field is set.
-       */
-      public boolean hasTask() {
-        return taskBuilder_ != null || task_ != null;
-      }
-      /**
-       * <pre>
-       * 计算服务上的任务Id和个数
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-       * @return The task.
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds getTask() {
-        if (taskBuilder_ == null) {
-          return task_ == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.getDefaultInstance() : task_;
-        } else {
-          return taskBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务上的任务Id和个数
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-       */
-      public Builder setTask(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds value) {
-        if (taskBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          task_ = value;
-          onChanged();
-        } else {
-          taskBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务上的任务Id和个数
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-       */
-      public Builder setTask(
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.Builder builderForValue) {
-        if (taskBuilder_ == null) {
-          task_ = builderForValue.build();
-          onChanged();
-        } else {
-          taskBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务上的任务Id和个数
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-       */
-      public Builder mergeTask(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds value) {
-        if (taskBuilder_ == null) {
-          if (task_ != null) {
-            task_ =
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.newBuilder(task_).mergeFrom(value).buildPartial();
-          } else {
-            task_ = value;
-          }
-          onChanged();
-        } else {
-          taskBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务上的任务Id和个数
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-       */
-      public Builder clearTask() {
-        if (taskBuilder_ == null) {
-          task_ = null;
-          onChanged();
-        } else {
-          task_ = null;
-          taskBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 计算服务上的任务Id和个数
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.Builder getTaskBuilder() {
-        
-        onChanged();
-        return getTaskFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 计算服务上的任务Id和个数
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIdsOrBuilder getTaskOrBuilder() {
-        if (taskBuilder_ != null) {
-          return taskBuilder_.getMessageOrBuilder();
-        } else {
-          return task_ == null ?
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.getDefaultInstance() : task_;
-        }
-      }
-      /**
-       * <pre>
-       * 计算服务上的任务Id和个数
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredJobNodeTaskIds task = 9;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIdsOrBuilder> 
-          getTaskFieldBuilder() {
-        if (taskBuilder_ == null) {
-          taskBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIdsOrBuilder>(
-                  getTask(),
-                  getParentForChildren(),
-                  isClean());
-          task_ = null;
-        }
-        return taskBuilder_;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:rpcapi.YarnRegisteredJobNode)
-    }
-
-    // @@protoc_insertion_point(class_scope:rpcapi.YarnRegisteredJobNode)
-    private static final com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode();
-    }
-
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<YarnRegisteredJobNode>
-        PARSER = new com.google.protobuf.AbstractParser<YarnRegisteredJobNode>() {
-      @java.lang.Override
-      public YarnRegisteredJobNode parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new YarnRegisteredJobNode(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<YarnRegisteredJobNode> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<YarnRegisteredJobNode> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface YarnRegisteredJobNodeTaskIdsOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.YarnRegisteredJobNodeTaskIds)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>uint32 count = 1;</code>
-     * @return The count.
-     */
-    int getCount();
-
-    /**
-     * <code>repeated string task_ids = 2;</code>
-     * @return A list containing the taskIds.
-     */
-    java.util.List<java.lang.String>
-        getTaskIdsList();
-    /**
-     * <code>repeated string task_ids = 2;</code>
-     * @return The count of taskIds.
-     */
-    int getTaskIdsCount();
-    /**
-     * <code>repeated string task_ids = 2;</code>
-     * @param index The index of the element to return.
-     * @return The taskIds at the given index.
-     */
-    java.lang.String getTaskIds(int index);
-    /**
-     * <code>repeated string task_ids = 2;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the taskIds at the given index.
-     */
-    com.google.protobuf.ByteString
-        getTaskIdsBytes(int index);
-  }
-  /**
-   * Protobuf type {@code rpcapi.YarnRegisteredJobNodeTaskIds}
-   */
-  public static final class YarnRegisteredJobNodeTaskIds extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.YarnRegisteredJobNodeTaskIds)
-      YarnRegisteredJobNodeTaskIdsOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use YarnRegisteredJobNodeTaskIds.newBuilder() to construct.
-    private YarnRegisteredJobNodeTaskIds(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private YarnRegisteredJobNodeTaskIds() {
-      taskIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new YarnRegisteredJobNodeTaskIds();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private YarnRegisteredJobNodeTaskIds(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-
-              count_ = input.readUInt32();
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                taskIds_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              taskIds_.add(s);
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          taskIds_ = taskIds_.getUnmodifiableView();
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredJobNodeTaskIds_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredJobNodeTaskIds_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.Builder.class);
-    }
-
-    public static final int COUNT_FIELD_NUMBER = 1;
-    private int count_;
-    /**
-     * <code>uint32 count = 1;</code>
-     * @return The count.
-     */
-    @java.lang.Override
-    public int getCount() {
-      return count_;
-    }
-
-    public static final int TASK_IDS_FIELD_NUMBER = 2;
-    private com.google.protobuf.LazyStringList taskIds_;
-    /**
-     * <code>repeated string task_ids = 2;</code>
-     * @return A list containing the taskIds.
-     */
-    public com.google.protobuf.ProtocolStringList
-        getTaskIdsList() {
-      return taskIds_;
-    }
-    /**
-     * <code>repeated string task_ids = 2;</code>
-     * @return The count of taskIds.
-     */
-    public int getTaskIdsCount() {
-      return taskIds_.size();
-    }
-    /**
-     * <code>repeated string task_ids = 2;</code>
-     * @param index The index of the element to return.
-     * @return The taskIds at the given index.
-     */
-    public java.lang.String getTaskIds(int index) {
-      return taskIds_.get(index);
-    }
-    /**
-     * <code>repeated string task_ids = 2;</code>
-     * @param index The index of the value to return.
-     * @return The bytes of the taskIds at the given index.
-     */
-    public com.google.protobuf.ByteString
-        getTaskIdsBytes(int index) {
-      return taskIds_.getByteString(index);
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (count_ != 0) {
-        output.writeUInt32(1, count_);
-      }
-      for (int i = 0; i < taskIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, taskIds_.getRaw(i));
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (count_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, count_);
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < taskIds_.size(); i++) {
-          dataSize += computeStringSizeNoTag(taskIds_.getRaw(i));
-        }
-        size += dataSize;
-        size += 1 * getTaskIdsList().size();
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds)) {
-        return super.equals(obj);
-      }
-      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds) obj;
-
-      if (getCount()
-          != other.getCount()) return false;
-      if (!getTaskIdsList()
-          .equals(other.getTaskIdsList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + COUNT_FIELD_NUMBER;
-      hash = (53 * hash) + getCount();
-      if (getTaskIdsCount() > 0) {
-        hash = (37 * hash) + TASK_IDS_FIELD_NUMBER;
-        hash = (53 * hash) + getTaskIdsList().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code rpcapi.YarnRegisteredJobNodeTaskIds}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.YarnRegisteredJobNodeTaskIds)
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIdsOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredJobNodeTaskIds_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredJobNodeTaskIds_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.Builder.class);
-      }
-
-      // Construct using com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        count_ = 0;
-
-        taskIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredJobNodeTaskIds_descriptor;
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds build() {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds(this);
-        int from_bitField0_ = bitField0_;
-        result.count_ = count_;
-        if (((bitField0_ & 0x00000001) != 0)) {
-          taskIds_ = taskIds_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        }
-        result.taskIds_ = taskIds_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds.getDefaultInstance()) return this;
-        if (other.getCount() != 0) {
-          setCount(other.getCount());
-        }
-        if (!other.taskIds_.isEmpty()) {
-          if (taskIds_.isEmpty()) {
-            taskIds_ = other.taskIds_;
-            bitField0_ = (bitField0_ & ~0x00000001);
-          } else {
-            ensureTaskIdsIsMutable();
-            taskIds_.addAll(other.taskIds_);
-          }
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private int count_ ;
-      /**
-       * <code>uint32 count = 1;</code>
-       * @return The count.
-       */
-      @java.lang.Override
-      public int getCount() {
-        return count_;
-      }
-      /**
-       * <code>uint32 count = 1;</code>
-       * @param value The count to set.
-       * @return This builder for chaining.
-       */
-      public Builder setCount(int value) {
-        
-        count_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>uint32 count = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearCount() {
-        
-        count_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList taskIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureTaskIdsIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
-          taskIds_ = new com.google.protobuf.LazyStringArrayList(taskIds_);
-          bitField0_ |= 0x00000001;
-         }
-      }
-      /**
-       * <code>repeated string task_ids = 2;</code>
-       * @return A list containing the taskIds.
-       */
-      public com.google.protobuf.ProtocolStringList
-          getTaskIdsList() {
-        return taskIds_.getUnmodifiableView();
-      }
-      /**
-       * <code>repeated string task_ids = 2;</code>
-       * @return The count of taskIds.
-       */
-      public int getTaskIdsCount() {
-        return taskIds_.size();
-      }
-      /**
-       * <code>repeated string task_ids = 2;</code>
-       * @param index The index of the element to return.
-       * @return The taskIds at the given index.
-       */
-      public java.lang.String getTaskIds(int index) {
-        return taskIds_.get(index);
-      }
-      /**
-       * <code>repeated string task_ids = 2;</code>
-       * @param index The index of the value to return.
-       * @return The bytes of the taskIds at the given index.
-       */
-      public com.google.protobuf.ByteString
-          getTaskIdsBytes(int index) {
-        return taskIds_.getByteString(index);
-      }
-      /**
-       * <code>repeated string task_ids = 2;</code>
-       * @param index The index to set the value at.
-       * @param value The taskIds to set.
-       * @return This builder for chaining.
-       */
-      public Builder setTaskIds(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureTaskIdsIsMutable();
-        taskIds_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string task_ids = 2;</code>
-       * @param value The taskIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addTaskIds(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureTaskIdsIsMutable();
-        taskIds_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string task_ids = 2;</code>
-       * @param values The taskIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addAllTaskIds(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureTaskIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, taskIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string task_ids = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearTaskIds() {
-        taskIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated string task_ids = 2;</code>
-       * @param value The bytes of the taskIds to add.
-       * @return This builder for chaining.
-       */
-      public Builder addTaskIdsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        ensureTaskIdsIsMutable();
-        taskIds_.add(value);
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:rpcapi.YarnRegisteredJobNodeTaskIds)
-    }
-
-    // @@protoc_insertion_point(class_scope:rpcapi.YarnRegisteredJobNodeTaskIds)
-    private static final com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds();
-    }
-
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<YarnRegisteredJobNodeTaskIds>
-        PARSER = new com.google.protobuf.AbstractParser<YarnRegisteredJobNodeTaskIds>() {
-      @java.lang.Override
-      public YarnRegisteredJobNodeTaskIds parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new YarnRegisteredJobNodeTaskIds(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<YarnRegisteredJobNodeTaskIds> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<YarnRegisteredJobNodeTaskIds> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeTaskIds getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface YarnRegisteredDataNodeOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.YarnRegisteredDataNode)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <pre>
-     * 数据服务的唯一Id
-     * </pre>
-     *
-     * <code>string id = 2;</code>
-     * @return The id.
-     */
-    java.lang.String getId();
-    /**
-     * <pre>
-     * 数据服务的唯一Id
-     * </pre>
-     *
-     * <code>string id = 2;</code>
-     * @return The bytes for id.
-     */
-    com.google.protobuf.ByteString
-        getIdBytes();
-
-    /**
-     * <pre>
-     * 数据服务的内网 ip, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_ip = 3;</code>
-     * @return The internalIp.
-     */
-    java.lang.String getInternalIp();
-    /**
-     * <pre>
-     * 数据服务的内网 ip, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_ip = 3;</code>
-     * @return The bytes for internalIp.
-     */
-    com.google.protobuf.ByteString
-        getInternalIpBytes();
-
-    /**
-     * <pre>
-     * 数据服务的外网 ip, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_ip = 4;</code>
-     * @return The externalIp.
-     */
-    java.lang.String getExternalIp();
-    /**
-     * <pre>
-     * 数据服务的外网 ip, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_ip = 4;</code>
-     * @return The bytes for externalIp.
-     */
-    com.google.protobuf.ByteString
-        getExternalIpBytes();
-
-    /**
-     * <pre>
-     * 数据服务的内网 port, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_port = 5;</code>
-     * @return The internalPort.
-     */
-    java.lang.String getInternalPort();
-    /**
-     * <pre>
-     * 数据服务的内网 port, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_port = 5;</code>
-     * @return The bytes for internalPort.
-     */
-    com.google.protobuf.ByteString
-        getInternalPortBytes();
-
-    /**
-     * <pre>
-     * 数据服务的外网 port, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_port = 6;</code>
-     * @return The externalPort.
-     */
-    java.lang.String getExternalPort();
-    /**
-     * <pre>
-     * 数据服务的外网 port, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_port = 6;</code>
-     * @return The bytes for externalPort.
-     */
-    com.google.protobuf.ByteString
-        getExternalPortBytes();
-
-    /**
-     * <pre>
-     * 数据服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     * @return Whether the information field is set.
-     */
-    boolean hasInformation();
-    /**
-     * <pre>
-     * 数据服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     * @return The information.
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation();
-    /**
-     * <pre>
-     * 数据服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder();
-
-    /**
-     * <pre>
-     * 数据服务远行时长 (从加入网络中的时间点计算)
-     * </pre>
-     *
-     * <code>uint64 duration = 8;</code>
-     * @return The duration.
-     */
-    long getDuration();
-
-    /**
-     * <pre>
-     * 数据服务上的文件统计信息
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-     * @return Whether the delta field is set.
-     */
-    boolean hasDelta();
-    /**
-     * <pre>
-     * 数据服务上的文件统计信息
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-     * @return The delta.
-     */
-    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta getDelta();
-    /**
-     * <pre>
-     * 数据服务上的文件统计信息
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDeltaOrBuilder getDeltaOrBuilder();
-  }
-  /**
-   * Protobuf type {@code rpcapi.YarnRegisteredDataNode}
-   */
-  public static final class YarnRegisteredDataNode extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.YarnRegisteredDataNode)
-      YarnRegisteredDataNodeOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use YarnRegisteredDataNode.newBuilder() to construct.
-    private YarnRegisteredDataNode(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private YarnRegisteredDataNode() {
-      id_ = "";
-      internalIp_ = "";
-      externalIp_ = "";
-      internalPort_ = "";
-      externalPort_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new YarnRegisteredDataNode();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private YarnRegisteredDataNode(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              id_ = s;
-              break;
-            }
-            case 26: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              internalIp_ = s;
-              break;
-            }
-            case 34: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              externalIp_ = s;
-              break;
-            }
-            case 42: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              internalPort_ = s;
-              break;
-            }
-            case 50: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              externalPort_ = s;
-              break;
-            }
-            case 58: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder subBuilder = null;
-              if (information_ != null) {
-                subBuilder = information_.toBuilder();
-              }
-              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(information_);
-                information_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 64: {
-
-              duration_ = input.readUInt64();
-              break;
-            }
-            case 74: {
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.Builder subBuilder = null;
-              if (delta_ != null) {
-                subBuilder = delta_.toBuilder();
-              }
-              delta_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(delta_);
-                delta_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredDataNode_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredDataNode_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder.class);
-    }
-
-    public static final int ID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object id_;
-    /**
-     * <pre>
-     * 数据服务的唯一Id
-     * </pre>
-     *
-     * <code>string id = 2;</code>
-     * @return The id.
-     */
-    @java.lang.Override
-    public java.lang.String getId() {
-      java.lang.Object ref = id_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        id_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 数据服务的唯一Id
-     * </pre>
-     *
-     * <code>string id = 2;</code>
-     * @return The bytes for id.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getIdBytes() {
-      java.lang.Object ref = id_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        id_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int INTERNAL_IP_FIELD_NUMBER = 3;
-    private volatile java.lang.Object internalIp_;
-    /**
-     * <pre>
-     * 数据服务的内网 ip, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_ip = 3;</code>
-     * @return The internalIp.
-     */
-    @java.lang.Override
-    public java.lang.String getInternalIp() {
-      java.lang.Object ref = internalIp_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        internalIp_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 数据服务的内网 ip, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_ip = 3;</code>
-     * @return The bytes for internalIp.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getInternalIpBytes() {
-      java.lang.Object ref = internalIp_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        internalIp_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int EXTERNAL_IP_FIELD_NUMBER = 4;
-    private volatile java.lang.Object externalIp_;
-    /**
-     * <pre>
-     * 数据服务的外网 ip, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_ip = 4;</code>
-     * @return The externalIp.
-     */
-    @java.lang.Override
-    public java.lang.String getExternalIp() {
-      java.lang.Object ref = externalIp_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        externalIp_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 数据服务的外网 ip, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_ip = 4;</code>
-     * @return The bytes for externalIp.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getExternalIpBytes() {
-      java.lang.Object ref = externalIp_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        externalIp_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int INTERNAL_PORT_FIELD_NUMBER = 5;
-    private volatile java.lang.Object internalPort_;
-    /**
-     * <pre>
-     * 数据服务的内网 port, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_port = 5;</code>
-     * @return The internalPort.
-     */
-    @java.lang.Override
-    public java.lang.String getInternalPort() {
-      java.lang.Object ref = internalPort_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        internalPort_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 数据服务的内网 port, 给 管理台用
-     * </pre>
-     *
-     * <code>string internal_port = 5;</code>
-     * @return The bytes for internalPort.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getInternalPortBytes() {
-      java.lang.Object ref = internalPort_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        internalPort_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int EXTERNAL_PORT_FIELD_NUMBER = 6;
-    private volatile java.lang.Object externalPort_;
-    /**
-     * <pre>
-     * 数据服务的外网 port, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_port = 6;</code>
-     * @return The externalPort.
-     */
-    @java.lang.Override
-    public java.lang.String getExternalPort() {
-      java.lang.Object ref = externalPort_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        externalPort_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * 数据服务的外网 port, 给 多方协作任务用
-     * </pre>
-     *
-     * <code>string external_port = 6;</code>
-     * @return The bytes for externalPort.
-     */
-    @java.lang.Override
-    public com.google.protobuf.ByteString
-        getExternalPortBytes() {
-      java.lang.Object ref = externalPort_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        externalPort_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int INFORMATION_FIELD_NUMBER = 7;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow information_;
-    /**
-     * <pre>
-     * 数据服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     * @return Whether the information field is set.
-     */
-    @java.lang.Override
-    public boolean hasInformation() {
-      return information_ != null;
-    }
-    /**
-     * <pre>
-     * 数据服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     * @return The information.
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation() {
-      return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
-    }
-    /**
-     * <pre>
-     * 数据服务的算力资源使用情况
-     * </pre>
-     *
-     * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder() {
-      return getInformation();
-    }
-
-    public static final int DURATION_FIELD_NUMBER = 8;
-    private long duration_;
-    /**
-     * <pre>
-     * 数据服务远行时长 (从加入网络中的时间点计算)
-     * </pre>
-     *
-     * <code>uint64 duration = 8;</code>
-     * @return The duration.
-     */
-    @java.lang.Override
-    public long getDuration() {
-      return duration_;
-    }
-
-    public static final int DELTA_FIELD_NUMBER = 9;
-    private com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta delta_;
-    /**
-     * <pre>
-     * 数据服务上的文件统计信息
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-     * @return Whether the delta field is set.
-     */
-    @java.lang.Override
-    public boolean hasDelta() {
-      return delta_ != null;
-    }
-    /**
-     * <pre>
-     * 数据服务上的文件统计信息
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-     * @return The delta.
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta getDelta() {
-      return delta_ == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.getDefaultInstance() : delta_;
-    }
-    /**
-     * <pre>
-     * 数据服务上的文件统计信息
-     * </pre>
-     *
-     * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDeltaOrBuilder getDeltaOrBuilder() {
-      return getDelta();
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getIdBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, id_);
-      }
-      if (!getInternalIpBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, internalIp_);
-      }
-      if (!getExternalIpBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, externalIp_);
-      }
-      if (!getInternalPortBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, internalPort_);
-      }
-      if (!getExternalPortBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, externalPort_);
-      }
-      if (information_ != null) {
-        output.writeMessage(7, getInformation());
-      }
-      if (duration_ != 0L) {
-        output.writeUInt64(8, duration_);
-      }
-      if (delta_ != null) {
-        output.writeMessage(9, getDelta());
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getIdBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, id_);
-      }
-      if (!getInternalIpBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, internalIp_);
-      }
-      if (!getExternalIpBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, externalIp_);
-      }
-      if (!getInternalPortBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, internalPort_);
-      }
-      if (!getExternalPortBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, externalPort_);
-      }
-      if (information_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, getInformation());
-      }
-      if (duration_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(8, duration_);
-      }
-      if (delta_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(9, getDelta());
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode)) {
-        return super.equals(obj);
-      }
-      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode) obj;
-
-      if (!getId()
-          .equals(other.getId())) return false;
-      if (!getInternalIp()
-          .equals(other.getInternalIp())) return false;
-      if (!getExternalIp()
-          .equals(other.getExternalIp())) return false;
-      if (!getInternalPort()
-          .equals(other.getInternalPort())) return false;
-      if (!getExternalPort()
-          .equals(other.getExternalPort())) return false;
-      if (hasInformation() != other.hasInformation()) return false;
-      if (hasInformation()) {
-        if (!getInformation()
-            .equals(other.getInformation())) return false;
-      }
-      if (getDuration()
-          != other.getDuration()) return false;
-      if (hasDelta() != other.hasDelta()) return false;
-      if (hasDelta()) {
-        if (!getDelta()
-            .equals(other.getDelta())) return false;
-      }
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + ID_FIELD_NUMBER;
-      hash = (53 * hash) + getId().hashCode();
-      hash = (37 * hash) + INTERNAL_IP_FIELD_NUMBER;
-      hash = (53 * hash) + getInternalIp().hashCode();
-      hash = (37 * hash) + EXTERNAL_IP_FIELD_NUMBER;
-      hash = (53 * hash) + getExternalIp().hashCode();
-      hash = (37 * hash) + INTERNAL_PORT_FIELD_NUMBER;
-      hash = (53 * hash) + getInternalPort().hashCode();
-      hash = (37 * hash) + EXTERNAL_PORT_FIELD_NUMBER;
-      hash = (53 * hash) + getExternalPort().hashCode();
-      if (hasInformation()) {
-        hash = (37 * hash) + INFORMATION_FIELD_NUMBER;
-        hash = (53 * hash) + getInformation().hashCode();
-      }
-      hash = (37 * hash) + DURATION_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getDuration());
-      if (hasDelta()) {
-        hash = (37 * hash) + DELTA_FIELD_NUMBER;
-        hash = (53 * hash) + getDelta().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code rpcapi.YarnRegisteredDataNode}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.YarnRegisteredDataNode)
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredDataNode_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredDataNode_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder.class);
-      }
-
-      // Construct using com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        id_ = "";
-
-        internalIp_ = "";
-
-        externalIp_ = "";
-
-        internalPort_ = "";
-
-        externalPort_ = "";
-
-        if (informationBuilder_ == null) {
-          information_ = null;
-        } else {
-          information_ = null;
-          informationBuilder_ = null;
-        }
-        duration_ = 0L;
-
-        if (deltaBuilder_ == null) {
-          delta_ = null;
-        } else {
-          delta_ = null;
-          deltaBuilder_ = null;
-        }
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredDataNode_descriptor;
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode build() {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode(this);
-        result.id_ = id_;
-        result.internalIp_ = internalIp_;
-        result.externalIp_ = externalIp_;
-        result.internalPort_ = internalPort_;
-        result.externalPort_ = externalPort_;
-        if (informationBuilder_ == null) {
-          result.information_ = information_;
-        } else {
-          result.information_ = informationBuilder_.build();
-        }
-        result.duration_ = duration_;
-        if (deltaBuilder_ == null) {
-          result.delta_ = delta_;
-        } else {
-          result.delta_ = deltaBuilder_.build();
-        }
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.getDefaultInstance()) return this;
-        if (!other.getId().isEmpty()) {
-          id_ = other.id_;
-          onChanged();
-        }
-        if (!other.getInternalIp().isEmpty()) {
-          internalIp_ = other.internalIp_;
-          onChanged();
-        }
-        if (!other.getExternalIp().isEmpty()) {
-          externalIp_ = other.externalIp_;
-          onChanged();
-        }
-        if (!other.getInternalPort().isEmpty()) {
-          internalPort_ = other.internalPort_;
-          onChanged();
-        }
-        if (!other.getExternalPort().isEmpty()) {
-          externalPort_ = other.externalPort_;
-          onChanged();
-        }
-        if (other.hasInformation()) {
-          mergeInformation(other.getInformation());
-        }
-        if (other.getDuration() != 0L) {
-          setDuration(other.getDuration());
-        }
-        if (other.hasDelta()) {
-          mergeDelta(other.getDelta());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object id_ = "";
-      /**
-       * <pre>
-       * 数据服务的唯一Id
-       * </pre>
-       *
-       * <code>string id = 2;</code>
-       * @return The id.
-       */
-      public java.lang.String getId() {
-        java.lang.Object ref = id_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          id_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的唯一Id
-       * </pre>
-       *
-       * <code>string id = 2;</code>
-       * @return The bytes for id.
-       */
-      public com.google.protobuf.ByteString
-          getIdBytes() {
-        java.lang.Object ref = id_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          id_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的唯一Id
-       * </pre>
-       *
-       * <code>string id = 2;</code>
-       * @param value The id to set.
-       * @return This builder for chaining.
-       */
-      public Builder setId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        id_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的唯一Id
-       * </pre>
-       *
-       * <code>string id = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearId() {
-        
-        id_ = getDefaultInstance().getId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的唯一Id
-       * </pre>
-       *
-       * <code>string id = 2;</code>
-       * @param value The bytes for id to set.
-       * @return This builder for chaining.
-       */
-      public Builder setIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        id_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object internalIp_ = "";
-      /**
-       * <pre>
-       * 数据服务的内网 ip, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_ip = 3;</code>
-       * @return The internalIp.
-       */
-      public java.lang.String getInternalIp() {
-        java.lang.Object ref = internalIp_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          internalIp_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的内网 ip, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_ip = 3;</code>
-       * @return The bytes for internalIp.
-       */
-      public com.google.protobuf.ByteString
-          getInternalIpBytes() {
-        java.lang.Object ref = internalIp_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          internalIp_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的内网 ip, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_ip = 3;</code>
-       * @param value The internalIp to set.
-       * @return This builder for chaining.
-       */
-      public Builder setInternalIp(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        internalIp_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的内网 ip, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_ip = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearInternalIp() {
-        
-        internalIp_ = getDefaultInstance().getInternalIp();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的内网 ip, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_ip = 3;</code>
-       * @param value The bytes for internalIp to set.
-       * @return This builder for chaining.
-       */
-      public Builder setInternalIpBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        internalIp_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object externalIp_ = "";
-      /**
-       * <pre>
-       * 数据服务的外网 ip, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_ip = 4;</code>
-       * @return The externalIp.
-       */
-      public java.lang.String getExternalIp() {
-        java.lang.Object ref = externalIp_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          externalIp_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的外网 ip, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_ip = 4;</code>
-       * @return The bytes for externalIp.
-       */
-      public com.google.protobuf.ByteString
-          getExternalIpBytes() {
-        java.lang.Object ref = externalIp_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          externalIp_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的外网 ip, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_ip = 4;</code>
-       * @param value The externalIp to set.
-       * @return This builder for chaining.
-       */
-      public Builder setExternalIp(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        externalIp_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的外网 ip, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_ip = 4;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearExternalIp() {
-        
-        externalIp_ = getDefaultInstance().getExternalIp();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的外网 ip, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_ip = 4;</code>
-       * @param value The bytes for externalIp to set.
-       * @return This builder for chaining.
-       */
-      public Builder setExternalIpBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        externalIp_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object internalPort_ = "";
-      /**
-       * <pre>
-       * 数据服务的内网 port, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_port = 5;</code>
-       * @return The internalPort.
-       */
-      public java.lang.String getInternalPort() {
-        java.lang.Object ref = internalPort_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          internalPort_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的内网 port, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_port = 5;</code>
-       * @return The bytes for internalPort.
-       */
-      public com.google.protobuf.ByteString
-          getInternalPortBytes() {
-        java.lang.Object ref = internalPort_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          internalPort_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的内网 port, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_port = 5;</code>
-       * @param value The internalPort to set.
-       * @return This builder for chaining.
-       */
-      public Builder setInternalPort(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        internalPort_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的内网 port, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_port = 5;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearInternalPort() {
-        
-        internalPort_ = getDefaultInstance().getInternalPort();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的内网 port, 给 管理台用
-       * </pre>
-       *
-       * <code>string internal_port = 5;</code>
-       * @param value The bytes for internalPort to set.
-       * @return This builder for chaining.
-       */
-      public Builder setInternalPortBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        internalPort_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object externalPort_ = "";
-      /**
-       * <pre>
-       * 数据服务的外网 port, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_port = 6;</code>
-       * @return The externalPort.
-       */
-      public java.lang.String getExternalPort() {
-        java.lang.Object ref = externalPort_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          externalPort_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的外网 port, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_port = 6;</code>
-       * @return The bytes for externalPort.
-       */
-      public com.google.protobuf.ByteString
-          getExternalPortBytes() {
-        java.lang.Object ref = externalPort_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          externalPort_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的外网 port, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_port = 6;</code>
-       * @param value The externalPort to set.
-       * @return This builder for chaining.
-       */
-      public Builder setExternalPort(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        externalPort_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的外网 port, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_port = 6;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearExternalPort() {
-        
-        externalPort_ = getDefaultInstance().getExternalPort();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的外网 port, 给 多方协作任务用
-       * </pre>
-       *
-       * <code>string external_port = 6;</code>
-       * @param value The bytes for externalPort to set.
-       * @return This builder for chaining.
-       */
-      public Builder setExternalPortBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        externalPort_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow information_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> informationBuilder_;
-      /**
-       * <pre>
-       * 数据服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       * @return Whether the information field is set.
-       */
-      public boolean hasInformation() {
-        return informationBuilder_ != null || information_ != null;
-      }
-      /**
-       * <pre>
-       * 数据服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       * @return The information.
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getInformation() {
-        if (informationBuilder_ == null) {
-          return information_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
-        } else {
-          return informationBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
-        if (informationBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          information_ = value;
-          onChanged();
-        } else {
-          informationBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public Builder setInformation(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder builderForValue) {
-        if (informationBuilder_ == null) {
-          information_ = builderForValue.build();
-          onChanged();
-        } else {
-          informationBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
-        if (informationBuilder_ == null) {
-          if (information_ != null) {
-            information_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.newBuilder(information_).mergeFrom(value).buildPartial();
-          } else {
-            information_ = value;
-          }
-          onChanged();
-        } else {
-          informationBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public Builder clearInformation() {
-        if (informationBuilder_ == null) {
-          information_ = null;
-          onChanged();
-        } else {
-          information_ = null;
-          informationBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder getInformationBuilder() {
-        
-        onChanged();
-        return getInformationFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 数据服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getInformationOrBuilder() {
-        if (informationBuilder_ != null) {
-          return informationBuilder_.getMessageOrBuilder();
-        } else {
-          return information_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : information_;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务的算力资源使用情况
-       * </pre>
-       *
-       * <code>.rpcapi.ResourceUsedDetailShow information = 7;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> 
-          getInformationFieldBuilder() {
-        if (informationBuilder_ == null) {
-          informationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder>(
-                  getInformation(),
-                  getParentForChildren(),
-                  isClean());
-          information_ = null;
-        }
-        return informationBuilder_;
-      }
-
-      private long duration_ ;
-      /**
-       * <pre>
-       * 数据服务远行时长 (从加入网络中的时间点计算)
-       * </pre>
-       *
-       * <code>uint64 duration = 8;</code>
-       * @return The duration.
-       */
-      @java.lang.Override
-      public long getDuration() {
-        return duration_;
-      }
-      /**
-       * <pre>
-       * 数据服务远行时长 (从加入网络中的时间点计算)
-       * </pre>
-       *
-       * <code>uint64 duration = 8;</code>
-       * @param value The duration to set.
-       * @return This builder for chaining.
-       */
-      public Builder setDuration(long value) {
-        
-        duration_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务远行时长 (从加入网络中的时间点计算)
-       * </pre>
-       *
-       * <code>uint64 duration = 8;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearDuration() {
-        
-        duration_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta delta_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDeltaOrBuilder> deltaBuilder_;
-      /**
-       * <pre>
-       * 数据服务上的文件统计信息
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-       * @return Whether the delta field is set.
-       */
-      public boolean hasDelta() {
-        return deltaBuilder_ != null || delta_ != null;
-      }
-      /**
-       * <pre>
-       * 数据服务上的文件统计信息
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-       * @return The delta.
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta getDelta() {
-        if (deltaBuilder_ == null) {
-          return delta_ == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.getDefaultInstance() : delta_;
-        } else {
-          return deltaBuilder_.getMessage();
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务上的文件统计信息
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-       */
-      public Builder setDelta(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta value) {
-        if (deltaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          delta_ = value;
-          onChanged();
-        } else {
-          deltaBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务上的文件统计信息
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-       */
-      public Builder setDelta(
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.Builder builderForValue) {
-        if (deltaBuilder_ == null) {
-          delta_ = builderForValue.build();
-          onChanged();
-        } else {
-          deltaBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务上的文件统计信息
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-       */
-      public Builder mergeDelta(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta value) {
-        if (deltaBuilder_ == null) {
-          if (delta_ != null) {
-            delta_ =
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.newBuilder(delta_).mergeFrom(value).buildPartial();
-          } else {
-            delta_ = value;
-          }
-          onChanged();
-        } else {
-          deltaBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务上的文件统计信息
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-       */
-      public Builder clearDelta() {
-        if (deltaBuilder_ == null) {
-          delta_ = null;
-          onChanged();
-        } else {
-          delta_ = null;
-          deltaBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务上的文件统计信息
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.Builder getDeltaBuilder() {
-        
-        onChanged();
-        return getDeltaFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * 数据服务上的文件统计信息
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDeltaOrBuilder getDeltaOrBuilder() {
-        if (deltaBuilder_ != null) {
-          return deltaBuilder_.getMessageOrBuilder();
-        } else {
-          return delta_ == null ?
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.getDefaultInstance() : delta_;
-        }
-      }
-      /**
-       * <pre>
-       * 数据服务上的文件统计信息
-       * </pre>
-       *
-       * <code>.rpcapi.YarnRegisteredDataNodeDelta delta = 9;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDeltaOrBuilder> 
-          getDeltaFieldBuilder() {
-        if (deltaBuilder_ == null) {
-          deltaBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDeltaOrBuilder>(
-                  getDelta(),
-                  getParentForChildren(),
-                  isClean());
-          delta_ = null;
-        }
-        return deltaBuilder_;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:rpcapi.YarnRegisteredDataNode)
-    }
-
-    // @@protoc_insertion_point(class_scope:rpcapi.YarnRegisteredDataNode)
-    private static final com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode();
-    }
-
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<YarnRegisteredDataNode>
-        PARSER = new com.google.protobuf.AbstractParser<YarnRegisteredDataNode>() {
-      @java.lang.Override
-      public YarnRegisteredDataNode parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new YarnRegisteredDataNode(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<YarnRegisteredDataNode> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<YarnRegisteredDataNode> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface YarnRegisteredDataNodeDeltaOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.YarnRegisteredDataNodeDelta)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <pre>
-     * 数据服务对外公开的源文件个数
-     * </pre>
-     *
-     * <code>uint32 fileCount = 1;</code>
-     * @return The fileCount.
-     */
-    int getFileCount();
-
-    /**
-     * <pre>
-     * 数据服务对外公开的源文件总大小  (单位: byte)
-     * </pre>
-     *
-     * <code>uint32 fileTotalSize = 2;</code>
-     * @return The fileTotalSize.
-     */
-    int getFileTotalSize();
-  }
-  /**
-   * Protobuf type {@code rpcapi.YarnRegisteredDataNodeDelta}
-   */
-  public static final class YarnRegisteredDataNodeDelta extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.YarnRegisteredDataNodeDelta)
-      YarnRegisteredDataNodeDeltaOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use YarnRegisteredDataNodeDelta.newBuilder() to construct.
-    private YarnRegisteredDataNodeDelta(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private YarnRegisteredDataNodeDelta() {
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new YarnRegisteredDataNodeDelta();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private YarnRegisteredDataNodeDelta(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 8: {
-
-              fileCount_ = input.readUInt32();
-              break;
-            }
-            case 16: {
-
-              fileTotalSize_ = input.readUInt32();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredDataNodeDelta_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredDataNodeDelta_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.Builder.class);
-    }
-
-    public static final int FILECOUNT_FIELD_NUMBER = 1;
-    private int fileCount_;
-    /**
-     * <pre>
-     * 数据服务对外公开的源文件个数
-     * </pre>
-     *
-     * <code>uint32 fileCount = 1;</code>
-     * @return The fileCount.
-     */
-    @java.lang.Override
-    public int getFileCount() {
-      return fileCount_;
-    }
-
-    public static final int FILETOTALSIZE_FIELD_NUMBER = 2;
-    private int fileTotalSize_;
-    /**
-     * <pre>
-     * 数据服务对外公开的源文件总大小  (单位: byte)
-     * </pre>
-     *
-     * <code>uint32 fileTotalSize = 2;</code>
-     * @return The fileTotalSize.
-     */
-    @java.lang.Override
-    public int getFileTotalSize() {
-      return fileTotalSize_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (fileCount_ != 0) {
-        output.writeUInt32(1, fileCount_);
-      }
-      if (fileTotalSize_ != 0) {
-        output.writeUInt32(2, fileTotalSize_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (fileCount_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(1, fileCount_);
-      }
-      if (fileTotalSize_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, fileTotalSize_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta)) {
-        return super.equals(obj);
-      }
-      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta) obj;
-
-      if (getFileCount()
-          != other.getFileCount()) return false;
-      if (getFileTotalSize()
-          != other.getFileTotalSize()) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + FILECOUNT_FIELD_NUMBER;
-      hash = (53 * hash) + getFileCount();
-      hash = (37 * hash) + FILETOTALSIZE_FIELD_NUMBER;
-      hash = (53 * hash) + getFileTotalSize();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code rpcapi.YarnRegisteredDataNodeDelta}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.YarnRegisteredDataNodeDelta)
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDeltaOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredDataNodeDelta_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredDataNodeDelta_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.Builder.class);
-      }
-
-      // Construct using com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        fileCount_ = 0;
-
-        fileTotalSize_ = 0;
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_YarnRegisteredDataNodeDelta_descriptor;
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta build() {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta(this);
-        result.fileCount_ = fileCount_;
-        result.fileTotalSize_ = fileTotalSize_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta.getDefaultInstance()) return this;
-        if (other.getFileCount() != 0) {
-          setFileCount(other.getFileCount());
-        }
-        if (other.getFileTotalSize() != 0) {
-          setFileTotalSize(other.getFileTotalSize());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private int fileCount_ ;
-      /**
-       * <pre>
-       * 数据服务对外公开的源文件个数
-       * </pre>
-       *
-       * <code>uint32 fileCount = 1;</code>
-       * @return The fileCount.
-       */
-      @java.lang.Override
-      public int getFileCount() {
-        return fileCount_;
-      }
-      /**
-       * <pre>
-       * 数据服务对外公开的源文件个数
-       * </pre>
-       *
-       * <code>uint32 fileCount = 1;</code>
-       * @param value The fileCount to set.
-       * @return This builder for chaining.
-       */
-      public Builder setFileCount(int value) {
-        
-        fileCount_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务对外公开的源文件个数
-       * </pre>
-       *
-       * <code>uint32 fileCount = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearFileCount() {
-        
-        fileCount_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int fileTotalSize_ ;
-      /**
-       * <pre>
-       * 数据服务对外公开的源文件总大小  (单位: byte)
-       * </pre>
-       *
-       * <code>uint32 fileTotalSize = 2;</code>
-       * @return The fileTotalSize.
-       */
-      @java.lang.Override
-      public int getFileTotalSize() {
-        return fileTotalSize_;
-      }
-      /**
-       * <pre>
-       * 数据服务对外公开的源文件总大小  (单位: byte)
-       * </pre>
-       *
-       * <code>uint32 fileTotalSize = 2;</code>
-       * @param value The fileTotalSize to set.
-       * @return This builder for chaining.
-       */
-      public Builder setFileTotalSize(int value) {
-        
-        fileTotalSize_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * 数据服务对外公开的源文件总大小  (单位: byte)
-       * </pre>
-       *
-       * <code>uint32 fileTotalSize = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearFileTotalSize() {
-        
-        fileTotalSize_ = 0;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:rpcapi.YarnRegisteredDataNodeDelta)
-    }
-
-    // @@protoc_insertion_point(class_scope:rpcapi.YarnRegisteredDataNodeDelta)
-    private static final com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta();
-    }
-
-    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<YarnRegisteredDataNodeDelta>
-        PARSER = new com.google.protobuf.AbstractParser<YarnRegisteredDataNodeDelta>() {
-      @java.lang.Override
-      public YarnRegisteredDataNodeDelta parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new YarnRegisteredDataNodeDelta(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<YarnRegisteredDataNodeDelta> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<YarnRegisteredDataNodeDelta> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeDelta getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -14272,6 +9245,567 @@ public final class YarnRpcMessage {
 
   }
 
+  public interface GetRegisteredPeersRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.GetRegisteredPeersRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 种子or计算or数据服务node的类型
+     * </pre>
+     *
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The enum numeric value on the wire for nodeType.
+     */
+    int getNodeTypeValue();
+    /**
+     * <pre>
+     * 种子or计算or数据服务node的类型
+     * </pre>
+     *
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The nodeType.
+     */
+    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType();
+  }
+  /**
+   * Protobuf type {@code rpcapi.GetRegisteredPeersRequest}
+   */
+  public static final class GetRegisteredPeersRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.GetRegisteredPeersRequest)
+      GetRegisteredPeersRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GetRegisteredPeersRequest.newBuilder() to construct.
+    private GetRegisteredPeersRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetRegisteredPeersRequest() {
+      nodeType_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new GetRegisteredPeersRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetRegisteredPeersRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int rawValue = input.readEnum();
+
+              nodeType_ = rawValue;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetRegisteredPeersRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetRegisteredPeersRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest.Builder.class);
+    }
+
+    public static final int NODE_TYPE_FIELD_NUMBER = 1;
+    private int nodeType_;
+    /**
+     * <pre>
+     * 种子or计算or数据服务node的类型
+     * </pre>
+     *
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The enum numeric value on the wire for nodeType.
+     */
+    @java.lang.Override public int getNodeTypeValue() {
+      return nodeType_;
+    }
+    /**
+     * <pre>
+     * 种子or计算or数据服务node的类型
+     * </pre>
+     *
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The nodeType.
+     */
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType() {
+      @SuppressWarnings("deprecation")
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType result = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.valueOf(nodeType_);
+      return result == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.UNRECOGNIZED : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (nodeType_ != com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.SeedNode.getNumber()) {
+        output.writeEnum(1, nodeType_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (nodeType_ != com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.SeedNode.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, nodeType_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest) obj;
+
+      if (nodeType_ != other.nodeType_) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + NODE_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + nodeType_;
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code rpcapi.GetRegisteredPeersRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.GetRegisteredPeersRequest)
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetRegisteredPeersRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetRegisteredPeersRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        nodeType_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetRegisteredPeersRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest build() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest(this);
+        result.nodeType_ = nodeType_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest.getDefaultInstance()) return this;
+        if (other.nodeType_ != 0) {
+          setNodeTypeValue(other.getNodeTypeValue());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int nodeType_ = 0;
+      /**
+       * <pre>
+       * 种子or计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @return The enum numeric value on the wire for nodeType.
+       */
+      @java.lang.Override public int getNodeTypeValue() {
+        return nodeType_;
+      }
+      /**
+       * <pre>
+       * 种子or计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @param value The enum numeric value on the wire for nodeType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeTypeValue(int value) {
+        
+        nodeType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 种子or计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @return The nodeType.
+       */
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType() {
+        @SuppressWarnings("deprecation")
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType result = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.valueOf(nodeType_);
+        return result == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 种子or计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @param value The nodeType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeType(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        nodeType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 种子or计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNodeType() {
+        
+        nodeType_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.GetRegisteredPeersRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.GetRegisteredPeersRequest)
+    private static final com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<GetRegisteredPeersRequest>
+        PARSER = new com.google.protobuf.AbstractParser<GetRegisteredPeersRequest>() {
+      @java.lang.Override
+      public GetRegisteredPeersRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetRegisteredPeersRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetRegisteredPeersRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetRegisteredPeersRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetRegisteredPeersRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface GetRegisteredPeersResponseOrBuilder extends
       // @@protoc_insertion_point(interface_extends:rpcapi.GetRegisteredPeersResponse)
       com.google.protobuf.MessageOrBuilder {
@@ -14308,90 +9842,46 @@ public final class YarnRpcMessage {
 
     /**
      * <pre>
-     * 注册在调度服务上的 计算服务信息
+     * 注册在调度服务上的 计算or数据服务信息
      * </pre>
      *
-     * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+     * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
      */
-    java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode> 
-        getJobNodesList();
+    java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer> 
+        getNodesList();
     /**
      * <pre>
-     * 注册在调度服务上的 计算服务信息
+     * 注册在调度服务上的 计算or数据服务信息
      * </pre>
      *
-     * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+     * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode getJobNodes(int index);
+    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer getNodes(int index);
     /**
      * <pre>
-     * 注册在调度服务上的 计算服务信息
+     * 注册在调度服务上的 计算or数据服务信息
      * </pre>
      *
-     * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+     * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
      */
-    int getJobNodesCount();
+    int getNodesCount();
     /**
      * <pre>
-     * 注册在调度服务上的 计算服务信息
+     * 注册在调度服务上的 计算or数据服务信息
      * </pre>
      *
-     * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+     * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
      */
-    java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeOrBuilder> 
-        getJobNodesOrBuilderList();
+    java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeerOrBuilder> 
+        getNodesOrBuilderList();
     /**
      * <pre>
-     * 注册在调度服务上的 计算服务信息
+     * 注册在调度服务上的 计算or数据服务信息
      * </pre>
      *
-     * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+     * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeOrBuilder getJobNodesOrBuilder(
-        int index);
-
-    /**
-     * <pre>
-     * 注册在调度服务上的 数据服务信息
-     * </pre>
-     *
-     * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-     */
-    java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode> 
-        getDataNodesList();
-    /**
-     * <pre>
-     * 注册在调度服务上的 数据服务信息
-     * </pre>
-     *
-     * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode getDataNodes(int index);
-    /**
-     * <pre>
-     * 注册在调度服务上的 数据服务信息
-     * </pre>
-     *
-     * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-     */
-    int getDataNodesCount();
-    /**
-     * <pre>
-     * 注册在调度服务上的 数据服务信息
-     * </pre>
-     *
-     * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-     */
-    java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeOrBuilder> 
-        getDataNodesOrBuilderList();
-    /**
-     * <pre>
-     * 注册在调度服务上的 数据服务信息
-     * </pre>
-     *
-     * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-     */
-    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeOrBuilder getDataNodesOrBuilder(
+    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeerOrBuilder getNodesOrBuilder(
         int index);
   }
   /**
@@ -14408,8 +9898,7 @@ public final class YarnRpcMessage {
     }
     private GetRegisteredPeersResponse() {
       msg_ = "";
-      jobNodes_ = java.util.Collections.emptyList();
-      dataNodes_ = java.util.Collections.emptyList();
+      nodes_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -14456,20 +9945,11 @@ public final class YarnRpcMessage {
             }
             case 26: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                jobNodes_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode>();
+                nodes_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer>();
                 mutable_bitField0_ |= 0x00000001;
               }
-              jobNodes_.add(
-                  input.readMessage(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.parser(), extensionRegistry));
-              break;
-            }
-            case 34: {
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                dataNodes_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              dataNodes_.add(
-                  input.readMessage(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.parser(), extensionRegistry));
+              nodes_.add(
+                  input.readMessage(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.parser(), extensionRegistry));
               break;
             }
             default: {
@@ -14488,10 +9968,7 @@ public final class YarnRpcMessage {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          jobNodes_ = java.util.Collections.unmodifiableList(jobNodes_);
-        }
-        if (((mutable_bitField0_ & 0x00000002) != 0)) {
-          dataNodes_ = java.util.Collections.unmodifiableList(dataNodes_);
+          nodes_ = java.util.Collections.unmodifiableList(nodes_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -14571,124 +10048,64 @@ public final class YarnRpcMessage {
       }
     }
 
-    public static final int JOB_NODES_FIELD_NUMBER = 3;
-    private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode> jobNodes_;
+    public static final int NODES_FIELD_NUMBER = 3;
+    private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer> nodes_;
     /**
      * <pre>
-     * 注册在调度服务上的 计算服务信息
+     * 注册在调度服务上的 计算or数据服务信息
      * </pre>
      *
-     * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+     * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
      */
     @java.lang.Override
-    public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode> getJobNodesList() {
-      return jobNodes_;
+    public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer> getNodesList() {
+      return nodes_;
     }
     /**
      * <pre>
-     * 注册在调度服务上的 计算服务信息
+     * 注册在调度服务上的 计算or数据服务信息
      * </pre>
      *
-     * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+     * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
      */
     @java.lang.Override
-    public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeOrBuilder> 
-        getJobNodesOrBuilderList() {
-      return jobNodes_;
+    public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeerOrBuilder> 
+        getNodesOrBuilderList() {
+      return nodes_;
     }
     /**
      * <pre>
-     * 注册在调度服务上的 计算服务信息
+     * 注册在调度服务上的 计算or数据服务信息
      * </pre>
      *
-     * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+     * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
      */
     @java.lang.Override
-    public int getJobNodesCount() {
-      return jobNodes_.size();
+    public int getNodesCount() {
+      return nodes_.size();
     }
     /**
      * <pre>
-     * 注册在调度服务上的 计算服务信息
+     * 注册在调度服务上的 计算or数据服务信息
      * </pre>
      *
-     * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+     * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode getJobNodes(int index) {
-      return jobNodes_.get(index);
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer getNodes(int index) {
+      return nodes_.get(index);
     }
     /**
      * <pre>
-     * 注册在调度服务上的 计算服务信息
+     * 注册在调度服务上的 计算or数据服务信息
      * </pre>
      *
-     * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+     * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeOrBuilder getJobNodesOrBuilder(
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeerOrBuilder getNodesOrBuilder(
         int index) {
-      return jobNodes_.get(index);
-    }
-
-    public static final int DATA_NODES_FIELD_NUMBER = 4;
-    private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode> dataNodes_;
-    /**
-     * <pre>
-     * 注册在调度服务上的 数据服务信息
-     * </pre>
-     *
-     * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-     */
-    @java.lang.Override
-    public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode> getDataNodesList() {
-      return dataNodes_;
-    }
-    /**
-     * <pre>
-     * 注册在调度服务上的 数据服务信息
-     * </pre>
-     *
-     * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-     */
-    @java.lang.Override
-    public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeOrBuilder> 
-        getDataNodesOrBuilderList() {
-      return dataNodes_;
-    }
-    /**
-     * <pre>
-     * 注册在调度服务上的 数据服务信息
-     * </pre>
-     *
-     * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-     */
-    @java.lang.Override
-    public int getDataNodesCount() {
-      return dataNodes_.size();
-    }
-    /**
-     * <pre>
-     * 注册在调度服务上的 数据服务信息
-     * </pre>
-     *
-     * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode getDataNodes(int index) {
-      return dataNodes_.get(index);
-    }
-    /**
-     * <pre>
-     * 注册在调度服务上的 数据服务信息
-     * </pre>
-     *
-     * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeOrBuilder getDataNodesOrBuilder(
-        int index) {
-      return dataNodes_.get(index);
+      return nodes_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -14711,11 +10128,8 @@ public final class YarnRpcMessage {
       if (!getMsgBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, msg_);
       }
-      for (int i = 0; i < jobNodes_.size(); i++) {
-        output.writeMessage(3, jobNodes_.get(i));
-      }
-      for (int i = 0; i < dataNodes_.size(); i++) {
-        output.writeMessage(4, dataNodes_.get(i));
+      for (int i = 0; i < nodes_.size(); i++) {
+        output.writeMessage(3, nodes_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -14733,13 +10147,9 @@ public final class YarnRpcMessage {
       if (!getMsgBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, msg_);
       }
-      for (int i = 0; i < jobNodes_.size(); i++) {
+      for (int i = 0; i < nodes_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, jobNodes_.get(i));
-      }
-      for (int i = 0; i < dataNodes_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, dataNodes_.get(i));
+          .computeMessageSize(3, nodes_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -14760,10 +10170,8 @@ public final class YarnRpcMessage {
           != other.getStatus()) return false;
       if (!getMsg()
           .equals(other.getMsg())) return false;
-      if (!getJobNodesList()
-          .equals(other.getJobNodesList())) return false;
-      if (!getDataNodesList()
-          .equals(other.getDataNodesList())) return false;
+      if (!getNodesList()
+          .equals(other.getNodesList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -14779,13 +10187,9 @@ public final class YarnRpcMessage {
       hash = (53 * hash) + getStatus();
       hash = (37 * hash) + MSG_FIELD_NUMBER;
       hash = (53 * hash) + getMsg().hashCode();
-      if (getJobNodesCount() > 0) {
-        hash = (37 * hash) + JOB_NODES_FIELD_NUMBER;
-        hash = (53 * hash) + getJobNodesList().hashCode();
-      }
-      if (getDataNodesCount() > 0) {
-        hash = (37 * hash) + DATA_NODES_FIELD_NUMBER;
-        hash = (53 * hash) + getDataNodesList().hashCode();
+      if (getNodesCount() > 0) {
+        hash = (37 * hash) + NODES_FIELD_NUMBER;
+        hash = (53 * hash) + getNodesList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -14915,8 +10319,7 @@ public final class YarnRpcMessage {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getJobNodesFieldBuilder();
-          getDataNodesFieldBuilder();
+          getNodesFieldBuilder();
         }
       }
       @java.lang.Override
@@ -14926,17 +10329,11 @@ public final class YarnRpcMessage {
 
         msg_ = "";
 
-        if (jobNodesBuilder_ == null) {
-          jobNodes_ = java.util.Collections.emptyList();
+        if (nodesBuilder_ == null) {
+          nodes_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
         } else {
-          jobNodesBuilder_.clear();
-        }
-        if (dataNodesBuilder_ == null) {
-          dataNodes_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
-        } else {
-          dataNodesBuilder_.clear();
+          nodesBuilder_.clear();
         }
         return this;
       }
@@ -14967,23 +10364,14 @@ public final class YarnRpcMessage {
         int from_bitField0_ = bitField0_;
         result.status_ = status_;
         result.msg_ = msg_;
-        if (jobNodesBuilder_ == null) {
+        if (nodesBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
-            jobNodes_ = java.util.Collections.unmodifiableList(jobNodes_);
+            nodes_ = java.util.Collections.unmodifiableList(nodes_);
             bitField0_ = (bitField0_ & ~0x00000001);
           }
-          result.jobNodes_ = jobNodes_;
+          result.nodes_ = nodes_;
         } else {
-          result.jobNodes_ = jobNodesBuilder_.build();
-        }
-        if (dataNodesBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) != 0)) {
-            dataNodes_ = java.util.Collections.unmodifiableList(dataNodes_);
-            bitField0_ = (bitField0_ & ~0x00000002);
-          }
-          result.dataNodes_ = dataNodes_;
-        } else {
-          result.dataNodes_ = dataNodesBuilder_.build();
+          result.nodes_ = nodesBuilder_.build();
         }
         onBuilt();
         return result;
@@ -15040,55 +10428,29 @@ public final class YarnRpcMessage {
           msg_ = other.msg_;
           onChanged();
         }
-        if (jobNodesBuilder_ == null) {
-          if (!other.jobNodes_.isEmpty()) {
-            if (jobNodes_.isEmpty()) {
-              jobNodes_ = other.jobNodes_;
+        if (nodesBuilder_ == null) {
+          if (!other.nodes_.isEmpty()) {
+            if (nodes_.isEmpty()) {
+              nodes_ = other.nodes_;
               bitField0_ = (bitField0_ & ~0x00000001);
             } else {
-              ensureJobNodesIsMutable();
-              jobNodes_.addAll(other.jobNodes_);
+              ensureNodesIsMutable();
+              nodes_.addAll(other.nodes_);
             }
             onChanged();
           }
         } else {
-          if (!other.jobNodes_.isEmpty()) {
-            if (jobNodesBuilder_.isEmpty()) {
-              jobNodesBuilder_.dispose();
-              jobNodesBuilder_ = null;
-              jobNodes_ = other.jobNodes_;
+          if (!other.nodes_.isEmpty()) {
+            if (nodesBuilder_.isEmpty()) {
+              nodesBuilder_.dispose();
+              nodesBuilder_ = null;
+              nodes_ = other.nodes_;
               bitField0_ = (bitField0_ & ~0x00000001);
-              jobNodesBuilder_ = 
+              nodesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getJobNodesFieldBuilder() : null;
+                   getNodesFieldBuilder() : null;
             } else {
-              jobNodesBuilder_.addAllMessages(other.jobNodes_);
-            }
-          }
-        }
-        if (dataNodesBuilder_ == null) {
-          if (!other.dataNodes_.isEmpty()) {
-            if (dataNodes_.isEmpty()) {
-              dataNodes_ = other.dataNodes_;
-              bitField0_ = (bitField0_ & ~0x00000002);
-            } else {
-              ensureDataNodesIsMutable();
-              dataNodes_.addAll(other.dataNodes_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.dataNodes_.isEmpty()) {
-            if (dataNodesBuilder_.isEmpty()) {
-              dataNodesBuilder_.dispose();
-              dataNodesBuilder_ = null;
-              dataNodes_ = other.dataNodes_;
-              bitField0_ = (bitField0_ & ~0x00000002);
-              dataNodesBuilder_ = 
-                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getDataNodesFieldBuilder() : null;
-            } else {
-              dataNodesBuilder_.addAllMessages(other.dataNodes_);
+              nodesBuilder_.addAllMessages(other.nodes_);
             }
           }
         }
@@ -15261,628 +10623,316 @@ public final class YarnRpcMessage {
         return this;
       }
 
-      private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode> jobNodes_ =
+      private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer> nodes_ =
         java.util.Collections.emptyList();
-      private void ensureJobNodesIsMutable() {
+      private void ensureNodesIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          jobNodes_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode>(jobNodes_);
+          nodes_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer>(nodes_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeOrBuilder> jobNodesBuilder_;
+          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeerOrBuilder> nodesBuilder_;
 
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode> getJobNodesList() {
-        if (jobNodesBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(jobNodes_);
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer> getNodesList() {
+        if (nodesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(nodes_);
         } else {
-          return jobNodesBuilder_.getMessageList();
+          return nodesBuilder_.getMessageList();
         }
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public int getJobNodesCount() {
-        if (jobNodesBuilder_ == null) {
-          return jobNodes_.size();
+      public int getNodesCount() {
+        if (nodesBuilder_ == null) {
+          return nodes_.size();
         } else {
-          return jobNodesBuilder_.getCount();
+          return nodesBuilder_.getCount();
         }
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode getJobNodes(int index) {
-        if (jobNodesBuilder_ == null) {
-          return jobNodes_.get(index);
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer getNodes(int index) {
+        if (nodesBuilder_ == null) {
+          return nodes_.get(index);
         } else {
-          return jobNodesBuilder_.getMessage(index);
+          return nodesBuilder_.getMessage(index);
         }
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public Builder setJobNodes(
-          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode value) {
-        if (jobNodesBuilder_ == null) {
+      public Builder setNodes(
+          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer value) {
+        if (nodesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureJobNodesIsMutable();
-          jobNodes_.set(index, value);
+          ensureNodesIsMutable();
+          nodes_.set(index, value);
           onChanged();
         } else {
-          jobNodesBuilder_.setMessage(index, value);
+          nodesBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public Builder setJobNodes(
-          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder builderForValue) {
-        if (jobNodesBuilder_ == null) {
-          ensureJobNodesIsMutable();
-          jobNodes_.set(index, builderForValue.build());
+      public Builder setNodes(
+          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.Builder builderForValue) {
+        if (nodesBuilder_ == null) {
+          ensureNodesIsMutable();
+          nodes_.set(index, builderForValue.build());
           onChanged();
         } else {
-          jobNodesBuilder_.setMessage(index, builderForValue.build());
+          nodesBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public Builder addJobNodes(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode value) {
-        if (jobNodesBuilder_ == null) {
+      public Builder addNodes(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer value) {
+        if (nodesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureJobNodesIsMutable();
-          jobNodes_.add(value);
+          ensureNodesIsMutable();
+          nodes_.add(value);
           onChanged();
         } else {
-          jobNodesBuilder_.addMessage(value);
+          nodesBuilder_.addMessage(value);
         }
         return this;
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public Builder addJobNodes(
-          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode value) {
-        if (jobNodesBuilder_ == null) {
+      public Builder addNodes(
+          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer value) {
+        if (nodesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureJobNodesIsMutable();
-          jobNodes_.add(index, value);
+          ensureNodesIsMutable();
+          nodes_.add(index, value);
           onChanged();
         } else {
-          jobNodesBuilder_.addMessage(index, value);
+          nodesBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public Builder addJobNodes(
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder builderForValue) {
-        if (jobNodesBuilder_ == null) {
-          ensureJobNodesIsMutable();
-          jobNodes_.add(builderForValue.build());
+      public Builder addNodes(
+          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.Builder builderForValue) {
+        if (nodesBuilder_ == null) {
+          ensureNodesIsMutable();
+          nodes_.add(builderForValue.build());
           onChanged();
         } else {
-          jobNodesBuilder_.addMessage(builderForValue.build());
+          nodesBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public Builder addJobNodes(
-          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder builderForValue) {
-        if (jobNodesBuilder_ == null) {
-          ensureJobNodesIsMutable();
-          jobNodes_.add(index, builderForValue.build());
+      public Builder addNodes(
+          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.Builder builderForValue) {
+        if (nodesBuilder_ == null) {
+          ensureNodesIsMutable();
+          nodes_.add(index, builderForValue.build());
           onChanged();
         } else {
-          jobNodesBuilder_.addMessage(index, builderForValue.build());
+          nodesBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public Builder addAllJobNodes(
-          java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode> values) {
-        if (jobNodesBuilder_ == null) {
-          ensureJobNodesIsMutable();
+      public Builder addAllNodes(
+          java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer> values) {
+        if (nodesBuilder_ == null) {
+          ensureNodesIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, jobNodes_);
+              values, nodes_);
           onChanged();
         } else {
-          jobNodesBuilder_.addAllMessages(values);
+          nodesBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public Builder clearJobNodes() {
-        if (jobNodesBuilder_ == null) {
-          jobNodes_ = java.util.Collections.emptyList();
+      public Builder clearNodes() {
+        if (nodesBuilder_ == null) {
+          nodes_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
-          jobNodesBuilder_.clear();
+          nodesBuilder_.clear();
         }
         return this;
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public Builder removeJobNodes(int index) {
-        if (jobNodesBuilder_ == null) {
-          ensureJobNodesIsMutable();
-          jobNodes_.remove(index);
+      public Builder removeNodes(int index) {
+        if (nodesBuilder_ == null) {
+          ensureNodesIsMutable();
+          nodes_.remove(index);
           onChanged();
         } else {
-          jobNodesBuilder_.remove(index);
+          nodesBuilder_.remove(index);
         }
         return this;
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder getJobNodesBuilder(
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.Builder getNodesBuilder(
           int index) {
-        return getJobNodesFieldBuilder().getBuilder(index);
+        return getNodesFieldBuilder().getBuilder(index);
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeOrBuilder getJobNodesOrBuilder(
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeerOrBuilder getNodesOrBuilder(
           int index) {
-        if (jobNodesBuilder_ == null) {
-          return jobNodes_.get(index);  } else {
-          return jobNodesBuilder_.getMessageOrBuilder(index);
+        if (nodesBuilder_ == null) {
+          return nodes_.get(index);  } else {
+          return nodesBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeOrBuilder> 
-           getJobNodesOrBuilderList() {
-        if (jobNodesBuilder_ != null) {
-          return jobNodesBuilder_.getMessageOrBuilderList();
+      public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeerOrBuilder> 
+           getNodesOrBuilderList() {
+        if (nodesBuilder_ != null) {
+          return nodesBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(jobNodes_);
+          return java.util.Collections.unmodifiableList(nodes_);
         }
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder addJobNodesBuilder() {
-        return getJobNodesFieldBuilder().addBuilder(
-            com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.getDefaultInstance());
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.Builder addNodesBuilder() {
+        return getNodesFieldBuilder().addBuilder(
+            com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.getDefaultInstance());
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder addJobNodesBuilder(
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.Builder addNodesBuilder(
           int index) {
-        return getJobNodesFieldBuilder().addBuilder(
-            index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.getDefaultInstance());
+        return getNodesFieldBuilder().addBuilder(
+            index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.getDefaultInstance());
       }
       /**
        * <pre>
-       * 注册在调度服务上的 计算服务信息
+       * 注册在调度服务上的 计算or数据服务信息
        * </pre>
        *
-       * <code>repeated .rpcapi.YarnRegisteredJobNode job_nodes = 3;</code>
+       * <code>repeated .rpcapi.YarnRegisteredPeer nodes = 3;</code>
        */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder> 
-           getJobNodesBuilderList() {
-        return getJobNodesFieldBuilder().getBuilderList();
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.Builder> 
+           getNodesBuilderList() {
+        return getNodesFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeOrBuilder> 
-          getJobNodesFieldBuilder() {
-        if (jobNodesBuilder_ == null) {
-          jobNodesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNode.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredJobNodeOrBuilder>(
-                  jobNodes_,
+          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeerOrBuilder> 
+          getNodesFieldBuilder() {
+        if (nodesBuilder_ == null) {
+          nodesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeer.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredPeerOrBuilder>(
+                  nodes_,
                   ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
-          jobNodes_ = null;
+          nodes_ = null;
         }
-        return jobNodesBuilder_;
-      }
-
-      private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode> dataNodes_ =
-        java.util.Collections.emptyList();
-      private void ensureDataNodesIsMutable() {
-        if (!((bitField0_ & 0x00000002) != 0)) {
-          dataNodes_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode>(dataNodes_);
-          bitField0_ |= 0x00000002;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeOrBuilder> dataNodesBuilder_;
-
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode> getDataNodesList() {
-        if (dataNodesBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(dataNodes_);
-        } else {
-          return dataNodesBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public int getDataNodesCount() {
-        if (dataNodesBuilder_ == null) {
-          return dataNodes_.size();
-        } else {
-          return dataNodesBuilder_.getCount();
-        }
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode getDataNodes(int index) {
-        if (dataNodesBuilder_ == null) {
-          return dataNodes_.get(index);
-        } else {
-          return dataNodesBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public Builder setDataNodes(
-          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode value) {
-        if (dataNodesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureDataNodesIsMutable();
-          dataNodes_.set(index, value);
-          onChanged();
-        } else {
-          dataNodesBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public Builder setDataNodes(
-          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder builderForValue) {
-        if (dataNodesBuilder_ == null) {
-          ensureDataNodesIsMutable();
-          dataNodes_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          dataNodesBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public Builder addDataNodes(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode value) {
-        if (dataNodesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureDataNodesIsMutable();
-          dataNodes_.add(value);
-          onChanged();
-        } else {
-          dataNodesBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public Builder addDataNodes(
-          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode value) {
-        if (dataNodesBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureDataNodesIsMutable();
-          dataNodes_.add(index, value);
-          onChanged();
-        } else {
-          dataNodesBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public Builder addDataNodes(
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder builderForValue) {
-        if (dataNodesBuilder_ == null) {
-          ensureDataNodesIsMutable();
-          dataNodes_.add(builderForValue.build());
-          onChanged();
-        } else {
-          dataNodesBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public Builder addDataNodes(
-          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder builderForValue) {
-        if (dataNodesBuilder_ == null) {
-          ensureDataNodesIsMutable();
-          dataNodes_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          dataNodesBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public Builder addAllDataNodes(
-          java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode> values) {
-        if (dataNodesBuilder_ == null) {
-          ensureDataNodesIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, dataNodes_);
-          onChanged();
-        } else {
-          dataNodesBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public Builder clearDataNodes() {
-        if (dataNodesBuilder_ == null) {
-          dataNodes_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
-          onChanged();
-        } else {
-          dataNodesBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public Builder removeDataNodes(int index) {
-        if (dataNodesBuilder_ == null) {
-          ensureDataNodesIsMutable();
-          dataNodes_.remove(index);
-          onChanged();
-        } else {
-          dataNodesBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder getDataNodesBuilder(
-          int index) {
-        return getDataNodesFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeOrBuilder getDataNodesOrBuilder(
-          int index) {
-        if (dataNodesBuilder_ == null) {
-          return dataNodes_.get(index);  } else {
-          return dataNodesBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeOrBuilder> 
-           getDataNodesOrBuilderList() {
-        if (dataNodesBuilder_ != null) {
-          return dataNodesBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(dataNodes_);
-        }
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder addDataNodesBuilder() {
-        return getDataNodesFieldBuilder().addBuilder(
-            com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.getDefaultInstance());
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder addDataNodesBuilder(
-          int index) {
-        return getDataNodesFieldBuilder().addBuilder(
-            index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.getDefaultInstance());
-      }
-      /**
-       * <pre>
-       * 注册在调度服务上的 数据服务信息
-       * </pre>
-       *
-       * <code>repeated .rpcapi.YarnRegisteredDataNode data_nodes = 4;</code>
-       */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder> 
-           getDataNodesBuilderList() {
-        return getDataNodesFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeOrBuilder> 
-          getDataNodesFieldBuilder() {
-        if (dataNodesBuilder_ == null) {
-          dataNodesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNode.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.YarnRegisteredDataNodeOrBuilder>(
-                  dataNodes_,
-                  ((bitField0_ & 0x00000002) != 0),
-                  getParentForChildren(),
-                  isClean());
-          dataNodes_ = null;
-        }
-        return dataNodesBuilder_;
+        return nodesBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -15937,16 +10987,640 @@ public final class YarnRpcMessage {
 
   }
 
+  public interface DeleteRegisteredNodeRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.DeleteRegisteredNodeRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 内部节点的唯一Id
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <pre>
+     * 内部节点的唯一Id
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+  }
+  /**
+   * Protobuf type {@code rpcapi.DeleteRegisteredNodeRequest}
+   */
+  public static final class DeleteRegisteredNodeRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.DeleteRegisteredNodeRequest)
+      DeleteRegisteredNodeRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use DeleteRegisteredNodeRequest.newBuilder() to construct.
+    private DeleteRegisteredNodeRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private DeleteRegisteredNodeRequest() {
+      id_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new DeleteRegisteredNodeRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private DeleteRegisteredNodeRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              id_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_DeleteRegisteredNodeRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.Builder.class);
+    }
+
+    public static final int ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object id_;
+    /**
+     * <pre>
+     * 内部节点的唯一Id
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 内部节点的唯一Id
+     * </pre>
+     *
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest) obj;
+
+      if (!getId()
+          .equals(other.getId())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + getId().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code rpcapi.DeleteRegisteredNodeRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.DeleteRegisteredNodeRequest)
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_DeleteRegisteredNodeRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        id_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest build() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest(this);
+        result.id_ = id_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest.getDefaultInstance()) return this;
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object id_ = "";
+      /**
+       * <pre>
+       * 内部节点的唯一Id
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @return The id.
+       */
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 内部节点的唯一Id
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @return The bytes for id.
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 内部节点的唯一Id
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 内部节点的唯一Id
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 内部节点的唯一Id
+       * </pre>
+       *
+       * <code>string id = 1;</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.DeleteRegisteredNodeRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.DeleteRegisteredNodeRequest)
+    private static final com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<DeleteRegisteredNodeRequest>
+        PARSER = new com.google.protobuf.AbstractParser<DeleteRegisteredNodeRequest>() {
+      @java.lang.Override
+      public DeleteRegisteredNodeRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new DeleteRegisteredNodeRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<DeleteRegisteredNodeRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<DeleteRegisteredNodeRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.DeleteRegisteredNodeRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface SetSeedNodeRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:rpcapi.SetSeedNodeRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
      * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 1;</code>
+     * @return The nodeId.
+     */
+    java.lang.String getNodeId();
+    /**
+     * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 1;</code>
+     * @return The bytes for nodeId.
+     */
+    com.google.protobuf.ByteString
+        getNodeIdBytes();
+
+    /**
+     * <pre>
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 1;</code>
+     * <code>string internal_ip = 2;</code>
      * @return The internalIp.
      */
     java.lang.String getInternalIp();
@@ -15955,7 +11629,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 1;</code>
+     * <code>string internal_ip = 2;</code>
      * @return The bytes for internalIp.
      */
     com.google.protobuf.ByteString
@@ -15966,7 +11640,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 2;</code>
+     * <code>string internal_port = 3;</code>
      * @return The internalPort.
      */
     java.lang.String getInternalPort();
@@ -15975,7 +11649,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 2;</code>
+     * <code>string internal_port = 3;</code>
      * @return The bytes for internalPort.
      */
     com.google.protobuf.ByteString
@@ -15994,6 +11668,7 @@ public final class YarnRpcMessage {
       super(builder);
     }
     private SetSeedNodeRequest() {
+      nodeId_ = "";
       internalIp_ = "";
       internalPort_ = "";
     }
@@ -16031,10 +11706,16 @@ public final class YarnRpcMessage {
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              internalIp_ = s;
+              nodeId_ = s;
               break;
             }
             case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              internalIp_ = s;
+              break;
+            }
+            case 26: {
               java.lang.String s = input.readStringRequireUtf8();
 
               internalPort_ = s;
@@ -16072,14 +11753,60 @@ public final class YarnRpcMessage {
               com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetSeedNodeRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetSeedNodeRequest.Builder.class);
     }
 
-    public static final int INTERNAL_IP_FIELD_NUMBER = 1;
+    public static final int NODE_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object nodeId_;
+    /**
+     * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 1;</code>
+     * @return The nodeId.
+     */
+    @java.lang.Override
+    public java.lang.String getNodeId() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        nodeId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 1;</code>
+     * @return The bytes for nodeId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getNodeIdBytes() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nodeId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int INTERNAL_IP_FIELD_NUMBER = 2;
     private volatile java.lang.Object internalIp_;
     /**
      * <pre>
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 1;</code>
+     * <code>string internal_ip = 2;</code>
      * @return The internalIp.
      */
     @java.lang.Override
@@ -16100,7 +11827,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 1;</code>
+     * <code>string internal_ip = 2;</code>
      * @return The bytes for internalIp.
      */
     @java.lang.Override
@@ -16118,14 +11845,14 @@ public final class YarnRpcMessage {
       }
     }
 
-    public static final int INTERNAL_PORT_FIELD_NUMBER = 2;
+    public static final int INTERNAL_PORT_FIELD_NUMBER = 3;
     private volatile java.lang.Object internalPort_;
     /**
      * <pre>
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 2;</code>
+     * <code>string internal_port = 3;</code>
      * @return The internalPort.
      */
     @java.lang.Override
@@ -16146,7 +11873,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 2;</code>
+     * <code>string internal_port = 3;</code>
      * @return The bytes for internalPort.
      */
     @java.lang.Override
@@ -16178,11 +11905,14 @@ public final class YarnRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (!getNodeIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, nodeId_);
+      }
       if (!getInternalIpBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, internalIp_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, internalIp_);
       }
       if (!getInternalPortBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, internalPort_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, internalPort_);
       }
       unknownFields.writeTo(output);
     }
@@ -16193,11 +11923,14 @@ public final class YarnRpcMessage {
       if (size != -1) return size;
 
       size = 0;
+      if (!getNodeIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, nodeId_);
+      }
       if (!getInternalIpBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, internalIp_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, internalIp_);
       }
       if (!getInternalPortBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, internalPort_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, internalPort_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -16214,6 +11947,8 @@ public final class YarnRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetSeedNodeRequest other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetSeedNodeRequest) obj;
 
+      if (!getNodeId()
+          .equals(other.getNodeId())) return false;
       if (!getInternalIp()
           .equals(other.getInternalIp())) return false;
       if (!getInternalPort()
@@ -16229,6 +11964,8 @@ public final class YarnRpcMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + NODE_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getNodeId().hashCode();
       hash = (37 * hash) + INTERNAL_IP_FIELD_NUMBER;
       hash = (53 * hash) + getInternalIp().hashCode();
       hash = (37 * hash) + INTERNAL_PORT_FIELD_NUMBER;
@@ -16366,6 +12103,8 @@ public final class YarnRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        nodeId_ = "";
+
         internalIp_ = "";
 
         internalPort_ = "";
@@ -16396,6 +12135,7 @@ public final class YarnRpcMessage {
       @java.lang.Override
       public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetSeedNodeRequest buildPartial() {
         com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetSeedNodeRequest result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetSeedNodeRequest(this);
+        result.nodeId_ = nodeId_;
         result.internalIp_ = internalIp_;
         result.internalPort_ = internalPort_;
         onBuilt();
@@ -16446,6 +12186,10 @@ public final class YarnRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetSeedNodeRequest other) {
         if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SetSeedNodeRequest.getDefaultInstance()) return this;
+        if (!other.getNodeId().isEmpty()) {
+          nodeId_ = other.nodeId_;
+          onChanged();
+        }
         if (!other.getInternalIp().isEmpty()) {
           internalIp_ = other.internalIp_;
           onChanged();
@@ -16483,13 +12227,109 @@ public final class YarnRpcMessage {
         return this;
       }
 
+      private java.lang.Object nodeId_ = "";
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 1;</code>
+       * @return The nodeId.
+       */
+      public java.lang.String getNodeId() {
+        java.lang.Object ref = nodeId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          nodeId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 1;</code>
+       * @return The bytes for nodeId.
+       */
+      public com.google.protobuf.ByteString
+          getNodeIdBytes() {
+        java.lang.Object ref = nodeId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nodeId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 1;</code>
+       * @param value The nodeId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNodeId() {
+        
+        nodeId_ = getDefaultInstance().getNodeId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 1;</code>
+       * @param value The bytes for nodeId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object internalIp_ = "";
       /**
        * <pre>
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 1;</code>
+       * <code>string internal_ip = 2;</code>
        * @return The internalIp.
        */
       public java.lang.String getInternalIp() {
@@ -16509,7 +12349,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 1;</code>
+       * <code>string internal_ip = 2;</code>
        * @return The bytes for internalIp.
        */
       public com.google.protobuf.ByteString
@@ -16530,7 +12370,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 1;</code>
+       * <code>string internal_ip = 2;</code>
        * @param value The internalIp to set.
        * @return This builder for chaining.
        */
@@ -16549,7 +12389,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 1;</code>
+       * <code>string internal_ip = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearInternalIp() {
@@ -16563,7 +12403,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 1;</code>
+       * <code>string internal_ip = 2;</code>
        * @param value The bytes for internalIp to set.
        * @return This builder for chaining.
        */
@@ -16585,7 +12425,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 2;</code>
+       * <code>string internal_port = 3;</code>
        * @return The internalPort.
        */
       public java.lang.String getInternalPort() {
@@ -16605,7 +12445,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 2;</code>
+       * <code>string internal_port = 3;</code>
        * @return The bytes for internalPort.
        */
       public com.google.protobuf.ByteString
@@ -16626,7 +12466,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 2;</code>
+       * <code>string internal_port = 3;</code>
        * @param value The internalPort to set.
        * @return This builder for chaining.
        */
@@ -16645,7 +12485,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 2;</code>
+       * <code>string internal_port = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearInternalPort() {
@@ -16659,7 +12499,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 2;</code>
+       * <code>string internal_port = 3;</code>
        * @param value The bytes for internalPort to set.
        * @return This builder for chaining.
        */
@@ -16762,16 +12602,28 @@ public final class YarnRpcMessage {
         getMsgBytes();
 
     /**
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
      * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
      * @return Whether the seedPeer field is set.
      */
     boolean hasSeedPeer();
     /**
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
      * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
      * @return The seedPeer.
      */
     com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer getSeedPeer();
     /**
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
      * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
      */
     com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder getSeedPeerOrBuilder();
@@ -16942,6 +12794,10 @@ public final class YarnRpcMessage {
     public static final int SEED_PEER_FIELD_NUMBER = 3;
     private com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer seedPeer_;
     /**
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
      * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
      * @return Whether the seedPeer field is set.
      */
@@ -16950,6 +12806,10 @@ public final class YarnRpcMessage {
       return seedPeer_ != null;
     }
     /**
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
      * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
      * @return The seedPeer.
      */
@@ -16958,6 +12818,10 @@ public final class YarnRpcMessage {
       return seedPeer_ == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.getDefaultInstance() : seedPeer_;
     }
     /**
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
      * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
      */
     @java.lang.Override
@@ -17457,6 +13321,10 @@ public final class YarnRpcMessage {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder> seedPeerBuilder_;
       /**
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
        * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
        * @return Whether the seedPeer field is set.
        */
@@ -17464,6 +13332,10 @@ public final class YarnRpcMessage {
         return seedPeerBuilder_ != null || seedPeer_ != null;
       }
       /**
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
        * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
        * @return The seedPeer.
        */
@@ -17475,6 +13347,10 @@ public final class YarnRpcMessage {
         }
       }
       /**
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
        * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
        */
       public Builder setSeedPeer(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer value) {
@@ -17491,6 +13367,10 @@ public final class YarnRpcMessage {
         return this;
       }
       /**
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
        * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
        */
       public Builder setSeedPeer(
@@ -17505,6 +13385,10 @@ public final class YarnRpcMessage {
         return this;
       }
       /**
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
        * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
        */
       public Builder mergeSeedPeer(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer value) {
@@ -17523,6 +13407,10 @@ public final class YarnRpcMessage {
         return this;
       }
       /**
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
        * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
        */
       public Builder clearSeedPeer() {
@@ -17537,6 +13425,10 @@ public final class YarnRpcMessage {
         return this;
       }
       /**
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
        * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder getSeedPeerBuilder() {
@@ -17545,6 +13437,10 @@ public final class YarnRpcMessage {
         return getSeedPeerFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
        * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder getSeedPeerOrBuilder() {
@@ -17556,6 +13452,10 @@ public final class YarnRpcMessage {
         }
       }
       /**
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
        * <code>.rpcapi.SeedPeer seed_peer = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -17650,10 +13550,30 @@ public final class YarnRpcMessage {
 
     /**
      * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The nodeId.
+     */
+    java.lang.String getNodeId();
+    /**
+     * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The bytes for nodeId.
+     */
+    com.google.protobuf.ByteString
+        getNodeIdBytes();
+
+    /**
+     * <pre>
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 2;</code>
+     * <code>string internal_ip = 3;</code>
      * @return The internalIp.
      */
     java.lang.String getInternalIp();
@@ -17662,7 +13582,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 2;</code>
+     * <code>string internal_ip = 3;</code>
      * @return The bytes for internalIp.
      */
     com.google.protobuf.ByteString
@@ -17673,7 +13593,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 3;</code>
+     * <code>string internal_port = 4;</code>
      * @return The internalPort.
      */
     java.lang.String getInternalPort();
@@ -17682,7 +13602,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 3;</code>
+     * <code>string internal_port = 4;</code>
      * @return The bytes for internalPort.
      */
     com.google.protobuf.ByteString
@@ -17702,6 +13622,7 @@ public final class YarnRpcMessage {
     }
     private UpdateSeedNodeRequest() {
       id_ = "";
+      nodeId_ = "";
       internalIp_ = "";
       internalPort_ = "";
     }
@@ -17745,10 +13666,16 @@ public final class YarnRpcMessage {
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
-              internalIp_ = s;
+              nodeId_ = s;
               break;
             }
             case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              internalIp_ = s;
+              break;
+            }
+            case 34: {
               java.lang.String s = input.readStringRequireUtf8();
 
               internalPort_ = s;
@@ -17832,14 +13759,60 @@ public final class YarnRpcMessage {
       }
     }
 
-    public static final int INTERNAL_IP_FIELD_NUMBER = 2;
+    public static final int NODE_ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object nodeId_;
+    /**
+     * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The nodeId.
+     */
+    @java.lang.Override
+    public java.lang.String getNodeId() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        nodeId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The bytes for nodeId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getNodeIdBytes() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nodeId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int INTERNAL_IP_FIELD_NUMBER = 3;
     private volatile java.lang.Object internalIp_;
     /**
      * <pre>
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 2;</code>
+     * <code>string internal_ip = 3;</code>
      * @return The internalIp.
      */
     @java.lang.Override
@@ -17860,7 +13833,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 ip, 给 管理台用
      * </pre>
      *
-     * <code>string internal_ip = 2;</code>
+     * <code>string internal_ip = 3;</code>
      * @return The bytes for internalIp.
      */
     @java.lang.Override
@@ -17878,14 +13851,14 @@ public final class YarnRpcMessage {
       }
     }
 
-    public static final int INTERNAL_PORT_FIELD_NUMBER = 3;
+    public static final int INTERNAL_PORT_FIELD_NUMBER = 4;
     private volatile java.lang.Object internalPort_;
     /**
      * <pre>
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 3;</code>
+     * <code>string internal_port = 4;</code>
      * @return The internalPort.
      */
     @java.lang.Override
@@ -17906,7 +13879,7 @@ public final class YarnRpcMessage {
      * 种子节点的内网 port, 给 管理台用
      * </pre>
      *
-     * <code>string internal_port = 3;</code>
+     * <code>string internal_port = 4;</code>
      * @return The bytes for internalPort.
      */
     @java.lang.Override
@@ -17941,11 +13914,14 @@ public final class YarnRpcMessage {
       if (!getIdBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
       }
+      if (!getNodeIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, nodeId_);
+      }
       if (!getInternalIpBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, internalIp_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, internalIp_);
       }
       if (!getInternalPortBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, internalPort_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, internalPort_);
       }
       unknownFields.writeTo(output);
     }
@@ -17959,11 +13935,14 @@ public final class YarnRpcMessage {
       if (!getIdBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
       }
+      if (!getNodeIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, nodeId_);
+      }
       if (!getInternalIpBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, internalIp_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, internalIp_);
       }
       if (!getInternalPortBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, internalPort_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, internalPort_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -17982,6 +13961,8 @@ public final class YarnRpcMessage {
 
       if (!getId()
           .equals(other.getId())) return false;
+      if (!getNodeId()
+          .equals(other.getNodeId())) return false;
       if (!getInternalIp()
           .equals(other.getInternalIp())) return false;
       if (!getInternalPort()
@@ -17999,6 +13980,8 @@ public final class YarnRpcMessage {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + ID_FIELD_NUMBER;
       hash = (53 * hash) + getId().hashCode();
+      hash = (37 * hash) + NODE_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getNodeId().hashCode();
       hash = (37 * hash) + INTERNAL_IP_FIELD_NUMBER;
       hash = (53 * hash) + getInternalIp().hashCode();
       hash = (37 * hash) + INTERNAL_PORT_FIELD_NUMBER;
@@ -18138,6 +14121,8 @@ public final class YarnRpcMessage {
         super.clear();
         id_ = "";
 
+        nodeId_ = "";
+
         internalIp_ = "";
 
         internalPort_ = "";
@@ -18169,6 +14154,7 @@ public final class YarnRpcMessage {
       public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.UpdateSeedNodeRequest buildPartial() {
         com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.UpdateSeedNodeRequest result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.UpdateSeedNodeRequest(this);
         result.id_ = id_;
+        result.nodeId_ = nodeId_;
         result.internalIp_ = internalIp_;
         result.internalPort_ = internalPort_;
         onBuilt();
@@ -18221,6 +14207,10 @@ public final class YarnRpcMessage {
         if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.UpdateSeedNodeRequest.getDefaultInstance()) return this;
         if (!other.getId().isEmpty()) {
           id_ = other.id_;
+          onChanged();
+        }
+        if (!other.getNodeId().isEmpty()) {
+          nodeId_ = other.nodeId_;
           onChanged();
         }
         if (!other.getInternalIp().isEmpty()) {
@@ -18356,13 +14346,109 @@ public final class YarnRpcMessage {
         return this;
       }
 
+      private java.lang.Object nodeId_ = "";
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @return The nodeId.
+       */
+      public java.lang.String getNodeId() {
+        java.lang.Object ref = nodeId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          nodeId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @return The bytes for nodeId.
+       */
+      public com.google.protobuf.ByteString
+          getNodeIdBytes() {
+        java.lang.Object ref = nodeId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nodeId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @param value The nodeId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNodeId() {
+        
+        nodeId_ = getDefaultInstance().getNodeId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 种子节点p2p用的nodeId (对应组织信息中的nodeId)
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @param value The bytes for nodeId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object internalIp_ = "";
       /**
        * <pre>
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 2;</code>
+       * <code>string internal_ip = 3;</code>
        * @return The internalIp.
        */
       public java.lang.String getInternalIp() {
@@ -18382,7 +14468,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 2;</code>
+       * <code>string internal_ip = 3;</code>
        * @return The bytes for internalIp.
        */
       public com.google.protobuf.ByteString
@@ -18403,7 +14489,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 2;</code>
+       * <code>string internal_ip = 3;</code>
        * @param value The internalIp to set.
        * @return This builder for chaining.
        */
@@ -18422,7 +14508,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 2;</code>
+       * <code>string internal_ip = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearInternalIp() {
@@ -18436,7 +14522,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 ip, 给 管理台用
        * </pre>
        *
-       * <code>string internal_ip = 2;</code>
+       * <code>string internal_ip = 3;</code>
        * @param value The bytes for internalIp to set.
        * @return This builder for chaining.
        */
@@ -18458,7 +14544,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 3;</code>
+       * <code>string internal_port = 4;</code>
        * @return The internalPort.
        */
       public java.lang.String getInternalPort() {
@@ -18478,7 +14564,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 3;</code>
+       * <code>string internal_port = 4;</code>
        * @return The bytes for internalPort.
        */
       public com.google.protobuf.ByteString
@@ -18499,7 +14585,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 3;</code>
+       * <code>string internal_port = 4;</code>
        * @param value The internalPort to set.
        * @return This builder for chaining.
        */
@@ -18518,7 +14604,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 3;</code>
+       * <code>string internal_port = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearInternalPort() {
@@ -18532,7 +14618,7 @@ public final class YarnRpcMessage {
        * 种子节点的内网 port, 给 管理台用
        * </pre>
        *
-       * <code>string internal_port = 3;</code>
+       * <code>string internal_port = 4;</code>
        * @param value The bytes for internalPort to set.
        * @return This builder for chaining.
        */
@@ -18635,27 +14721,47 @@ public final class YarnRpcMessage {
         getMsgBytes();
 
     /**
-     * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
+     * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
      */
     java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer> 
-        getSeedPeersList();
+        getNodesList();
     /**
-     * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
+     * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer getSeedPeers(int index);
+    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer getNodes(int index);
     /**
-     * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
+     * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
      */
-    int getSeedPeersCount();
+    int getNodesCount();
     /**
-     * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
+     * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
      */
     java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder> 
-        getSeedPeersOrBuilderList();
+        getNodesOrBuilderList();
     /**
-     * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
+     * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder getSeedPeersOrBuilder(
+    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder getNodesOrBuilder(
         int index);
   }
   /**
@@ -18672,7 +14778,7 @@ public final class YarnRpcMessage {
     }
     private GetSeedNodeListResponse() {
       msg_ = "";
-      seedPeers_ = java.util.Collections.emptyList();
+      nodes_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -18719,10 +14825,10 @@ public final class YarnRpcMessage {
             }
             case 26: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                seedPeers_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer>();
+                nodes_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer>();
                 mutable_bitField0_ |= 0x00000001;
               }
-              seedPeers_.add(
+              nodes_.add(
                   input.readMessage(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.parser(), extensionRegistry));
               break;
             }
@@ -18742,7 +14848,7 @@ public final class YarnRpcMessage {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          seedPeers_ = java.util.Collections.unmodifiableList(seedPeers_);
+          nodes_ = java.util.Collections.unmodifiableList(nodes_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -18822,44 +14928,64 @@ public final class YarnRpcMessage {
       }
     }
 
-    public static final int SEED_PEERS_FIELD_NUMBER = 3;
-    private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer> seedPeers_;
+    public static final int NODES_FIELD_NUMBER = 3;
+    private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer> nodes_;
     /**
-     * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
+     * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
      */
     @java.lang.Override
-    public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer> getSeedPeersList() {
-      return seedPeers_;
+    public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer> getNodesList() {
+      return nodes_;
     }
     /**
-     * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
+     * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder> 
-        getSeedPeersOrBuilderList() {
-      return seedPeers_;
+        getNodesOrBuilderList() {
+      return nodes_;
     }
     /**
-     * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
+     * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
      */
     @java.lang.Override
-    public int getSeedPeersCount() {
-      return seedPeers_.size();
+    public int getNodesCount() {
+      return nodes_.size();
     }
     /**
-     * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
+     * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer getSeedPeers(int index) {
-      return seedPeers_.get(index);
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer getNodes(int index) {
+      return nodes_.get(index);
     }
     /**
-     * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+     * <pre>
+     * 种子节点的详情信息
+     * </pre>
+     *
+     * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder getSeedPeersOrBuilder(
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder getNodesOrBuilder(
         int index) {
-      return seedPeers_.get(index);
+      return nodes_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -18882,8 +15008,8 @@ public final class YarnRpcMessage {
       if (!getMsgBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, msg_);
       }
-      for (int i = 0; i < seedPeers_.size(); i++) {
-        output.writeMessage(3, seedPeers_.get(i));
+      for (int i = 0; i < nodes_.size(); i++) {
+        output.writeMessage(3, nodes_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -18901,9 +15027,9 @@ public final class YarnRpcMessage {
       if (!getMsgBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, msg_);
       }
-      for (int i = 0; i < seedPeers_.size(); i++) {
+      for (int i = 0; i < nodes_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, seedPeers_.get(i));
+          .computeMessageSize(3, nodes_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -18924,8 +15050,8 @@ public final class YarnRpcMessage {
           != other.getStatus()) return false;
       if (!getMsg()
           .equals(other.getMsg())) return false;
-      if (!getSeedPeersList()
-          .equals(other.getSeedPeersList())) return false;
+      if (!getNodesList()
+          .equals(other.getNodesList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -18941,9 +15067,9 @@ public final class YarnRpcMessage {
       hash = (53 * hash) + getStatus();
       hash = (37 * hash) + MSG_FIELD_NUMBER;
       hash = (53 * hash) + getMsg().hashCode();
-      if (getSeedPeersCount() > 0) {
-        hash = (37 * hash) + SEED_PEERS_FIELD_NUMBER;
-        hash = (53 * hash) + getSeedPeersList().hashCode();
+      if (getNodesCount() > 0) {
+        hash = (37 * hash) + NODES_FIELD_NUMBER;
+        hash = (53 * hash) + getNodesList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -19073,7 +15199,7 @@ public final class YarnRpcMessage {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getSeedPeersFieldBuilder();
+          getNodesFieldBuilder();
         }
       }
       @java.lang.Override
@@ -19083,11 +15209,11 @@ public final class YarnRpcMessage {
 
         msg_ = "";
 
-        if (seedPeersBuilder_ == null) {
-          seedPeers_ = java.util.Collections.emptyList();
+        if (nodesBuilder_ == null) {
+          nodes_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
         } else {
-          seedPeersBuilder_.clear();
+          nodesBuilder_.clear();
         }
         return this;
       }
@@ -19118,14 +15244,14 @@ public final class YarnRpcMessage {
         int from_bitField0_ = bitField0_;
         result.status_ = status_;
         result.msg_ = msg_;
-        if (seedPeersBuilder_ == null) {
+        if (nodesBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
-            seedPeers_ = java.util.Collections.unmodifiableList(seedPeers_);
+            nodes_ = java.util.Collections.unmodifiableList(nodes_);
             bitField0_ = (bitField0_ & ~0x00000001);
           }
-          result.seedPeers_ = seedPeers_;
+          result.nodes_ = nodes_;
         } else {
-          result.seedPeers_ = seedPeersBuilder_.build();
+          result.nodes_ = nodesBuilder_.build();
         }
         onBuilt();
         return result;
@@ -19182,29 +15308,29 @@ public final class YarnRpcMessage {
           msg_ = other.msg_;
           onChanged();
         }
-        if (seedPeersBuilder_ == null) {
-          if (!other.seedPeers_.isEmpty()) {
-            if (seedPeers_.isEmpty()) {
-              seedPeers_ = other.seedPeers_;
+        if (nodesBuilder_ == null) {
+          if (!other.nodes_.isEmpty()) {
+            if (nodes_.isEmpty()) {
+              nodes_ = other.nodes_;
               bitField0_ = (bitField0_ & ~0x00000001);
             } else {
-              ensureSeedPeersIsMutable();
-              seedPeers_.addAll(other.seedPeers_);
+              ensureNodesIsMutable();
+              nodes_.addAll(other.nodes_);
             }
             onChanged();
           }
         } else {
-          if (!other.seedPeers_.isEmpty()) {
-            if (seedPeersBuilder_.isEmpty()) {
-              seedPeersBuilder_.dispose();
-              seedPeersBuilder_ = null;
-              seedPeers_ = other.seedPeers_;
+          if (!other.nodes_.isEmpty()) {
+            if (nodesBuilder_.isEmpty()) {
+              nodesBuilder_.dispose();
+              nodesBuilder_ = null;
+              nodes_ = other.nodes_;
               bitField0_ = (bitField0_ & ~0x00000001);
-              seedPeersBuilder_ = 
+              nodesBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getSeedPeersFieldBuilder() : null;
+                   getNodesFieldBuilder() : null;
             } else {
-              seedPeersBuilder_.addAllMessages(other.seedPeers_);
+              nodesBuilder_.addAllMessages(other.nodes_);
             }
           }
         }
@@ -19377,244 +15503,316 @@ public final class YarnRpcMessage {
         return this;
       }
 
-      private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer> seedPeers_ =
+      private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer> nodes_ =
         java.util.Collections.emptyList();
-      private void ensureSeedPeersIsMutable() {
+      private void ensureNodesIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          seedPeers_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer>(seedPeers_);
+          nodes_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer>(nodes_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder> seedPeersBuilder_;
+          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder> nodesBuilder_;
 
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer> getSeedPeersList() {
-        if (seedPeersBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(seedPeers_);
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer> getNodesList() {
+        if (nodesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(nodes_);
         } else {
-          return seedPeersBuilder_.getMessageList();
+          return nodesBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public int getSeedPeersCount() {
-        if (seedPeersBuilder_ == null) {
-          return seedPeers_.size();
+      public int getNodesCount() {
+        if (nodesBuilder_ == null) {
+          return nodes_.size();
         } else {
-          return seedPeersBuilder_.getCount();
+          return nodesBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer getSeedPeers(int index) {
-        if (seedPeersBuilder_ == null) {
-          return seedPeers_.get(index);
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer getNodes(int index) {
+        if (nodesBuilder_ == null) {
+          return nodes_.get(index);
         } else {
-          return seedPeersBuilder_.getMessage(index);
+          return nodesBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public Builder setSeedPeers(
+      public Builder setNodes(
           int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer value) {
-        if (seedPeersBuilder_ == null) {
+        if (nodesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureSeedPeersIsMutable();
-          seedPeers_.set(index, value);
+          ensureNodesIsMutable();
+          nodes_.set(index, value);
           onChanged();
         } else {
-          seedPeersBuilder_.setMessage(index, value);
+          nodesBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public Builder setSeedPeers(
+      public Builder setNodes(
           int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder builderForValue) {
-        if (seedPeersBuilder_ == null) {
-          ensureSeedPeersIsMutable();
-          seedPeers_.set(index, builderForValue.build());
+        if (nodesBuilder_ == null) {
+          ensureNodesIsMutable();
+          nodes_.set(index, builderForValue.build());
           onChanged();
         } else {
-          seedPeersBuilder_.setMessage(index, builderForValue.build());
+          nodesBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public Builder addSeedPeers(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer value) {
-        if (seedPeersBuilder_ == null) {
+      public Builder addNodes(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer value) {
+        if (nodesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureSeedPeersIsMutable();
-          seedPeers_.add(value);
+          ensureNodesIsMutable();
+          nodes_.add(value);
           onChanged();
         } else {
-          seedPeersBuilder_.addMessage(value);
+          nodesBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public Builder addSeedPeers(
+      public Builder addNodes(
           int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer value) {
-        if (seedPeersBuilder_ == null) {
+        if (nodesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureSeedPeersIsMutable();
-          seedPeers_.add(index, value);
+          ensureNodesIsMutable();
+          nodes_.add(index, value);
           onChanged();
         } else {
-          seedPeersBuilder_.addMessage(index, value);
+          nodesBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public Builder addSeedPeers(
+      public Builder addNodes(
           com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder builderForValue) {
-        if (seedPeersBuilder_ == null) {
-          ensureSeedPeersIsMutable();
-          seedPeers_.add(builderForValue.build());
+        if (nodesBuilder_ == null) {
+          ensureNodesIsMutable();
+          nodes_.add(builderForValue.build());
           onChanged();
         } else {
-          seedPeersBuilder_.addMessage(builderForValue.build());
+          nodesBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public Builder addSeedPeers(
+      public Builder addNodes(
           int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder builderForValue) {
-        if (seedPeersBuilder_ == null) {
-          ensureSeedPeersIsMutable();
-          seedPeers_.add(index, builderForValue.build());
+        if (nodesBuilder_ == null) {
+          ensureNodesIsMutable();
+          nodes_.add(index, builderForValue.build());
           onChanged();
         } else {
-          seedPeersBuilder_.addMessage(index, builderForValue.build());
+          nodesBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public Builder addAllSeedPeers(
+      public Builder addAllNodes(
           java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer> values) {
-        if (seedPeersBuilder_ == null) {
-          ensureSeedPeersIsMutable();
+        if (nodesBuilder_ == null) {
+          ensureNodesIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, seedPeers_);
+              values, nodes_);
           onChanged();
         } else {
-          seedPeersBuilder_.addAllMessages(values);
+          nodesBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public Builder clearSeedPeers() {
-        if (seedPeersBuilder_ == null) {
-          seedPeers_ = java.util.Collections.emptyList();
+      public Builder clearNodes() {
+        if (nodesBuilder_ == null) {
+          nodes_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
-          seedPeersBuilder_.clear();
+          nodesBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public Builder removeSeedPeers(int index) {
-        if (seedPeersBuilder_ == null) {
-          ensureSeedPeersIsMutable();
-          seedPeers_.remove(index);
+      public Builder removeNodes(int index) {
+        if (nodesBuilder_ == null) {
+          ensureNodesIsMutable();
+          nodes_.remove(index);
           onChanged();
         } else {
-          seedPeersBuilder_.remove(index);
+          nodesBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder getSeedPeersBuilder(
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder getNodesBuilder(
           int index) {
-        return getSeedPeersFieldBuilder().getBuilder(index);
+        return getNodesFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder getSeedPeersOrBuilder(
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder getNodesOrBuilder(
           int index) {
-        if (seedPeersBuilder_ == null) {
-          return seedPeers_.get(index);  } else {
-          return seedPeersBuilder_.getMessageOrBuilder(index);
+        if (nodesBuilder_ == null) {
+          return nodes_.get(index);  } else {
+          return nodesBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
       public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder> 
-           getSeedPeersOrBuilderList() {
-        if (seedPeersBuilder_ != null) {
-          return seedPeersBuilder_.getMessageOrBuilderList();
+           getNodesOrBuilderList() {
+        if (nodesBuilder_ != null) {
+          return nodesBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(seedPeers_);
+          return java.util.Collections.unmodifiableList(nodes_);
         }
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder addSeedPeersBuilder() {
-        return getSeedPeersFieldBuilder().addBuilder(
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder addNodesBuilder() {
+        return getNodesFieldBuilder().addBuilder(
             com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.getDefaultInstance());
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder addSeedPeersBuilder(
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder addNodesBuilder(
           int index) {
-        return getSeedPeersFieldBuilder().addBuilder(
+        return getNodesFieldBuilder().addBuilder(
             index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.getDefaultInstance());
       }
       /**
-       * <code>repeated .rpcapi.SeedPeer seed_peers = 3;</code>
+       * <pre>
+       * 种子节点的详情信息
+       * </pre>
+       *
+       * <code>repeated .rpcapi.SeedPeer nodes = 3;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder> 
-           getSeedPeersBuilderList() {
-        return getSeedPeersFieldBuilder().getBuilderList();
+           getNodesBuilderList() {
+        return getNodesFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
           com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder> 
-          getSeedPeersFieldBuilder() {
-        if (seedPeersBuilder_ == null) {
-          seedPeersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+          getNodesFieldBuilder() {
+        if (nodesBuilder_ == null) {
+          nodesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeer.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.SeedPeerOrBuilder>(
-                  seedPeers_,
+                  nodes_,
                   ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
                   isClean());
-          seedPeers_ = null;
+          nodes_ = null;
         }
-        return seedPeersBuilder_;
+        return nodesBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -28176,10 +24374,76 @@ public final class YarnRpcMessage {
   public interface ReportTaskResourceExpenseRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:rpcapi.ReportTaskResourceExpenseRequest)
       com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 计算or数据服务node的类型
+     * </pre>
+     *
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The enum numeric value on the wire for nodeType.
+     */
+    int getNodeTypeValue();
+    /**
+     * <pre>
+     * 计算or数据服务node的类型
+     * </pre>
+     *
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The nodeType.
+     */
+    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType();
+
+    /**
+     * <pre>
+     * 节点Id
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The nodeId.
+     */
+    java.lang.String getNodeId();
+    /**
+     * <pre>
+     * 节点Id
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The bytes for nodeId.
+     */
+    com.google.protobuf.ByteString
+        getNodeIdBytes();
+
+    /**
+     * <pre>
+     * 服务的资源实况
+     * </pre>
+     *
+     * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+     * @return Whether the usage field is set.
+     */
+    boolean hasUsage();
+    /**
+     * <pre>
+     * 服务的资源实况
+     * </pre>
+     *
+     * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+     * @return The usage.
+     */
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getUsage();
+    /**
+     * <pre>
+     * 服务的资源实况
+     * </pre>
+     *
+     * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+     */
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getUsageOrBuilder();
   }
   /**
    * <pre>
-   * 未定义
+   * 节点的资源使用实况上报请求
    * </pre>
    *
    * Protobuf type {@code rpcapi.ReportTaskResourceExpenseRequest}
@@ -28194,6 +24458,8 @@ public final class YarnRpcMessage {
       super(builder);
     }
     private ReportTaskResourceExpenseRequest() {
+      nodeType_ = 0;
+      nodeId_ = "";
     }
 
     @java.lang.Override
@@ -28226,6 +24492,31 @@ public final class YarnRpcMessage {
             case 0:
               done = true;
               break;
+            case 8: {
+              int rawValue = input.readEnum();
+
+              nodeType_ = rawValue;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              nodeId_ = s;
+              break;
+            }
+            case 26: {
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder subBuilder = null;
+              if (usage_ != null) {
+                subBuilder = usage_.toBuilder();
+              }
+              usage_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(usage_);
+                usage_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -28258,6 +24549,117 @@ public final class YarnRpcMessage {
               com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResourceExpenseRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResourceExpenseRequest.Builder.class);
     }
 
+    public static final int NODE_TYPE_FIELD_NUMBER = 1;
+    private int nodeType_;
+    /**
+     * <pre>
+     * 计算or数据服务node的类型
+     * </pre>
+     *
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The enum numeric value on the wire for nodeType.
+     */
+    @java.lang.Override public int getNodeTypeValue() {
+      return nodeType_;
+    }
+    /**
+     * <pre>
+     * 计算or数据服务node的类型
+     * </pre>
+     *
+     * <code>.rpcapi.NodeType node_type = 1;</code>
+     * @return The nodeType.
+     */
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType() {
+      @SuppressWarnings("deprecation")
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType result = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.valueOf(nodeType_);
+      return result == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.UNRECOGNIZED : result;
+    }
+
+    public static final int NODE_ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object nodeId_;
+    /**
+     * <pre>
+     * 节点Id
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The nodeId.
+     */
+    @java.lang.Override
+    public java.lang.String getNodeId() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        nodeId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 节点Id
+     * </pre>
+     *
+     * <code>string node_id = 2;</code>
+     * @return The bytes for nodeId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getNodeIdBytes() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nodeId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USAGE_FIELD_NUMBER = 3;
+    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail usage_;
+    /**
+     * <pre>
+     * 服务的资源实况
+     * </pre>
+     *
+     * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+     * @return Whether the usage field is set.
+     */
+    @java.lang.Override
+    public boolean hasUsage() {
+      return usage_ != null;
+    }
+    /**
+     * <pre>
+     * 服务的资源实况
+     * </pre>
+     *
+     * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+     * @return The usage.
+     */
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getUsage() {
+      return usage_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : usage_;
+    }
+    /**
+     * <pre>
+     * 服务的资源实况
+     * </pre>
+     *
+     * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+     */
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getUsageOrBuilder() {
+      return getUsage();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -28272,6 +24674,15 @@ public final class YarnRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (nodeType_ != com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.SeedNode.getNumber()) {
+        output.writeEnum(1, nodeType_);
+      }
+      if (!getNodeIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, nodeId_);
+      }
+      if (usage_ != null) {
+        output.writeMessage(3, getUsage());
+      }
       unknownFields.writeTo(output);
     }
 
@@ -28281,6 +24692,17 @@ public final class YarnRpcMessage {
       if (size != -1) return size;
 
       size = 0;
+      if (nodeType_ != com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.SeedNode.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, nodeType_);
+      }
+      if (!getNodeIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, nodeId_);
+      }
+      if (usage_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, getUsage());
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -28296,6 +24718,14 @@ public final class YarnRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResourceExpenseRequest other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResourceExpenseRequest) obj;
 
+      if (nodeType_ != other.nodeType_) return false;
+      if (!getNodeId()
+          .equals(other.getNodeId())) return false;
+      if (hasUsage() != other.hasUsage()) return false;
+      if (hasUsage()) {
+        if (!getUsage()
+            .equals(other.getUsage())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -28307,6 +24737,14 @@ public final class YarnRpcMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + NODE_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + nodeType_;
+      hash = (37 * hash) + NODE_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getNodeId().hashCode();
+      if (hasUsage()) {
+        hash = (37 * hash) + USAGE_FIELD_NUMBER;
+        hash = (53 * hash) + getUsage().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -28404,7 +24842,7 @@ public final class YarnRpcMessage {
     }
     /**
      * <pre>
-     * 未定义
+     * 节点的资源使用实况上报请求
      * </pre>
      *
      * Protobuf type {@code rpcapi.ReportTaskResourceExpenseRequest}
@@ -28444,6 +24882,16 @@ public final class YarnRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        nodeType_ = 0;
+
+        nodeId_ = "";
+
+        if (usageBuilder_ == null) {
+          usage_ = null;
+        } else {
+          usage_ = null;
+          usageBuilder_ = null;
+        }
         return this;
       }
 
@@ -28470,6 +24918,13 @@ public final class YarnRpcMessage {
       @java.lang.Override
       public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResourceExpenseRequest buildPartial() {
         com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResourceExpenseRequest result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResourceExpenseRequest(this);
+        result.nodeType_ = nodeType_;
+        result.nodeId_ = nodeId_;
+        if (usageBuilder_ == null) {
+          result.usage_ = usage_;
+        } else {
+          result.usage_ = usageBuilder_.build();
+        }
         onBuilt();
         return result;
       }
@@ -28518,6 +24973,16 @@ public final class YarnRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResourceExpenseRequest other) {
         if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResourceExpenseRequest.getDefaultInstance()) return this;
+        if (other.nodeType_ != 0) {
+          setNodeTypeValue(other.getNodeTypeValue());
+        }
+        if (!other.getNodeId().isEmpty()) {
+          nodeId_ = other.nodeId_;
+          onChanged();
+        }
+        if (other.hasUsage()) {
+          mergeUsage(other.getUsage());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -28545,6 +25010,331 @@ public final class YarnRpcMessage {
           }
         }
         return this;
+      }
+
+      private int nodeType_ = 0;
+      /**
+       * <pre>
+       * 计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @return The enum numeric value on the wire for nodeType.
+       */
+      @java.lang.Override public int getNodeTypeValue() {
+        return nodeType_;
+      }
+      /**
+       * <pre>
+       * 计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @param value The enum numeric value on the wire for nodeType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeTypeValue(int value) {
+        
+        nodeType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @return The nodeType.
+       */
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType getNodeType() {
+        @SuppressWarnings("deprecation")
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType result = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.valueOf(nodeType_);
+        return result == null ? com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @param value The nodeType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeType(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.NodeType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        nodeType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 计算or数据服务node的类型
+       * </pre>
+       *
+       * <code>.rpcapi.NodeType node_type = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNodeType() {
+        
+        nodeType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object nodeId_ = "";
+      /**
+       * <pre>
+       * 节点Id
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @return The nodeId.
+       */
+      public java.lang.String getNodeId() {
+        java.lang.Object ref = nodeId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          nodeId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 节点Id
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @return The bytes for nodeId.
+       */
+      public com.google.protobuf.ByteString
+          getNodeIdBytes() {
+        java.lang.Object ref = nodeId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nodeId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 节点Id
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @param value The nodeId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 节点Id
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNodeId() {
+        
+        nodeId_ = getDefaultInstance().getNodeId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 节点Id
+       * </pre>
+       *
+       * <code>string node_id = 2;</code>
+       * @param value The bytes for nodeId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNodeIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail usage_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder> usageBuilder_;
+      /**
+       * <pre>
+       * 服务的资源实况
+       * </pre>
+       *
+       * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+       * @return Whether the usage field is set.
+       */
+      public boolean hasUsage() {
+        return usageBuilder_ != null || usage_ != null;
+      }
+      /**
+       * <pre>
+       * 服务的资源实况
+       * </pre>
+       *
+       * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+       * @return The usage.
+       */
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getUsage() {
+        if (usageBuilder_ == null) {
+          return usage_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : usage_;
+        } else {
+          return usageBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * 服务的资源实况
+       * </pre>
+       *
+       * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+       */
+      public Builder setUsage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail value) {
+        if (usageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          usage_ = value;
+          onChanged();
+        } else {
+          usageBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * 服务的资源实况
+       * </pre>
+       *
+       * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+       */
+      public Builder setUsage(
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder builderForValue) {
+        if (usageBuilder_ == null) {
+          usage_ = builderForValue.build();
+          onChanged();
+        } else {
+          usageBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * 服务的资源实况
+       * </pre>
+       *
+       * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+       */
+      public Builder mergeUsage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail value) {
+        if (usageBuilder_ == null) {
+          if (usage_ != null) {
+            usage_ =
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.newBuilder(usage_).mergeFrom(value).buildPartial();
+          } else {
+            usage_ = value;
+          }
+          onChanged();
+        } else {
+          usageBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * 服务的资源实况
+       * </pre>
+       *
+       * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+       */
+      public Builder clearUsage() {
+        if (usageBuilder_ == null) {
+          usage_ = null;
+          onChanged();
+        } else {
+          usage_ = null;
+          usageBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * 服务的资源实况
+       * </pre>
+       *
+       * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+       */
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder getUsageBuilder() {
+        
+        onChanged();
+        return getUsageFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * 服务的资源实况
+       * </pre>
+       *
+       * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+       */
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getUsageOrBuilder() {
+        if (usageBuilder_ != null) {
+          return usageBuilder_.getMessageOrBuilder();
+        } else {
+          return usage_ == null ?
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : usage_;
+        }
+      }
+      /**
+       * <pre>
+       * 服务的资源实况
+       * </pre>
+       *
+       * <code>.rpcapi.ResourceUsedDetail usage = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder> 
+          getUsageFieldBuilder() {
+        if (usageBuilder_ == null) {
+          usageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder>(
+                  getUsage(),
+                  getParentForChildren(),
+                  isClean());
+          usage_ = null;
+        }
+        return usageBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -32852,35 +29642,25 @@ public final class YarnRpcMessage {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_SeedPeer_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_YarnRegisteredJobNode_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_YarnRegisteredJobNode_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_YarnRegisteredJobNodeTaskIds_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_YarnRegisteredJobNodeTaskIds_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_YarnRegisteredDataNode_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_YarnRegisteredDataNode_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_YarnRegisteredDataNodeDelta_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_YarnRegisteredDataNodeDelta_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_GetNodeInfoResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_GetNodeInfoResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_GetRegisteredPeersRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_GetRegisteredPeersRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_GetRegisteredPeersResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_GetRegisteredPeersResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_DeleteRegisteredNodeRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_SetSeedNodeRequest_descriptor;
   private static final 
@@ -32983,151 +29763,142 @@ public final class YarnRpcMessage {
       "\n\035carrier/api/sys_rpc_api.proto\022\006rpcapi\032" +
       " carrier/api/common_message.proto\032\036carri" +
       "er/api/task_rpc_api.proto\032\034google/api/an" +
-      "notations.proto\"\333\002\n\014YarnNodeInfo\022\021\n\tnode" +
-      "_type\030\001 \001(\t\022\017\n\007node_id\030\002 \001(\t\022\023\n\013internal" +
-      "_ip\030\003 \001(\t\022\023\n\013external_ip\030\004 \001(\t\022\025\n\rintern" +
-      "al_port\030\005 \001(\t\022\025\n\rexternal_port\030\006 \001(\t\022\025\n\r" +
-      "identity_type\030\007 \001(\t\022\023\n\013identity_id\030\010 \001(\t" +
-      "\0225\n\rresource_used\030\t \001(\0132\036.rpcapi.Resourc" +
-      "eUsedDetailShow\022)\n\005peers\030\n \003(\0132\032.rpcapi." +
-      "YarnRegisteredPeer\022$\n\nseed_peers\030\013 \003(\0132\020" +
-      ".rpcapi.SeedPeer\022\r\n\005state\030\014 \001(\t\022\014\n\004name\030" +
-      "\r \001(\t\"\246\001\n\017YarnNodeSysInfo\022\014\n\004name\030\001 \001(\t\022" +
-      "\021\n\ttotal_mem\030\002 \001(\004\022\020\n\010used_mem\030\003 \001(\004\022\027\n\017" +
-      "total_processor\030\004 \001(\004\022\026\n\016used_processor\030" +
-      "\005 \001(\004\022\027\n\017total_bandwidth\030\006 \001(\004\022\026\n\016used_b" +
-      "andwidth\030\007 \001(\004\"^\n\022YarnRegisteredPeer\022\021\n\t" +
-      "node_type\030\001 \001(\t\0225\n\013node_detail\030\002 \001(\0132 .r" +
-      "pcapi.YarnRegisteredPeerDetail\"\222\001\n\030YarnR" +
-      "egisteredPeerDetail\022\n\n\002id\030\001 \001(\t\022\023\n\013inter" +
-      "nal_ip\030\002 \001(\t\022\023\n\013external_ip\030\003 \001(\t\022\025\n\rint" +
-      "ernal_port\030\004 \001(\t\022\025\n\rexternal_port\030\005 \001(\t\022" +
-      "\022\n\nconn_state\030\006 \001(\005\"V\n\010SeedPeer\022\n\n\002id\030\001 " +
-      "\001(\t\022\023\n\013internal_ip\030\002 \001(\t\022\025\n\rinternal_por" +
-      "t\030\003 \001(\t\022\022\n\nconn_state\030\004 \001(\005\"\366\001\n\025YarnRegi" +
-      "steredJobNode\022\n\n\002id\030\002 \001(\t\022\023\n\013internal_ip" +
-      "\030\003 \001(\t\022\023\n\013external_ip\030\004 \001(\t\022\025\n\rinternal_" +
-      "port\030\005 \001(\t\022\025\n\rexternal_port\030\006 \001(\t\0223\n\013inf" +
-      "ormation\030\007 \001(\0132\036.rpcapi.ResourceUsedDeta" +
-      "ilShow\022\020\n\010duration\030\010 \001(\004\0222\n\004task\030\t \001(\0132$" +
-      ".rpcapi.YarnRegisteredJobNodeTaskIds\"?\n\034" +
-      "YarnRegisteredJobNodeTaskIds\022\r\n\005count\030\001 " +
-      "\001(\r\022\020\n\010task_ids\030\002 \003(\t\"\367\001\n\026YarnRegistered" +
-      "DataNode\022\n\n\002id\030\002 \001(\t\022\023\n\013internal_ip\030\003 \001(" +
-      "\t\022\023\n\013external_ip\030\004 \001(\t\022\025\n\rinternal_port\030" +
-      "\005 \001(\t\022\025\n\rexternal_port\030\006 \001(\t\0223\n\013informat" +
-      "ion\030\007 \001(\0132\036.rpcapi.ResourceUsedDetailSho" +
-      "w\022\020\n\010duration\030\010 \001(\004\0222\n\005delta\030\t \001(\0132#.rpc" +
-      "api.YarnRegisteredDataNodeDelta\"G\n\033YarnR" +
-      "egisteredDataNodeDelta\022\021\n\tfileCount\030\001 \001(" +
-      "\r\022\025\n\rfileTotalSize\030\002 \001(\r\"]\n\023GetNodeInfoR" +
-      "esponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022)\n\013" +
-      "information\030\003 \001(\0132\024.rpcapi.YarnNodeInfo\"" +
-      "\237\001\n\032GetRegisteredPeersResponse\022\016\n\006status" +
-      "\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0220\n\tjob_nodes\030\003 \003(\0132\035" +
-      ".rpcapi.YarnRegisteredJobNode\0222\n\ndata_no" +
-      "des\030\004 \003(\0132\036.rpcapi.YarnRegisteredDataNod" +
-      "e\"@\n\022SetSeedNodeRequest\022\023\n\013internal_ip\030\001" +
-      " \001(\t\022\025\n\rinternal_port\030\002 \001(\t\"W\n\023SetSeedNo" +
-      "deResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022" +
-      "#\n\tseed_peer\030\003 \001(\0132\020.rpcapi.SeedPeer\"O\n\025" +
-      "UpdateSeedNodeRequest\022\n\n\002id\030\001 \001(\t\022\023\n\013int" +
-      "ernal_ip\030\002 \001(\t\022\025\n\rinternal_port\030\003 \001(\t\"\\\n" +
-      "\027GetSeedNodeListResponse\022\016\n\006status\030\001 \001(\005" +
-      "\022\013\n\003msg\030\002 \001(\t\022$\n\nseed_peers\030\003 \003(\0132\020.rpca" +
-      "pi.SeedPeer\"l\n\022SetDataNodeRequest\022\023\n\013int" +
+      "notations.proto\"\351\002\n\014YarnNodeInfo\022#\n\tnode" +
+      "_type\030\001 \001(\0162\020.rpcapi.NodeType\022\017\n\007node_id" +
+      "\030\002 \001(\t\022\023\n\013internal_ip\030\003 \001(\t\022\023\n\013external_" +
+      "ip\030\004 \001(\t\022\025\n\rinternal_port\030\005 \001(\t\022\025\n\rexter" +
+      "nal_port\030\006 \001(\t\022\025\n\ridentity_type\030\007 \001(\t\022\023\n" +
+      "\013identity_id\030\010 \001(\t\0221\n\rresource_used\030\t \001(" +
+      "\0132\032.rpcapi.ResourceUsedDetail\022)\n\005peers\030\n" +
+      " \003(\0132\032.rpcapi.YarnRegisteredPeer\022$\n\nseed" +
+      "_peers\030\013 \003(\0132\020.rpcapi.SeedPeer\022\r\n\005state\030" +
+      "\014 \001(\t\022\014\n\004name\030\r \001(\t\"\246\001\n\017YarnNodeSysInfo\022" +
+      "\014\n\004name\030\001 \001(\t\022\021\n\ttotal_mem\030\002 \001(\004\022\020\n\010used" +
+      "_mem\030\003 \001(\004\022\027\n\017total_processor\030\004 \001(\004\022\026\n\016u" +
+      "sed_processor\030\005 \001(\004\022\027\n\017total_bandwidth\030\006" +
+      " \001(\004\022\026\n\016used_bandwidth\030\007 \001(\004\"p\n\022YarnRegi" +
+      "steredPeer\022#\n\tnode_type\030\001 \001(\0162\020.rpcapi.N" +
+      "odeType\0225\n\013node_detail\030\002 \001(\0132 .rpcapi.Ya" +
+      "rnRegisteredPeerDetail\"\222\001\n\030YarnRegistere" +
+      "dPeerDetail\022\n\n\002id\030\001 \001(\t\022\023\n\013internal_ip\030\002" +
+      " \001(\t\022\023\n\013external_ip\030\003 \001(\t\022\025\n\rinternal_po" +
+      "rt\030\004 \001(\t\022\025\n\rexternal_port\030\005 \001(\t\022\022\n\nconn_" +
+      "state\030\006 \001(\005\"g\n\010SeedPeer\022\n\n\002id\030\001 \001(\t\022\017\n\007n" +
+      "ode_id\030\002 \001(\t\022\023\n\013internal_ip\030\003 \001(\t\022\025\n\rint" +
+      "ernal_port\030\004 \001(\t\022\022\n\nconn_state\030\005 \001(\005\"]\n\023" +
+      "GetNodeInfoResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003m" +
+      "sg\030\002 \001(\t\022)\n\013information\030\003 \001(\0132\024.rpcapi.Y" +
+      "arnNodeInfo\"@\n\031GetRegisteredPeersRequest" +
+      "\022#\n\tnode_type\030\001 \001(\0162\020.rpcapi.NodeType\"d\n" +
+      "\032GetRegisteredPeersResponse\022\016\n\006status\030\001 " +
+      "\001(\005\022\013\n\003msg\030\002 \001(\t\022)\n\005nodes\030\003 \003(\0132\032.rpcapi" +
+      ".YarnRegisteredPeer\")\n\033DeleteRegisteredN" +
+      "odeRequest\022\n\n\002id\030\001 \001(\t\"Q\n\022SetSeedNodeReq" +
+      "uest\022\017\n\007node_id\030\001 \001(\t\022\023\n\013internal_ip\030\002 \001" +
+      "(\t\022\025\n\rinternal_port\030\003 \001(\t\"W\n\023SetSeedNode" +
+      "Response\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022#\n" +
+      "\tseed_peer\030\003 \001(\0132\020.rpcapi.SeedPeer\"`\n\025Up" +
+      "dateSeedNodeRequest\022\n\n\002id\030\001 \001(\t\022\017\n\007node_" +
+      "id\030\002 \001(\t\022\023\n\013internal_ip\030\003 \001(\t\022\025\n\rinterna" +
+      "l_port\030\004 \001(\t\"W\n\027GetSeedNodeListResponse\022" +
+      "\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022\037\n\005nodes\030\003 " +
+      "\003(\0132\020.rpcapi.SeedPeer\"l\n\022SetDataNodeRequ" +
+      "est\022\023\n\013internal_ip\030\003 \001(\t\022\023\n\013external_ip\030" +
+      "\004 \001(\t\022\025\n\rinternal_port\030\005 \001(\t\022\025\n\rexternal" +
+      "_port\030\006 \001(\t\"g\n\023SetDataNodeResponse\022\016\n\006st" +
+      "atus\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0223\n\tdata_node\030\003 \001" +
+      "(\0132 .rpcapi.YarnRegisteredPeerDetail\"{\n\025" +
+      "UpdateDataNodeRequest\022\n\n\002id\030\001 \001(\t\022\023\n\013int" +
       "ernal_ip\030\003 \001(\t\022\023\n\013external_ip\030\004 \001(\t\022\025\n\ri" +
       "nternal_port\030\005 \001(\t\022\025\n\rexternal_port\030\006 \001(" +
-      "\t\"g\n\023SetDataNodeResponse\022\016\n\006status\030\001 \001(\005" +
-      "\022\013\n\003msg\030\002 \001(\t\0223\n\tdata_node\030\003 \001(\0132 .rpcap" +
-      "i.YarnRegisteredPeerDetail\"{\n\025UpdateData" +
-      "NodeRequest\022\n\n\002id\030\001 \001(\t\022\023\n\013internal_ip\030\003" +
-      " \001(\t\022\023\n\013external_ip\030\004 \001(\t\022\025\n\rinternal_po" +
-      "rt\030\005 \001(\t\022\025\n\rexternal_port\030\006 \001(\t\"g\n\035GetRe" +
-      "gisteredNodeListResponse\022\016\n\006status\030\001 \001(\005" +
-      "\022\013\n\003msg\030\002 \001(\t\022)\n\005nodes\030\003 \003(\0132\032.rpcapi.Ya" +
-      "rnRegisteredPeer\"k\n\021SetJobNodeRequest\022\023\n" +
-      "\013internal_ip\030\003 \001(\t\022\023\n\013external_ip\030\004 \001(\t\022" +
-      "\025\n\rinternal_port\030\005 \001(\t\022\025\n\rexternal_port\030" +
-      "\006 \001(\t\"e\n\022SetJobNodeResponse\022\016\n\006status\030\001 " +
-      "\001(\005\022\013\n\003msg\030\002 \001(\t\0222\n\010job_node\030\003 \001(\0132 .rpc" +
-      "api.YarnRegisteredPeerDetail\"z\n\024UpdateJo" +
-      "bNodeRequest\022\n\n\002id\030\001 \001(\t\022\023\n\013internal_ip\030" +
-      "\003 \001(\t\022\023\n\013external_ip\030\004 \001(\t\022\025\n\rinternal_p" +
-      "ort\030\005 \001(\t\022\025\n\rexternal_port\030\006 \001(\t\"F\n\026Repo" +
-      "rtTaskEventRequest\022,\n\ntask_event\030\001 \001(\0132\030" +
-      ".rpcapi.TaskEventDeclare\"\"\n ReportTaskRe" +
-      "sourceExpenseRequest\"\\\n\032ReportUpFileSumm" +
-      "aryRequest\022\021\n\torigin_id\030\001 \001(\t\022\021\n\tfile_pa" +
-      "th\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\014\n\004port\030\004 \001(\t\"E\n\035Qu" +
-      "eryAvailableDataNodeRequest\022\021\n\tfile_size" +
-      "\030\001 \001(\004\022\021\n\tfile_type\030\002 \001(\t\":\n\036QueryAvaila" +
-      "bleDataNodeResponse\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030" +
-      "\002 \001(\t\"-\n\030QueryFilePositionRequest\022\021\n\tori" +
-      "gin_id\030\001 \001(\t\"H\n\031QueryFilePositionRespons" +
-      "e\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030\002 \001(\t\022\021\n\tfile_path" +
-      "\030\003 \001(\t2\316\022\n\013YarnService\022h\n\013GetNodeInfo\022\026." +
-      "rpcapi.EmptyGetParams\032\033.rpcapi.GetNodeIn" +
-      "foResponse\"$\202\323\344\223\002\036\"\031/carrier/v1/yarn/nod" +
-      "eInfo:\001*\022}\n\022GetRegisteredPeers\022\026.rpcapi." +
-      "EmptyGetParams\032\".rpcapi.GetRegisteredPee" +
-      "rsResponse\"+\202\323\344\223\002%\" /carrier/v1/yarn/reg" +
-      "isteredPeers:\001*\022k\n\013SetSeedNode\022\032.rpcapi." +
-      "SetSeedNodeRequest\032\033.rpcapi.SetSeedNodeR" +
-      "esponse\"#\202\323\344\223\002\035\"\030/carrier/v1/yarn/setSee" +
-      "d:\001*\022t\n\016UpdateSeedNode\022\035.rpcapi.UpdateSe" +
-      "edNodeRequest\032\033.rpcapi.SetSeedNodeRespon" +
-      "se\"&\202\323\344\223\002 \"\033/carrier/v1/yarn/updateSeed:" +
-      "\001*\022y\n\016DeleteSeedNode\022#.rpcapi.DeleteRegi" +
-      "steredNodeRequest\032\032.rpcapi.SimpleRespons" +
-      "eCode\"&\202\323\344\223\002 \"\033/carrier/v1/yarn/deleteSe" +
-      "ed:\001*\022p\n\017GetSeedNodeList\022\026.rpcapi.EmptyG" +
-      "etParams\032\037.rpcapi.GetSeedNodeListRespons" +
-      "e\"$\202\323\344\223\002\036\"\031/carrier/v1/yarn/seedList:\001*\022" +
-      "o\n\013SetDataNode\022\032.rpcapi.SetDataNodeReque" +
-      "st\032\033.rpcapi.SetDataNodeResponse\"\'\202\323\344\223\002!\"" +
-      "\034/carrier/v1/yarn/setDataNode:\001*\022x\n\016Upda" +
-      "teDataNode\022\035.rpcapi.UpdateDataNodeReques" +
-      "t\032\033.rpcapi.SetDataNodeResponse\"*\202\323\344\223\002$\"\037" +
-      "/carrier/v1/yarn/updateDataNode:\001*\022}\n\016De" +
-      "leteDataNode\022#.rpcapi.DeleteRegisteredNo" +
-      "deRequest\032\032.rpcapi.SimpleResponseCode\"*\202" +
-      "\323\344\223\002$\"\037/carrier/v1/yarn/deleteDataNode:\001" +
-      "*\022z\n\017GetDataNodeList\022\026.rpcapi.EmptyGetPa" +
-      "rams\032%.rpcapi.GetRegisteredNodeListRespo" +
-      "nse\"(\202\323\344\223\002\"\"\035/carrier/v1/yarn/dataNodeLi" +
-      "st:\001*\022k\n\nSetJobNode\022\031.rpcapi.SetJobNodeR" +
-      "equest\032\032.rpcapi.SetJobNodeResponse\"&\202\323\344\223" +
-      "\002 \"\033/carrier/v1/yarn/setJobNode:\001*\022t\n\rUp" +
-      "dateJobNode\022\034.rpcapi.UpdateJobNodeReques" +
-      "t\032\032.rpcapi.SetJobNodeResponse\")\202\323\344\223\002#\"\036/" +
-      "carrier/v1/yarn/updateJobNode:\001*\022{\n\rDele" +
-      "teJobNode\022#.rpcapi.DeleteRegisteredNodeR" +
-      "equest\032\032.rpcapi.SimpleResponseCode\")\202\323\344\223" +
-      "\002#\"\036/carrier/v1/yarn/deleteJobNode:\001*\022x\n" +
-      "\016GetJobNodeList\022\026.rpcapi.EmptyGetParams\032" +
-      "%.rpcapi.GetRegisteredNodeListResponse\"\'" +
-      "\202\323\344\223\002!\"\034/carrier/v1/yarn/jobNodeList:\001*\022" +
-      "z\n\017ReportTaskEvent\022\036.rpcapi.ReportTaskEv" +
-      "entRequest\032\032.rpcapi.SimpleResponseCode\"+" +
-      "\202\323\344\223\002%\" /carrier/v1/yarn/reportTaskEvent" +
-      ":\001*\022\230\001\n\031ReportTaskResourceExpense\022(.rpca" +
-      "pi.ReportTaskResourceExpenseRequest\032\032.rp" +
-      "capi.SimpleResponseCode\"5\202\323\344\223\002/\"*/carrie" +
-      "r/v1/yarn/reportTaskResourceExpense:\001*\022\206" +
-      "\001\n\023ReportUpFileSummary\022\".rpcapi.ReportUp" +
-      "FileSummaryRequest\032\032.rpcapi.SimpleRespon" +
-      "seCode\"/\202\323\344\223\002)\"$/carrier/v1/yarn/reportU" +
-      "pFileSummary:\001*\022\233\001\n\026QueryAvailableDataNo" +
-      "de\022%.rpcapi.QueryAvailableDataNodeReques" +
-      "t\032&.rpcapi.QueryAvailableDataNodeRespons" +
-      "e\"2\202\323\344\223\002,\"\'/carrier/v1/yarn/queryAvailab" +
-      "leDataNode:\001*\022\207\001\n\021QueryFilePosition\022 .rp" +
-      "capi.QueryFilePositionRequest\032!.rpcapi.Q" +
-      "ueryFilePositionResponse\"-\202\323\344\223\002\'\"\"/carri" +
-      "er/v1/yarn/queryFilePosition:\001*B:\n(com.p" +
-      "laton.rosettanet.admin.grpc.serviceB\016Yar" +
-      "nRpcMessageb\006proto3"
+      "\t\"g\n\035GetRegisteredNodeListResponse\022\016\n\006st" +
+      "atus\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022)\n\005nodes\030\003 \003(\0132\032" +
+      ".rpcapi.YarnRegisteredPeer\"k\n\021SetJobNode" +
+      "Request\022\023\n\013internal_ip\030\003 \001(\t\022\023\n\013external" +
+      "_ip\030\004 \001(\t\022\025\n\rinternal_port\030\005 \001(\t\022\025\n\rexte" +
+      "rnal_port\030\006 \001(\t\"e\n\022SetJobNodeResponse\022\016\n" +
+      "\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0222\n\010job_node\030\003" +
+      " \001(\0132 .rpcapi.YarnRegisteredPeerDetail\"z" +
+      "\n\024UpdateJobNodeRequest\022\n\n\002id\030\001 \001(\t\022\023\n\013in" +
+      "ternal_ip\030\003 \001(\t\022\023\n\013external_ip\030\004 \001(\t\022\025\n\r" +
+      "internal_port\030\005 \001(\t\022\025\n\rexternal_port\030\006 \001" +
+      "(\t\"F\n\026ReportTaskEventRequest\022,\n\ntask_eve" +
+      "nt\030\001 \001(\0132\030.rpcapi.TaskEventDeclare\"\203\001\n R" +
+      "eportTaskResourceExpenseRequest\022#\n\tnode_" +
+      "type\030\001 \001(\0162\020.rpcapi.NodeType\022\017\n\007node_id\030" +
+      "\002 \001(\t\022)\n\005usage\030\003 \001(\0132\032.rpcapi.ResourceUs" +
+      "edDetail\"\\\n\032ReportUpFileSummaryRequest\022\021" +
+      "\n\torigin_id\030\001 \001(\t\022\021\n\tfile_path\030\002 \001(\t\022\n\n\002" +
+      "ip\030\003 \001(\t\022\014\n\004port\030\004 \001(\t\"E\n\035QueryAvailable" +
+      "DataNodeRequest\022\021\n\tfile_size\030\001 \001(\004\022\021\n\tfi" +
+      "le_type\030\002 \001(\t\":\n\036QueryAvailableDataNodeR" +
+      "esponse\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030\002 \001(\t\"-\n\030Que" +
+      "ryFilePositionRequest\022\021\n\torigin_id\030\001 \001(\t" +
+      "\"H\n\031QueryFilePositionResponse\022\n\n\002ip\030\001 \001(" +
+      "\t\022\014\n\004port\030\002 \001(\t\022\021\n\tfile_path\030\003 \001(\t*3\n\010No" +
+      "deType\022\014\n\010SeedNode\020\000\022\013\n\007JobNode\020\001\022\014\n\010Dat" +
+      "aNode\020\0022\332\022\n\013YarnService\022h\n\013GetNodeInfo\022\026" +
+      ".rpcapi.EmptyGetParams\032\033.rpcapi.GetNodeI" +
+      "nfoResponse\"$\202\323\344\223\002\036\"\031/carrier/v1/yarn/no" +
+      "deInfo:\001*\022\210\001\n\022GetRegisteredPeers\022!.rpcap" +
+      "i.GetRegisteredPeersRequest\032\".rpcapi.Get" +
+      "RegisteredPeersResponse\"+\202\323\344\223\002%\" /carrie" +
+      "r/v1/yarn/registeredPeers:\001*\022k\n\013SetSeedN" +
+      "ode\022\032.rpcapi.SetSeedNodeRequest\032\033.rpcapi" +
+      ".SetSeedNodeResponse\"#\202\323\344\223\002\035\"\030/carrier/v" +
+      "1/yarn/setSeed:\001*\022t\n\016UpdateSeedNode\022\035.rp" +
+      "capi.UpdateSeedNodeRequest\032\033.rpcapi.SetS" +
+      "eedNodeResponse\"&\202\323\344\223\002 \"\033/carrier/v1/yar" +
+      "n/updateSeed:\001*\022y\n\016DeleteSeedNode\022#.rpca" +
+      "pi.DeleteRegisteredNodeRequest\032\032.rpcapi." +
+      "SimpleResponseCode\"&\202\323\344\223\002 \"\033/carrier/v1/" +
+      "yarn/deleteSeed:\001*\022p\n\017GetSeedNodeList\022\026." +
+      "rpcapi.EmptyGetParams\032\037.rpcapi.GetSeedNo" +
+      "deListResponse\"$\202\323\344\223\002\036\"\031/carrier/v1/yarn" +
+      "/seedList:\001*\022o\n\013SetDataNode\022\032.rpcapi.Set" +
+      "DataNodeRequest\032\033.rpcapi.SetDataNodeResp" +
+      "onse\"\'\202\323\344\223\002!\"\034/carrier/v1/yarn/setDataNo" +
+      "de:\001*\022x\n\016UpdateDataNode\022\035.rpcapi.UpdateD" +
+      "ataNodeRequest\032\033.rpcapi.SetDataNodeRespo" +
+      "nse\"*\202\323\344\223\002$\"\037/carrier/v1/yarn/updateData" +
+      "Node:\001*\022}\n\016DeleteDataNode\022#.rpcapi.Delet" +
+      "eRegisteredNodeRequest\032\032.rpcapi.SimpleRe" +
+      "sponseCode\"*\202\323\344\223\002$\"\037/carrier/v1/yarn/del" +
+      "eteDataNode:\001*\022z\n\017GetDataNodeList\022\026.rpca" +
+      "pi.EmptyGetParams\032%.rpcapi.GetRegistered" +
+      "NodeListResponse\"(\202\323\344\223\002\"\"\035/carrier/v1/ya" +
+      "rn/dataNodeList:\001*\022k\n\nSetJobNode\022\031.rpcap" +
+      "i.SetJobNodeRequest\032\032.rpcapi.SetJobNodeR" +
+      "esponse\"&\202\323\344\223\002 \"\033/carrier/v1/yarn/setJob" +
+      "Node:\001*\022t\n\rUpdateJobNode\022\034.rpcapi.Update" +
+      "JobNodeRequest\032\032.rpcapi.SetJobNodeRespon" +
+      "se\")\202\323\344\223\002#\"\036/carrier/v1/yarn/updateJobNo" +
+      "de:\001*\022{\n\rDeleteJobNode\022#.rpcapi.DeleteRe" +
+      "gisteredNodeRequest\032\032.rpcapi.SimpleRespo" +
+      "nseCode\")\202\323\344\223\002#\"\036/carrier/v1/yarn/delete" +
+      "JobNode:\001*\022x\n\016GetJobNodeList\022\026.rpcapi.Em" +
+      "ptyGetParams\032%.rpcapi.GetRegisteredNodeL" +
+      "istResponse\"\'\202\323\344\223\002!\"\034/carrier/v1/yarn/jo" +
+      "bNodeList:\001*\022z\n\017ReportTaskEvent\022\036.rpcapi" +
+      ".ReportTaskEventRequest\032\032.rpcapi.SimpleR" +
+      "esponseCode\"+\202\323\344\223\002%\" /carrier/v1/yarn/re" +
+      "portTaskEvent:\001*\022\230\001\n\031ReportTaskResourceE" +
+      "xpense\022(.rpcapi.ReportTaskResourceExpens" +
+      "eRequest\032\032.rpcapi.SimpleResponseCode\"5\202\323" +
+      "\344\223\002/\"*/carrier/v1/yarn/reportTaskResourc" +
+      "eExpense:\001*\022\206\001\n\023ReportUpFileSummary\022\".rp" +
+      "capi.ReportUpFileSummaryRequest\032\032.rpcapi" +
+      ".SimpleResponseCode\"/\202\323\344\223\002)\"$/carrier/v1" +
+      "/yarn/reportUpFileSummary:\001*\022\233\001\n\026QueryAv" +
+      "ailableDataNode\022%.rpcapi.QueryAvailableD" +
+      "ataNodeRequest\032&.rpcapi.QueryAvailableDa" +
+      "taNodeResponse\"2\202\323\344\223\002,\"\'/carrier/v1/yarn" +
+      "/queryAvailableDataNode:\001*\022\207\001\n\021QueryFile" +
+      "Position\022 .rpcapi.QueryFilePositionReque" +
+      "st\032!.rpcapi.QueryFilePositionResponse\"-\202" +
+      "\323\344\223\002\'\"\"/carrier/v1/yarn/queryFilePositio" +
+      "n:\001*B:\n(com.platon.rosettanet.admin.grpc" +
+      ".serviceB\016YarnRpcMessageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -33165,147 +29936,135 @@ public final class YarnRpcMessage {
     internal_static_rpcapi_SeedPeer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_SeedPeer_descriptor,
-        new java.lang.String[] { "Id", "InternalIp", "InternalPort", "ConnState", });
-    internal_static_rpcapi_YarnRegisteredJobNode_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_rpcapi_YarnRegisteredJobNode_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_YarnRegisteredJobNode_descriptor,
-        new java.lang.String[] { "Id", "InternalIp", "ExternalIp", "InternalPort", "ExternalPort", "Information", "Duration", "Task", });
-    internal_static_rpcapi_YarnRegisteredJobNodeTaskIds_descriptor =
-      getDescriptor().getMessageTypes().get(6);
-    internal_static_rpcapi_YarnRegisteredJobNodeTaskIds_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_YarnRegisteredJobNodeTaskIds_descriptor,
-        new java.lang.String[] { "Count", "TaskIds", });
-    internal_static_rpcapi_YarnRegisteredDataNode_descriptor =
-      getDescriptor().getMessageTypes().get(7);
-    internal_static_rpcapi_YarnRegisteredDataNode_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_YarnRegisteredDataNode_descriptor,
-        new java.lang.String[] { "Id", "InternalIp", "ExternalIp", "InternalPort", "ExternalPort", "Information", "Duration", "Delta", });
-    internal_static_rpcapi_YarnRegisteredDataNodeDelta_descriptor =
-      getDescriptor().getMessageTypes().get(8);
-    internal_static_rpcapi_YarnRegisteredDataNodeDelta_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_YarnRegisteredDataNodeDelta_descriptor,
-        new java.lang.String[] { "FileCount", "FileTotalSize", });
+        new java.lang.String[] { "Id", "NodeId", "InternalIp", "InternalPort", "ConnState", });
     internal_static_rpcapi_GetNodeInfoResponse_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_rpcapi_GetNodeInfoResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetNodeInfoResponse_descriptor,
         new java.lang.String[] { "Status", "Msg", "Information", });
+    internal_static_rpcapi_GetRegisteredPeersRequest_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_rpcapi_GetRegisteredPeersRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_GetRegisteredPeersRequest_descriptor,
+        new java.lang.String[] { "NodeType", });
     internal_static_rpcapi_GetRegisteredPeersResponse_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_rpcapi_GetRegisteredPeersResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetRegisteredPeersResponse_descriptor,
-        new java.lang.String[] { "Status", "Msg", "JobNodes", "DataNodes", });
+        new java.lang.String[] { "Status", "Msg", "Nodes", });
+    internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_rpcapi_DeleteRegisteredNodeRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_DeleteRegisteredNodeRequest_descriptor,
+        new java.lang.String[] { "Id", });
     internal_static_rpcapi_SetSeedNodeRequest_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_rpcapi_SetSeedNodeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_SetSeedNodeRequest_descriptor,
-        new java.lang.String[] { "InternalIp", "InternalPort", });
+        new java.lang.String[] { "NodeId", "InternalIp", "InternalPort", });
     internal_static_rpcapi_SetSeedNodeResponse_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_rpcapi_SetSeedNodeResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_SetSeedNodeResponse_descriptor,
         new java.lang.String[] { "Status", "Msg", "SeedPeer", });
     internal_static_rpcapi_UpdateSeedNodeRequest_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_rpcapi_UpdateSeedNodeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_UpdateSeedNodeRequest_descriptor,
-        new java.lang.String[] { "Id", "InternalIp", "InternalPort", });
+        new java.lang.String[] { "Id", "NodeId", "InternalIp", "InternalPort", });
     internal_static_rpcapi_GetSeedNodeListResponse_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_rpcapi_GetSeedNodeListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetSeedNodeListResponse_descriptor,
-        new java.lang.String[] { "Status", "Msg", "SeedPeers", });
+        new java.lang.String[] { "Status", "Msg", "Nodes", });
     internal_static_rpcapi_SetDataNodeRequest_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_rpcapi_SetDataNodeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_SetDataNodeRequest_descriptor,
         new java.lang.String[] { "InternalIp", "ExternalIp", "InternalPort", "ExternalPort", });
     internal_static_rpcapi_SetDataNodeResponse_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_rpcapi_SetDataNodeResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_SetDataNodeResponse_descriptor,
         new java.lang.String[] { "Status", "Msg", "DataNode", });
     internal_static_rpcapi_UpdateDataNodeRequest_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_rpcapi_UpdateDataNodeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_UpdateDataNodeRequest_descriptor,
         new java.lang.String[] { "Id", "InternalIp", "ExternalIp", "InternalPort", "ExternalPort", });
     internal_static_rpcapi_GetRegisteredNodeListResponse_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_rpcapi_GetRegisteredNodeListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetRegisteredNodeListResponse_descriptor,
         new java.lang.String[] { "Status", "Msg", "Nodes", });
     internal_static_rpcapi_SetJobNodeRequest_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_rpcapi_SetJobNodeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_SetJobNodeRequest_descriptor,
         new java.lang.String[] { "InternalIp", "ExternalIp", "InternalPort", "ExternalPort", });
     internal_static_rpcapi_SetJobNodeResponse_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_rpcapi_SetJobNodeResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_SetJobNodeResponse_descriptor,
         new java.lang.String[] { "Status", "Msg", "JobNode", });
     internal_static_rpcapi_UpdateJobNodeRequest_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_rpcapi_UpdateJobNodeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_UpdateJobNodeRequest_descriptor,
         new java.lang.String[] { "Id", "InternalIp", "ExternalIp", "InternalPort", "ExternalPort", });
     internal_static_rpcapi_ReportTaskEventRequest_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_rpcapi_ReportTaskEventRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_ReportTaskEventRequest_descriptor,
         new java.lang.String[] { "TaskEvent", });
     internal_static_rpcapi_ReportTaskResourceExpenseRequest_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_rpcapi_ReportTaskResourceExpenseRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_ReportTaskResourceExpenseRequest_descriptor,
-        new java.lang.String[] { });
+        new java.lang.String[] { "NodeType", "NodeId", "Usage", });
     internal_static_rpcapi_ReportUpFileSummaryRequest_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_rpcapi_ReportUpFileSummaryRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_ReportUpFileSummaryRequest_descriptor,
         new java.lang.String[] { "OriginId", "FilePath", "Ip", "Port", });
     internal_static_rpcapi_QueryAvailableDataNodeRequest_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_rpcapi_QueryAvailableDataNodeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_QueryAvailableDataNodeRequest_descriptor,
         new java.lang.String[] { "FileSize", "FileType", });
     internal_static_rpcapi_QueryAvailableDataNodeResponse_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_rpcapi_QueryAvailableDataNodeResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_QueryAvailableDataNodeResponse_descriptor,
         new java.lang.String[] { "Ip", "Port", });
     internal_static_rpcapi_QueryFilePositionRequest_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_rpcapi_QueryFilePositionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_QueryFilePositionRequest_descriptor,
         new java.lang.String[] { "OriginId", });
     internal_static_rpcapi_QueryFilePositionResponse_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_rpcapi_QueryFilePositionResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_QueryFilePositionResponse_descriptor,

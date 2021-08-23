@@ -14,8 +14,8 @@ public final class TaskRpcMessage {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  public interface TaskDetailShowOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.TaskDetailShow)
+  public interface TaskDetailOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.TaskDetail)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -60,37 +60,76 @@ public final class TaskRpcMessage {
 
     /**
      * <pre>
-     * 任务发起发
+     * 发起任务的用户的信息 (task是属于用户的)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
-     * @return Whether the owner field is set.
+     * <code>string user = 3;</code>
+     * @return The user.
      */
-    boolean hasOwner();
+    java.lang.String getUser();
     /**
      * <pre>
-     * 任务发起发
+     * 发起任务的用户的信息 (task是属于用户的)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
-     * @return The owner.
+     * <code>string user = 3;</code>
+     * @return The bytes for user.
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getOwner();
+    com.google.protobuf.ByteString
+        getUserBytes();
+
     /**
      * <pre>
-     * 任务发起发
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
+     * <code>.rpcapi.UserType user_type = 4;</code>
+     * @return The enum numeric value on the wire for userType.
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getOwnerOrBuilder();
+    int getUserTypeValue();
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 4;</code>
+     * @return The userType.
+     */
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType getUserType();
+
+    /**
+     * <pre>
+     * 任务发起方
+     * </pre>
+     *
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
+     * @return Whether the sender field is set.
+     */
+    boolean hasSender();
+    /**
+     * <pre>
+     * 任务发起方
+     * </pre>
+     *
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
+     * @return The sender.
+     */
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getSender();
+    /**
+     * <pre>
+     * 任务发起方
+     * </pre>
+     *
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
+     */
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getSenderOrBuilder();
 
     /**
      * <pre>
      * 算法提供方 (目前就是和 任务发起方是同一个 ...)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
      * @return Whether the algoSupplier field is set.
      */
     boolean hasAlgoSupplier();
@@ -99,7 +138,7 @@ public final class TaskRpcMessage {
      * 算法提供方 (目前就是和 任务发起方是同一个 ...)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
      * @return The algoSupplier.
      */
     com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getAlgoSupplier();
@@ -108,7 +147,7 @@ public final class TaskRpcMessage {
      * 算法提供方 (目前就是和 任务发起方是同一个 ...)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
      */
     com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getAlgoSupplierOrBuilder();
 
@@ -117,24 +156,24 @@ public final class TaskRpcMessage {
      * 数据提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+     * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
      */
-    java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow> 
+    java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier> 
         getDataSupplierList();
     /**
      * <pre>
      * 数据提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+     * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow getDataSupplier(int index);
+    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier getDataSupplier(int index);
     /**
      * <pre>
      * 数据提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+     * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
      */
     int getDataSupplierCount();
     /**
@@ -142,18 +181,18 @@ public final class TaskRpcMessage {
      * 数据提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+     * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
      */
-    java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShowOrBuilder> 
+    java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierOrBuilder> 
         getDataSupplierOrBuilderList();
     /**
      * <pre>
      * 数据提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+     * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShowOrBuilder getDataSupplierOrBuilder(
+    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierOrBuilder getDataSupplierOrBuilder(
         int index);
 
     /**
@@ -161,24 +200,24 @@ public final class TaskRpcMessage {
      * 算力提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+     * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
      */
-    java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow> 
+    java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier> 
         getPowerSupplierList();
     /**
      * <pre>
      * 算力提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+     * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow getPowerSupplier(int index);
+    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier getPowerSupplier(int index);
     /**
      * <pre>
      * 算力提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+     * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
      */
     int getPowerSupplierCount();
     /**
@@ -186,18 +225,18 @@ public final class TaskRpcMessage {
      * 算力提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+     * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
      */
-    java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShowOrBuilder> 
+    java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierOrBuilder> 
         getPowerSupplierOrBuilderList();
     /**
      * <pre>
      * 算力提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+     * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShowOrBuilder getPowerSupplierOrBuilder(
+    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierOrBuilder getPowerSupplierOrBuilder(
         int index);
 
     /**
@@ -205,7 +244,7 @@ public final class TaskRpcMessage {
      * 任务结果方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
      */
     java.util.List<com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo> 
         getReceiversList();
@@ -214,7 +253,7 @@ public final class TaskRpcMessage {
      * 任务结果方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
      */
     com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getReceivers(int index);
     /**
@@ -222,7 +261,7 @@ public final class TaskRpcMessage {
      * 任务结果方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
      */
     int getReceiversCount();
     /**
@@ -230,7 +269,7 @@ public final class TaskRpcMessage {
      * 任务结果方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
      */
     java.util.List<? extends com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> 
         getReceiversOrBuilderList();
@@ -239,7 +278,7 @@ public final class TaskRpcMessage {
      * 任务结果方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
      */
     com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getReceiversOrBuilder(
         int index);
@@ -249,7 +288,7 @@ public final class TaskRpcMessage {
      * 任务发起时间
      * </pre>
      *
-     * <code>uint64 create_at = 8;</code>
+     * <code>uint64 create_at = 10;</code>
      * @return The createAt.
      */
     long getCreateAt();
@@ -259,7 +298,7 @@ public final class TaskRpcMessage {
      * 任务启动时间
      * </pre>
      *
-     * <code>uint64 start_at = 9;</code>
+     * <code>uint64 start_at = 11;</code>
      * @return The startAt.
      */
     long getStartAt();
@@ -269,7 +308,7 @@ public final class TaskRpcMessage {
      * 任务结束时间
      * </pre>
      *
-     * <code>uint64 end_at = 10;</code>
+     * <code>uint64 end_at = 12;</code>
      * @return The endAt.
      */
     long getEndAt();
@@ -279,7 +318,7 @@ public final class TaskRpcMessage {
      * 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
      * </pre>
      *
-     * <code>string state = 11;</code>
+     * <code>string state = 13;</code>
      * @return The state.
      */
     java.lang.String getState();
@@ -288,7 +327,7 @@ public final class TaskRpcMessage {
      * 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
      * </pre>
      *
-     * <code>string state = 11;</code>
+     * <code>string state = 13;</code>
      * @return The bytes for state.
      */
     com.google.protobuf.ByteString
@@ -299,7 +338,7 @@ public final class TaskRpcMessage {
      * 任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
      * @return Whether the operationCost field is set.
      */
     boolean hasOperationCost();
@@ -308,7 +347,7 @@ public final class TaskRpcMessage {
      * 任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
      * @return The operationCost.
      */
     com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare getOperationCost();
@@ -317,29 +356,31 @@ public final class TaskRpcMessage {
      * 任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
      */
     com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclareOrBuilder getOperationCostOrBuilder();
   }
   /**
    * <pre>
-   * 任务详情 (供展示用)
+   * 任务详情
    * </pre>
    *
-   * Protobuf type {@code rpcapi.TaskDetailShow}
+   * Protobuf type {@code rpcapi.TaskDetail}
    */
-  public static final class TaskDetailShow extends
+  public static final class TaskDetail extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.TaskDetailShow)
-      TaskDetailShowOrBuilder {
+      // @@protoc_insertion_point(message_implements:rpcapi.TaskDetail)
+      TaskDetailOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use TaskDetailShow.newBuilder() to construct.
-    private TaskDetailShow(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use TaskDetail.newBuilder() to construct.
+    private TaskDetail(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private TaskDetailShow() {
+    private TaskDetail() {
       taskId_ = "";
       taskName_ = "";
+      user_ = "";
+      userType_ = 0;
       dataSupplier_ = java.util.Collections.emptyList();
       powerSupplier_ = java.util.Collections.emptyList();
       receivers_ = java.util.Collections.emptyList();
@@ -350,7 +391,7 @@ public final class TaskRpcMessage {
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new TaskDetailShow();
+      return new TaskDetail();
     }
 
     @java.lang.Override
@@ -358,7 +399,7 @@ public final class TaskRpcMessage {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private TaskDetailShow(
+    private TaskDetail(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -390,19 +431,31 @@ public final class TaskRpcMessage {
               break;
             }
             case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              user_ = s;
+              break;
+            }
+            case 32: {
+              int rawValue = input.readEnum();
+
+              userType_ = rawValue;
+              break;
+            }
+            case 42: {
               com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder subBuilder = null;
-              if (owner_ != null) {
-                subBuilder = owner_.toBuilder();
+              if (sender_ != null) {
+                subBuilder = sender_.toBuilder();
               }
-              owner_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.parser(), extensionRegistry);
+              sender_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(owner_);
-                owner_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(sender_);
+                sender_ = subBuilder.buildPartial();
               }
 
               break;
             }
-            case 34: {
+            case 50: {
               com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder subBuilder = null;
               if (algoSupplier_ != null) {
                 subBuilder = algoSupplier_.toBuilder();
@@ -415,25 +468,25 @@ public final class TaskRpcMessage {
 
               break;
             }
-            case 42: {
+            case 58: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                dataSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow>();
+                dataSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier>();
                 mutable_bitField0_ |= 0x00000001;
               }
               dataSupplier_.add(
-                  input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.parser(), extensionRegistry));
+                  input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.parser(), extensionRegistry));
               break;
             }
-            case 50: {
+            case 66: {
               if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                powerSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow>();
+                powerSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier>();
                 mutable_bitField0_ |= 0x00000002;
               }
               powerSupplier_.add(
-                  input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.parser(), extensionRegistry));
+                  input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.parser(), extensionRegistry));
               break;
             }
-            case 58: {
+            case 74: {
               if (!((mutable_bitField0_ & 0x00000004) != 0)) {
                 receivers_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo>();
                 mutable_bitField0_ |= 0x00000004;
@@ -442,28 +495,28 @@ public final class TaskRpcMessage {
                   input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.parser(), extensionRegistry));
               break;
             }
-            case 64: {
+            case 80: {
 
               createAt_ = input.readUInt64();
               break;
             }
-            case 72: {
+            case 88: {
 
               startAt_ = input.readUInt64();
               break;
             }
-            case 80: {
+            case 96: {
 
               endAt_ = input.readUInt64();
               break;
             }
-            case 90: {
+            case 106: {
               java.lang.String s = input.readStringRequireUtf8();
 
               state_ = s;
               break;
             }
-            case 98: {
+            case 114: {
               com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare.Builder subBuilder = null;
               if (operationCost_ != null) {
                 subBuilder = operationCost_.toBuilder();
@@ -506,15 +559,15 @@ public final class TaskRpcMessage {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDetailShow_descriptor;
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDetail_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDetailShow_fieldAccessorTable
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDetail_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.Builder.class);
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.Builder.class);
     }
 
     public static final int TASK_ID_FIELD_NUMBER = 1;
@@ -609,52 +662,125 @@ public final class TaskRpcMessage {
       }
     }
 
-    public static final int OWNER_FIELD_NUMBER = 3;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo owner_;
+    public static final int USER_FIELD_NUMBER = 3;
+    private volatile java.lang.Object user_;
     /**
      * <pre>
-     * 任务发起发
+     * 发起任务的用户的信息 (task是属于用户的)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
-     * @return Whether the owner field is set.
+     * <code>string user = 3;</code>
+     * @return The user.
      */
     @java.lang.Override
-    public boolean hasOwner() {
-      return owner_ != null;
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        user_ = s;
+        return s;
+      }
     }
     /**
      * <pre>
-     * 任务发起发
+     * 发起任务的用户的信息 (task是属于用户的)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
-     * @return The owner.
+     * <code>string user = 3;</code>
+     * @return The bytes for user.
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getOwner() {
-      return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : owner_;
-    }
-    /**
-     * <pre>
-     * 任务发起发
-     * </pre>
-     *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-      return getOwner();
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
-    public static final int ALGO_SUPPLIER_FIELD_NUMBER = 4;
+    public static final int USER_TYPE_FIELD_NUMBER = 4;
+    private int userType_;
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 4;</code>
+     * @return The enum numeric value on the wire for userType.
+     */
+    @java.lang.Override public int getUserTypeValue() {
+      return userType_;
+    }
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 4;</code>
+     * @return The userType.
+     */
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType getUserType() {
+      @SuppressWarnings("deprecation")
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType result = com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.valueOf(userType_);
+      return result == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.UNRECOGNIZED : result;
+    }
+
+    public static final int SENDER_FIELD_NUMBER = 5;
+    private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo sender_;
+    /**
+     * <pre>
+     * 任务发起方
+     * </pre>
+     *
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
+     * @return Whether the sender field is set.
+     */
+    @java.lang.Override
+    public boolean hasSender() {
+      return sender_ != null;
+    }
+    /**
+     * <pre>
+     * 任务发起方
+     * </pre>
+     *
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
+     * @return The sender.
+     */
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getSender() {
+      return sender_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : sender_;
+    }
+    /**
+     * <pre>
+     * 任务发起方
+     * </pre>
+     *
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
+     */
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getSenderOrBuilder() {
+      return getSender();
+    }
+
+    public static final int ALGO_SUPPLIER_FIELD_NUMBER = 6;
     private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo algoSupplier_;
     /**
      * <pre>
      * 算法提供方 (目前就是和 任务发起方是同一个 ...)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
      * @return Whether the algoSupplier field is set.
      */
     @java.lang.Override
@@ -666,7 +792,7 @@ public final class TaskRpcMessage {
      * 算法提供方 (目前就是和 任务发起方是同一个 ...)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
      * @return The algoSupplier.
      */
     @java.lang.Override
@@ -678,24 +804,24 @@ public final class TaskRpcMessage {
      * 算法提供方 (目前就是和 任务发起方是同一个 ...)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getAlgoSupplierOrBuilder() {
       return getAlgoSupplier();
     }
 
-    public static final int DATA_SUPPLIER_FIELD_NUMBER = 5;
-    private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow> dataSupplier_;
+    public static final int DATA_SUPPLIER_FIELD_NUMBER = 7;
+    private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier> dataSupplier_;
     /**
      * <pre>
      * 数据提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+     * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
      */
     @java.lang.Override
-    public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow> getDataSupplierList() {
+    public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier> getDataSupplierList() {
       return dataSupplier_;
     }
     /**
@@ -703,10 +829,10 @@ public final class TaskRpcMessage {
      * 数据提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+     * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
      */
     @java.lang.Override
-    public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShowOrBuilder> 
+    public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierOrBuilder> 
         getDataSupplierOrBuilderList() {
       return dataSupplier_;
     }
@@ -715,7 +841,7 @@ public final class TaskRpcMessage {
      * 数据提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+     * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
      */
     @java.lang.Override
     public int getDataSupplierCount() {
@@ -726,10 +852,10 @@ public final class TaskRpcMessage {
      * 数据提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+     * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow getDataSupplier(int index) {
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier getDataSupplier(int index) {
       return dataSupplier_.get(index);
     }
     /**
@@ -737,25 +863,25 @@ public final class TaskRpcMessage {
      * 数据提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+     * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShowOrBuilder getDataSupplierOrBuilder(
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierOrBuilder getDataSupplierOrBuilder(
         int index) {
       return dataSupplier_.get(index);
     }
 
-    public static final int POWER_SUPPLIER_FIELD_NUMBER = 6;
-    private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow> powerSupplier_;
+    public static final int POWER_SUPPLIER_FIELD_NUMBER = 8;
+    private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier> powerSupplier_;
     /**
      * <pre>
      * 算力提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+     * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
      */
     @java.lang.Override
-    public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow> getPowerSupplierList() {
+    public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier> getPowerSupplierList() {
       return powerSupplier_;
     }
     /**
@@ -763,10 +889,10 @@ public final class TaskRpcMessage {
      * 算力提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+     * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
      */
     @java.lang.Override
-    public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShowOrBuilder> 
+    public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierOrBuilder> 
         getPowerSupplierOrBuilderList() {
       return powerSupplier_;
     }
@@ -775,7 +901,7 @@ public final class TaskRpcMessage {
      * 算力提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+     * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
      */
     @java.lang.Override
     public int getPowerSupplierCount() {
@@ -786,10 +912,10 @@ public final class TaskRpcMessage {
      * 算力提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+     * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow getPowerSupplier(int index) {
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier getPowerSupplier(int index) {
       return powerSupplier_.get(index);
     }
     /**
@@ -797,22 +923,22 @@ public final class TaskRpcMessage {
      * 算力提供方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+     * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShowOrBuilder getPowerSupplierOrBuilder(
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierOrBuilder getPowerSupplierOrBuilder(
         int index) {
       return powerSupplier_.get(index);
     }
 
-    public static final int RECEIVERS_FIELD_NUMBER = 7;
+    public static final int RECEIVERS_FIELD_NUMBER = 9;
     private java.util.List<com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo> receivers_;
     /**
      * <pre>
      * 任务结果方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
      */
     @java.lang.Override
     public java.util.List<com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo> getReceiversList() {
@@ -823,7 +949,7 @@ public final class TaskRpcMessage {
      * 任务结果方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> 
@@ -835,7 +961,7 @@ public final class TaskRpcMessage {
      * 任务结果方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
      */
     @java.lang.Override
     public int getReceiversCount() {
@@ -846,7 +972,7 @@ public final class TaskRpcMessage {
      * 任务结果方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getReceivers(int index) {
@@ -857,7 +983,7 @@ public final class TaskRpcMessage {
      * 任务结果方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+     * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getReceiversOrBuilder(
@@ -865,14 +991,14 @@ public final class TaskRpcMessage {
       return receivers_.get(index);
     }
 
-    public static final int CREATE_AT_FIELD_NUMBER = 8;
+    public static final int CREATE_AT_FIELD_NUMBER = 10;
     private long createAt_;
     /**
      * <pre>
      * 任务发起时间
      * </pre>
      *
-     * <code>uint64 create_at = 8;</code>
+     * <code>uint64 create_at = 10;</code>
      * @return The createAt.
      */
     @java.lang.Override
@@ -880,14 +1006,14 @@ public final class TaskRpcMessage {
       return createAt_;
     }
 
-    public static final int START_AT_FIELD_NUMBER = 9;
+    public static final int START_AT_FIELD_NUMBER = 11;
     private long startAt_;
     /**
      * <pre>
      * 任务启动时间
      * </pre>
      *
-     * <code>uint64 start_at = 9;</code>
+     * <code>uint64 start_at = 11;</code>
      * @return The startAt.
      */
     @java.lang.Override
@@ -895,14 +1021,14 @@ public final class TaskRpcMessage {
       return startAt_;
     }
 
-    public static final int END_AT_FIELD_NUMBER = 10;
+    public static final int END_AT_FIELD_NUMBER = 12;
     private long endAt_;
     /**
      * <pre>
      * 任务结束时间
      * </pre>
      *
-     * <code>uint64 end_at = 10;</code>
+     * <code>uint64 end_at = 12;</code>
      * @return The endAt.
      */
     @java.lang.Override
@@ -910,14 +1036,14 @@ public final class TaskRpcMessage {
       return endAt_;
     }
 
-    public static final int STATE_FIELD_NUMBER = 11;
+    public static final int STATE_FIELD_NUMBER = 13;
     private volatile java.lang.Object state_;
     /**
      * <pre>
      * 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
      * </pre>
      *
-     * <code>string state = 11;</code>
+     * <code>string state = 13;</code>
      * @return The state.
      */
     @java.lang.Override
@@ -938,7 +1064,7 @@ public final class TaskRpcMessage {
      * 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
      * </pre>
      *
-     * <code>string state = 11;</code>
+     * <code>string state = 13;</code>
      * @return The bytes for state.
      */
     @java.lang.Override
@@ -956,14 +1082,14 @@ public final class TaskRpcMessage {
       }
     }
 
-    public static final int OPERATION_COST_FIELD_NUMBER = 12;
+    public static final int OPERATION_COST_FIELD_NUMBER = 14;
     private com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare operationCost_;
     /**
      * <pre>
      * 任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
      * @return Whether the operationCost field is set.
      */
     @java.lang.Override
@@ -975,7 +1101,7 @@ public final class TaskRpcMessage {
      * 任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
      * @return The operationCost.
      */
     @java.lang.Override
@@ -987,7 +1113,7 @@ public final class TaskRpcMessage {
      * 任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclareOrBuilder getOperationCostOrBuilder() {
@@ -1014,35 +1140,41 @@ public final class TaskRpcMessage {
       if (!getTaskNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, taskName_);
       }
-      if (owner_ != null) {
-        output.writeMessage(3, getOwner());
+      if (!getUserBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, user_);
+      }
+      if (userType_ != com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.Unknown.getNumber()) {
+        output.writeEnum(4, userType_);
+      }
+      if (sender_ != null) {
+        output.writeMessage(5, getSender());
       }
       if (algoSupplier_ != null) {
-        output.writeMessage(4, getAlgoSupplier());
+        output.writeMessage(6, getAlgoSupplier());
       }
       for (int i = 0; i < dataSupplier_.size(); i++) {
-        output.writeMessage(5, dataSupplier_.get(i));
+        output.writeMessage(7, dataSupplier_.get(i));
       }
       for (int i = 0; i < powerSupplier_.size(); i++) {
-        output.writeMessage(6, powerSupplier_.get(i));
+        output.writeMessage(8, powerSupplier_.get(i));
       }
       for (int i = 0; i < receivers_.size(); i++) {
-        output.writeMessage(7, receivers_.get(i));
+        output.writeMessage(9, receivers_.get(i));
       }
       if (createAt_ != 0L) {
-        output.writeUInt64(8, createAt_);
+        output.writeUInt64(10, createAt_);
       }
       if (startAt_ != 0L) {
-        output.writeUInt64(9, startAt_);
+        output.writeUInt64(11, startAt_);
       }
       if (endAt_ != 0L) {
-        output.writeUInt64(10, endAt_);
+        output.writeUInt64(12, endAt_);
       }
       if (!getStateBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, state_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, state_);
       }
       if (operationCost_ != null) {
-        output.writeMessage(12, getOperationCost());
+        output.writeMessage(14, getOperationCost());
       }
       unknownFields.writeTo(output);
     }
@@ -1059,44 +1191,51 @@ public final class TaskRpcMessage {
       if (!getTaskNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, taskName_);
       }
-      if (owner_ != null) {
+      if (!getUserBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, user_);
+      }
+      if (userType_ != com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.Unknown.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, getOwner());
+          .computeEnumSize(4, userType_);
+      }
+      if (sender_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, getSender());
       }
       if (algoSupplier_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getAlgoSupplier());
+          .computeMessageSize(6, getAlgoSupplier());
       }
       for (int i = 0; i < dataSupplier_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, dataSupplier_.get(i));
+          .computeMessageSize(7, dataSupplier_.get(i));
       }
       for (int i = 0; i < powerSupplier_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, powerSupplier_.get(i));
+          .computeMessageSize(8, powerSupplier_.get(i));
       }
       for (int i = 0; i < receivers_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, receivers_.get(i));
+          .computeMessageSize(9, receivers_.get(i));
       }
       if (createAt_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(8, createAt_);
+          .computeUInt64Size(10, createAt_);
       }
       if (startAt_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(9, startAt_);
+          .computeUInt64Size(11, startAt_);
       }
       if (endAt_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(10, endAt_);
+          .computeUInt64Size(12, endAt_);
       }
       if (!getStateBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, state_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, state_);
       }
       if (operationCost_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(12, getOperationCost());
+          .computeMessageSize(14, getOperationCost());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1108,19 +1247,22 @@ public final class TaskRpcMessage {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow)) {
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail)) {
         return super.equals(obj);
       }
-      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow other = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow) obj;
+      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail other = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail) obj;
 
       if (!getTaskId()
           .equals(other.getTaskId())) return false;
       if (!getTaskName()
           .equals(other.getTaskName())) return false;
-      if (hasOwner() != other.hasOwner()) return false;
-      if (hasOwner()) {
-        if (!getOwner()
-            .equals(other.getOwner())) return false;
+      if (!getUser()
+          .equals(other.getUser())) return false;
+      if (userType_ != other.userType_) return false;
+      if (hasSender() != other.hasSender()) return false;
+      if (hasSender()) {
+        if (!getSender()
+            .equals(other.getSender())) return false;
       }
       if (hasAlgoSupplier() != other.hasAlgoSupplier()) return false;
       if (hasAlgoSupplier()) {
@@ -1161,9 +1303,13 @@ public final class TaskRpcMessage {
       hash = (53 * hash) + getTaskId().hashCode();
       hash = (37 * hash) + TASK_NAME_FIELD_NUMBER;
       hash = (53 * hash) + getTaskName().hashCode();
-      if (hasOwner()) {
-        hash = (37 * hash) + OWNER_FIELD_NUMBER;
-        hash = (53 * hash) + getOwner().hashCode();
+      hash = (37 * hash) + USER_FIELD_NUMBER;
+      hash = (53 * hash) + getUser().hashCode();
+      hash = (37 * hash) + USER_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + userType_;
+      if (hasSender()) {
+        hash = (37 * hash) + SENDER_FIELD_NUMBER;
+        hash = (53 * hash) + getSender().hashCode();
       }
       if (hasAlgoSupplier()) {
         hash = (37 * hash) + ALGO_SUPPLIER_FIELD_NUMBER;
@@ -1201,69 +1347,69 @@ public final class TaskRpcMessage {
       return hash;
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseFrom(byte[] data)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseDelimitedFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseDelimitedFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1276,7 +1422,7 @@ public final class TaskRpcMessage {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow prototype) {
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -1293,29 +1439,29 @@ public final class TaskRpcMessage {
     }
     /**
      * <pre>
-     * 任务详情 (供展示用)
+     * 任务详情
      * </pre>
      *
-     * Protobuf type {@code rpcapi.TaskDetailShow}
+     * Protobuf type {@code rpcapi.TaskDetail}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.TaskDetailShow)
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShowOrBuilder {
+        // @@protoc_insertion_point(builder_implements:rpcapi.TaskDetail)
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDetailShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDetail_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDetailShow_fieldAccessorTable
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDetail_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.Builder.class);
+                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.Builder.class);
       }
 
-      // Construct using com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.newBuilder()
+      // Construct using com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1340,11 +1486,15 @@ public final class TaskRpcMessage {
 
         taskName_ = "";
 
-        if (ownerBuilder_ == null) {
-          owner_ = null;
+        user_ = "";
+
+        userType_ = 0;
+
+        if (senderBuilder_ == null) {
+          sender_ = null;
         } else {
-          owner_ = null;
-          ownerBuilder_ = null;
+          sender_ = null;
+          senderBuilder_ = null;
         }
         if (algoSupplierBuilder_ == null) {
           algoSupplier_ = null;
@@ -1390,17 +1540,17 @@ public final class TaskRpcMessage {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDetailShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDetail_descriptor;
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.getDefaultInstance();
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow build() {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow result = buildPartial();
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail build() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -1408,15 +1558,17 @@ public final class TaskRpcMessage {
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow(this);
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail(this);
         int from_bitField0_ = bitField0_;
         result.taskId_ = taskId_;
         result.taskName_ = taskName_;
-        if (ownerBuilder_ == null) {
-          result.owner_ = owner_;
+        result.user_ = user_;
+        result.userType_ = userType_;
+        if (senderBuilder_ == null) {
+          result.sender_ = sender_;
         } else {
-          result.owner_ = ownerBuilder_.build();
+          result.sender_ = senderBuilder_.build();
         }
         if (algoSupplierBuilder_ == null) {
           result.algoSupplier_ = algoSupplier_;
@@ -1497,16 +1649,16 @@ public final class TaskRpcMessage {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow)other);
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.getDefaultInstance()) return this;
         if (!other.getTaskId().isEmpty()) {
           taskId_ = other.taskId_;
           onChanged();
@@ -1515,8 +1667,15 @@ public final class TaskRpcMessage {
           taskName_ = other.taskName_;
           onChanged();
         }
-        if (other.hasOwner()) {
-          mergeOwner(other.getOwner());
+        if (!other.getUser().isEmpty()) {
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.userType_ != 0) {
+          setUserTypeValue(other.getUserTypeValue());
+        }
+        if (other.hasSender()) {
+          mergeSender(other.getSender());
         }
         if (other.hasAlgoSupplier()) {
           mergeAlgoSupplier(other.getAlgoSupplier());
@@ -1630,11 +1789,11 @@ public final class TaskRpcMessage {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow parsedMessage = null;
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow) e.getUnfinishedMessage();
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -1837,159 +1996,329 @@ public final class TaskRpcMessage {
         return this;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo owner_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> ownerBuilder_;
+      private java.lang.Object user_ = "";
       /**
        * <pre>
-       * 任务发起发
+       * 发起任务的用户的信息 (task是属于用户的)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
-       * @return Whether the owner field is set.
+       * <code>string user = 3;</code>
+       * @return The user.
        */
-      public boolean hasOwner() {
-        return ownerBuilder_ != null || owner_ != null;
-      }
-      /**
-       * <pre>
-       * 任务发起发
-       * </pre>
-       *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
-       * @return The owner.
-       */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getOwner() {
-        if (ownerBuilder_ == null) {
-          return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : owner_;
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          user_ = s;
+          return s;
         } else {
-          return ownerBuilder_.getMessage();
+          return (java.lang.String) ref;
         }
       }
       /**
        * <pre>
-       * 任务发起发
+       * 发起任务的用户的信息 (task是属于用户的)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
+       * <code>string user = 3;</code>
+       * @return The bytes for user.
        */
-      public Builder setOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 3;</code>
+       * @param value The user to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUser() {
+        
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 3;</code>
+       * @param value The bytes for user to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int userType_ = 0;
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 4;</code>
+       * @return The enum numeric value on the wire for userType.
+       */
+      @java.lang.Override public int getUserTypeValue() {
+        return userType_;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 4;</code>
+       * @param value The enum numeric value on the wire for userType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTypeValue(int value) {
+        
+        userType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 4;</code>
+       * @return The userType.
+       */
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType getUserType() {
+        @SuppressWarnings("deprecation")
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType result = com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.valueOf(userType_);
+        return result == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 4;</code>
+       * @param value The userType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserType(com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        userType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserType() {
+        
+        userType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo sender_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> senderBuilder_;
+      /**
+       * <pre>
+       * 任务发起方
+       * </pre>
+       *
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
+       * @return Whether the sender field is set.
+       */
+      public boolean hasSender() {
+        return senderBuilder_ != null || sender_ != null;
+      }
+      /**
+       * <pre>
+       * 任务发起方
+       * </pre>
+       *
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
+       * @return The sender.
+       */
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getSender() {
+        if (senderBuilder_ == null) {
+          return sender_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : sender_;
+        } else {
+          return senderBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * 任务发起方
+       * </pre>
+       *
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
+       */
+      public Builder setSender(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
+        if (senderBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          owner_ = value;
+          sender_ = value;
           onChanged();
         } else {
-          ownerBuilder_.setMessage(value);
+          senderBuilder_.setMessage(value);
         }
 
         return this;
       }
       /**
        * <pre>
-       * 任务发起发
+       * 任务发起方
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
        */
-      public Builder setOwner(
+      public Builder setSender(
           com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder builderForValue) {
-        if (ownerBuilder_ == null) {
-          owner_ = builderForValue.build();
+        if (senderBuilder_ == null) {
+          sender_ = builderForValue.build();
           onChanged();
         } else {
-          ownerBuilder_.setMessage(builderForValue.build());
+          senderBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
       }
       /**
        * <pre>
-       * 任务发起发
+       * 任务发起方
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
        */
-      public Builder mergeOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
-          if (owner_ != null) {
-            owner_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.newBuilder(owner_).mergeFrom(value).buildPartial();
+      public Builder mergeSender(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
+        if (senderBuilder_ == null) {
+          if (sender_ != null) {
+            sender_ =
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.newBuilder(sender_).mergeFrom(value).buildPartial();
           } else {
-            owner_ = value;
+            sender_ = value;
           }
           onChanged();
         } else {
-          ownerBuilder_.mergeFrom(value);
+          senderBuilder_.mergeFrom(value);
         }
 
         return this;
       }
       /**
        * <pre>
-       * 任务发起发
+       * 任务发起方
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
        */
-      public Builder clearOwner() {
-        if (ownerBuilder_ == null) {
-          owner_ = null;
+      public Builder clearSender() {
+        if (senderBuilder_ == null) {
+          sender_ = null;
           onChanged();
         } else {
-          owner_ = null;
-          ownerBuilder_ = null;
+          sender_ = null;
+          senderBuilder_ = null;
         }
 
         return this;
       }
       /**
        * <pre>
-       * 任务发起发
+       * 任务发起方
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder getOwnerBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder getSenderBuilder() {
         
         onChanged();
-        return getOwnerFieldBuilder().getBuilder();
+        return getSenderFieldBuilder().getBuilder();
       }
       /**
        * <pre>
-       * 任务发起发
+       * 任务发起方
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-        if (ownerBuilder_ != null) {
-          return ownerBuilder_.getMessageOrBuilder();
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getSenderOrBuilder() {
+        if (senderBuilder_ != null) {
+          return senderBuilder_.getMessageOrBuilder();
         } else {
-          return owner_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : owner_;
+          return sender_ == null ?
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : sender_;
         }
       }
       /**
        * <pre>
-       * 任务发起发
+       * 任务发起方
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 3;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> 
-          getOwnerFieldBuilder() {
-        if (ownerBuilder_ == null) {
-          ownerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          getSenderFieldBuilder() {
+        if (senderBuilder_ == null) {
+          senderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder>(
-                  getOwner(),
+                  getSender(),
                   getParentForChildren(),
                   isClean());
-          owner_ = null;
+          sender_ = null;
         }
-        return ownerBuilder_;
+        return senderBuilder_;
       }
 
       private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo algoSupplier_;
@@ -2000,7 +2329,7 @@ public final class TaskRpcMessage {
        * 算法提供方 (目前就是和 任务发起方是同一个 ...)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
        * @return Whether the algoSupplier field is set.
        */
       public boolean hasAlgoSupplier() {
@@ -2011,7 +2340,7 @@ public final class TaskRpcMessage {
        * 算法提供方 (目前就是和 任务发起方是同一个 ...)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
        * @return The algoSupplier.
        */
       public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getAlgoSupplier() {
@@ -2026,7 +2355,7 @@ public final class TaskRpcMessage {
        * 算法提供方 (目前就是和 任务发起方是同一个 ...)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
        */
       public Builder setAlgoSupplier(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
         if (algoSupplierBuilder_ == null) {
@@ -2046,7 +2375,7 @@ public final class TaskRpcMessage {
        * 算法提供方 (目前就是和 任务发起方是同一个 ...)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
        */
       public Builder setAlgoSupplier(
           com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder builderForValue) {
@@ -2064,7 +2393,7 @@ public final class TaskRpcMessage {
        * 算法提供方 (目前就是和 任务发起方是同一个 ...)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
        */
       public Builder mergeAlgoSupplier(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
         if (algoSupplierBuilder_ == null) {
@@ -2086,7 +2415,7 @@ public final class TaskRpcMessage {
        * 算法提供方 (目前就是和 任务发起方是同一个 ...)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
        */
       public Builder clearAlgoSupplier() {
         if (algoSupplierBuilder_ == null) {
@@ -2104,7 +2433,7 @@ public final class TaskRpcMessage {
        * 算法提供方 (目前就是和 任务发起方是同一个 ...)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder getAlgoSupplierBuilder() {
         
@@ -2116,7 +2445,7 @@ public final class TaskRpcMessage {
        * 算法提供方 (目前就是和 任务发起方是同一个 ...)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getAlgoSupplierOrBuilder() {
         if (algoSupplierBuilder_ != null) {
@@ -2131,7 +2460,7 @@ public final class TaskRpcMessage {
        * 算法提供方 (目前就是和 任务发起方是同一个 ...)
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 4;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo algo_supplier = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> 
@@ -2147,26 +2476,26 @@ public final class TaskRpcMessage {
         return algoSupplierBuilder_;
       }
 
-      private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow> dataSupplier_ =
+      private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier> dataSupplier_ =
         java.util.Collections.emptyList();
       private void ensureDataSupplierIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          dataSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow>(dataSupplier_);
+          dataSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier>(dataSupplier_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShowOrBuilder> dataSupplierBuilder_;
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierOrBuilder> dataSupplierBuilder_;
 
       /**
        * <pre>
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow> getDataSupplierList() {
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier> getDataSupplierList() {
         if (dataSupplierBuilder_ == null) {
           return java.util.Collections.unmodifiableList(dataSupplier_);
         } else {
@@ -2178,7 +2507,7 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
       public int getDataSupplierCount() {
         if (dataSupplierBuilder_ == null) {
@@ -2192,9 +2521,9 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow getDataSupplier(int index) {
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier getDataSupplier(int index) {
         if (dataSupplierBuilder_ == null) {
           return dataSupplier_.get(index);
         } else {
@@ -2206,10 +2535,10 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
       public Builder setDataSupplier(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow value) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier value) {
         if (dataSupplierBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2227,10 +2556,10 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
       public Builder setDataSupplier(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder builderForValue) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder builderForValue) {
         if (dataSupplierBuilder_ == null) {
           ensureDataSupplierIsMutable();
           dataSupplier_.set(index, builderForValue.build());
@@ -2245,9 +2574,9 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
-      public Builder addDataSupplier(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow value) {
+      public Builder addDataSupplier(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier value) {
         if (dataSupplierBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2265,10 +2594,10 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
       public Builder addDataSupplier(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow value) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier value) {
         if (dataSupplierBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2286,10 +2615,10 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
       public Builder addDataSupplier(
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder builderForValue) {
         if (dataSupplierBuilder_ == null) {
           ensureDataSupplierIsMutable();
           dataSupplier_.add(builderForValue.build());
@@ -2304,10 +2633,10 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
       public Builder addDataSupplier(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder builderForValue) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder builderForValue) {
         if (dataSupplierBuilder_ == null) {
           ensureDataSupplierIsMutable();
           dataSupplier_.add(index, builderForValue.build());
@@ -2322,10 +2651,10 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
       public Builder addAllDataSupplier(
-          java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow> values) {
+          java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier> values) {
         if (dataSupplierBuilder_ == null) {
           ensureDataSupplierIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -2341,7 +2670,7 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
       public Builder clearDataSupplier() {
         if (dataSupplierBuilder_ == null) {
@@ -2358,7 +2687,7 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
       public Builder removeDataSupplier(int index) {
         if (dataSupplierBuilder_ == null) {
@@ -2375,9 +2704,9 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder getDataSupplierBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder getDataSupplierBuilder(
           int index) {
         return getDataSupplierFieldBuilder().getBuilder(index);
       }
@@ -2386,9 +2715,9 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShowOrBuilder getDataSupplierOrBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierOrBuilder getDataSupplierOrBuilder(
           int index) {
         if (dataSupplierBuilder_ == null) {
           return dataSupplier_.get(index);  } else {
@@ -2400,9 +2729,9 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
-      public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShowOrBuilder> 
+      public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierOrBuilder> 
            getDataSupplierOrBuilderList() {
         if (dataSupplierBuilder_ != null) {
           return dataSupplierBuilder_.getMessageOrBuilderList();
@@ -2415,41 +2744,41 @@ public final class TaskRpcMessage {
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder addDataSupplierBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder addDataSupplierBuilder() {
         return getDataSupplierFieldBuilder().addBuilder(
-            com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.getDefaultInstance());
+            com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.getDefaultInstance());
       }
       /**
        * <pre>
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder addDataSupplierBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder addDataSupplierBuilder(
           int index) {
         return getDataSupplierFieldBuilder().addBuilder(
-            index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.getDefaultInstance());
+            index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.getDefaultInstance());
       }
       /**
        * <pre>
        * 数据提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierShow data_supplier = 5;</code>
+       * <code>repeated .rpcapi.TaskDataSupplier data_supplier = 7;</code>
        */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder> 
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder> 
            getDataSupplierBuilderList() {
         return getDataSupplierFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShowOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierOrBuilder> 
           getDataSupplierFieldBuilder() {
         if (dataSupplierBuilder_ == null) {
           dataSupplierBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShowOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierOrBuilder>(
                   dataSupplier_,
                   ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
@@ -2459,26 +2788,26 @@ public final class TaskRpcMessage {
         return dataSupplierBuilder_;
       }
 
-      private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow> powerSupplier_ =
+      private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier> powerSupplier_ =
         java.util.Collections.emptyList();
       private void ensurePowerSupplierIsMutable() {
         if (!((bitField0_ & 0x00000002) != 0)) {
-          powerSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow>(powerSupplier_);
+          powerSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier>(powerSupplier_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShowOrBuilder> powerSupplierBuilder_;
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierOrBuilder> powerSupplierBuilder_;
 
       /**
        * <pre>
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow> getPowerSupplierList() {
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier> getPowerSupplierList() {
         if (powerSupplierBuilder_ == null) {
           return java.util.Collections.unmodifiableList(powerSupplier_);
         } else {
@@ -2490,7 +2819,7 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
       public int getPowerSupplierCount() {
         if (powerSupplierBuilder_ == null) {
@@ -2504,9 +2833,9 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow getPowerSupplier(int index) {
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier getPowerSupplier(int index) {
         if (powerSupplierBuilder_ == null) {
           return powerSupplier_.get(index);
         } else {
@@ -2518,10 +2847,10 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
       public Builder setPowerSupplier(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow value) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier value) {
         if (powerSupplierBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2539,10 +2868,10 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
       public Builder setPowerSupplier(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder builderForValue) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder builderForValue) {
         if (powerSupplierBuilder_ == null) {
           ensurePowerSupplierIsMutable();
           powerSupplier_.set(index, builderForValue.build());
@@ -2557,9 +2886,9 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
-      public Builder addPowerSupplier(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow value) {
+      public Builder addPowerSupplier(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier value) {
         if (powerSupplierBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2577,10 +2906,10 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
       public Builder addPowerSupplier(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow value) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier value) {
         if (powerSupplierBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2598,10 +2927,10 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
       public Builder addPowerSupplier(
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder builderForValue) {
         if (powerSupplierBuilder_ == null) {
           ensurePowerSupplierIsMutable();
           powerSupplier_.add(builderForValue.build());
@@ -2616,10 +2945,10 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
       public Builder addPowerSupplier(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder builderForValue) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder builderForValue) {
         if (powerSupplierBuilder_ == null) {
           ensurePowerSupplierIsMutable();
           powerSupplier_.add(index, builderForValue.build());
@@ -2634,10 +2963,10 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
       public Builder addAllPowerSupplier(
-          java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow> values) {
+          java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier> values) {
         if (powerSupplierBuilder_ == null) {
           ensurePowerSupplierIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -2653,7 +2982,7 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
       public Builder clearPowerSupplier() {
         if (powerSupplierBuilder_ == null) {
@@ -2670,7 +2999,7 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
       public Builder removePowerSupplier(int index) {
         if (powerSupplierBuilder_ == null) {
@@ -2687,9 +3016,9 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder getPowerSupplierBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder getPowerSupplierBuilder(
           int index) {
         return getPowerSupplierFieldBuilder().getBuilder(index);
       }
@@ -2698,9 +3027,9 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShowOrBuilder getPowerSupplierOrBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierOrBuilder getPowerSupplierOrBuilder(
           int index) {
         if (powerSupplierBuilder_ == null) {
           return powerSupplier_.get(index);  } else {
@@ -2712,9 +3041,9 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
-      public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShowOrBuilder> 
+      public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierOrBuilder> 
            getPowerSupplierOrBuilderList() {
         if (powerSupplierBuilder_ != null) {
           return powerSupplierBuilder_.getMessageOrBuilderList();
@@ -2727,41 +3056,41 @@ public final class TaskRpcMessage {
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder addPowerSupplierBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder addPowerSupplierBuilder() {
         return getPowerSupplierFieldBuilder().addBuilder(
-            com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.getDefaultInstance());
+            com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.getDefaultInstance());
       }
       /**
        * <pre>
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder addPowerSupplierBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder addPowerSupplierBuilder(
           int index) {
         return getPowerSupplierFieldBuilder().addBuilder(
-            index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.getDefaultInstance());
+            index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.getDefaultInstance());
       }
       /**
        * <pre>
        * 算力提供方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskPowerSupplierShow power_supplier = 6;</code>
+       * <code>repeated .rpcapi.TaskPowerSupplier power_supplier = 8;</code>
        */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder> 
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder> 
            getPowerSupplierBuilderList() {
         return getPowerSupplierFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShowOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierOrBuilder> 
           getPowerSupplierFieldBuilder() {
         if (powerSupplierBuilder_ == null) {
           powerSupplierBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShowOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierOrBuilder>(
                   powerSupplier_,
                   ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
@@ -2788,7 +3117,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo> getReceiversList() {
         if (receiversBuilder_ == null) {
@@ -2802,7 +3131,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public int getReceiversCount() {
         if (receiversBuilder_ == null) {
@@ -2816,7 +3145,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getReceivers(int index) {
         if (receiversBuilder_ == null) {
@@ -2830,7 +3159,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public Builder setReceivers(
           int index, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
@@ -2851,7 +3180,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public Builder setReceivers(
           int index, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder builderForValue) {
@@ -2869,7 +3198,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public Builder addReceivers(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
         if (receiversBuilder_ == null) {
@@ -2889,7 +3218,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public Builder addReceivers(
           int index, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
@@ -2910,7 +3239,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public Builder addReceivers(
           com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder builderForValue) {
@@ -2928,7 +3257,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public Builder addReceivers(
           int index, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder builderForValue) {
@@ -2946,7 +3275,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public Builder addAllReceivers(
           java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo> values) {
@@ -2965,7 +3294,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public Builder clearReceivers() {
         if (receiversBuilder_ == null) {
@@ -2982,7 +3311,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public Builder removeReceivers(int index) {
         if (receiversBuilder_ == null) {
@@ -2999,7 +3328,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder getReceiversBuilder(
           int index) {
@@ -3010,7 +3339,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getReceiversOrBuilder(
           int index) {
@@ -3024,7 +3353,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> 
            getReceiversOrBuilderList() {
@@ -3039,7 +3368,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder addReceiversBuilder() {
         return getReceiversFieldBuilder().addBuilder(
@@ -3050,7 +3379,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder addReceiversBuilder(
           int index) {
@@ -3062,7 +3391,7 @@ public final class TaskRpcMessage {
        * 任务结果方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 7;</code>
+       * <code>repeated .rpcapi.TaskOrganizationIdentityInfo receivers = 9;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder> 
            getReceiversBuilderList() {
@@ -3089,7 +3418,7 @@ public final class TaskRpcMessage {
        * 任务发起时间
        * </pre>
        *
-       * <code>uint64 create_at = 8;</code>
+       * <code>uint64 create_at = 10;</code>
        * @return The createAt.
        */
       @java.lang.Override
@@ -3101,7 +3430,7 @@ public final class TaskRpcMessage {
        * 任务发起时间
        * </pre>
        *
-       * <code>uint64 create_at = 8;</code>
+       * <code>uint64 create_at = 10;</code>
        * @param value The createAt to set.
        * @return This builder for chaining.
        */
@@ -3116,7 +3445,7 @@ public final class TaskRpcMessage {
        * 任务发起时间
        * </pre>
        *
-       * <code>uint64 create_at = 8;</code>
+       * <code>uint64 create_at = 10;</code>
        * @return This builder for chaining.
        */
       public Builder clearCreateAt() {
@@ -3132,7 +3461,7 @@ public final class TaskRpcMessage {
        * 任务启动时间
        * </pre>
        *
-       * <code>uint64 start_at = 9;</code>
+       * <code>uint64 start_at = 11;</code>
        * @return The startAt.
        */
       @java.lang.Override
@@ -3144,7 +3473,7 @@ public final class TaskRpcMessage {
        * 任务启动时间
        * </pre>
        *
-       * <code>uint64 start_at = 9;</code>
+       * <code>uint64 start_at = 11;</code>
        * @param value The startAt to set.
        * @return This builder for chaining.
        */
@@ -3159,7 +3488,7 @@ public final class TaskRpcMessage {
        * 任务启动时间
        * </pre>
        *
-       * <code>uint64 start_at = 9;</code>
+       * <code>uint64 start_at = 11;</code>
        * @return This builder for chaining.
        */
       public Builder clearStartAt() {
@@ -3175,7 +3504,7 @@ public final class TaskRpcMessage {
        * 任务结束时间
        * </pre>
        *
-       * <code>uint64 end_at = 10;</code>
+       * <code>uint64 end_at = 12;</code>
        * @return The endAt.
        */
       @java.lang.Override
@@ -3187,7 +3516,7 @@ public final class TaskRpcMessage {
        * 任务结束时间
        * </pre>
        *
-       * <code>uint64 end_at = 10;</code>
+       * <code>uint64 end_at = 12;</code>
        * @param value The endAt to set.
        * @return This builder for chaining.
        */
@@ -3202,7 +3531,7 @@ public final class TaskRpcMessage {
        * 任务结束时间
        * </pre>
        *
-       * <code>uint64 end_at = 10;</code>
+       * <code>uint64 end_at = 12;</code>
        * @return This builder for chaining.
        */
       public Builder clearEndAt() {
@@ -3218,7 +3547,7 @@ public final class TaskRpcMessage {
        * 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
        * </pre>
        *
-       * <code>string state = 11;</code>
+       * <code>string state = 13;</code>
        * @return The state.
        */
       public java.lang.String getState() {
@@ -3238,7 +3567,7 @@ public final class TaskRpcMessage {
        * 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
        * </pre>
        *
-       * <code>string state = 11;</code>
+       * <code>string state = 13;</code>
        * @return The bytes for state.
        */
       public com.google.protobuf.ByteString
@@ -3259,7 +3588,7 @@ public final class TaskRpcMessage {
        * 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
        * </pre>
        *
-       * <code>string state = 11;</code>
+       * <code>string state = 13;</code>
        * @param value The state to set.
        * @return This builder for chaining.
        */
@@ -3278,7 +3607,7 @@ public final class TaskRpcMessage {
        * 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
        * </pre>
        *
-       * <code>string state = 11;</code>
+       * <code>string state = 13;</code>
        * @return This builder for chaining.
        */
       public Builder clearState() {
@@ -3292,7 +3621,7 @@ public final class TaskRpcMessage {
        * 任务的状态 (pending: 等在中; running: 计算中; failed: 失败; success: 成功)
        * </pre>
        *
-       * <code>string state = 11;</code>
+       * <code>string state = 13;</code>
        * @param value The bytes for state to set.
        * @return This builder for chaining.
        */
@@ -3316,7 +3645,7 @@ public final class TaskRpcMessage {
        * 任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
        * @return Whether the operationCost field is set.
        */
       public boolean hasOperationCost() {
@@ -3327,7 +3656,7 @@ public final class TaskRpcMessage {
        * 任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
        * @return The operationCost.
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare getOperationCost() {
@@ -3342,7 +3671,7 @@ public final class TaskRpcMessage {
        * 任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
        */
       public Builder setOperationCost(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare value) {
         if (operationCostBuilder_ == null) {
@@ -3362,7 +3691,7 @@ public final class TaskRpcMessage {
        * 任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
        */
       public Builder setOperationCost(
           com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare.Builder builderForValue) {
@@ -3380,7 +3709,7 @@ public final class TaskRpcMessage {
        * 任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
        */
       public Builder mergeOperationCost(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare value) {
         if (operationCostBuilder_ == null) {
@@ -3402,7 +3731,7 @@ public final class TaskRpcMessage {
        * 任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
        */
       public Builder clearOperationCost() {
         if (operationCostBuilder_ == null) {
@@ -3420,7 +3749,7 @@ public final class TaskRpcMessage {
        * 任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare.Builder getOperationCostBuilder() {
         
@@ -3432,7 +3761,7 @@ public final class TaskRpcMessage {
        * 任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclareOrBuilder getOperationCostOrBuilder() {
         if (operationCostBuilder_ != null) {
@@ -3447,7 +3776,7 @@ public final class TaskRpcMessage {
        * 任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 12;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 14;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclareOrBuilder> 
@@ -3475,48 +3804,48 @@ public final class TaskRpcMessage {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:rpcapi.TaskDetailShow)
+      // @@protoc_insertion_point(builder_scope:rpcapi.TaskDetail)
     }
 
-    // @@protoc_insertion_point(class_scope:rpcapi.TaskDetailShow)
-    private static final com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:rpcapi.TaskDetail)
+    private static final com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow();
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail();
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow getDefaultInstance() {
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<TaskDetailShow>
-        PARSER = new com.google.protobuf.AbstractParser<TaskDetailShow>() {
+    private static final com.google.protobuf.Parser<TaskDetail>
+        PARSER = new com.google.protobuf.AbstractParser<TaskDetail>() {
       @java.lang.Override
-      public TaskDetailShow parsePartialFrom(
+      public TaskDetail parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new TaskDetailShow(input, extensionRegistry);
+        return new TaskDetail(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<TaskDetailShow> parser() {
+    public static com.google.protobuf.Parser<TaskDetail> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<TaskDetailShow> getParserForType() {
+    public com.google.protobuf.Parser<TaskDetail> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow getDefaultInstanceForType() {
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface TaskDataSupplierShowOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.TaskDataSupplierShow)
+  public interface TaskDataSupplierOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.TaskDataSupplier)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -3591,18 +3920,18 @@ public final class TaskRpcMessage {
    * 任务数据提供方信息 (任务详情展示用)
    * </pre>
    *
-   * Protobuf type {@code rpcapi.TaskDataSupplierShow}
+   * Protobuf type {@code rpcapi.TaskDataSupplier}
    */
-  public static final class TaskDataSupplierShow extends
+  public static final class TaskDataSupplier extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.TaskDataSupplierShow)
-      TaskDataSupplierShowOrBuilder {
+      // @@protoc_insertion_point(message_implements:rpcapi.TaskDataSupplier)
+      TaskDataSupplierOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use TaskDataSupplierShow.newBuilder() to construct.
-    private TaskDataSupplierShow(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use TaskDataSupplier.newBuilder() to construct.
+    private TaskDataSupplier(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private TaskDataSupplierShow() {
+    private TaskDataSupplier() {
       metaDataId_ = "";
       metaDataName_ = "";
     }
@@ -3611,7 +3940,7 @@ public final class TaskRpcMessage {
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new TaskDataSupplierShow();
+      return new TaskDataSupplier();
     }
 
     @java.lang.Override
@@ -3619,7 +3948,7 @@ public final class TaskRpcMessage {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private TaskDataSupplierShow(
+    private TaskDataSupplier(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3683,15 +4012,15 @@ public final class TaskRpcMessage {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDataSupplierShow_descriptor;
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDataSupplier_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDataSupplierShow_fieldAccessorTable
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDataSupplier_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder.class);
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder.class);
     }
 
     public static final int MEMBER_INFO_FIELD_NUMBER = 1;
@@ -3876,10 +4205,10 @@ public final class TaskRpcMessage {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow)) {
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier)) {
         return super.equals(obj);
       }
-      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow other = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow) obj;
+      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier other = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier) obj;
 
       if (hasMemberInfo() != other.hasMemberInfo()) return false;
       if (hasMemberInfo()) {
@@ -3914,69 +4243,69 @@ public final class TaskRpcMessage {
       return hash;
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseFrom(byte[] data)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseDelimitedFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseDelimitedFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3989,7 +4318,7 @@ public final class TaskRpcMessage {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow prototype) {
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -4009,26 +4338,26 @@ public final class TaskRpcMessage {
      * 任务数据提供方信息 (任务详情展示用)
      * </pre>
      *
-     * Protobuf type {@code rpcapi.TaskDataSupplierShow}
+     * Protobuf type {@code rpcapi.TaskDataSupplier}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.TaskDataSupplierShow)
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShowOrBuilder {
+        // @@protoc_insertion_point(builder_implements:rpcapi.TaskDataSupplier)
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDataSupplierShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDataSupplier_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDataSupplierShow_fieldAccessorTable
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDataSupplier_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.Builder.class);
+                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.Builder.class);
       }
 
-      // Construct using com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.newBuilder()
+      // Construct using com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -4062,17 +4391,17 @@ public final class TaskRpcMessage {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDataSupplierShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskDataSupplier_descriptor;
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.getDefaultInstance();
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow build() {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow result = buildPartial();
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier build() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -4080,8 +4409,8 @@ public final class TaskRpcMessage {
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow(this);
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier(this);
         if (memberInfoBuilder_ == null) {
           result.memberInfo_ = memberInfo_;
         } else {
@@ -4127,16 +4456,16 @@ public final class TaskRpcMessage {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow)other);
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier.getDefaultInstance()) return this;
         if (other.hasMemberInfo()) {
           mergeMemberInfo(other.getMemberInfo());
         }
@@ -4163,11 +4492,11 @@ public final class TaskRpcMessage {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow parsedMessage = null;
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow) e.getUnfinishedMessage();
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -4536,48 +4865,48 @@ public final class TaskRpcMessage {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:rpcapi.TaskDataSupplierShow)
+      // @@protoc_insertion_point(builder_scope:rpcapi.TaskDataSupplier)
     }
 
-    // @@protoc_insertion_point(class_scope:rpcapi.TaskDataSupplierShow)
-    private static final com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:rpcapi.TaskDataSupplier)
+    private static final com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow();
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier();
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow getDefaultInstance() {
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<TaskDataSupplierShow>
-        PARSER = new com.google.protobuf.AbstractParser<TaskDataSupplierShow>() {
+    private static final com.google.protobuf.Parser<TaskDataSupplier>
+        PARSER = new com.google.protobuf.AbstractParser<TaskDataSupplier>() {
       @java.lang.Override
-      public TaskDataSupplierShow parsePartialFrom(
+      public TaskDataSupplier parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new TaskDataSupplierShow(input, extensionRegistry);
+        return new TaskDataSupplier(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<TaskDataSupplierShow> parser() {
+    public static com.google.protobuf.Parser<TaskDataSupplier> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<TaskDataSupplierShow> getParserForType() {
+    public com.google.protobuf.Parser<TaskDataSupplier> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierShow getDefaultInstanceForType() {
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplier getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface TaskPowerSupplierShowOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.TaskPowerSupplierShow)
+  public interface TaskPowerSupplierOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.TaskPowerSupplier)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -4612,7 +4941,7 @@ public final class TaskRpcMessage {
      * 算力使用情况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+     * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
      * @return Whether the powerInfo field is set.
      */
     boolean hasPowerInfo();
@@ -4621,43 +4950,43 @@ public final class TaskRpcMessage {
      * 算力使用情况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+     * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
      * @return The powerInfo.
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getPowerInfo();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getPowerInfo();
     /**
      * <pre>
      * 算力使用情况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+     * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getPowerInfoOrBuilder();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getPowerInfoOrBuilder();
   }
   /**
    * <pre>
    * 任务算力提供方信息 (任务详情展示用)
    * </pre>
    *
-   * Protobuf type {@code rpcapi.TaskPowerSupplierShow}
+   * Protobuf type {@code rpcapi.TaskPowerSupplier}
    */
-  public static final class TaskPowerSupplierShow extends
+  public static final class TaskPowerSupplier extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.TaskPowerSupplierShow)
-      TaskPowerSupplierShowOrBuilder {
+      // @@protoc_insertion_point(message_implements:rpcapi.TaskPowerSupplier)
+      TaskPowerSupplierOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use TaskPowerSupplierShow.newBuilder() to construct.
-    private TaskPowerSupplierShow(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use TaskPowerSupplier.newBuilder() to construct.
+    private TaskPowerSupplier(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private TaskPowerSupplierShow() {
+    private TaskPowerSupplier() {
     }
 
     @java.lang.Override
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new TaskPowerSupplierShow();
+      return new TaskPowerSupplier();
     }
 
     @java.lang.Override
@@ -4665,7 +4994,7 @@ public final class TaskRpcMessage {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private TaskPowerSupplierShow(
+    private TaskPowerSupplier(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -4697,11 +5026,11 @@ public final class TaskRpcMessage {
               break;
             }
             case 18: {
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder subBuilder = null;
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder subBuilder = null;
               if (powerInfo_ != null) {
                 subBuilder = powerInfo_.toBuilder();
               }
-              powerInfo_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.parser(), extensionRegistry);
+              powerInfo_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(powerInfo_);
                 powerInfo_ = subBuilder.buildPartial();
@@ -4730,15 +5059,15 @@ public final class TaskRpcMessage {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskPowerSupplierShow_descriptor;
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskPowerSupplier_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskPowerSupplierShow_fieldAccessorTable
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskPowerSupplier_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder.class);
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder.class);
     }
 
     public static final int MEMBER_INFO_FIELD_NUMBER = 1;
@@ -4780,13 +5109,13 @@ public final class TaskRpcMessage {
     }
 
     public static final int POWER_INFO_FIELD_NUMBER = 2;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow powerInfo_;
+    private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail powerInfo_;
     /**
      * <pre>
      * 算力使用情况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+     * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
      * @return Whether the powerInfo field is set.
      */
     @java.lang.Override
@@ -4798,22 +5127,22 @@ public final class TaskRpcMessage {
      * 算力使用情况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+     * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
      * @return The powerInfo.
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getPowerInfo() {
-      return powerInfo_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : powerInfo_;
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getPowerInfo() {
+      return powerInfo_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : powerInfo_;
     }
     /**
      * <pre>
      * 算力使用情况
      * </pre>
      *
-     * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+     * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getPowerInfoOrBuilder() {
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getPowerInfoOrBuilder() {
       return getPowerInfo();
     }
 
@@ -4864,10 +5193,10 @@ public final class TaskRpcMessage {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow)) {
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier)) {
         return super.equals(obj);
       }
-      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow other = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow) obj;
+      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier other = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier) obj;
 
       if (hasMemberInfo() != other.hasMemberInfo()) return false;
       if (hasMemberInfo()) {
@@ -4903,69 +5232,69 @@ public final class TaskRpcMessage {
       return hash;
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseFrom(byte[] data)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseDelimitedFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseDelimitedFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -4978,7 +5307,7 @@ public final class TaskRpcMessage {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow prototype) {
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -4998,26 +5327,26 @@ public final class TaskRpcMessage {
      * 任务算力提供方信息 (任务详情展示用)
      * </pre>
      *
-     * Protobuf type {@code rpcapi.TaskPowerSupplierShow}
+     * Protobuf type {@code rpcapi.TaskPowerSupplier}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.TaskPowerSupplierShow)
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShowOrBuilder {
+        // @@protoc_insertion_point(builder_implements:rpcapi.TaskPowerSupplier)
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskPowerSupplierShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskPowerSupplier_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskPowerSupplierShow_fieldAccessorTable
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskPowerSupplier_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.Builder.class);
+                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.Builder.class);
       }
 
-      // Construct using com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.newBuilder()
+      // Construct using com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -5053,17 +5382,17 @@ public final class TaskRpcMessage {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskPowerSupplierShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskPowerSupplier_descriptor;
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.getDefaultInstance();
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow build() {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow result = buildPartial();
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier build() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -5071,8 +5400,8 @@ public final class TaskRpcMessage {
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow(this);
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier(this);
         if (memberInfoBuilder_ == null) {
           result.memberInfo_ = memberInfo_;
         } else {
@@ -5121,16 +5450,16 @@ public final class TaskRpcMessage {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow)other);
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier.getDefaultInstance()) return this;
         if (other.hasMemberInfo()) {
           mergeMemberInfo(other.getMemberInfo());
         }
@@ -5152,11 +5481,11 @@ public final class TaskRpcMessage {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow parsedMessage = null;
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow) e.getUnfinishedMessage();
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -5321,15 +5650,15 @@ public final class TaskRpcMessage {
         return memberInfoBuilder_;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow powerInfo_;
+      private com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail powerInfo_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> powerInfoBuilder_;
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder> powerInfoBuilder_;
       /**
        * <pre>
        * 算力使用情况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+       * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
        * @return Whether the powerInfo field is set.
        */
       public boolean hasPowerInfo() {
@@ -5340,12 +5669,12 @@ public final class TaskRpcMessage {
        * 算力使用情况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+       * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
        * @return The powerInfo.
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow getPowerInfo() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail getPowerInfo() {
         if (powerInfoBuilder_ == null) {
-          return powerInfo_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : powerInfo_;
+          return powerInfo_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : powerInfo_;
         } else {
           return powerInfoBuilder_.getMessage();
         }
@@ -5355,9 +5684,9 @@ public final class TaskRpcMessage {
        * 算力使用情况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+       * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
        */
-      public Builder setPowerInfo(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
+      public Builder setPowerInfo(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail value) {
         if (powerInfoBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -5375,10 +5704,10 @@ public final class TaskRpcMessage {
        * 算力使用情况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+       * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
        */
       public Builder setPowerInfo(
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder builderForValue) {
         if (powerInfoBuilder_ == null) {
           powerInfo_ = builderForValue.build();
           onChanged();
@@ -5393,13 +5722,13 @@ public final class TaskRpcMessage {
        * 算力使用情况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+       * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
        */
-      public Builder mergePowerInfo(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow value) {
+      public Builder mergePowerInfo(com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail value) {
         if (powerInfoBuilder_ == null) {
           if (powerInfo_ != null) {
             powerInfo_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.newBuilder(powerInfo_).mergeFrom(value).buildPartial();
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.newBuilder(powerInfo_).mergeFrom(value).buildPartial();
           } else {
             powerInfo_ = value;
           }
@@ -5415,7 +5744,7 @@ public final class TaskRpcMessage {
        * 算力使用情况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+       * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
        */
       public Builder clearPowerInfo() {
         if (powerInfoBuilder_ == null) {
@@ -5433,9 +5762,9 @@ public final class TaskRpcMessage {
        * 算力使用情况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+       * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder getPowerInfoBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder getPowerInfoBuilder() {
         
         onChanged();
         return getPowerInfoFieldBuilder().getBuilder();
@@ -5445,14 +5774,14 @@ public final class TaskRpcMessage {
        * 算力使用情况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+       * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder getPowerInfoOrBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder getPowerInfoOrBuilder() {
         if (powerInfoBuilder_ != null) {
           return powerInfoBuilder_.getMessageOrBuilder();
         } else {
           return powerInfo_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.getDefaultInstance() : powerInfo_;
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.getDefaultInstance() : powerInfo_;
         }
       }
       /**
@@ -5460,14 +5789,14 @@ public final class TaskRpcMessage {
        * 算力使用情况
        * </pre>
        *
-       * <code>.rpcapi.ResourceUsedDetailShow power_info = 2;</code>
+       * <code>.rpcapi.ResourceUsedDetail power_info = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder> 
           getPowerInfoFieldBuilder() {
         if (powerInfoBuilder_ == null) {
           powerInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailShowOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetail.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.ResourceUsedDetailOrBuilder>(
                   getPowerInfo(),
                   getParentForChildren(),
                   isClean());
@@ -5488,48 +5817,48 @@ public final class TaskRpcMessage {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:rpcapi.TaskPowerSupplierShow)
+      // @@protoc_insertion_point(builder_scope:rpcapi.TaskPowerSupplier)
     }
 
-    // @@protoc_insertion_point(class_scope:rpcapi.TaskPowerSupplierShow)
-    private static final com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:rpcapi.TaskPowerSupplier)
+    private static final com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow();
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier();
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow getDefaultInstance() {
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<TaskPowerSupplierShow>
-        PARSER = new com.google.protobuf.AbstractParser<TaskPowerSupplierShow>() {
+    private static final com.google.protobuf.Parser<TaskPowerSupplier>
+        PARSER = new com.google.protobuf.AbstractParser<TaskPowerSupplier>() {
       @java.lang.Override
-      public TaskPowerSupplierShow parsePartialFrom(
+      public TaskPowerSupplier parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new TaskPowerSupplierShow(input, extensionRegistry);
+        return new TaskPowerSupplier(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<TaskPowerSupplierShow> parser() {
+    public static com.google.protobuf.Parser<TaskPowerSupplier> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<TaskPowerSupplierShow> getParserForType() {
+    public com.google.protobuf.Parser<TaskPowerSupplier> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplierShow getDefaultInstanceForType() {
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskPowerSupplier getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
-  public interface TaskEventShowOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:rpcapi.TaskEventShow)
+  public interface TaskEventOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.TaskEvent)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -5634,18 +5963,18 @@ public final class TaskRpcMessage {
    * 任务事件定义
    * </pre>
    *
-   * Protobuf type {@code rpcapi.TaskEventShow}
+   * Protobuf type {@code rpcapi.TaskEvent}
    */
-  public static final class TaskEventShow extends
+  public static final class TaskEvent extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:rpcapi.TaskEventShow)
-      TaskEventShowOrBuilder {
+      // @@protoc_insertion_point(message_implements:rpcapi.TaskEvent)
+      TaskEventOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use TaskEventShow.newBuilder() to construct.
-    private TaskEventShow(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use TaskEvent.newBuilder() to construct.
+    private TaskEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private TaskEventShow() {
+    private TaskEvent() {
       type_ = "";
       taskId_ = "";
       content_ = "";
@@ -5655,7 +5984,7 @@ public final class TaskRpcMessage {
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new TaskEventShow();
+      return new TaskEvent();
     }
 
     @java.lang.Override
@@ -5663,7 +5992,7 @@ public final class TaskRpcMessage {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private TaskEventShow(
+    private TaskEvent(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -5738,15 +6067,15 @@ public final class TaskRpcMessage {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskEventShow_descriptor;
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskEvent_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskEventShow_fieldAccessorTable
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskEvent_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder.class);
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder.class);
     }
 
     public static final int TYPE_FIELD_NUMBER = 1;
@@ -6005,10 +6334,10 @@ public final class TaskRpcMessage {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow)) {
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent)) {
         return super.equals(obj);
       }
-      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow other = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow) obj;
+      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent other = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent) obj;
 
       if (!getType()
           .equals(other.getType())) return false;
@@ -6052,69 +6381,69 @@ public final class TaskRpcMessage {
       return hash;
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseFrom(byte[] data)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseDelimitedFrom(java.io.InputStream input)
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseDelimitedFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parseFrom(
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -6127,7 +6456,7 @@ public final class TaskRpcMessage {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow prototype) {
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -6147,26 +6476,26 @@ public final class TaskRpcMessage {
      * 任务事件定义
      * </pre>
      *
-     * Protobuf type {@code rpcapi.TaskEventShow}
+     * Protobuf type {@code rpcapi.TaskEvent}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:rpcapi.TaskEventShow)
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShowOrBuilder {
+        // @@protoc_insertion_point(builder_implements:rpcapi.TaskEvent)
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskEventShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskEvent_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskEventShow_fieldAccessorTable
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskEvent_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder.class);
+                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder.class);
       }
 
-      // Construct using com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.newBuilder()
+      // Construct using com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -6204,17 +6533,17 @@ public final class TaskRpcMessage {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskEventShow_descriptor;
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TaskEvent_descriptor;
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow getDefaultInstanceForType() {
-        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.getDefaultInstance();
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.getDefaultInstance();
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow build() {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow result = buildPartial();
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent build() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -6222,8 +6551,8 @@ public final class TaskRpcMessage {
       }
 
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow buildPartial() {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow(this);
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent(this);
         result.type_ = type_;
         result.taskId_ = taskId_;
         if (ownerBuilder_ == null) {
@@ -6271,16 +6600,16 @@ public final class TaskRpcMessage {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow) {
-          return mergeFrom((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow)other);
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow other) {
-        if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.getDefaultInstance()) return this;
         if (!other.getType().isEmpty()) {
           type_ = other.type_;
           onChanged();
@@ -6314,11 +6643,11 @@ public final class TaskRpcMessage {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow parsedMessage = null;
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow) e.getUnfinishedMessage();
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -6826,41 +7155,41 @@ public final class TaskRpcMessage {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:rpcapi.TaskEventShow)
+      // @@protoc_insertion_point(builder_scope:rpcapi.TaskEvent)
     }
 
-    // @@protoc_insertion_point(class_scope:rpcapi.TaskEventShow)
-    private static final com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:rpcapi.TaskEvent)
+    private static final com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow();
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent();
     }
 
-    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow getDefaultInstance() {
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<TaskEventShow>
-        PARSER = new com.google.protobuf.AbstractParser<TaskEventShow>() {
+    private static final com.google.protobuf.Parser<TaskEvent>
+        PARSER = new com.google.protobuf.AbstractParser<TaskEvent>() {
       @java.lang.Override
-      public TaskEventShow parsePartialFrom(
+      public TaskEvent parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new TaskEventShow(input, extensionRegistry);
+        return new TaskEvent(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<TaskEventShow> parser() {
+    public static com.google.protobuf.Parser<TaskEvent> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<TaskEventShow> getParserForType() {
+    public com.google.protobuf.Parser<TaskEvent> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow getDefaultInstanceForType() {
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -11891,7 +12220,7 @@ public final class TaskRpcMessage {
      * 任务详情
      * </pre>
      *
-     * <code>.rpcapi.TaskDetailShow information = 1;</code>
+     * <code>.rpcapi.TaskDetail information = 1;</code>
      * @return Whether the information field is set.
      */
     boolean hasInformation();
@@ -11900,18 +12229,18 @@ public final class TaskRpcMessage {
      * 任务详情
      * </pre>
      *
-     * <code>.rpcapi.TaskDetailShow information = 1;</code>
+     * <code>.rpcapi.TaskDetail information = 1;</code>
      * @return The information.
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow getInformation();
+    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail getInformation();
     /**
      * <pre>
      * 任务详情
      * </pre>
      *
-     * <code>.rpcapi.TaskDetailShow information = 1;</code>
+     * <code>.rpcapi.TaskDetail information = 1;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShowOrBuilder getInformationOrBuilder();
+    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailOrBuilder getInformationOrBuilder();
 
     /**
      * <pre>
@@ -11980,11 +12309,11 @@ public final class TaskRpcMessage {
               done = true;
               break;
             case 10: {
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.Builder subBuilder = null;
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.Builder subBuilder = null;
               if (information_ != null) {
                 subBuilder = information_.toBuilder();
               }
-              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.parser(), extensionRegistry);
+              information_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(information_);
                 information_ = subBuilder.buildPartial();
@@ -12031,13 +12360,13 @@ public final class TaskRpcMessage {
     }
 
     public static final int INFORMATION_FIELD_NUMBER = 1;
-    private com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow information_;
+    private com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail information_;
     /**
      * <pre>
      * 任务详情
      * </pre>
      *
-     * <code>.rpcapi.TaskDetailShow information = 1;</code>
+     * <code>.rpcapi.TaskDetail information = 1;</code>
      * @return Whether the information field is set.
      */
     @java.lang.Override
@@ -12049,22 +12378,22 @@ public final class TaskRpcMessage {
      * 任务详情
      * </pre>
      *
-     * <code>.rpcapi.TaskDetailShow information = 1;</code>
+     * <code>.rpcapi.TaskDetail information = 1;</code>
      * @return The information.
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow getInformation() {
-      return information_ == null ? com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.getDefaultInstance() : information_;
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail getInformation() {
+      return information_ == null ? com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.getDefaultInstance() : information_;
     }
     /**
      * <pre>
      * 任务详情
      * </pre>
      *
-     * <code>.rpcapi.TaskDetailShow information = 1;</code>
+     * <code>.rpcapi.TaskDetail information = 1;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShowOrBuilder getInformationOrBuilder() {
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailOrBuilder getInformationOrBuilder() {
       return getInformation();
     }
 
@@ -12446,15 +12775,15 @@ public final class TaskRpcMessage {
         return this;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow information_;
+      private com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail information_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShowOrBuilder> informationBuilder_;
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailOrBuilder> informationBuilder_;
       /**
        * <pre>
        * 任务详情
        * </pre>
        *
-       * <code>.rpcapi.TaskDetailShow information = 1;</code>
+       * <code>.rpcapi.TaskDetail information = 1;</code>
        * @return Whether the information field is set.
        */
       public boolean hasInformation() {
@@ -12465,12 +12794,12 @@ public final class TaskRpcMessage {
        * 任务详情
        * </pre>
        *
-       * <code>.rpcapi.TaskDetailShow information = 1;</code>
+       * <code>.rpcapi.TaskDetail information = 1;</code>
        * @return The information.
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow getInformation() {
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail getInformation() {
         if (informationBuilder_ == null) {
-          return information_ == null ? com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.getDefaultInstance() : information_;
+          return information_ == null ? com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.getDefaultInstance() : information_;
         } else {
           return informationBuilder_.getMessage();
         }
@@ -12480,9 +12809,9 @@ public final class TaskRpcMessage {
        * 任务详情
        * </pre>
        *
-       * <code>.rpcapi.TaskDetailShow information = 1;</code>
+       * <code>.rpcapi.TaskDetail information = 1;</code>
        */
-      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow value) {
+      public Builder setInformation(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail value) {
         if (informationBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -12500,10 +12829,10 @@ public final class TaskRpcMessage {
        * 任务详情
        * </pre>
        *
-       * <code>.rpcapi.TaskDetailShow information = 1;</code>
+       * <code>.rpcapi.TaskDetail information = 1;</code>
        */
       public Builder setInformation(
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.Builder builderForValue) {
         if (informationBuilder_ == null) {
           information_ = builderForValue.build();
           onChanged();
@@ -12518,13 +12847,13 @@ public final class TaskRpcMessage {
        * 任务详情
        * </pre>
        *
-       * <code>.rpcapi.TaskDetailShow information = 1;</code>
+       * <code>.rpcapi.TaskDetail information = 1;</code>
        */
-      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow value) {
+      public Builder mergeInformation(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail value) {
         if (informationBuilder_ == null) {
           if (information_ != null) {
             information_ =
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.newBuilder(information_).mergeFrom(value).buildPartial();
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.newBuilder(information_).mergeFrom(value).buildPartial();
           } else {
             information_ = value;
           }
@@ -12540,7 +12869,7 @@ public final class TaskRpcMessage {
        * 任务详情
        * </pre>
        *
-       * <code>.rpcapi.TaskDetailShow information = 1;</code>
+       * <code>.rpcapi.TaskDetail information = 1;</code>
        */
       public Builder clearInformation() {
         if (informationBuilder_ == null) {
@@ -12558,9 +12887,9 @@ public final class TaskRpcMessage {
        * 任务详情
        * </pre>
        *
-       * <code>.rpcapi.TaskDetailShow information = 1;</code>
+       * <code>.rpcapi.TaskDetail information = 1;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.Builder getInformationBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.Builder getInformationBuilder() {
         
         onChanged();
         return getInformationFieldBuilder().getBuilder();
@@ -12570,14 +12899,14 @@ public final class TaskRpcMessage {
        * 任务详情
        * </pre>
        *
-       * <code>.rpcapi.TaskDetailShow information = 1;</code>
+       * <code>.rpcapi.TaskDetail information = 1;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShowOrBuilder getInformationOrBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailOrBuilder getInformationOrBuilder() {
         if (informationBuilder_ != null) {
           return informationBuilder_.getMessageOrBuilder();
         } else {
           return information_ == null ?
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.getDefaultInstance() : information_;
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.getDefaultInstance() : information_;
         }
       }
       /**
@@ -12585,14 +12914,14 @@ public final class TaskRpcMessage {
        * 任务详情
        * </pre>
        *
-       * <code>.rpcapi.TaskDetailShow information = 1;</code>
+       * <code>.rpcapi.TaskDetail information = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShowOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailOrBuilder> 
           getInformationFieldBuilder() {
         if (informationBuilder_ == null) {
           informationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailShowOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetail.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDetailOrBuilder>(
                   getInformation(),
                   getParentForChildren(),
                   isClean());
@@ -15175,24 +15504,24 @@ public final class TaskRpcMessage {
      * 任务事件列表
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+     * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
      */
-    java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow> 
+    java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent> 
         getTaskEventListList();
     /**
      * <pre>
      * 任务事件列表
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+     * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow getTaskEventList(int index);
+    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent getTaskEventList(int index);
     /**
      * <pre>
      * 任务事件列表
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+     * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
      */
     int getTaskEventListCount();
     /**
@@ -15200,18 +15529,18 @@ public final class TaskRpcMessage {
      * 任务事件列表
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+     * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
      */
-    java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShowOrBuilder> 
+    java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventOrBuilder> 
         getTaskEventListOrBuilderList();
     /**
      * <pre>
      * 任务事件列表
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+     * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
      */
-    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShowOrBuilder getTaskEventListOrBuilder(
+    com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventOrBuilder getTaskEventListOrBuilder(
         int index);
   }
   /**
@@ -15275,11 +15604,11 @@ public final class TaskRpcMessage {
             }
             case 26: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                taskEventList_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow>();
+                taskEventList_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent>();
                 mutable_bitField0_ |= 0x00000001;
               }
               taskEventList_.add(
-                  input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.parser(), extensionRegistry));
+                  input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.parser(), extensionRegistry));
               break;
             }
             default: {
@@ -15379,16 +15708,16 @@ public final class TaskRpcMessage {
     }
 
     public static final int TASK_EVENT_LIST_FIELD_NUMBER = 3;
-    private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow> taskEventList_;
+    private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent> taskEventList_;
     /**
      * <pre>
      * 任务事件列表
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+     * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
      */
     @java.lang.Override
-    public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow> getTaskEventListList() {
+    public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent> getTaskEventListList() {
       return taskEventList_;
     }
     /**
@@ -15396,10 +15725,10 @@ public final class TaskRpcMessage {
      * 任务事件列表
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+     * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
      */
     @java.lang.Override
-    public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShowOrBuilder> 
+    public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventOrBuilder> 
         getTaskEventListOrBuilderList() {
       return taskEventList_;
     }
@@ -15408,7 +15737,7 @@ public final class TaskRpcMessage {
      * 任务事件列表
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+     * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
      */
     @java.lang.Override
     public int getTaskEventListCount() {
@@ -15419,10 +15748,10 @@ public final class TaskRpcMessage {
      * 任务事件列表
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+     * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow getTaskEventList(int index) {
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent getTaskEventList(int index) {
       return taskEventList_.get(index);
     }
     /**
@@ -15430,10 +15759,10 @@ public final class TaskRpcMessage {
      * 任务事件列表
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+     * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShowOrBuilder getTaskEventListOrBuilder(
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventOrBuilder getTaskEventListOrBuilder(
         int index) {
       return taskEventList_.get(index);
     }
@@ -15953,26 +16282,26 @@ public final class TaskRpcMessage {
         return this;
       }
 
-      private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow> taskEventList_ =
+      private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent> taskEventList_ =
         java.util.Collections.emptyList();
       private void ensureTaskEventListIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          taskEventList_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow>(taskEventList_);
+          taskEventList_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent>(taskEventList_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShowOrBuilder> taskEventListBuilder_;
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventOrBuilder> taskEventListBuilder_;
 
       /**
        * <pre>
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow> getTaskEventListList() {
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent> getTaskEventListList() {
         if (taskEventListBuilder_ == null) {
           return java.util.Collections.unmodifiableList(taskEventList_);
         } else {
@@ -15984,7 +16313,7 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
       public int getTaskEventListCount() {
         if (taskEventListBuilder_ == null) {
@@ -15998,9 +16327,9 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow getTaskEventList(int index) {
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent getTaskEventList(int index) {
         if (taskEventListBuilder_ == null) {
           return taskEventList_.get(index);
         } else {
@@ -16012,10 +16341,10 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
       public Builder setTaskEventList(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow value) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent value) {
         if (taskEventListBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -16033,10 +16362,10 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
       public Builder setTaskEventList(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder builderForValue) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder builderForValue) {
         if (taskEventListBuilder_ == null) {
           ensureTaskEventListIsMutable();
           taskEventList_.set(index, builderForValue.build());
@@ -16051,9 +16380,9 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
-      public Builder addTaskEventList(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow value) {
+      public Builder addTaskEventList(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent value) {
         if (taskEventListBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -16071,10 +16400,10 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
       public Builder addTaskEventList(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow value) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent value) {
         if (taskEventListBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -16092,10 +16421,10 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
       public Builder addTaskEventList(
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder builderForValue) {
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder builderForValue) {
         if (taskEventListBuilder_ == null) {
           ensureTaskEventListIsMutable();
           taskEventList_.add(builderForValue.build());
@@ -16110,10 +16439,10 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
       public Builder addTaskEventList(
-          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder builderForValue) {
+          int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder builderForValue) {
         if (taskEventListBuilder_ == null) {
           ensureTaskEventListIsMutable();
           taskEventList_.add(index, builderForValue.build());
@@ -16128,10 +16457,10 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
       public Builder addAllTaskEventList(
-          java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow> values) {
+          java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent> values) {
         if (taskEventListBuilder_ == null) {
           ensureTaskEventListIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -16147,7 +16476,7 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
       public Builder clearTaskEventList() {
         if (taskEventListBuilder_ == null) {
@@ -16164,7 +16493,7 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
       public Builder removeTaskEventList(int index) {
         if (taskEventListBuilder_ == null) {
@@ -16181,9 +16510,9 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder getTaskEventListBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder getTaskEventListBuilder(
           int index) {
         return getTaskEventListFieldBuilder().getBuilder(index);
       }
@@ -16192,9 +16521,9 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShowOrBuilder getTaskEventListOrBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventOrBuilder getTaskEventListOrBuilder(
           int index) {
         if (taskEventListBuilder_ == null) {
           return taskEventList_.get(index);  } else {
@@ -16206,9 +16535,9 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
-      public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShowOrBuilder> 
+      public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventOrBuilder> 
            getTaskEventListOrBuilderList() {
         if (taskEventListBuilder_ != null) {
           return taskEventListBuilder_.getMessageOrBuilderList();
@@ -16221,41 +16550,41 @@ public final class TaskRpcMessage {
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder addTaskEventListBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder addTaskEventListBuilder() {
         return getTaskEventListFieldBuilder().addBuilder(
-            com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.getDefaultInstance());
+            com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.getDefaultInstance());
       }
       /**
        * <pre>
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder addTaskEventListBuilder(
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder addTaskEventListBuilder(
           int index) {
         return getTaskEventListFieldBuilder().addBuilder(
-            index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.getDefaultInstance());
+            index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.getDefaultInstance());
       }
       /**
        * <pre>
        * 任务事件列表
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskEventShow task_event_list = 3;</code>
+       * <code>repeated .rpcapi.TaskEvent task_event_list = 3;</code>
        */
-      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder> 
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder> 
            getTaskEventListBuilderList() {
         return getTaskEventListFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShowOrBuilder> 
+          com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventOrBuilder> 
           getTaskEventListFieldBuilder() {
         if (taskEventListBuilder_ == null) {
           taskEventListBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShow.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventShowOrBuilder>(
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEvent.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskEventOrBuilder>(
                   taskEventList_,
                   ((bitField0_ & 0x00000001) != 0),
                   getParentForChildren(),
@@ -16343,37 +16672,76 @@ public final class TaskRpcMessage {
 
     /**
      * <pre>
-     *  任务发起者 组织信息
+     *  发起任务的用户的信息 (task是属于用户的)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
-     * @return Whether the owner field is set.
+     * <code>string user = 2;</code>
+     * @return The user.
      */
-    boolean hasOwner();
+    java.lang.String getUser();
+    /**
+     * <pre>
+     *  发起任务的用户的信息 (task是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 2;</code>
+     * @return The bytes for user.
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
+
+    /**
+     * <pre>
+     *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 3;</code>
+     * @return The enum numeric value on the wire for userType.
+     */
+    int getUserTypeValue();
+    /**
+     * <pre>
+     *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 3;</code>
+     * @return The userType.
+     */
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType getUserType();
+
     /**
      * <pre>
      *  任务发起者 组织信息
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
-     * @return The owner.
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
+     * @return Whether the sender field is set.
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getOwner();
+    boolean hasSender();
     /**
      * <pre>
      *  任务发起者 组织信息
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
+     * @return The sender.
      */
-    com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getOwnerOrBuilder();
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getSender();
+    /**
+     * <pre>
+     *  任务发起者 组织信息
+     * </pre>
+     *
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
+     */
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getSenderOrBuilder();
 
     /**
      * <pre>
      *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
      */
     java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> 
         getDataSupplierList();
@@ -16382,7 +16750,7 @@ public final class TaskRpcMessage {
      *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
      */
     com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getDataSupplier(int index);
     /**
@@ -16390,7 +16758,7 @@ public final class TaskRpcMessage {
      *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
      */
     int getDataSupplierCount();
     /**
@@ -16398,7 +16766,7 @@ public final class TaskRpcMessage {
      *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
      */
     java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> 
         getDataSupplierOrBuilderList();
@@ -16407,7 +16775,7 @@ public final class TaskRpcMessage {
      *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
      */
     com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getDataSupplierOrBuilder(
         int index);
@@ -16417,7 +16785,7 @@ public final class TaskRpcMessage {
      *  算力提供方未来要用的 标签
      * </pre>
      *
-     * <code>repeated string power_party_ids = 4;</code>
+     * <code>repeated string power_party_ids = 6;</code>
      * @return A list containing the powerPartyIds.
      */
     java.util.List<java.lang.String>
@@ -16427,7 +16795,7 @@ public final class TaskRpcMessage {
      *  算力提供方未来要用的 标签
      * </pre>
      *
-     * <code>repeated string power_party_ids = 4;</code>
+     * <code>repeated string power_party_ids = 6;</code>
      * @return The count of powerPartyIds.
      */
     int getPowerPartyIdsCount();
@@ -16436,7 +16804,7 @@ public final class TaskRpcMessage {
      *  算力提供方未来要用的 标签
      * </pre>
      *
-     * <code>repeated string power_party_ids = 4;</code>
+     * <code>repeated string power_party_ids = 6;</code>
      * @param index The index of the element to return.
      * @return The powerPartyIds at the given index.
      */
@@ -16446,7 +16814,7 @@ public final class TaskRpcMessage {
      *  算力提供方未来要用的 标签
      * </pre>
      *
-     * <code>repeated string power_party_ids = 4;</code>
+     * <code>repeated string power_party_ids = 6;</code>
      * @param index The index of the value to return.
      * @return The bytes of the powerPartyIds at the given index.
      */
@@ -16458,7 +16826,7 @@ public final class TaskRpcMessage {
      *  任务结果接受者
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
      */
     java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare> 
         getReceiversList();
@@ -16467,7 +16835,7 @@ public final class TaskRpcMessage {
      *  任务结果接受者
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
      */
     com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare getReceivers(int index);
     /**
@@ -16475,7 +16843,7 @@ public final class TaskRpcMessage {
      *  任务结果接受者
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
      */
     int getReceiversCount();
     /**
@@ -16483,7 +16851,7 @@ public final class TaskRpcMessage {
      *  任务结果接受者
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
      */
     java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclareOrBuilder> 
         getReceiversOrBuilderList();
@@ -16492,7 +16860,7 @@ public final class TaskRpcMessage {
      *  任务结果接受者
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
      */
     com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclareOrBuilder getReceiversOrBuilder(
         int index);
@@ -16502,7 +16870,7 @@ public final class TaskRpcMessage {
      *  任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
      * @return Whether the operationCost field is set.
      */
     boolean hasOperationCost();
@@ -16511,7 +16879,7 @@ public final class TaskRpcMessage {
      *  任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
      * @return The operationCost.
      */
     com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare getOperationCost();
@@ -16520,7 +16888,7 @@ public final class TaskRpcMessage {
      *  任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
      */
     com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclareOrBuilder getOperationCostOrBuilder();
 
@@ -16529,7 +16897,7 @@ public final class TaskRpcMessage {
      *  计算合约
      * </pre>
      *
-     * <code>string calculate_contractcode = 7;</code>
+     * <code>string calculate_contractcode = 9;</code>
      * @return The calculateContractcode.
      */
     java.lang.String getCalculateContractcode();
@@ -16538,7 +16906,7 @@ public final class TaskRpcMessage {
      *  计算合约
      * </pre>
      *
-     * <code>string calculate_contractcode = 7;</code>
+     * <code>string calculate_contractcode = 9;</code>
      * @return The bytes for calculateContractcode.
      */
     com.google.protobuf.ByteString
@@ -16549,7 +16917,7 @@ public final class TaskRpcMessage {
      *  数据分片合约
      * </pre>
      *
-     * <code>string datasplit_contractcode = 8;</code>
+     * <code>string datasplit_contractcode = 10;</code>
      * @return The datasplitContractcode.
      */
     java.lang.String getDatasplitContractcode();
@@ -16558,7 +16926,7 @@ public final class TaskRpcMessage {
      *  数据分片合约
      * </pre>
      *
-     * <code>string datasplit_contractcode = 8;</code>
+     * <code>string datasplit_contractcode = 10;</code>
      * @return The bytes for datasplitContractcode.
      */
     com.google.protobuf.ByteString
@@ -16569,7 +16937,7 @@ public final class TaskRpcMessage {
      *  合约调用的额外可变入参 (json 字符串, 根据算法来)
      * </pre>
      *
-     * <code>string contract_extra_params = 9;</code>
+     * <code>string contract_extra_params = 11;</code>
      * @return The contractExtraParams.
      */
     java.lang.String getContractExtraParams();
@@ -16578,11 +16946,21 @@ public final class TaskRpcMessage {
      *  合约调用的额外可变入参 (json 字符串, 根据算法来)
      * </pre>
      *
-     * <code>string contract_extra_params = 9;</code>
+     * <code>string contract_extra_params = 11;</code>
      * @return The bytes for contractExtraParams.
      */
     com.google.protobuf.ByteString
         getContractExtraParamsBytes();
+
+    /**
+     * <pre>
+     *  发起任务的账户的签名
+     * </pre>
+     *
+     * <code>bytes sign = 12;</code>
+     * @return The sign.
+     */
+    com.google.protobuf.ByteString getSign();
   }
   /**
    * Protobuf type {@code rpcapi.PublishTaskDeclareRequest}
@@ -16598,12 +16976,15 @@ public final class TaskRpcMessage {
     }
     private PublishTaskDeclareRequest() {
       taskName_ = "";
+      user_ = "";
+      userType_ = 0;
       dataSupplier_ = java.util.Collections.emptyList();
       powerPartyIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       receivers_ = java.util.Collections.emptyList();
       calculateContractcode_ = "";
       datasplitContractcode_ = "";
       contractExtraParams_ = "";
+      sign_ = com.google.protobuf.ByteString.EMPTY;
     }
 
     @java.lang.Override
@@ -16644,19 +17025,31 @@ public final class TaskRpcMessage {
               break;
             }
             case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              user_ = s;
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+
+              userType_ = rawValue;
+              break;
+            }
+            case 34: {
               com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder subBuilder = null;
-              if (owner_ != null) {
-                subBuilder = owner_.toBuilder();
+              if (sender_ != null) {
+                subBuilder = sender_.toBuilder();
               }
-              owner_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.parser(), extensionRegistry);
+              sender_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(owner_);
-                owner_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(sender_);
+                sender_ = subBuilder.buildPartial();
               }
 
               break;
             }
-            case 26: {
+            case 42: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 dataSupplier_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare>();
                 mutable_bitField0_ |= 0x00000001;
@@ -16665,7 +17058,7 @@ public final class TaskRpcMessage {
                   input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.parser(), extensionRegistry));
               break;
             }
-            case 34: {
+            case 50: {
               java.lang.String s = input.readStringRequireUtf8();
               if (!((mutable_bitField0_ & 0x00000002) != 0)) {
                 powerPartyIds_ = new com.google.protobuf.LazyStringArrayList();
@@ -16674,7 +17067,7 @@ public final class TaskRpcMessage {
               powerPartyIds_.add(s);
               break;
             }
-            case 42: {
+            case 58: {
               if (!((mutable_bitField0_ & 0x00000004) != 0)) {
                 receivers_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare>();
                 mutable_bitField0_ |= 0x00000004;
@@ -16683,7 +17076,7 @@ public final class TaskRpcMessage {
                   input.readMessage(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare.parser(), extensionRegistry));
               break;
             }
-            case 50: {
+            case 66: {
               com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare.Builder subBuilder = null;
               if (operationCost_ != null) {
                 subBuilder = operationCost_.toBuilder();
@@ -16696,22 +17089,27 @@ public final class TaskRpcMessage {
 
               break;
             }
-            case 58: {
+            case 74: {
               java.lang.String s = input.readStringRequireUtf8();
 
               calculateContractcode_ = s;
               break;
             }
-            case 66: {
+            case 82: {
               java.lang.String s = input.readStringRequireUtf8();
 
               datasplitContractcode_ = s;
               break;
             }
-            case 74: {
+            case 90: {
               java.lang.String s = input.readStringRequireUtf8();
 
               contractExtraParams_ = s;
+              break;
+            }
+            case 98: {
+
+              sign_ = input.readBytes();
               break;
             }
             default: {
@@ -16801,52 +17199,125 @@ public final class TaskRpcMessage {
       }
     }
 
-    public static final int OWNER_FIELD_NUMBER = 2;
-    private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo owner_;
+    public static final int USER_FIELD_NUMBER = 2;
+    private volatile java.lang.Object user_;
     /**
      * <pre>
-     *  任务发起者 组织信息
+     *  发起任务的用户的信息 (task是属于用户的)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
-     * @return Whether the owner field is set.
+     * <code>string user = 2;</code>
+     * @return The user.
      */
     @java.lang.Override
-    public boolean hasOwner() {
-      return owner_ != null;
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        user_ = s;
+        return s;
+      }
     }
     /**
      * <pre>
-     *  任务发起者 组织信息
+     *  发起任务的用户的信息 (task是属于用户的)
      * </pre>
      *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
-     * @return The owner.
+     * <code>string user = 2;</code>
+     * @return The bytes for user.
      */
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getOwner() {
-      return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : owner_;
-    }
-    /**
-     * <pre>
-     *  任务发起者 组织信息
-     * </pre>
-     *
-     * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
-     */
-    @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-      return getOwner();
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
-    public static final int DATA_SUPPLIER_FIELD_NUMBER = 3;
+    public static final int USER_TYPE_FIELD_NUMBER = 3;
+    private int userType_;
+    /**
+     * <pre>
+     *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 3;</code>
+     * @return The enum numeric value on the wire for userType.
+     */
+    @java.lang.Override public int getUserTypeValue() {
+      return userType_;
+    }
+    /**
+     * <pre>
+     *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 3;</code>
+     * @return The userType.
+     */
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType getUserType() {
+      @SuppressWarnings("deprecation")
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType result = com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.valueOf(userType_);
+      return result == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.UNRECOGNIZED : result;
+    }
+
+    public static final int SENDER_FIELD_NUMBER = 4;
+    private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo sender_;
+    /**
+     * <pre>
+     *  任务发起者 组织信息
+     * </pre>
+     *
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
+     * @return Whether the sender field is set.
+     */
+    @java.lang.Override
+    public boolean hasSender() {
+      return sender_ != null;
+    }
+    /**
+     * <pre>
+     *  任务发起者 组织信息
+     * </pre>
+     *
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
+     * @return The sender.
+     */
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getSender() {
+      return sender_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : sender_;
+    }
+    /**
+     * <pre>
+     *  任务发起者 组织信息
+     * </pre>
+     *
+     * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
+     */
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getSenderOrBuilder() {
+      return getSender();
+    }
+
+    public static final int DATA_SUPPLIER_FIELD_NUMBER = 5;
     private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> dataSupplier_;
     /**
      * <pre>
      *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
      */
     @java.lang.Override
     public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> getDataSupplierList() {
@@ -16857,7 +17328,7 @@ public final class TaskRpcMessage {
      *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> 
@@ -16869,7 +17340,7 @@ public final class TaskRpcMessage {
      *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
      */
     @java.lang.Override
     public int getDataSupplierCount() {
@@ -16880,7 +17351,7 @@ public final class TaskRpcMessage {
      *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getDataSupplier(int index) {
@@ -16891,7 +17362,7 @@ public final class TaskRpcMessage {
      *  任务的数据提供方, 包含发起者和参与方
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+     * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getDataSupplierOrBuilder(
@@ -16899,14 +17370,14 @@ public final class TaskRpcMessage {
       return dataSupplier_.get(index);
     }
 
-    public static final int POWER_PARTY_IDS_FIELD_NUMBER = 4;
+    public static final int POWER_PARTY_IDS_FIELD_NUMBER = 6;
     private com.google.protobuf.LazyStringList powerPartyIds_;
     /**
      * <pre>
      *  算力提供方未来要用的 标签
      * </pre>
      *
-     * <code>repeated string power_party_ids = 4;</code>
+     * <code>repeated string power_party_ids = 6;</code>
      * @return A list containing the powerPartyIds.
      */
     public com.google.protobuf.ProtocolStringList
@@ -16918,7 +17389,7 @@ public final class TaskRpcMessage {
      *  算力提供方未来要用的 标签
      * </pre>
      *
-     * <code>repeated string power_party_ids = 4;</code>
+     * <code>repeated string power_party_ids = 6;</code>
      * @return The count of powerPartyIds.
      */
     public int getPowerPartyIdsCount() {
@@ -16929,7 +17400,7 @@ public final class TaskRpcMessage {
      *  算力提供方未来要用的 标签
      * </pre>
      *
-     * <code>repeated string power_party_ids = 4;</code>
+     * <code>repeated string power_party_ids = 6;</code>
      * @param index The index of the element to return.
      * @return The powerPartyIds at the given index.
      */
@@ -16941,7 +17412,7 @@ public final class TaskRpcMessage {
      *  算力提供方未来要用的 标签
      * </pre>
      *
-     * <code>repeated string power_party_ids = 4;</code>
+     * <code>repeated string power_party_ids = 6;</code>
      * @param index The index of the value to return.
      * @return The bytes of the powerPartyIds at the given index.
      */
@@ -16950,14 +17421,14 @@ public final class TaskRpcMessage {
       return powerPartyIds_.getByteString(index);
     }
 
-    public static final int RECEIVERS_FIELD_NUMBER = 5;
+    public static final int RECEIVERS_FIELD_NUMBER = 7;
     private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare> receivers_;
     /**
      * <pre>
      *  任务结果接受者
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
      */
     @java.lang.Override
     public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare> getReceiversList() {
@@ -16968,7 +17439,7 @@ public final class TaskRpcMessage {
      *  任务结果接受者
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
      */
     @java.lang.Override
     public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclareOrBuilder> 
@@ -16980,7 +17451,7 @@ public final class TaskRpcMessage {
      *  任务结果接受者
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
      */
     @java.lang.Override
     public int getReceiversCount() {
@@ -16991,7 +17462,7 @@ public final class TaskRpcMessage {
      *  任务结果接受者
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare getReceivers(int index) {
@@ -17002,7 +17473,7 @@ public final class TaskRpcMessage {
      *  任务结果接受者
      * </pre>
      *
-     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+     * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclareOrBuilder getReceiversOrBuilder(
@@ -17010,14 +17481,14 @@ public final class TaskRpcMessage {
       return receivers_.get(index);
     }
 
-    public static final int OPERATION_COST_FIELD_NUMBER = 6;
+    public static final int OPERATION_COST_FIELD_NUMBER = 8;
     private com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare operationCost_;
     /**
      * <pre>
      *  任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
      * @return Whether the operationCost field is set.
      */
     @java.lang.Override
@@ -17029,7 +17500,7 @@ public final class TaskRpcMessage {
      *  任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
      * @return The operationCost.
      */
     @java.lang.Override
@@ -17041,21 +17512,21 @@ public final class TaskRpcMessage {
      *  任务所需资源声明
      * </pre>
      *
-     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+     * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclareOrBuilder getOperationCostOrBuilder() {
       return getOperationCost();
     }
 
-    public static final int CALCULATE_CONTRACTCODE_FIELD_NUMBER = 7;
+    public static final int CALCULATE_CONTRACTCODE_FIELD_NUMBER = 9;
     private volatile java.lang.Object calculateContractcode_;
     /**
      * <pre>
      *  计算合约
      * </pre>
      *
-     * <code>string calculate_contractcode = 7;</code>
+     * <code>string calculate_contractcode = 9;</code>
      * @return The calculateContractcode.
      */
     @java.lang.Override
@@ -17076,7 +17547,7 @@ public final class TaskRpcMessage {
      *  计算合约
      * </pre>
      *
-     * <code>string calculate_contractcode = 7;</code>
+     * <code>string calculate_contractcode = 9;</code>
      * @return The bytes for calculateContractcode.
      */
     @java.lang.Override
@@ -17094,14 +17565,14 @@ public final class TaskRpcMessage {
       }
     }
 
-    public static final int DATASPLIT_CONTRACTCODE_FIELD_NUMBER = 8;
+    public static final int DATASPLIT_CONTRACTCODE_FIELD_NUMBER = 10;
     private volatile java.lang.Object datasplitContractcode_;
     /**
      * <pre>
      *  数据分片合约
      * </pre>
      *
-     * <code>string datasplit_contractcode = 8;</code>
+     * <code>string datasplit_contractcode = 10;</code>
      * @return The datasplitContractcode.
      */
     @java.lang.Override
@@ -17122,7 +17593,7 @@ public final class TaskRpcMessage {
      *  数据分片合约
      * </pre>
      *
-     * <code>string datasplit_contractcode = 8;</code>
+     * <code>string datasplit_contractcode = 10;</code>
      * @return The bytes for datasplitContractcode.
      */
     @java.lang.Override
@@ -17140,14 +17611,14 @@ public final class TaskRpcMessage {
       }
     }
 
-    public static final int CONTRACT_EXTRA_PARAMS_FIELD_NUMBER = 9;
+    public static final int CONTRACT_EXTRA_PARAMS_FIELD_NUMBER = 11;
     private volatile java.lang.Object contractExtraParams_;
     /**
      * <pre>
      *  合约调用的额外可变入参 (json 字符串, 根据算法来)
      * </pre>
      *
-     * <code>string contract_extra_params = 9;</code>
+     * <code>string contract_extra_params = 11;</code>
      * @return The contractExtraParams.
      */
     @java.lang.Override
@@ -17168,7 +17639,7 @@ public final class TaskRpcMessage {
      *  合约调用的额外可变入参 (json 字符串, 根据算法来)
      * </pre>
      *
-     * <code>string contract_extra_params = 9;</code>
+     * <code>string contract_extra_params = 11;</code>
      * @return The bytes for contractExtraParams.
      */
     @java.lang.Override
@@ -17184,6 +17655,21 @@ public final class TaskRpcMessage {
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
+    }
+
+    public static final int SIGN_FIELD_NUMBER = 12;
+    private com.google.protobuf.ByteString sign_;
+    /**
+     * <pre>
+     *  发起任务的账户的签名
+     * </pre>
+     *
+     * <code>bytes sign = 12;</code>
+     * @return The sign.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getSign() {
+      return sign_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -17203,29 +17689,38 @@ public final class TaskRpcMessage {
       if (!getTaskNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, taskName_);
       }
-      if (owner_ != null) {
-        output.writeMessage(2, getOwner());
+      if (!getUserBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, user_);
+      }
+      if (userType_ != com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.Unknown.getNumber()) {
+        output.writeEnum(3, userType_);
+      }
+      if (sender_ != null) {
+        output.writeMessage(4, getSender());
       }
       for (int i = 0; i < dataSupplier_.size(); i++) {
-        output.writeMessage(3, dataSupplier_.get(i));
+        output.writeMessage(5, dataSupplier_.get(i));
       }
       for (int i = 0; i < powerPartyIds_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, powerPartyIds_.getRaw(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, powerPartyIds_.getRaw(i));
       }
       for (int i = 0; i < receivers_.size(); i++) {
-        output.writeMessage(5, receivers_.get(i));
+        output.writeMessage(7, receivers_.get(i));
       }
       if (operationCost_ != null) {
-        output.writeMessage(6, getOperationCost());
+        output.writeMessage(8, getOperationCost());
       }
       if (!getCalculateContractcodeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, calculateContractcode_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, calculateContractcode_);
       }
       if (!getDatasplitContractcodeBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, datasplitContractcode_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 10, datasplitContractcode_);
       }
       if (!getContractExtraParamsBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, contractExtraParams_);
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 11, contractExtraParams_);
+      }
+      if (!sign_.isEmpty()) {
+        output.writeBytes(12, sign_);
       }
       unknownFields.writeTo(output);
     }
@@ -17239,13 +17734,20 @@ public final class TaskRpcMessage {
       if (!getTaskNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, taskName_);
       }
-      if (owner_ != null) {
+      if (!getUserBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, user_);
+      }
+      if (userType_ != com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.Unknown.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getOwner());
+          .computeEnumSize(3, userType_);
+      }
+      if (sender_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getSender());
       }
       for (int i = 0; i < dataSupplier_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, dataSupplier_.get(i));
+          .computeMessageSize(5, dataSupplier_.get(i));
       }
       {
         int dataSize = 0;
@@ -17257,20 +17759,24 @@ public final class TaskRpcMessage {
       }
       for (int i = 0; i < receivers_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, receivers_.get(i));
+          .computeMessageSize(7, receivers_.get(i));
       }
       if (operationCost_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, getOperationCost());
+          .computeMessageSize(8, getOperationCost());
       }
       if (!getCalculateContractcodeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, calculateContractcode_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, calculateContractcode_);
       }
       if (!getDatasplitContractcodeBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, datasplitContractcode_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, datasplitContractcode_);
       }
       if (!getContractExtraParamsBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, contractExtraParams_);
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(11, contractExtraParams_);
+      }
+      if (!sign_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, sign_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -17289,10 +17795,13 @@ public final class TaskRpcMessage {
 
       if (!getTaskName()
           .equals(other.getTaskName())) return false;
-      if (hasOwner() != other.hasOwner()) return false;
-      if (hasOwner()) {
-        if (!getOwner()
-            .equals(other.getOwner())) return false;
+      if (!getUser()
+          .equals(other.getUser())) return false;
+      if (userType_ != other.userType_) return false;
+      if (hasSender() != other.hasSender()) return false;
+      if (hasSender()) {
+        if (!getSender()
+            .equals(other.getSender())) return false;
       }
       if (!getDataSupplierList()
           .equals(other.getDataSupplierList())) return false;
@@ -17311,6 +17820,8 @@ public final class TaskRpcMessage {
           .equals(other.getDatasplitContractcode())) return false;
       if (!getContractExtraParams()
           .equals(other.getContractExtraParams())) return false;
+      if (!getSign()
+          .equals(other.getSign())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -17324,9 +17835,13 @@ public final class TaskRpcMessage {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + TASK_NAME_FIELD_NUMBER;
       hash = (53 * hash) + getTaskName().hashCode();
-      if (hasOwner()) {
-        hash = (37 * hash) + OWNER_FIELD_NUMBER;
-        hash = (53 * hash) + getOwner().hashCode();
+      hash = (37 * hash) + USER_FIELD_NUMBER;
+      hash = (53 * hash) + getUser().hashCode();
+      hash = (37 * hash) + USER_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + userType_;
+      if (hasSender()) {
+        hash = (37 * hash) + SENDER_FIELD_NUMBER;
+        hash = (53 * hash) + getSender().hashCode();
       }
       if (getDataSupplierCount() > 0) {
         hash = (37 * hash) + DATA_SUPPLIER_FIELD_NUMBER;
@@ -17350,6 +17865,8 @@ public final class TaskRpcMessage {
       hash = (53 * hash) + getDatasplitContractcode().hashCode();
       hash = (37 * hash) + CONTRACT_EXTRA_PARAMS_FIELD_NUMBER;
       hash = (53 * hash) + getContractExtraParams().hashCode();
+      hash = (37 * hash) + SIGN_FIELD_NUMBER;
+      hash = (53 * hash) + getSign().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -17487,11 +18004,15 @@ public final class TaskRpcMessage {
         super.clear();
         taskName_ = "";
 
-        if (ownerBuilder_ == null) {
-          owner_ = null;
+        user_ = "";
+
+        userType_ = 0;
+
+        if (senderBuilder_ == null) {
+          sender_ = null;
         } else {
-          owner_ = null;
-          ownerBuilder_ = null;
+          sender_ = null;
+          senderBuilder_ = null;
         }
         if (dataSupplierBuilder_ == null) {
           dataSupplier_ = java.util.Collections.emptyList();
@@ -17518,6 +18039,8 @@ public final class TaskRpcMessage {
         datasplitContractcode_ = "";
 
         contractExtraParams_ = "";
+
+        sign_ = com.google.protobuf.ByteString.EMPTY;
 
         return this;
       }
@@ -17547,10 +18070,12 @@ public final class TaskRpcMessage {
         com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.PublishTaskDeclareRequest result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.PublishTaskDeclareRequest(this);
         int from_bitField0_ = bitField0_;
         result.taskName_ = taskName_;
-        if (ownerBuilder_ == null) {
-          result.owner_ = owner_;
+        result.user_ = user_;
+        result.userType_ = userType_;
+        if (senderBuilder_ == null) {
+          result.sender_ = sender_;
         } else {
-          result.owner_ = ownerBuilder_.build();
+          result.sender_ = senderBuilder_.build();
         }
         if (dataSupplierBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
@@ -17583,6 +18108,7 @@ public final class TaskRpcMessage {
         result.calculateContractcode_ = calculateContractcode_;
         result.datasplitContractcode_ = datasplitContractcode_;
         result.contractExtraParams_ = contractExtraParams_;
+        result.sign_ = sign_;
         onBuilt();
         return result;
       }
@@ -17635,8 +18161,15 @@ public final class TaskRpcMessage {
           taskName_ = other.taskName_;
           onChanged();
         }
-        if (other.hasOwner()) {
-          mergeOwner(other.getOwner());
+        if (!other.getUser().isEmpty()) {
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.userType_ != 0) {
+          setUserTypeValue(other.getUserTypeValue());
+        }
+        if (other.hasSender()) {
+          mergeSender(other.getSender());
         }
         if (dataSupplierBuilder_ == null) {
           if (!other.dataSupplier_.isEmpty()) {
@@ -17714,6 +18247,9 @@ public final class TaskRpcMessage {
         if (!other.getContractExtraParams().isEmpty()) {
           contractExtraParams_ = other.contractExtraParams_;
           onChanged();
+        }
+        if (other.getSign() != com.google.protobuf.ByteString.EMPTY) {
+          setSign(other.getSign());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -17841,33 +18377,203 @@ public final class TaskRpcMessage {
         return this;
       }
 
-      private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo owner_;
+      private java.lang.Object user_ = "";
+      /**
+       * <pre>
+       *  发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 2;</code>
+       * @return The user.
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *  发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 2;</code>
+       * @return The bytes for user.
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *  发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 2;</code>
+       * @param value The user to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUser() {
+        
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 2;</code>
+       * @param value The bytes for user to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int userType_ = 0;
+      /**
+       * <pre>
+       *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 3;</code>
+       * @return The enum numeric value on the wire for userType.
+       */
+      @java.lang.Override public int getUserTypeValue() {
+        return userType_;
+      }
+      /**
+       * <pre>
+       *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 3;</code>
+       * @param value The enum numeric value on the wire for userType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTypeValue(int value) {
+        
+        userType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 3;</code>
+       * @return The userType.
+       */
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType getUserType() {
+        @SuppressWarnings("deprecation")
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType result = com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.valueOf(userType_);
+        return result == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 3;</code>
+       * @param value The userType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserType(com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        userType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserType() {
+        
+        userType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo sender_;
       private com.google.protobuf.SingleFieldBuilderV3<
-          com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> ownerBuilder_;
+          com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> senderBuilder_;
       /**
        * <pre>
        *  任务发起者 组织信息
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
-       * @return Whether the owner field is set.
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
+       * @return Whether the sender field is set.
        */
-      public boolean hasOwner() {
-        return ownerBuilder_ != null || owner_ != null;
+      public boolean hasSender() {
+        return senderBuilder_ != null || sender_ != null;
       }
       /**
        * <pre>
        *  任务发起者 组织信息
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
-       * @return The owner.
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
+       * @return The sender.
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getOwner() {
-        if (ownerBuilder_ == null) {
-          return owner_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : owner_;
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo getSender() {
+        if (senderBuilder_ == null) {
+          return sender_ == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : sender_;
         } else {
-          return ownerBuilder_.getMessage();
+          return senderBuilder_.getMessage();
         }
       }
       /**
@@ -17875,17 +18581,17 @@ public final class TaskRpcMessage {
        *  任务发起者 组织信息
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
        */
-      public Builder setOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
+      public Builder setSender(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
+        if (senderBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          owner_ = value;
+          sender_ = value;
           onChanged();
         } else {
-          ownerBuilder_.setMessage(value);
+          senderBuilder_.setMessage(value);
         }
 
         return this;
@@ -17895,15 +18601,15 @@ public final class TaskRpcMessage {
        *  任务发起者 组织信息
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
        */
-      public Builder setOwner(
+      public Builder setSender(
           com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder builderForValue) {
-        if (ownerBuilder_ == null) {
-          owner_ = builderForValue.build();
+        if (senderBuilder_ == null) {
+          sender_ = builderForValue.build();
           onChanged();
         } else {
-          ownerBuilder_.setMessage(builderForValue.build());
+          senderBuilder_.setMessage(builderForValue.build());
         }
 
         return this;
@@ -17913,19 +18619,19 @@ public final class TaskRpcMessage {
        *  任务发起者 组织信息
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
        */
-      public Builder mergeOwner(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
-        if (ownerBuilder_ == null) {
-          if (owner_ != null) {
-            owner_ =
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.newBuilder(owner_).mergeFrom(value).buildPartial();
+      public Builder mergeSender(com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo value) {
+        if (senderBuilder_ == null) {
+          if (sender_ != null) {
+            sender_ =
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.newBuilder(sender_).mergeFrom(value).buildPartial();
           } else {
-            owner_ = value;
+            sender_ = value;
           }
           onChanged();
         } else {
-          ownerBuilder_.mergeFrom(value);
+          senderBuilder_.mergeFrom(value);
         }
 
         return this;
@@ -17935,15 +18641,15 @@ public final class TaskRpcMessage {
        *  任务发起者 组织信息
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
        */
-      public Builder clearOwner() {
-        if (ownerBuilder_ == null) {
-          owner_ = null;
+      public Builder clearSender() {
+        if (senderBuilder_ == null) {
+          sender_ = null;
           onChanged();
         } else {
-          owner_ = null;
-          ownerBuilder_ = null;
+          sender_ = null;
+          senderBuilder_ = null;
         }
 
         return this;
@@ -17953,26 +18659,26 @@ public final class TaskRpcMessage {
        *  任务发起者 组织信息
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder getOwnerBuilder() {
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder getSenderBuilder() {
         
         onChanged();
-        return getOwnerFieldBuilder().getBuilder();
+        return getSenderFieldBuilder().getBuilder();
       }
       /**
        * <pre>
        *  任务发起者 组织信息
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
        */
-      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getOwnerOrBuilder() {
-        if (ownerBuilder_ != null) {
-          return ownerBuilder_.getMessageOrBuilder();
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder getSenderOrBuilder() {
+        if (senderBuilder_ != null) {
+          return senderBuilder_.getMessageOrBuilder();
         } else {
-          return owner_ == null ?
-              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : owner_;
+          return sender_ == null ?
+              com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.getDefaultInstance() : sender_;
         }
       }
       /**
@@ -17980,20 +18686,20 @@ public final class TaskRpcMessage {
        *  任务发起者 组织信息
        * </pre>
        *
-       * <code>.rpcapi.TaskOrganizationIdentityInfo owner = 2;</code>
+       * <code>.rpcapi.TaskOrganizationIdentityInfo sender = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder> 
-          getOwnerFieldBuilder() {
-        if (ownerBuilder_ == null) {
-          ownerBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          getSenderFieldBuilder() {
+        if (senderBuilder_ == null) {
+          senderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfo.Builder, com.platon.rosettanet.admin.grpc.service.CommonMessage.TaskOrganizationIdentityInfoOrBuilder>(
-                  getOwner(),
+                  getSender(),
                   getParentForChildren(),
                   isClean());
-          owner_ = null;
+          sender_ = null;
         }
-        return ownerBuilder_;
+        return senderBuilder_;
       }
 
       private java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> dataSupplier_ =
@@ -18013,7 +18719,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> getDataSupplierList() {
         if (dataSupplierBuilder_ == null) {
@@ -18027,7 +18733,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public int getDataSupplierCount() {
         if (dataSupplierBuilder_ == null) {
@@ -18041,7 +18747,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare getDataSupplier(int index) {
         if (dataSupplierBuilder_ == null) {
@@ -18055,7 +18761,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public Builder setDataSupplier(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare value) {
@@ -18076,7 +18782,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public Builder setDataSupplier(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder builderForValue) {
@@ -18094,7 +18800,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public Builder addDataSupplier(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare value) {
         if (dataSupplierBuilder_ == null) {
@@ -18114,7 +18820,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public Builder addDataSupplier(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare value) {
@@ -18135,7 +18841,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public Builder addDataSupplier(
           com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder builderForValue) {
@@ -18153,7 +18859,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public Builder addDataSupplier(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder builderForValue) {
@@ -18171,7 +18877,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public Builder addAllDataSupplier(
           java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare> values) {
@@ -18190,7 +18896,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public Builder clearDataSupplier() {
         if (dataSupplierBuilder_ == null) {
@@ -18207,7 +18913,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public Builder removeDataSupplier(int index) {
         if (dataSupplierBuilder_ == null) {
@@ -18224,7 +18930,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder getDataSupplierBuilder(
           int index) {
@@ -18235,7 +18941,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder getDataSupplierOrBuilder(
           int index) {
@@ -18249,7 +18955,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclareOrBuilder> 
            getDataSupplierOrBuilderList() {
@@ -18264,7 +18970,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder addDataSupplierBuilder() {
         return getDataSupplierFieldBuilder().addBuilder(
@@ -18275,7 +18981,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder addDataSupplierBuilder(
           int index) {
@@ -18287,7 +18993,7 @@ public final class TaskRpcMessage {
        *  任务的数据提供方, 包含发起者和参与方
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 3;</code>
+       * <code>repeated .rpcapi.TaskDataSupplierDeclare data_supplier = 5;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskDataSupplierDeclare.Builder> 
            getDataSupplierBuilderList() {
@@ -18320,7 +19026,7 @@ public final class TaskRpcMessage {
        *  算力提供方未来要用的 标签
        * </pre>
        *
-       * <code>repeated string power_party_ids = 4;</code>
+       * <code>repeated string power_party_ids = 6;</code>
        * @return A list containing the powerPartyIds.
        */
       public com.google.protobuf.ProtocolStringList
@@ -18332,7 +19038,7 @@ public final class TaskRpcMessage {
        *  算力提供方未来要用的 标签
        * </pre>
        *
-       * <code>repeated string power_party_ids = 4;</code>
+       * <code>repeated string power_party_ids = 6;</code>
        * @return The count of powerPartyIds.
        */
       public int getPowerPartyIdsCount() {
@@ -18343,7 +19049,7 @@ public final class TaskRpcMessage {
        *  算力提供方未来要用的 标签
        * </pre>
        *
-       * <code>repeated string power_party_ids = 4;</code>
+       * <code>repeated string power_party_ids = 6;</code>
        * @param index The index of the element to return.
        * @return The powerPartyIds at the given index.
        */
@@ -18355,7 +19061,7 @@ public final class TaskRpcMessage {
        *  算力提供方未来要用的 标签
        * </pre>
        *
-       * <code>repeated string power_party_ids = 4;</code>
+       * <code>repeated string power_party_ids = 6;</code>
        * @param index The index of the value to return.
        * @return The bytes of the powerPartyIds at the given index.
        */
@@ -18368,7 +19074,7 @@ public final class TaskRpcMessage {
        *  算力提供方未来要用的 标签
        * </pre>
        *
-       * <code>repeated string power_party_ids = 4;</code>
+       * <code>repeated string power_party_ids = 6;</code>
        * @param index The index to set the value at.
        * @param value The powerPartyIds to set.
        * @return This builder for chaining.
@@ -18388,7 +19094,7 @@ public final class TaskRpcMessage {
        *  算力提供方未来要用的 标签
        * </pre>
        *
-       * <code>repeated string power_party_ids = 4;</code>
+       * <code>repeated string power_party_ids = 6;</code>
        * @param value The powerPartyIds to add.
        * @return This builder for chaining.
        */
@@ -18407,7 +19113,7 @@ public final class TaskRpcMessage {
        *  算力提供方未来要用的 标签
        * </pre>
        *
-       * <code>repeated string power_party_ids = 4;</code>
+       * <code>repeated string power_party_ids = 6;</code>
        * @param values The powerPartyIds to add.
        * @return This builder for chaining.
        */
@@ -18424,7 +19130,7 @@ public final class TaskRpcMessage {
        *  算力提供方未来要用的 标签
        * </pre>
        *
-       * <code>repeated string power_party_ids = 4;</code>
+       * <code>repeated string power_party_ids = 6;</code>
        * @return This builder for chaining.
        */
       public Builder clearPowerPartyIds() {
@@ -18438,7 +19144,7 @@ public final class TaskRpcMessage {
        *  算力提供方未来要用的 标签
        * </pre>
        *
-       * <code>repeated string power_party_ids = 4;</code>
+       * <code>repeated string power_party_ids = 6;</code>
        * @param value The bytes of the powerPartyIds to add.
        * @return This builder for chaining.
        */
@@ -18471,7 +19177,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare> getReceiversList() {
         if (receiversBuilder_ == null) {
@@ -18485,7 +19191,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public int getReceiversCount() {
         if (receiversBuilder_ == null) {
@@ -18499,7 +19205,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare getReceivers(int index) {
         if (receiversBuilder_ == null) {
@@ -18513,7 +19219,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public Builder setReceivers(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare value) {
@@ -18534,7 +19240,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public Builder setReceivers(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare.Builder builderForValue) {
@@ -18552,7 +19258,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public Builder addReceivers(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare value) {
         if (receiversBuilder_ == null) {
@@ -18572,7 +19278,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public Builder addReceivers(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare value) {
@@ -18593,7 +19299,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public Builder addReceivers(
           com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare.Builder builderForValue) {
@@ -18611,7 +19317,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public Builder addReceivers(
           int index, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare.Builder builderForValue) {
@@ -18629,7 +19335,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public Builder addAllReceivers(
           java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare> values) {
@@ -18648,7 +19354,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public Builder clearReceivers() {
         if (receiversBuilder_ == null) {
@@ -18665,7 +19371,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public Builder removeReceivers(int index) {
         if (receiversBuilder_ == null) {
@@ -18682,7 +19388,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare.Builder getReceiversBuilder(
           int index) {
@@ -18693,7 +19399,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclareOrBuilder getReceiversOrBuilder(
           int index) {
@@ -18707,7 +19413,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclareOrBuilder> 
            getReceiversOrBuilderList() {
@@ -18722,7 +19428,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare.Builder addReceiversBuilder() {
         return getReceiversFieldBuilder().addBuilder(
@@ -18733,7 +19439,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare.Builder addReceiversBuilder(
           int index) {
@@ -18745,7 +19451,7 @@ public final class TaskRpcMessage {
        *  任务结果接受者
        * </pre>
        *
-       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 5;</code>
+       * <code>repeated .rpcapi.TaskResultReceiverDeclare receivers = 7;</code>
        */
       public java.util.List<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskResultReceiverDeclare.Builder> 
            getReceiversBuilderList() {
@@ -18774,7 +19480,7 @@ public final class TaskRpcMessage {
        *  任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
        * @return Whether the operationCost field is set.
        */
       public boolean hasOperationCost() {
@@ -18785,7 +19491,7 @@ public final class TaskRpcMessage {
        *  任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
        * @return The operationCost.
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare getOperationCost() {
@@ -18800,7 +19506,7 @@ public final class TaskRpcMessage {
        *  任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
        */
       public Builder setOperationCost(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare value) {
         if (operationCostBuilder_ == null) {
@@ -18820,7 +19526,7 @@ public final class TaskRpcMessage {
        *  任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
        */
       public Builder setOperationCost(
           com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare.Builder builderForValue) {
@@ -18838,7 +19544,7 @@ public final class TaskRpcMessage {
        *  任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
        */
       public Builder mergeOperationCost(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare value) {
         if (operationCostBuilder_ == null) {
@@ -18860,7 +19566,7 @@ public final class TaskRpcMessage {
        *  任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
        */
       public Builder clearOperationCost() {
         if (operationCostBuilder_ == null) {
@@ -18878,7 +19584,7 @@ public final class TaskRpcMessage {
        *  任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare.Builder getOperationCostBuilder() {
         
@@ -18890,7 +19596,7 @@ public final class TaskRpcMessage {
        *  任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclareOrBuilder getOperationCostOrBuilder() {
         if (operationCostBuilder_ != null) {
@@ -18905,7 +19611,7 @@ public final class TaskRpcMessage {
        *  任务所需资源声明
        * </pre>
        *
-       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 6;</code>
+       * <code>.rpcapi.TaskOperationCostDeclare operation_cost = 8;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclare.Builder, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TaskOperationCostDeclareOrBuilder> 
@@ -18927,7 +19633,7 @@ public final class TaskRpcMessage {
        *  计算合约
        * </pre>
        *
-       * <code>string calculate_contractcode = 7;</code>
+       * <code>string calculate_contractcode = 9;</code>
        * @return The calculateContractcode.
        */
       public java.lang.String getCalculateContractcode() {
@@ -18947,7 +19653,7 @@ public final class TaskRpcMessage {
        *  计算合约
        * </pre>
        *
-       * <code>string calculate_contractcode = 7;</code>
+       * <code>string calculate_contractcode = 9;</code>
        * @return The bytes for calculateContractcode.
        */
       public com.google.protobuf.ByteString
@@ -18968,7 +19674,7 @@ public final class TaskRpcMessage {
        *  计算合约
        * </pre>
        *
-       * <code>string calculate_contractcode = 7;</code>
+       * <code>string calculate_contractcode = 9;</code>
        * @param value The calculateContractcode to set.
        * @return This builder for chaining.
        */
@@ -18987,7 +19693,7 @@ public final class TaskRpcMessage {
        *  计算合约
        * </pre>
        *
-       * <code>string calculate_contractcode = 7;</code>
+       * <code>string calculate_contractcode = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearCalculateContractcode() {
@@ -19001,7 +19707,7 @@ public final class TaskRpcMessage {
        *  计算合约
        * </pre>
        *
-       * <code>string calculate_contractcode = 7;</code>
+       * <code>string calculate_contractcode = 9;</code>
        * @param value The bytes for calculateContractcode to set.
        * @return This builder for chaining.
        */
@@ -19023,7 +19729,7 @@ public final class TaskRpcMessage {
        *  数据分片合约
        * </pre>
        *
-       * <code>string datasplit_contractcode = 8;</code>
+       * <code>string datasplit_contractcode = 10;</code>
        * @return The datasplitContractcode.
        */
       public java.lang.String getDatasplitContractcode() {
@@ -19043,7 +19749,7 @@ public final class TaskRpcMessage {
        *  数据分片合约
        * </pre>
        *
-       * <code>string datasplit_contractcode = 8;</code>
+       * <code>string datasplit_contractcode = 10;</code>
        * @return The bytes for datasplitContractcode.
        */
       public com.google.protobuf.ByteString
@@ -19064,7 +19770,7 @@ public final class TaskRpcMessage {
        *  数据分片合约
        * </pre>
        *
-       * <code>string datasplit_contractcode = 8;</code>
+       * <code>string datasplit_contractcode = 10;</code>
        * @param value The datasplitContractcode to set.
        * @return This builder for chaining.
        */
@@ -19083,7 +19789,7 @@ public final class TaskRpcMessage {
        *  数据分片合约
        * </pre>
        *
-       * <code>string datasplit_contractcode = 8;</code>
+       * <code>string datasplit_contractcode = 10;</code>
        * @return This builder for chaining.
        */
       public Builder clearDatasplitContractcode() {
@@ -19097,7 +19803,7 @@ public final class TaskRpcMessage {
        *  数据分片合约
        * </pre>
        *
-       * <code>string datasplit_contractcode = 8;</code>
+       * <code>string datasplit_contractcode = 10;</code>
        * @param value The bytes for datasplitContractcode to set.
        * @return This builder for chaining.
        */
@@ -19119,7 +19825,7 @@ public final class TaskRpcMessage {
        *  合约调用的额外可变入参 (json 字符串, 根据算法来)
        * </pre>
        *
-       * <code>string contract_extra_params = 9;</code>
+       * <code>string contract_extra_params = 11;</code>
        * @return The contractExtraParams.
        */
       public java.lang.String getContractExtraParams() {
@@ -19139,7 +19845,7 @@ public final class TaskRpcMessage {
        *  合约调用的额外可变入参 (json 字符串, 根据算法来)
        * </pre>
        *
-       * <code>string contract_extra_params = 9;</code>
+       * <code>string contract_extra_params = 11;</code>
        * @return The bytes for contractExtraParams.
        */
       public com.google.protobuf.ByteString
@@ -19160,7 +19866,7 @@ public final class TaskRpcMessage {
        *  合约调用的额外可变入参 (json 字符串, 根据算法来)
        * </pre>
        *
-       * <code>string contract_extra_params = 9;</code>
+       * <code>string contract_extra_params = 11;</code>
        * @param value The contractExtraParams to set.
        * @return This builder for chaining.
        */
@@ -19179,7 +19885,7 @@ public final class TaskRpcMessage {
        *  合约调用的额外可变入参 (json 字符串, 根据算法来)
        * </pre>
        *
-       * <code>string contract_extra_params = 9;</code>
+       * <code>string contract_extra_params = 11;</code>
        * @return This builder for chaining.
        */
       public Builder clearContractExtraParams() {
@@ -19193,7 +19899,7 @@ public final class TaskRpcMessage {
        *  合约调用的额外可变入参 (json 字符串, 根据算法来)
        * </pre>
        *
-       * <code>string contract_extra_params = 9;</code>
+       * <code>string contract_extra_params = 11;</code>
        * @param value The bytes for contractExtraParams to set.
        * @return This builder for chaining.
        */
@@ -19205,6 +19911,52 @@ public final class TaskRpcMessage {
   checkByteStringIsUtf8(value);
         
         contractExtraParams_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString sign_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       *  发起任务的账户的签名
+       * </pre>
+       *
+       * <code>bytes sign = 12;</code>
+       * @return The sign.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getSign() {
+        return sign_;
+      }
+      /**
+       * <pre>
+       *  发起任务的账户的签名
+       * </pre>
+       *
+       * <code>bytes sign = 12;</code>
+       * @param value The sign to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSign(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        sign_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  发起任务的账户的签名
+       * </pre>
+       *
+       * <code>bytes sign = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSign() {
+        
+        sign_ = getDefaultInstance().getSign();
         onChanged();
         return this;
       }
@@ -20141,26 +20893,1053 @@ public final class TaskRpcMessage {
 
   }
 
+  public interface TerminateTaskRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.TerminateTaskRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     *  发起任务的用户的信息 (task是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The user.
+     */
+    java.lang.String getUser();
+    /**
+     * <pre>
+     *  发起任务的用户的信息 (task是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The bytes for user.
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
+
+    /**
+     * <pre>
+     *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 2;</code>
+     * @return The enum numeric value on the wire for userType.
+     */
+    int getUserTypeValue();
+    /**
+     * <pre>
+     *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 2;</code>
+     * @return The userType.
+     */
+    com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType getUserType();
+
+    /**
+     * <pre>
+     *  任务id
+     * </pre>
+     *
+     * <code>string task_id = 3;</code>
+     * @return The taskId.
+     */
+    java.lang.String getTaskId();
+    /**
+     * <pre>
+     *  任务id
+     * </pre>
+     *
+     * <code>string task_id = 3;</code>
+     * @return The bytes for taskId.
+     */
+    com.google.protobuf.ByteString
+        getTaskIdBytes();
+
+    /**
+     * <pre>
+     *  发起任务的账户的签名
+     * </pre>
+     *
+     * <code>bytes sign = 12;</code>
+     * @return The sign.
+     */
+    com.google.protobuf.ByteString getSign();
+  }
+  /**
+   * Protobuf type {@code rpcapi.TerminateTaskRequest}
+   */
+  public static final class TerminateTaskRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.TerminateTaskRequest)
+      TerminateTaskRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TerminateTaskRequest.newBuilder() to construct.
+    private TerminateTaskRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TerminateTaskRequest() {
+      user_ = "";
+      userType_ = 0;
+      taskId_ = "";
+      sign_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TerminateTaskRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TerminateTaskRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              user_ = s;
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+
+              userType_ = rawValue;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              taskId_ = s;
+              break;
+            }
+            case 98: {
+
+              sign_ = input.readBytes();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TerminateTaskRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TerminateTaskRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.Builder.class);
+    }
+
+    public static final int USER_FIELD_NUMBER = 1;
+    private volatile java.lang.Object user_;
+    /**
+     * <pre>
+     *  发起任务的用户的信息 (task是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The user.
+     */
+    @java.lang.Override
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        user_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *  发起任务的用户的信息 (task是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The bytes for user.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USER_TYPE_FIELD_NUMBER = 2;
+    private int userType_;
+    /**
+     * <pre>
+     *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 2;</code>
+     * @return The enum numeric value on the wire for userType.
+     */
+    @java.lang.Override public int getUserTypeValue() {
+      return userType_;
+    }
+    /**
+     * <pre>
+     *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.rpcapi.UserType user_type = 2;</code>
+     * @return The userType.
+     */
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType getUserType() {
+      @SuppressWarnings("deprecation")
+      com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType result = com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.valueOf(userType_);
+      return result == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.UNRECOGNIZED : result;
+    }
+
+    public static final int TASK_ID_FIELD_NUMBER = 3;
+    private volatile java.lang.Object taskId_;
+    /**
+     * <pre>
+     *  任务id
+     * </pre>
+     *
+     * <code>string task_id = 3;</code>
+     * @return The taskId.
+     */
+    @java.lang.Override
+    public java.lang.String getTaskId() {
+      java.lang.Object ref = taskId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        taskId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     *  任务id
+     * </pre>
+     *
+     * <code>string task_id = 3;</code>
+     * @return The bytes for taskId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTaskIdBytes() {
+      java.lang.Object ref = taskId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        taskId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SIGN_FIELD_NUMBER = 12;
+    private com.google.protobuf.ByteString sign_;
+    /**
+     * <pre>
+     *  发起任务的账户的签名
+     * </pre>
+     *
+     * <code>bytes sign = 12;</code>
+     * @return The sign.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getSign() {
+      return sign_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getUserBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, user_);
+      }
+      if (userType_ != com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.Unknown.getNumber()) {
+        output.writeEnum(2, userType_);
+      }
+      if (!getTaskIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, taskId_);
+      }
+      if (!sign_.isEmpty()) {
+        output.writeBytes(12, sign_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getUserBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, user_);
+      }
+      if (userType_ != com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.Unknown.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, userType_);
+      }
+      if (!getTaskIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, taskId_);
+      }
+      if (!sign_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, sign_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest other = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest) obj;
+
+      if (!getUser()
+          .equals(other.getUser())) return false;
+      if (userType_ != other.userType_) return false;
+      if (!getTaskId()
+          .equals(other.getTaskId())) return false;
+      if (!getSign()
+          .equals(other.getSign())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + USER_FIELD_NUMBER;
+      hash = (53 * hash) + getUser().hashCode();
+      hash = (37 * hash) + USER_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + userType_;
+      hash = (37 * hash) + TASK_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getTaskId().hashCode();
+      hash = (37 * hash) + SIGN_FIELD_NUMBER;
+      hash = (53 * hash) + getSign().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code rpcapi.TerminateTaskRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.TerminateTaskRequest)
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TerminateTaskRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TerminateTaskRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.class, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        user_ = "";
+
+        userType_ = 0;
+
+        taskId_ = "";
+
+        sign_ = com.google.protobuf.ByteString.EMPTY;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.internal_static_rpcapi_TerminateTaskRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest build() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest result = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest(this);
+        result.user_ = user_;
+        result.userType_ = userType_;
+        result.taskId_ = taskId_;
+        result.sign_ = sign_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.getDefaultInstance()) return this;
+        if (!other.getUser().isEmpty()) {
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.userType_ != 0) {
+          setUserTypeValue(other.getUserTypeValue());
+        }
+        if (!other.getTaskId().isEmpty()) {
+          taskId_ = other.taskId_;
+          onChanged();
+        }
+        if (other.getSign() != com.google.protobuf.ByteString.EMPTY) {
+          setSign(other.getSign());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object user_ = "";
+      /**
+       * <pre>
+       *  发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @return The user.
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *  发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @return The bytes for user.
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *  发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @param value The user to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUser() {
+        
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  发起任务的用户的信息 (task是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @param value The bytes for user to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int userType_ = 0;
+      /**
+       * <pre>
+       *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 2;</code>
+       * @return The enum numeric value on the wire for userType.
+       */
+      @java.lang.Override public int getUserTypeValue() {
+        return userType_;
+      }
+      /**
+       * <pre>
+       *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 2;</code>
+       * @param value The enum numeric value on the wire for userType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTypeValue(int value) {
+        
+        userType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 2;</code>
+       * @return The userType.
+       */
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType getUserType() {
+        @SuppressWarnings("deprecation")
+        com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType result = com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.valueOf(userType_);
+        return result == null ? com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 2;</code>
+       * @param value The userType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserType(com.platon.rosettanet.admin.grpc.service.CommonMessage.UserType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        userType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.rpcapi.UserType user_type = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserType() {
+        
+        userType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object taskId_ = "";
+      /**
+       * <pre>
+       *  任务id
+       * </pre>
+       *
+       * <code>string task_id = 3;</code>
+       * @return The taskId.
+       */
+      public java.lang.String getTaskId() {
+        java.lang.Object ref = taskId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          taskId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       *  任务id
+       * </pre>
+       *
+       * <code>string task_id = 3;</code>
+       * @return The bytes for taskId.
+       */
+      public com.google.protobuf.ByteString
+          getTaskIdBytes() {
+        java.lang.Object ref = taskId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          taskId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       *  任务id
+       * </pre>
+       *
+       * <code>string task_id = 3;</code>
+       * @param value The taskId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTaskId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  任务id
+       * </pre>
+       *
+       * <code>string task_id = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTaskId() {
+        
+        taskId_ = getDefaultInstance().getTaskId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  任务id
+       * </pre>
+       *
+       * <code>string task_id = 3;</code>
+       * @param value The bytes for taskId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTaskIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString sign_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       *  发起任务的账户的签名
+       * </pre>
+       *
+       * <code>bytes sign = 12;</code>
+       * @return The sign.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getSign() {
+        return sign_;
+      }
+      /**
+       * <pre>
+       *  发起任务的账户的签名
+       * </pre>
+       *
+       * <code>bytes sign = 12;</code>
+       * @param value The sign to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSign(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        sign_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  发起任务的账户的签名
+       * </pre>
+       *
+       * <code>bytes sign = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSign() {
+        
+        sign_ = getDefaultInstance().getSign();
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.TerminateTaskRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.TerminateTaskRequest)
+    private static final com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<TerminateTaskRequest>
+        PARSER = new com.google.protobuf.AbstractParser<TerminateTaskRequest>() {
+      @java.lang.Override
+      public TerminateTaskRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TerminateTaskRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<TerminateTaskRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TerminateTaskRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_TaskDetailShow_descriptor;
+    internal_static_rpcapi_TaskDetail_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_TaskDetailShow_fieldAccessorTable;
+      internal_static_rpcapi_TaskDetail_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_TaskDataSupplierShow_descriptor;
+    internal_static_rpcapi_TaskDataSupplier_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_TaskDataSupplierShow_fieldAccessorTable;
+      internal_static_rpcapi_TaskDataSupplier_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_TaskPowerSupplierShow_descriptor;
+    internal_static_rpcapi_TaskPowerSupplier_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_TaskPowerSupplierShow_fieldAccessorTable;
+      internal_static_rpcapi_TaskPowerSupplier_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_rpcapi_TaskEventShow_descriptor;
+    internal_static_rpcapi_TaskEvent_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_rpcapi_TaskEventShow_fieldAccessorTable;
+      internal_static_rpcapi_TaskEvent_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_TaskEventDeclare_descriptor;
   private static final 
@@ -20221,6 +22000,11 @@ public final class TaskRpcMessage {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_PublishTaskDeclareResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_TerminateTaskRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_TerminateTaskRequest_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -20232,80 +22016,87 @@ public final class TaskRpcMessage {
     java.lang.String[] descriptorData = {
       "\n\036carrier/api/task_rpc_api.proto\022\006rpcapi" +
       "\032 carrier/api/common_message.proto\032\034goog" +
-      "le/api/annotations.proto\"\311\003\n\016TaskDetailS" +
-      "how\022\017\n\007task_id\030\001 \001(\t\022\021\n\ttask_name\030\002 \001(\t\022" +
-      "3\n\005owner\030\003 \001(\0132$.rpcapi.TaskOrganization" +
-      "IdentityInfo\022;\n\ralgo_supplier\030\004 \001(\0132$.rp" +
-      "capi.TaskOrganizationIdentityInfo\0223\n\rdat" +
-      "a_supplier\030\005 \003(\0132\034.rpcapi.TaskDataSuppli" +
-      "erShow\0225\n\016power_supplier\030\006 \003(\0132\035.rpcapi." +
-      "TaskPowerSupplierShow\0227\n\treceivers\030\007 \003(\013" +
+      "le/api/annotations.proto\"\361\003\n\nTaskDetail\022" +
+      "\017\n\007task_id\030\001 \001(\t\022\021\n\ttask_name\030\002 \001(\t\022\014\n\004u" +
+      "ser\030\003 \001(\t\022#\n\tuser_type\030\004 \001(\0162\020.rpcapi.Us" +
+      "erType\0224\n\006sender\030\005 \001(\0132$.rpcapi.TaskOrga" +
+      "nizationIdentityInfo\022;\n\ralgo_supplier\030\006 " +
+      "\001(\0132$.rpcapi.TaskOrganizationIdentityInf" +
+      "o\022/\n\rdata_supplier\030\007 \003(\0132\030.rpcapi.TaskDa" +
+      "taSupplier\0221\n\016power_supplier\030\010 \003(\0132\031.rpc" +
+      "api.TaskPowerSupplier\0227\n\treceivers\030\t \003(\013" +
       "2$.rpcapi.TaskOrganizationIdentityInfo\022\021" +
-      "\n\tcreate_at\030\010 \001(\004\022\020\n\010start_at\030\t \001(\004\022\016\n\006e" +
-      "nd_at\030\n \001(\004\022\r\n\005state\030\013 \001(\t\0228\n\016operation_" +
-      "cost\030\014 \001(\0132 .rpcapi.TaskOperationCostDec" +
-      "lare\"\177\n\024TaskDataSupplierShow\0229\n\013member_i" +
-      "nfo\030\001 \001(\0132$.rpcapi.TaskOrganizationIdent" +
-      "ityInfo\022\024\n\014meta_data_id\030\002 \001(\t\022\026\n\016meta_da" +
-      "ta_name\030\003 \001(\t\"\206\001\n\025TaskPowerSupplierShow\022" +
-      "9\n\013member_info\030\001 \001(\0132$.rpcapi.TaskOrgani" +
-      "zationIdentityInfo\0222\n\npower_info\030\002 \001(\0132\036" +
-      ".rpcapi.ResourceUsedDetailShow\"\203\001\n\rTaskE" +
-      "ventShow\022\014\n\004type\030\001 \001(\t\022\017\n\007task_id\030\002 \001(\t\022" +
-      "/\n\005owner\030\003 \001(\0132 .rpcapi.OrganizationIden" +
-      "tityInfo\022\017\n\007content\030\004 \001(\t\022\021\n\tcreate_at\030\005" +
-      " \001(\004\"j\n\020TaskEventDeclare\022\014\n\004type\030\001 \001(\t\022\017" +
-      "\n\007task_id\030\002 \001(\t\022\023\n\013identity_id\030\003 \001(\t\022\017\n\007" +
-      "content\030\004 \001(\t\022\021\n\tcreate_at\030\005 \001(\004\"\211\001\n\027Tas" +
-      "kDataSupplierDeclare\0229\n\013member_info\030\001 \001(" +
-      "\0132$.rpcapi.TaskOrganizationIdentityInfo\022" +
-      "3\n\016meta_data_info\030\002 \001(\0132\033.rpcapi.TaskMet" +
-      "aDataDeclare\"F\n\023TaskMetaDataDeclare\022\024\n\014m" +
-      "eta_data_id\030\001 \001(\t\022\031\n\021column_index_list\030\002" +
-      " \003(\004\"\217\001\n\031TaskResultReceiverDeclare\0229\n\013me" +
-      "mber_info\030\001 \001(\0132$.rpcapi.TaskOrganizatio" +
-      "nIdentityInfo\0227\n\tproviders\030\002 \003(\0132$.rpcap" +
-      "i.TaskOrganizationIdentityInfo\"n\n\030TaskOp" +
-      "erationCostDeclare\022\020\n\010cost_mem\030\001 \001(\004\022\026\n\016" +
-      "cost_processor\030\002 \001(\004\022\026\n\016cost_bandwidth\030\003" +
-      " \001(\004\022\020\n\010duration\030\004 \001(\004\"R\n\025GetTaskDetailR" +
-      "esponse\022+\n\013information\030\001 \001(\0132\026.rpcapi.Ta" +
-      "skDetailShow\022\014\n\004role\030\002 \001(\t\"j\n\031GetTaskDet" +
-      "ailListResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002" +
-      " \001(\t\0220\n\ttask_list\030\003 \003(\0132\035.rpcapi.GetTask" +
-      "DetailResponse\"*\n\027GetTaskEventListReques" +
-      "t\022\017\n\007task_id\030\001 \001(\t\"4\n GetTaskEventListBy" +
-      "TaskIdsRequest\022\020\n\010task_ids\030\001 \003(\t\"g\n\030GetT" +
-      "askEventListResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003" +
-      "msg\030\002 \001(\t\022.\n\017task_event_list\030\003 \003(\0132\025.rpc" +
-      "api.TaskEventShow\"\203\003\n\031PublishTaskDeclare" +
-      "Request\022\021\n\ttask_name\030\001 \001(\t\0223\n\005owner\030\002 \001(" +
-      "\0132$.rpcapi.TaskOrganizationIdentityInfo\022" +
-      "6\n\rdata_supplier\030\003 \003(\0132\037.rpcapi.TaskData" +
-      "SupplierDeclare\022\027\n\017power_party_ids\030\004 \003(\t" +
-      "\0224\n\treceivers\030\005 \003(\0132!.rpcapi.TaskResultR" +
-      "eceiverDeclare\0228\n\016operation_cost\030\006 \001(\0132 " +
-      ".rpcapi.TaskOperationCostDeclare\022\036\n\026calc" +
-      "ulate_contractcode\030\007 \001(\t\022\036\n\026datasplit_co" +
-      "ntractcode\030\010 \001(\t\022\035\n\025contract_extra_param" +
-      "s\030\t \001(\t\"J\n\032PublishTaskDeclareResponse\022\016\n" +
+      "\n\tcreate_at\030\n \001(\004\022\020\n\010start_at\030\013 \001(\004\022\016\n\006e" +
+      "nd_at\030\014 \001(\004\022\r\n\005state\030\r \001(\t\0228\n\016operation_" +
+      "cost\030\016 \001(\0132 .rpcapi.TaskOperationCostDec" +
+      "lare\"{\n\020TaskDataSupplier\0229\n\013member_info\030" +
+      "\001 \001(\0132$.rpcapi.TaskOrganizationIdentityI" +
+      "nfo\022\024\n\014meta_data_id\030\002 \001(\t\022\026\n\016meta_data_n" +
+      "ame\030\003 \001(\t\"~\n\021TaskPowerSupplier\0229\n\013member" +
+      "_info\030\001 \001(\0132$.rpcapi.TaskOrganizationIde" +
+      "ntityInfo\022.\n\npower_info\030\002 \001(\0132\032.rpcapi.R" +
+      "esourceUsedDetail\"\177\n\tTaskEvent\022\014\n\004type\030\001" +
+      " \001(\t\022\017\n\007task_id\030\002 \001(\t\022/\n\005owner\030\003 \001(\0132 .r" +
+      "pcapi.OrganizationIdentityInfo\022\017\n\007conten" +
+      "t\030\004 \001(\t\022\021\n\tcreate_at\030\005 \001(\004\"j\n\020TaskEventD" +
+      "eclare\022\014\n\004type\030\001 \001(\t\022\017\n\007task_id\030\002 \001(\t\022\023\n" +
+      "\013identity_id\030\003 \001(\t\022\017\n\007content\030\004 \001(\t\022\021\n\tc" +
+      "reate_at\030\005 \001(\004\"\211\001\n\027TaskDataSupplierDecla" +
+      "re\0229\n\013member_info\030\001 \001(\0132$.rpcapi.TaskOrg" +
+      "anizationIdentityInfo\0223\n\016meta_data_info\030" +
+      "\002 \001(\0132\033.rpcapi.TaskMetaDataDeclare\"F\n\023Ta" +
+      "skMetaDataDeclare\022\024\n\014meta_data_id\030\001 \001(\t\022" +
+      "\031\n\021column_index_list\030\002 \003(\004\"\217\001\n\031TaskResul" +
+      "tReceiverDeclare\0229\n\013member_info\030\001 \001(\0132$." +
+      "rpcapi.TaskOrganizationIdentityInfo\0227\n\tp" +
+      "roviders\030\002 \003(\0132$.rpcapi.TaskOrganization" +
+      "IdentityInfo\"n\n\030TaskOperationCostDeclare" +
+      "\022\020\n\010cost_mem\030\001 \001(\004\022\026\n\016cost_processor\030\002 \001" +
+      "(\004\022\026\n\016cost_bandwidth\030\003 \001(\004\022\020\n\010duration\030\004" +
+      " \001(\004\"N\n\025GetTaskDetailResponse\022\'\n\013informa" +
+      "tion\030\001 \001(\0132\022.rpcapi.TaskDetail\022\014\n\004role\030\002" +
+      " \001(\t\"j\n\031GetTaskDetailListResponse\022\016\n\006sta" +
+      "tus\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0220\n\ttask_list\030\003 \003(" +
+      "\0132\035.rpcapi.GetTaskDetailResponse\"*\n\027GetT" +
+      "askEventListRequest\022\017\n\007task_id\030\001 \001(\t\"4\n " +
+      "GetTaskEventListByTaskIdsRequest\022\020\n\010task" +
+      "_ids\030\001 \003(\t\"c\n\030GetTaskEventListResponse\022\016" +
+      "\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022*\n\017task_even" +
+      "t_list\030\003 \003(\0132\021.rpcapi.TaskEvent\"\305\003\n\031Publ" +
+      "ishTaskDeclareRequest\022\021\n\ttask_name\030\001 \001(\t" +
+      "\022\014\n\004user\030\002 \001(\t\022#\n\tuser_type\030\003 \001(\0162\020.rpca" +
+      "pi.UserType\0224\n\006sender\030\004 \001(\0132$.rpcapi.Tas" +
+      "kOrganizationIdentityInfo\0226\n\rdata_suppli" +
+      "er\030\005 \003(\0132\037.rpcapi.TaskDataSupplierDeclar" +
+      "e\022\027\n\017power_party_ids\030\006 \003(\t\0224\n\treceivers\030" +
+      "\007 \003(\0132!.rpcapi.TaskResultReceiverDeclare" +
+      "\0228\n\016operation_cost\030\010 \001(\0132 .rpcapi.TaskOp" +
+      "erationCostDeclare\022\036\n\026calculate_contract" +
+      "code\030\t \001(\t\022\036\n\026datasplit_contractcode\030\n \001" +
+      "(\t\022\035\n\025contract_extra_params\030\013 \001(\t\022\014\n\004sig" +
+      "n\030\014 \001(\014\"J\n\032PublishTaskDeclareResponse\022\016\n" +
       "\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022\017\n\007task_id\030\003 " +
-      "\001(\t2\232\004\n\013TaskService\022p\n\021GetTaskDetailList" +
-      "\022\026.rpcapi.EmptyGetParams\032!.rpcapi.GetTas" +
-      "kDetailListResponse\" \202\323\344\223\002\032\"\025/carrier/v1" +
-      "/task/list:\001*\022|\n\020GetTaskEventList\022\037.rpca" +
-      "pi.GetTaskEventListRequest\032 .rpcapi.GetT" +
-      "askEventListResponse\"%\202\323\344\223\002\037\"\032/carrier/v" +
-      "1/task/eventList:\001*\022\227\001\n\031GetTaskEventList" +
-      "ByTaskIds\022(.rpcapi.GetTaskEventListByTas" +
-      "kIdsRequest\032 .rpcapi.GetTaskEventListRes" +
-      "ponse\".\202\323\344\223\002(\"#/carrier/v1/task/eventLis" +
-      "tByTaskIds:\001*\022\200\001\n\022PublishTaskDeclare\022!.r" +
-      "pcapi.PublishTaskDeclareRequest\032\".rpcapi" +
-      ".PublishTaskDeclareResponse\"#\202\323\344\223\002\035\"\030/ca" +
-      "rrier/v1/task/publish:\001*B:\n(com.platon.r" +
-      "osettanet.admin.grpc.serviceB\016TaskRpcMes" +
-      "sageb\006proto3"
+      "\001(\t\"h\n\024TerminateTaskRequest\022\014\n\004user\030\001 \001(" +
+      "\t\022#\n\tuser_type\030\002 \001(\0162\020.rpcapi.UserType\022\017" +
+      "\n\007task_id\030\003 \001(\t\022\014\n\004sign\030\014 \001(\0142\214\005\n\013TaskSe" +
+      "rvice\022p\n\021GetTaskDetailList\022\026.rpcapi.Empt" +
+      "yGetParams\032!.rpcapi.GetTaskDetailListRes" +
+      "ponse\" \202\323\344\223\002\032\"\025/carrier/v1/task/list:\001*\022" +
+      "|\n\020GetTaskEventList\022\037.rpcapi.GetTaskEven" +
+      "tListRequest\032 .rpcapi.GetTaskEventListRe" +
+      "sponse\"%\202\323\344\223\002\037\"\032/carrier/v1/task/eventLi" +
+      "st:\001*\022\227\001\n\031GetTaskEventListByTaskIds\022(.rp" +
+      "capi.GetTaskEventListByTaskIdsRequest\032 ." +
+      "rpcapi.GetTaskEventListResponse\".\202\323\344\223\002(\"" +
+      "#/carrier/v1/task/eventListByTaskIds:\001*\022" +
+      "\200\001\n\022PublishTaskDeclare\022!.rpcapi.PublishT" +
+      "askDeclareRequest\032\".rpcapi.PublishTaskDe" +
+      "clareResponse\"#\202\323\344\223\002\035\"\030/carrier/v1/task/" +
+      "publish:\001*\022p\n\rTerminateTask\022\034.rpcapi.Ter" +
+      "minateTaskRequest\032\032.rpcapi.SimpleRespons" +
+      "eCode\"%\202\323\344\223\002\037\"\032/carrier/v1/task/terminat" +
+      "e:\001*B:\n(com.platon.rosettanet.admin.grpc" +
+      ".serviceB\016TaskRpcMessageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -20313,29 +22104,29 @@ public final class TaskRpcMessage {
           com.platon.rosettanet.admin.grpc.service.CommonMessage.getDescriptor(),
           com.platon.rosettanet.admin.grpc.service.AnnotationsProto.getDescriptor(),
         });
-    internal_static_rpcapi_TaskDetailShow_descriptor =
+    internal_static_rpcapi_TaskDetail_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_rpcapi_TaskDetailShow_fieldAccessorTable = new
+    internal_static_rpcapi_TaskDetail_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_TaskDetailShow_descriptor,
-        new java.lang.String[] { "TaskId", "TaskName", "Owner", "AlgoSupplier", "DataSupplier", "PowerSupplier", "Receivers", "CreateAt", "StartAt", "EndAt", "State", "OperationCost", });
-    internal_static_rpcapi_TaskDataSupplierShow_descriptor =
+        internal_static_rpcapi_TaskDetail_descriptor,
+        new java.lang.String[] { "TaskId", "TaskName", "User", "UserType", "Sender", "AlgoSupplier", "DataSupplier", "PowerSupplier", "Receivers", "CreateAt", "StartAt", "EndAt", "State", "OperationCost", });
+    internal_static_rpcapi_TaskDataSupplier_descriptor =
       getDescriptor().getMessageTypes().get(1);
-    internal_static_rpcapi_TaskDataSupplierShow_fieldAccessorTable = new
+    internal_static_rpcapi_TaskDataSupplier_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_TaskDataSupplierShow_descriptor,
+        internal_static_rpcapi_TaskDataSupplier_descriptor,
         new java.lang.String[] { "MemberInfo", "MetaDataId", "MetaDataName", });
-    internal_static_rpcapi_TaskPowerSupplierShow_descriptor =
+    internal_static_rpcapi_TaskPowerSupplier_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_rpcapi_TaskPowerSupplierShow_fieldAccessorTable = new
+    internal_static_rpcapi_TaskPowerSupplier_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_TaskPowerSupplierShow_descriptor,
+        internal_static_rpcapi_TaskPowerSupplier_descriptor,
         new java.lang.String[] { "MemberInfo", "PowerInfo", });
-    internal_static_rpcapi_TaskEventShow_descriptor =
+    internal_static_rpcapi_TaskEvent_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_rpcapi_TaskEventShow_fieldAccessorTable = new
+    internal_static_rpcapi_TaskEvent_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_rpcapi_TaskEventShow_descriptor,
+        internal_static_rpcapi_TaskEvent_descriptor,
         new java.lang.String[] { "Type", "TaskId", "Owner", "Content", "CreateAt", });
     internal_static_rpcapi_TaskEventDeclare_descriptor =
       getDescriptor().getMessageTypes().get(4);
@@ -20402,13 +22193,19 @@ public final class TaskRpcMessage {
     internal_static_rpcapi_PublishTaskDeclareRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_PublishTaskDeclareRequest_descriptor,
-        new java.lang.String[] { "TaskName", "Owner", "DataSupplier", "PowerPartyIds", "Receivers", "OperationCost", "CalculateContractcode", "DatasplitContractcode", "ContractExtraParams", });
+        new java.lang.String[] { "TaskName", "User", "UserType", "Sender", "DataSupplier", "PowerPartyIds", "Receivers", "OperationCost", "CalculateContractcode", "DatasplitContractcode", "ContractExtraParams", "Sign", });
     internal_static_rpcapi_PublishTaskDeclareResponse_descriptor =
       getDescriptor().getMessageTypes().get(15);
     internal_static_rpcapi_PublishTaskDeclareResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_PublishTaskDeclareResponse_descriptor,
         new java.lang.String[] { "Status", "Msg", "TaskId", });
+    internal_static_rpcapi_TerminateTaskRequest_descriptor =
+      getDescriptor().getMessageTypes().get(16);
+    internal_static_rpcapi_TerminateTaskRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_TerminateTaskRequest_descriptor,
+        new java.lang.String[] { "User", "UserType", "TaskId", "Sign", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();
     registry.add(com.platon.rosettanet.admin.grpc.service.AnnotationsProto.http);
