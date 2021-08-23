@@ -166,21 +166,26 @@ CREATE TABLE `local_meta_data_column` (
 DROP TABLE IF EXISTS `local_data_auth`;
 CREATE TABLE `local_data_auth` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `auth_id` varchar(256) NOT NULL COMMENT '元数据授权申请Id',
   `meta_data_id` varchar(256) NOT NULL COMMENT '元数据ID',
-  `owner_identity_id` varchar(256) DEFAULT NULL COMMENT '授权发起方身份标识',
-  `owner_identity_name` varchar(256) DEFAULT NULL COMMENT '授权发起方名称',
-  `auth_type` int(4) DEFAULT NULL COMMENT '授权方式(1：时间，2：次数)',
-  `auth_value_amount` int(100) DEFAULT '0' COMMENT '授权值(以授权次数)',
-  `auth_value_start_at` datetime DEFAULT NULL COMMENT '授权值开始时间',
-  `auth_value_end_at` datetime DEFAULT NULL COMMENT '授权值结束时间',
+  `apply_user` varchar(256) DEFAULT NULL COMMENT '发起任务的用户的信息 (task是属于用户的)',
+  `user_type` int(4) DEFAULT '0' COMMENT '发起任务用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)',
+  `auth_type` int(4) DEFAULT '0' COMMENT '授权方式(0：未定义，1：时间，2：次数)',
+  `auth_value_amount` int(100) DEFAULT '0' COMMENT '授权值(以授权次数)，auth_type = 2使用此字段',
+  `auth_value_start_at` datetime DEFAULT NULL COMMENT '授权值开始时间，auth_type = 1使用此字段',
+  `auth_value_end_at` datetime DEFAULT NULL COMMENT '授权值结束时间，auth_type = 1使用此字段',
   `create_at` datetime DEFAULT NULL COMMENT '授权申请发起时间',
   `auth_at` datetime DEFAULT NULL COMMENT '授权数据时间',
-  `status` int(4) DEFAULT '3' COMMENT '授权数据状态：1:同意， 2:拒绝 ，3:待授权',
+  `status` int(4) DEFAULT '0' COMMENT '授权数据状态：0：等待授权审核，1:同意， 2:拒绝 ',
+  `identity_name` varchar(256) DEFAULT NULL COMMENT '元数据所属的组织信息，组织名称',
+  `identity_id` varchar(256) DEFAULT NULL COMMENT '元数据所属的组织信息,组织的身份标识Id',
+  `identity_node_id` varchar(256) DEFAULT NULL COMMENT '组织中调度服务的 nodeId',
   `rec_create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_meta_data_id` (`meta_data_id`) USING BTREE COMMENT '元数据ID唯一'
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='本组织申请授权数据表';
+
 
 -- ----------------------------
 -- Table structure for local_seed_node
@@ -358,13 +363,15 @@ CREATE TABLE `task` (
   `task_Id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID',
   `task_Name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务名称',
   `owner_Identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务发起方身份',
+  `apply_use` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发起任务的用户的信息 (task是属于用户的)',
+  `user_type` int(4) DEFAULT '0' COMMENT '发起任务用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)',
   `create_At` datetime DEFAULT NULL COMMENT '任务发起时间',
   `start_At` datetime DEFAULT NULL COMMENT '任务启动时间',
   `auth_At` datetime DEFAULT NULL COMMENT '任务授权时间',
   `auth_Status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务授权状态: pending:等待授权、denied:授权未通过',
   `end_At` datetime DEFAULT NULL COMMENT '任务结束时间',
   `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务状态 pending: 等在中; running: 计算中; failed: 失败; success: 成功)',
-  `role` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方)',
+  `role` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方; algoSupplier:算法提供方)',
   `duration` datetime DEFAULT NULL COMMENT '任务声明计算时间',
   `cost_core` int(11) DEFAULT '0' COMMENT '任务声明所需CPU',
   `cost_Memory` bigint(20) DEFAULT '0' COMMENT '任务声明所需内存',
@@ -375,7 +382,7 @@ CREATE TABLE `task` (
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `taskID` (`task_Id`) USING BTREE COMMENT 'task_id唯一'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='全网任务表 用于同步本地任务数据以及全网的相关数据';
+) ENGINE=InnoDB AUTO_INCREMENT=38841 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='全网任务表 用于同步本地任务数据以及全网的相关数据';
 
 -- ----------------------------
 -- Table structure for task_data_provider
