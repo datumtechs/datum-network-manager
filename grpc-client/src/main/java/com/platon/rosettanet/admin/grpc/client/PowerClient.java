@@ -97,7 +97,7 @@ public class PowerClient {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.DeleteRegisteredNodeRequest joinRequest = CommonMessage.DeleteRegisteredNodeRequest.newBuilder()
+            YarnRpcMessage.DeleteRegisteredNodeRequest joinRequest = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder()
                     .setId(powerNodeId).build();
             //3.调用rpc,获取response
             simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
@@ -258,7 +258,7 @@ public class PowerClient {
     //                uint64 total_bandwidth = 6;       // 服务的总带宽数 (单位: bps)
     //                uint64 used_bandwidth  = 7;        // 服务的已用带宽数 (单位: bps)
     //            }
-                CommonMessage.ResourceUsedDetailShow information = powerDetail.getInformation();// 算力实况
+                CommonMessage.ResourceUsedDetail information = powerDetail.getInformation();// 算力实况
                 GlobalPower globalPower = new GlobalPower();
                 globalPower.setIdentityId(identityId);
                 globalPower.setOrgName(orgName);

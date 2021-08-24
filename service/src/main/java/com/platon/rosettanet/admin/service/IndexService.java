@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.service;
 
 import com.github.pagehelper.Page;
+import com.platon.rosettanet.admin.dao.dto.UsedResourceDTO;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 

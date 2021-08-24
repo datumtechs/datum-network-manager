@@ -30,11 +30,11 @@
 <!--  </select>-->
 
   <!-- 查询总占用资源 -->
-  <select id="queryUsedTotalResource" resultType="java.util.HashMap">
+  <select id="queryUsedTotalResource" resultType="com.platon.rosettanet.admin.dao.dto.UsedResourceDTO">
     select
-        sum(usedCore) as usedCore,
-        sum(usedMemory) as usedMemory,
-        sum(usedBandwidth) as usedBandwidth,
+        sum(used_core) as usedCore,
+        sum(used_memory) as usedMemory,
+        sum(used_bandwidth) as usedBandwidth,
         sum(memory) as totalMemory,
         sum(core) as totalCore,
         sum(bandwidth) as totalBandwidth

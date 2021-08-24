@@ -18,4 +18,10 @@
     from sys_user
     where user_name = #{userName} and `password` = #{password}
   </select>
+
+  <!-- 修改机构识别名称 -->
+  <select id="updateOrgName">
+    UPDATE local_org SET name = #{identityName, jdbcType=VARCHAR} where identity_id = #{identityId, jdbcType=VARCHAR}
+  </select>
+
 </mapper>

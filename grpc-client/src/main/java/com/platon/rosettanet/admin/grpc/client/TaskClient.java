@@ -105,12 +105,12 @@ public class TaskClient {
             if(taskEventListResponse != null){
                 taskEventDataResp.setStatus(taskEventListResponse.getStatus());
                 taskEventDataResp.setMsg(taskEventListResponse.getMsg());
-                List<TaskRpcMessage.TaskEventShow> taskEventShowList = taskEventListResponse.getTaskEventListList();
+                List<TaskRpcMessage.TaskEvent> taskEventShowList = taskEventListResponse.getTaskEventListList();
 
                 if(GrpcConstant.GRPC_SUCCESS_CODE == taskEventListResponse.getStatus()){
                     List<TaskEvent> taskEventList = new ArrayList<>();
                     //构造taskEvent集合
-                    for (TaskRpcMessage.TaskEventShow taskEvenShow : taskEventShowList) {
+                    for (TaskRpcMessage.TaskEvent taskEvenShow : taskEventShowList) {
                             TaskEvent taskEvent = new TaskEvent();
                             taskEvent.setTaskId(taskEvenShow.getTaskId());
                             taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt()/1000,0, ZoneOffset.ofHours(8)));
@@ -144,14 +144,14 @@ public class TaskClient {
 
         List<Task> taskList = new ArrayList<>();
         for (int i = 0; i < taskDetailList.size(); i++) {
-            TaskRpcMessage.TaskDetailShow  taskDetail = taskDetailList.get(i).getInformation();
+            TaskRpcMessage.TaskDetail  taskDetail = taskDetailList.get(i).getInformation();
             String role = taskDetailList.get(i).getRole();
             String taskId =  taskDetail.getTaskId();
             String taskName =  taskDetail.getTaskName();
-            CommonMessage.TaskOrganizationIdentityInfo owner = taskDetail.getOwner();
+            CommonMessage.TaskOrganizationIdentityInfo owner = taskDetail.getSender();
             CommonMessage.TaskOrganizationIdentityInfo algoSupplier = taskDetail.getAlgoSupplier();
-            List<TaskRpcMessage.TaskDataSupplierShow> dataSupplierList = taskDetail.getDataSupplierList();
-            List<TaskRpcMessage.TaskPowerSupplierShow> powerSupplierList = taskDetail.getPowerSupplierList();
+            List<TaskRpcMessage.TaskDataSupplier> dataSupplierList = taskDetail.getDataSupplierList();
+            List<TaskRpcMessage.TaskPowerSupplier> powerSupplierList = taskDetail.getPowerSupplierList();
             List<CommonMessage.TaskOrganizationIdentityInfo> receiverList = taskDetail.getReceiversList();
             Long createAt = taskDetail.getCreateAt();
             Long startAt = taskDetail.getStartAt();
@@ -192,7 +192,7 @@ public class TaskClient {
 
             //数据提供方dataSupplierList
             List<TaskDataReceiver> taskDataReceiverList = new ArrayList<>();
-            for (TaskRpcMessage.TaskDataSupplierShow dataSupplier : dataSupplierList) {
+            for (TaskRpcMessage.TaskDataSupplier dataSupplier : dataSupplierList) {
                 TaskDataReceiver receiver = new TaskDataReceiver();
                 receiver.setTaskId(taskId);
                 receiver.setMetaDataId(dataSupplier.getMetaDataId());
@@ -205,7 +205,7 @@ public class TaskClient {
 
             //算力提供方powerSupplierList
             List<TaskPowerProvider> taskPowerProviderList = new ArrayList<>();
-            for (TaskRpcMessage.TaskPowerSupplierShow taskPowerSupplierShow : powerSupplierList) {
+            for (TaskRpcMessage.TaskPowerSupplier taskPowerSupplierShow : powerSupplierList) {
                 TaskPowerProvider powerProvider = new TaskPowerProvider();
                 powerProvider.setTaskId(taskId);
                 powerProvider.setIdentityId(taskPowerSupplierShow.getMemberInfo().getIdentityId());

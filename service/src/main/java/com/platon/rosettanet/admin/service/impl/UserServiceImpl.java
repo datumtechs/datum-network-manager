@@ -68,4 +68,10 @@ public class UserServiceImpl implements UserService {
         }
         return sysUser.getId().toString();
     }
+
+    @Override
+    public void updateOrgName(String identityId, String identityName) {
+        sysUserMapper.updateOrgName(identityId, identityName);
+    }
+
 }

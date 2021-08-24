@@ -70,7 +70,7 @@ public class MetaDataClient {
            /* if(StrUtil.isNotBlank(fileDetail.getRemarks())){
                 summaryBuilder.setDesc(fileDetail.getRemarks());
             }*/
-            MetaDataRpcMessage.MetaDataDetailShow.Builder builder = MetaDataRpcMessage.MetaDataDetailShow
+            MetaDataRpcMessage.MetaDataDetail.Builder builder = MetaDataRpcMessage.MetaDataDetail
                     .newBuilder()
                     .setMetaDataSummary(summaryBuilder.build());
             //2.3构建文件元数据列信息
@@ -96,11 +96,10 @@ public class MetaDataClient {
                 builder.addColumnMeta(columnDetailBuilder.build());
             }
             //2.4收集完成文件信息
-            MetaDataRpcMessage.MetaDataDetailShow metaDataDetail = builder.build();
+            MetaDataRpcMessage.MetaDataDetail metaDataDetail = builder.build();
             //2.5构建完整的请求信息
             MetaDataRpcMessage.PublishMetaDataRequest request = MetaDataRpcMessage.PublishMetaDataRequest
                     .newBuilder()
-                    .setOwner(orgInfo)
                     .setInformation(metaDataDetail)
                     .build();
             //3.调用rpc,获取response
@@ -136,7 +135,6 @@ public class MetaDataClient {
                     .build();
             MetaDataRpcMessage.RevokeMetaDataRequest request = MetaDataRpcMessage.RevokeMetaDataRequest
                     .newBuilder()
-                    .setOwner(orgInfo)
                     .setMetaDataId(metaDataId)
                     .build();
             //3.调用rpc,获取response
@@ -180,7 +178,7 @@ public class MetaDataClient {
                         detail.setIdentityId(identityId);
                         detail.setOrgName(orgName);
                         //元文件详情主体
-                        MetaDataRpcMessage.MetaDataDetailShow information = metaData.getInformation();
+                        MetaDataRpcMessage.MetaDataDetail information = metaData.getInformation();
                         //            string meta_data_id = 1;           // 元数据Id
                         //            string origin_id    = 2;              // 源文件Id
                         //            string table_name   = 3;             // 元数据名称 (表名)

@@ -6,11 +6,13 @@ import com.platon.rosettanet.admin.constant.ControllerConstants;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.UserLoginReq;
 import com.platon.rosettanet.admin.dto.req.UserApplyOrgIdentityReq;
+import com.platon.rosettanet.admin.dto.req.index.OrgNameReq;
 import com.platon.rosettanet.admin.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,7 @@ import javax.servlet.http.HttpSession;
 @Api(tags = "用户登录相关接口")
 @RestController
 @RequestMapping("/api/v1/system/user/")
+@Slf4j
 public class UserController {
 
     @Resource
@@ -119,4 +122,17 @@ public class UserController {
         session.setAttribute(ControllerConstants.VERIFICATION_CODE,String.valueOf(code));
         return JsonResponse.success(String.valueOf(code));
     }
+
+    @ApiOperation(value = "修改机构识别名称", response = JsonResponse.class)
+    @GetMapping("/updateOrgName")
+    public JsonResponse updateOrgName(@RequestBody @Validated OrgNameReq orgNameReq){
+        try {
+            userService.updateOrgName(orgNameReq.getIdentityId(), orgNameReq.getIdentityName());
+            return JsonResponse.success("修改成功！");
+        } catch (Exception e) {
+            log.error("updateOrgName--修改机构识别名称失败, 错误信息:{}", e);
+            return JsonResponse.fail("修改失败！");
+        }
+    }
+
 }

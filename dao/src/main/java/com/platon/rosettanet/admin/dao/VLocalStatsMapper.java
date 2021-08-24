@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.dao;
 
+import com.platon.rosettanet.admin.dao.dto.UsedResourceDTO;
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface VLocalStatsMapper {
      * 查询总计算资源占用情况
      * @return
      */
-    Map queryUsedTotalResource();
+    UsedResourceDTO queryUsedTotalResource();
 
     /**
      * 查询我发布的数据

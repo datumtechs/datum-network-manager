@@ -96,7 +96,7 @@ public class SeedClient {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.DeleteRegisteredNodeRequest seedRequest = CommonMessage.DeleteRegisteredNodeRequest.newBuilder()
+            YarnRpcMessage.DeleteRegisteredNodeRequest seedRequest = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder()
                     .setId(seedNodeId)
                     .build();
             //3.调用rpc,获取response

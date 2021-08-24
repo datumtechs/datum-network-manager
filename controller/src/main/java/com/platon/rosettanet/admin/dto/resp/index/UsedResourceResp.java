@@ -12,22 +12,13 @@ import lombok.Data;
 @ApiModel(value = "资源占用概况响应参数")
 public class UsedResourceResp {
 
-    @ApiModelProperty(value = "总核数")
-    private Integer totalCore;
+    @ApiModelProperty(value = "使用核数占比")
+    private String usedCore;
 
-    @ApiModelProperty(value = "总内存")
-    private Long totalMemory;
+    @ApiModelProperty(value = "使用内存占比")
+    private String usedMemory;
 
-    @ApiModelProperty(value = "总带宽")
-    private Long totalBandwidth;
-
-    @ApiModelProperty(value = "已使用核数")
-    private Integer usedCore;
-
-    @ApiModelProperty(value = "已使用内存")
-    private Long usedMemory;
-
-    @ApiModelProperty(value = "已使用带宽")
-    private Long usedBandwidth;
+    @ApiModelProperty(value = "使用带宽占比")
+    private String usedBandwidth;
 
 }

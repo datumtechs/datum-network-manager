@@ -135,7 +135,7 @@ public class PowerNodeRefreshTask {
     /** 判断当前时间是否是整点, 是则保存计算节点历史数据信息，否不保存数据 */
     private List<LocalPowerHistory> savePowerHistory(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerHistory> localPowerHistoryList){
         // 算力实况
-        CommonMessage.ResourceUsedDetailShow resourceUsedDetailShow = detail.getInformation();
+        CommonMessage.ResourceUsedDetail resourceUsedDetailShow = detail.getInformation();
         if(System.currentTimeMillis() % ServiceConstant.int_3600000 < ServiceConstant.int_60000){
             LocalPowerHistory localPowerHistory = new LocalPowerHistory();
             // 计算节点id
@@ -174,7 +174,7 @@ public class PowerNodeRefreshTask {
     /** 保存当前节点算力信息 */
     private List<LocalPowerNode> saveLocalPowerNode(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerNode> localPowerNodeList ){
         // 算力实况
-        CommonMessage.ResourceUsedDetailShow resourceUsedDetailShow = detail.getInformation();
+        CommonMessage.ResourceUsedDetail resourceUsedDetailShow = detail.getInformation();
         // 保存计算节点算力信息开始
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(detail.getJobNodeId());

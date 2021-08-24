@@ -83,7 +83,7 @@ public class TaskClientTest {
             System.out.println("########### request:" + request);
 
 
-            TaskRpcMessage.TaskDetailShow taskDetailShow = TaskRpcMessage.TaskDetailShow.newBuilder()
+            TaskRpcMessage.TaskDetail taskDetailShow = TaskRpcMessage.TaskDetail.newBuilder()
                                                                .setTaskId("001")
                                                                .setTaskName("taskName")
                                                                .build();

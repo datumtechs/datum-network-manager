@@ -61,10 +61,6 @@ public class IndexController {
 //        return JsonResponse.success(respList);
 //    }
 
-    /**
-     * 查询总计算资源占用情况
-     * @return
-     */
     @ApiOperation(value = "查询总计算资源占用情况", response = UsedResourceResp.class)
     @GetMapping("/queryUsedTotalResource")
     public JsonResponse<UsedResourceResp> queryUsedTotalResource(){
@@ -73,10 +69,7 @@ public class IndexController {
         BeanUtils.copyProperties(map, usedResourceResp);
         return JsonResponse.success(usedResourceResp);
     }
-    /**
-     * 查询我发布的数据
-     * @return
-     */
+
     @ApiOperation(value = "查询我发布的数据")
     @GetMapping("/queryMyPublishData")
     public JsonResponse<MyPublishDataResp> queryMyPublishData(){
@@ -86,10 +79,6 @@ public class IndexController {
         return JsonResponse.success(myPublishDataResp);
     }
 
-    /**
-     * 查询我的计算任务概况
-     * @return
-     */
     @ApiOperation(value = "查询我的计算任务概况")
     @GetMapping("/queryMyPowerTaskStats")
     public JsonResponse<MyTaskStatsResp> queryMyPowerTaskStats(){
@@ -99,10 +88,6 @@ public class IndexController {
         return JsonResponse.success(myTaskStatsResp);
     }
 
-    /**
-     * 查询全网数据或算力总量走势
-     * @return
-     */
     @ApiOperation(value = "查询全网数据或算力总量走势", response = WholeNetDataResp.class)
     @PostMapping("/queryWholeNetDateAndPower")
     public JsonResponse<WholeNetDataResp> queryWholeNetDateAndPower(@Validated @RequestBody WholeNetDataReq wholeNetDataReq){
@@ -112,10 +97,6 @@ public class IndexController {
         return JsonResponse.success(wholeNetDataResp);
     }
 
-    /**
-     * 查询全网数据总量环比
-     * @return
-     */
     @ApiOperation(value = "查询全网数据总量环比", response = WholeNetDataResp.class)
     @GetMapping("/queryWholeNetDateRatio")
     public JsonResponse<WholeNetDataResp> queryWholeNetDateRatio(){

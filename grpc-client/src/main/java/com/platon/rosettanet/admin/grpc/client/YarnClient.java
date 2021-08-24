@@ -125,7 +125,7 @@ public class YarnClient {
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.DeleteRegisteredNodeRequest request = CommonMessage.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
+            YarnRpcMessage.DeleteRegisteredNodeRequest request = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
             log.info("调用删除数据节点调度服务,参数:{}",request);
             //3.调用rpc,获取response
             CommonMessage.SimpleResponseCode simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
@@ -314,7 +314,6 @@ public class YarnClient {
              */
             YarnRpcMessage.YarnNodeInfo information = nodeInfo.getInformation();
             resp.setNodeId(information.getNodeId());
-            resp.setNodeType(information.getNodeType());
             resp.setInternalIp(information.getInternalIp());
             resp.setInternalPort(information.getInternalPort());
             resp.setExternalIp(information.getExternalIp());
