@@ -1,9 +1,12 @@
 package com.platon.rosettanet.admin.controller.system;
 
+import com.platon.rosettanet.admin.dao.dto.UsedResourceDTO;
 import com.platon.rosettanet.admin.dto.JsonResponse;
+import com.platon.rosettanet.admin.dto.req.index.DataAndPowerReq;
 import com.platon.rosettanet.admin.dto.req.index.WholeNetDataReq;
 import com.platon.rosettanet.admin.dto.resp.index.*;
 import com.platon.rosettanet.admin.service.IndexService;
+import com.platon.rosettanet.admin.util.ConvertUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -11,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,22 +65,21 @@ public class IndexController {
 //        return JsonResponse.success(respList);
 //    }
 
-    @ApiOperation(value = "查询总计算资源占用情况", response = UsedResourceResp.class)
+    @ApiOperation(value = "查询总计算资源占用情况")
     @GetMapping("/queryUsedTotalResource")
     public JsonResponse<UsedResourceResp> queryUsedTotalResource(){
-        UsedResourceResp usedResourceResp = new UsedResourceResp();
-        Map<String, Object> map = indexService.queryUsedTotalResource();
-        BeanUtils.copyProperties(map, usedResourceResp);
+        UsedResourceDTO usedResourceDTO = indexService.queryUsedTotalResource();
+        UsedResourceResp usedResourceResp = (UsedResourceResp)ConvertUtil.ConvertToResp(
+                usedResourceDTO, new UsedResourceResp());
         return JsonResponse.success(usedResourceResp);
     }
 
-    @ApiOperation(value = "查询我发布的数据")
-    @GetMapping("/queryMyPublishData")
-    public JsonResponse<MyPublishDataResp> queryMyPublishData(){
+    @ApiOperation(value = "查询我发布的数据或算力")
+    @PostMapping("/queryPublishDataOrPower")
+    public JsonResponse<MyPublishDataResp> queryPublishDataAndPower(@RequestBody @Validated DataAndPowerReq dataAndPowerReq){
         MyPublishDataResp myPublishDataResp = new MyPublishDataResp();
-        Map<String, Object> map = indexService.queryMyPublishData();
-        BeanUtils.copyProperties(map, myPublishDataResp);
-        return JsonResponse.success(myPublishDataResp);
+        List<Long> dataPowerList = indexService.queryPublishDataOrPower(dataAndPowerReq.getFlag());
+        return JsonResponse.success(dataPowerList);
     }
 
     @ApiOperation(value = "查询我的计算任务概况")

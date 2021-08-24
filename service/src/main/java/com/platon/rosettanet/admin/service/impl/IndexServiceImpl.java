@@ -45,32 +45,40 @@ public class IndexServiceImpl implements IndexService {
 //    }
 
     @Override
-    public Map<String, Object> queryUsedTotalResource() {
-        Map<String, Object> map = new HashMap<>(4);
+    public UsedResourceDTO queryUsedTotalResource() {
+//        Map<String, Object> map = new HashMap<>(4);
         UsedResourceDTO usedResourceDTO  = localStatsMapper.queryUsedTotalResource();
-        if (null != usedResourceDTO) {
-            // 计算核数
-            BigDecimal usedCore = new BigDecimal(3 * 100)
-                    .divide(new BigDecimal(usedResourceDTO.getTotalCore()), 0, BigDecimal.ROUND_HALF_UP);
-            // 计算内存
-            BigDecimal usedMemory = new BigDecimal(usedResourceDTO.getUsedMemory() * 100)
-                    .divide(new BigDecimal(usedResourceDTO.getTotalMemory()), 0, BigDecimal.ROUND_HALF_UP)
-                    .divide(new BigDecimal(1024 * 1024 * 1024));
-            // 计算带宽
-            BigDecimal usedBandwidth = new BigDecimal(34444 * 100)
-                    .divide(new BigDecimal(usedResourceDTO.getTotalBandwidth()), 0, BigDecimal.ROUND_HALF_UP)
-                    .divide(new BigDecimal(1000 * 1000));
-
-            map.put("usedCore", usedCore + "%");
-            map.put("usedMemory", usedMemory + "%" );
-            map.put("usedBandwidth", usedBandwidth + "%" );
-        }
-        return map;
+//        if (null != usedResourceDTO) {
+//            // 计算核数
+//            BigDecimal usedCore = new BigDecimal(3 * 100)
+//                    .divide(new BigDecimal(usedResourceDTO.getTotalCore()), 0, BigDecimal.ROUND_HALF_UP);
+//            // 计算内存
+//            BigDecimal usedMemory = new BigDecimal(usedResourceDTO.getUsedMemory() * 100)
+//                    .divide(new BigDecimal(usedResourceDTO.getTotalMemory()), 0, BigDecimal.ROUND_HALF_UP)
+//                    .divide(new BigDecimal(1024 * 1024 * 1024));
+//            // 计算带宽
+//            BigDecimal usedBandwidth = new BigDecimal(34444 * 100)
+//                    .divide(new BigDecimal(usedResourceDTO.getTotalBandwidth()), 0, BigDecimal.ROUND_HALF_UP)
+//                    .divide(new BigDecimal(1000 * 1000));
+//
+//            map.put("usedCore", usedCore + "%");
+//            map.put("usedMemory", usedMemory + "%" );
+//            map.put("usedBandwidth", usedBandwidth + "%" );
+//        }
+        return usedResourceDTO;
     }
 
     @Override
-    public Map<String, Object> queryMyPublishData() {
-        return localStatsMapper.queryMyPublishData();
+    public List<Long> queryPublishDataOrPower(String flag) {
+        // 数据
+        if (ServiceConstant.constant_1.equals(flag)) {
+            return localStatsMapper.queryMyPublishData();
+        }
+        // 算力
+        if (ServiceConstant.constant_2.equals(flag)) {
+            return localStatsMapper.queryMyPublishPower();
+        }
+        return null;
     }
 
     @Override

@@ -43,22 +43,30 @@
   </select>
 
   <!-- 查询我发布的数据 -->
-  <select id="queryMyPublishData" resultType="java.util.HashMap">
+  <select id="queryMyPublishData" resultType="java.lang.Long">
     select
-        publish_time as publishTime,
-        sum(dateFile.size) / (1024 * 1024) as sizeTotal
-    from
-        (select
-            size as size,
-            DATE_FORMAT(publish_time,'%Y-%m') as publish_time,
-            rec_create_time as createTime
-        from
-            local_meta_data
-        where
-            status = 'released') dateFile
-    group by dateFile.publish_time
-    order by dateFile.publish_time desc
-    limit 6
+        IFNULL(sum(b.size), 0) as totalSize
+        <!--IFNULL(sum(b.size), 0) / (1024 * 1024 * 1024) as totalSize -->
+   from
+       v_past_12_month a left join local_meta_data b
+       on a.months =  DATE_FORMAT(b.publish_time,'%Y-%m')
+       and b.status = 'released'
+   group by a.months
+   order by a.months desc
+  </select>
+
+  <!-- 查询我发布的算力 -->
+  <select id="queryMyPublishPower" resultType="java.lang.Long">
+      select
+          IFNULL(sum(b.memory), 0) as totalMemory
+          <!-- IFNULL(sum(b.memory), 0) / (1024 * 1024 * 1024) as totalMemory -->
+      from
+          v_past_12_month a left join local_power_node b
+          on a.months =  DATE_FORMAT(b.start_time,'%Y-%m')
+          and b.power_status = 'release'
+          and b.conn_status != '-1'
+      group by a.months
+      order by a.months desc
   </select>
 
   <!-- 查询我的计算任务概况 -->

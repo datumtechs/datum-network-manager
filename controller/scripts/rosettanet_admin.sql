@@ -458,3 +458,21 @@ CREATE TABLE `task_result_consumer` (
 -- ----------------------------
 DROP VIEW IF EXISTS `v_local_stats`;
 CREATE VIEW `v_local_stats` AS select `carriernode`.`carrier_conn_status` AS `carrier_conn_Status`,`datanode`.`data_node_count` AS `data_node_count`,`powernode`.`power_node_count` AS `power_node_count`,`powerstats`.`total_core` AS `total_core`,`powerstats`.`total_memory` AS `total_memory`,`powerstats`.`total_bandwidth` AS `total_bandwidth`,`powerstats`.`used_core` AS `used_core`,`powerstats`.`used_memory` AS `used_memory`,`powerstats`.`used_bandwidth` AS `used_bandwidth`,`releasedfile`.`released_data_file_count` AS `released_data_file_count`,`unreleasedfile`.`unreleased_data_file_count` AS `unreleased_data_file_count`,`runingtask`.`task_count` AS `task_count` from ((((((((select `local_org`.`carrier_conn_status` AS `carrier_conn_status` from `local_org`)) `carriernode` join (select count(`local_data_node`.`id`) AS `data_node_count` from `local_data_node`) `datanode`) join (select count(`local_power_node`.`id`) AS `power_node_count` from `local_power_node`) `powernode`) join (select sum(`local_power_node`.`core`) AS `total_core`,sum(`local_power_node`.`memory`) AS `total_memory`,sum(`local_power_node`.`bandwidth`) AS `total_bandwidth`,sum(`local_power_node`.`used_core`) AS `used_core`,sum(`local_power_node`.`used_memory`) AS `used_memory`,sum(`local_power_node`.`used_bandwidth`) AS `used_bandwidth` from `local_power_node`) `powerstats`) join (select count(`local_data_file`.`id`) AS `released_data_file_count` from `local_data_file` where (`local_data_file`.`status` = 'released')) `releasedfile`) join (select count(`local_data_file`.`id`) AS `unreleased_data_file_count` from `local_data_file` where (`local_data_file`.`status` <> 'released')) `unreleasedfile`) join (select count(1) AS `task_count` from (select count(`local_power_join_task`.`task_id`) AS `task_count` from `local_power_join_task` group by `local_power_join_task`.`task_id`) `t`) `runingtask`) ;
+
+-- ----------------------------
+-- View structure for v_past_12_month
+-- ----------------------------
+drop view if exists v_past_12_month;
+CREATE VIEW `v_past_12_month` AS
+    SELECT DATE_FORMAT(CURDATE(), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 1 MONTH), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 2 MONTH), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 3 MONTH), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 4 MONTH), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 5 MONTH), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 6 MONTH), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 7 MONTH), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 8 MONTH), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 9 MONTH), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 10 MONTH), '%Y-%m') AS `months`
+    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 11 MONTH), '%Y-%m') AS `months`;

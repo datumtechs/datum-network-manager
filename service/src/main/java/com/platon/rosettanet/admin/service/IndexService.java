@@ -31,13 +31,14 @@ public interface IndexService {
      * 查询总计算资源占用情况
      * @return
      */
-    Map<String, Object> queryUsedTotalResource();
+    UsedResourceDTO queryUsedTotalResource();
 
     /**
-     * 查询我发布的数据
+     * 查询我发布的数据和算力
+     * @param flag 请求标志
      * @return
      */
-    Map<String, Object> queryMyPublishData();
+    List<Long> queryPublishDataOrPower(String flag);
 
     /**
      * 查询我的计算任务概况

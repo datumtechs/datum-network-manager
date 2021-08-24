@@ -20,7 +20,13 @@ public interface VLocalStatsMapper {
      * 查询我发布的数据
      * @return
      */
-    Map queryMyPublishData();
+    List<Long> queryMyPublishData();
+
+    /**
+     * 查询我发布的算力
+     * @return
+     */
+    List<Long> queryMyPublishPower();
 
     /**
      * 查询我的计算任务概况
