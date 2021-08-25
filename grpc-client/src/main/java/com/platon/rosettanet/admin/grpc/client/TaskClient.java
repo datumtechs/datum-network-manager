@@ -148,6 +148,8 @@ public class TaskClient {
             String role = taskDetailList.get(i).getRole();
             String taskId =  taskDetail.getTaskId();
             String taskName =  taskDetail.getTaskName();
+            String applyUser = taskDetail.getUser();
+            CommonMessage.UserType userType = taskDetail.getUserType();
             CommonMessage.TaskOrganizationIdentityInfo owner = taskDetail.getSender();
             CommonMessage.TaskOrganizationIdentityInfo algoSupplier = taskDetail.getAlgoSupplier();
             List<TaskRpcMessage.TaskDataSupplier> dataSupplierList = taskDetail.getDataSupplierList();
@@ -175,6 +177,9 @@ public class TaskClient {
             task.setCostMemory(operationCost.getCostMem());
             task.setCostBandwidth(operationCost.getCostBandwidth());
             task.setDuration(LocalDateTime.ofEpochSecond(operationCost.getDuration()/1000,0, ZoneOffset.ofHours(8)));
+            task.setApplyUser(applyUser);
+            task.setUserType(userType.getNumber());
+
 
             //任务发起发owner
             TaskOrg ownerData = new TaskOrg();

@@ -286,6 +286,8 @@ public class LocalDataServiceImpl implements LocalDataService {
         }
         LocalMetaData localMetaData = localMetaDataMapper.selectByFileId(localDataFile.getFileId());
         List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByMetaId(localMetaData.getId());
+        List<String> taskIdList = taskDataReceiverMapper.selectTaskByMetaDataId(localMetaData.getMetaDataId());
+
         LocalDataFileDetail detail = new LocalDataFileDetail();
         BeanUtils.copyProperties(localDataFile,detail);
         detail.setLocalMetaDataColumnList(columnList);
@@ -295,6 +297,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         dynamicFields.put(ServiceConstant.LOCAL_DATA_METADATA_ID, localMetaData.getMetaDataId());
         dynamicFields.put(ServiceConstant.LOCAL_DATA_REMARKS, localMetaData.getRemarks());
         dynamicFields.put(ServiceConstant.LOCAL_DATA_INDUSTRY, localMetaData.getIndustry());
+        dynamicFields.put(ServiceConstant.LOCAL_DATA_ATTEND_TASK_COUNT, CollectionUtils.isEmpty(taskIdList) ? 0 : taskIdList.size());
         detail.setDynamicFields(dynamicFields);
         return detail;
     }

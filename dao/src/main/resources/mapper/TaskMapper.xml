@@ -6,6 +6,8 @@
     <result column="task_Id" jdbcType="VARCHAR" property="taskId" />
     <result column="task_Name" jdbcType="VARCHAR" property="taskName" />
     <result column="owner_Identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
+    <result column="apply_use" jdbcType="VARCHAR" property="applyUser" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
     <result column="create_At" jdbcType="TIMESTAMP" property="createAt" />
     <result column="start_At" jdbcType="TIMESTAMP" property="startAt" />
     <result column="auth_At" jdbcType="TIMESTAMP" property="authAt" />
@@ -23,7 +25,7 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, task_Id, task_Name, owner_Identity_id, create_At, start_At, auth_At, auth_Status, end_At,
+    id, task_Id, task_Name, owner_Identity_id, apply_use, user_type, create_At, start_At, auth_At, auth_Status, end_At,
     `status`, `role`, duration, cost_core, cost_Memory, cost_Bandwidth, alg_Identity_id, reviewed,
     rec_create_time, rec_update_time
   </sql>
@@ -159,12 +161,14 @@
   </delete>
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
     insert into task (task_Id, task_Name, owner_Identity_id,
+      apply_use, user_type,
       create_At, start_At, auth_At, 
       auth_Status, end_At, status, 
       duration, cost_core, cost_Memory, 
       cost_Bandwidth, alg_Identity_id, reviewed, 
       rec_create_time, rec_update_time)
     values (#{taskId,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR},
+      #{applyUse,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER},
       #{createAt,jdbcType=TIMESTAMP}, #{startAt,jdbcType=TIMESTAMP}, #{authAt,jdbcType=TIMESTAMP}, 
       #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
       #{duration,jdbcType=TIMESTAMP}, #{costCore,jdbcType=INTEGER}, #{costMemory,jdbcType=BIGINT}, 
@@ -175,6 +179,7 @@
 
   <insert id="insertBatch" parameterType="java.util.List">
     replace into task (task_Id, task_Name, owner_Identity_id,
+    apply_use, user_type,
     create_At, start_At, auth_At,
     auth_Status, end_At, status, role,
     duration, cost_core, cost_Memory,
@@ -183,6 +188,7 @@
     values
     <foreach collection ="list" item="item" index="index" separator=",">
       (#{item.taskId,jdbcType=VARCHAR}, #{item.taskName,jdbcType=VARCHAR}, #{item.ownerIdentityId,jdbcType=VARCHAR},
+      #{item.applyUse,jdbcType=VARCHAR}, #{item.userType,jdbcType=INTEGER},
       #{item.createAt,jdbcType=TIMESTAMP}, #{item.startAt,jdbcType=TIMESTAMP}, #{item.authAt,jdbcType=TIMESTAMP},
       #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=VARCHAR}, #{item.role,jdbcType=VARCHAR},
       #{item.duration,jdbcType=TIMESTAMP}, #{item.costCore,jdbcType=INTEGER}, #{item.costMemory,jdbcType=BIGINT},
@@ -206,6 +212,12 @@
       </if>
       <if test="ownerIdentityId != null">
         owner_Identity_id,
+      </if>
+      <if test="applyUse != null">
+        apply_use,
+      </if>
+      <if test="userType != null">
+        user_type,
       </if>
       <if test="createAt != null">
         create_At,
@@ -260,6 +272,12 @@
       <if test="ownerIdentityId != null">
         #{ownerIdentityId,jdbcType=VARCHAR},
       </if>
+      <if test="applyUse != null">
+        #{applyUse,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
+      </if>
       <if test="createAt != null">
         #{createAt,jdbcType=TIMESTAMP},
       </if>
@@ -313,6 +331,12 @@
       <if test="ownerIdentityId != null">
         owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
       </if>
+      <if test="applyUse != null">
+       apply_user =  #{applyUse,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
       <if test="createAt != null">
         create_At = #{createAt,jdbcType=TIMESTAMP},
       </if>
@@ -362,6 +386,8 @@
     update task
     set task_Name = #{taskName,jdbcType=VARCHAR},
       owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
+      apply_user =  #{applyUse,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=INTEGER},
       create_At = #{createAt,jdbcType=TIMESTAMP},
       start_At = #{startAt,jdbcType=TIMESTAMP},
       auth_At = #{authAt,jdbcType=TIMESTAMP},
@@ -395,6 +421,8 @@
       update task
       set task_Name = #{taskName,jdbcType=VARCHAR},
       owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
+      apply_user =  #{applyUse,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=INTEGER},
       create_At = #{createAt,jdbcType=TIMESTAMP},
       start_At = #{startAt,jdbcType=TIMESTAMP},
       auth_At = #{authAt,jdbcType=TIMESTAMP},

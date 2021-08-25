@@ -70,12 +70,14 @@ public class LocalDataAuthDetailResp {
     public static class DataAuth{
         @ApiModelProperty(name = "id", value = "序号")
         private Integer id;
+        @ApiModelProperty(name = "authId", value = "元数据授权申请Id")
+        private String authId;
         @ApiModelProperty(name = "metaDataId", value = "元数据ID")
         private String metaDataId;
-        @ApiModelProperty(name = "ownerIdentityId", value = "授权发起方身份标识")
-        private String ownerIdentityId;
-        @ApiModelProperty(name = "ownerIdentityName", value = "授权发起方名称")
-        private String ownerIdentityName;
+        @ApiModelProperty(name = "applyUser", value = "发起任务的用户的信息 (task是属于用户的)")
+        private String applyUser;
+        @ApiModelProperty(name = "userType", value = "发起任务用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)")
+        private Integer userType;
         @ApiModelProperty(name = "fileName", value = "源文件名称")
         private String fileName;
         @ApiModelProperty(name = "resourceName", value = "数据名称")

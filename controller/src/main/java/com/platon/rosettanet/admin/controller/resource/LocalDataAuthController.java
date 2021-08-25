@@ -40,8 +40,9 @@ public class LocalDataAuthController {
     @ApiOperation(value = "授权数据列表分页查询")
     @PostMapping("authDataList")
     public JsonResponse<List<LocalDataAuthPageResp>> page(@RequestBody @Validated AuthPageReq req){
-        if(req.getStatus() != DtoAuthStatusEnum.AUTH_UNFINISH.getStatus() && req.getStatus() != DtoAuthStatusEnum.AUTH_FINISH.getStatus()){
-            throw new ServiceException("授权状态有误，请核对必须为1:待授权数据， 2:已授权数据");
+        if(req.getStatus() != DtoAuthStatusEnum.AUTH_UNDEFINED.getStatus() && req.getStatus() != DtoAuthStatusEnum.AUTH_UNFINISH.getStatus() &&
+           req.getStatus() != DtoAuthStatusEnum.AUTH_FINISH.getStatus()){
+            throw new ServiceException("入参授权状态有误，请核对必须为0：未定义，1:待授权数据，2:已授权数据");
         }
         Page<LocalDataAuth> localDataAuthPage = localDataAuthService.listLocalDataAuth(req.getPageNumber(), req.getPageSize(), req.getStatus(), req.getKeyWord());
         List<LocalDataAuthPageResp> localDataAuthPageList = localDataAuthPage.getResult().stream().map(LocalDataAuthPageResp::from).collect(Collectors.toList());

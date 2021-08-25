@@ -41,6 +41,10 @@ public class TaskDataDetailResp {
     private Long costMemory;
     @ApiModelProperty(name = "costBandwidth",value = "任务所需的带宽资源 (单位: bps)")
     private Long costBandwidth;
+    @ApiModelProperty(name = "applyUser",value = "任务发起的账户")
+    private String applyUser;
+    @ApiModelProperty(name = "userType",value = "发起任务用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)")
+    private Integer userType;
     @ApiModelProperty(name = "reviewed",value = "任务是否被查看过，默认为false(0)")
     private Boolean reviewed;
     @ApiModelProperty(name = "role",value = "我在任务中的角色 (0: 未定义; 1: 发起方; 2: 数据提供方; 3: 计算参与方; 4: 结果提供方)")
@@ -73,6 +77,8 @@ public class TaskDataDetailResp {
         resp.setCostBandwidth(task.getCostBandwidth());
         resp.setCostCore(task.getCostCore());
         resp.setCostMemory(task.getCostMemory());
+        resp.setApplyUser(task.getApplyUser());
+        resp.setUserType(task.getUserType());
         resp.setCreateAt(task.getCreateAt() == null ? null : task.getCreateAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
         resp.setDuration(task.getDuration() == null ? null : task.getDuration().toInstant(ZoneOffset.of("+8")).toEpochMilli());
         resp.setStartAt(task.getStartAt() == null ? null : task.getStartAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
