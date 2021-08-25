@@ -70,47 +70,37 @@
   </select>
 
   <!-- 查询我的计算任务概况 -->
-  <select id="queryMyPowerTaskStats" resultType="java.util.HashMap">
+  <select id="queryMyCalculateTaskStats" resultType="java.util.HashMap">
     select
-       status as status,
-       count(status) as statusCount
+        status as status,
+        count(status) as statusCount
     from
         task
     group by status
   </select>
 
   <!-- 查询全网数据总量走势 -->
-  <select id="queryWholeNetDateTrend" resultType="java.util.HashMap">
-     select
-        publish_time as time,
-        sum(dateFile.size) / (1024 * 1024) as total
+  <select id="queryWholeNetDateTrend" resultType="java.lang.Long">
+    select
+        IFNULL(sum(b.size), 0) as totalSize
+        <!-- IFNULL(sum(b.size), 0) / (1024 * 1024 * 1024) as totalSize -->
     from
-        (select
-            size as size,
-            DATE_FORMAT(publish_time,'%Y-%m-%d') as publish_time
-        from
-            global_data_file
-        where
-            status = 'released') dateFile
-    group by dateFile.publish_time
-    order by dateFile.publish_time desc
-    limit 30
+        v_past_12_month a left join global_data_file b
+        on a.months =  DATE_FORMAT(b.publish_time,'%Y-%m')
+        and b.status = 'released'
+    group by a.months
+    order by a.months desc
   </select>
   <!-- 查询全网算力总量走势 -->
-  <select id="queryWholeNetPowerTrend" resultType="java.util.HashMap">
+  <select id="queryWholeNetPowerTrend" resultType="java.lang.Long">
     select
-        sum(dateFile.used_Memory) / (1024 * 1024) as total
+        IFNULL(sum(b.total_Memory), 0) as total_Memory
+        <!-- IFNULL(sum(b.total_Memory), 0) / (1024 * 1024 * 1024) as total_Memory -->
     from
-        (select
-            used_Memory as used_Memory,
-            DATE_FORMAT(rec_update_time,'%Y-%m-%d') as update_time
-        from
-            global_power
-        where
-            status = 'released') dateFile
-    group by dateFile.update_time
-    order by dateFile.update_time desc
-    limit 30
+        v_past_12_month a left join global_power b
+        on a.months =  DATE_FORMAT(b.rec_update_time,'%Y-%m')
+    group by a.months
+    order by a.months desc
   </select>
 
   <!-- 查询全网数据总量周环比-->

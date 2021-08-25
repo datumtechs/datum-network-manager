@@ -16,6 +16,6 @@ public class MyTaskStatsResp {
     private String status;
 
     @ApiModelProperty(value = "状态数量")
-    private Long statusCount;
+    private Integer statusCount;
 
 }

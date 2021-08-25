@@ -44,14 +44,14 @@ public interface IndexService {
      * 查询我的计算任务概况
      * @return
      */
-    Map<String, Object> queryMyPowerTaskStats();
+    List<Map<String, Object>> queryMyCalculateTaskStats();
 
     /**
      * 查询全网数据或算力总量走势
      * @param flag
      * @return
      */
-    Map<String, Object> queryWholeNetDateAndPower(String flag);
+    List<Long> queryWholeNetDateOrPower(String flag);
 
     /**
      * 查询全网数据总量环比

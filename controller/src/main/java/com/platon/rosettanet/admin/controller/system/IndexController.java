@@ -9,11 +9,13 @@ import com.platon.rosettanet.admin.service.IndexService;
 import com.platon.rosettanet.admin.util.ConvertUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +34,7 @@ import java.util.Map;
 @Api(tags = "系统概况")
 @RestController
 @RequestMapping("/api/v1/system/index")
+@Slf4j
 public class IndexController {
 
     @Resource
@@ -68,36 +71,53 @@ public class IndexController {
     @ApiOperation(value = "查询总计算资源占用情况")
     @GetMapping("/queryUsedTotalResource")
     public JsonResponse<UsedResourceResp> queryUsedTotalResource(){
-        UsedResourceDTO usedResourceDTO = indexService.queryUsedTotalResource();
-        UsedResourceResp usedResourceResp = (UsedResourceResp)ConvertUtil.ConvertToResp(
-                usedResourceDTO, new UsedResourceResp());
-        return JsonResponse.success(usedResourceResp);
+        try {
+            UsedResourceResp usedResourceResp = new UsedResourceResp();
+            UsedResourceDTO usedResourceDTO = indexService.queryUsedTotalResource();
+            BeanUtils.copyProperties(usedResourceDTO, usedResourceResp);
+            return JsonResponse.success(usedResourceResp);
+        } catch (Exception e) {
+            log.error("index--queryUsedTotalResource--查询总计算资源占用情况, 错误信息:{}", e);
+            return JsonResponse.fail(e.getMessage());
+        }
     }
 
     @ApiOperation(value = "查询我发布的数据或算力")
     @PostMapping("/queryPublishDataOrPower")
-    public JsonResponse<MyPublishDataResp> queryPublishDataAndPower(@RequestBody @Validated DataAndPowerReq dataAndPowerReq){
-        MyPublishDataResp myPublishDataResp = new MyPublishDataResp();
-        List<Long> dataPowerList = indexService.queryPublishDataOrPower(dataAndPowerReq.getFlag());
-        return JsonResponse.success(dataPowerList);
+    public JsonResponse queryPublishDataAndPower(@RequestBody @Validated DataAndPowerReq dataAndPowerReq){
+        try {
+            List<Long> dataPowerList = indexService.queryPublishDataOrPower(dataAndPowerReq.getFlag());
+            return JsonResponse.success(dataPowerList);
+        } catch (Exception e) {
+            log.error("index--queryPublishDataOrPower--查询我发布的数据或算力, 错误信息:{}", e);
+            return JsonResponse.fail(e.getMessage());
+        }
     }
 
     @ApiOperation(value = "查询我的计算任务概况")
-    @GetMapping("/queryMyPowerTaskStats")
-    public JsonResponse<MyTaskStatsResp> queryMyPowerTaskStats(){
-        MyTaskStatsResp myTaskStatsResp = new MyTaskStatsResp();
-        Map<String, Object> map = indexService.queryMyPowerTaskStats();
-        BeanUtils.copyProperties(map, myTaskStatsResp);
-        return JsonResponse.success(myTaskStatsResp);
+    @GetMapping("/queryMyCalculateTaskStats")
+    public JsonResponse<MyTaskStatsResp> queryMyCalculateTaskStats(){
+        try {
+            List<Map<String, Object>> mapList = indexService.queryMyCalculateTaskStats();
+            List<MyTaskStatsResp> myTaskStatsRespList = (List)ConvertUtil.ConvertToRespList(mapList, new MyTaskStatsResp());
+            return JsonResponse.success(myTaskStatsRespList);
+        } catch (Exception e) {
+            log.error("index--queryMyCalculateTaskStats--查询我的计算任务概况, 错误信息:{}", e);
+            return JsonResponse.fail(e.getMessage());
+        }
     }
 
-    @ApiOperation(value = "查询全网数据或算力总量走势", response = WholeNetDataResp.class)
-    @PostMapping("/queryWholeNetDateAndPower")
-    public JsonResponse<WholeNetDataResp> queryWholeNetDateAndPower(@Validated @RequestBody WholeNetDataReq wholeNetDataReq){
-        WholeNetDataResp wholeNetDataResp = new WholeNetDataResp();
-        Map<String, Object> map = indexService.queryWholeNetDateAndPower(wholeNetDataReq.getFlag());
-        BeanUtils.copyProperties(map, wholeNetDataResp);
-        return JsonResponse.success(wholeNetDataResp);
+    @ApiOperation(value = "查询全网数据或算力总量走势")
+    @PostMapping("/queryWholeNetDateOrPower")
+    public JsonResponse queryWholeNetDateAndPower(@Validated @RequestBody WholeNetDataReq wholeNetDataReq){
+        try {
+            List<Long> list = indexService.queryWholeNetDateOrPower(wholeNetDataReq.getFlag());
+            return JsonResponse.success(list);
+        } catch (Exception e) {
+            log.error("index--queryWholeNetDateOrPower--查询全网数据或算力总量走势, 错误信息:{}", e);
+            return JsonResponse.fail(e.getMessage());
+        }
+
     }
 
     @ApiOperation(value = "查询全网数据总量环比", response = WholeNetDataResp.class)

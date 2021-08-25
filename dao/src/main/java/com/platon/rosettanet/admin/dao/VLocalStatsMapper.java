@@ -32,19 +32,19 @@ public interface VLocalStatsMapper {
      * 查询我的计算任务概况
      * @return
      */
-    Map queryMyPowerTaskStats();
+    List<Map<String, Object>> queryMyCalculateTaskStats();
 
     /**
      * 查询全网数据总量走势
      * @return
      */
-    Map queryWholeNetDateTrend();
+    List<Long> queryWholeNetDateTrend();
 
     /**
      * 查询全网数据总量走势
      * @return
      */
-    Map queryWholeNetPowerTrend();
+    List<Long> queryWholeNetPowerTrend();
 
     /**
      * 查询全网数据总量环比
