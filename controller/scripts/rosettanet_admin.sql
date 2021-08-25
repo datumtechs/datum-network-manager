@@ -118,9 +118,10 @@ CREATE TABLE `local_data_file` (
   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `resource_name` (`resource_name`),
-  UNIQUE KEY `file_id` (`file_id`) USING HASH
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表，数据信息表';
+  UNIQUE KEY `resource_name` (`resource_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表，数据信息表';
+
+
 
 -- ----------------------------
 -- Table structure for local_meta_data
@@ -128,18 +129,20 @@ CREATE TABLE `local_data_file` (
 DROP TABLE IF EXISTS `local_meta_data`;
 CREATE TABLE `local_meta_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `file_id` varchar(256) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID，上传文件成功后返回源文件ID',
+  `data_file_id` int(11) NOT NULL COMMENT '数据文件表自增id',
   `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据ID,hash',
   `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
   `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'created' COMMENT '数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
   `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
   `remarks` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '数据描述',
+  `industry` int(4) DEFAULT NULL COMMENT '所属行业 1：金融业（银行）、2：金融业（保险）、3：金融业（证券）、4：金融业（其他）、5：ICT、 6：制造业、 7：能源业、 8：交通运输业、 9 ：医疗健康业、 10 ：公共服务业、 11：传媒广告业、 12 ：其他行业',
   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY `file_id` (`file_id`),
-	UNIQUE KEY `meta_data_id` (`meta_data_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织元数据文件表，文件的元数据信息';
+  UNIQUE KEY `meta_data_id` (`meta_data_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织元数据文件表，文件的元数据信息';
+
+
 
 -- ----------------------------
 -- Table structure for local_meta_data_column
