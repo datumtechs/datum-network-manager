@@ -34,5 +34,6 @@ public class ServiceConstant {
     public static String LOCAL_DATA_METADATA_ID = "metaDataId";
     public static String LOCAL_DATA_REMARKS = "remarks";
     public static String LOCAL_DATA_INDUSTRY = "industry";
+    public static String LOCAL_DATA_ATTEND_TASK_COUNT = "attendTaskCount";
 
 }

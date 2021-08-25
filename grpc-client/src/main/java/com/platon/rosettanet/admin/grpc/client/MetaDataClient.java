@@ -95,6 +95,9 @@ public class MetaDataClient {
                 }
                 builder.addColumnMeta(columnDetailBuilder.build());
             }
+            //构建该元数据参与过得任务数 (已完成的和正在执行的)
+            builder.setTotalTaskCount(0);//todo 统计该元数据参与过的任务
+
             //2.4收集完成文件信息
             MetaDataRpcMessage.MetaDataDetail metaDataDetail = builder.build();
             //2.5构建完整的请求信息
@@ -126,13 +129,13 @@ public class MetaDataClient {
             channel = channelManager.getScheduleServer();
             //2.拼装request
             //2.1文件所属组织者信息
-            LocalOrg localOrgInfo = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+            /*LocalOrg localOrgInfo = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
             CommonMessage.OrganizationIdentityInfo orgInfo = CommonMessage.OrganizationIdentityInfo
                     .newBuilder()
                     .setName(localOrgInfo.getName())
                     .setNodeId(localOrgInfo.getCarrierNodeId())
                     .setIdentityId(localOrgInfo.getIdentityId())
-                    .build();
+                    .build();*/
             MetaDataRpcMessage.RevokeMetaDataRequest request = MetaDataRpcMessage.RevokeMetaDataRequest
                     .newBuilder()
                     .setMetaDataId(metaDataId)

@@ -65,6 +65,11 @@ public class Task {
     //我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方; algoSupplier:算法提供方)
     private String role;
 
+    //发起任务的用户的信息 (task是属于用户的)
+    private String applyUser;
+
+    //用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+    private Integer userType;
 
 
 

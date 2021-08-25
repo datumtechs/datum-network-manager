@@ -7,6 +7,9 @@ import com.platon.rosettanet.admin.dao.LocalMetaDataColumnMapper;
 import com.platon.rosettanet.admin.dao.LocalMetaDataMapper;
 import com.platon.rosettanet.admin.dao.entity.*;
 import com.platon.rosettanet.admin.dao.enums.DataAuthStatusEnum;
+import com.platon.rosettanet.admin.grpc.client.AuthClient;
+import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
+import com.platon.rosettanet.admin.grpc.entity.CommonResp;
 import com.platon.rosettanet.admin.service.LocalDataAuthService;
 import com.platon.rosettanet.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +35,8 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
     private LocalDataFileMapper localDataFileMapper;
     @Resource
     private LocalMetaDataColumnMapper localMetaDataColumnMapper;
+    @Resource
+    private AuthClient authClient;
 
     @Override
     public Page<LocalDataAuth> listLocalDataAuth(int pageNo, int pageSize, int status, String keyword) {
@@ -87,6 +92,10 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
             throw new ServiceException("此数据已经授权过,不能重复授权");
         }
+        CommonResp commonResp = authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.AGREE.getStatus());
+        if(commonResp.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
+           throw new ServiceException("调用rpc授权失败" + commonResp.getMsg());
+        }
 
         Date time = new Date();
         LocalDataAuth dataAuth = new LocalDataAuth();
@@ -108,6 +117,10 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         }
         if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
             throw new ServiceException("此数据已经授权过,不能重复授权");
+        }
+        CommonResp commonResp = authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus());
+        if(commonResp.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
+            throw new ServiceException("调用rpc授权失败" + commonResp.getMsg());
         }
 
         Date time = new Date();

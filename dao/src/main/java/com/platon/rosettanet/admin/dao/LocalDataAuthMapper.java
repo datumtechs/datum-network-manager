@@ -14,9 +14,13 @@ public interface LocalDataAuthMapper {
 
     int insertSelective(LocalDataAuth record);
 
+    int insertBatch(List<LocalDataAuth> dataAuthList);
+
     LocalDataAuth selectByPrimaryKey(Integer id);
 
     List<LocalDataAuth> selectDataAuthList(@Param("status") int status, @Param("keyword") String keyword);
+
+    List<String> selectDataAuthByStatusWithAuthFinish();
 
     int selectFinishAuthCount();
 

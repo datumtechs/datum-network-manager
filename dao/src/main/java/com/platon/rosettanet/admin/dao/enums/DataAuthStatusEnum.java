@@ -8,15 +8,14 @@ package com.platon.rosettanet.admin.dao.enums;
 import lombok.Getter;
 
 /**
- * 授权数据状态：1:同意， 2:拒绝 ，3:待授权
+ * 授权数据状态：0:待授权，1:同意， 2:拒绝
  */
 
 @Getter
 public enum DataAuthStatusEnum {
-
+    PENDING(0,"待授权"),
     AGREE(1,"同意"),
-    REFUSE(2,"拒绝"),
-    PENDING(3,"待授权");
+    REFUSE(2,"拒绝");
 
     DataAuthStatusEnum(int status, String desc){
         this.status = status;

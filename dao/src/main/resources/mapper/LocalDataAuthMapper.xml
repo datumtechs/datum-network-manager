@@ -3,9 +3,11 @@
 <mapper namespace="com.platon.rosettanet.admin.dao.LocalDataAuthMapper">
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="id" jdbcType="VARCHAR" property="authId" />
+    <result column="auth_id" jdbcType="VARCHAR" property="authId" />
     <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
-    <result column="owner_identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
-    <result column="owner_identity_name" jdbcType="VARCHAR" property="ownerIdentityName" />
+    <result column="apply_user" jdbcType="VARCHAR" property="applyUser" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
     <result column="auth_type" jdbcType="BIT" property="authType" />
     <result column="auth_value_amount" jdbcType="INTEGER" property="authValueAmount" />
     <result column="auth_value_start_at" jdbcType="TIMESTAMP" property="authValueStartAt" />
@@ -13,13 +15,16 @@
     <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
     <result column="auth_at" jdbcType="TIMESTAMP" property="authAt" />
     <result column="status" jdbcType="BIT" property="status" />
+    <result column="identity_name" jdbcType="VARCHAR" property="identityName" />
+    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="identity_node_id" jdbcType="VARCHAR" property="identityNodeId" />
     <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, meta_data_id, owner_identity_id, owner_identity_name, auth_type, auth_value_amount, 
-    auth_value_start_at, auth_value_end_at, create_at, auth_at, status, rec_create_time, 
-    rec_update_time
+    id, auth_id, meta_data_id, apply_user, user_type, auth_type, auth_value_amount,
+    auth_value_start_at, auth_value_end_at, create_at, auth_at, status,
+    identity_name, identity_id, identity_node_id, rec_create_time, rec_update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -49,14 +54,13 @@
      LEFT JOIN local_data_file AS ldf ON a.file_id = ldf.file_id
      <where>
          <if test="status != null and status == 1">
-           and a.status = 3
+           and a.status = 0
          </if>
          <if test="status != null and status == 2">
            and a.status in (1,2)
          </if>
          <if test="keyword != null and keyword != ''">
            and (ldf.resource_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
-           or a.id like concat('%', #{keyword, jdbcType=VARCHAR}, '%'))
          </if>
      </where>
      ORDER BY a.create_at DESC
@@ -79,7 +83,25 @@
         FROM
             local_data_auth AS lda
         WHERE
-            lda.`status` IN (3)
+            lda.`status` IN (0)
+  </select>
+
+  <select id="selectDataAuthByStatusWithAuthFinish" resultType="java.lang.String">
+    SELECT
+       lda.auth_id
+    FROM
+       local_data_auth AS lda
+    WHERE
+       lda.`status` = 2
+    OR (
+        lda.auth_type = 1
+        AND lda.`status` = 1
+        AND UNIX_TIMESTAMP(lda.auth_value_start_at) <![CDATA[<= ]]> UNIX_TIMESTAMP(NOW())
+        AND UNIX_TIMESTAMP(lda.auth_value_end_at) <![CDATA[>= ]]> UNIX_TIMESTAMP(NOW())
+    )
+
+
+
   </select>
 
 
@@ -87,32 +109,63 @@
     delete from local_data_auth
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
-    insert into local_data_auth (id, meta_data_id, owner_identity_id, 
-      owner_identity_name, auth_type, auth_value_amount, 
+    insert into local_data_auth (id, auth_id, meta_data_id, apply_user,
+      user_type, auth_type, auth_value_amount,
       auth_value_start_at, auth_value_end_at, create_at, 
-      auth_at, status, rec_create_time, 
-      rec_update_time)
-    values (#{id,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR}, 
-      #{ownerIdentityName,jdbcType=VARCHAR}, #{authType,jdbcType=BIT}, #{authValueAmount,jdbcType=INTEGER}, 
+      auth_at, status,
+      identity_name, identity_id, identity_node_id
+      rec_create_time, rec_update_time)
+    values (#{id,jdbcType=INTEGER}, #{authId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{applyUser,jdbcType=VARCHAR},
+      #{userType,jdbcType=INTEGER}, #{authType,jdbcType=BIT}, #{authValueAmount,jdbcType=INTEGER},
       #{authValueStartAt,jdbcType=TIMESTAMP}, #{authValueEndAt,jdbcType=TIMESTAMP}, #{createAt,jdbcType=TIMESTAMP}, 
-      #{authAt,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}, #{recCreateTime,jdbcType=TIMESTAMP}, 
-      #{recUpdateTime,jdbcType=TIMESTAMP})
+      #{authAt,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT},
+      #{identityName,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{identityNodeId,jdbcType=VARCHAR},
+      #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
   </insert>
+
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    replace into local_data_auth (auth_id, meta_data_id, apply_user,
+    user_type, auth_type, auth_value_amount,
+    auth_value_start_at, auth_value_end_at, create_at,
+    auth_at, status,
+    identity_name, identity_id, identity_node_id
+    rec_create_time, rec_update_time)
+    values
+    <foreach collection ="list" item="item" index="index" separator=",">
+      (#{authId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{applyUser,jdbcType=VARCHAR},
+      #{userType,jdbcType=INTEGER}, #{authType,jdbcType=BIT}, #{authValueAmount,jdbcType=INTEGER},
+      #{authValueStartAt,jdbcType=TIMESTAMP}, #{authValueEndAt,jdbcType=TIMESTAMP}, #{createAt,jdbcType=TIMESTAMP},
+      #{authAt,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT},
+      #{identityName,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{identityNodeId,jdbcType=VARCHAR},
+      #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+
+
+
+
+
   <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
     insert into local_data_auth
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
+      <if test="authId != null">
+        auth_id,
+      </if>
       <if test="metaDataId != null">
         meta_data_id,
       </if>
-      <if test="ownerIdentityId != null">
-        owner_identity_id,
+      <if test="applyUser != null">
+        apply_user,
       </if>
-      <if test="ownerIdentityName != null">
-        owner_identity_name,
+      <if test="userType != null">
+        user_type,
       </if>
       <if test="authType != null">
         auth_type,
@@ -135,6 +188,15 @@
       <if test="status != null">
         status,
       </if>
+      <if test="identityName != null">
+        identity_name,
+      </if>
+      <if test="identityId != null">
+        identity_id,
+      </if>
+      <if test="identityNodeId != null">
+        identity_node_id,
+      </if>
       <if test="recCreateTime != null">
         rec_create_time,
       </if>
@@ -146,14 +208,17 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="authId != null">
+        #{authId,jdbcType=VARCHAR},
+      </if>
       <if test="metaDataId != null">
         #{metaDataId,jdbcType=VARCHAR},
       </if>
-      <if test="ownerIdentityId != null">
-        #{ownerIdentityId,jdbcType=VARCHAR},
+      <if test="applyUser != null">
+        #{applyUser,jdbcType=VARCHAR},
       </if>
-      <if test="ownerIdentityName != null">
-        #{ownerIdentityName,jdbcType=VARCHAR},
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
       </if>
       <if test="authType != null">
         #{authType,jdbcType=BIT},
@@ -176,6 +241,15 @@
       <if test="status != null">
         #{status,jdbcType=BIT},
       </if>
+      <if test="identityName != null">
+        #{identityName,jdbcType=VARCHAR},
+      </if>
+      <if test="identityId != null">
+        #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="identityNodeId != null">
+        #{identityNodeId,jdbcType=VARCHAR},
+      </if>
       <if test="recCreateTime != null">
         #{recCreateTime,jdbcType=TIMESTAMP},
       </if>
@@ -184,17 +258,22 @@
       </if>
     </trim>
   </insert>
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
     update local_data_auth
     <set>
+      <if test="authId != null">
+        auth_id = #{authId,jdbcType=VARCHAR},
+      </if>
       <if test="metaDataId != null">
         meta_data_id = #{metaDataId,jdbcType=VARCHAR},
       </if>
-      <if test="ownerIdentityId != null">
-        owner_identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
+      <if test="applyUser != null">
+        apply_user = #{applyUser,jdbcType=VARCHAR},
       </if>
-      <if test="ownerIdentityName != null">
-        owner_identity_name = #{ownerIdentityName,jdbcType=VARCHAR},
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
       </if>
       <if test="authType != null">
         auth_type = #{authType,jdbcType=BIT},
@@ -217,6 +296,15 @@
       <if test="status != null">
         status = #{status,jdbcType=BIT},
       </if>
+      <if test="identityName != null">
+        identity_name = #{identityName,jdbcType=VARCHAR},
+      </if>
+      <if test="identityId != null">
+        identity_id = #{identityId,jdbcType=VARCHAR},
+      </if>
+      <if test="identityNodeId != null">
+        identity_node_id = #{identityNodeId,jdbcType=VARCHAR},
+      </if>
       <if test="recCreateTime != null">
         rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
       </if>
@@ -228,9 +316,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
     update local_data_auth
-    set meta_data_id = #{metaDataId,jdbcType=VARCHAR},
-      owner_identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
-      owner_identity_name = #{ownerIdentityName,jdbcType=VARCHAR},
+    set auth_id = #{authId,jdbcType=VARCHAR},
+      meta_data_id = #{metaDataId,jdbcType=VARCHAR},
+      apply_user = #{applyUser,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=INTEGER},
       auth_type = #{authType,jdbcType=BIT},
       auth_value_amount = #{authValueAmount,jdbcType=INTEGER},
       auth_value_start_at = #{authValueStartAt,jdbcType=TIMESTAMP},
@@ -238,6 +327,9 @@
       create_at = #{createAt,jdbcType=TIMESTAMP},
       auth_at = #{authAt,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=BIT},
+      identity_name = #{identityName,jdbcType=VARCHAR},
+      identity_id = #{identityId,jdbcType=VARCHAR},
+      identity_node_id = #{identityNodeId,jdbcType=VARCHAR},
       rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
       rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

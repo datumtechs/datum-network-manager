@@ -25,29 +25,31 @@ public class LocalDataAuthPageResp {
 
     @ApiModelProperty(name = "id", value = "数据ID，序号")
     private Integer id;
+    @ApiModelProperty(name = "authId", value = "元数据授权申请Id")
+    private Integer authId;
     @ApiModelProperty(name = "metaDataId", value = "元数据Id")
     private String metaDataId;
     @ApiModelProperty(name = "fileName", value = "源文件名称")
     private String fileName;
     @ApiModelProperty(name = "resourceName", value = "数据名称")
     private String resourceName;
-    @ApiModelProperty(name = "ownerIdentityId", value = "授权发起方身份标识")
-    private String ownerIdentityId;
-    @ApiModelProperty(name = "ownerIdentityName", value = "授权发起方名称")
-    private String ownerIdentityName;
-    @ApiModelProperty(name = "authType", value = "授权方式(1：时间，2：次数)")
+    @ApiModelProperty(name = "applyUser", value = "发起任务的用户的信息 (task是属于用户的)")
+    private String applyUser;
+    @ApiModelProperty(name = "userType", value = "发起任务用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)")
+    private Integer userType;
+    @ApiModelProperty(name = "authType", value = "授权方式(0：未定义，1：时间，2：次数)")
     private Integer authType;
-    @ApiModelProperty(name = "authValueAmount", value = "授权值(以授权次数)")
+    @ApiModelProperty(name = "authValueAmount", value = "授权值(以授权次数)，auth_type = 2使用此字段")
     private Integer authValueAmount;
-    @ApiModelProperty(name = "authValueStartAt", value = "授权值开始时间")
+    @ApiModelProperty(name = "authValueStartAt", value = "授权值结束时间，auth_type = 1使用此字段")
     private Long authValueStartAt;
-    @ApiModelProperty(name = "authValueEndAt", value = "授权值结束时间")
+    @ApiModelProperty(name = "authValueEndAt", value = "授权值结束时间，auth_type = 1使用此字段")
     private Long authValueEndAt;
     @ApiModelProperty(name = "createAt", value = "授权申请发起时间")
     private Long createAt;
     @ApiModelProperty(name = "authAt", value = "授权数据时间")
     private Long authAt;
-    @ApiModelProperty(name = "status", value = "授权数据状态：1:同意， 2:拒绝 ，3:待授权")
+    @ApiModelProperty(name = "status", value = "授权数据状态：0：等待授权审核，1:同意， 2:拒绝")
     private Integer status;
     //创建时间
     @ApiModelProperty(name = "recCreateTime", value = "创建时间,单位ms")
