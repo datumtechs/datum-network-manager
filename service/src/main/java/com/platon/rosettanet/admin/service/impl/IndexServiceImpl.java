@@ -8,10 +8,12 @@ import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 import com.platon.rosettanet.admin.service.IndexService;
 import com.platon.rosettanet.admin.service.constant.ServiceConstant;
+import com.platon.rosettanet.admin.service.exception.ServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,11 +72,11 @@ public class IndexServiceImpl implements IndexService {
 
     @Override
     public List<Long> queryPublishDataOrPower(String flag) {
-        // 数据
+        // 查询我发布的数据
         if (ServiceConstant.constant_1.equals(flag)) {
             return localStatsMapper.queryMyPublishData();
         }
-        // 算力
+        // 查询我发布的算力
         if (ServiceConstant.constant_2.equals(flag)) {
             return localStatsMapper.queryMyPublishPower();
         }
@@ -82,12 +84,12 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public Map<String, Object> queryMyPowerTaskStats() {
-        return localStatsMapper.queryMyPowerTaskStats();
+    public List<Map<String, Object>> queryMyCalculateTaskStats() {
+        return localStatsMapper.queryMyCalculateTaskStats();
     }
 
     @Override
-    public Map<String, Object> queryWholeNetDateAndPower(String flag) {
+    public List<Long> queryWholeNetDateOrPower(String flag) {
         // 查询全网数据走势
         if (ServiceConstant.constant_1.equals(flag)) {
            return localStatsMapper.queryWholeNetDateTrend();
@@ -96,7 +98,7 @@ public class IndexServiceImpl implements IndexService {
         if (ServiceConstant.constant_1.equals(flag)) {
             return localStatsMapper.queryWholeNetPowerTrend();
         }
-        return new HashMap(2);
+        throw new ServiceException("请求标志错误，请稍后重试");
     }
 
     @Override
