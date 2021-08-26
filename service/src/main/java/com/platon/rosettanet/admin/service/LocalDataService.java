@@ -45,6 +45,13 @@ public interface LocalDataService {
     int add(LocalDataFileDetail detail, LocalMetaData metaData);
 
     /**
+     * 添加文件信息
+     * @param detail
+     * @return
+     */
+    int addAgain(LocalDataFileDetail detail, LocalMetaData metaData);
+
+    /**
      * 删除文件元数据
      * @param id
      */

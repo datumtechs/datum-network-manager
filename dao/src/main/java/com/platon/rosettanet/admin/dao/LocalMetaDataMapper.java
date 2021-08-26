@@ -11,7 +11,7 @@ public interface LocalMetaDataMapper {
 
     LocalMetaData selectByPrimaryKey(Integer id);
 
-    LocalMetaData selectByFileId(String fileId);
+    LocalMetaData selectByDataFileId(Integer dataFileId);
 
     LocalMetaData selectByMetaDataId(String metaDataId);
 

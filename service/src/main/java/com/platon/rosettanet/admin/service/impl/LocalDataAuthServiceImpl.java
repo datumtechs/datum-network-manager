@@ -64,13 +64,13 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
              throw new ServiceException("metaDataID异常，不可为空");
         }
         LocalMetaData localMetaData = localMetaDataMapper.selectByMetaDataId(localDataAuth.getMetaDataId());
-        if(Objects.isNull(localMetaData) || Objects.isNull(localMetaData.getFileId()) || "".equals(localMetaData.getFileId())){
-            throw new ServiceException("localMetaData fileId异常，不可为空");
+        if(Objects.isNull(localMetaData) || Objects.isNull(localMetaData.getDataFileId()) || localMetaData.getDataFileId() == 0){
+            throw new ServiceException("localMetaData dataFileId异常，不可为空");
         }
         if(Objects.isNull(localMetaData) || Objects.isNull(localMetaData.getId()) || "".equals(localMetaData.getId())){
             throw new ServiceException("localMetaData id异常，不可为空");
         }
-        LocalDataFile localDataFile = localDataFileMapper.selectByFileId(localMetaData.getFileId());
+        LocalDataFile localDataFile = localDataFileMapper.selectById(localMetaData.getDataFileId());
         List<LocalMetaDataColumn> localMetaDataColumnList =  localMetaDataColumnMapper.selectByMetaId(localMetaData.getId());
 
         LocalDataAuthDetail localDataAuthDetail = new LocalDataAuthDetail();

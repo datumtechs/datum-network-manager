@@ -114,6 +114,19 @@
   </insert>
 
 
+ <!--  插入新数数据 -->
+  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into local_data_file (identity_id, file_id, file_name,
+      file_path, file_type, resource_name,
+      `size`, `rows`, `columns`, has_title
+    )
+    values (#{identityId,jdbcType=VARCHAR}, #{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR},
+      #{filePath,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, #{resourceName,jdbcType=VARCHAR},
+      #{size,jdbcType=BIGINT}, #{rows,jdbcType=BIGINT}, #{columns,jdbcType=INTEGER}, #{hasTitle,jdbcType=BIT}
+      )
+  </insert>
+
+
   <!-- 根据metaDataId进行选择性更新-->
   <update id="updateByFileIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
     update local_data_file

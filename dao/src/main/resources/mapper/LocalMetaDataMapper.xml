@@ -3,7 +3,7 @@
 <mapper namespace="com.platon.rosettanet.admin.dao.LocalMetaDataMapper">
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalMetaData">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
+    <result column="data_file_id" jdbcType="VARCHAR" property="dataFileId" />
     <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
     <result column="size" jdbcType="BIGINT" property="size" />
     <result column="status" jdbcType="VARCHAR" property="status" />
@@ -14,7 +14,7 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_id, meta_data_id, `size`, status, publish_time, remarks, industry, rec_create_time,
+    id, data_file_id, meta_data_id, `size`, status, publish_time, remarks, industry, rec_create_time,
     rec_update_time
   </sql>
 
@@ -27,11 +27,11 @@
   </select>
 
 
-  <select id="selectByFileId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByDataFileId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from local_meta_data
-    where file_id = #{fileId,jdbcType=INTEGER}
+    where data_file_id = #{dataFileId,jdbcType=INTEGER}
     order by id desc limit 1
   </select>
 
@@ -49,23 +49,23 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-    insert into local_meta_data (id, file_id, meta_data_id, 
-      size, status, publish_time, 
+    insert into local_meta_data (id, data_file_id, meta_data_id,
+      `size`, status, publish_time,
       remarks, industry, rec_create_time, rec_update_time
       )
-    values (#{id,jdbcType=INTEGER}, #{fileId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{dataFileId,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR},
       #{size,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, 
       #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData">
+  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into local_meta_data
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="fileId != null">
-        file_id,
+      <if test="dataFileId != null">
+        data_file_id,
       </if>
       <if test="metaDataId != null">
         meta_data_id,
@@ -96,8 +96,8 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="fileId != null">
-        #{fileId,jdbcType=VARCHAR},
+      <if test="dataFileId != null">
+        #{dataFileId,jdbcType=INTEGER},
       </if>
       <if test="metaDataId != null">
         #{metaDataId,jdbcType=VARCHAR},
@@ -128,14 +128,14 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData">
     update local_meta_data
     <set>
-      <if test="fileId != null">
-        file_id = #{fileId,jdbcType=VARCHAR},
+      <if test="dataFileId != null">
+        data_file_id = #{dataFileId,jdbcType=INTEGER},
       </if>
       <if test="metaDataId != null">
         meta_data_id = #{metaDataId,jdbcType=VARCHAR},
       </if>
       <if test="size != null">
-        size = #{size,jdbcType=BIGINT},
+        `size` = #{size,jdbcType=BIGINT},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
@@ -160,9 +160,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData">
     update local_meta_data
-    set file_id = #{fileId,jdbcType=VARCHAR},
+    set data_file_id = #{dataFileId,jdbcType=VARCHAR},
       meta_data_id = #{metaDataId,jdbcType=VARCHAR},
-      size = #{size,jdbcType=BIGINT},
+      `size` = #{size,jdbcType=BIGINT},
       status = #{status,jdbcType=VARCHAR},
       publish_time = #{publishTime,jdbcType=TIMESTAMP},
       remarks = #{remarks,jdbcType=VARCHAR},
