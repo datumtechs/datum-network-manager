@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.controller.system;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.platon.rosettanet.admin.dao.dto.UsedResourceDTO;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.index.DataAndPowerReq;
@@ -10,12 +11,10 @@ import com.platon.rosettanet.admin.util.ConvertUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,9 +71,8 @@ public class IndexController {
     @GetMapping("/queryUsedTotalResource")
     public JsonResponse<UsedResourceResp> queryUsedTotalResource(){
         try {
-            UsedResourceResp usedResourceResp = new UsedResourceResp();
             UsedResourceDTO usedResourceDTO = indexService.queryUsedTotalResource();
-            BeanUtils.copyProperties(usedResourceDTO, usedResourceResp);
+            UsedResourceResp usedResourceResp = BeanUtil.toBean(usedResourceDTO, UsedResourceResp.class);
             return JsonResponse.success(usedResourceResp);
         } catch (Exception e) {
             log.error("index--queryUsedTotalResource--查询总计算资源占用情况, 错误信息:{}", e);
@@ -99,7 +97,7 @@ public class IndexController {
     public JsonResponse<MyTaskStatsResp> queryMyCalculateTaskStats(){
         try {
             List<Map<String, Object>> mapList = indexService.queryMyCalculateTaskStats();
-            List<MyTaskStatsResp> myTaskStatsRespList = (List)ConvertUtil.ConvertToRespList(mapList, new MyTaskStatsResp());
+            List<MyTaskStatsResp> myTaskStatsRespList = (List)ConvertUtil.convertParallelToList(mapList, new MyTaskStatsResp());
             return JsonResponse.success(myTaskStatsRespList);
         } catch (Exception e) {
             log.error("index--queryMyCalculateTaskStats--查询我的计算任务概况, 错误信息:{}", e);
@@ -120,12 +118,11 @@ public class IndexController {
 
     }
 
-    @ApiOperation(value = "查询全网数据总量环比", response = WholeNetDataResp.class)
+    @ApiOperation(value = "查询全网数据总量环比")
     @GetMapping("/queryWholeNetDateRatio")
-    public JsonResponse<WholeNetDataResp> queryWholeNetDateRatio(){
-        DataRatioResp dataRatioResp = new DataRatioResp();
+    public JsonResponse<DataRatioResp> queryWholeNetDateRatio(){
         Map<String, Object> map = indexService.queryWholeNetDateTotalRatio();
-        BeanUtils.copyProperties(map, dataRatioResp);
+        DataRatioResp dataRatioResp = BeanUtil.toBean(map, DataRatioResp.class);
         return JsonResponse.success(dataRatioResp);
     }
 

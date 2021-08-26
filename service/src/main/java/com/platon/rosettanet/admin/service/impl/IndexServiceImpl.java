@@ -104,31 +104,33 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public Map<String, Object> queryWholeNetDateTotalRatio() {
         Map<String, Object> map = new HashMap(4);
-        // 查询计算周环比
-        List<Float> weekList = localStatsMapper.queryWholeNetDateWeekRatio();
-        String weekRatio = this.calculateRatio(weekList);
-        // 查询计算月环比
-        List<Float> monthList = localStatsMapper.queryWholeNetDateMonthRatio();
-        String monthRatio = this.calculateRatio(monthList);
-        // 周环比
-        map.put("weekRatio", weekRatio);
+        // 查询全网数据总量月环比（上月/上上月）
+        List<Double> monthList = localStatsMapper.queryWholeNetDateRingRatio();
+        String ringRatio = this.calculateRatio(monthList);
+        // 查询全网数据总量月同比（当前年上月/去年同上月）
+        List<Double> sameList = localStatsMapper.queryWholeNetDateSameRatio();
+        String sameRatio = this.calculateRatio(sameList);
         // 月环比
-        map.put("monthRatio", monthRatio);
+        map.put("ringRatio", ringRatio);
+        // 月同比
+        map.put("sameRatio", sameRatio);
         return map;
     }
 
     /** 计算环比 */
-    private String calculateRatio(List<Float> list){
-        String ratio = "0.0";
-        if (list == null || list.size() == 0) {
-            return ratio;
-        }
-        if (list.size() == ServiceConstant.integer_1) {
+    private String calculateRatio(List<Double> list){
+        // 上月数据
+        BigDecimal pMonth = new BigDecimal(list.get(0));
+        // 上上月数据
+        BigDecimal ppMonth = new BigDecimal(list.get(1));
+        // 上上月为0
+        if (list.get(1) == 0) {
             return String.valueOf(list.get(0));
         }
-        if (list.size() >= ServiceConstant.integer_2) {
-            return String.format("%.1f", list.get(0)/list.get(1));
-        }
-        return ratio;
+        BigDecimal bd = pMonth.subtract(ppMonth).abs()
+                .divide(ppMonth)
+//                .multiply(new BigDecimal(100))
+                .setScale(1, BigDecimal.ROUND_UP);
+        return String.valueOf(bd);
     }
 }

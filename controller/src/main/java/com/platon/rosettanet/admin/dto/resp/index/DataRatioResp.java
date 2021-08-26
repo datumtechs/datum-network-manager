@@ -12,10 +12,10 @@ import lombok.Data;
 @ApiModel(value = "全网数据环比响应")
 public class DataRatioResp {
 
-    @ApiModelProperty(value = "周环比")
-    private String weekRatio;
-
     @ApiModelProperty(value = "月环比")
-    private String monthRatio;
+    private String ringRatio;
+
+    @ApiModelProperty(value = "月同比")
+    private String sameRatio;
 
 }
