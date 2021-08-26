@@ -49,10 +49,10 @@
         <!--IFNULL(sum(b.size), 0) / (1024 * 1024 * 1024) as totalSize -->
    from
        v_past_12_month a left join local_meta_data b
-       on a.months =  DATE_FORMAT(b.publish_time,'%Y-%m')
+       on a.month =  DATE_FORMAT(b.publish_time,'%Y-%m')
        and b.status = 'released'
-   group by a.months
-   order by a.months desc
+   group by a.month
+   order by a.month desc
   </select>
 
   <!-- 查询我发布的算力 -->
@@ -62,11 +62,11 @@
           <!-- IFNULL(sum(b.memory), 0) / (1024 * 1024 * 1024) as totalMemory -->
       from
           v_past_12_month a left join local_power_node b
-          on a.months =  DATE_FORMAT(b.start_time,'%Y-%m')
+          on a.month =  DATE_FORMAT(b.start_time,'%Y-%m')
           and b.power_status = 'release'
           and b.conn_status != '-1'
-      group by a.months
-      order by a.months desc
+      group by a.month
+      order by a.month desc
   </select>
 
   <!-- 查询我的计算任务概况 -->
@@ -86,10 +86,10 @@
         <!-- IFNULL(sum(b.size), 0) / (1024 * 1024 * 1024) as totalSize -->
     from
         v_past_12_month a left join global_data_file b
-        on a.months =  DATE_FORMAT(b.publish_time,'%Y-%m')
+        on a.month =  DATE_FORMAT(b.publish_time,'%Y-%m')
         and b.status = 'released'
-    group by a.months
-    order by a.months desc
+    group by a.month
+    order by a.month desc
   </select>
   <!-- 查询全网算力总量走势 -->
   <select id="queryWholeNetPowerTrend" resultType="java.lang.Long">
@@ -98,35 +98,38 @@
         <!-- IFNULL(sum(b.total_Memory), 0) / (1024 * 1024 * 1024) as total_Memory -->
     from
         v_past_12_month a left join global_power b
-        on a.months =  DATE_FORMAT(b.rec_update_time,'%Y-%m')
-    group by a.months
-    order by a.months desc
+        on a.month =  DATE_FORMAT(b.rec_update_time,'%Y-%m')
+    group by a.month
+    order by a.month desc
+  </select>
+  <!-- 查询全网数据总量月环比（上月/上上月）-->
+  <select id="queryWholeNetDateRingRatio" resultType="java.lang.Double">
+    select
+        IFNULL(sum(b.size), 0) as totalSize
+        <!-- IFNULL(sum(b.size), 0) / (1024 * 1024 * 1024) as totalSize -->
+    from
+        (select DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m') AS `month`
+        UNION select DATE_FORMAT(CURDATE() - INTERVAL 2 MONTH, '%Y-%m') AS `month`) a
+        left join global_data_file b
+        on a.month = DATE_FORMAT(b.publish_time, '%Y-%m')
+        and b.status = 'released'
+    group by a.month
+    order by a.month desc
   </select>
 
-  <!-- 查询全网数据总量周环比-->
-  <select id="queryWholeNetDateWeekRatio" resultType="java.lang.Float">
+  <!-- 查询全网数据总量月同比（当前年上月/去年同上月）-->
+  <select id="queryWholeNetDateSameRatio" resultType="java.lang.Double">
     select
-        sum(size) / (1024 * 1024) as sizeTotal
+        IFNULL(sum(b.size), 0) as totalSize
+        <!-- IFNULL(sum(b.size), 0) / (1024 * 1024 * 1024) as totalSize -->
     from
-        global_data_file
-    where
-        status = 'released'
-    group by WEEK(publish_time, 1)
-    order by WEEK(publish_time, 1) desc
-    limit 2
-  </select>
-
-  <!-- 查询全网数据总量月环比-->
-  <select id="queryWholeNetDateMonthRatio" resultType="java.lang.Float">
-    select
-        sum(size) / (1024 * 1024) as sizeTotal
-    from
-        global_data_file
-    where
-        status = 'released'
-    group by M(publish_time, 1)
-    order by WEEK(publish_time, 1) desc
-    limit 2
+        (select DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m') AS `month`
+        UNION select DATE_FORMAT(CURDATE() - INTERVAL 13 MONTH, '%Y-%m') AS `month`) a
+        left join global_data_file b
+        on a.month = DATE_FORMAT(b.publish_time, '%Y-%m')
+        and b.status = 'released'
+    group by a.month
+    order by a.month desc
   </select>
 
 </mapper>

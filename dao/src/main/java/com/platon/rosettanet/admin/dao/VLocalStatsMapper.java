@@ -47,14 +47,16 @@ public interface VLocalStatsMapper {
     List<Long> queryWholeNetPowerTrend();
 
     /**
-     * 查询全网数据总量环比
+     * 查询全网数据总量月环比
      * @return
      */
-    List<Float> queryWholeNetDateWeekRatio();
+    List<Double> queryWholeNetDateRingRatio();
 
     /**
-     * 查询全网数据总量环比
+     * 查询全网数据总量月同比
      * @return
      */
-    List<Float> queryWholeNetDateMonthRatio();
+    List<Double> queryWholeNetDateSameRatio();
+
+
 }
