@@ -96,8 +96,8 @@ public class IndexController {
     @GetMapping("/queryMyCalculateTaskStats")
     public JsonResponse<MyTaskStatsResp> queryMyCalculateTaskStats(){
         try {
-            List<Map<String, Object>> mapList = indexService.queryMyCalculateTaskStats();
-            List<MyTaskStatsResp> myTaskStatsRespList = (List)ConvertUtil.convertParallelToList(mapList, new MyTaskStatsResp());
+            List list = indexService.queryMyCalculateTaskStats();
+            List<MyTaskStatsResp> myTaskStatsRespList = ConvertUtil.convertParallelToList(list, MyTaskStatsResp.class);
             return JsonResponse.success(myTaskStatsRespList);
         } catch (Exception e) {
             log.error("index--queryMyCalculateTaskStats--查询我的计算任务概况, 错误信息:{}", e);

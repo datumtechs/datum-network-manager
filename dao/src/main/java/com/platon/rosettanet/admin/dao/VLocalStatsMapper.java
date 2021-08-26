@@ -32,7 +32,7 @@ public interface VLocalStatsMapper {
      * 查询我的计算任务概况
      * @return
      */
-    List<Map<String, Object>> queryMyCalculateTaskStats();
+    List<Map> queryMyCalculateTaskStats();
 
     /**
      * 查询全网数据总量走势

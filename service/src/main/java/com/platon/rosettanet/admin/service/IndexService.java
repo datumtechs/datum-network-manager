@@ -44,7 +44,7 @@ public interface IndexService {
      * 查询我的计算任务概况
      * @return
      */
-    List<Map<String, Object>> queryMyCalculateTaskStats();
+    List queryMyCalculateTaskStats();
 
     /**
      * 查询全网数据或算力总量走势
