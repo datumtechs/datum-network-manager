@@ -84,7 +84,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<Map<String, Object>> queryMyCalculateTaskStats() {
+    public List queryMyCalculateTaskStats() {
         return localStatsMapper.queryMyCalculateTaskStats();
     }
 
