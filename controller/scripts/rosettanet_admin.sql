@@ -126,10 +126,10 @@ CREATE TABLE `local_data_file` (
 DROP TABLE IF EXISTS `local_meta_data`;
 CREATE TABLE `local_meta_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `data_file_id` int(11) NOT NULL COMMENT '数据文件id',
+  `data_file_id` int(11) NOT NULL COMMENT '数据文件表自增id（不是文件id）',
   `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据ID,hash',
   `meta_data_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '元数据名称',
-  `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'entered' COMMENT '元数据的状态 (entered：录入数据(创建未发布新表之前的操作); created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
+  `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'entered' COMMENT '数据的状态 (entered：录入数据(创建未发布新表之前的操作); created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表; deleted:已删除的表)',
   `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
   `remarks` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '元数据描述',
   `industry` int(4) DEFAULT NULL COMMENT '所属行业 1：金融业（银行）、2：金融业（保险）、3：金融业（证券）、4：金融业（其他）、5：ICT、 6：制造业、 7：能源业、 8：交通运输业、 9 ：医疗健康业、 10 ：公共服务业、 11：传媒广告业、 12 ：其他行业',
@@ -140,6 +140,7 @@ CREATE TABLE `local_meta_data` (
   UNIQUE KEY `meta_data_id` (`meta_data_id`),
   KEY `data_file_id` (`data_file_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织元数据文件表，文件的元数据信息';
+
 
 -- ----------------------------
 -- Table structure for local_meta_data_column
