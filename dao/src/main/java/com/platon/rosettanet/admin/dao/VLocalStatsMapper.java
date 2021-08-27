@@ -7,9 +7,10 @@ import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author houz
+ */
 public interface VLocalStatsMapper {
-
-//    VLocalStats selectLocalStats();
 
     /**
      * 查询总计算资源占用情况
@@ -33,7 +34,7 @@ public interface VLocalStatsMapper {
      * 查询我的计算任务概况
      * @return
      */
-    List<Map> queryMyCalculateTaskStats();
+    List<Map<String, Object>> queryMyCalculateTaskStats();
 
     /**
      * 查询全网数据总量走势
@@ -63,7 +64,7 @@ public interface VLocalStatsMapper {
      * 查询待授权数据列表
      * @return
      */
-    List<LocalDataAuth> queryWaitAuthDataList();
+    List<Map<String, Object>> queryWaitAuthDataList();
 
 
 }

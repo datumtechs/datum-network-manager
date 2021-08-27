@@ -2,6 +2,7 @@ package com.platon.rosettanet.admin.service;
 
 import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.dao.dto.UsedResourceDTO;
+import com.platon.rosettanet.admin.dao.entity.LocalDataAuth;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 
@@ -44,7 +45,7 @@ public interface IndexService {
      * 查询我的计算任务概况
      * @return
      */
-    List queryMyCalculateTaskStats();
+    List<Map<String, Object>> queryMyCalculateTaskStats();
 
     /**
      * 查询全网数据或算力总量走势
@@ -63,5 +64,5 @@ public interface IndexService {
      * 查询数据待授权列表
      * @return
      */
-    List queryDataWaitAuthList();
+    List<Map<String, Object>> queryWaitAuthDataList();
 }

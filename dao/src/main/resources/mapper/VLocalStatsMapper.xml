@@ -1,33 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.rosettanet.admin.dao.VLocalStatsMapper">
-<!--  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.VLocalStats">-->
-<!--    <result column="carrier_conn_status" jdbcType="VARCHAR" property="carrierConnStatus" />-->
-<!--    <result column="data_node_count" jdbcType="BIGINT" property="dataNodeCount" />-->
-<!--    <result column="power_node_count" jdbcType="BIGINT" property="powerNodeCount" />-->
-<!--    <result column="total_core" jdbcType="DECIMAL" property="totalCore" />-->
-<!--    <result column="total_memory" jdbcType="DECIMAL" property="totalMemory" />-->
-<!--    <result column="total_bandwidth" jdbcType="DECIMAL" property="totalBandwidth" />-->
-<!--    <result column="used_core" jdbcType="DECIMAL" property="usedCore" />-->
-<!--    <result column="used_memory" jdbcType="DECIMAL" property="usedMemory" />-->
-<!--    <result column="used_bandwidth" jdbcType="DECIMAL" property="usedBandwidth" />-->
-<!--    <result column="released_data_file_count" jdbcType="BIGINT" property="releasedDataFileCount" />-->
-<!--    <result column="unreleased_data_file_count" jdbcType="BIGINT" property="unreleasedDataFileCount" />-->
-<!--    <result column="task_count" jdbcType="BIGINT" property="taskCount" />-->
-<!--  </resultMap>-->
-<!--  <sql id="Base_Column_List">-->
-<!--    carrier_conn_status,-->
-<!--    data_node_count,-->
-<!--    power_node_count,-->
-<!--    total_core,total_memory,total_bandwidth,used_core,used_memory,used_bandwidth,-->
-<!--    released_data_file_count,unreleased_data_file_count,-->
-<!--    task_count-->
-<!--  </sql>-->
-
-<!--  <select id="selectLocalStats" resultMap="BaseResultMap">-->
-<!--    select <include refid="Base_Column_List"/>-->
-<!--    from v_local_stats-->
-<!--  </select>-->
 
   <!-- 查询总占用资源 -->
   <select id="queryUsedTotalResource" resultType="com.platon.rosettanet.admin.dao.dto.UsedResourceDTO">
@@ -45,13 +18,12 @@
   <!-- 查询我发布的数据 -->
   <select id="queryMyPublishData" resultType="java.lang.Long">
     select
-        IFNULL(sum(b.size), 0) as totalSize
-        <!--IFNULL(sum(b.size), 0) / (1024 * 1024 * 1024) as totalSize -->
+        IFNULL(b.calculate_result, 0) as totalSize
+        <!--IFNULL(b.calculate_result, 0) / (1024 * 1024 * 1024) as totalSize -->
    from
-       v_past_12_month a left join local_meta_data b
-       on a.month =  DATE_FORMAT(b.publish_time,'%Y-%m')
-       and b.status = 'released'
-   group by a.month
+       v_past_12_month a left join store_calculate_result b
+       on a.month =  b.reside_time
+       and b.store_type = 'my_publish_data'
    order by a.month desc
   </select>
 
@@ -70,7 +42,7 @@
   </select>
 
   <!-- 查询我的计算任务概况 -->
-  <select id="queryMyCalculateTaskStats" resultType="java.util.HashMap">
+  <select id="queryMyCalculateTaskStats" resultType="java.util.Map">
     select
         status as status,
         count(status) as statusCount
@@ -91,6 +63,7 @@
     group by a.month
     order by a.month desc
   </select>
+
   <!-- 查询全网算力总量走势 -->
   <select id="queryWholeNetPowerTrend" resultType="java.lang.Long">
     select
@@ -102,6 +75,7 @@
     group by a.month
     order by a.month desc
   </select>
+
   <!-- 查询全网数据总量月环比（上月/上上月）-->
   <select id="queryWholeNetDateRingRatio" resultType="java.lang.Double">
     select
@@ -133,15 +107,18 @@
   </select>
 
   <!-- 查询待授权数据列表-->
-  <select id="queryWaitAuthDataList" resultType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+  <select id="queryWaitAuthDataList" resultType="java.util.HashMap">
     select
-        create_at as applyTime,
-        apply_user as applyUser,
-
+        a.create_at as applyTime,
+        a.apply_user as applyUser,
+        b.meta_data_name as dataName
     from
-        local_data_auth
-    where status = 0
-    order by create_at desc
+        local_data_auth a, local_meta_data b
+    where 1=1
+        and a.meta_data_id = b.meta_data_id
+        and a.status = 0
+        and b.status = 'released'
+    order by a.create_at desc
   </select>
 
 </mapper>

@@ -126,7 +126,7 @@ CREATE TABLE `local_data_file` (
 DROP TABLE IF EXISTS `local_meta_data`;
 CREATE TABLE `local_meta_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `data_file_id` int(11) NOT NULL COMMENT '数据文件id',
+  `data_file_id` int(11) NOT NULL COMMENT '数据文件表自增id（不是文件id）',
   `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据ID,hash',
   `meta_data_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '元数据名称',
   `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'entered' COMMENT '元数据的状态 (entered：录入数据(创建未发布新表之前的操作); created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
@@ -452,6 +452,22 @@ CREATE TABLE `task_result_consumer` (
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`task_id`,`consumer_identity_id`,`producer_identity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务结果接收方表 任务结果接收方信息';
+
+-- ----------------------------
+-- Table structure for store_calculate_result
+-- ----------------------------
+DROP TABLE IF EXISTS `store_calculate_result`;
+CREATE TABLE `store_calculate_result` (
+    `time_interval` varchar(10) NOT NULL COMMENT '时间间隔',
+    `store_type` varchar(50) NOT NULL COMMENT '存储类型',
+    `reside_time` varchar(10) NOT NULL COMMENT '所属时间',
+    `calculate_result` bigint(20) DEFAULT 0 COMMENT '计算结果（单位：字节/bps）',
+    `status` int(4) DEFAULT 1 COMMENT '是否有效（1:有效，2:无效）',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+    KEY (`store_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='存储计算结果表';
+
 
 -- ----------------------------
 -- View structure for v_local_stats

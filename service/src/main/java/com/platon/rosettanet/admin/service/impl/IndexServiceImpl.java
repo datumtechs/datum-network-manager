@@ -31,21 +31,6 @@ public class IndexServiceImpl implements IndexService {
 
     @Resource
     private VLocalStatsMapper localStatsMapper;
-    @Resource
-    private LocalPowerNodeMapper localPowerNodeMapper;
-
-//    @Override
-//    public VLocalStats getOverview() {
-//        VLocalStats vLocalStats = localStatsMapper.selectLocalStats();
-//        return vLocalStats;
-//    }
-
-//    @Override
-//    public List<LocalPowerNode> getPowerNodeList() {
-//        String identityId = LocalOrgIdentityCache.getIdentityId();
-//        List<LocalPowerNode> localPowerNodes = localPowerNodeMapper.queryPowerNodeList(identityId);
-//        return localPowerNodes;
-//    }
 
     @Override
     public UsedResourceDTO queryUsedTotalResource() {
@@ -85,7 +70,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List queryMyCalculateTaskStats() {
+    public List<Map<String, Object>> queryMyCalculateTaskStats() {
         return localStatsMapper.queryMyCalculateTaskStats();
     }
 
@@ -136,8 +121,8 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<LocalDataAuth> queryDataWaitAuthList() {
-        return localStatsMapper;
+    public List<Map<String, Object>> queryWaitAuthDataList() {
+        return localStatsMapper.queryWaitAuthDataList();
     }
 
 }
