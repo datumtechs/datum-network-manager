@@ -22,6 +22,13 @@ public interface LocalDataFileMapper {
     int insertSelective(LocalDataFile localDataFile);
 
     /**
+     * 插入数据
+     * @param localDataFile
+     * @return
+     */
+    int insert(LocalDataFile localDataFile);
+
+    /**
      *根据metaDataId进行选择性更新
      */
     int updateByFileIdSelective(LocalDataFile localDataFile);
@@ -53,7 +60,7 @@ public interface LocalDataFileMapper {
     LocalDataFile selectByResourceName(@Param("resourceName") String resourceName, @Param("id") Integer id);
 
     /**
-     * 排除指定metaDataId之后，根据resourceName查询数据文件
+     *
      * @param fileId
      * @return
      */

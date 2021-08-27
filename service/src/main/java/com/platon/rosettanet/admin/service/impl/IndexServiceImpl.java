@@ -4,6 +4,7 @@ import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.dao.LocalPowerNodeMapper;
 import com.platon.rosettanet.admin.dao.VLocalStatsMapper;
 import com.platon.rosettanet.admin.dao.dto.UsedResourceDTO;
+import com.platon.rosettanet.admin.dao.entity.LocalDataAuth;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 import com.platon.rosettanet.admin.service.IndexService;
@@ -133,4 +134,10 @@ public class IndexServiceImpl implements IndexService {
                 .setScale(1, BigDecimal.ROUND_UP);
         return String.valueOf(bd);
     }
+
+    @Override
+    public List<LocalDataAuth> queryDataWaitAuthList() {
+        return localStatsMapper;
+    }
+
 }

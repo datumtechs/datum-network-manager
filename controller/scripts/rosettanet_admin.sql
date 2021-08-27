@@ -120,8 +120,6 @@ CREATE TABLE `local_data_file` (
   UNIQUE KEY `file_id` (`file_id`) USING HASH
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表，数据信息表';
 
-
-
 -- ----------------------------
 -- Table structure for local_meta_data
 -- ----------------------------
@@ -142,8 +140,6 @@ CREATE TABLE `local_meta_data` (
   UNIQUE KEY `meta_data_id` (`meta_data_id`),
   KEY `data_file_id` (`data_file_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织元数据文件表，文件的元数据信息';
-
-
 
 -- ----------------------------
 -- Table structure for local_meta_data_column

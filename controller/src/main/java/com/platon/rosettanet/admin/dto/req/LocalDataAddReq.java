@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.dto.req;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,9 +19,7 @@ import java.util.List;
  * @Desc
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 @ApiModel
 public class LocalDataAddReq {
 
@@ -28,6 +27,8 @@ public class LocalDataAddReq {
     @ApiModelProperty(value = "数据库id",required = true)
     @NotNull
     private Integer id;
+    @ApiModelProperty(value = "数据添加类型 1：新增数据、2：另存为新数据",required = true)
+    private Integer addType;
     //资源名称
     @ApiModelProperty(value = "资源名称",required = true)
     private String resourceName;

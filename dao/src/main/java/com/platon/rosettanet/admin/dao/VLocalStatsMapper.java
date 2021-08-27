@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.dao;
 
 import com.platon.rosettanet.admin.dao.dto.UsedResourceDTO;
+import com.platon.rosettanet.admin.dao.entity.LocalDataAuth;
 import com.platon.rosettanet.admin.dao.entity.VLocalStats;
 
 import java.util.List;
@@ -57,6 +58,12 @@ public interface VLocalStatsMapper {
      * @return
      */
     List<Double> queryWholeNetDateSameRatio();
+
+    /**
+     * 查询待授权数据列表
+     * @return
+     */
+    List<LocalDataAuth> queryWaitAuthDataList();
 
 
 }

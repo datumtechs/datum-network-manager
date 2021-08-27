@@ -46,12 +46,12 @@
      FROM
           (
               SELECT
-                  lda.*, lma.file_id
+                  lda.*, lma.data_file_id
               FROM
                   local_data_auth AS lda
               LEFT JOIN local_meta_data AS lma ON lda.meta_data_id = lma.meta_data_id
           ) AS a
-     LEFT JOIN local_data_file AS ldf ON a.file_id = ldf.file_id
+     LEFT JOIN local_data_file AS ldf ON a.data_file_id = ldf.id
      <where>
          <if test="status != null and status == 1">
            and a.status = 0

@@ -12,8 +12,8 @@ import java.util.Date;
 public class LocalMetaData {
     //序号
     private Integer id;
-    //源文件ID，上传文件成功后返回源文件ID
-    private String fileId;
+    //数据文件表自增id
+    private Integer dataFileId;
     //元数据ID,hash
     private String metaDataId;
     //文件大小(字节)

@@ -126,4 +126,12 @@ public class IndexController {
         return JsonResponse.success(dataRatioResp);
     }
 
+    @ApiOperation(value = "查询数据待授权列表")
+    @PostMapping("/queryDataWaitAuthList")
+    public JsonResponse<DataRatioResp> queryDataWaitAuthList(){
+        Map<String, Object> map = indexService.queryDataWaitAuthList();
+        DataRatioResp dataRatioResp = BeanUtil.toBean(map, DataRatioResp.class);
+        return JsonResponse.success(dataRatioResp);
+    }
+
 }

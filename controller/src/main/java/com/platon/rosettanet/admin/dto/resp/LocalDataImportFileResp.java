@@ -65,8 +65,8 @@ public class LocalDataImportFileResp {
     //数据描述
     @ApiModelProperty(name = "remarks", value = "数据描述")
     private String remarks;
-    //数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)
-    @ApiModelProperty(name = "status", value = "数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)")
+    //数据的状态 (entered：录入数据(创建未发布新表之前的操作); created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)
+    @ApiModelProperty(name = "status", value = "数据的状态 (entered：录入数据(创建未发布新表之前的操作); created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)")
     private String status;
     //元数据ID,hash
     @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
@@ -88,7 +88,7 @@ public class LocalDataImportFileResp {
         }
         LocalDataImportFileResp resp = new LocalDataImportFileResp();
         BeanUtils.copyProperties(detail,resp);
-        resp.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());
+        resp.setStatus(LocalDataFileStatusEnum.ENTERED.getStatus());
         resp.setRecCreateTime(detail.getRecCreateTime() == null? null : detail.getRecCreateTime().getTime());
         resp.setRecUpdateTime(detail.getRecUpdateTime() == null? null : detail.getRecUpdateTime().getTime());
         return resp;

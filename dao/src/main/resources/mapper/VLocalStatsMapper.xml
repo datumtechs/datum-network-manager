@@ -132,4 +132,16 @@
     order by a.month desc
   </select>
 
+  <!-- 查询待授权数据列表-->
+  <select id="queryWaitAuthDataList" resultType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+    select
+        create_at as applyTime,
+        apply_user as applyUser,
+
+    from
+        local_data_auth
+    where status = 0
+    order by create_at desc
+  </select>
+
 </mapper>

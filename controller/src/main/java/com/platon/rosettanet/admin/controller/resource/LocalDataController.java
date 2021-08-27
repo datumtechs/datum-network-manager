@@ -13,6 +13,8 @@ import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaData;
 import com.platon.rosettanet.admin.dao.entity.Task;
+import com.platon.rosettanet.admin.dao.enums.DataAddTypeEnum;
+import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.rosettanet.admin.dto.CommonPageReq;
 import com.platon.rosettanet.admin.dto.JsonResponse;
 import com.platon.rosettanet.admin.dto.req.*;
@@ -138,10 +140,16 @@ public class LocalDataController {
 
     /**
      * 数据添加：实际只是更新数据库信息，在上一步导入文件的时候已经插入数据
+     * 另存为新数据：复制一份数据进行保存
      */
-    @ApiOperation(value = "添加数据")
+    @ApiOperation(value = "添加数据/另存为新数据")
     @PostMapping("addMetaData")
     public JsonResponse add(@RequestBody @Validated LocalDataAddReq req){
+        int count = 0;
+        //判断数据添加类型
+        if(req.getAddType() != DataAddTypeEnum.ADD.getType() && req.getAddType() != DataAddTypeEnum.ADD_AGAIN.getType()){
+           return JsonResponse.fail("数据添加类型不正确，类型为 1：新增数据、2：另存为新数据");
+        }
         //判断格式是否对
         if(!NameUtil.isValidName(req.getResourceName())){
             return JsonResponse.fail("文件名称格式不合法:仅支持中英文与数字输入，最多12个字符");
@@ -157,12 +165,22 @@ public class LocalDataController {
         LocalMetaData metaData = new LocalMetaData();
         metaData.setRemarks(req.getRemarks());
         metaData.setIndustry(req.getIndustry());
-        int count = localDataService.add(detail, metaData);
+        metaData.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());//添加数据状态为created
+        //添加数据/另存为新数据
+        if(req.getAddType() == DataAddTypeEnum.ADD.getType()){
+            count = localDataService.add(detail, metaData);
+        } else {
+            count = localDataService.addAgain(detail, metaData);
+        }
         if(count <= 0){
             return JsonResponse.fail("添加失败");
         }
         return JsonResponse.success();
     }
+
+
+
+
 
     /**
      * 查看数据详情

@@ -58,4 +58,10 @@ public interface IndexService {
      * @return
      */
     Map<String, Object> queryWholeNetDateTotalRatio();
+
+    /**
+     * 查询数据待授权列表
+     * @return
+     */
+    List queryDataWaitAuthList();
 }
