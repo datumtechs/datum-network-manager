@@ -5,6 +5,7 @@
   <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalSeedNode">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="out_node_id" jdbcType="VARCHAR" property="outNodeId" />
     <result column="seed_node_id" jdbcType="VARCHAR" property="seedNodeId" />
     <result column="seed_node_name" jdbcType="VARCHAR" property="seedNodeName" />
     <result column="internal_ip" jdbcType="VARCHAR" property="internalIp" />
@@ -18,6 +19,7 @@
   <sql id="Base_Column_List">
     id,
     identity_id,
+    out_node_id,
     seed_node_id,
     seed_node_name,
     internal_ip,
@@ -51,8 +53,8 @@
         local_seed_node
     where 1=1
         <if test="keyWord != null and keyWord != ''">
-         and (seed_node_name like concat('%', #{keyWord, jdbcType=VARCHAR}, '%')
-         or seed_node_id like concat('%', #{keyWord, jdbcType=VARCHAR}, '%')) </if>
+            and seed_node_name like concat('%', #{keyWord, jdbcType=VARCHAR}, '%')
+        </if>
     order by conn_status asc, init_flag desc, create_time desc
   </select>
 
@@ -67,6 +69,7 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">id,</if>
       <if test="identityId != null">identity_id,</if>
+      <if test="outNodeId != null">out_node_id,</if>
       <if test="seedNodeId != null">seed_node_id,</if>
       <if test="seedNodeName != null">seed_node_name,</if>
       <if test="internalIp != null">internal_ip,</if>
@@ -79,6 +82,7 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null"> #{id, jdbcType=INTEGER},</if>
       <if test="identityId != null">#{identityId, jdbcType=VARCHAR},</if>
+      <if test="outNodeId != null">#{outNodeId, jdbcType=VARCHAR},</if>
       <if test="seedNodeId != null">#{seedNodeId, jdbcType=VARCHAR},</if>
       <if test="seedNodeName != null">#{seedNodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">#{internalIp, jdbcType=VARCHAR},</if>
@@ -94,6 +98,7 @@
   <update id="updateSeedNode" parameterType="com.platon.rosettanet.admin.dao.entity.LocalSeedNode">
     update local_seed_node
     <set>
+      <if test="outNodeId != null">out_node_id = #{outNodeId, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
       <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
       <if test="connStatus != null">conn_status = #{connStatus, jdbcType=INTEGER},</if>
@@ -107,6 +112,7 @@
     <foreach collection="list" item="item" separator=";">
       update local_seed_node
       <set>
+        <if test="item.outNodeId != null">out_node_id = #{item.outNodeId, jdbcType=VARCHAR},</if>
         <if test="item.internalIp != null">internal_ip = #{item.internalIp, jdbcType=VARCHAR},</if>
         <if test="item.internalPort != null">internal_port = #{item.internalPort, jdbcType=INTEGER},</if>
         <if test="item.connStatus != null">conn_status = #{item.connStatus, jdbcType=INTEGER},</if>

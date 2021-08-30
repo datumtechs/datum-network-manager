@@ -58,7 +58,7 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
         // 调用grpc接口修改计算节点信息
         YarnRpcMessage.SeedPeer seedResp = seedClient.updateSeedNode(seedNode.getSeedNodeId(), seedNode.getInternalIp(),
                 seedNode.getInternalPort());
-        // 计算节点id
+        // 种子节点id
         seedNode.setSeedNodeId(seedResp.getId());
         // 连接状态
         seedNode.setConnStatus(seedResp.getConnState());

@@ -22,6 +22,10 @@ public class SeedUpdateReq {
     @ApiModelProperty(value = "种子节点ID", example = "", required = true)
     private String seedNodeId;
 
+    @NotNull(message = "节点id不能为空")
+    @ApiModelProperty(value = "节点ID", example = "", required = true)
+    private String nodeId;
+
     @NotNull(message = "内部IP不能为空")
     @ApiModelProperty(value = "节点内网IP", example = "", required = true)
     private String internalIp;

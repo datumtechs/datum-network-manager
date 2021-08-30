@@ -30,11 +30,13 @@
   <select id="listDataFile"  resultMap="BaseResultMap">
     select
         <include refid="Base_Column_List" />
-    from global_data_file
+    from
+        global_data_file
+    <where>
       <if test="keyword != null and keyword != ''">
-        where resource_name like concat('%',#{keyword},'%')
-              or meta_data_id like concat('%',#{keyword},'%')
+        resource_name like concat('%',#{keyword},'%')
       </if>
+    </where>
     order by publish_time desc
   </select>
 

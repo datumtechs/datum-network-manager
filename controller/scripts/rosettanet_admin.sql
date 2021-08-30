@@ -195,6 +195,7 @@ DROP TABLE IF EXISTS `local_seed_node`;
 CREATE TABLE `local_seed_node` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组织身份ID',
+  `out_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '外部节点id',
   `seed_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
   `seed_node_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点名称',
   `internal_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点内部IP',

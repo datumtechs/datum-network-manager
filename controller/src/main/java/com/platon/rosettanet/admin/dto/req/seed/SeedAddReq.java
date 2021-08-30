@@ -23,6 +23,10 @@ public class SeedAddReq {
     @ApiModelProperty(value = "种子节点名称", example = "", required = true)
     private String seedNodeName;
 
+    @NotNull(message = "节点id不能为空")
+    @ApiModelProperty(value = "节点ID", example = "", required = true)
+    private String nodeId;
+
     @NotNull(message = "内部IP不能为空")
     @ApiModelProperty(value = "节点内网IP", example = "", required = true)
     private String internalIp;

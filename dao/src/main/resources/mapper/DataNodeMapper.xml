@@ -28,7 +28,7 @@
     from local_data_node
     <where>
       <if test="keyword != null and keyword != ''">
-        node_id like CONCAT('%',#{keyword},'%') or host_Name like CONCAT('%',#{keyword},'%')
+        host_Name like CONCAT('%',#{keyword},'%')
       </if>
     </where>
     ORDER BY CASE conn_status WHEN 'enabled' THEN 1 ELSE 0 END

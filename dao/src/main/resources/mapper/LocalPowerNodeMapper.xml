@@ -82,7 +82,7 @@
     select count(1) from local_power_node where power_node_Name = #{powerNodeName, jdbcType=VARCHAR}
   </select>
 
-  <!-- 通过组织机构id查询计算节点-->
+  <!-- 询计算节点列表-->
   <select id="queryPowerNodeList" resultMap="BaseResultMap">
     select
         <include refid="Base_Column_List" />
@@ -90,8 +90,7 @@
         local_power_node
     where 1=1
         <if test="keyword != null and keyword != ''">
-        and (power_node_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
-            or power_node_id like concat('%', #{keyword, jdbcType=VARCHAR}, '%'))
+            and power_node_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
         </if>
     order by (case when conn_status = -1 THEN 0 ELSE 1 END), create_time desc
   </select>
