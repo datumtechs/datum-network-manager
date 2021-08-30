@@ -26,7 +26,7 @@ public class LocalDataAuthPageResp {
     @ApiModelProperty(name = "id", value = "数据ID，序号")
     private Integer id;
     @ApiModelProperty(name = "authId", value = "元数据授权申请Id")
-    private Integer authId;
+    private String authId;
     @ApiModelProperty(name = "metaDataId", value = "元数据Id")
     private String metaDataId;
     @ApiModelProperty(name = "resourceName", value = "数据名称")

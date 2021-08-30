@@ -26,7 +26,8 @@ public class MockDataAuthTest {
     public void addDataAuth(){
 
         LocalDataAuth localDataAuth = new LocalDataAuth();
-        localDataAuth.setMetaDataId("metadata:0x813af436089087c85fda98c518e86a67aad6b8707817ef9f0b152473749d7bdb");
+        localDataAuth.setAuthId("001");
+        localDataAuth.setMetaDataId("metadata:0x3426733d8fbd4a27ed26f06b35caa6ac63bca1fc09b98e56e1b262da9a357ffd");
         localDataAuth.setApplyUser("user_0bcc975ab55848bda315d7c14799bc17");
         localDataAuth.setUserType(1);
         localDataAuth.setAuthType(2);
@@ -36,6 +37,7 @@ public class MockDataAuthTest {
         localDataAuthMapper.insertSelective(localDataAuth);
 
         LocalDataAuth localDataAuth1 = new LocalDataAuth();
+        localDataAuth1.setAuthId("002");
         localDataAuth1.setMetaDataId("metadata:0x2f3515dbe3103411ba3dc726058768f97eebe02e94bc41e4ebe5c99ed830d0b3");
         localDataAuth1.setApplyUser("user_0bcc975ab55848bda315d7c14799bc17");
         localDataAuth1.setUserType(1);

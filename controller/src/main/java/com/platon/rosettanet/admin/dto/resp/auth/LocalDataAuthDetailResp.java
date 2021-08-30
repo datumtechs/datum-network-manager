@@ -42,6 +42,8 @@ public class LocalDataAuthDetailResp {
         authInfo.setAuthAt(getTime(dataAuth.getAuthAt()));
         authInfo.setAuthValueStartAt(getTime(dataAuth.getAuthValueStartAt()));
         authInfo.setAuthValueEndAt(getTime(dataAuth.getAuthValueEndAt()));
+        authInfo.setRecCreateTime(getTime(dataAuth.getRecCreateTime()));
+        authInfo.setRecUpdateTime(getTime(dataAuth.getRecUpdateTime()));
 
         //基本信息
         MetaData basicDataInfo = new MetaData();
@@ -94,7 +96,7 @@ public class LocalDataAuthDetailResp {
         private Long createAt;
         @ApiModelProperty(name = "authAt", value = "授权数据时间")
         private Long authAt;
-        @ApiModelProperty(name = "status", value = "授权数据状态：1:同意， 2:拒绝 ，3:待授权")
+        @ApiModelProperty(name = "status", value = "授权数据状态：0：等待授权审核，1:同意， 2:拒绝")
         private Integer status;
         @ApiModelProperty(name = "recCreateTime", value = "创建时间")
         private Long recCreateTime;

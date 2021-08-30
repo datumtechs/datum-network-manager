@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.grpc.client;
 
+import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.dao.entity.LocalDataAuth;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
@@ -130,7 +131,7 @@ public class AuthClient {
      * @param authStatus ：授权数据状态：0：等待授权审核，1:同意， 2:拒绝
      * @return
      */
-    public CommonResp auditMetaData(String metaDataAuthId, int authStatus){
+    public CommonResp auditMetaData(String metaDataAuthId, int authStatus) throws ApplicationException {
         //1.获取rpc连接
         Channel channel = null;
         try{

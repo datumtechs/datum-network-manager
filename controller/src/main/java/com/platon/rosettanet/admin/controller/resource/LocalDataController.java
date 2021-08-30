@@ -129,10 +129,10 @@ public class LocalDataController {
             throw new ApplicationException("文件名称格式不合法:仅支持中英文与数字输入，最多12个字符");
         }
         //判断文件名称是否重复
-        boolean exist = localDataService.isExistResourceName(resourceName,null);
+        /*boolean exist = localDataService.isExistResourceName(resourceName,null);
         if(exist){
             throw new ApplicationException("文件名称已存在，请修改文件名称前12个字符，确保不会和已存在的文件前12个字符重复！！！");
-        }
+        }*/
     }
 
     /**
