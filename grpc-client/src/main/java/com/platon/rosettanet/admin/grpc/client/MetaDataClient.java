@@ -59,7 +59,7 @@ public class MetaDataClient {
             MetaDataRpcMessage.MetaDataSummary.Builder summaryBuilder = MetaDataRpcMessage.MetaDataSummary
                     .newBuilder()
                     .setOriginId(fileDetail.getFileId())
-                    .setTableName(fileDetail.getResourceName())
+                    .setTableName((String) fileDetail.getDynamicFields().get("resourceName"))
                     .setFilePath(fileDetail.getFilePath())
                     .setRows(fileDetail.getRows().intValue()) // 源文件的行数
                     .setColumns(fileDetail.getColumns())

@@ -5,8 +5,9 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="data_file_id" jdbcType="VARCHAR" property="dataFileId" />
     <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
-    <result column="size" jdbcType="BIGINT" property="size" />
+    <result column="meta_data_name" jdbcType="VARCHAR" property="metaDataName" />
     <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="has_other_save" jdbcType="TINYINT" property="hasOtherSave" />
     <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="industry" jdbcType="INTEGER" property="industry" />
@@ -14,7 +15,7 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, data_file_id, meta_data_id, `size`, status, publish_time, remarks, industry, rec_create_time,
+    id, data_file_id, meta_data_id, meta_data_name, status, publish_time, remarks, industry, rec_create_time,
     rec_update_time
   </sql>
 
@@ -43,6 +44,38 @@
     where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
   </select>
 
+  <select id="listMetaData" parameterType="java.lang.String" resultType="com.platon.rosettanet.admin.dao.entity.LocalMetaDataItem">
+    SELECT
+	lmd.id AS id,
+	lmd.meta_data_id AS metaDataId,
+	lmd.meta_data_name AS metaDataName,
+	lmd.`status` AS `status`,
+    ldf.size AS `size`,
+	lmd.rec_update_time AS recUpdateTime
+    FROM
+        local_meta_data AS lmd
+    LEFT JOIN local_data_file AS ldf ON lmd.data_file_id = ldf.id
+    WHERE `status` IN ('created', 'released', 'revoked')
+    AND lmd.has_other_save = 1
+    <if test="keyword != null and keyword != ''">
+      and metaDataName like concat('%',#{keyword},'%')
+    </if>
+    ORDER BY recUpdateTime ASC
+
+  </select>
+
+
+
+  <!-- 根据resourceName查询数据文件-->
+  <select id="selectByResourceName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from local_meta_data
+    where meta_data_name = #{resourceName}
+    <if test="id != null">
+      and id != #{id}
+    </if>
+  </select>
+
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from local_meta_data
@@ -50,11 +83,11 @@
   </delete>
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into local_meta_data (id, data_file_id, meta_data_id,
-      `size`, status, publish_time,
+      meta_data_name, status, has_other_save, publish_time,
       remarks, industry, rec_create_time, rec_update_time
       )
     values (#{id,jdbcType=INTEGER}, #{dataFileId,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR},
-      #{size,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, 
+      #{metaDataName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{hasOtherSave,jdbcType=TINYINT}, #{publishTime,jdbcType=TIMESTAMP},
       #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -70,11 +103,14 @@
       <if test="metaDataId != null">
         meta_data_id,
       </if>
-      <if test="size != null">
-        `size`,
+      <if test="metaDataName != null">
+        meta_data_name,
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="hasOtherSave != null">
+        has_other_save,
       </if>
       <if test="publishTime != null">
         publish_time,
@@ -102,11 +138,14 @@
       <if test="metaDataId != null">
         #{metaDataId,jdbcType=VARCHAR},
       </if>
-      <if test="size != null">
-        #{size,jdbcType=BIGINT},
+      <if test="metaDataName != null">
+        #{metaDataName,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="hasOtherSave != null">
+        #{hasOtherSave,jdbcType=TINYINT},
       </if>
       <if test="publishTime != null">
         #{publishTime,jdbcType=TIMESTAMP},
@@ -134,11 +173,14 @@
       <if test="metaDataId != null">
         meta_data_id = #{metaDataId,jdbcType=VARCHAR},
       </if>
-      <if test="size != null">
-        `size` = #{size,jdbcType=BIGINT},
+      <if test="metaDataName != null">
+        meta_data_name = #{metaDataName,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="hasOtherSave != null">
+        has_other_save = #{hasOtherSave,jdbcType=TINYINT},
       </if>
       <if test="publishTime != null">
         publish_time = #{publishTime,jdbcType=TIMESTAMP},
@@ -162,8 +204,9 @@
     update local_meta_data
     set data_file_id = #{dataFileId,jdbcType=VARCHAR},
       meta_data_id = #{metaDataId,jdbcType=VARCHAR},
-      `size` = #{size,jdbcType=BIGINT},
+      meta_data_name = #{metaDataName,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
+      has_other_save = #{hasOtherSave,jdbcType=TINYINT},
       publish_time = #{publishTime,jdbcType=TIMESTAMP},
       remarks = #{remarks,jdbcType=VARCHAR},
       industry = #{industry,jdbcType=INTEGER},

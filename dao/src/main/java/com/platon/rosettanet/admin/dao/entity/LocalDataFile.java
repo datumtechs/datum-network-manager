@@ -21,8 +21,6 @@ public class LocalDataFile extends BaseDomain {
     private String filePath;
     //文件后缀/类型, csv
     private String fileType;
-    //资源名称
-    private String resourceName;
     //文件大小(字节)
     private Long size;
     //数据行数(不算title)

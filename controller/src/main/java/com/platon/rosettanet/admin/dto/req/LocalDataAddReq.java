@@ -24,9 +24,9 @@ import java.util.List;
 public class LocalDataAddReq {
 
     //数据库id
-    @ApiModelProperty(value = "数据库id",required = true)
+    @ApiModelProperty(value = "metaData数据库id",required = true)
     @NotNull
-    private Integer id;
+    private Integer metaDataPKId;
     @ApiModelProperty(value = "数据添加类型 1：新增数据、2：另存为新数据",required = true)
     private Integer addType;
     //资源名称

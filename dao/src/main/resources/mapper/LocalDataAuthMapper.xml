@@ -35,35 +35,28 @@
 
 
   <resultMap id="BaseResultMap_With_FileName" type="com.platon.rosettanet.admin.dao.entity.LocalDataAuth" extends="BaseResultMap">
-    <result column="file_name" property="dynamicFields.fileName" jdbcType="VARCHAR"/>
     <result column="resource_name" property="dynamicFields.resourceName" jdbcType="VARCHAR"/>
   </resultMap>
 
 
   <select id="selectDataAuthList" resultMap="BaseResultMap_With_FileName">
-     SELECT
-          a.*, ldf.file_name AS file_name, ldf.resource_name AS resource_name
-     FROM
-          (
-              SELECT
-                  lda.*, lma.data_file_id
-              FROM
-                  local_data_auth AS lda
-              LEFT JOIN local_meta_data AS lma ON lda.meta_data_id = lma.meta_data_id
-          ) AS a
-     LEFT JOIN local_data_file AS ldf ON a.data_file_id = ldf.id
+    SELECT
+    lda.*, lma.meta_data_name AS resource_name
+    FROM
+    local_data_auth AS lda
+    LEFT JOIN local_meta_data AS lma ON lda.meta_data_id = lma.meta_data_id
      <where>
          <if test="status != null and status == 1">
-           and a.status = 0
+           and lda.status = 0
          </if>
          <if test="status != null and status == 2">
-           and a.status in (1,2)
+           and lda.status in (1,2)
          </if>
          <if test="keyword != null and keyword != ''">
-           and (ldf.resource_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
+           and (lma.meta_data_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
          </if>
      </where>
-     ORDER BY a.create_at DESC
+     ORDER BY lda.create_at DESC
   </select>
 
 

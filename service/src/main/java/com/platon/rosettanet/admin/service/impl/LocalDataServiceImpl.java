@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -65,39 +66,17 @@ public class LocalDataServiceImpl implements LocalDataService {
 
 
     @Override
-    public Page<LocalDataFile> listDataFile(int pageNo, int pageSize,String keyword) {
-        Page<LocalDataFile> localDataFilePage = PageHelper.startPage(pageNo, pageSize);
-        localDataFileMapper.listDataFile(keyword);
-        List<LocalDataFileDetail> detailList = localDataFilePage.stream()
-                .filter(new Predicate<LocalDataFile>() {
-                    @Override
-                    public boolean test(LocalDataFile localDataFile) {
-                        LocalMetaData localMetaData = localMetaDataMapper.selectByDataFileId(localDataFile.getId());
-                        return !LocalDataFileStatusEnum.ENTERED.getStatus().equals(localMetaData.getStatus());
-                    }
-                })
-                .collect(Collectors.toList())
-                .stream()
-                .map(localDataFile -> {
-                    LocalMetaData localMetaData = localMetaDataMapper.selectByDataFileId(localDataFile.getId());
-                    List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByMetaId(localMetaData.getId());
-                    List<String> dataJoinTaskIdList = taskDataReceiverMapper.selectTaskByMetaDataId(localMetaData.getMetaDataId());
-                    LocalDataFileDetail detail = new LocalDataFileDetail();
-                    BeanUtils.copyProperties(localDataFile, detail);
-                    detail.setLocalMetaDataColumnList(columnList);
-                    //数据状态及metaDataId
-                    Map dynamicFields = new HashMap<>();
-                    dynamicFields.put("status", localMetaData.getStatus());
-                    dynamicFields.put("metaDataId", localMetaData.getMetaDataId());
-                    dynamicFields.put("dataJoinTaskCount", CollectionUtils.isEmpty(dataJoinTaskIdList) ? 0 : dataJoinTaskIdList.size());
-                    detail.setDynamicFields(dynamicFields);
-                    return detail;
-                })
-                .collect(Collectors.toList());
-        localDataFilePage.clear();
-        //重新赋值
-        localDataFilePage.addAll(detailList);
-        return localDataFilePage;
+    public Page<LocalMetaDataItem> listDataFile(int pageNo, int pageSize,String keyword) {
+        Page<LocalMetaDataItem> localDataMetaPage = PageHelper.startPage(pageNo, pageSize);
+        localMetaDataMapper.listMetaData(keyword);
+        localDataMetaPage.stream().forEach(new Consumer<LocalMetaDataItem>() {
+            @Override
+            public void accept(LocalMetaDataItem localMetaDataItem) {
+                List<String> dataJoinTaskIdList = taskDataReceiverMapper.selectTaskByMetaDataId(localMetaDataItem.getMetaDataId());
+                localMetaDataItem.setDataJoinTaskCount(CollectionUtils.isEmpty(dataJoinTaskIdList) ? 0 : dataJoinTaskIdList.size());
+            }
+        });
+        return localDataMetaPage;
     }
 
     @Override
@@ -182,6 +161,8 @@ public class LocalDataServiceImpl implements LocalDataService {
             localMetaDataColumn.setMetaId(localMetaData.getId());
         });
         count += localMetaDataColumnMapper.batchInsert(detail.getLocalMetaDataColumnList());
+        //### 6.返回数据补充metaData主Id
+        detail.getDynamicFields().put(ServiceConstant.LOCAL_DATA_METADATA_PK_ID, localMetaData.getId());
         return detail;
     }
 
@@ -189,18 +170,14 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Transactional
     @Override
     public int add(LocalDataFileDetail detail, LocalMetaData metaData) {
-        //LocalDataFile localDataFile = localDataFileMapper.selectById(detail.getId());
-        LocalMetaData localMetaData = localMetaDataMapper.selectByDataFileId(detail.getId());//todo 此处后续多次变更，一定要在最新的基础上变更
+        LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(metaData.getId());
         //已发布状态的元数据不允许修改
         if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(localMetaData.getStatus())){
             throw new ServiceException("已发布状态的元数据不允许修改");
         }
         Date operateDate = new Date();
         AtomicInteger count = new AtomicInteger();
-        detail.setRecUpdateTime(operateDate);
         metaData.setRecUpdateTime(operateDate);
-        metaData.setId(localMetaData.getId());
-        count.getAndAdd(localDataFileMapper.updateByIdSelective(detail));
         count.getAndAdd(localMetaDataMapper.updateByPrimaryKeySelective(metaData));
 
         /**
@@ -217,19 +194,15 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Transactional
     @Override
     public int addAgain(LocalDataFileDetail detail, LocalMetaData metaData) {
-
-        LocalDataFile localDataFile = localDataFileMapper.selectById(detail.getId());
-        LocalMetaData localMetaData = localMetaDataMapper.selectByDataFileId(detail.getId());
-
+        LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(metaData.getId());
         AtomicInteger count = new AtomicInteger();
-        //1、持久化数据文件 localDataFile
-        localDataFile.setResourceName(detail.getResourceName());
-        count.getAndAdd(localDataFileMapper.insert(localDataFile));
-        //2、持久化元数据  localMetaData
-        localMetaData.setDataFileId(localDataFile.getId());//关联表local_data_file
+        //1、持久化元数据  localMetaData
+        localMetaData.setDataFileId(localMetaData.getDataFileId());
         localMetaData.setRemarks(metaData.getRemarks());
+        localMetaData.setMetaDataName(metaData.getMetaDataName());
         localMetaData.setIndustry(metaData.getIndustry());
         localMetaData.setStatus(metaData.getStatus());
+        localMetaData.setHasOtherSave(metaData.getHasOtherSave());
         localMetaData.setMetaDataId(null);
         localMetaData.setPublishTime(null);
         localMetaData.setId(null);
@@ -252,61 +225,71 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Transactional
     @Override
     public int delete(Integer id) {
-        LocalMetaData localMetaData = localMetaDataMapper.selectByDataFileId(id);
-        int count = localMetaDataColumnMapper.deleteByMetaId(localMetaData.getId());
-        if(count <= 0){
-            return 0;
+        LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
+        if(Objects.isNull(localMetaData)){
+            throw new ServiceException("输入的id有误");
         }
-        count += localMetaDataMapper.deleteByPrimaryKey(localMetaData.getId());//TODO 因为要查看记录，是否设置成假删除更合理
-        count += localDataFileMapper.deleteById(id);
-        return count;
+        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(localMetaData.getStatus())){
+            throw new ServiceException("已发布状态的数据不能删除");
+        }
+        LocalMetaData metaData = new LocalMetaData();
+        metaData.setId(localMetaData.getId());
+        metaData.setStatus(LocalDataFileStatusEnum.DELETED.getStatus());
+        metaData.setRecUpdateTime(new Date());
+        AtomicInteger count = new AtomicInteger();
+        count.getAndAdd(localMetaDataMapper.updateByPrimaryKeySelective(metaData));
+        return count.get();
     }
 
     @SneakyThrows
     @Override
     public void downLoad(HttpServletResponse response, Integer id) {
         //### 1.获取文件路径
-        LocalDataFile localDataFile = localDataFileMapper.selectById(id);
+        LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
+        LocalDataFile localDataFile = localDataFileMapper.selectById(localMetaData.getDataFileId());
         //### 2.获取可用的数据节点
         YarnQueryFilePositionResp yarnQueryFilePositionResp = yarnClient.queryFilePosition(localDataFile.getFileId());
         byte[] bytes = dataProviderClient.downloadData(
                 yarnQueryFilePositionResp.getIp(),
                 yarnQueryFilePositionResp.getPort(),
                 yarnQueryFilePositionResp.getFilePath());
-        ExportFileUtil.exportCsv(localDataFile.getResourceName(),bytes,response);
+        ExportFileUtil.exportCsv(localMetaData.getMetaDataName(),bytes,response);
     }
 
     @Transactional
     @Override
     public int update(LocalDataFileDetail detail, LocalMetaData metaData) {
-        LocalDataFile localDataFile = localDataFileMapper.selectById(detail.getId());
-        LocalMetaData localMetaData = localMetaDataMapper.selectByDataFileId(localDataFile.getId());
+        LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(metaData.getId());
         //已发布状态的元数据不允许修改
         if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(localMetaData.getStatus())){
             throw new ServiceException("已发布状态的元数据不允许修改");
         }
         Date operateDate = new Date();
         AtomicInteger count = new AtomicInteger();
-        detail.setRecUpdateTime(operateDate);
-        count.getAndAdd(localDataFileMapper.updateByIdSelective(detail));
 
         //修改元数据区分情况：1、数据下架修改 2、数据从未发布过修改
         if(LocalDataFileStatusEnum.REVOKED.getStatus().equals(localMetaData.getStatus())){
             Date operateDateCreate = new Date();
             LocalMetaData localMetaDataCreate = new LocalMetaData();
-            localMetaDataCreate.setDataFileId(localDataFile.getId());
-            localMetaDataCreate.setSize(localDataFile.getSize());
+            localMetaDataCreate.setDataFileId(localMetaData.getDataFileId());
+            localMetaDataCreate.setMetaDataName(localMetaData.getMetaDataName());
             localMetaDataCreate.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());
+            localMetaDataCreate.setHasOtherSave(true);
             localMetaDataCreate.setRemarks(metaData.getRemarks());
             localMetaDataCreate.setIndustry(metaData.getIndustry());
             localMetaDataCreate.setRecCreateTime(operateDateCreate);
             localMetaDataCreate.setRecUpdateTime(operateDateCreate);
-            int id = localMetaDataMapper.insert(localMetaDataCreate);
+            //旧数据另存状态重置，并更新新数据为另外状态
+            LocalMetaData oldLocalMetaData = new LocalMetaData();
+            oldLocalMetaData.setId(metaData.getId());
+            oldLocalMetaData.setHasOtherSave(false);
+            count.getAndAdd(localMetaDataMapper.updateByPrimaryKeySelective(oldLocalMetaData));
+            count.getAndAdd(localMetaDataMapper.insert(localMetaDataCreate));
             detail.getLocalMetaDataColumnList().stream().forEach(localMetaDataColumn -> {
                 //关联ID
                 localMetaDataColumn.setMetaId(localMetaDataCreate.getId());
             });
-            localMetaDataColumnMapper.batchInsert(detail.getLocalMetaDataColumnList());
+            count.getAndAdd(localMetaDataColumnMapper.batchInsert(detail.getLocalMetaDataColumnList()));
         }else if(LocalDataFileStatusEnum.CREATED.getStatus().equals(localMetaData.getStatus())){
             metaData.setRecUpdateTime(operateDate);
             metaData.setId(localMetaData.getId());
@@ -323,11 +306,14 @@ public class LocalDataServiceImpl implements LocalDataService {
 
     @Override
     public LocalDataFileDetail detail(Integer id) {
-        LocalDataFile localDataFile = localDataFileMapper.selectById(id);
-        if(localDataFile == null){
-            return null;
+        LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
+        if(Objects.isNull(localMetaData)){
+            throw new ServiceException("查询为空，请检查metaDataPKId是否正确");
         }
-        LocalMetaData localMetaData = localMetaDataMapper.selectByDataFileId(localDataFile.getId());
+        LocalDataFile localDataFile = localDataFileMapper.selectById(localMetaData.getDataFileId());
+        if(Objects.isNull(localDataFile)){
+            throw new ServiceException("查询为空，请检查dataFileId是否正确");
+        }
         List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByMetaId(localMetaData.getId());
         List<String> taskIdList = taskDataReceiverMapper.selectTaskByMetaDataId(localMetaData.getMetaDataId());
 
@@ -340,6 +326,8 @@ public class LocalDataServiceImpl implements LocalDataService {
         dynamicFields.put(ServiceConstant.LOCAL_DATA_METADATA_ID, localMetaData.getMetaDataId());
         dynamicFields.put(ServiceConstant.LOCAL_DATA_REMARKS, localMetaData.getRemarks());
         dynamicFields.put(ServiceConstant.LOCAL_DATA_INDUSTRY, localMetaData.getIndustry());
+        dynamicFields.put(ServiceConstant.LOCAL_DATA_RESOURCE_NAME, localMetaData.getMetaDataName());
+        dynamicFields.put(ServiceConstant.LOCAL_DATA_METADATA_PK_ID, localMetaData.getId());
         dynamicFields.put(ServiceConstant.LOCAL_DATA_ATTEND_TASK_COUNT, CollectionUtils.isEmpty(taskIdList) ? 0 : taskIdList.size());
         detail.setDynamicFields(dynamicFields);
         return detail;
@@ -348,7 +336,7 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Override
     public int down(Integer id) {
         Date operateDate = new Date();
-        LocalMetaData localMetaData = localMetaDataMapper.selectByDataFileId(id);
+        LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
 
         //已发布状态的元数据不允许修改
         if(!LocalDataFileStatusEnum.RELEASED.getStatus().equals(localMetaData.getStatus())){
@@ -370,8 +358,8 @@ public class LocalDataServiceImpl implements LocalDataService {
     public int up(Integer id) {
         Date operateDate = new Date();
         //获取文件元数据详情
-        LocalDataFile localDataFile = localDataFileMapper.selectById(id);
-        LocalMetaData localMetaData = localMetaDataMapper.selectByDataFileId(localDataFile.getId());
+        LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
+        LocalDataFile localDataFile = localDataFileMapper.selectById(localMetaData.getDataFileId());
         //已发布状态的元数据不允许修改
         if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(localMetaData.getStatus())){
             throw new ServiceException("元数据已上架");
@@ -380,6 +368,9 @@ public class LocalDataServiceImpl implements LocalDataService {
         LocalDataFileDetail detail = new LocalDataFileDetail();
         BeanUtils.copyProperties(localDataFile,detail);
         detail.setLocalMetaDataColumnList(columnList);
+        Map dynamicMap = new HashMap();
+        dynamicMap.put(ServiceConstant.LOCAL_DATA_RESOURCE_NAME, localMetaData.getMetaDataName());
+        detail.setDynamicFields(dynamicMap);
         //调用grpc
         //String publishMetaDataId = metaDataClient.publishMetaData(detail);?????????????????????????????
         String publishMetaDataId = "metadata:0x3426733d8fbd4a27ed26f06b35caa6ac63bca1fc09b98e56e1b262da9a357ffd";
@@ -400,8 +391,8 @@ public class LocalDataServiceImpl implements LocalDataService {
 
     @Override
     public boolean isExistResourceName(String resourceName,Integer id) {
-        LocalDataFile localDataFile = localDataFileMapper.selectByResourceName(resourceName,id);
-        return localDataFile != null ? true : false;
+        LocalMetaData localMetaData = localMetaDataMapper.selectByResourceName(resourceName,id);
+        return localMetaData != null ? true : false;
     }
 
     /**
@@ -416,14 +407,16 @@ public class LocalDataServiceImpl implements LocalDataService {
             String fileName = file.getOriginalFilename();
             LocalDataFileDetail detail = new LocalDataFileDetail();
             detail.setFileName(fileName);
-            //导入去掉.csv后缀的文件名称，保存前12个字符作为资源名称
-            String resourceName = StrUtil.sub(FileUtil.getPrefix(fileName),0,12);
-            //因为上层已做资源文件名称校验，故此处暂时不再做校验
-            detail.setResourceName(resourceName);
             detail.setIdentityId(LocalOrgIdentityCache.getIdentityId());
             detail.setFileType(FileUtil.getSuffix(fileName));//获取文件类型
             detail.setSize(file.getSize());
             detail.setHasTitle(hasTitle);
+            //导入去掉.csv后缀的文件名称，保存前12个字符作为资源名称
+            String resourceName = StrUtil.sub(FileUtil.getPrefix(fileName),0,12);
+            //因为上层已做资源文件名称校验，故此处暂时不再做校验
+            Map dynamicMap = new HashMap();
+            dynamicMap.put(ServiceConstant.LOCAL_DATA_RESOURCE_NAME, resourceName);
+            detail.setDynamicFields(dynamicMap);
 
             detail.setRecCreateTime(operateDate);
             detail.setRecUpdateTime(operateDate);
@@ -492,10 +485,11 @@ public class LocalDataServiceImpl implements LocalDataService {
         Date operateDate = new Date();
         LocalMetaData localMetaData = new LocalMetaData();
         localMetaData.setDataFileId(detail.getId());
-        localMetaData.setSize(detail.getSize());
         localMetaData.setStatus(LocalDataFileStatusEnum.ENTERED.getStatus());
+        localMetaData.setHasOtherSave(false);
         localMetaData.setRecCreateTime(operateDate);
         localMetaData.setRecUpdateTime(operateDate);
+        localMetaData.setMetaDataName((String) detail.getDynamicFields().get(ServiceConstant.LOCAL_DATA_RESOURCE_NAME));
         return localMetaData;
     }
 

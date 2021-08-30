@@ -71,7 +71,7 @@ public class LocalDataRefreshTask implements ApplicationRunner {
         dataFileDetail.setFileName(globalDataFileDetail.getFileName());
         dataFileDetail.setFilePath(globalDataFileDetail.getFilePath());
         dataFileDetail.setFileType(globalDataFileDetail.getFileType());
-        dataFileDetail.setResourceName(globalDataFileDetail.getResourceName());
+        //dataFileDetail.setResourceName(globalDataFileDetail.getResourceName());
         dataFileDetail.setSize(globalDataFileDetail.getSize());
         dataFileDetail.setRows(globalDataFileDetail.getRows());
         dataFileDetail.setColumns(globalDataFileDetail.getColumns());

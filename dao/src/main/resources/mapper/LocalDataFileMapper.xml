@@ -8,7 +8,6 @@
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="file_type" jdbcType="VARCHAR" property="fileType" />
-    <result column="resource_name" jdbcType="VARCHAR" property="resourceName" />
     <result column="size" jdbcType="BIGINT" property="size" />
     <result column="rows" jdbcType="BIGINT" property="rows" />
     <result column="columns" jdbcType="INTEGER" property="columns" />
@@ -17,7 +16,7 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, identity_id, file_id,file_name, file_path, file_type, resource_name, `size`, `rows`, `columns`,
+    id, identity_id, file_id,file_name, file_path, file_type, `size`, `rows`, `columns`,
     has_title, rec_create_time, rec_update_time
   </sql>
 
@@ -50,9 +49,6 @@
       </if>
       <if test="fileType != null">
         file_type,
-      </if>
-      <if test="resourceName != null">
-        resource_name,
       </if>
       <if test="size != null">
         `size`,
@@ -89,9 +85,6 @@
       <if test="fileType != null">
         #{fileType},
       </if>
-      <if test="resourceName != null">
-        #{resourceName},
-      </if>
       <if test="size != null">
         #{size},
       </if>
@@ -117,11 +110,11 @@
  <!--  插入新数数据 -->
   <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into local_data_file (identity_id, file_id, file_name,
-      file_path, file_type, resource_name,
+      file_path, file_type,
       `size`, `rows`, `columns`, has_title
     )
     values (#{identityId,jdbcType=VARCHAR}, #{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR},
-      #{filePath,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, #{resourceName,jdbcType=VARCHAR},
+      #{filePath,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR},
       #{size,jdbcType=BIGINT}, #{rows,jdbcType=BIGINT}, #{columns,jdbcType=INTEGER}, #{hasTitle,jdbcType=BIT}
       )
   </insert>
@@ -131,9 +124,6 @@
   <update id="updateByFileIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
     update local_data_file
     <set>
-      <if test="resourceName != null">
-        `resource_name` = #{resourceName,jdbcType=VARCHAR},
-      </if>
       <if test="recUpdateTime != null">
         rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
       </if>
@@ -145,9 +135,6 @@
   <update id="updateByIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
     update local_data_file
     <set>
-      <if test="resourceName != null">
-        `resource_name` = #{resourceName,jdbcType=VARCHAR},
-      </if>
       <if test="recUpdateTime != null">
         rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
       </if>

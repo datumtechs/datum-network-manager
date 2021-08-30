@@ -37,7 +37,7 @@ public class LocalDataAuthDetailResp {
         DataAuth authInfo = new DataAuth();
         BeanUtils.copyProperties(dataAuth, authInfo);
         authInfo.setFileName(dataFile.getFileName());
-        authInfo.setResourceName(dataFile.getResourceName());
+        authInfo.setResourceName(metaData.getMetaDataName());
         authInfo.setCreateAt(getTime(dataAuth.getCreateAt()));
         authInfo.setAuthAt(getTime(dataAuth.getAuthAt()));
         authInfo.setAuthValueStartAt(getTime(dataAuth.getAuthValueStartAt()));

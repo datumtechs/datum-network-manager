@@ -9,10 +9,7 @@ import com.github.pagehelper.Page;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.common.util.NameUtil;
 import com.platon.rosettanet.admin.constant.ControllerConstants;
-import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
-import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
-import com.platon.rosettanet.admin.dao.entity.LocalMetaData;
-import com.platon.rosettanet.admin.dao.entity.Task;
+import com.platon.rosettanet.admin.dao.entity.*;
 import com.platon.rosettanet.admin.dao.enums.DataAddTypeEnum;
 import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.rosettanet.admin.dto.CommonPageReq;
@@ -60,7 +57,7 @@ public class LocalDataController {
     @ApiOperation(value = "数据列表分页查询")
     @PostMapping("metaDataList")
     public JsonResponse<List<LocalDataPageResp>> page(@RequestBody @Validated CommonPageReq req){
-        Page<LocalDataFile> localDataFilePage = localDataService.listDataFile(req.getPageNumber(), req.getPageSize(),null);
+        Page<LocalMetaDataItem> localDataFilePage = localDataService.listDataFile(req.getPageNumber(), req.getPageSize(),null);
         List<LocalDataPageResp> respList = localDataFilePage.getResult().stream()
                 .map(LocalDataPageResp::from)
                 .collect(Collectors.toList());
@@ -73,7 +70,7 @@ public class LocalDataController {
     @ApiOperation(value = "数据列表关键字查询")
     @PostMapping("metaDataListByKeyWord")
     public JsonResponse<List<LocalDataPageResp>> metaDataListByKeyWord(@RequestBody @Validated LocalDataMetaDataListByKeyWordReq req){
-        Page<LocalDataFile> localDataFilePage = localDataService.listDataFile(req.getPageNumber(), req.getPageSize(),req.getKeyword());
+        Page<LocalMetaDataItem> localDataFilePage = localDataService.listDataFile(req.getPageNumber(), req.getPageSize(),req.getKeyword());
         List<LocalDataPageResp> respList = localDataFilePage.getResult().stream()
                 .map(LocalDataPageResp::from)
                 .collect(Collectors.toList());
@@ -155,7 +152,7 @@ public class LocalDataController {
             return JsonResponse.fail("文件名称格式不合法:仅支持中英文与数字输入，最多12个字符");
         }
         //判断是否重复
-        boolean exist = localDataService.isExistResourceName(req.getResourceName(),req.getId());
+        boolean exist = localDataService.isExistResourceName(req.getResourceName(),req.getMetaDataPKId());
         if(exist){
             return JsonResponse.fail("文件名称已存在，请修改文件名称前12个字符，确保不会和已存在的文件前12个字符重复！！！");
         }
@@ -163,9 +160,12 @@ public class LocalDataController {
         BeanUtils.copyProperties(req,detail);
 
         LocalMetaData metaData = new LocalMetaData();
+        metaData.setId(req.getMetaDataPKId());
         metaData.setRemarks(req.getRemarks());
         metaData.setIndustry(req.getIndustry());
+        metaData.setMetaDataName(req.getResourceName());
         metaData.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());//添加数据状态为created
+        metaData.setHasOtherSave(true);//标记为数据另存
         //添加数据/另存为新数据
         if(req.getAddType() == DataAddTypeEnum.ADD.getType()){
             count = localDataService.add(detail, metaData);
@@ -204,10 +204,12 @@ public class LocalDataController {
     public JsonResponse update(@RequestBody @Validated LocalDataUpdateReq req){
         LocalDataFileDetail detail = new LocalDataFileDetail();
         BeanUtils.copyProperties(req,detail);
+        detail.setId(null);
 
         LocalMetaData metaData = new LocalMetaData();
         metaData.setRemarks(req.getRemarks());
         metaData.setIndustry(req.getIndustry());
+        metaData.setId(req.getId());
         int count = localDataService.update(detail, metaData);
         if(count <= 0){
             return JsonResponse.fail("更新失败");

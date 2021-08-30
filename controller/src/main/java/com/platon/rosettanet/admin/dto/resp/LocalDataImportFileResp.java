@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.dto.resp;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
+import com.platon.rosettanet.admin.service.constant.ServiceConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -32,6 +33,9 @@ public class LocalDataImportFileResp {
      */
     @ApiModelProperty(name = "id", value = "序号")
     private Integer id;
+    //metaData主id
+    @ApiModelProperty(name = "metaDataPKId", value = "metaData主id")
+    private Integer metaDataPKId;
     //组织身份ID
     @ApiModelProperty(name = "identityId", value = "组织身份ID")
     private String identityId;
@@ -89,6 +93,8 @@ public class LocalDataImportFileResp {
         LocalDataImportFileResp resp = new LocalDataImportFileResp();
         BeanUtils.copyProperties(detail,resp);
         resp.setStatus(LocalDataFileStatusEnum.ENTERED.getStatus());
+        resp.setResourceName((String) detail.getDynamicFields().get(ServiceConstant.LOCAL_DATA_RESOURCE_NAME));
+        resp.setMetaDataPKId((Integer) detail.getDynamicFields().get(ServiceConstant.LOCAL_DATA_METADATA_PK_ID));
         resp.setRecCreateTime(detail.getRecCreateTime() == null? null : detail.getRecCreateTime().getTime());
         resp.setRecUpdateTime(detail.getRecUpdateTime() == null? null : detail.getRecUpdateTime().getTime());
         return resp;

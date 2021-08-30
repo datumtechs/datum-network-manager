@@ -24,7 +24,7 @@ public class LocalDataActionReq {
 
     //元数据Id
     @NotNull(message = "文件ID不能为空")
-    @ApiModelProperty(value = "文件ID",required = true)
+    @ApiModelProperty(value = "metaData文件ID",required = true)
     private Integer id;
     //元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)
     @ApiModelProperty(value = "元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)",required = true)

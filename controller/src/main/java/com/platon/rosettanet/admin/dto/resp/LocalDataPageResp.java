@@ -3,6 +3,7 @@ package com.platon.rosettanet.admin.dto.resp;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFile;
 import com.platon.rosettanet.admin.dao.entity.LocalDataFileDetail;
 import com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn;
+import com.platon.rosettanet.admin.dao.entity.LocalMetaDataItem;
 import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,11 +32,8 @@ public class LocalDataPageResp {
     @ApiModelProperty(name = "id", value = "数据ID")
     private Integer id;
 
-    @ApiModelProperty(name = "fileName", value = "源文件名称")
+    @ApiModelProperty(name = "fileName", value = "元数据名称")
     private String fileName;
-
-    @ApiModelProperty(name = "fileId", value = "源文件Id")
-    private String fileId;
 
     @ApiModelProperty(name = "status", value = "元数据状态:1已发布，0未发布")
     private String status;
@@ -52,40 +50,26 @@ public class LocalDataPageResp {
     @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
     private String metaDataId;
 
-    @ApiModelProperty(name = "metaDataColumnList", value = "元数据摘要")
-    private List<String> metaDataColumnList = new ArrayList<>();
 
 
-    public static LocalDataPageResp from(LocalDataFile localDataFile){
-        if(localDataFile == null){
+
+    public static LocalDataPageResp from(LocalMetaDataItem localMetaDataItem){
+        if(localMetaDataItem == null){
             return null;
         }
         LocalDataPageResp localDataPageResp = new LocalDataPageResp();
-        localDataPageResp.setId(localDataFile.getId());
-        localDataPageResp.setFileId(localDataFile.getFileId());
-        localDataPageResp.setFileName(localDataFile.getResourceName());
-        Map dynamicFields = localDataFile.getDynamicFields();
-        String status = (String) dynamicFields.get("status");
-        String metaDataId = (String) dynamicFields.get("metaDataId");
-        int dataJoinTaskCount = (int) dynamicFields.get("dataJoinTaskCount");
+        localDataPageResp.setId(localMetaDataItem.getId());
+        localDataPageResp.setFileName(localMetaDataItem.getMetaDataName());
+        localDataPageResp.setMetaDataId(localMetaDataItem.getMetaDataId());
         //元数据状态:1已发布，0未发布
-        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(status)){
+        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(localMetaDataItem.getStatus())){
             localDataPageResp.setStatus("1");
         } else {
             localDataPageResp.setStatus("0");
         }
-        localDataPageResp.setSize(localDataFile.getSize());
-        localDataPageResp.setRecUpdateTime(localDataFile.getRecUpdateTime());
-        localDataPageResp.setMetaDataId(metaDataId);
-        localDataPageResp.setAttendTaskCount(dataJoinTaskCount);
-
-        if(localDataFile instanceof LocalDataFileDetail){
-            LocalDataFileDetail detail = (LocalDataFileDetail)localDataFile;
-            List<String> metaDataColumnList = detail.getLocalMetaDataColumnList().stream()
-                    .map(LocalMetaDataColumn::getColumnName)
-                    .collect(Collectors.toList());
-            localDataPageResp.setMetaDataColumnList(metaDataColumnList);
-        }
+        localDataPageResp.setSize(localMetaDataItem.getSize());
+        localDataPageResp.setRecUpdateTime(localMetaDataItem.getRecUpdateTime());
+        localDataPageResp.setAttendTaskCount(localMetaDataItem.getDataJoinTaskCount());
         return localDataPageResp;
     }
 }

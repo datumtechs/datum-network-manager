@@ -16,10 +16,18 @@ public class LocalMetaData {
     private Integer dataFileId;
     //元数据ID,hash
     private String metaDataId;
-    //文件大小(字节)
-    private Long size;
+    //元数据名称
+    private String metaDataName;
     //数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)
     private String status;
+    //数据是否为另存数据(true:是另存，false:非另存)
+    /**
+     * 场景：
+     * 1、新数据提交----标记另存
+     * 2、数据另存提交 ---标记另存
+     * 3、数据撤销，并修改------标记另存
+     */
+    private Boolean hasOtherSave;
     //元数据发布时间
     private Date publishTime;
     //数据描述

@@ -28,7 +28,7 @@ public class LocalDataUpdateReq {
     /**
      * 序号
      */
-    @ApiModelProperty(value = "数据ID",required = true)
+    @ApiModelProperty(value = "metaData数据ID",required = true)
     @NotNull
     private Integer id;
     //数据描述

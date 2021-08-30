@@ -29,8 +29,6 @@ public class LocalDataAuthPageResp {
     private Integer authId;
     @ApiModelProperty(name = "metaDataId", value = "元数据Id")
     private String metaDataId;
-    @ApiModelProperty(name = "fileName", value = "源文件名称")
-    private String fileName;
     @ApiModelProperty(name = "resourceName", value = "数据名称")
     private String resourceName;
     @ApiModelProperty(name = "applyUser", value = "发起任务的用户的信息 (task是属于用户的)")
@@ -73,9 +71,7 @@ public class LocalDataAuthPageResp {
         localDataPageResp.setRecCreateTime(getTime(localDataAuth.getRecCreateTime()));
         localDataPageResp.setRecUpdateTime(getTime(localDataAuth.getRecUpdateTime()));
         //
-        String fileName = (String) localDataAuth.getDynamicFields().get("fileName");
         String resourceName = (String) localDataAuth.getDynamicFields().get("resourceName");
-        localDataPageResp.setFileName(fileName);
         localDataPageResp.setResourceName(resourceName);
         return localDataPageResp;
     }

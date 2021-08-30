@@ -19,7 +19,8 @@ public enum LocalDataFileStatusEnum {
     ENTERED("entered","录入数据(创建未发布新表之前的操作)"),
     CREATED("created","还未发布的新表"),
     RELEASED("released","已发布的表"),
-    REVOKED("revoked","已撤销的表");
+    REVOKED("revoked","已撤销的表"),
+    DELETED("deleted","已删除的表");
 
     LocalDataFileStatusEnum(String status,String desc){
         this.status = status;

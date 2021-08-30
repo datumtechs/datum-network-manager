@@ -31,7 +31,7 @@ public class LocalDataDetailResp {
     /**
      * 序号
      */
-    @ApiModelProperty(name = "id", value = "序号")
+    @ApiModelProperty(name = "id", value = "meataData序号")
     private Integer id;
     //组织身份ID
     @ApiModelProperty(name = "identityId", value = "组织身份ID")
@@ -97,14 +97,12 @@ public class LocalDataDetailResp {
         BeanUtils.copyProperties(detail,resp);
         Map dynamicFields = detail.getDynamicFields();
         String status = (String) dynamicFields.get(ServiceConstant.LOCAL_DATA_STATUS);
-        String metaDataId = (String) dynamicFields.get(ServiceConstant.LOCAL_DATA_METADATA_ID);
-        String remarks = (String) dynamicFields.get(ServiceConstant.LOCAL_DATA_REMARKS);
-        Integer industry = (Integer) dynamicFields.get(ServiceConstant.LOCAL_DATA_INDUSTRY);
-        Integer attendTaskCount = (Integer) dynamicFields.get(ServiceConstant.LOCAL_DATA_ATTEND_TASK_COUNT);
-        resp.setRemarks(remarks);
-        resp.setIndustry(industry);
-        resp.setMetaDataId(metaDataId);
-        resp.setAttendTaskCount(attendTaskCount);
+        resp.setRemarks((String) dynamicFields.get(ServiceConstant.LOCAL_DATA_REMARKS));
+        resp.setIndustry((Integer) dynamicFields.get(ServiceConstant.LOCAL_DATA_INDUSTRY));
+        resp.setMetaDataId((String) dynamicFields.get(ServiceConstant.LOCAL_DATA_METADATA_ID));
+        resp.setAttendTaskCount((Integer) dynamicFields.get(ServiceConstant.LOCAL_DATA_ATTEND_TASK_COUNT));
+        resp.setResourceName((String) dynamicFields.get(ServiceConstant.LOCAL_DATA_RESOURCE_NAME));
+        resp.setId((Integer) dynamicFields.get(ServiceConstant.LOCAL_DATA_METADATA_PK_ID));
         //元数据状态:1已发布，0未发布
         if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(status)){
             resp.setStatus("1");
