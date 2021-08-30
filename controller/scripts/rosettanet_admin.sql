@@ -130,16 +130,16 @@ CREATE TABLE `local_meta_data` (
   `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据ID,hash',
   `meta_data_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '元数据名称',
   `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'entered' COMMENT '数据的状态 (entered：录入数据(创建未发布新表之前的操作); created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表; deleted:已删除的表)',
+  `has_other_save` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否另存，0非另存，1是另存',
   `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
   `remarks` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '元数据描述',
   `industry` int(4) DEFAULT NULL COMMENT '所属行业 1：金融业（银行）、2：金融业（保险）、3：金融业（证券）、4：金融业（其他）、5：ICT、 6：制造业、 7：能源业、 8：交通运输业、 9 ：医疗健康业、 10 ：公共服务业、 11：传媒广告业、 12 ：其他行业',
   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `meta_data_name` (`meta_data_name`),
   UNIQUE KEY `meta_data_id` (`meta_data_id`),
   KEY `data_file_id` (`data_file_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织元数据文件表，文件的元数据信息';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织元数据文件表，文件的元数据信息';
 
 
 -- ----------------------------
