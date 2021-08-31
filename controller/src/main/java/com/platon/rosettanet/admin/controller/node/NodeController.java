@@ -42,10 +42,6 @@ public class NodeController {
      * @return
      */
     @ApiOperation(value = "连接调度节点")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "ip",value = "调度节点ip",required = true,paramType = "query"),
-            @ApiImplicitParam(name = "port",value = "调度节点端口",required = true,paramType = "query")
-    })
     @PostMapping("connectNode")
     public JsonResponse<ConnectNodeResp> connectNode(@Validated @NotBlank(message = "ip不能为空") String ip,
                                                      @Validated @NotNull(message = "port不能为空") Integer port){

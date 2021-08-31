@@ -1,15 +1,14 @@
 package com.platon.rosettanet.admin.dao.entity;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.util.Date;
 
-@Getter
-@Setter
-@ToString
+/**
+ * @author houz
+ */
+@Data
 public class LocalOrg {
     //机构名称
     private String name;
@@ -23,6 +22,9 @@ public class LocalOrg {
     private Integer carrierPort;
     //连接状态 enabled：可用, disabled:不可用
     private String carrierConnStatus;
+
+    /** 连接的节点数量 */
+    private String connNodeCount;
     //服务连接时间
     private Date carrierConnTime;
     //调度服务的状态：active: 活跃; leave: 离开网络; join: 加入网络 unuseful: 不可用

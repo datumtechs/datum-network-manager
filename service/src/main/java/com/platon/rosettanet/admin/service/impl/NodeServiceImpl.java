@@ -40,20 +40,12 @@ public class NodeServiceImpl implements NodeService {
 
     @Override
     public CarrierConnStatusEnum connectNode(String ip, int port) {
-        //### 1.尝试连接调度服务
+        //尝试连接调度服务
         boolean success = yarnClient.connectScheduleServer(ip, port);
         if(!success){
             return CarrierConnStatusEnum.DISABLED;
         }
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-//        if(localOrg == null){
-//            //刷新缓存
-//            LocalOrgCache.setLocalOrgInfo(null);
-//            LocalOrgIdentityCache.setIdentityId(null);
-//            throw new ServiceException("请先申请身份标识");
-//        }
-        //YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(ip, port);
-        //localOrg.setCarrierStatus(nodeInfo.getState());
         localOrg.setRecUpdateTime(new Date());
         localOrg.setCarrierIp(ip);
         localOrg.setCarrierPort(port);
@@ -70,12 +62,6 @@ public class NodeServiceImpl implements NodeService {
     @Override
     public Integer applyJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-//        if(localOrg == null){
-//            //刷新缓存
-//            LocalOrgCache.setLocalOrgInfo(null);
-//            LocalOrgIdentityCache.setIdentityId(null);
-//            throw new ServiceException("请先申请身份标识");
-//        }
         CommonResp resp = authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName());
         if(resp.getStatus() != GRPC_SUCCESS_CODE){
             throw new ServiceException("入网失败：" + resp.getMsg());
@@ -103,15 +89,6 @@ public class NodeServiceImpl implements NodeService {
     @Override
     public Integer cancelJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-//        if(localOrg == null){
-//            //刷新缓存
-//            LocalOrgCache.setLocalOrgInfo(null);
-//            LocalOrgIdentityCache.setIdentityId(null);
-//            throw new ServiceException("请先申请身份标识");
-//        }
-//        if(LocalOrgStatusEnum.LEAVE.getStatus().equals(localOrg.getStatus())){//已离开网络
-//            throw new ServiceException("还未入网，请先入网后再退网");
-//        }
         CommonResp resp = authClient.revokeIdentityJoin();
         if(resp.getStatus() != GRPC_SUCCESS_CODE){
             throw new ServiceException("退网失败：" + resp.getMsg());
