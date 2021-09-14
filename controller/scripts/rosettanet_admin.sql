@@ -40,26 +40,26 @@ CREATE TABLE `bootstrap_node` (
 -- ----------------------------
 DROP TABLE IF EXISTS `global_data_file`;
 CREATE TABLE `global_data_file` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
-  `org_name` varchar(256) CHARACTER SET utf8mb4 NOT NULL COMMENT '组织名称',
-  `file_id` varchar(256) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID',
-  `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据ID,hash',
-  `file_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源文件名称',
-  `file_path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件存储路径',
-  `file_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件后缀/类型, csv',
-  `resource_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数据名称',
-  `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
-  `rows` bigint(20) NOT NULL DEFAULT '0' COMMENT '数据行数(不算title)',
-  `columns` int(11) NOT NULL DEFAULT '0' COMMENT '数据列数',
-  `has_title` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否带标题,0表示不带，1表示带标题',
-  `remarks` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数据描述',
-  `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'created' COMMENT '数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
-  `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
-  `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `file_id` (`file_id`) USING HASH
+    `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+    `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
+    `org_name` varchar(256) CHARACTER SET utf8mb4 NOT NULL COMMENT '组织名称',
+    `file_id` varchar(256) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID',
+    `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据ID,hash',
+    `file_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源文件名称',
+    `file_path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件存储路径',
+    `file_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '文件后缀/类型, 0：未知、1：csv(目前只支持这个)',
+    `resource_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数据名称',
+    `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
+    `rows` bigint(20) NOT NULL DEFAULT '0' COMMENT '数据行数(不算title)',
+    `columns` int(11) NOT NULL DEFAULT '0' COMMENT '数据列数',
+    `has_title` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否带标题,0表示不带，1表示带标题',
+    `remarks` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数据描述',
+    `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'created' COMMENT '数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
+    `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
+    `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `file_id` (`file_id`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='全网数据文件表';
 
 -- ----------------------------
@@ -104,21 +104,22 @@ CREATE TABLE `global_power` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_data_file`;
 CREATE TABLE `local_data_file` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
-  `file_id` varchar(256) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID，上传文件成功后返回源文件ID',
-  `file_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源文件名称',
-  `file_path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件存储路径',
-  `file_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件后缀/类型, csv',
-  `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
-  `rows` bigint(20) NOT NULL DEFAULT '0' COMMENT '数据行数(不算title)',
-  `columns` int(11) NOT NULL DEFAULT '0' COMMENT '数据列数',
-  `has_title` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否带标题,0表示不带，1表示带标题',
-  `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `file_id` (`file_id`) USING HASH
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表，数据信息表';
+   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
+   `file_id` varchar(256) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID，上传文件成功后返回源文件ID',
+   `file_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源文件名称',
+   `file_path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件存储路径',
+   `file_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '文件后缀/类型, 0：未知、1：csv(目前只支持这个)',
+   `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
+   `rows` bigint(20) NOT NULL DEFAULT '0' COMMENT '数据行数(不算title)',
+   `columns` int(11) NOT NULL DEFAULT '0' COMMENT '数据列数',
+   `has_title` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否带标题,0表示不带，1表示带标题',
+   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `file_id` (`file_id`) USING HASH
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织数据文件表，数据信息表';
+
 
 -- ----------------------------
 -- Table structure for local_meta_data
@@ -236,18 +237,18 @@ CREATE TABLE `local_data_node` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_org`;
 CREATE TABLE `local_org` (
-  `name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '机构名称',
-  `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '机构身份标识ID',
-  `carrier_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '机构调度服务node id，入网后可以获取到',
-  `carrier_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '调度服务IP地址',
-  `carrier_port` int(11) DEFAULT NULL COMMENT '调度服务端口号',
-  `carrier_conn_status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '连接状态 enabled：可用, disabled:不可用',
-  `carrier_status` varchar(10) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '调度服务的状态：active: 活跃; leave: 离开网络; join: 加入网络 unuseful: 不可用',
-  `conn_node_count` int(11)  DEFAULT NULL COMMENT '节点连接的数量',
-  `carrier_conn_time` datetime DEFAULT NULL COMMENT '服务连接时间',
-  `status` tinyint(1) DEFAULT '0' COMMENT '0未入网，1已入网',
-  `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
+     `name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '机构名称',
+     `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '机构身份标识ID',
+     `carrier_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '机构调度服务node id，入网后可以获取到',
+     `carrier_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '调度服务IP地址',
+     `carrier_port` int(11) DEFAULT NULL COMMENT '调度服务端口号',
+     `carrier_conn_status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '连接状态 enabled：可用, disabled:不可用',
+     `carrier_status` tinyint(4) DEFAULT '0' COMMENT '调度服务的状态（0:unknown未知、1: active活跃、2:leave: 离开网络、3:join加入网络 4:unuseful不可用）',
+     `carrier_conn_time` datetime DEFAULT NULL COMMENT '服务连接时间',
+     `status` tinyint(1) DEFAULT '0' COMMENT '0未入网，1已入网',
+     `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本地组织信息表';
+
 
 -- ----------------------------
 -- Table structure for local_power_history
@@ -296,33 +297,35 @@ CREATE TABLE `local_power_join_task` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_power_node`;
 CREATE TABLE `local_power_node` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
-  `power_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
-  `power_node_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点名称(同一个组织不可重复）',
-  `internal_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点内网IP',
-  `internal_port` int(11) DEFAULT NULL COMMENT '节点内网端口',
-  `external_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点外网IP',
-  `external_port` int(11) DEFAULT NULL COMMENT '节点外网端口',
-  `start_time` datetime DEFAULT NULL COMMENT '节点启用时间',
-  `remarks` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点备注',
-  `conn_time` datetime DEFAULT NULL COMMENT '节点上一次连接时间',
-  `conn_status` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点状态，-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用<计算服务>; 2: 算力被占用(计算服务算力正在被任务占用)',
-  `conn_message` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点(连接失败)信息',
-  `power_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点启动后底层返回的算力ID',
-  `power_status` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '算力状态 (create: 还未发布的算力; release: 已发布的算力; revoke: 已撤销的算力)',
-  `memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '计算host内存, 字节',
-  `core` int(11) NOT NULL DEFAULT '0' COMMENT '计算host core',
-  `bandwidth` bigint(20) NOT NULL DEFAULT '0' COMMENT '计算host带宽, bps',
-  `used_memory` bigint(20) DEFAULT '0' COMMENT '使用的内存, 字节',
-  `used_core` int(11) DEFAULT '0' COMMENT '使用的core',
-  `used_bandwidth` bigint(20) DEFAULT '0' COMMENT '使用的带宽, bps',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`id`),
-  KEY `power_node_id` (`power_node_id`),
-  KEY `power_node_name` (`power_node_name`)
+    `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+    `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
+    `power_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
+    `power_node_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点名称(同一个组织不可重复）',
+    `internal_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点内网IP',
+    `internal_port` int(11) DEFAULT NULL COMMENT '节点内网端口',
+    `external_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点外网IP',
+    `external_port` int(11) DEFAULT NULL COMMENT '节点外网端口',
+    `start_time` datetime DEFAULT NULL COMMENT '节点启用时间',
+    `remarks` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点备注',
+    `conn_time` datetime DEFAULT NULL COMMENT '节点上一次连接时间',
+    `conn_status` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点状态，-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用<计算服务>; 2: 算力被占用(计算服务算力正在被任务占用)',
+    `conn_message` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点(连接失败)信息',
+    `power_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点启动后底层返回的算力ID',
+    `power_status` tinyint(4) DEFAULT '0' COMMENT '算力状态 (0:unknown未知、1:create还未发布的算力、2:release已发布的算力、3:revoke已撤销的算力)',
+    `memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '计算host内存, 字节',
+    `core` int(11) NOT NULL DEFAULT '0' COMMENT '计算host core',
+    `bandwidth` bigint(20) NOT NULL DEFAULT '0' COMMENT '计算host带宽, bps',
+    `used_memory` bigint(20) DEFAULT '0' COMMENT '使用的内存, 字节',
+    `used_core` int(11) DEFAULT '0' COMMENT '使用的core',
+    `used_bandwidth` bigint(20) DEFAULT '0' COMMENT '使用的带宽, bps',
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+    PRIMARY KEY (`id`),
+    KEY `power_node_id` (`power_node_id`),
+    KEY `power_node_name` (`power_node_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='本组织计算节点配置表 配置当前参与方的计算节点信息';
+
+
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -362,30 +365,32 @@ INSERT INTO `sys_user` (`id`, `user_name`, `password`, `status`, `is_Master`, `r
 -- ----------------------------
 DROP TABLE IF EXISTS `task`;
 CREATE TABLE `task` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `task_Id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID',
-  `task_Name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务名称',
-  `owner_Identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务发起方身份',
-  `apply_use` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发起任务的用户的信息 (task是属于用户的)',
-  `user_type` int(4) DEFAULT '0' COMMENT '发起任务用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)',
-  `create_At` datetime DEFAULT NULL COMMENT '任务发起时间',
-  `start_At` datetime DEFAULT NULL COMMENT '任务启动时间',
-  `auth_At` datetime DEFAULT NULL COMMENT '任务授权时间',
-  `auth_Status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务授权状态: pending:等待授权、denied:授权未通过',
-  `end_At` datetime DEFAULT NULL COMMENT '任务结束时间',
-  `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务状态 pending: 等在中; running: 计算中; failed: 失败; success: 成功)',
-  `role` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方; algoSupplier:算法提供方)',
-  `duration` datetime DEFAULT NULL COMMENT '任务声明计算时间',
-  `cost_core` int(11) DEFAULT '0' COMMENT '任务声明所需CPU',
-  `cost_Memory` bigint(20) DEFAULT '0' COMMENT '任务声明所需内存',
-  `cost_Bandwidth` bigint(20) DEFAULT '0' COMMENT '任务声明所需带宽',
-  `alg_Identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '算法提供方身份ID',
-  `reviewed` tinyint(1) DEFAULT '0' COMMENT '任务是否被查看过，默认为false(0)',
-  `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `taskID` (`task_Id`) USING BTREE COMMENT 'task_id唯一'
+    `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+    `task_Id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID',
+    `task_Name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务名称',
+    `owner_Identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务发起方身份',
+    `apply_use` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发起任务的用户的信息 (task是属于用户的)',
+    `user_type` int(4) DEFAULT '0' COMMENT '发起任务用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)',
+    `create_At` datetime DEFAULT NULL COMMENT '任务发起时间',
+    `start_At` datetime DEFAULT NULL COMMENT '任务启动时间',
+    `auth_At` datetime DEFAULT NULL COMMENT '任务授权时间',
+    `auth_Status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务授权状态: pending:等待授权、denied:授权未通过',
+    `end_At` datetime DEFAULT NULL COMMENT '任务结束时间',
+    `status` tinyint(4) DEFAULT '0' COMMENT '任务状态(0:unknown未知、1:pending等在中、2:running计算中、3:failed失败、4:success成功)',
+    `role` tinyint(4) DEFAULT '0' COMMENT '我在任务中的角色 (0:unknown未知、1:owner任务发起方、2:dataSupplier数据提供方、3:powerSupplier算力提供方、4:receiver结果接收方、5:algoSupplier算法提供方)',
+    `duration` datetime DEFAULT NULL COMMENT '任务声明计算时间',
+    `cost_core` int(11) DEFAULT '0' COMMENT '任务声明所需CPU',
+    `cost_Memory` bigint(20) DEFAULT '0' COMMENT '任务声明所需内存',
+    `cost_Bandwidth` bigint(20) DEFAULT '0' COMMENT '任务声明所需带宽',
+    `alg_Identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '算法提供方身份ID',
+    `reviewed` tinyint(1) DEFAULT '0' COMMENT '任务是否被查看过，默认为false(0)',
+    `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `taskID` (`task_Id`) USING BTREE COMMENT 'task_id唯一'
 ) ENGINE=InnoDB AUTO_INCREMENT=38841 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='全网任务表 用于同步本地任务数据以及全网的相关数据';
+
+
 
 -- ----------------------------
 -- Table structure for task_data_provider
