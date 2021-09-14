@@ -544,6 +544,37 @@ public final class YarnServiceGrpc {
     return getReportUpFileSummaryMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest,
+      com.platon.rosettanet.admin.grpc.service.SimpleResponse> getReportTaskResultFileSummaryMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "ReportTaskResultFileSummary",
+      requestType = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.SimpleResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest,
+      com.platon.rosettanet.admin.grpc.service.SimpleResponse> getReportTaskResultFileSummaryMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest, com.platon.rosettanet.admin.grpc.service.SimpleResponse> getReportTaskResultFileSummaryMethod;
+    if ((getReportTaskResultFileSummaryMethod = YarnServiceGrpc.getReportTaskResultFileSummaryMethod) == null) {
+      synchronized (YarnServiceGrpc.class) {
+        if ((getReportTaskResultFileSummaryMethod = YarnServiceGrpc.getReportTaskResultFileSummaryMethod) == null) {
+          YarnServiceGrpc.getReportTaskResultFileSummaryMethod = getReportTaskResultFileSummaryMethod =
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest, com.platon.rosettanet.admin.grpc.service.SimpleResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "ReportTaskResultFileSummary"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.SimpleResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new YarnServiceMethodDescriptorSupplier("ReportTaskResultFileSummary"))
+              .build();
+        }
+      }
+    }
+    return getReportTaskResultFileSummaryMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryAvailableDataNodeRequest,
       com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryAvailableDataNodeResponse> getQueryAvailableDataNodeMethod;
 
@@ -604,6 +635,68 @@ public final class YarnServiceGrpc {
       }
     }
     return getQueryFilePositionMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest,
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> getGetTaskResultFileSummaryMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "GetTaskResultFileSummary",
+      requestType = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest,
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> getGetTaskResultFileSummaryMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> getGetTaskResultFileSummaryMethod;
+    if ((getGetTaskResultFileSummaryMethod = YarnServiceGrpc.getGetTaskResultFileSummaryMethod) == null) {
+      synchronized (YarnServiceGrpc.class) {
+        if ((getGetTaskResultFileSummaryMethod = YarnServiceGrpc.getGetTaskResultFileSummaryMethod) == null) {
+          YarnServiceGrpc.getGetTaskResultFileSummaryMethod = getGetTaskResultFileSummaryMethod =
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetTaskResultFileSummary"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new YarnServiceMethodDescriptorSupplier("GetTaskResultFileSummary"))
+              .build();
+        }
+      }
+    }
+    return getGetTaskResultFileSummaryMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<com.google.protobuf.Empty,
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse> getGetTaskResultFileSummaryListMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "GetTaskResultFileSummaryList",
+      requestType = com.google.protobuf.Empty.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.google.protobuf.Empty,
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse> getGetTaskResultFileSummaryListMethod() {
+    io.grpc.MethodDescriptor<com.google.protobuf.Empty, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse> getGetTaskResultFileSummaryListMethod;
+    if ((getGetTaskResultFileSummaryListMethod = YarnServiceGrpc.getGetTaskResultFileSummaryListMethod) == null) {
+      synchronized (YarnServiceGrpc.class) {
+        if ((getGetTaskResultFileSummaryListMethod = YarnServiceGrpc.getGetTaskResultFileSummaryListMethod) == null) {
+          YarnServiceGrpc.getGetTaskResultFileSummaryListMethod = getGetTaskResultFileSummaryListMethod =
+              io.grpc.MethodDescriptor.<com.google.protobuf.Empty, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetTaskResultFileSummaryList"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.google.protobuf.Empty.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new YarnServiceMethodDescriptorSupplier("GetTaskResultFileSummaryList"))
+              .build();
+        }
+      }
+    }
+    return getGetTaskResultFileSummaryListMethod;
   }
 
   /**
@@ -834,6 +927,16 @@ public final class YarnServiceGrpc {
 
     /**
      * <pre>
+     * 上报 任务结果文件摘要
+     * </pre>
+     */
+    public void reportTaskResultFileSummary(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getReportTaskResultFileSummaryMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
      * 查询可用数据服务资源目标 ip:port 信息
      * </pre>
      */
@@ -850,6 +953,26 @@ public final class YarnServiceGrpc {
     public void queryFilePosition(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryFilePositionRequest request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryFilePositionResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getQueryFilePositionMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
+     * 查询 任务结果文件摘要
+     * </pre>
+     */
+    public void getTaskResultFileSummary(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetTaskResultFileSummaryMethod(), responseObserver);
+    }
+
+    /**
+     * <pre>
+     * 查询当前组织参与的所有任务结果文件摘要
+     * </pre>
+     */
+    public void getTaskResultFileSummaryList(com.google.protobuf.Empty request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetTaskResultFileSummaryListMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -974,6 +1097,13 @@ public final class YarnServiceGrpc {
                 com.platon.rosettanet.admin.grpc.service.SimpleResponse>(
                   this, METHODID_REPORT_UP_FILE_SUMMARY)))
           .addMethod(
+            getReportTaskResultFileSummaryMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest,
+                com.platon.rosettanet.admin.grpc.service.SimpleResponse>(
+                  this, METHODID_REPORT_TASK_RESULT_FILE_SUMMARY)))
+          .addMethod(
             getQueryAvailableDataNodeMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
@@ -987,6 +1117,20 @@ public final class YarnServiceGrpc {
                 com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryFilePositionRequest,
                 com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryFilePositionResponse>(
                   this, METHODID_QUERY_FILE_POSITION)))
+          .addMethod(
+            getGetTaskResultFileSummaryMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest,
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse>(
+                  this, METHODID_GET_TASK_RESULT_FILE_SUMMARY)))
+          .addMethod(
+            getGetTaskResultFileSummaryListMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.google.protobuf.Empty,
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse>(
+                  this, METHODID_GET_TASK_RESULT_FILE_SUMMARY_LIST)))
           .build();
     }
   }
@@ -1202,6 +1346,17 @@ public final class YarnServiceGrpc {
 
     /**
      * <pre>
+     * 上报 任务结果文件摘要
+     * </pre>
+     */
+    public void reportTaskResultFileSummary(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getReportTaskResultFileSummaryMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
      * 查询可用数据服务资源目标 ip:port 信息
      * </pre>
      */
@@ -1220,6 +1375,28 @@ public final class YarnServiceGrpc {
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryFilePositionResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getQueryFilePositionMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
+     * 查询 任务结果文件摘要
+     * </pre>
+     */
+    public void getTaskResultFileSummary(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetTaskResultFileSummaryMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     * <pre>
+     * 查询当前组织参与的所有任务结果文件摘要
+     * </pre>
+     */
+    public void getTaskResultFileSummaryList(com.google.protobuf.Empty request,
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetTaskResultFileSummaryListMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -1417,6 +1594,16 @@ public final class YarnServiceGrpc {
 
     /**
      * <pre>
+     * 上报 任务结果文件摘要
+     * </pre>
+     */
+    public com.platon.rosettanet.admin.grpc.service.SimpleResponse reportTaskResultFileSummary(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getReportTaskResultFileSummaryMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
      * 查询可用数据服务资源目标 ip:port 信息
      * </pre>
      */
@@ -1433,6 +1620,26 @@ public final class YarnServiceGrpc {
     public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryFilePositionResponse queryFilePosition(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryFilePositionRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getQueryFilePositionMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * 查询 任务结果文件摘要
+     * </pre>
+     */
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse getTaskResultFileSummary(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetTaskResultFileSummaryMethod(), getCallOptions(), request);
+    }
+
+    /**
+     * <pre>
+     * 查询当前组织参与的所有任务结果文件摘要
+     * </pre>
+     */
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse getTaskResultFileSummaryList(com.google.protobuf.Empty request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetTaskResultFileSummaryListMethod(), getCallOptions(), request);
     }
   }
 
@@ -1647,6 +1854,17 @@ public final class YarnServiceGrpc {
 
     /**
      * <pre>
+     * 上报 任务结果文件摘要
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.SimpleResponse> reportTaskResultFileSummary(
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getReportTaskResultFileSummaryMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
      * 查询可用数据服务资源目标 ip:port 信息
      * </pre>
      */
@@ -1665,6 +1883,28 @@ public final class YarnServiceGrpc {
         com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryFilePositionRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getQueryFilePositionMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
+     * 查询 任务结果文件摘要
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> getTaskResultFileSummary(
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetTaskResultFileSummaryMethod(), getCallOptions()), request);
+    }
+
+    /**
+     * <pre>
+     * 查询当前组织参与的所有任务结果文件摘要
+     * </pre>
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse> getTaskResultFileSummaryList(
+        com.google.protobuf.Empty request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetTaskResultFileSummaryListMethod(), getCallOptions()), request);
     }
   }
 
@@ -1685,8 +1925,11 @@ public final class YarnServiceGrpc {
   private static final int METHODID_REPORT_TASK_EVENT = 14;
   private static final int METHODID_REPORT_TASK_RESOURCE_EXPENSE = 15;
   private static final int METHODID_REPORT_UP_FILE_SUMMARY = 16;
-  private static final int METHODID_QUERY_AVAILABLE_DATA_NODE = 17;
-  private static final int METHODID_QUERY_FILE_POSITION = 18;
+  private static final int METHODID_REPORT_TASK_RESULT_FILE_SUMMARY = 17;
+  private static final int METHODID_QUERY_AVAILABLE_DATA_NODE = 18;
+  private static final int METHODID_QUERY_FILE_POSITION = 19;
+  private static final int METHODID_GET_TASK_RESULT_FILE_SUMMARY = 20;
+  private static final int METHODID_GET_TASK_RESULT_FILE_SUMMARY_LIST = 21;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -1773,6 +2016,10 @@ public final class YarnServiceGrpc {
           serviceImpl.reportUpFileSummary((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportUpFileSummaryRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse>) responseObserver);
           break;
+        case METHODID_REPORT_TASK_RESULT_FILE_SUMMARY:
+          serviceImpl.reportTaskResultFileSummary((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse>) responseObserver);
+          break;
         case METHODID_QUERY_AVAILABLE_DATA_NODE:
           serviceImpl.queryAvailableDataNode((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryAvailableDataNodeRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryAvailableDataNodeResponse>) responseObserver);
@@ -1780,6 +2027,14 @@ public final class YarnServiceGrpc {
         case METHODID_QUERY_FILE_POSITION:
           serviceImpl.queryFilePosition((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryFilePositionRequest) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.QueryFilePositionResponse>) responseObserver);
+          break;
+        case METHODID_GET_TASK_RESULT_FILE_SUMMARY:
+          serviceImpl.getTaskResultFileSummary((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse>) responseObserver);
+          break;
+        case METHODID_GET_TASK_RESULT_FILE_SUMMARY_LIST:
+          serviceImpl.getTaskResultFileSummaryList((com.google.protobuf.Empty) request,
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -1859,8 +2114,11 @@ public final class YarnServiceGrpc {
               .addMethod(getReportTaskEventMethod())
               .addMethod(getReportTaskResourceExpenseMethod())
               .addMethod(getReportUpFileSummaryMethod())
+              .addMethod(getReportTaskResultFileSummaryMethod())
               .addMethod(getQueryAvailableDataNodeMethod())
               .addMethod(getQueryFilePositionMethod())
+              .addMethod(getGetTaskResultFileSummaryMethod())
+              .addMethod(getGetTaskResultFileSummaryListMethod())
               .build();
         }
       }

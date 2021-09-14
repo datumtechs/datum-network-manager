@@ -3,8 +3,8 @@
 
 package com.platon.rosettanet.admin.grpc.service;
 
-public interface MetadataUsageOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:types.MetadataUsage)
+public interface MetadataUsedQuoOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:types.MetadataUsedQuo)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -28,31 +28,21 @@ public interface MetadataUsageOrBuilder extends
 
   /**
    * <pre>
-   * 使用开始时间 (当 usage_type 为 1 时才需要的字段)
+   * 是否已过期 (当 usage_type 为 1 时才需要的字段)
    * </pre>
    *
-   * <code>uint64 start_at = 2;</code>
-   * @return The startAt.
+   * <code>bool expire = 2;</code>
+   * @return The expire.
    */
-  long getStartAt();
+  boolean getExpire();
 
   /**
    * <pre>
-   * 使用结束时间 (当 usage_type 为 1 时才需要的字段)
+   * 已经使用的次数 (当 usage_type 为 1 时才需要的字段)
    * </pre>
    *
-   * <code>uint64 end_at = 3;</code>
-   * @return The endAt.
+   * <code>uint32 used_times = 3;</code>
+   * @return The usedTimes.
    */
-  long getEndAt();
-
-  /**
-   * <pre>
-   * 使用次数 (当 usage_type 为 2 时才需要的字段)
-   * </pre>
-   *
-   * <code>uint32 times = 4;</code>
-   * @return The times.
-   */
-  int getTimes();
+  int getUsedTimes();
 }

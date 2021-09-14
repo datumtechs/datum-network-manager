@@ -109,3 +109,12 @@ enum TaskState {
   TaskState_Failed = 3;                   // 失败
   TaskState_Succeed = 4;                  // 成功
 }
+
+// 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 <失效前主动撤回的>; 4: 已经失效的数据授权 <过期or达到使用上限的>)
+enum MetadataAuthorityState {
+  MAState_Unknown = 0;
+  MAState_Created = 1;
+  MAState_Released = 2;
+  MAState_Revoked = 3;
+  MAState_Invalid = 4;
+}

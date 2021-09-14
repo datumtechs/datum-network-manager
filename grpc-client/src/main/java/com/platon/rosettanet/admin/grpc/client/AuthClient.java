@@ -163,7 +163,7 @@ public class AuthClient {
                   MetadataAuthority metaDataAuthority =  dataAuth.getAuth();
                   Organization  identityInfo = metaDataAuthority.getOwner();
                   String metaDataId = metaDataAuthority.getMetadataId();
-                  MetadataUsage  metaDataUsage = metaDataAuthority.getUsage();
+                MetadataUsageRule  metaDataUsage = metaDataAuthority.getUsageRule();
                   long startAt = metaDataUsage.getStartAt();
                   long endAt = metaDataUsage.getEndAt();
                   int useAuthNumber = metaDataUsage.getTimes();
@@ -175,7 +175,7 @@ public class AuthClient {
                   localDataAuth.setUserType(dataAuth.getUserTypeValue());
                   localDataAuth.setCreateAt(new Date(dataAuth.getApplyAt()));
                   localDataAuth.setAuthAt(new Date(dataAuth.getAuditAt()));
-                  localDataAuth.setStatus(dataAuth.getAuditValue());
+                  localDataAuth.setStatus(dataAuth.getAuditOption().getNumber());
                   localDataAuth.setAuthType(useAuthType);
                   localDataAuth.setAuthValueStartAt(new Date(startAt));
                   localDataAuth.setAuthValueEndAt(new Date(endAt));

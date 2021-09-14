@@ -25,10 +25,10 @@ public final class MetaDataProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_types_MetadataColumn_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_types_AuthRecordPB_descriptor;
+    internal_static_types_MetadataAuthorityPB_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_types_AuthRecordPB_fieldAccessorTable;
+      internal_static_types_MetadataAuthorityPB_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_types_MetadataSummary_descriptor;
   static final 
@@ -40,15 +40,20 @@ public final class MetaDataProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_types_MetadataDetail_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_types_MetadataUsage_descriptor;
+    internal_static_types_MetadataUsageRule_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_types_MetadataUsage_fieldAccessorTable;
+      internal_static_types_MetadataUsageRule_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_types_MetadataAuthority_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_types_MetadataAuthority_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_types_MetadataUsedQuo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_types_MetadataUsedQuo_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -59,50 +64,57 @@ public final class MetaDataProto {
   static {
     java.lang.String[] descriptorData = {
       "\n\030lib/types/metadata.proto\022\005types\032\025lib/c" +
-      "ommon/base.proto\"\255\003\n\nMetadataPB\022\023\n\013ident" +
-      "ity_id\030\001 \001(\t\022\017\n\007node_id\030\002 \001(\t\022\021\n\tnode_na" +
-      "me\030\003 \001(\t\022\017\n\007data_id\030\004 \001(\t\022-\n\013data_status" +
-      "\030\005 \001(\0162\030.api.protobuf.DataStatus\022\021\n\torig" +
-      "in_id\030\006 \001(\t\022\022\n\ntable_name\030\007 \001(\t\022\021\n\tfile_" +
-      "path\030\010 \001(\t\022\014\n\004desc\030\t \001(\t\022\014\n\004rows\030\n \001(\r\022\017" +
-      "\n\007columns\030\013 \001(\r\022\014\n\004size\030\014 \001(\004\022/\n\tfile_ty" +
-      "pe\030\r \001(\0162\034.api.protobuf.OriginFileType\022*" +
-      "\n\005state\030\016 \001(\0162\033.api.protobuf.MetadataSta" +
-      "te\022\021\n\thas_title\030\017 \001(\010\022/\n\020metadata_column" +
-      "s\030\020 \003(\0132\025.types.MetadataColumn\022\020\n\010indust" +
-      "ry\030\021 \001(\t\"d\n\016MetadataColumn\022\017\n\007c_index\030\001 " +
-      "\001(\r\022\016\n\006c_name\030\002 \001(\t\022\016\n\006c_type\030\003 \001(\t\022\016\n\006c" +
-      "_size\030\004 \001(\r\022\021\n\tc_comment\030\005 \001(\t\"\202\002\n\014AuthR" +
-      "ecordPB\022\026\n\016auth_record_id\030\001 \001(\t\022\014\n\004user\030" +
-      "\002 \001(\t\022)\n\tuser_type\030\003 \001(\0162\026.api.protobuf." +
-      "UserType\022-\n\013data_record\030\004 \001(\0132\030.types.Me" +
-      "tadataAuthority\0227\n\014audit_result\030\005 \001(\0162!." +
-      "api.protobuf.AuditMetadataOption\022\025\n\raudi" +
-      "t_suggest\030\006 \001(\t\022\020\n\010apply_at\030\007 \001(\004\022\020\n\010aud" +
-      "it_at\030\010 \001(\004\"\235\002\n\017MetadataSummary\022\023\n\013metad" +
-      "ata_id\030\001 \001(\t\022\021\n\torigin_id\030\002 \001(\t\022\022\n\ntable" +
-      "_name\030\003 \001(\t\022\014\n\004desc\030\004 \001(\t\022\021\n\tfile_path\030\005" +
-      " \001(\t\022\014\n\004rows\030\006 \001(\r\022\017\n\007columns\030\007 \001(\r\022\014\n\004s" +
-      "ize\030\010 \001(\004\022/\n\tfile_type\030\t \001(\0162\034.api.proto" +
-      "buf.OriginFileType\022\021\n\thas_title\030\n \001(\010\022\020\n" +
-      "\010industry\030\013 \001(\t\022*\n\005state\030\014 \001(\0162\033.api.pro" +
-      "tobuf.MetadataState\"\215\001\n\016MetadataDetail\0220" +
-      "\n\020metadata_summary\030\001 \001(\0132\026.types.Metadat" +
-      "aSummary\022/\n\020metadata_columns\030\002 \003(\0132\025.typ" +
-      "es.MetadataColumn\022\030\n\020total_task_count\030\003 " +
-      "\001(\r\"u\n\rMetadataUsage\0223\n\nusage_type\030\001 \001(\016" +
-      "2\037.api.protobuf.MetadataUsageType\022\020\n\010sta" +
-      "rt_at\030\002 \001(\004\022\016\n\006end_at\030\003 \001(\004\022\r\n\005times\030\004 \001" +
-      "(\r\"x\n\021MetadataAuthority\022)\n\005owner\030\001 \001(\0132\032" +
-      ".api.protobuf.Organization\022\023\n\013metadata_i" +
-      "d\030\002 \001(\t\022#\n\005usage\030\003 \001(\0132\024.types.MetadataU" +
-      "sageB;\n(com.platon.rosettanet.admin.grpc" +
-      ".serviceB\rMetaDataProtoP\001b\006proto3"
+      "ommon/base.proto\032\025lib/common/data.proto\"" +
+      "\255\003\n\nMetadataPB\022\023\n\013identity_id\030\001 \001(\t\022\017\n\007n" +
+      "ode_id\030\002 \001(\t\022\021\n\tnode_name\030\003 \001(\t\022\017\n\007data_" +
+      "id\030\004 \001(\t\022-\n\013data_status\030\005 \001(\0162\030.api.prot" +
+      "obuf.DataStatus\022\021\n\torigin_id\030\006 \001(\t\022\022\n\nta" +
+      "ble_name\030\007 \001(\t\022\021\n\tfile_path\030\010 \001(\t\022\014\n\004des" +
+      "c\030\t \001(\t\022\014\n\004rows\030\n \001(\r\022\017\n\007columns\030\013 \001(\r\022\014" +
+      "\n\004size\030\014 \001(\004\022/\n\tfile_type\030\r \001(\0162\034.api.pr" +
+      "otobuf.OriginFileType\022*\n\005state\030\016 \001(\0162\033.a" +
+      "pi.protobuf.MetadataState\022\021\n\thas_title\030\017" +
+      " \001(\010\022/\n\020metadata_columns\030\020 \003(\0132\025.types.M" +
+      "etadataColumn\022\020\n\010industry\030\021 \001(\t\"d\n\016Metad" +
+      "ataColumn\022\017\n\007c_index\030\001 \001(\r\022\016\n\006c_name\030\002 \001" +
+      "(\t\022\016\n\006c_type\030\003 \001(\t\022\016\n\006c_size\030\004 \001(\r\022\021\n\tc_" +
+      "comment\030\005 \001(\t\"\346\002\n\023MetadataAuthorityPB\022\030\n" +
+      "\020metadata_auth_id\030\001 \001(\t\022\014\n\004user\030\002 \001(\t\022)\n" +
+      "\tuser_type\030\003 \001(\0162\026.api.protobuf.UserType" +
+      "\022&\n\004auth\030\004 \001(\0132\030.types.MetadataAuthority" +
+      "\0227\n\014audit_option\030\005 \001(\0162!.api.protobuf.Au" +
+      "ditMetadataOption\022\030\n\020audit_suggestion\030\006 " +
+      "\001(\t\022(\n\010used_quo\030\007 \001(\0132\026.types.MetadataUs" +
+      "edQuo\022\020\n\010apply_at\030\010 \001(\004\022\020\n\010audit_at\030\t \001(" +
+      "\004\0223\n\005state\030\n \001(\0162$.api.protobuf.Metadata" +
+      "AuthorityState\"\235\002\n\017MetadataSummary\022\023\n\013me" +
+      "tadata_id\030\001 \001(\t\022\021\n\torigin_id\030\002 \001(\t\022\022\n\nta" +
+      "ble_name\030\003 \001(\t\022\014\n\004desc\030\004 \001(\t\022\021\n\tfile_pat" +
+      "h\030\005 \001(\t\022\014\n\004rows\030\006 \001(\r\022\017\n\007columns\030\007 \001(\r\022\014" +
+      "\n\004size\030\010 \001(\004\022/\n\tfile_type\030\t \001(\0162\034.api.pr" +
+      "otobuf.OriginFileType\022\021\n\thas_title\030\n \001(\010" +
+      "\022\020\n\010industry\030\013 \001(\t\022*\n\005state\030\014 \001(\0162\033.api." +
+      "protobuf.MetadataState\"\215\001\n\016MetadataDetai" +
+      "l\0220\n\020metadata_summary\030\001 \001(\0132\026.types.Meta" +
+      "dataSummary\022/\n\020metadata_columns\030\002 \003(\0132\025." +
+      "types.MetadataColumn\022\030\n\020total_task_count" +
+      "\030\003 \001(\r\"y\n\021MetadataUsageRule\0223\n\nusage_typ" +
+      "e\030\001 \001(\0162\037.api.protobuf.MetadataUsageType" +
+      "\022\020\n\010start_at\030\002 \001(\004\022\016\n\006end_at\030\003 \001(\004\022\r\n\005ti" +
+      "mes\030\004 \001(\r\"\201\001\n\021MetadataAuthority\022)\n\005owner" +
+      "\030\001 \001(\0132\032.api.protobuf.Organization\022\023\n\013me" +
+      "tadata_id\030\002 \001(\t\022,\n\nusage_rule\030\003 \001(\0132\030.ty" +
+      "pes.MetadataUsageRule\"j\n\017MetadataUsedQuo" +
+      "\0223\n\nusage_type\030\001 \001(\0162\037.api.protobuf.Meta" +
+      "dataUsageType\022\016\n\006expire\030\002 \001(\010\022\022\n\nused_ti" +
+      "mes\030\003 \001(\rB;\n(com.platon.rosettanet.admin" +
+      ".grpc.serviceB\rMetaDataProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.platon.rosettanet.admin.grpc.service.Base.getDescriptor(),
+          com.platon.rosettanet.admin.grpc.service.Data.getDescriptor(),
         });
     internal_static_types_MetadataPB_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -116,12 +128,12 @@ public final class MetaDataProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_types_MetadataColumn_descriptor,
         new java.lang.String[] { "CIndex", "CName", "CType", "CSize", "CComment", });
-    internal_static_types_AuthRecordPB_descriptor =
+    internal_static_types_MetadataAuthorityPB_descriptor =
       getDescriptor().getMessageTypes().get(2);
-    internal_static_types_AuthRecordPB_fieldAccessorTable = new
+    internal_static_types_MetadataAuthorityPB_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_types_AuthRecordPB_descriptor,
-        new java.lang.String[] { "AuthRecordId", "User", "UserType", "DataRecord", "AuditResult", "AuditSuggest", "ApplyAt", "AuditAt", });
+        internal_static_types_MetadataAuthorityPB_descriptor,
+        new java.lang.String[] { "MetadataAuthId", "User", "UserType", "Auth", "AuditOption", "AuditSuggestion", "UsedQuo", "ApplyAt", "AuditAt", "State", });
     internal_static_types_MetadataSummary_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_types_MetadataSummary_fieldAccessorTable = new
@@ -134,19 +146,26 @@ public final class MetaDataProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_types_MetadataDetail_descriptor,
         new java.lang.String[] { "MetadataSummary", "MetadataColumns", "TotalTaskCount", });
-    internal_static_types_MetadataUsage_descriptor =
+    internal_static_types_MetadataUsageRule_descriptor =
       getDescriptor().getMessageTypes().get(5);
-    internal_static_types_MetadataUsage_fieldAccessorTable = new
+    internal_static_types_MetadataUsageRule_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_types_MetadataUsage_descriptor,
+        internal_static_types_MetadataUsageRule_descriptor,
         new java.lang.String[] { "UsageType", "StartAt", "EndAt", "Times", });
     internal_static_types_MetadataAuthority_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_types_MetadataAuthority_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_types_MetadataAuthority_descriptor,
-        new java.lang.String[] { "Owner", "MetadataId", "Usage", });
+        new java.lang.String[] { "Owner", "MetadataId", "UsageRule", });
+    internal_static_types_MetadataUsedQuo_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_types_MetadataUsedQuo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_types_MetadataUsedQuo_descriptor,
+        new java.lang.String[] { "UsageType", "Expire", "UsedTimes", });
     com.platon.rosettanet.admin.grpc.service.Base.getDescriptor();
+    com.platon.rosettanet.admin.grpc.service.Data.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

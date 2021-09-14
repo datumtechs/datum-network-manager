@@ -70,8 +70,11 @@ public final class Base {
       "\n\tTaskState\022\025\n\021TaskState_Unknown\020\000\022\025\n\021Ta" +
       "skState_Pending\020\001\022\025\n\021TaskState_Running\020\002" +
       "\022\024\n\020TaskState_Failed\020\003\022\025\n\021TaskState_Succ" +
-      "eed\020\004B,\n(com.platon.rosettanet.admin.grp" +
-      "c.serviceP\001b\006proto3"
+      "eed\020\004*\202\001\n\026MetadataAuthorityState\022\023\n\017MASt" +
+      "ate_Unknown\020\000\022\023\n\017MAState_Created\020\001\022\024\n\020MA" +
+      "State_Released\020\002\022\023\n\017MAState_Revoked\020\003\022\023\n" +
+      "\017MAState_Invalid\020\004B,\n(com.platon.rosetta" +
+      "net.admin.grpc.serviceP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

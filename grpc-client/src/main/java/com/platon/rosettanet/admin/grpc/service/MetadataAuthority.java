@@ -73,14 +73,14 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 26: {
-            com.platon.rosettanet.admin.grpc.service.MetadataUsage.Builder subBuilder = null;
-            if (usage_ != null) {
-              subBuilder = usage_.toBuilder();
+            com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.Builder subBuilder = null;
+            if (usageRule_ != null) {
+              subBuilder = usageRule_.toBuilder();
             }
-            usage_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.MetadataUsage.parser(), extensionRegistry);
+            usageRule_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.parser(), extensionRegistry);
             if (subBuilder != null) {
-              subBuilder.mergeFrom(usage_);
-              usage_ = subBuilder.buildPartial();
+              subBuilder.mergeFrom(usageRule_);
+              usageRule_ = subBuilder.buildPartial();
             }
 
             break;
@@ -201,42 +201,42 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int USAGE_FIELD_NUMBER = 3;
-  private com.platon.rosettanet.admin.grpc.service.MetadataUsage usage_;
+  public static final int USAGE_RULE_FIELD_NUMBER = 3;
+  private com.platon.rosettanet.admin.grpc.service.MetadataUsageRule usageRule_;
   /**
    * <pre>
    * 元数据怎么使用
    * </pre>
    *
-   * <code>.types.MetadataUsage usage = 3;</code>
-   * @return Whether the usage field is set.
+   * <code>.types.MetadataUsageRule usage_rule = 3;</code>
+   * @return Whether the usageRule field is set.
    */
   @java.lang.Override
-  public boolean hasUsage() {
-    return usage_ != null;
+  public boolean hasUsageRule() {
+    return usageRule_ != null;
   }
   /**
    * <pre>
    * 元数据怎么使用
    * </pre>
    *
-   * <code>.types.MetadataUsage usage = 3;</code>
-   * @return The usage.
+   * <code>.types.MetadataUsageRule usage_rule = 3;</code>
+   * @return The usageRule.
    */
   @java.lang.Override
-  public com.platon.rosettanet.admin.grpc.service.MetadataUsage getUsage() {
-    return usage_ == null ? com.platon.rosettanet.admin.grpc.service.MetadataUsage.getDefaultInstance() : usage_;
+  public com.platon.rosettanet.admin.grpc.service.MetadataUsageRule getUsageRule() {
+    return usageRule_ == null ? com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.getDefaultInstance() : usageRule_;
   }
   /**
    * <pre>
    * 元数据怎么使用
    * </pre>
    *
-   * <code>.types.MetadataUsage usage = 3;</code>
+   * <code>.types.MetadataUsageRule usage_rule = 3;</code>
    */
   @java.lang.Override
-  public com.platon.rosettanet.admin.grpc.service.MetadataUsageOrBuilder getUsageOrBuilder() {
-    return getUsage();
+  public com.platon.rosettanet.admin.grpc.service.MetadataUsageRuleOrBuilder getUsageRuleOrBuilder() {
+    return getUsageRule();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -259,8 +259,8 @@ private static final long serialVersionUID = 0L;
     if (!getMetadataIdBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, metadataId_);
     }
-    if (usage_ != null) {
-      output.writeMessage(3, getUsage());
+    if (usageRule_ != null) {
+      output.writeMessage(3, getUsageRule());
     }
     unknownFields.writeTo(output);
   }
@@ -278,9 +278,9 @@ private static final long serialVersionUID = 0L;
     if (!getMetadataIdBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, metadataId_);
     }
-    if (usage_ != null) {
+    if (usageRule_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, getUsage());
+        .computeMessageSize(3, getUsageRule());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -304,10 +304,10 @@ private static final long serialVersionUID = 0L;
     }
     if (!getMetadataId()
         .equals(other.getMetadataId())) return false;
-    if (hasUsage() != other.hasUsage()) return false;
-    if (hasUsage()) {
-      if (!getUsage()
-          .equals(other.getUsage())) return false;
+    if (hasUsageRule() != other.hasUsageRule()) return false;
+    if (hasUsageRule()) {
+      if (!getUsageRule()
+          .equals(other.getUsageRule())) return false;
     }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
@@ -326,9 +326,9 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + METADATA_ID_FIELD_NUMBER;
     hash = (53 * hash) + getMetadataId().hashCode();
-    if (hasUsage()) {
-      hash = (37 * hash) + USAGE_FIELD_NUMBER;
-      hash = (53 * hash) + getUsage().hashCode();
+    if (hasUsageRule()) {
+      hash = (37 * hash) + USAGE_RULE_FIELD_NUMBER;
+      hash = (53 * hash) + getUsageRule().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -475,11 +475,11 @@ private static final long serialVersionUID = 0L;
       }
       metadataId_ = "";
 
-      if (usageBuilder_ == null) {
-        usage_ = null;
+      if (usageRuleBuilder_ == null) {
+        usageRule_ = null;
       } else {
-        usage_ = null;
-        usageBuilder_ = null;
+        usageRule_ = null;
+        usageRuleBuilder_ = null;
       }
       return this;
     }
@@ -513,10 +513,10 @@ private static final long serialVersionUID = 0L;
         result.owner_ = ownerBuilder_.build();
       }
       result.metadataId_ = metadataId_;
-      if (usageBuilder_ == null) {
-        result.usage_ = usage_;
+      if (usageRuleBuilder_ == null) {
+        result.usageRule_ = usageRule_;
       } else {
-        result.usage_ = usageBuilder_.build();
+        result.usageRule_ = usageRuleBuilder_.build();
       }
       onBuilt();
       return result;
@@ -573,8 +573,8 @@ private static final long serialVersionUID = 0L;
         metadataId_ = other.metadataId_;
         onChanged();
       }
-      if (other.hasUsage()) {
-        mergeUsage(other.getUsage());
+      if (other.hasUsageRule()) {
+        mergeUsageRule(other.getUsageRule());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -856,33 +856,33 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.platon.rosettanet.admin.grpc.service.MetadataUsage usage_;
+    private com.platon.rosettanet.admin.grpc.service.MetadataUsageRule usageRule_;
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.platon.rosettanet.admin.grpc.service.MetadataUsage, com.platon.rosettanet.admin.grpc.service.MetadataUsage.Builder, com.platon.rosettanet.admin.grpc.service.MetadataUsageOrBuilder> usageBuilder_;
+        com.platon.rosettanet.admin.grpc.service.MetadataUsageRule, com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.Builder, com.platon.rosettanet.admin.grpc.service.MetadataUsageRuleOrBuilder> usageRuleBuilder_;
     /**
      * <pre>
      * 元数据怎么使用
      * </pre>
      *
-     * <code>.types.MetadataUsage usage = 3;</code>
-     * @return Whether the usage field is set.
+     * <code>.types.MetadataUsageRule usage_rule = 3;</code>
+     * @return Whether the usageRule field is set.
      */
-    public boolean hasUsage() {
-      return usageBuilder_ != null || usage_ != null;
+    public boolean hasUsageRule() {
+      return usageRuleBuilder_ != null || usageRule_ != null;
     }
     /**
      * <pre>
      * 元数据怎么使用
      * </pre>
      *
-     * <code>.types.MetadataUsage usage = 3;</code>
-     * @return The usage.
+     * <code>.types.MetadataUsageRule usage_rule = 3;</code>
+     * @return The usageRule.
      */
-    public com.platon.rosettanet.admin.grpc.service.MetadataUsage getUsage() {
-      if (usageBuilder_ == null) {
-        return usage_ == null ? com.platon.rosettanet.admin.grpc.service.MetadataUsage.getDefaultInstance() : usage_;
+    public com.platon.rosettanet.admin.grpc.service.MetadataUsageRule getUsageRule() {
+      if (usageRuleBuilder_ == null) {
+        return usageRule_ == null ? com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.getDefaultInstance() : usageRule_;
       } else {
-        return usageBuilder_.getMessage();
+        return usageRuleBuilder_.getMessage();
       }
     }
     /**
@@ -890,17 +890,17 @@ private static final long serialVersionUID = 0L;
      * 元数据怎么使用
      * </pre>
      *
-     * <code>.types.MetadataUsage usage = 3;</code>
+     * <code>.types.MetadataUsageRule usage_rule = 3;</code>
      */
-    public Builder setUsage(com.platon.rosettanet.admin.grpc.service.MetadataUsage value) {
-      if (usageBuilder_ == null) {
+    public Builder setUsageRule(com.platon.rosettanet.admin.grpc.service.MetadataUsageRule value) {
+      if (usageRuleBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        usage_ = value;
+        usageRule_ = value;
         onChanged();
       } else {
-        usageBuilder_.setMessage(value);
+        usageRuleBuilder_.setMessage(value);
       }
 
       return this;
@@ -910,15 +910,15 @@ private static final long serialVersionUID = 0L;
      * 元数据怎么使用
      * </pre>
      *
-     * <code>.types.MetadataUsage usage = 3;</code>
+     * <code>.types.MetadataUsageRule usage_rule = 3;</code>
      */
-    public Builder setUsage(
-        com.platon.rosettanet.admin.grpc.service.MetadataUsage.Builder builderForValue) {
-      if (usageBuilder_ == null) {
-        usage_ = builderForValue.build();
+    public Builder setUsageRule(
+        com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.Builder builderForValue) {
+      if (usageRuleBuilder_ == null) {
+        usageRule_ = builderForValue.build();
         onChanged();
       } else {
-        usageBuilder_.setMessage(builderForValue.build());
+        usageRuleBuilder_.setMessage(builderForValue.build());
       }
 
       return this;
@@ -928,19 +928,19 @@ private static final long serialVersionUID = 0L;
      * 元数据怎么使用
      * </pre>
      *
-     * <code>.types.MetadataUsage usage = 3;</code>
+     * <code>.types.MetadataUsageRule usage_rule = 3;</code>
      */
-    public Builder mergeUsage(com.platon.rosettanet.admin.grpc.service.MetadataUsage value) {
-      if (usageBuilder_ == null) {
-        if (usage_ != null) {
-          usage_ =
-            com.platon.rosettanet.admin.grpc.service.MetadataUsage.newBuilder(usage_).mergeFrom(value).buildPartial();
+    public Builder mergeUsageRule(com.platon.rosettanet.admin.grpc.service.MetadataUsageRule value) {
+      if (usageRuleBuilder_ == null) {
+        if (usageRule_ != null) {
+          usageRule_ =
+            com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.newBuilder(usageRule_).mergeFrom(value).buildPartial();
         } else {
-          usage_ = value;
+          usageRule_ = value;
         }
         onChanged();
       } else {
-        usageBuilder_.mergeFrom(value);
+        usageRuleBuilder_.mergeFrom(value);
       }
 
       return this;
@@ -950,15 +950,15 @@ private static final long serialVersionUID = 0L;
      * 元数据怎么使用
      * </pre>
      *
-     * <code>.types.MetadataUsage usage = 3;</code>
+     * <code>.types.MetadataUsageRule usage_rule = 3;</code>
      */
-    public Builder clearUsage() {
-      if (usageBuilder_ == null) {
-        usage_ = null;
+    public Builder clearUsageRule() {
+      if (usageRuleBuilder_ == null) {
+        usageRule_ = null;
         onChanged();
       } else {
-        usage_ = null;
-        usageBuilder_ = null;
+        usageRule_ = null;
+        usageRuleBuilder_ = null;
       }
 
       return this;
@@ -968,26 +968,26 @@ private static final long serialVersionUID = 0L;
      * 元数据怎么使用
      * </pre>
      *
-     * <code>.types.MetadataUsage usage = 3;</code>
+     * <code>.types.MetadataUsageRule usage_rule = 3;</code>
      */
-    public com.platon.rosettanet.admin.grpc.service.MetadataUsage.Builder getUsageBuilder() {
+    public com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.Builder getUsageRuleBuilder() {
       
       onChanged();
-      return getUsageFieldBuilder().getBuilder();
+      return getUsageRuleFieldBuilder().getBuilder();
     }
     /**
      * <pre>
      * 元数据怎么使用
      * </pre>
      *
-     * <code>.types.MetadataUsage usage = 3;</code>
+     * <code>.types.MetadataUsageRule usage_rule = 3;</code>
      */
-    public com.platon.rosettanet.admin.grpc.service.MetadataUsageOrBuilder getUsageOrBuilder() {
-      if (usageBuilder_ != null) {
-        return usageBuilder_.getMessageOrBuilder();
+    public com.platon.rosettanet.admin.grpc.service.MetadataUsageRuleOrBuilder getUsageRuleOrBuilder() {
+      if (usageRuleBuilder_ != null) {
+        return usageRuleBuilder_.getMessageOrBuilder();
       } else {
-        return usage_ == null ?
-            com.platon.rosettanet.admin.grpc.service.MetadataUsage.getDefaultInstance() : usage_;
+        return usageRule_ == null ?
+            com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.getDefaultInstance() : usageRule_;
       }
     }
     /**
@@ -995,20 +995,20 @@ private static final long serialVersionUID = 0L;
      * 元数据怎么使用
      * </pre>
      *
-     * <code>.types.MetadataUsage usage = 3;</code>
+     * <code>.types.MetadataUsageRule usage_rule = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.platon.rosettanet.admin.grpc.service.MetadataUsage, com.platon.rosettanet.admin.grpc.service.MetadataUsage.Builder, com.platon.rosettanet.admin.grpc.service.MetadataUsageOrBuilder> 
-        getUsageFieldBuilder() {
-      if (usageBuilder_ == null) {
-        usageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.platon.rosettanet.admin.grpc.service.MetadataUsage, com.platon.rosettanet.admin.grpc.service.MetadataUsage.Builder, com.platon.rosettanet.admin.grpc.service.MetadataUsageOrBuilder>(
-                getUsage(),
+        com.platon.rosettanet.admin.grpc.service.MetadataUsageRule, com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.Builder, com.platon.rosettanet.admin.grpc.service.MetadataUsageRuleOrBuilder> 
+        getUsageRuleFieldBuilder() {
+      if (usageRuleBuilder_ == null) {
+        usageRuleBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.platon.rosettanet.admin.grpc.service.MetadataUsageRule, com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.Builder, com.platon.rosettanet.admin.grpc.service.MetadataUsageRuleOrBuilder>(
+                getUsageRule(),
                 getParentForChildren(),
                 isClean());
-        usage_ = null;
+        usageRule_ = null;
       }
-      return usageBuilder_;
+      return usageRuleBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -59,25 +59,25 @@ public interface MetadataAuthorityOrBuilder extends
    * 元数据怎么使用
    * </pre>
    *
-   * <code>.types.MetadataUsage usage = 3;</code>
-   * @return Whether the usage field is set.
+   * <code>.types.MetadataUsageRule usage_rule = 3;</code>
+   * @return Whether the usageRule field is set.
    */
-  boolean hasUsage();
+  boolean hasUsageRule();
   /**
    * <pre>
    * 元数据怎么使用
    * </pre>
    *
-   * <code>.types.MetadataUsage usage = 3;</code>
-   * @return The usage.
+   * <code>.types.MetadataUsageRule usage_rule = 3;</code>
+   * @return The usageRule.
    */
-  com.platon.rosettanet.admin.grpc.service.MetadataUsage getUsage();
+  com.platon.rosettanet.admin.grpc.service.MetadataUsageRule getUsageRule();
   /**
    * <pre>
    * 元数据怎么使用
    * </pre>
    *
-   * <code>.types.MetadataUsage usage = 3;</code>
+   * <code>.types.MetadataUsageRule usage_rule = 3;</code>
    */
-  com.platon.rosettanet.admin.grpc.service.MetadataUsageOrBuilder getUsageOrBuilder();
+  com.platon.rosettanet.admin.grpc.service.MetadataUsageRuleOrBuilder getUsageRuleOrBuilder();
 }

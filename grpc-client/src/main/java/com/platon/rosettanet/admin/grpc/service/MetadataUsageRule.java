@@ -8,18 +8,18 @@ package com.platon.rosettanet.admin.grpc.service;
  * 元数据的使用方式定义
  * </pre>
  *
- * Protobuf type {@code types.MetadataUsage}
+ * Protobuf type {@code types.MetadataUsageRule}
  */
-public final class MetadataUsage extends
+public final class MetadataUsageRule extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:types.MetadataUsage)
-    MetadataUsageOrBuilder {
+    // @@protoc_insertion_point(message_implements:types.MetadataUsageRule)
+    MetadataUsageRuleOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use MetadataUsage.newBuilder() to construct.
-  private MetadataUsage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use MetadataUsageRule.newBuilder() to construct.
+  private MetadataUsageRule(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private MetadataUsage() {
+  private MetadataUsageRule() {
     usageType_ = 0;
   }
 
@@ -27,7 +27,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new MetadataUsage();
+    return new MetadataUsageRule();
   }
 
   @java.lang.Override
@@ -35,7 +35,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private MetadataUsage(
+  private MetadataUsageRule(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -95,15 +95,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.platon.rosettanet.admin.grpc.service.MetaDataProto.internal_static_types_MetadataUsage_descriptor;
+    return com.platon.rosettanet.admin.grpc.service.MetaDataProto.internal_static_types_MetadataUsageRule_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.platon.rosettanet.admin.grpc.service.MetaDataProto.internal_static_types_MetadataUsage_fieldAccessorTable
+    return com.platon.rosettanet.admin.grpc.service.MetaDataProto.internal_static_types_MetadataUsageRule_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.platon.rosettanet.admin.grpc.service.MetadataUsage.class, com.platon.rosettanet.admin.grpc.service.MetadataUsage.Builder.class);
+            com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.class, com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.Builder.class);
   }
 
   public static final int USAGE_TYPE_FIELD_NUMBER = 1;
@@ -137,7 +137,7 @@ private static final long serialVersionUID = 0L;
   private long startAt_;
   /**
    * <pre>
-   * 使用开始时间 (当 usage_type 为 1 时才需要的字段)
+   * 可使用的开始时间 (当 usage_type 为 1 时才需要的字段)
    * </pre>
    *
    * <code>uint64 start_at = 2;</code>
@@ -152,7 +152,7 @@ private static final long serialVersionUID = 0L;
   private long endAt_;
   /**
    * <pre>
-   * 使用结束时间 (当 usage_type 为 1 时才需要的字段)
+   * 可使用的结束时间 (当 usage_type 为 1 时才需要的字段)
    * </pre>
    *
    * <code>uint64 end_at = 3;</code>
@@ -167,7 +167,7 @@ private static final long serialVersionUID = 0L;
   private int times_;
   /**
    * <pre>
-   * 使用次数 (当 usage_type 为 2 时才需要的字段)
+   * 可使用的次数 (当 usage_type 为 2 时才需要的字段)
    * </pre>
    *
    * <code>uint32 times = 4;</code>
@@ -239,10 +239,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.MetadataUsage)) {
+    if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.MetadataUsageRule)) {
       return super.equals(obj);
     }
-    com.platon.rosettanet.admin.grpc.service.MetadataUsage other = (com.platon.rosettanet.admin.grpc.service.MetadataUsage) obj;
+    com.platon.rosettanet.admin.grpc.service.MetadataUsageRule other = (com.platon.rosettanet.admin.grpc.service.MetadataUsageRule) obj;
 
     if (usageType_ != other.usageType_) return false;
     if (getStartAt()
@@ -277,69 +277,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseFrom(
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseFrom(
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseFrom(
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseFrom(
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseFrom(byte[] data)
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseFrom(
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseFrom(java.io.InputStream input)
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseFrom(
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseDelimitedFrom(java.io.InputStream input)
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseDelimitedFrom(
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseFrom(
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage parseFrom(
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -352,7 +352,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.MetadataUsage prototype) {
+  public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.MetadataUsageRule prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -372,26 +372,26 @@ private static final long serialVersionUID = 0L;
    * 元数据的使用方式定义
    * </pre>
    *
-   * Protobuf type {@code types.MetadataUsage}
+   * Protobuf type {@code types.MetadataUsageRule}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:types.MetadataUsage)
-      com.platon.rosettanet.admin.grpc.service.MetadataUsageOrBuilder {
+      // @@protoc_insertion_point(builder_implements:types.MetadataUsageRule)
+      com.platon.rosettanet.admin.grpc.service.MetadataUsageRuleOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.platon.rosettanet.admin.grpc.service.MetaDataProto.internal_static_types_MetadataUsage_descriptor;
+      return com.platon.rosettanet.admin.grpc.service.MetaDataProto.internal_static_types_MetadataUsageRule_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.platon.rosettanet.admin.grpc.service.MetaDataProto.internal_static_types_MetadataUsage_fieldAccessorTable
+      return com.platon.rosettanet.admin.grpc.service.MetaDataProto.internal_static_types_MetadataUsageRule_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.platon.rosettanet.admin.grpc.service.MetadataUsage.class, com.platon.rosettanet.admin.grpc.service.MetadataUsage.Builder.class);
+              com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.class, com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.Builder.class);
     }
 
-    // Construct using com.platon.rosettanet.admin.grpc.service.MetadataUsage.newBuilder()
+    // Construct using com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -423,17 +423,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.platon.rosettanet.admin.grpc.service.MetaDataProto.internal_static_types_MetadataUsage_descriptor;
+      return com.platon.rosettanet.admin.grpc.service.MetaDataProto.internal_static_types_MetadataUsageRule_descriptor;
     }
 
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.MetadataUsage getDefaultInstanceForType() {
-      return com.platon.rosettanet.admin.grpc.service.MetadataUsage.getDefaultInstance();
+    public com.platon.rosettanet.admin.grpc.service.MetadataUsageRule getDefaultInstanceForType() {
+      return com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.MetadataUsage build() {
-      com.platon.rosettanet.admin.grpc.service.MetadataUsage result = buildPartial();
+    public com.platon.rosettanet.admin.grpc.service.MetadataUsageRule build() {
+      com.platon.rosettanet.admin.grpc.service.MetadataUsageRule result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -441,8 +441,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.platon.rosettanet.admin.grpc.service.MetadataUsage buildPartial() {
-      com.platon.rosettanet.admin.grpc.service.MetadataUsage result = new com.platon.rosettanet.admin.grpc.service.MetadataUsage(this);
+    public com.platon.rosettanet.admin.grpc.service.MetadataUsageRule buildPartial() {
+      com.platon.rosettanet.admin.grpc.service.MetadataUsageRule result = new com.platon.rosettanet.admin.grpc.service.MetadataUsageRule(this);
       result.usageType_ = usageType_;
       result.startAt_ = startAt_;
       result.endAt_ = endAt_;
@@ -485,16 +485,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.platon.rosettanet.admin.grpc.service.MetadataUsage) {
-        return mergeFrom((com.platon.rosettanet.admin.grpc.service.MetadataUsage)other);
+      if (other instanceof com.platon.rosettanet.admin.grpc.service.MetadataUsageRule) {
+        return mergeFrom((com.platon.rosettanet.admin.grpc.service.MetadataUsageRule)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.MetadataUsage other) {
-      if (other == com.platon.rosettanet.admin.grpc.service.MetadataUsage.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.MetadataUsageRule other) {
+      if (other == com.platon.rosettanet.admin.grpc.service.MetadataUsageRule.getDefaultInstance()) return this;
       if (other.usageType_ != 0) {
         setUsageTypeValue(other.getUsageTypeValue());
       }
@@ -522,11 +522,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.platon.rosettanet.admin.grpc.service.MetadataUsage parsedMessage = null;
+      com.platon.rosettanet.admin.grpc.service.MetadataUsageRule parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.platon.rosettanet.admin.grpc.service.MetadataUsage) e.getUnfinishedMessage();
+        parsedMessage = (com.platon.rosettanet.admin.grpc.service.MetadataUsageRule) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -613,7 +613,7 @@ private static final long serialVersionUID = 0L;
     private long startAt_ ;
     /**
      * <pre>
-     * 使用开始时间 (当 usage_type 为 1 时才需要的字段)
+     * 可使用的开始时间 (当 usage_type 为 1 时才需要的字段)
      * </pre>
      *
      * <code>uint64 start_at = 2;</code>
@@ -625,7 +625,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * 使用开始时间 (当 usage_type 为 1 时才需要的字段)
+     * 可使用的开始时间 (当 usage_type 为 1 时才需要的字段)
      * </pre>
      *
      * <code>uint64 start_at = 2;</code>
@@ -640,7 +640,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * 使用开始时间 (当 usage_type 为 1 时才需要的字段)
+     * 可使用的开始时间 (当 usage_type 为 1 时才需要的字段)
      * </pre>
      *
      * <code>uint64 start_at = 2;</code>
@@ -656,7 +656,7 @@ private static final long serialVersionUID = 0L;
     private long endAt_ ;
     /**
      * <pre>
-     * 使用结束时间 (当 usage_type 为 1 时才需要的字段)
+     * 可使用的结束时间 (当 usage_type 为 1 时才需要的字段)
      * </pre>
      *
      * <code>uint64 end_at = 3;</code>
@@ -668,7 +668,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * 使用结束时间 (当 usage_type 为 1 时才需要的字段)
+     * 可使用的结束时间 (当 usage_type 为 1 时才需要的字段)
      * </pre>
      *
      * <code>uint64 end_at = 3;</code>
@@ -683,7 +683,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * 使用结束时间 (当 usage_type 为 1 时才需要的字段)
+     * 可使用的结束时间 (当 usage_type 为 1 时才需要的字段)
      * </pre>
      *
      * <code>uint64 end_at = 3;</code>
@@ -699,7 +699,7 @@ private static final long serialVersionUID = 0L;
     private int times_ ;
     /**
      * <pre>
-     * 使用次数 (当 usage_type 为 2 时才需要的字段)
+     * 可使用的次数 (当 usage_type 为 2 时才需要的字段)
      * </pre>
      *
      * <code>uint32 times = 4;</code>
@@ -711,7 +711,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * 使用次数 (当 usage_type 为 2 时才需要的字段)
+     * 可使用的次数 (当 usage_type 为 2 时才需要的字段)
      * </pre>
      *
      * <code>uint32 times = 4;</code>
@@ -726,7 +726,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * 使用次数 (当 usage_type 为 2 时才需要的字段)
+     * 可使用的次数 (当 usage_type 为 2 时才需要的字段)
      * </pre>
      *
      * <code>uint32 times = 4;</code>
@@ -751,41 +751,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:types.MetadataUsage)
+    // @@protoc_insertion_point(builder_scope:types.MetadataUsageRule)
   }
 
-  // @@protoc_insertion_point(class_scope:types.MetadataUsage)
-  private static final com.platon.rosettanet.admin.grpc.service.MetadataUsage DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:types.MetadataUsageRule)
+  private static final com.platon.rosettanet.admin.grpc.service.MetadataUsageRule DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.MetadataUsage();
+    DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.MetadataUsageRule();
   }
 
-  public static com.platon.rosettanet.admin.grpc.service.MetadataUsage getDefaultInstance() {
+  public static com.platon.rosettanet.admin.grpc.service.MetadataUsageRule getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<MetadataUsage>
-      PARSER = new com.google.protobuf.AbstractParser<MetadataUsage>() {
+  private static final com.google.protobuf.Parser<MetadataUsageRule>
+      PARSER = new com.google.protobuf.AbstractParser<MetadataUsageRule>() {
     @java.lang.Override
-    public MetadataUsage parsePartialFrom(
+    public MetadataUsageRule parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new MetadataUsage(input, extensionRegistry);
+      return new MetadataUsageRule(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<MetadataUsage> parser() {
+  public static com.google.protobuf.Parser<MetadataUsageRule> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<MetadataUsage> getParserForType() {
+  public com.google.protobuf.Parser<MetadataUsageRule> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.platon.rosettanet.admin.grpc.service.MetadataUsage getDefaultInstanceForType() {
+  public com.platon.rosettanet.admin.grpc.service.MetadataUsageRule getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

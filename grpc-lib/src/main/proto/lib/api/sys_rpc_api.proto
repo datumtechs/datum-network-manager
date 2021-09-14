@@ -224,7 +224,8 @@ message UpdateJobNodeRequest {
 
 // 数据/计算服务 上报任务事件 req
 message ReportTaskEventRequest {
-  types.TaskEvent task_event = 1;    // 事件信息
+  string          party_id = 1;       // 本资源在该 task 中的 partyId
+  types.TaskEvent task_event = 2;     // 事件信息
 }
 
 // 数据/计算服务 上报资源使用实况 req
@@ -240,6 +241,15 @@ message ReportUpFileSummaryRequest {
   string file_path = 2;    // 被成功上传的原始文件的相对 path
   string ip = 3;           // Fighter 的 grpc server IP
   string port = 4;         // Fighter 的 grpc server PORT
+}
+
+// 上报 任务结果文件摘要 req
+message ReportTaskResultFileSummaryRequest {
+  string task_id = 1;      // 任务Id
+  string origin_id = 2;    // 任务结果的原始文件的 Id
+  string file_path = 3;    // 任务结果的原始文件的相对 path
+  string ip = 4;           // Fighter 的 grpc server IP
+  string port = 5;         // Fighter 的 grpc server PORT
 }
 
 // 查询可用数据服务资源目标 ip:port 信息 req
@@ -261,6 +271,29 @@ message QueryFilePositionResponse {
   string ip = 1;                     // 需要被下载的目标原始文件所在的 数据服务内网ip
   string port = 2;                   // 需要被下载的目标原始文件所在的 数据服务内网port
   string file_path = 3;              // 需要被下载的目标原始文件的完整相对路径名
+}
+
+// 查询 任务结果文件摘要 req
+message GetTaskResultFileSummaryRequest {
+  string task_id = 1;
+}
+
+// 查询 任务结果文件摘要 resp
+message GetTaskResultFileSummaryResponse {
+  string task_id = 1;                 // 任务结果文件对应的任务Id
+  string file_name = 2;               // 任务结果文件的名称
+  string meta_data_id = 3;            // 任务结果文件的元数据Id <系统默认生成的元数据>
+  string origin_id = 4;               // 任务结果文件的原始文件Id
+  string file_path = 5;               // 任务结果文件的完整相对路径名
+  string ip = 6;                      // 任务结果文件所在的 数据服务内网ip
+  string port = 7;                    // 任务结果文件所在的 数据服务内网port
+}
+
+// 查询当前组织参与的所有任务结果文件摘要 resp
+message GetTaskResultFileSummaryListResponse {
+  int32                              status = 1;                      // 响应码
+  string                             msg = 2;                         // 错误信息
+  repeated GetTaskResultFileSummaryResponse metadata_list = 3;               // 元数据列表
 }
 
 // ## 调度服务 - 系统状态 接口
@@ -406,6 +439,14 @@ service YarnService {
     };
   }
 
+  // 上报 任务结果文件摘要
+  rpc ReportTaskResultFileSummary (ReportTaskResultFileSummaryRequest) returns (api.protobuf.SimpleResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/yarn/reportTaskResultFileSummary"
+      body: "*"
+    };
+  }
+
   // 查询可用数据服务资源目标 ip:port 信息
   rpc QueryAvailableDataNode (QueryAvailableDataNodeRequest) returns (QueryAvailableDataNodeResponse) {
     option (google.api.http) = {
@@ -418,6 +459,22 @@ service YarnService {
   rpc QueryFilePosition (QueryFilePositionRequest) returns (QueryFilePositionResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/queryFilePosition"
+      body: "*"
+    };
+  }
+
+  // 查询 任务结果文件摘要
+  rpc GetTaskResultFileSummary (GetTaskResultFileSummaryRequest) returns (GetTaskResultFileSummaryResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/task/taskResultFileSummary"
+      body: "*"
+    };
+  }
+
+  // 查询当前组织参与的所有任务结果文件摘要
+  rpc GetTaskResultFileSummaryList (google.protobuf.Empty) returns (GetTaskResultFileSummaryListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/task/taskResultFileSummaryList"
       body: "*"
     };
   }

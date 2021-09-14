@@ -23976,10 +23976,30 @@ public final class YarnRpcMessage {
 
     /**
      * <pre>
+     * 本资源在该 task 中的 partyId
+     * </pre>
+     *
+     * <code>string party_id = 1;</code>
+     * @return The partyId.
+     */
+    java.lang.String getPartyId();
+    /**
+     * <pre>
+     * 本资源在该 task 中的 partyId
+     * </pre>
+     *
+     * <code>string party_id = 1;</code>
+     * @return The bytes for partyId.
+     */
+    com.google.protobuf.ByteString
+        getPartyIdBytes();
+
+    /**
+     * <pre>
      * 事件信息
      * </pre>
      *
-     * <code>.types.TaskEvent task_event = 1;</code>
+     * <code>.types.TaskEvent task_event = 2;</code>
      * @return Whether the taskEvent field is set.
      */
     boolean hasTaskEvent();
@@ -23988,7 +24008,7 @@ public final class YarnRpcMessage {
      * 事件信息
      * </pre>
      *
-     * <code>.types.TaskEvent task_event = 1;</code>
+     * <code>.types.TaskEvent task_event = 2;</code>
      * @return The taskEvent.
      */
     com.platon.rosettanet.admin.grpc.service.TaskEvent getTaskEvent();
@@ -23997,7 +24017,7 @@ public final class YarnRpcMessage {
      * 事件信息
      * </pre>
      *
-     * <code>.types.TaskEvent task_event = 1;</code>
+     * <code>.types.TaskEvent task_event = 2;</code>
      */
     com.platon.rosettanet.admin.grpc.service.TaskEventOrBuilder getTaskEventOrBuilder();
   }
@@ -24018,6 +24038,7 @@ public final class YarnRpcMessage {
       super(builder);
     }
     private ReportTaskEventRequest() {
+      partyId_ = "";
     }
 
     @java.lang.Override
@@ -24051,6 +24072,12 @@ public final class YarnRpcMessage {
               done = true;
               break;
             case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              partyId_ = s;
+              break;
+            }
+            case 18: {
               com.platon.rosettanet.admin.grpc.service.TaskEvent.Builder subBuilder = null;
               if (taskEvent_ != null) {
                 subBuilder = taskEvent_.toBuilder();
@@ -24095,14 +24122,60 @@ public final class YarnRpcMessage {
               com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskEventRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskEventRequest.Builder.class);
     }
 
-    public static final int TASK_EVENT_FIELD_NUMBER = 1;
+    public static final int PARTY_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object partyId_;
+    /**
+     * <pre>
+     * 本资源在该 task 中的 partyId
+     * </pre>
+     *
+     * <code>string party_id = 1;</code>
+     * @return The partyId.
+     */
+    @java.lang.Override
+    public java.lang.String getPartyId() {
+      java.lang.Object ref = partyId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        partyId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 本资源在该 task 中的 partyId
+     * </pre>
+     *
+     * <code>string party_id = 1;</code>
+     * @return The bytes for partyId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPartyIdBytes() {
+      java.lang.Object ref = partyId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        partyId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int TASK_EVENT_FIELD_NUMBER = 2;
     private com.platon.rosettanet.admin.grpc.service.TaskEvent taskEvent_;
     /**
      * <pre>
      * 事件信息
      * </pre>
      *
-     * <code>.types.TaskEvent task_event = 1;</code>
+     * <code>.types.TaskEvent task_event = 2;</code>
      * @return Whether the taskEvent field is set.
      */
     @java.lang.Override
@@ -24114,7 +24187,7 @@ public final class YarnRpcMessage {
      * 事件信息
      * </pre>
      *
-     * <code>.types.TaskEvent task_event = 1;</code>
+     * <code>.types.TaskEvent task_event = 2;</code>
      * @return The taskEvent.
      */
     @java.lang.Override
@@ -24126,7 +24199,7 @@ public final class YarnRpcMessage {
      * 事件信息
      * </pre>
      *
-     * <code>.types.TaskEvent task_event = 1;</code>
+     * <code>.types.TaskEvent task_event = 2;</code>
      */
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.TaskEventOrBuilder getTaskEventOrBuilder() {
@@ -24147,8 +24220,11 @@ public final class YarnRpcMessage {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (!getPartyIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, partyId_);
+      }
       if (taskEvent_ != null) {
-        output.writeMessage(1, getTaskEvent());
+        output.writeMessage(2, getTaskEvent());
       }
       unknownFields.writeTo(output);
     }
@@ -24159,9 +24235,12 @@ public final class YarnRpcMessage {
       if (size != -1) return size;
 
       size = 0;
+      if (!getPartyIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, partyId_);
+      }
       if (taskEvent_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getTaskEvent());
+          .computeMessageSize(2, getTaskEvent());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -24178,6 +24257,8 @@ public final class YarnRpcMessage {
       }
       com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskEventRequest other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskEventRequest) obj;
 
+      if (!getPartyId()
+          .equals(other.getPartyId())) return false;
       if (hasTaskEvent() != other.hasTaskEvent()) return false;
       if (hasTaskEvent()) {
         if (!getTaskEvent()
@@ -24194,6 +24275,8 @@ public final class YarnRpcMessage {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PARTY_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getPartyId().hashCode();
       if (hasTaskEvent()) {
         hash = (37 * hash) + TASK_EVENT_FIELD_NUMBER;
         hash = (53 * hash) + getTaskEvent().hashCode();
@@ -24335,6 +24418,8 @@ public final class YarnRpcMessage {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        partyId_ = "";
+
         if (taskEventBuilder_ == null) {
           taskEvent_ = null;
         } else {
@@ -24367,6 +24452,7 @@ public final class YarnRpcMessage {
       @java.lang.Override
       public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskEventRequest buildPartial() {
         com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskEventRequest result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskEventRequest(this);
+        result.partyId_ = partyId_;
         if (taskEventBuilder_ == null) {
           result.taskEvent_ = taskEvent_;
         } else {
@@ -24420,6 +24506,10 @@ public final class YarnRpcMessage {
 
       public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskEventRequest other) {
         if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskEventRequest.getDefaultInstance()) return this;
+        if (!other.getPartyId().isEmpty()) {
+          partyId_ = other.partyId_;
+          onChanged();
+        }
         if (other.hasTaskEvent()) {
           mergeTaskEvent(other.getTaskEvent());
         }
@@ -24452,6 +24542,102 @@ public final class YarnRpcMessage {
         return this;
       }
 
+      private java.lang.Object partyId_ = "";
+      /**
+       * <pre>
+       * 本资源在该 task 中的 partyId
+       * </pre>
+       *
+       * <code>string party_id = 1;</code>
+       * @return The partyId.
+       */
+      public java.lang.String getPartyId() {
+        java.lang.Object ref = partyId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          partyId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 本资源在该 task 中的 partyId
+       * </pre>
+       *
+       * <code>string party_id = 1;</code>
+       * @return The bytes for partyId.
+       */
+      public com.google.protobuf.ByteString
+          getPartyIdBytes() {
+        java.lang.Object ref = partyId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          partyId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 本资源在该 task 中的 partyId
+       * </pre>
+       *
+       * <code>string party_id = 1;</code>
+       * @param value The partyId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPartyId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        partyId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 本资源在该 task 中的 partyId
+       * </pre>
+       *
+       * <code>string party_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPartyId() {
+        
+        partyId_ = getDefaultInstance().getPartyId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 本资源在该 task 中的 partyId
+       * </pre>
+       *
+       * <code>string party_id = 1;</code>
+       * @param value The bytes for partyId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPartyIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        partyId_ = value;
+        onChanged();
+        return this;
+      }
+
       private com.platon.rosettanet.admin.grpc.service.TaskEvent taskEvent_;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.platon.rosettanet.admin.grpc.service.TaskEvent, com.platon.rosettanet.admin.grpc.service.TaskEvent.Builder, com.platon.rosettanet.admin.grpc.service.TaskEventOrBuilder> taskEventBuilder_;
@@ -24460,7 +24646,7 @@ public final class YarnRpcMessage {
        * 事件信息
        * </pre>
        *
-       * <code>.types.TaskEvent task_event = 1;</code>
+       * <code>.types.TaskEvent task_event = 2;</code>
        * @return Whether the taskEvent field is set.
        */
       public boolean hasTaskEvent() {
@@ -24471,7 +24657,7 @@ public final class YarnRpcMessage {
        * 事件信息
        * </pre>
        *
-       * <code>.types.TaskEvent task_event = 1;</code>
+       * <code>.types.TaskEvent task_event = 2;</code>
        * @return The taskEvent.
        */
       public com.platon.rosettanet.admin.grpc.service.TaskEvent getTaskEvent() {
@@ -24486,7 +24672,7 @@ public final class YarnRpcMessage {
        * 事件信息
        * </pre>
        *
-       * <code>.types.TaskEvent task_event = 1;</code>
+       * <code>.types.TaskEvent task_event = 2;</code>
        */
       public Builder setTaskEvent(com.platon.rosettanet.admin.grpc.service.TaskEvent value) {
         if (taskEventBuilder_ == null) {
@@ -24506,7 +24692,7 @@ public final class YarnRpcMessage {
        * 事件信息
        * </pre>
        *
-       * <code>.types.TaskEvent task_event = 1;</code>
+       * <code>.types.TaskEvent task_event = 2;</code>
        */
       public Builder setTaskEvent(
           com.platon.rosettanet.admin.grpc.service.TaskEvent.Builder builderForValue) {
@@ -24524,7 +24710,7 @@ public final class YarnRpcMessage {
        * 事件信息
        * </pre>
        *
-       * <code>.types.TaskEvent task_event = 1;</code>
+       * <code>.types.TaskEvent task_event = 2;</code>
        */
       public Builder mergeTaskEvent(com.platon.rosettanet.admin.grpc.service.TaskEvent value) {
         if (taskEventBuilder_ == null) {
@@ -24546,7 +24732,7 @@ public final class YarnRpcMessage {
        * 事件信息
        * </pre>
        *
-       * <code>.types.TaskEvent task_event = 1;</code>
+       * <code>.types.TaskEvent task_event = 2;</code>
        */
       public Builder clearTaskEvent() {
         if (taskEventBuilder_ == null) {
@@ -24564,7 +24750,7 @@ public final class YarnRpcMessage {
        * 事件信息
        * </pre>
        *
-       * <code>.types.TaskEvent task_event = 1;</code>
+       * <code>.types.TaskEvent task_event = 2;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskEvent.Builder getTaskEventBuilder() {
         
@@ -24576,7 +24762,7 @@ public final class YarnRpcMessage {
        * 事件信息
        * </pre>
        *
-       * <code>.types.TaskEvent task_event = 1;</code>
+       * <code>.types.TaskEvent task_event = 2;</code>
        */
       public com.platon.rosettanet.admin.grpc.service.TaskEventOrBuilder getTaskEventOrBuilder() {
         if (taskEventBuilder_ != null) {
@@ -24591,7 +24777,7 @@ public final class YarnRpcMessage {
        * 事件信息
        * </pre>
        *
-       * <code>.types.TaskEvent task_event = 1;</code>
+       * <code>.types.TaskEvent task_event = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.platon.rosettanet.admin.grpc.service.TaskEvent, com.platon.rosettanet.admin.grpc.service.TaskEvent.Builder, com.platon.rosettanet.admin.grpc.service.TaskEventOrBuilder> 
@@ -26842,6 +27028,1362 @@ public final class YarnRpcMessage {
 
     @java.lang.Override
     public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportUpFileSummaryRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ReportTaskResultFileSummaryRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.ReportTaskResultFileSummaryRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 任务Id
+     * </pre>
+     *
+     * <code>string task_id = 1;</code>
+     * @return The taskId.
+     */
+    java.lang.String getTaskId();
+    /**
+     * <pre>
+     * 任务Id
+     * </pre>
+     *
+     * <code>string task_id = 1;</code>
+     * @return The bytes for taskId.
+     */
+    com.google.protobuf.ByteString
+        getTaskIdBytes();
+
+    /**
+     * <pre>
+     * 任务结果的原始文件的 Id
+     * </pre>
+     *
+     * <code>string origin_id = 2;</code>
+     * @return The originId.
+     */
+    java.lang.String getOriginId();
+    /**
+     * <pre>
+     * 任务结果的原始文件的 Id
+     * </pre>
+     *
+     * <code>string origin_id = 2;</code>
+     * @return The bytes for originId.
+     */
+    com.google.protobuf.ByteString
+        getOriginIdBytes();
+
+    /**
+     * <pre>
+     * 任务结果的原始文件的相对 path
+     * </pre>
+     *
+     * <code>string file_path = 3;</code>
+     * @return The filePath.
+     */
+    java.lang.String getFilePath();
+    /**
+     * <pre>
+     * 任务结果的原始文件的相对 path
+     * </pre>
+     *
+     * <code>string file_path = 3;</code>
+     * @return The bytes for filePath.
+     */
+    com.google.protobuf.ByteString
+        getFilePathBytes();
+
+    /**
+     * <pre>
+     * Fighter 的 grpc server IP
+     * </pre>
+     *
+     * <code>string ip = 4;</code>
+     * @return The ip.
+     */
+    java.lang.String getIp();
+    /**
+     * <pre>
+     * Fighter 的 grpc server IP
+     * </pre>
+     *
+     * <code>string ip = 4;</code>
+     * @return The bytes for ip.
+     */
+    com.google.protobuf.ByteString
+        getIpBytes();
+
+    /**
+     * <pre>
+     * Fighter 的 grpc server PORT
+     * </pre>
+     *
+     * <code>string port = 5;</code>
+     * @return The port.
+     */
+    java.lang.String getPort();
+    /**
+     * <pre>
+     * Fighter 的 grpc server PORT
+     * </pre>
+     *
+     * <code>string port = 5;</code>
+     * @return The bytes for port.
+     */
+    com.google.protobuf.ByteString
+        getPortBytes();
+  }
+  /**
+   * <pre>
+   * 上报 任务结果文件摘要 req
+   * </pre>
+   *
+   * Protobuf type {@code rpcapi.ReportTaskResultFileSummaryRequest}
+   */
+  public static final class ReportTaskResultFileSummaryRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.ReportTaskResultFileSummaryRequest)
+      ReportTaskResultFileSummaryRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ReportTaskResultFileSummaryRequest.newBuilder() to construct.
+    private ReportTaskResultFileSummaryRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ReportTaskResultFileSummaryRequest() {
+      taskId_ = "";
+      originId_ = "";
+      filePath_ = "";
+      ip_ = "";
+      port_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ReportTaskResultFileSummaryRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ReportTaskResultFileSummaryRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              taskId_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              originId_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              filePath_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              ip_ = s;
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              port_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_ReportTaskResultFileSummaryRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_ReportTaskResultFileSummaryRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest.Builder.class);
+    }
+
+    public static final int TASK_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object taskId_;
+    /**
+     * <pre>
+     * 任务Id
+     * </pre>
+     *
+     * <code>string task_id = 1;</code>
+     * @return The taskId.
+     */
+    @java.lang.Override
+    public java.lang.String getTaskId() {
+      java.lang.Object ref = taskId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        taskId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务Id
+     * </pre>
+     *
+     * <code>string task_id = 1;</code>
+     * @return The bytes for taskId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTaskIdBytes() {
+      java.lang.Object ref = taskId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        taskId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ORIGIN_ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object originId_;
+    /**
+     * <pre>
+     * 任务结果的原始文件的 Id
+     * </pre>
+     *
+     * <code>string origin_id = 2;</code>
+     * @return The originId.
+     */
+    @java.lang.Override
+    public java.lang.String getOriginId() {
+      java.lang.Object ref = originId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        originId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务结果的原始文件的 Id
+     * </pre>
+     *
+     * <code>string origin_id = 2;</code>
+     * @return The bytes for originId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getOriginIdBytes() {
+      java.lang.Object ref = originId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        originId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FILE_PATH_FIELD_NUMBER = 3;
+    private volatile java.lang.Object filePath_;
+    /**
+     * <pre>
+     * 任务结果的原始文件的相对 path
+     * </pre>
+     *
+     * <code>string file_path = 3;</code>
+     * @return The filePath.
+     */
+    @java.lang.Override
+    public java.lang.String getFilePath() {
+      java.lang.Object ref = filePath_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        filePath_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务结果的原始文件的相对 path
+     * </pre>
+     *
+     * <code>string file_path = 3;</code>
+     * @return The bytes for filePath.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getFilePathBytes() {
+      java.lang.Object ref = filePath_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        filePath_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int IP_FIELD_NUMBER = 4;
+    private volatile java.lang.Object ip_;
+    /**
+     * <pre>
+     * Fighter 的 grpc server IP
+     * </pre>
+     *
+     * <code>string ip = 4;</code>
+     * @return The ip.
+     */
+    @java.lang.Override
+    public java.lang.String getIp() {
+      java.lang.Object ref = ip_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ip_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Fighter 的 grpc server IP
+     * </pre>
+     *
+     * <code>string ip = 4;</code>
+     * @return The bytes for ip.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIpBytes() {
+      java.lang.Object ref = ip_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ip_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORT_FIELD_NUMBER = 5;
+    private volatile java.lang.Object port_;
+    /**
+     * <pre>
+     * Fighter 的 grpc server PORT
+     * </pre>
+     *
+     * <code>string port = 5;</code>
+     * @return The port.
+     */
+    @java.lang.Override
+    public java.lang.String getPort() {
+      java.lang.Object ref = port_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        port_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Fighter 的 grpc server PORT
+     * </pre>
+     *
+     * <code>string port = 5;</code>
+     * @return The bytes for port.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPortBytes() {
+      java.lang.Object ref = port_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        port_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getTaskIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, taskId_);
+      }
+      if (!getOriginIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, originId_);
+      }
+      if (!getFilePathBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, filePath_);
+      }
+      if (!getIpBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, ip_);
+      }
+      if (!getPortBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, port_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getTaskIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, taskId_);
+      }
+      if (!getOriginIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, originId_);
+      }
+      if (!getFilePathBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, filePath_);
+      }
+      if (!getIpBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, ip_);
+      }
+      if (!getPortBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, port_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest) obj;
+
+      if (!getTaskId()
+          .equals(other.getTaskId())) return false;
+      if (!getOriginId()
+          .equals(other.getOriginId())) return false;
+      if (!getFilePath()
+          .equals(other.getFilePath())) return false;
+      if (!getIp()
+          .equals(other.getIp())) return false;
+      if (!getPort()
+          .equals(other.getPort())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TASK_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getTaskId().hashCode();
+      hash = (37 * hash) + ORIGIN_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getOriginId().hashCode();
+      hash = (37 * hash) + FILE_PATH_FIELD_NUMBER;
+      hash = (53 * hash) + getFilePath().hashCode();
+      hash = (37 * hash) + IP_FIELD_NUMBER;
+      hash = (53 * hash) + getIp().hashCode();
+      hash = (37 * hash) + PORT_FIELD_NUMBER;
+      hash = (53 * hash) + getPort().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 上报 任务结果文件摘要 req
+     * </pre>
+     *
+     * Protobuf type {@code rpcapi.ReportTaskResultFileSummaryRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.ReportTaskResultFileSummaryRequest)
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_ReportTaskResultFileSummaryRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_ReportTaskResultFileSummaryRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        taskId_ = "";
+
+        originId_ = "";
+
+        filePath_ = "";
+
+        ip_ = "";
+
+        port_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_ReportTaskResultFileSummaryRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest build() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest(this);
+        result.taskId_ = taskId_;
+        result.originId_ = originId_;
+        result.filePath_ = filePath_;
+        result.ip_ = ip_;
+        result.port_ = port_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest.getDefaultInstance()) return this;
+        if (!other.getTaskId().isEmpty()) {
+          taskId_ = other.taskId_;
+          onChanged();
+        }
+        if (!other.getOriginId().isEmpty()) {
+          originId_ = other.originId_;
+          onChanged();
+        }
+        if (!other.getFilePath().isEmpty()) {
+          filePath_ = other.filePath_;
+          onChanged();
+        }
+        if (!other.getIp().isEmpty()) {
+          ip_ = other.ip_;
+          onChanged();
+        }
+        if (!other.getPort().isEmpty()) {
+          port_ = other.port_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object taskId_ = "";
+      /**
+       * <pre>
+       * 任务Id
+       * </pre>
+       *
+       * <code>string task_id = 1;</code>
+       * @return The taskId.
+       */
+      public java.lang.String getTaskId() {
+        java.lang.Object ref = taskId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          taskId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务Id
+       * </pre>
+       *
+       * <code>string task_id = 1;</code>
+       * @return The bytes for taskId.
+       */
+      public com.google.protobuf.ByteString
+          getTaskIdBytes() {
+        java.lang.Object ref = taskId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          taskId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务Id
+       * </pre>
+       *
+       * <code>string task_id = 1;</code>
+       * @param value The taskId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTaskId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务Id
+       * </pre>
+       *
+       * <code>string task_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTaskId() {
+        
+        taskId_ = getDefaultInstance().getTaskId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务Id
+       * </pre>
+       *
+       * <code>string task_id = 1;</code>
+       * @param value The bytes for taskId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTaskIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object originId_ = "";
+      /**
+       * <pre>
+       * 任务结果的原始文件的 Id
+       * </pre>
+       *
+       * <code>string origin_id = 2;</code>
+       * @return The originId.
+       */
+      public java.lang.String getOriginId() {
+        java.lang.Object ref = originId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          originId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果的原始文件的 Id
+       * </pre>
+       *
+       * <code>string origin_id = 2;</code>
+       * @return The bytes for originId.
+       */
+      public com.google.protobuf.ByteString
+          getOriginIdBytes() {
+        java.lang.Object ref = originId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          originId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果的原始文件的 Id
+       * </pre>
+       *
+       * <code>string origin_id = 2;</code>
+       * @param value The originId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOriginId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        originId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果的原始文件的 Id
+       * </pre>
+       *
+       * <code>string origin_id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOriginId() {
+        
+        originId_ = getDefaultInstance().getOriginId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果的原始文件的 Id
+       * </pre>
+       *
+       * <code>string origin_id = 2;</code>
+       * @param value The bytes for originId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOriginIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        originId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object filePath_ = "";
+      /**
+       * <pre>
+       * 任务结果的原始文件的相对 path
+       * </pre>
+       *
+       * <code>string file_path = 3;</code>
+       * @return The filePath.
+       */
+      public java.lang.String getFilePath() {
+        java.lang.Object ref = filePath_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          filePath_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果的原始文件的相对 path
+       * </pre>
+       *
+       * <code>string file_path = 3;</code>
+       * @return The bytes for filePath.
+       */
+      public com.google.protobuf.ByteString
+          getFilePathBytes() {
+        java.lang.Object ref = filePath_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          filePath_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果的原始文件的相对 path
+       * </pre>
+       *
+       * <code>string file_path = 3;</code>
+       * @param value The filePath to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFilePath(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        filePath_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果的原始文件的相对 path
+       * </pre>
+       *
+       * <code>string file_path = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFilePath() {
+        
+        filePath_ = getDefaultInstance().getFilePath();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果的原始文件的相对 path
+       * </pre>
+       *
+       * <code>string file_path = 3;</code>
+       * @param value The bytes for filePath to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFilePathBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        filePath_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object ip_ = "";
+      /**
+       * <pre>
+       * Fighter 的 grpc server IP
+       * </pre>
+       *
+       * <code>string ip = 4;</code>
+       * @return The ip.
+       */
+      public java.lang.String getIp() {
+        java.lang.Object ref = ip_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          ip_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server IP
+       * </pre>
+       *
+       * <code>string ip = 4;</code>
+       * @return The bytes for ip.
+       */
+      public com.google.protobuf.ByteString
+          getIpBytes() {
+        java.lang.Object ref = ip_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ip_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server IP
+       * </pre>
+       *
+       * <code>string ip = 4;</code>
+       * @param value The ip to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        ip_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server IP
+       * </pre>
+       *
+       * <code>string ip = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIp() {
+        
+        ip_ = getDefaultInstance().getIp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server IP
+       * </pre>
+       *
+       * <code>string ip = 4;</code>
+       * @param value The bytes for ip to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIpBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        ip_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object port_ = "";
+      /**
+       * <pre>
+       * Fighter 的 grpc server PORT
+       * </pre>
+       *
+       * <code>string port = 5;</code>
+       * @return The port.
+       */
+      public java.lang.String getPort() {
+        java.lang.Object ref = port_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          port_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server PORT
+       * </pre>
+       *
+       * <code>string port = 5;</code>
+       * @return The bytes for port.
+       */
+      public com.google.protobuf.ByteString
+          getPortBytes() {
+        java.lang.Object ref = port_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          port_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server PORT
+       * </pre>
+       *
+       * <code>string port = 5;</code>
+       * @param value The port to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPort(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server PORT
+       * </pre>
+       *
+       * <code>string port = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPort() {
+        
+        port_ = getDefaultInstance().getPort();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Fighter 的 grpc server PORT
+       * </pre>
+       *
+       * <code>string port = 5;</code>
+       * @param value The bytes for port to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPortBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.ReportTaskResultFileSummaryRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.ReportTaskResultFileSummaryRequest)
+    private static final com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ReportTaskResultFileSummaryRequest>
+        PARSER = new com.google.protobuf.AbstractParser<ReportTaskResultFileSummaryRequest>() {
+      @java.lang.Override
+      public ReportTaskResultFileSummaryRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ReportTaskResultFileSummaryRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ReportTaskResultFileSummaryRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ReportTaskResultFileSummaryRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.ReportTaskResultFileSummaryRequest getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -29901,6 +31443,3499 @@ public final class YarnRpcMessage {
 
   }
 
+  public interface GetTaskResultFileSummaryRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.GetTaskResultFileSummaryRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string task_id = 1;</code>
+     * @return The taskId.
+     */
+    java.lang.String getTaskId();
+    /**
+     * <code>string task_id = 1;</code>
+     * @return The bytes for taskId.
+     */
+    com.google.protobuf.ByteString
+        getTaskIdBytes();
+  }
+  /**
+   * <pre>
+   * 查询 任务结果文件摘要 req
+   * </pre>
+   *
+   * Protobuf type {@code rpcapi.GetTaskResultFileSummaryRequest}
+   */
+  public static final class GetTaskResultFileSummaryRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.GetTaskResultFileSummaryRequest)
+      GetTaskResultFileSummaryRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GetTaskResultFileSummaryRequest.newBuilder() to construct.
+    private GetTaskResultFileSummaryRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetTaskResultFileSummaryRequest() {
+      taskId_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new GetTaskResultFileSummaryRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetTaskResultFileSummaryRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              taskId_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest.Builder.class);
+    }
+
+    public static final int TASK_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object taskId_;
+    /**
+     * <code>string task_id = 1;</code>
+     * @return The taskId.
+     */
+    @java.lang.Override
+    public java.lang.String getTaskId() {
+      java.lang.Object ref = taskId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        taskId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string task_id = 1;</code>
+     * @return The bytes for taskId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTaskIdBytes() {
+      java.lang.Object ref = taskId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        taskId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getTaskIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, taskId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getTaskIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, taskId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest) obj;
+
+      if (!getTaskId()
+          .equals(other.getTaskId())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TASK_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getTaskId().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 查询 任务结果文件摘要 req
+     * </pre>
+     *
+     * Protobuf type {@code rpcapi.GetTaskResultFileSummaryRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.GetTaskResultFileSummaryRequest)
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        taskId_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest build() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest(this);
+        result.taskId_ = taskId_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest.getDefaultInstance()) return this;
+        if (!other.getTaskId().isEmpty()) {
+          taskId_ = other.taskId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object taskId_ = "";
+      /**
+       * <code>string task_id = 1;</code>
+       * @return The taskId.
+       */
+      public java.lang.String getTaskId() {
+        java.lang.Object ref = taskId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          taskId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string task_id = 1;</code>
+       * @return The bytes for taskId.
+       */
+      public com.google.protobuf.ByteString
+          getTaskIdBytes() {
+        java.lang.Object ref = taskId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          taskId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string task_id = 1;</code>
+       * @param value The taskId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTaskId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string task_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTaskId() {
+        
+        taskId_ = getDefaultInstance().getTaskId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string task_id = 1;</code>
+       * @param value The bytes for taskId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTaskIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.GetTaskResultFileSummaryRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.GetTaskResultFileSummaryRequest)
+    private static final com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<GetTaskResultFileSummaryRequest>
+        PARSER = new com.google.protobuf.AbstractParser<GetTaskResultFileSummaryRequest>() {
+      @java.lang.Override
+      public GetTaskResultFileSummaryRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetTaskResultFileSummaryRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetTaskResultFileSummaryRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetTaskResultFileSummaryRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface GetTaskResultFileSummaryResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.GetTaskResultFileSummaryResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 任务结果文件对应的任务Id
+     * </pre>
+     *
+     * <code>string task_id = 1;</code>
+     * @return The taskId.
+     */
+    java.lang.String getTaskId();
+    /**
+     * <pre>
+     * 任务结果文件对应的任务Id
+     * </pre>
+     *
+     * <code>string task_id = 1;</code>
+     * @return The bytes for taskId.
+     */
+    com.google.protobuf.ByteString
+        getTaskIdBytes();
+
+    /**
+     * <pre>
+     * 任务结果文件的名称
+     * </pre>
+     *
+     * <code>string file_name = 2;</code>
+     * @return The fileName.
+     */
+    java.lang.String getFileName();
+    /**
+     * <pre>
+     * 任务结果文件的名称
+     * </pre>
+     *
+     * <code>string file_name = 2;</code>
+     * @return The bytes for fileName.
+     */
+    com.google.protobuf.ByteString
+        getFileNameBytes();
+
+    /**
+     * <pre>
+     * 任务结果文件的元数据Id &lt;系统默认生成的元数据&gt;
+     * </pre>
+     *
+     * <code>string meta_data_id = 3;</code>
+     * @return The metaDataId.
+     */
+    java.lang.String getMetaDataId();
+    /**
+     * <pre>
+     * 任务结果文件的元数据Id &lt;系统默认生成的元数据&gt;
+     * </pre>
+     *
+     * <code>string meta_data_id = 3;</code>
+     * @return The bytes for metaDataId.
+     */
+    com.google.protobuf.ByteString
+        getMetaDataIdBytes();
+
+    /**
+     * <pre>
+     * 任务结果文件的原始文件Id
+     * </pre>
+     *
+     * <code>string origin_id = 4;</code>
+     * @return The originId.
+     */
+    java.lang.String getOriginId();
+    /**
+     * <pre>
+     * 任务结果文件的原始文件Id
+     * </pre>
+     *
+     * <code>string origin_id = 4;</code>
+     * @return The bytes for originId.
+     */
+    com.google.protobuf.ByteString
+        getOriginIdBytes();
+
+    /**
+     * <pre>
+     * 任务结果文件的完整相对路径名
+     * </pre>
+     *
+     * <code>string file_path = 5;</code>
+     * @return The filePath.
+     */
+    java.lang.String getFilePath();
+    /**
+     * <pre>
+     * 任务结果文件的完整相对路径名
+     * </pre>
+     *
+     * <code>string file_path = 5;</code>
+     * @return The bytes for filePath.
+     */
+    com.google.protobuf.ByteString
+        getFilePathBytes();
+
+    /**
+     * <pre>
+     * 任务结果文件所在的 数据服务内网ip
+     * </pre>
+     *
+     * <code>string ip = 6;</code>
+     * @return The ip.
+     */
+    java.lang.String getIp();
+    /**
+     * <pre>
+     * 任务结果文件所在的 数据服务内网ip
+     * </pre>
+     *
+     * <code>string ip = 6;</code>
+     * @return The bytes for ip.
+     */
+    com.google.protobuf.ByteString
+        getIpBytes();
+
+    /**
+     * <pre>
+     * 任务结果文件所在的 数据服务内网port
+     * </pre>
+     *
+     * <code>string port = 7;</code>
+     * @return The port.
+     */
+    java.lang.String getPort();
+    /**
+     * <pre>
+     * 任务结果文件所在的 数据服务内网port
+     * </pre>
+     *
+     * <code>string port = 7;</code>
+     * @return The bytes for port.
+     */
+    com.google.protobuf.ByteString
+        getPortBytes();
+  }
+  /**
+   * <pre>
+   * 查询 任务结果文件摘要 resp
+   * </pre>
+   *
+   * Protobuf type {@code rpcapi.GetTaskResultFileSummaryResponse}
+   */
+  public static final class GetTaskResultFileSummaryResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.GetTaskResultFileSummaryResponse)
+      GetTaskResultFileSummaryResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GetTaskResultFileSummaryResponse.newBuilder() to construct.
+    private GetTaskResultFileSummaryResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetTaskResultFileSummaryResponse() {
+      taskId_ = "";
+      fileName_ = "";
+      metaDataId_ = "";
+      originId_ = "";
+      filePath_ = "";
+      ip_ = "";
+      port_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new GetTaskResultFileSummaryResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetTaskResultFileSummaryResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              taskId_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              fileName_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              metaDataId_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              originId_ = s;
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              filePath_ = s;
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              ip_ = s;
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              port_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder.class);
+    }
+
+    public static final int TASK_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object taskId_;
+    /**
+     * <pre>
+     * 任务结果文件对应的任务Id
+     * </pre>
+     *
+     * <code>string task_id = 1;</code>
+     * @return The taskId.
+     */
+    @java.lang.Override
+    public java.lang.String getTaskId() {
+      java.lang.Object ref = taskId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        taskId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务结果文件对应的任务Id
+     * </pre>
+     *
+     * <code>string task_id = 1;</code>
+     * @return The bytes for taskId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTaskIdBytes() {
+      java.lang.Object ref = taskId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        taskId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FILE_NAME_FIELD_NUMBER = 2;
+    private volatile java.lang.Object fileName_;
+    /**
+     * <pre>
+     * 任务结果文件的名称
+     * </pre>
+     *
+     * <code>string file_name = 2;</code>
+     * @return The fileName.
+     */
+    @java.lang.Override
+    public java.lang.String getFileName() {
+      java.lang.Object ref = fileName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        fileName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务结果文件的名称
+     * </pre>
+     *
+     * <code>string file_name = 2;</code>
+     * @return The bytes for fileName.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getFileNameBytes() {
+      java.lang.Object ref = fileName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        fileName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int META_DATA_ID_FIELD_NUMBER = 3;
+    private volatile java.lang.Object metaDataId_;
+    /**
+     * <pre>
+     * 任务结果文件的元数据Id &lt;系统默认生成的元数据&gt;
+     * </pre>
+     *
+     * <code>string meta_data_id = 3;</code>
+     * @return The metaDataId.
+     */
+    @java.lang.Override
+    public java.lang.String getMetaDataId() {
+      java.lang.Object ref = metaDataId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        metaDataId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务结果文件的元数据Id &lt;系统默认生成的元数据&gt;
+     * </pre>
+     *
+     * <code>string meta_data_id = 3;</code>
+     * @return The bytes for metaDataId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getMetaDataIdBytes() {
+      java.lang.Object ref = metaDataId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        metaDataId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ORIGIN_ID_FIELD_NUMBER = 4;
+    private volatile java.lang.Object originId_;
+    /**
+     * <pre>
+     * 任务结果文件的原始文件Id
+     * </pre>
+     *
+     * <code>string origin_id = 4;</code>
+     * @return The originId.
+     */
+    @java.lang.Override
+    public java.lang.String getOriginId() {
+      java.lang.Object ref = originId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        originId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务结果文件的原始文件Id
+     * </pre>
+     *
+     * <code>string origin_id = 4;</code>
+     * @return The bytes for originId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getOriginIdBytes() {
+      java.lang.Object ref = originId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        originId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int FILE_PATH_FIELD_NUMBER = 5;
+    private volatile java.lang.Object filePath_;
+    /**
+     * <pre>
+     * 任务结果文件的完整相对路径名
+     * </pre>
+     *
+     * <code>string file_path = 5;</code>
+     * @return The filePath.
+     */
+    @java.lang.Override
+    public java.lang.String getFilePath() {
+      java.lang.Object ref = filePath_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        filePath_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务结果文件的完整相对路径名
+     * </pre>
+     *
+     * <code>string file_path = 5;</code>
+     * @return The bytes for filePath.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getFilePathBytes() {
+      java.lang.Object ref = filePath_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        filePath_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int IP_FIELD_NUMBER = 6;
+    private volatile java.lang.Object ip_;
+    /**
+     * <pre>
+     * 任务结果文件所在的 数据服务内网ip
+     * </pre>
+     *
+     * <code>string ip = 6;</code>
+     * @return The ip.
+     */
+    @java.lang.Override
+    public java.lang.String getIp() {
+      java.lang.Object ref = ip_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ip_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务结果文件所在的 数据服务内网ip
+     * </pre>
+     *
+     * <code>string ip = 6;</code>
+     * @return The bytes for ip.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIpBytes() {
+      java.lang.Object ref = ip_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ip_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORT_FIELD_NUMBER = 7;
+    private volatile java.lang.Object port_;
+    /**
+     * <pre>
+     * 任务结果文件所在的 数据服务内网port
+     * </pre>
+     *
+     * <code>string port = 7;</code>
+     * @return The port.
+     */
+    @java.lang.Override
+    public java.lang.String getPort() {
+      java.lang.Object ref = port_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        port_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 任务结果文件所在的 数据服务内网port
+     * </pre>
+     *
+     * <code>string port = 7;</code>
+     * @return The bytes for port.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPortBytes() {
+      java.lang.Object ref = port_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        port_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getTaskIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, taskId_);
+      }
+      if (!getFileNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, fileName_);
+      }
+      if (!getMetaDataIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, metaDataId_);
+      }
+      if (!getOriginIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, originId_);
+      }
+      if (!getFilePathBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, filePath_);
+      }
+      if (!getIpBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, ip_);
+      }
+      if (!getPortBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, port_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getTaskIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, taskId_);
+      }
+      if (!getFileNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, fileName_);
+      }
+      if (!getMetaDataIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, metaDataId_);
+      }
+      if (!getOriginIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, originId_);
+      }
+      if (!getFilePathBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, filePath_);
+      }
+      if (!getIpBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, ip_);
+      }
+      if (!getPortBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, port_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse) obj;
+
+      if (!getTaskId()
+          .equals(other.getTaskId())) return false;
+      if (!getFileName()
+          .equals(other.getFileName())) return false;
+      if (!getMetaDataId()
+          .equals(other.getMetaDataId())) return false;
+      if (!getOriginId()
+          .equals(other.getOriginId())) return false;
+      if (!getFilePath()
+          .equals(other.getFilePath())) return false;
+      if (!getIp()
+          .equals(other.getIp())) return false;
+      if (!getPort()
+          .equals(other.getPort())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TASK_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getTaskId().hashCode();
+      hash = (37 * hash) + FILE_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getFileName().hashCode();
+      hash = (37 * hash) + META_DATA_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getMetaDataId().hashCode();
+      hash = (37 * hash) + ORIGIN_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getOriginId().hashCode();
+      hash = (37 * hash) + FILE_PATH_FIELD_NUMBER;
+      hash = (53 * hash) + getFilePath().hashCode();
+      hash = (37 * hash) + IP_FIELD_NUMBER;
+      hash = (53 * hash) + getIp().hashCode();
+      hash = (37 * hash) + PORT_FIELD_NUMBER;
+      hash = (53 * hash) + getPort().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 查询 任务结果文件摘要 resp
+     * </pre>
+     *
+     * Protobuf type {@code rpcapi.GetTaskResultFileSummaryResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.GetTaskResultFileSummaryResponse)
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        taskId_ = "";
+
+        fileName_ = "";
+
+        metaDataId_ = "";
+
+        originId_ = "";
+
+        filePath_ = "";
+
+        ip_ = "";
+
+        port_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse build() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse(this);
+        result.taskId_ = taskId_;
+        result.fileName_ = fileName_;
+        result.metaDataId_ = metaDataId_;
+        result.originId_ = originId_;
+        result.filePath_ = filePath_;
+        result.ip_ = ip_;
+        result.port_ = port_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.getDefaultInstance()) return this;
+        if (!other.getTaskId().isEmpty()) {
+          taskId_ = other.taskId_;
+          onChanged();
+        }
+        if (!other.getFileName().isEmpty()) {
+          fileName_ = other.fileName_;
+          onChanged();
+        }
+        if (!other.getMetaDataId().isEmpty()) {
+          metaDataId_ = other.metaDataId_;
+          onChanged();
+        }
+        if (!other.getOriginId().isEmpty()) {
+          originId_ = other.originId_;
+          onChanged();
+        }
+        if (!other.getFilePath().isEmpty()) {
+          filePath_ = other.filePath_;
+          onChanged();
+        }
+        if (!other.getIp().isEmpty()) {
+          ip_ = other.ip_;
+          onChanged();
+        }
+        if (!other.getPort().isEmpty()) {
+          port_ = other.port_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object taskId_ = "";
+      /**
+       * <pre>
+       * 任务结果文件对应的任务Id
+       * </pre>
+       *
+       * <code>string task_id = 1;</code>
+       * @return The taskId.
+       */
+      public java.lang.String getTaskId() {
+        java.lang.Object ref = taskId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          taskId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件对应的任务Id
+       * </pre>
+       *
+       * <code>string task_id = 1;</code>
+       * @return The bytes for taskId.
+       */
+      public com.google.protobuf.ByteString
+          getTaskIdBytes() {
+        java.lang.Object ref = taskId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          taskId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件对应的任务Id
+       * </pre>
+       *
+       * <code>string task_id = 1;</code>
+       * @param value The taskId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTaskId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件对应的任务Id
+       * </pre>
+       *
+       * <code>string task_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTaskId() {
+        
+        taskId_ = getDefaultInstance().getTaskId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件对应的任务Id
+       * </pre>
+       *
+       * <code>string task_id = 1;</code>
+       * @param value The bytes for taskId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTaskIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        taskId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object fileName_ = "";
+      /**
+       * <pre>
+       * 任务结果文件的名称
+       * </pre>
+       *
+       * <code>string file_name = 2;</code>
+       * @return The fileName.
+       */
+      public java.lang.String getFileName() {
+        java.lang.Object ref = fileName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          fileName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件的名称
+       * </pre>
+       *
+       * <code>string file_name = 2;</code>
+       * @return The bytes for fileName.
+       */
+      public com.google.protobuf.ByteString
+          getFileNameBytes() {
+        java.lang.Object ref = fileName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          fileName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件的名称
+       * </pre>
+       *
+       * <code>string file_name = 2;</code>
+       * @param value The fileName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFileName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        fileName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件的名称
+       * </pre>
+       *
+       * <code>string file_name = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFileName() {
+        
+        fileName_ = getDefaultInstance().getFileName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件的名称
+       * </pre>
+       *
+       * <code>string file_name = 2;</code>
+       * @param value The bytes for fileName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFileNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        fileName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object metaDataId_ = "";
+      /**
+       * <pre>
+       * 任务结果文件的元数据Id &lt;系统默认生成的元数据&gt;
+       * </pre>
+       *
+       * <code>string meta_data_id = 3;</code>
+       * @return The metaDataId.
+       */
+      public java.lang.String getMetaDataId() {
+        java.lang.Object ref = metaDataId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          metaDataId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件的元数据Id &lt;系统默认生成的元数据&gt;
+       * </pre>
+       *
+       * <code>string meta_data_id = 3;</code>
+       * @return The bytes for metaDataId.
+       */
+      public com.google.protobuf.ByteString
+          getMetaDataIdBytes() {
+        java.lang.Object ref = metaDataId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          metaDataId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件的元数据Id &lt;系统默认生成的元数据&gt;
+       * </pre>
+       *
+       * <code>string meta_data_id = 3;</code>
+       * @param value The metaDataId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMetaDataId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        metaDataId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件的元数据Id &lt;系统默认生成的元数据&gt;
+       * </pre>
+       *
+       * <code>string meta_data_id = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMetaDataId() {
+        
+        metaDataId_ = getDefaultInstance().getMetaDataId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件的元数据Id &lt;系统默认生成的元数据&gt;
+       * </pre>
+       *
+       * <code>string meta_data_id = 3;</code>
+       * @param value The bytes for metaDataId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMetaDataIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        metaDataId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object originId_ = "";
+      /**
+       * <pre>
+       * 任务结果文件的原始文件Id
+       * </pre>
+       *
+       * <code>string origin_id = 4;</code>
+       * @return The originId.
+       */
+      public java.lang.String getOriginId() {
+        java.lang.Object ref = originId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          originId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件的原始文件Id
+       * </pre>
+       *
+       * <code>string origin_id = 4;</code>
+       * @return The bytes for originId.
+       */
+      public com.google.protobuf.ByteString
+          getOriginIdBytes() {
+        java.lang.Object ref = originId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          originId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件的原始文件Id
+       * </pre>
+       *
+       * <code>string origin_id = 4;</code>
+       * @param value The originId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOriginId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        originId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件的原始文件Id
+       * </pre>
+       *
+       * <code>string origin_id = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOriginId() {
+        
+        originId_ = getDefaultInstance().getOriginId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件的原始文件Id
+       * </pre>
+       *
+       * <code>string origin_id = 4;</code>
+       * @param value The bytes for originId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOriginIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        originId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object filePath_ = "";
+      /**
+       * <pre>
+       * 任务结果文件的完整相对路径名
+       * </pre>
+       *
+       * <code>string file_path = 5;</code>
+       * @return The filePath.
+       */
+      public java.lang.String getFilePath() {
+        java.lang.Object ref = filePath_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          filePath_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件的完整相对路径名
+       * </pre>
+       *
+       * <code>string file_path = 5;</code>
+       * @return The bytes for filePath.
+       */
+      public com.google.protobuf.ByteString
+          getFilePathBytes() {
+        java.lang.Object ref = filePath_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          filePath_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件的完整相对路径名
+       * </pre>
+       *
+       * <code>string file_path = 5;</code>
+       * @param value The filePath to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFilePath(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        filePath_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件的完整相对路径名
+       * </pre>
+       *
+       * <code>string file_path = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFilePath() {
+        
+        filePath_ = getDefaultInstance().getFilePath();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件的完整相对路径名
+       * </pre>
+       *
+       * <code>string file_path = 5;</code>
+       * @param value The bytes for filePath to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFilePathBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        filePath_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object ip_ = "";
+      /**
+       * <pre>
+       * 任务结果文件所在的 数据服务内网ip
+       * </pre>
+       *
+       * <code>string ip = 6;</code>
+       * @return The ip.
+       */
+      public java.lang.String getIp() {
+        java.lang.Object ref = ip_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          ip_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件所在的 数据服务内网ip
+       * </pre>
+       *
+       * <code>string ip = 6;</code>
+       * @return The bytes for ip.
+       */
+      public com.google.protobuf.ByteString
+          getIpBytes() {
+        java.lang.Object ref = ip_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ip_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件所在的 数据服务内网ip
+       * </pre>
+       *
+       * <code>string ip = 6;</code>
+       * @param value The ip to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        ip_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件所在的 数据服务内网ip
+       * </pre>
+       *
+       * <code>string ip = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIp() {
+        
+        ip_ = getDefaultInstance().getIp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件所在的 数据服务内网ip
+       * </pre>
+       *
+       * <code>string ip = 6;</code>
+       * @param value The bytes for ip to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIpBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        ip_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object port_ = "";
+      /**
+       * <pre>
+       * 任务结果文件所在的 数据服务内网port
+       * </pre>
+       *
+       * <code>string port = 7;</code>
+       * @return The port.
+       */
+      public java.lang.String getPort() {
+        java.lang.Object ref = port_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          port_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件所在的 数据服务内网port
+       * </pre>
+       *
+       * <code>string port = 7;</code>
+       * @return The bytes for port.
+       */
+      public com.google.protobuf.ByteString
+          getPortBytes() {
+        java.lang.Object ref = port_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          port_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 任务结果文件所在的 数据服务内网port
+       * </pre>
+       *
+       * <code>string port = 7;</code>
+       * @param value The port to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPort(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件所在的 数据服务内网port
+       * </pre>
+       *
+       * <code>string port = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPort() {
+        
+        port_ = getDefaultInstance().getPort();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 任务结果文件所在的 数据服务内网port
+       * </pre>
+       *
+       * <code>string port = 7;</code>
+       * @param value The bytes for port to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPortBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.GetTaskResultFileSummaryResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.GetTaskResultFileSummaryResponse)
+    private static final com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<GetTaskResultFileSummaryResponse>
+        PARSER = new com.google.protobuf.AbstractParser<GetTaskResultFileSummaryResponse>() {
+      @java.lang.Override
+      public GetTaskResultFileSummaryResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetTaskResultFileSummaryResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetTaskResultFileSummaryResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetTaskResultFileSummaryResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface GetTaskResultFileSummaryListResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.GetTaskResultFileSummaryListResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 响应码
+     * </pre>
+     *
+     * <code>int32 status = 1;</code>
+     * @return The status.
+     */
+    int getStatus();
+
+    /**
+     * <pre>
+     * 错误信息
+     * </pre>
+     *
+     * <code>string msg = 2;</code>
+     * @return The msg.
+     */
+    java.lang.String getMsg();
+    /**
+     * <pre>
+     * 错误信息
+     * </pre>
+     *
+     * <code>string msg = 2;</code>
+     * @return The bytes for msg.
+     */
+    com.google.protobuf.ByteString
+        getMsgBytes();
+
+    /**
+     * <pre>
+     * 元数据列表
+     * </pre>
+     *
+     * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+     */
+    java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> 
+        getMetadataListList();
+    /**
+     * <pre>
+     * 元数据列表
+     * </pre>
+     *
+     * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+     */
+    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse getMetadataList(int index);
+    /**
+     * <pre>
+     * 元数据列表
+     * </pre>
+     *
+     * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+     */
+    int getMetadataListCount();
+    /**
+     * <pre>
+     * 元数据列表
+     * </pre>
+     *
+     * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+     */
+    java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponseOrBuilder> 
+        getMetadataListOrBuilderList();
+    /**
+     * <pre>
+     * 元数据列表
+     * </pre>
+     *
+     * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+     */
+    com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponseOrBuilder getMetadataListOrBuilder(
+        int index);
+  }
+  /**
+   * <pre>
+   * 查询当前组织参与的所有任务结果文件摘要 resp
+   * </pre>
+   *
+   * Protobuf type {@code rpcapi.GetTaskResultFileSummaryListResponse}
+   */
+  public static final class GetTaskResultFileSummaryListResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.GetTaskResultFileSummaryListResponse)
+      GetTaskResultFileSummaryListResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GetTaskResultFileSummaryListResponse.newBuilder() to construct.
+    private GetTaskResultFileSummaryListResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetTaskResultFileSummaryListResponse() {
+      msg_ = "";
+      metadataList_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new GetTaskResultFileSummaryListResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetTaskResultFileSummaryListResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              status_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              msg_ = s;
+              break;
+            }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                metadataList_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              metadataList_.add(
+                  input.readMessage(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          metadataList_ = java.util.Collections.unmodifiableList(metadataList_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryListResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryListResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse.Builder.class);
+    }
+
+    public static final int STATUS_FIELD_NUMBER = 1;
+    private int status_;
+    /**
+     * <pre>
+     * 响应码
+     * </pre>
+     *
+     * <code>int32 status = 1;</code>
+     * @return The status.
+     */
+    @java.lang.Override
+    public int getStatus() {
+      return status_;
+    }
+
+    public static final int MSG_FIELD_NUMBER = 2;
+    private volatile java.lang.Object msg_;
+    /**
+     * <pre>
+     * 错误信息
+     * </pre>
+     *
+     * <code>string msg = 2;</code>
+     * @return The msg.
+     */
+    @java.lang.Override
+    public java.lang.String getMsg() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        msg_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 错误信息
+     * </pre>
+     *
+     * <code>string msg = 2;</code>
+     * @return The bytes for msg.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getMsgBytes() {
+      java.lang.Object ref = msg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        msg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int METADATA_LIST_FIELD_NUMBER = 3;
+    private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> metadataList_;
+    /**
+     * <pre>
+     * 元数据列表
+     * </pre>
+     *
+     * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+     */
+    @java.lang.Override
+    public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> getMetadataListList() {
+      return metadataList_;
+    }
+    /**
+     * <pre>
+     * 元数据列表
+     * </pre>
+     *
+     * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponseOrBuilder> 
+        getMetadataListOrBuilderList() {
+      return metadataList_;
+    }
+    /**
+     * <pre>
+     * 元数据列表
+     * </pre>
+     *
+     * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+     */
+    @java.lang.Override
+    public int getMetadataListCount() {
+      return metadataList_.size();
+    }
+    /**
+     * <pre>
+     * 元数据列表
+     * </pre>
+     *
+     * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+     */
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse getMetadataList(int index) {
+      return metadataList_.get(index);
+    }
+    /**
+     * <pre>
+     * 元数据列表
+     * </pre>
+     *
+     * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+     */
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponseOrBuilder getMetadataListOrBuilder(
+        int index) {
+      return metadataList_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (status_ != 0) {
+        output.writeInt32(1, status_);
+      }
+      if (!getMsgBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, msg_);
+      }
+      for (int i = 0; i < metadataList_.size(); i++) {
+        output.writeMessage(3, metadataList_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (status_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, status_);
+      }
+      if (!getMsgBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, msg_);
+      }
+      for (int i = 0; i < metadataList_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, metadataList_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse other = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse) obj;
+
+      if (getStatus()
+          != other.getStatus()) return false;
+      if (!getMsg()
+          .equals(other.getMsg())) return false;
+      if (!getMetadataListList()
+          .equals(other.getMetadataListList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + STATUS_FIELD_NUMBER;
+      hash = (53 * hash) + getStatus();
+      hash = (37 * hash) + MSG_FIELD_NUMBER;
+      hash = (53 * hash) + getMsg().hashCode();
+      if (getMetadataListCount() > 0) {
+        hash = (37 * hash) + METADATA_LIST_FIELD_NUMBER;
+        hash = (53 * hash) + getMetadataListList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 查询当前组织参与的所有任务结果文件摘要 resp
+     * </pre>
+     *
+     * Protobuf type {@code rpcapi.GetTaskResultFileSummaryListResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.GetTaskResultFileSummaryListResponse)
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryListResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryListResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse.class, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getMetadataListFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        status_ = 0;
+
+        msg_ = "";
+
+        if (metadataListBuilder_ == null) {
+          metadataList_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          metadataListBuilder_.clear();
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.internal_static_rpcapi_GetTaskResultFileSummaryListResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse build() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse result = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse(this);
+        int from_bitField0_ = bitField0_;
+        result.status_ = status_;
+        result.msg_ = msg_;
+        if (metadataListBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            metadataList_ = java.util.Collections.unmodifiableList(metadataList_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.metadataList_ = metadataList_;
+        } else {
+          result.metadataList_ = metadataListBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse.getDefaultInstance()) return this;
+        if (other.getStatus() != 0) {
+          setStatus(other.getStatus());
+        }
+        if (!other.getMsg().isEmpty()) {
+          msg_ = other.msg_;
+          onChanged();
+        }
+        if (metadataListBuilder_ == null) {
+          if (!other.metadataList_.isEmpty()) {
+            if (metadataList_.isEmpty()) {
+              metadataList_ = other.metadataList_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureMetadataListIsMutable();
+              metadataList_.addAll(other.metadataList_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.metadataList_.isEmpty()) {
+            if (metadataListBuilder_.isEmpty()) {
+              metadataListBuilder_.dispose();
+              metadataListBuilder_ = null;
+              metadataList_ = other.metadataList_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              metadataListBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getMetadataListFieldBuilder() : null;
+            } else {
+              metadataListBuilder_.addAllMessages(other.metadataList_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int status_ ;
+      /**
+       * <pre>
+       * 响应码
+       * </pre>
+       *
+       * <code>int32 status = 1;</code>
+       * @return The status.
+       */
+      @java.lang.Override
+      public int getStatus() {
+        return status_;
+      }
+      /**
+       * <pre>
+       * 响应码
+       * </pre>
+       *
+       * <code>int32 status = 1;</code>
+       * @param value The status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatus(int value) {
+        
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 响应码
+       * </pre>
+       *
+       * <code>int32 status = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStatus() {
+        
+        status_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object msg_ = "";
+      /**
+       * <pre>
+       * 错误信息
+       * </pre>
+       *
+       * <code>string msg = 2;</code>
+       * @return The msg.
+       */
+      public java.lang.String getMsg() {
+        java.lang.Object ref = msg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          msg_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 错误信息
+       * </pre>
+       *
+       * <code>string msg = 2;</code>
+       * @return The bytes for msg.
+       */
+      public com.google.protobuf.ByteString
+          getMsgBytes() {
+        java.lang.Object ref = msg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          msg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 错误信息
+       * </pre>
+       *
+       * <code>string msg = 2;</code>
+       * @param value The msg to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMsg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 错误信息
+       * </pre>
+       *
+       * <code>string msg = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMsg() {
+        
+        msg_ = getDefaultInstance().getMsg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 错误信息
+       * </pre>
+       *
+       * <code>string msg = 2;</code>
+       * @param value The bytes for msg to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMsgBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        msg_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> metadataList_ =
+        java.util.Collections.emptyList();
+      private void ensureMetadataListIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          metadataList_ = new java.util.ArrayList<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse>(metadataList_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponseOrBuilder> metadataListBuilder_;
+
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> getMetadataListList() {
+        if (metadataListBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(metadataList_);
+        } else {
+          return metadataListBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public int getMetadataListCount() {
+        if (metadataListBuilder_ == null) {
+          return metadataList_.size();
+        } else {
+          return metadataListBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse getMetadataList(int index) {
+        if (metadataListBuilder_ == null) {
+          return metadataList_.get(index);
+        } else {
+          return metadataListBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public Builder setMetadataList(
+          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse value) {
+        if (metadataListBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMetadataListIsMutable();
+          metadataList_.set(index, value);
+          onChanged();
+        } else {
+          metadataListBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public Builder setMetadataList(
+          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder builderForValue) {
+        if (metadataListBuilder_ == null) {
+          ensureMetadataListIsMutable();
+          metadataList_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          metadataListBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public Builder addMetadataList(com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse value) {
+        if (metadataListBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMetadataListIsMutable();
+          metadataList_.add(value);
+          onChanged();
+        } else {
+          metadataListBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public Builder addMetadataList(
+          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse value) {
+        if (metadataListBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMetadataListIsMutable();
+          metadataList_.add(index, value);
+          onChanged();
+        } else {
+          metadataListBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public Builder addMetadataList(
+          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder builderForValue) {
+        if (metadataListBuilder_ == null) {
+          ensureMetadataListIsMutable();
+          metadataList_.add(builderForValue.build());
+          onChanged();
+        } else {
+          metadataListBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public Builder addMetadataList(
+          int index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder builderForValue) {
+        if (metadataListBuilder_ == null) {
+          ensureMetadataListIsMutable();
+          metadataList_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          metadataListBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public Builder addAllMetadataList(
+          java.lang.Iterable<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse> values) {
+        if (metadataListBuilder_ == null) {
+          ensureMetadataListIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, metadataList_);
+          onChanged();
+        } else {
+          metadataListBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public Builder clearMetadataList() {
+        if (metadataListBuilder_ == null) {
+          metadataList_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          metadataListBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public Builder removeMetadataList(int index) {
+        if (metadataListBuilder_ == null) {
+          ensureMetadataListIsMutable();
+          metadataList_.remove(index);
+          onChanged();
+        } else {
+          metadataListBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder getMetadataListBuilder(
+          int index) {
+        return getMetadataListFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponseOrBuilder getMetadataListOrBuilder(
+          int index) {
+        if (metadataListBuilder_ == null) {
+          return metadataList_.get(index);  } else {
+          return metadataListBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public java.util.List<? extends com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponseOrBuilder> 
+           getMetadataListOrBuilderList() {
+        if (metadataListBuilder_ != null) {
+          return metadataListBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(metadataList_);
+        }
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder addMetadataListBuilder() {
+        return getMetadataListFieldBuilder().addBuilder(
+            com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder addMetadataListBuilder(
+          int index) {
+        return getMetadataListFieldBuilder().addBuilder(
+            index, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * 元数据列表
+       * </pre>
+       *
+       * <code>repeated .rpcapi.GetTaskResultFileSummaryResponse metadata_list = 3;</code>
+       */
+      public java.util.List<com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder> 
+           getMetadataListBuilderList() {
+        return getMetadataListFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponseOrBuilder> 
+          getMetadataListFieldBuilder() {
+        if (metadataListBuilder_ == null) {
+          metadataListBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponse.Builder, com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryResponseOrBuilder>(
+                  metadataList_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          metadataList_ = null;
+        }
+        return metadataListBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.GetTaskResultFileSummaryListResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.GetTaskResultFileSummaryListResponse)
+    private static final com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<GetTaskResultFileSummaryListResponse>
+        PARSER = new com.google.protobuf.AbstractParser<GetTaskResultFileSummaryListResponse>() {
+      @java.lang.Override
+      public GetTaskResultFileSummaryListResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetTaskResultFileSummaryListResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetTaskResultFileSummaryListResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetTaskResultFileSummaryListResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.YarnRpcMessage.GetTaskResultFileSummaryListResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_YarnNodeInfo_descriptor;
   private static final 
@@ -30012,6 +35047,11 @@ public final class YarnRpcMessage {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_ReportUpFileSummaryRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_ReportTaskResultFileSummaryRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_ReportTaskResultFileSummaryRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_QueryAvailableDataNodeRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -30031,6 +35071,21 @@ public final class YarnRpcMessage {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_QueryFilePositionResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_GetTaskResultFileSummaryRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_GetTaskResultFileSummaryRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_GetTaskResultFileSummaryResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_GetTaskResultFileSummaryResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_GetTaskResultFileSummaryListResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_GetTaskResultFileSummaryListResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -30103,92 +35158,116 @@ public final class YarnRpcMessage {
       "ail\"z\n\024UpdateJobNodeRequest\022\n\n\002id\030\001 \001(\t\022" +
       "\023\n\013internal_ip\030\003 \001(\t\022\023\n\013external_ip\030\004 \001(" +
       "\t\022\025\n\rinternal_port\030\005 \001(\t\022\025\n\rexternal_por" +
-      "t\030\006 \001(\t\">\n\026ReportTaskEventRequest\022$\n\ntas" +
-      "k_event\030\001 \001(\0132\020.types.TaskEvent\"\205\001\n Repo" +
-      "rtTaskResourceExpenseRequest\022#\n\tnode_typ" +
-      "e\030\001 \001(\0162\020.rpcapi.NodeType\022\017\n\007node_id\030\002 \001" +
-      "(\t\022+\n\005usage\030\003 \001(\0132\034.types.ResourceUsageO" +
-      "verview\"\\\n\032ReportUpFileSummaryRequest\022\021\n" +
-      "\torigin_id\030\001 \001(\t\022\021\n\tfile_path\030\002 \001(\t\022\n\n\002i" +
-      "p\030\003 \001(\t\022\014\n\004port\030\004 \001(\t\"c\n\035QueryAvailableD" +
-      "ataNodeRequest\022\021\n\tfile_size\030\001 \001(\004\022/\n\tfil" +
-      "e_type\030\002 \001(\0162\034.api.protobuf.OriginFileTy" +
-      "pe\":\n\036QueryAvailableDataNodeResponse\022\n\n\002" +
-      "ip\030\001 \001(\t\022\014\n\004port\030\002 \001(\t\"-\n\030QueryFilePosit" +
-      "ionRequest\022\021\n\torigin_id\030\001 \001(\t\"H\n\031QueryFi" +
-      "lePositionResponse\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030\002" +
-      " \001(\t\022\021\n\tfile_path\030\003 \001(\t*{\n\010NodeType\022\024\n\020N" +
-      "odeType_Unknown\020\000\022\025\n\021NodeType_SeedNode\020\001" +
-      "\022\024\n\020NodeType_JobNode\020\002\022\025\n\021NodeType_DataN" +
-      "ode\020\003\022\025\n\021NodeType_YarnNode\020\004*i\n\rYarnNode" +
-      "State\022\021\n\rState_Unknown\020\000\022\020\n\014State_Active" +
-      "\020\001\022\017\n\013State_Leave\020\002\022\016\n\nState_Join\020\003\022\022\n\016S" +
-      "tate_Unuseful\020\004*n\n\tConnState\022\031\n\025ConnStat" +
-      "e_UnConnected\020\000\022\027\n\023ConnState_Connected\020\001" +
-      "\022\025\n\021ConnState_Enabled\020\002\022\026\n\022ConnState_Occ" +
-      "upied\020\0032\346\022\n\013YarnService\022h\n\013GetNodeInfo\022\026" +
-      ".google.protobuf.Empty\032\033.rpcapi.GetNodeI" +
-      "nfoResponse\"$\202\323\344\223\002\036\"\031/carrier/v1/yarn/no" +
-      "deInfo:\001*\022\210\001\n\022GetRegisteredPeers\022!.rpcap" +
-      "i.GetRegisteredPeersRequest\032\".rpcapi.Get" +
-      "RegisteredPeersResponse\"+\202\323\344\223\002%\" /carrie" +
-      "r/v1/yarn/registeredPeers:\001*\022k\n\013SetSeedN" +
-      "ode\022\032.rpcapi.SetSeedNodeRequest\032\033.rpcapi" +
-      ".SetSeedNodeResponse\"#\202\323\344\223\002\035\"\030/carrier/v" +
-      "1/yarn/setSeed:\001*\022t\n\016UpdateSeedNode\022\035.rp" +
-      "capi.UpdateSeedNodeRequest\032\033.rpcapi.SetS" +
-      "eedNodeResponse\"&\202\323\344\223\002 \"\033/carrier/v1/yar" +
-      "n/updateSeed:\001*\022{\n\016DeleteSeedNode\022#.rpca" +
-      "pi.DeleteRegisteredNodeRequest\032\034.api.pro" +
-      "tobuf.SimpleResponse\"&\202\323\344\223\002 \"\033/carrier/v" +
-      "1/yarn/deleteSeed:\001*\022p\n\017GetSeedNodeList\022" +
-      "\026.google.protobuf.Empty\032\037.rpcapi.GetSeed" +
-      "NodeListResponse\"$\202\323\344\223\002\036\"\031/carrier/v1/ya" +
-      "rn/seedList:\001*\022o\n\013SetDataNode\022\032.rpcapi.S" +
-      "etDataNodeRequest\032\033.rpcapi.SetDataNodeRe" +
-      "sponse\"\'\202\323\344\223\002!\"\034/carrier/v1/yarn/setData" +
-      "Node:\001*\022x\n\016UpdateDataNode\022\035.rpcapi.Updat" +
-      "eDataNodeRequest\032\033.rpcapi.SetDataNodeRes" +
-      "ponse\"*\202\323\344\223\002$\"\037/carrier/v1/yarn/updateDa" +
-      "taNode:\001*\022\177\n\016DeleteDataNode\022#.rpcapi.Del" +
-      "eteRegisteredNodeRequest\032\034.api.protobuf." +
-      "SimpleResponse\"*\202\323\344\223\002$\"\037/carrier/v1/yarn" +
-      "/deleteDataNode:\001*\022z\n\017GetDataNodeList\022\026." +
+      "t\030\006 \001(\t\"P\n\026ReportTaskEventRequest\022\020\n\010par" +
+      "ty_id\030\001 \001(\t\022$\n\ntask_event\030\002 \001(\0132\020.types." +
+      "TaskEvent\"\205\001\n ReportTaskResourceExpenseR" +
+      "equest\022#\n\tnode_type\030\001 \001(\0162\020.rpcapi.NodeT" +
+      "ype\022\017\n\007node_id\030\002 \001(\t\022+\n\005usage\030\003 \001(\0132\034.ty" +
+      "pes.ResourceUsageOverview\"\\\n\032ReportUpFil" +
+      "eSummaryRequest\022\021\n\torigin_id\030\001 \001(\t\022\021\n\tfi" +
+      "le_path\030\002 \001(\t\022\n\n\002ip\030\003 \001(\t\022\014\n\004port\030\004 \001(\t\"" +
+      "u\n\"ReportTaskResultFileSummaryRequest\022\017\n" +
+      "\007task_id\030\001 \001(\t\022\021\n\torigin_id\030\002 \001(\t\022\021\n\tfil" +
+      "e_path\030\003 \001(\t\022\n\n\002ip\030\004 \001(\t\022\014\n\004port\030\005 \001(\t\"c" +
+      "\n\035QueryAvailableDataNodeRequest\022\021\n\tfile_" +
+      "size\030\001 \001(\004\022/\n\tfile_type\030\002 \001(\0162\034.api.prot" +
+      "obuf.OriginFileType\":\n\036QueryAvailableDat" +
+      "aNodeResponse\022\n\n\002ip\030\001 \001(\t\022\014\n\004port\030\002 \001(\t\"" +
+      "-\n\030QueryFilePositionRequest\022\021\n\torigin_id" +
+      "\030\001 \001(\t\"H\n\031QueryFilePositionResponse\022\n\n\002i" +
+      "p\030\001 \001(\t\022\014\n\004port\030\002 \001(\t\022\021\n\tfile_path\030\003 \001(\t" +
+      "\"2\n\037GetTaskResultFileSummaryRequest\022\017\n\007t" +
+      "ask_id\030\001 \001(\t\"\234\001\n GetTaskResultFileSummar" +
+      "yResponse\022\017\n\007task_id\030\001 \001(\t\022\021\n\tfile_name\030" +
+      "\002 \001(\t\022\024\n\014meta_data_id\030\003 \001(\t\022\021\n\torigin_id" +
+      "\030\004 \001(\t\022\021\n\tfile_path\030\005 \001(\t\022\n\n\002ip\030\006 \001(\t\022\014\n" +
+      "\004port\030\007 \001(\t\"\204\001\n$GetTaskResultFileSummary" +
+      "ListResponse\022\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(" +
+      "\t\022?\n\rmetadata_list\030\003 \003(\0132(.rpcapi.GetTas" +
+      "kResultFileSummaryResponse*{\n\010NodeType\022\024" +
+      "\n\020NodeType_Unknown\020\000\022\025\n\021NodeType_SeedNod" +
+      "e\020\001\022\024\n\020NodeType_JobNode\020\002\022\025\n\021NodeType_Da" +
+      "taNode\020\003\022\025\n\021NodeType_YarnNode\020\004*i\n\rYarnN" +
+      "odeState\022\021\n\rState_Unknown\020\000\022\020\n\014State_Act" +
+      "ive\020\001\022\017\n\013State_Leave\020\002\022\016\n\nState_Join\020\003\022\022" +
+      "\n\016State_Unuseful\020\004*n\n\tConnState\022\031\n\025ConnS" +
+      "tate_UnConnected\020\000\022\027\n\023ConnState_Connecte" +
+      "d\020\001\022\025\n\021ConnState_Enabled\020\002\022\026\n\022ConnState_" +
+      "Occupied\020\0032\312\026\n\013YarnService\022h\n\013GetNodeInf" +
+      "o\022\026.google.protobuf.Empty\032\033.rpcapi.GetNo" +
+      "deInfoResponse\"$\202\323\344\223\002\036\"\031/carrier/v1/yarn" +
+      "/nodeInfo:\001*\022\210\001\n\022GetRegisteredPeers\022!.rp" +
+      "capi.GetRegisteredPeersRequest\032\".rpcapi." +
+      "GetRegisteredPeersResponse\"+\202\323\344\223\002%\" /car" +
+      "rier/v1/yarn/registeredPeers:\001*\022k\n\013SetSe" +
+      "edNode\022\032.rpcapi.SetSeedNodeRequest\032\033.rpc" +
+      "api.SetSeedNodeResponse\"#\202\323\344\223\002\035\"\030/carrie" +
+      "r/v1/yarn/setSeed:\001*\022t\n\016UpdateSeedNode\022\035" +
+      ".rpcapi.UpdateSeedNodeRequest\032\033.rpcapi.S" +
+      "etSeedNodeResponse\"&\202\323\344\223\002 \"\033/carrier/v1/" +
+      "yarn/updateSeed:\001*\022{\n\016DeleteSeedNode\022#.r" +
+      "pcapi.DeleteRegisteredNodeRequest\032\034.api." +
+      "protobuf.SimpleResponse\"&\202\323\344\223\002 \"\033/carrie" +
+      "r/v1/yarn/deleteSeed:\001*\022p\n\017GetSeedNodeLi" +
+      "st\022\026.google.protobuf.Empty\032\037.rpcapi.GetS" +
+      "eedNodeListResponse\"$\202\323\344\223\002\036\"\031/carrier/v1" +
+      "/yarn/seedList:\001*\022o\n\013SetDataNode\022\032.rpcap" +
+      "i.SetDataNodeRequest\032\033.rpcapi.SetDataNod" +
+      "eResponse\"\'\202\323\344\223\002!\"\034/carrier/v1/yarn/setD" +
+      "ataNode:\001*\022x\n\016UpdateDataNode\022\035.rpcapi.Up" +
+      "dateDataNodeRequest\032\033.rpcapi.SetDataNode" +
+      "Response\"*\202\323\344\223\002$\"\037/carrier/v1/yarn/updat" +
+      "eDataNode:\001*\022\177\n\016DeleteDataNode\022#.rpcapi." +
+      "DeleteRegisteredNodeRequest\032\034.api.protob" +
+      "uf.SimpleResponse\"*\202\323\344\223\002$\"\037/carrier/v1/y" +
+      "arn/deleteDataNode:\001*\022z\n\017GetDataNodeList" +
+      "\022\026.google.protobuf.Empty\032%.rpcapi.GetReg" +
+      "isteredNodeListResponse\"(\202\323\344\223\002\"\"\035/carrie" +
+      "r/v1/yarn/dataNodeList:\001*\022k\n\nSetJobNode\022" +
+      "\031.rpcapi.SetJobNodeRequest\032\032.rpcapi.SetJ" +
+      "obNodeResponse\"&\202\323\344\223\002 \"\033/carrier/v1/yarn" +
+      "/setJobNode:\001*\022t\n\rUpdateJobNode\022\034.rpcapi" +
+      ".UpdateJobNodeRequest\032\032.rpcapi.SetJobNod" +
+      "eResponse\")\202\323\344\223\002#\"\036/carrier/v1/yarn/upda" +
+      "teJobNode:\001*\022}\n\rDeleteJobNode\022#.rpcapi.D" +
+      "eleteRegisteredNodeRequest\032\034.api.protobu" +
+      "f.SimpleResponse\")\202\323\344\223\002#\"\036/carrier/v1/ya" +
+      "rn/deleteJobNode:\001*\022x\n\016GetJobNodeList\022\026." +
       "google.protobuf.Empty\032%.rpcapi.GetRegist" +
-      "eredNodeListResponse\"(\202\323\344\223\002\"\"\035/carrier/v" +
-      "1/yarn/dataNodeList:\001*\022k\n\nSetJobNode\022\031.r" +
-      "pcapi.SetJobNodeRequest\032\032.rpcapi.SetJobN" +
-      "odeResponse\"&\202\323\344\223\002 \"\033/carrier/v1/yarn/se" +
-      "tJobNode:\001*\022t\n\rUpdateJobNode\022\034.rpcapi.Up" +
-      "dateJobNodeRequest\032\032.rpcapi.SetJobNodeRe" +
-      "sponse\")\202\323\344\223\002#\"\036/carrier/v1/yarn/updateJ" +
-      "obNode:\001*\022}\n\rDeleteJobNode\022#.rpcapi.Dele" +
-      "teRegisteredNodeRequest\032\034.api.protobuf.S" +
-      "impleResponse\")\202\323\344\223\002#\"\036/carrier/v1/yarn/" +
-      "deleteJobNode:\001*\022x\n\016GetJobNodeList\022\026.goo" +
-      "gle.protobuf.Empty\032%.rpcapi.GetRegistere" +
-      "dNodeListResponse\"\'\202\323\344\223\002!\"\034/carrier/v1/y" +
-      "arn/jobNodeList:\001*\022|\n\017ReportTaskEvent\022\036." +
-      "rpcapi.ReportTaskEventRequest\032\034.api.prot" +
-      "obuf.SimpleResponse\"+\202\323\344\223\002%\" /carrier/v1" +
-      "/yarn/reportTaskEvent:\001*\022\232\001\n\031ReportTaskR" +
-      "esourceExpense\022(.rpcapi.ReportTaskResour" +
-      "ceExpenseRequest\032\034.api.protobuf.SimpleRe" +
-      "sponse\"5\202\323\344\223\002/\"*/carrier/v1/yarn/reportT" +
-      "askResourceExpense:\001*\022\210\001\n\023ReportUpFileSu" +
-      "mmary\022\".rpcapi.ReportUpFileSummaryReques" +
-      "t\032\034.api.protobuf.SimpleResponse\"/\202\323\344\223\002)\"" +
-      "$/carrier/v1/yarn/reportUpFileSummary:\001*" +
-      "\022\233\001\n\026QueryAvailableDataNode\022%.rpcapi.Que" +
-      "ryAvailableDataNodeRequest\032&.rpcapi.Quer" +
-      "yAvailableDataNodeResponse\"2\202\323\344\223\002,\"\'/car" +
-      "rier/v1/yarn/queryAvailableDataNode:\001*\022\207" +
-      "\001\n\021QueryFilePosition\022 .rpcapi.QueryFileP" +
-      "ositionRequest\032!.rpcapi.QueryFilePositio" +
-      "nResponse\"-\202\323\344\223\002\'\"\"/carrier/v1/yarn/quer" +
-      "yFilePosition:\001*B:\n(com.platon.rosettane" +
-      "t.admin.grpc.serviceB\016YarnRpcMessageb\006pr" +
-      "oto3"
+      "eredNodeListResponse\"\'\202\323\344\223\002!\"\034/carrier/v" +
+      "1/yarn/jobNodeList:\001*\022|\n\017ReportTaskEvent" +
+      "\022\036.rpcapi.ReportTaskEventRequest\032\034.api.p" +
+      "rotobuf.SimpleResponse\"+\202\323\344\223\002%\" /carrier" +
+      "/v1/yarn/reportTaskEvent:\001*\022\232\001\n\031ReportTa" +
+      "skResourceExpense\022(.rpcapi.ReportTaskRes" +
+      "ourceExpenseRequest\032\034.api.protobuf.Simpl" +
+      "eResponse\"5\202\323\344\223\002/\"*/carrier/v1/yarn/repo" +
+      "rtTaskResourceExpense:\001*\022\210\001\n\023ReportUpFil" +
+      "eSummary\022\".rpcapi.ReportUpFileSummaryReq" +
+      "uest\032\034.api.protobuf.SimpleResponse\"/\202\323\344\223" +
+      "\002)\"$/carrier/v1/yarn/reportUpFileSummary" +
+      ":\001*\022\240\001\n\033ReportTaskResultFileSummary\022*.rp" +
+      "capi.ReportTaskResultFileSummaryRequest\032" +
+      "\034.api.protobuf.SimpleResponse\"7\202\323\344\223\0021\",/" +
+      "carrier/v1/yarn/reportTaskResultFileSumm" +
+      "ary:\001*\022\233\001\n\026QueryAvailableDataNode\022%.rpca" +
+      "pi.QueryAvailableDataNodeRequest\032&.rpcap" +
+      "i.QueryAvailableDataNodeResponse\"2\202\323\344\223\002," +
+      "\"\'/carrier/v1/yarn/queryAvailableDataNod" +
+      "e:\001*\022\207\001\n\021QueryFilePosition\022 .rpcapi.Quer" +
+      "yFilePositionRequest\032!.rpcapi.QueryFileP" +
+      "ositionResponse\"-\202\323\344\223\002\'\"\"/carrier/v1/yar" +
+      "n/queryFilePosition:\001*\022\240\001\n\030GetTaskResult" +
+      "FileSummary\022\'.rpcapi.GetTaskResultFileSu" +
+      "mmaryRequest\032(.rpcapi.GetTaskResultFileS" +
+      "ummaryResponse\"1\202\323\344\223\002+\"&/carrier/v1/task" +
+      "/taskResultFileSummary:\001*\022\233\001\n\034GetTaskRes" +
+      "ultFileSummaryList\022\026.google.protobuf.Emp" +
+      "ty\032,.rpcapi.GetTaskResultFileSummaryList" +
+      "Response\"5\202\323\344\223\002/\"*/carrier/v1/task/taskR" +
+      "esultFileSummaryList:\001*B:\n(com.platon.ro" +
+      "settanet.admin.grpc.serviceB\016YarnRpcMess" +
+      "ageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -30318,7 +35397,7 @@ public final class YarnRpcMessage {
     internal_static_rpcapi_ReportTaskEventRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_ReportTaskEventRequest_descriptor,
-        new java.lang.String[] { "TaskEvent", });
+        new java.lang.String[] { "PartyId", "TaskEvent", });
     internal_static_rpcapi_ReportTaskResourceExpenseRequest_descriptor =
       getDescriptor().getMessageTypes().get(20);
     internal_static_rpcapi_ReportTaskResourceExpenseRequest_fieldAccessorTable = new
@@ -30331,30 +35410,54 @@ public final class YarnRpcMessage {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_ReportUpFileSummaryRequest_descriptor,
         new java.lang.String[] { "OriginId", "FilePath", "Ip", "Port", });
-    internal_static_rpcapi_QueryAvailableDataNodeRequest_descriptor =
+    internal_static_rpcapi_ReportTaskResultFileSummaryRequest_descriptor =
       getDescriptor().getMessageTypes().get(22);
+    internal_static_rpcapi_ReportTaskResultFileSummaryRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_ReportTaskResultFileSummaryRequest_descriptor,
+        new java.lang.String[] { "TaskId", "OriginId", "FilePath", "Ip", "Port", });
+    internal_static_rpcapi_QueryAvailableDataNodeRequest_descriptor =
+      getDescriptor().getMessageTypes().get(23);
     internal_static_rpcapi_QueryAvailableDataNodeRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_QueryAvailableDataNodeRequest_descriptor,
         new java.lang.String[] { "FileSize", "FileType", });
     internal_static_rpcapi_QueryAvailableDataNodeResponse_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_rpcapi_QueryAvailableDataNodeResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_QueryAvailableDataNodeResponse_descriptor,
         new java.lang.String[] { "Ip", "Port", });
     internal_static_rpcapi_QueryFilePositionRequest_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_rpcapi_QueryFilePositionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_QueryFilePositionRequest_descriptor,
         new java.lang.String[] { "OriginId", });
     internal_static_rpcapi_QueryFilePositionResponse_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_rpcapi_QueryFilePositionResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_QueryFilePositionResponse_descriptor,
         new java.lang.String[] { "Ip", "Port", "FilePath", });
+    internal_static_rpcapi_GetTaskResultFileSummaryRequest_descriptor =
+      getDescriptor().getMessageTypes().get(27);
+    internal_static_rpcapi_GetTaskResultFileSummaryRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_GetTaskResultFileSummaryRequest_descriptor,
+        new java.lang.String[] { "TaskId", });
+    internal_static_rpcapi_GetTaskResultFileSummaryResponse_descriptor =
+      getDescriptor().getMessageTypes().get(28);
+    internal_static_rpcapi_GetTaskResultFileSummaryResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_GetTaskResultFileSummaryResponse_descriptor,
+        new java.lang.String[] { "TaskId", "FileName", "MetaDataId", "OriginId", "FilePath", "Ip", "Port", });
+    internal_static_rpcapi_GetTaskResultFileSummaryListResponse_descriptor =
+      getDescriptor().getMessageTypes().get(29);
+    internal_static_rpcapi_GetTaskResultFileSummaryListResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_GetTaskResultFileSummaryListResponse_descriptor,
+        new java.lang.String[] { "Status", "Msg", "MetadataList", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();
     registry.add(com.platon.rosettanet.admin.grpc.service.AnnotationsProto.http);

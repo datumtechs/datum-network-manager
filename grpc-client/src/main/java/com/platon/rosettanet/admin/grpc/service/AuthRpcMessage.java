@@ -2863,7 +2863,7 @@ public final class AuthRpcMessage {
 
     /**
      * <pre>
-     * 发起任务的用户的信息 (task是属于用户的)
+     * 发起任务的用户的信息 (授权申请, 是属于用户的)
      * </pre>
      *
      * <code>string user = 1;</code>
@@ -2872,7 +2872,7 @@ public final class AuthRpcMessage {
     java.lang.String getUser();
     /**
      * <pre>
-     * 发起任务的用户的信息 (task是属于用户的)
+     * 发起任务的用户的信息 (授权申请, 是属于用户的)
      * </pre>
      *
      * <code>string user = 1;</code>
@@ -2939,7 +2939,7 @@ public final class AuthRpcMessage {
   }
   /**
    * <pre>
-   * 用户对元数据使用授权申请 req
+   * 发起用户对元数据使用授权申请 req
    * </pre>
    *
    * Protobuf type {@code rpcapi.ApplyMetadataAuthorityRequest}
@@ -3055,7 +3055,7 @@ public final class AuthRpcMessage {
     private volatile java.lang.Object user_;
     /**
      * <pre>
-     * 发起任务的用户的信息 (task是属于用户的)
+     * 发起任务的用户的信息 (授权申请, 是属于用户的)
      * </pre>
      *
      * <code>string user = 1;</code>
@@ -3076,7 +3076,7 @@ public final class AuthRpcMessage {
     }
     /**
      * <pre>
-     * 发起任务的用户的信息 (task是属于用户的)
+     * 发起任务的用户的信息 (授权申请, 是属于用户的)
      * </pre>
      *
      * <code>string user = 1;</code>
@@ -3370,7 +3370,7 @@ public final class AuthRpcMessage {
     }
     /**
      * <pre>
-     * 用户对元数据使用授权申请 req
+     * 发起用户对元数据使用授权申请 req
      * </pre>
      *
      * Protobuf type {@code rpcapi.ApplyMetadataAuthorityRequest}
@@ -3549,7 +3549,7 @@ public final class AuthRpcMessage {
       private java.lang.Object user_ = "";
       /**
        * <pre>
-       * 发起任务的用户的信息 (task是属于用户的)
+       * 发起任务的用户的信息 (授权申请, 是属于用户的)
        * </pre>
        *
        * <code>string user = 1;</code>
@@ -3569,7 +3569,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 发起任务的用户的信息 (task是属于用户的)
+       * 发起任务的用户的信息 (授权申请, 是属于用户的)
        * </pre>
        *
        * <code>string user = 1;</code>
@@ -3590,7 +3590,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 发起任务的用户的信息 (task是属于用户的)
+       * 发起任务的用户的信息 (授权申请, 是属于用户的)
        * </pre>
        *
        * <code>string user = 1;</code>
@@ -3609,7 +3609,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 发起任务的用户的信息 (task是属于用户的)
+       * 发起任务的用户的信息 (授权申请, 是属于用户的)
        * </pre>
        *
        * <code>string user = 1;</code>
@@ -3623,7 +3623,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 发起任务的用户的信息 (task是属于用户的)
+       * 发起任务的用户的信息 (授权申请, 是属于用户的)
        * </pre>
        *
        * <code>string user = 1;</code>
@@ -4025,7 +4025,7 @@ public final class AuthRpcMessage {
   }
   /**
    * <pre>
-   * 用户对元数据使用授权申请 resp
+   * 发起用户对元数据使用授权申请 resp
    * </pre>
    *
    * Protobuf type {@code rpcapi.ApplyMetadataAuthorityResponse}
@@ -4407,7 +4407,7 @@ public final class AuthRpcMessage {
     }
     /**
      * <pre>
-     * 用户对元数据使用授权申请 resp
+     * 发起用户对元数据使用授权申请 resp
      * </pre>
      *
      * Protobuf type {@code rpcapi.ApplyMetadataAuthorityResponse}
@@ -4857,6 +4857,1041 @@ public final class AuthRpcMessage {
 
   }
 
+  public interface RevokeMetadataAuthorityRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.RevokeMetadataAuthorityRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 发起任务的用户的信息 (授权申请, 是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The user.
+     */
+    java.lang.String getUser();
+    /**
+     * <pre>
+     * 发起任务的用户的信息 (授权申请, 是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The bytes for user.
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
+
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.api.protobuf.UserType user_type = 2;</code>
+     * @return The enum numeric value on the wire for userType.
+     */
+    int getUserTypeValue();
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.api.protobuf.UserType user_type = 2;</code>
+     * @return The userType.
+     */
+    com.platon.rosettanet.admin.grpc.service.UserType getUserType();
+
+    /**
+     * <pre>
+     * 元数据授权申请Id
+     * </pre>
+     *
+     * <code>string metadata_auth_id = 3;</code>
+     * @return The metadataAuthId.
+     */
+    java.lang.String getMetadataAuthId();
+    /**
+     * <pre>
+     * 元数据授权申请Id
+     * </pre>
+     *
+     * <code>string metadata_auth_id = 3;</code>
+     * @return The bytes for metadataAuthId.
+     */
+    com.google.protobuf.ByteString
+        getMetadataAuthIdBytes();
+
+    /**
+     * <pre>
+     *  撤销数据授权申请的账户的签名
+     * </pre>
+     *
+     * <code>bytes sign = 4;</code>
+     * @return The sign.
+     */
+    com.google.protobuf.ByteString getSign();
+  }
+  /**
+   * <pre>
+   * 撤销用户对元数据使用授权申请 req
+   * </pre>
+   *
+   * Protobuf type {@code rpcapi.RevokeMetadataAuthorityRequest}
+   */
+  public static final class RevokeMetadataAuthorityRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.RevokeMetadataAuthorityRequest)
+      RevokeMetadataAuthorityRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RevokeMetadataAuthorityRequest.newBuilder() to construct.
+    private RevokeMetadataAuthorityRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RevokeMetadataAuthorityRequest() {
+      user_ = "";
+      userType_ = 0;
+      metadataAuthId_ = "";
+      sign_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RevokeMetadataAuthorityRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RevokeMetadataAuthorityRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              user_ = s;
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+
+              userType_ = rawValue;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              metadataAuthId_ = s;
+              break;
+            }
+            case 34: {
+
+              sign_ = input.readBytes();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.internal_static_rpcapi_RevokeMetadataAuthorityRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.internal_static_rpcapi_RevokeMetadataAuthorityRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest.class, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest.Builder.class);
+    }
+
+    public static final int USER_FIELD_NUMBER = 1;
+    private volatile java.lang.Object user_;
+    /**
+     * <pre>
+     * 发起任务的用户的信息 (授权申请, 是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The user.
+     */
+    @java.lang.Override
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        user_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 发起任务的用户的信息 (授权申请, 是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The bytes for user.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USER_TYPE_FIELD_NUMBER = 2;
+    private int userType_;
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.api.protobuf.UserType user_type = 2;</code>
+     * @return The enum numeric value on the wire for userType.
+     */
+    @java.lang.Override public int getUserTypeValue() {
+      return userType_;
+    }
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.api.protobuf.UserType user_type = 2;</code>
+     * @return The userType.
+     */
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.UserType getUserType() {
+      @SuppressWarnings("deprecation")
+      com.platon.rosettanet.admin.grpc.service.UserType result = com.platon.rosettanet.admin.grpc.service.UserType.valueOf(userType_);
+      return result == null ? com.platon.rosettanet.admin.grpc.service.UserType.UNRECOGNIZED : result;
+    }
+
+    public static final int METADATA_AUTH_ID_FIELD_NUMBER = 3;
+    private volatile java.lang.Object metadataAuthId_;
+    /**
+     * <pre>
+     * 元数据授权申请Id
+     * </pre>
+     *
+     * <code>string metadata_auth_id = 3;</code>
+     * @return The metadataAuthId.
+     */
+    @java.lang.Override
+    public java.lang.String getMetadataAuthId() {
+      java.lang.Object ref = metadataAuthId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        metadataAuthId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 元数据授权申请Id
+     * </pre>
+     *
+     * <code>string metadata_auth_id = 3;</code>
+     * @return The bytes for metadataAuthId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getMetadataAuthIdBytes() {
+      java.lang.Object ref = metadataAuthId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        metadataAuthId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SIGN_FIELD_NUMBER = 4;
+    private com.google.protobuf.ByteString sign_;
+    /**
+     * <pre>
+     *  撤销数据授权申请的账户的签名
+     * </pre>
+     *
+     * <code>bytes sign = 4;</code>
+     * @return The sign.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getSign() {
+      return sign_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getUserBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, user_);
+      }
+      if (userType_ != com.platon.rosettanet.admin.grpc.service.UserType.User_Unknown.getNumber()) {
+        output.writeEnum(2, userType_);
+      }
+      if (!getMetadataAuthIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, metadataAuthId_);
+      }
+      if (!sign_.isEmpty()) {
+        output.writeBytes(4, sign_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getUserBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, user_);
+      }
+      if (userType_ != com.platon.rosettanet.admin.grpc.service.UserType.User_Unknown.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, userType_);
+      }
+      if (!getMetadataAuthIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, metadataAuthId_);
+      }
+      if (!sign_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, sign_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest other = (com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest) obj;
+
+      if (!getUser()
+          .equals(other.getUser())) return false;
+      if (userType_ != other.userType_) return false;
+      if (!getMetadataAuthId()
+          .equals(other.getMetadataAuthId())) return false;
+      if (!getSign()
+          .equals(other.getSign())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + USER_FIELD_NUMBER;
+      hash = (53 * hash) + getUser().hashCode();
+      hash = (37 * hash) + USER_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + userType_;
+      hash = (37 * hash) + METADATA_AUTH_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getMetadataAuthId().hashCode();
+      hash = (37 * hash) + SIGN_FIELD_NUMBER;
+      hash = (53 * hash) + getSign().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 撤销用户对元数据使用授权申请 req
+     * </pre>
+     *
+     * Protobuf type {@code rpcapi.RevokeMetadataAuthorityRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.RevokeMetadataAuthorityRequest)
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.internal_static_rpcapi_RevokeMetadataAuthorityRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.internal_static_rpcapi_RevokeMetadataAuthorityRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest.class, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        user_ = "";
+
+        userType_ = 0;
+
+        metadataAuthId_ = "";
+
+        sign_ = com.google.protobuf.ByteString.EMPTY;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.internal_static_rpcapi_RevokeMetadataAuthorityRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest build() {
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest result = new com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest(this);
+        result.user_ = user_;
+        result.userType_ = userType_;
+        result.metadataAuthId_ = metadataAuthId_;
+        result.sign_ = sign_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest.getDefaultInstance()) return this;
+        if (!other.getUser().isEmpty()) {
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.userType_ != 0) {
+          setUserTypeValue(other.getUserTypeValue());
+        }
+        if (!other.getMetadataAuthId().isEmpty()) {
+          metadataAuthId_ = other.metadataAuthId_;
+          onChanged();
+        }
+        if (other.getSign() != com.google.protobuf.ByteString.EMPTY) {
+          setSign(other.getSign());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object user_ = "";
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (授权申请, 是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @return The user.
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (授权申请, 是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @return The bytes for user.
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (授权申请, 是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @param value The user to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (授权申请, 是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUser() {
+        
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (授权申请, 是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @param value The bytes for user to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int userType_ = 0;
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.api.protobuf.UserType user_type = 2;</code>
+       * @return The enum numeric value on the wire for userType.
+       */
+      @java.lang.Override public int getUserTypeValue() {
+        return userType_;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.api.protobuf.UserType user_type = 2;</code>
+       * @param value The enum numeric value on the wire for userType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTypeValue(int value) {
+        
+        userType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.api.protobuf.UserType user_type = 2;</code>
+       * @return The userType.
+       */
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.UserType getUserType() {
+        @SuppressWarnings("deprecation")
+        com.platon.rosettanet.admin.grpc.service.UserType result = com.platon.rosettanet.admin.grpc.service.UserType.valueOf(userType_);
+        return result == null ? com.platon.rosettanet.admin.grpc.service.UserType.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.api.protobuf.UserType user_type = 2;</code>
+       * @param value The userType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserType(com.platon.rosettanet.admin.grpc.service.UserType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        userType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.api.protobuf.UserType user_type = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserType() {
+        
+        userType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object metadataAuthId_ = "";
+      /**
+       * <pre>
+       * 元数据授权申请Id
+       * </pre>
+       *
+       * <code>string metadata_auth_id = 3;</code>
+       * @return The metadataAuthId.
+       */
+      public java.lang.String getMetadataAuthId() {
+        java.lang.Object ref = metadataAuthId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          metadataAuthId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 元数据授权申请Id
+       * </pre>
+       *
+       * <code>string metadata_auth_id = 3;</code>
+       * @return The bytes for metadataAuthId.
+       */
+      public com.google.protobuf.ByteString
+          getMetadataAuthIdBytes() {
+        java.lang.Object ref = metadataAuthId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          metadataAuthId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 元数据授权申请Id
+       * </pre>
+       *
+       * <code>string metadata_auth_id = 3;</code>
+       * @param value The metadataAuthId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMetadataAuthId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        metadataAuthId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据授权申请Id
+       * </pre>
+       *
+       * <code>string metadata_auth_id = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMetadataAuthId() {
+        
+        metadataAuthId_ = getDefaultInstance().getMetadataAuthId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 元数据授权申请Id
+       * </pre>
+       *
+       * <code>string metadata_auth_id = 3;</code>
+       * @param value The bytes for metadataAuthId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMetadataAuthIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        metadataAuthId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString sign_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       *  撤销数据授权申请的账户的签名
+       * </pre>
+       *
+       * <code>bytes sign = 4;</code>
+       * @return The sign.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString getSign() {
+        return sign_;
+      }
+      /**
+       * <pre>
+       *  撤销数据授权申请的账户的签名
+       * </pre>
+       *
+       * <code>bytes sign = 4;</code>
+       * @param value The sign to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSign(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        sign_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *  撤销数据授权申请的账户的签名
+       * </pre>
+       *
+       * <code>bytes sign = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSign() {
+        
+        sign_ = getDefaultInstance().getSign();
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.RevokeMetadataAuthorityRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.RevokeMetadataAuthorityRequest)
+    private static final com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RevokeMetadataAuthorityRequest>
+        PARSER = new com.google.protobuf.AbstractParser<RevokeMetadataAuthorityRequest>() {
+      @java.lang.Override
+      public RevokeMetadataAuthorityRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RevokeMetadataAuthorityRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RevokeMetadataAuthorityRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RevokeMetadataAuthorityRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.RevokeMetadataAuthorityRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface AuditMetadataAuthorityRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:rpcapi.AuditMetadataAuthorityRequest)
       com.google.protobuf.MessageOrBuilder {
@@ -4883,7 +5918,7 @@ public final class AuthRpcMessage {
 
     /**
      * <pre>
-     * 审核意见
+     * 审核结果
      * </pre>
      *
      * <code>.api.protobuf.AuditMetadataOption audit = 2;</code>
@@ -4892,13 +5927,33 @@ public final class AuthRpcMessage {
     int getAuditValue();
     /**
      * <pre>
-     * 审核意见
+     * 审核结果
      * </pre>
      *
      * <code>.api.protobuf.AuditMetadataOption audit = 2;</code>
      * @return The audit.
      */
     com.platon.rosettanet.admin.grpc.service.AuditMetadataOption getAudit();
+
+    /**
+     * <pre>
+     * 审核意见 (允许""字符)
+     * </pre>
+     *
+     * <code>string suggestion = 3;</code>
+     * @return The suggestion.
+     */
+    java.lang.String getSuggestion();
+    /**
+     * <pre>
+     * 审核意见 (允许""字符)
+     * </pre>
+     *
+     * <code>string suggestion = 3;</code>
+     * @return The bytes for suggestion.
+     */
+    com.google.protobuf.ByteString
+        getSuggestionBytes();
   }
   /**
    * <pre>
@@ -4919,6 +5974,7 @@ public final class AuthRpcMessage {
     private AuditMetadataAuthorityRequest() {
       metadataAuthId_ = "";
       audit_ = 0;
+      suggestion_ = "";
     }
 
     @java.lang.Override
@@ -4961,6 +6017,12 @@ public final class AuthRpcMessage {
               int rawValue = input.readEnum();
 
               audit_ = rawValue;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              suggestion_ = s;
               break;
             }
             default: {
@@ -5045,7 +6107,7 @@ public final class AuthRpcMessage {
     private int audit_;
     /**
      * <pre>
-     * 审核意见
+     * 审核结果
      * </pre>
      *
      * <code>.api.protobuf.AuditMetadataOption audit = 2;</code>
@@ -5056,7 +6118,7 @@ public final class AuthRpcMessage {
     }
     /**
      * <pre>
-     * 审核意见
+     * 审核结果
      * </pre>
      *
      * <code>.api.protobuf.AuditMetadataOption audit = 2;</code>
@@ -5066,6 +6128,52 @@ public final class AuthRpcMessage {
       @SuppressWarnings("deprecation")
       com.platon.rosettanet.admin.grpc.service.AuditMetadataOption result = com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.valueOf(audit_);
       return result == null ? com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.UNRECOGNIZED : result;
+    }
+
+    public static final int SUGGESTION_FIELD_NUMBER = 3;
+    private volatile java.lang.Object suggestion_;
+    /**
+     * <pre>
+     * 审核意见 (允许""字符)
+     * </pre>
+     *
+     * <code>string suggestion = 3;</code>
+     * @return The suggestion.
+     */
+    @java.lang.Override
+    public java.lang.String getSuggestion() {
+      java.lang.Object ref = suggestion_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        suggestion_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 审核意见 (允许""字符)
+     * </pre>
+     *
+     * <code>string suggestion = 3;</code>
+     * @return The bytes for suggestion.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getSuggestionBytes() {
+      java.lang.Object ref = suggestion_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        suggestion_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -5088,6 +6196,9 @@ public final class AuthRpcMessage {
       if (audit_ != com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.Audit_Pending.getNumber()) {
         output.writeEnum(2, audit_);
       }
+      if (!getSuggestionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, suggestion_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -5103,6 +6214,9 @@ public final class AuthRpcMessage {
       if (audit_ != com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.Audit_Pending.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, audit_);
+      }
+      if (!getSuggestionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, suggestion_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5122,6 +6236,8 @@ public final class AuthRpcMessage {
       if (!getMetadataAuthId()
           .equals(other.getMetadataAuthId())) return false;
       if (audit_ != other.audit_) return false;
+      if (!getSuggestion()
+          .equals(other.getSuggestion())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -5137,6 +6253,8 @@ public final class AuthRpcMessage {
       hash = (53 * hash) + getMetadataAuthId().hashCode();
       hash = (37 * hash) + AUDIT_FIELD_NUMBER;
       hash = (53 * hash) + audit_;
+      hash = (37 * hash) + SUGGESTION_FIELD_NUMBER;
+      hash = (53 * hash) + getSuggestion().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -5278,6 +6396,8 @@ public final class AuthRpcMessage {
 
         audit_ = 0;
 
+        suggestion_ = "";
+
         return this;
       }
 
@@ -5306,6 +6426,7 @@ public final class AuthRpcMessage {
         com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetadataAuthorityRequest result = new com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.AuditMetadataAuthorityRequest(this);
         result.metadataAuthId_ = metadataAuthId_;
         result.audit_ = audit_;
+        result.suggestion_ = suggestion_;
         onBuilt();
         return result;
       }
@@ -5360,6 +6481,10 @@ public final class AuthRpcMessage {
         }
         if (other.audit_ != 0) {
           setAuditValue(other.getAuditValue());
+        }
+        if (!other.getSuggestion().isEmpty()) {
+          suggestion_ = other.suggestion_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -5489,7 +6614,7 @@ public final class AuthRpcMessage {
       private int audit_ = 0;
       /**
        * <pre>
-       * 审核意见
+       * 审核结果
        * </pre>
        *
        * <code>.api.protobuf.AuditMetadataOption audit = 2;</code>
@@ -5500,7 +6625,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 审核意见
+       * 审核结果
        * </pre>
        *
        * <code>.api.protobuf.AuditMetadataOption audit = 2;</code>
@@ -5515,7 +6640,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 审核意见
+       * 审核结果
        * </pre>
        *
        * <code>.api.protobuf.AuditMetadataOption audit = 2;</code>
@@ -5529,7 +6654,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 审核意见
+       * 审核结果
        * </pre>
        *
        * <code>.api.protobuf.AuditMetadataOption audit = 2;</code>
@@ -5547,7 +6672,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 审核意见
+       * 审核结果
        * </pre>
        *
        * <code>.api.protobuf.AuditMetadataOption audit = 2;</code>
@@ -5556,6 +6681,102 @@ public final class AuthRpcMessage {
       public Builder clearAudit() {
         
         audit_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object suggestion_ = "";
+      /**
+       * <pre>
+       * 审核意见 (允许""字符)
+       * </pre>
+       *
+       * <code>string suggestion = 3;</code>
+       * @return The suggestion.
+       */
+      public java.lang.String getSuggestion() {
+        java.lang.Object ref = suggestion_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          suggestion_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 审核意见 (允许""字符)
+       * </pre>
+       *
+       * <code>string suggestion = 3;</code>
+       * @return The bytes for suggestion.
+       */
+      public com.google.protobuf.ByteString
+          getSuggestionBytes() {
+        java.lang.Object ref = suggestion_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          suggestion_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 审核意见 (允许""字符)
+       * </pre>
+       *
+       * <code>string suggestion = 3;</code>
+       * @param value The suggestion to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSuggestion(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        suggestion_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 审核意见 (允许""字符)
+       * </pre>
+       *
+       * <code>string suggestion = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSuggestion() {
+        
+        suggestion_ = getDefaultInstance().getSuggestion();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 审核意见 (允许""字符)
+       * </pre>
+       *
+       * <code>string suggestion = 3;</code>
+       * @param value The bytes for suggestion to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSuggestionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        suggestion_ = value;
         onChanged();
         return this;
       }
@@ -6483,7 +7704,7 @@ public final class AuthRpcMessage {
 
     /**
      * <pre>
-     * 发起任务的用户的信息 (task是属于用户的)
+     * 发起任务的用户的信息 (数据授权 是属于用户的)
      * </pre>
      *
      * <code>string user = 2;</code>
@@ -6492,7 +7713,7 @@ public final class AuthRpcMessage {
     java.lang.String getUser();
     /**
      * <pre>
-     * 发起任务的用户的信息 (task是属于用户的)
+     * 发起任务的用户的信息 (数据授权 是属于用户的)
      * </pre>
      *
      * <code>string user = 2;</code>
@@ -6552,26 +7773,73 @@ public final class AuthRpcMessage {
      * 审核结果
      * </pre>
      *
-     * <code>.api.protobuf.AuditMetadataOption audit = 5;</code>
-     * @return The enum numeric value on the wire for audit.
+     * <code>.api.protobuf.AuditMetadataOption audit_option = 5;</code>
+     * @return The enum numeric value on the wire for auditOption.
      */
-    int getAuditValue();
+    int getAuditOptionValue();
     /**
      * <pre>
      * 审核结果
      * </pre>
      *
-     * <code>.api.protobuf.AuditMetadataOption audit = 5;</code>
-     * @return The audit.
+     * <code>.api.protobuf.AuditMetadataOption audit_option = 5;</code>
+     * @return The auditOption.
      */
-    com.platon.rosettanet.admin.grpc.service.AuditMetadataOption getAudit();
+    com.platon.rosettanet.admin.grpc.service.AuditMetadataOption getAuditOption();
+
+    /**
+     * <pre>
+     * 审核意见 (允许""字符)
+     * </pre>
+     *
+     * <code>string audit_suggestion = 6;</code>
+     * @return The auditSuggestion.
+     */
+    java.lang.String getAuditSuggestion();
+    /**
+     * <pre>
+     * 审核意见 (允许""字符)
+     * </pre>
+     *
+     * <code>string audit_suggestion = 6;</code>
+     * @return The bytes for auditSuggestion.
+     */
+    com.google.protobuf.ByteString
+        getAuditSuggestionBytes();
+
+    /**
+     * <pre>
+     * 对应数据授权信息中元数据的使用实况
+     * </pre>
+     *
+     * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+     * @return Whether the usedQuo field is set.
+     */
+    boolean hasUsedQuo();
+    /**
+     * <pre>
+     * 对应数据授权信息中元数据的使用实况
+     * </pre>
+     *
+     * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+     * @return The usedQuo.
+     */
+    com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo getUsedQuo();
+    /**
+     * <pre>
+     * 对应数据授权信息中元数据的使用实况
+     * </pre>
+     *
+     * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+     */
+    com.platon.rosettanet.admin.grpc.service.MetadataUsedQuoOrBuilder getUsedQuoOrBuilder();
 
     /**
      * <pre>
      * 发起授权申请的时间 (单位: ms)
      * </pre>
      *
-     * <code>uint64 apply_at = 6;</code>
+     * <code>uint64 apply_at = 8;</code>
      * @return The applyAt.
      */
     long getApplyAt();
@@ -6581,10 +7849,29 @@ public final class AuthRpcMessage {
      * 审核授权申请的时间 (单位: ms)
      * </pre>
      *
-     * <code>uint64 audit_at = 7;</code>
+     * <code>uint64 audit_at = 9;</code>
      * @return The auditAt.
      */
     long getAuditAt();
+
+    /**
+     * <pre>
+     * 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 &lt;失效前主动撤回的&gt;; 4: 已经失效的数据授权 &lt;过期or达到使用上限的&gt;)
+     * </pre>
+     *
+     * <code>.api.protobuf.MetadataAuthorityState state = 10;</code>
+     * @return The enum numeric value on the wire for state.
+     */
+    int getStateValue();
+    /**
+     * <pre>
+     * 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 &lt;失效前主动撤回的&gt;; 4: 已经失效的数据授权 &lt;过期or达到使用上限的&gt;)
+     * </pre>
+     *
+     * <code>.api.protobuf.MetadataAuthorityState state = 10;</code>
+     * @return The state.
+     */
+    com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState getState();
   }
   /**
    * <pre>
@@ -6606,7 +7893,9 @@ public final class AuthRpcMessage {
       metadataAuthId_ = "";
       user_ = "";
       userType_ = 0;
-      audit_ = 0;
+      auditOption_ = 0;
+      auditSuggestion_ = "";
+      state_ = 0;
     }
 
     @java.lang.Override
@@ -6673,17 +7962,42 @@ public final class AuthRpcMessage {
             case 40: {
               int rawValue = input.readEnum();
 
-              audit_ = rawValue;
+              auditOption_ = rawValue;
               break;
             }
-            case 48: {
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              auditSuggestion_ = s;
+              break;
+            }
+            case 58: {
+              com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.Builder subBuilder = null;
+              if (usedQuo_ != null) {
+                subBuilder = usedQuo_.toBuilder();
+              }
+              usedQuo_ = input.readMessage(com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(usedQuo_);
+                usedQuo_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 64: {
 
               applyAt_ = input.readUInt64();
               break;
             }
-            case 56: {
+            case 72: {
 
               auditAt_ = input.readUInt64();
+              break;
+            }
+            case 80: {
+              int rawValue = input.readEnum();
+
+              state_ = rawValue;
               break;
             }
             default: {
@@ -6768,7 +8082,7 @@ public final class AuthRpcMessage {
     private volatile java.lang.Object user_;
     /**
      * <pre>
-     * 发起任务的用户的信息 (task是属于用户的)
+     * 发起任务的用户的信息 (数据授权 是属于用户的)
      * </pre>
      *
      * <code>string user = 2;</code>
@@ -6789,7 +8103,7 @@ public final class AuthRpcMessage {
     }
     /**
      * <pre>
-     * 发起任务的用户的信息 (task是属于用户的)
+     * 发起任务的用户的信息 (数据授权 是属于用户的)
      * </pre>
      *
      * <code>string user = 2;</code>
@@ -6875,41 +8189,125 @@ public final class AuthRpcMessage {
       return getAuth();
     }
 
-    public static final int AUDIT_FIELD_NUMBER = 5;
-    private int audit_;
+    public static final int AUDIT_OPTION_FIELD_NUMBER = 5;
+    private int auditOption_;
     /**
      * <pre>
      * 审核结果
      * </pre>
      *
-     * <code>.api.protobuf.AuditMetadataOption audit = 5;</code>
-     * @return The enum numeric value on the wire for audit.
+     * <code>.api.protobuf.AuditMetadataOption audit_option = 5;</code>
+     * @return The enum numeric value on the wire for auditOption.
      */
-    @java.lang.Override public int getAuditValue() {
-      return audit_;
+    @java.lang.Override public int getAuditOptionValue() {
+      return auditOption_;
     }
     /**
      * <pre>
      * 审核结果
      * </pre>
      *
-     * <code>.api.protobuf.AuditMetadataOption audit = 5;</code>
-     * @return The audit.
+     * <code>.api.protobuf.AuditMetadataOption audit_option = 5;</code>
+     * @return The auditOption.
      */
-    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.AuditMetadataOption getAudit() {
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.AuditMetadataOption getAuditOption() {
       @SuppressWarnings("deprecation")
-      com.platon.rosettanet.admin.grpc.service.AuditMetadataOption result = com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.valueOf(audit_);
+      com.platon.rosettanet.admin.grpc.service.AuditMetadataOption result = com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.valueOf(auditOption_);
       return result == null ? com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.UNRECOGNIZED : result;
     }
 
-    public static final int APPLY_AT_FIELD_NUMBER = 6;
+    public static final int AUDIT_SUGGESTION_FIELD_NUMBER = 6;
+    private volatile java.lang.Object auditSuggestion_;
+    /**
+     * <pre>
+     * 审核意见 (允许""字符)
+     * </pre>
+     *
+     * <code>string audit_suggestion = 6;</code>
+     * @return The auditSuggestion.
+     */
+    @java.lang.Override
+    public java.lang.String getAuditSuggestion() {
+      java.lang.Object ref = auditSuggestion_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        auditSuggestion_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 审核意见 (允许""字符)
+     * </pre>
+     *
+     * <code>string audit_suggestion = 6;</code>
+     * @return The bytes for auditSuggestion.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getAuditSuggestionBytes() {
+      java.lang.Object ref = auditSuggestion_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        auditSuggestion_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USED_QUO_FIELD_NUMBER = 7;
+    private com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo usedQuo_;
+    /**
+     * <pre>
+     * 对应数据授权信息中元数据的使用实况
+     * </pre>
+     *
+     * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+     * @return Whether the usedQuo field is set.
+     */
+    @java.lang.Override
+    public boolean hasUsedQuo() {
+      return usedQuo_ != null;
+    }
+    /**
+     * <pre>
+     * 对应数据授权信息中元数据的使用实况
+     * </pre>
+     *
+     * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+     * @return The usedQuo.
+     */
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo getUsedQuo() {
+      return usedQuo_ == null ? com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.getDefaultInstance() : usedQuo_;
+    }
+    /**
+     * <pre>
+     * 对应数据授权信息中元数据的使用实况
+     * </pre>
+     *
+     * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+     */
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.MetadataUsedQuoOrBuilder getUsedQuoOrBuilder() {
+      return getUsedQuo();
+    }
+
+    public static final int APPLY_AT_FIELD_NUMBER = 8;
     private long applyAt_;
     /**
      * <pre>
      * 发起授权申请的时间 (单位: ms)
      * </pre>
      *
-     * <code>uint64 apply_at = 6;</code>
+     * <code>uint64 apply_at = 8;</code>
      * @return The applyAt.
      */
     @java.lang.Override
@@ -6917,19 +8315,46 @@ public final class AuthRpcMessage {
       return applyAt_;
     }
 
-    public static final int AUDIT_AT_FIELD_NUMBER = 7;
+    public static final int AUDIT_AT_FIELD_NUMBER = 9;
     private long auditAt_;
     /**
      * <pre>
      * 审核授权申请的时间 (单位: ms)
      * </pre>
      *
-     * <code>uint64 audit_at = 7;</code>
+     * <code>uint64 audit_at = 9;</code>
      * @return The auditAt.
      */
     @java.lang.Override
     public long getAuditAt() {
       return auditAt_;
+    }
+
+    public static final int STATE_FIELD_NUMBER = 10;
+    private int state_;
+    /**
+     * <pre>
+     * 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 &lt;失效前主动撤回的&gt;; 4: 已经失效的数据授权 &lt;过期or达到使用上限的&gt;)
+     * </pre>
+     *
+     * <code>.api.protobuf.MetadataAuthorityState state = 10;</code>
+     * @return The enum numeric value on the wire for state.
+     */
+    @java.lang.Override public int getStateValue() {
+      return state_;
+    }
+    /**
+     * <pre>
+     * 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 &lt;失效前主动撤回的&gt;; 4: 已经失效的数据授权 &lt;过期or达到使用上限的&gt;)
+     * </pre>
+     *
+     * <code>.api.protobuf.MetadataAuthorityState state = 10;</code>
+     * @return The state.
+     */
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState getState() {
+      @SuppressWarnings("deprecation")
+      com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState result = com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState.valueOf(state_);
+      return result == null ? com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState.UNRECOGNIZED : result;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -6958,14 +8383,23 @@ public final class AuthRpcMessage {
       if (auth_ != null) {
         output.writeMessage(4, getAuth());
       }
-      if (audit_ != com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.Audit_Pending.getNumber()) {
-        output.writeEnum(5, audit_);
+      if (auditOption_ != com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.Audit_Pending.getNumber()) {
+        output.writeEnum(5, auditOption_);
+      }
+      if (!getAuditSuggestionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, auditSuggestion_);
+      }
+      if (usedQuo_ != null) {
+        output.writeMessage(7, getUsedQuo());
       }
       if (applyAt_ != 0L) {
-        output.writeUInt64(6, applyAt_);
+        output.writeUInt64(8, applyAt_);
       }
       if (auditAt_ != 0L) {
-        output.writeUInt64(7, auditAt_);
+        output.writeUInt64(9, auditAt_);
+      }
+      if (state_ != com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState.MAState_Unknown.getNumber()) {
+        output.writeEnum(10, state_);
       }
       unknownFields.writeTo(output);
     }
@@ -6990,17 +8424,28 @@ public final class AuthRpcMessage {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, getAuth());
       }
-      if (audit_ != com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.Audit_Pending.getNumber()) {
+      if (auditOption_ != com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.Audit_Pending.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(5, audit_);
+          .computeEnumSize(5, auditOption_);
+      }
+      if (!getAuditSuggestionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, auditSuggestion_);
+      }
+      if (usedQuo_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, getUsedQuo());
       }
       if (applyAt_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(6, applyAt_);
+          .computeUInt64Size(8, applyAt_);
       }
       if (auditAt_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(7, auditAt_);
+          .computeUInt64Size(9, auditAt_);
+      }
+      if (state_ != com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState.MAState_Unknown.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(10, state_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -7027,11 +8472,19 @@ public final class AuthRpcMessage {
         if (!getAuth()
             .equals(other.getAuth())) return false;
       }
-      if (audit_ != other.audit_) return false;
+      if (auditOption_ != other.auditOption_) return false;
+      if (!getAuditSuggestion()
+          .equals(other.getAuditSuggestion())) return false;
+      if (hasUsedQuo() != other.hasUsedQuo()) return false;
+      if (hasUsedQuo()) {
+        if (!getUsedQuo()
+            .equals(other.getUsedQuo())) return false;
+      }
       if (getApplyAt()
           != other.getApplyAt()) return false;
       if (getAuditAt()
           != other.getAuditAt()) return false;
+      if (state_ != other.state_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -7053,14 +8506,22 @@ public final class AuthRpcMessage {
         hash = (37 * hash) + AUTH_FIELD_NUMBER;
         hash = (53 * hash) + getAuth().hashCode();
       }
-      hash = (37 * hash) + AUDIT_FIELD_NUMBER;
-      hash = (53 * hash) + audit_;
+      hash = (37 * hash) + AUDIT_OPTION_FIELD_NUMBER;
+      hash = (53 * hash) + auditOption_;
+      hash = (37 * hash) + AUDIT_SUGGESTION_FIELD_NUMBER;
+      hash = (53 * hash) + getAuditSuggestion().hashCode();
+      if (hasUsedQuo()) {
+        hash = (37 * hash) + USED_QUO_FIELD_NUMBER;
+        hash = (53 * hash) + getUsedQuo().hashCode();
+      }
       hash = (37 * hash) + APPLY_AT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getApplyAt());
       hash = (37 * hash) + AUDIT_AT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getAuditAt());
+      hash = (37 * hash) + STATE_FIELD_NUMBER;
+      hash = (53 * hash) + state_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7210,11 +8671,21 @@ public final class AuthRpcMessage {
           auth_ = null;
           authBuilder_ = null;
         }
-        audit_ = 0;
+        auditOption_ = 0;
 
+        auditSuggestion_ = "";
+
+        if (usedQuoBuilder_ == null) {
+          usedQuo_ = null;
+        } else {
+          usedQuo_ = null;
+          usedQuoBuilder_ = null;
+        }
         applyAt_ = 0L;
 
         auditAt_ = 0L;
+
+        state_ = 0;
 
         return this;
       }
@@ -7250,9 +8721,16 @@ public final class AuthRpcMessage {
         } else {
           result.auth_ = authBuilder_.build();
         }
-        result.audit_ = audit_;
+        result.auditOption_ = auditOption_;
+        result.auditSuggestion_ = auditSuggestion_;
+        if (usedQuoBuilder_ == null) {
+          result.usedQuo_ = usedQuo_;
+        } else {
+          result.usedQuo_ = usedQuoBuilder_.build();
+        }
         result.applyAt_ = applyAt_;
         result.auditAt_ = auditAt_;
+        result.state_ = state_;
         onBuilt();
         return result;
       }
@@ -7315,14 +8793,24 @@ public final class AuthRpcMessage {
         if (other.hasAuth()) {
           mergeAuth(other.getAuth());
         }
-        if (other.audit_ != 0) {
-          setAuditValue(other.getAuditValue());
+        if (other.auditOption_ != 0) {
+          setAuditOptionValue(other.getAuditOptionValue());
+        }
+        if (!other.getAuditSuggestion().isEmpty()) {
+          auditSuggestion_ = other.auditSuggestion_;
+          onChanged();
+        }
+        if (other.hasUsedQuo()) {
+          mergeUsedQuo(other.getUsedQuo());
         }
         if (other.getApplyAt() != 0L) {
           setApplyAt(other.getApplyAt());
         }
         if (other.getAuditAt() != 0L) {
           setAuditAt(other.getAuditAt());
+        }
+        if (other.state_ != 0) {
+          setStateValue(other.getStateValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -7452,7 +8940,7 @@ public final class AuthRpcMessage {
       private java.lang.Object user_ = "";
       /**
        * <pre>
-       * 发起任务的用户的信息 (task是属于用户的)
+       * 发起任务的用户的信息 (数据授权 是属于用户的)
        * </pre>
        *
        * <code>string user = 2;</code>
@@ -7472,7 +8960,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 发起任务的用户的信息 (task是属于用户的)
+       * 发起任务的用户的信息 (数据授权 是属于用户的)
        * </pre>
        *
        * <code>string user = 2;</code>
@@ -7493,7 +8981,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 发起任务的用户的信息 (task是属于用户的)
+       * 发起任务的用户的信息 (数据授权 是属于用户的)
        * </pre>
        *
        * <code>string user = 2;</code>
@@ -7512,7 +9000,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 发起任务的用户的信息 (task是属于用户的)
+       * 发起任务的用户的信息 (数据授权 是属于用户的)
        * </pre>
        *
        * <code>string user = 2;</code>
@@ -7526,7 +9014,7 @@ public final class AuthRpcMessage {
       }
       /**
        * <pre>
-       * 发起任务的用户的信息 (task是属于用户的)
+       * 发起任务的用户的信息 (数据授权 是属于用户的)
        * </pre>
        *
        * <code>string user = 2;</code>
@@ -7774,30 +9262,30 @@ public final class AuthRpcMessage {
         return authBuilder_;
       }
 
-      private int audit_ = 0;
+      private int auditOption_ = 0;
       /**
        * <pre>
        * 审核结果
        * </pre>
        *
-       * <code>.api.protobuf.AuditMetadataOption audit = 5;</code>
-       * @return The enum numeric value on the wire for audit.
+       * <code>.api.protobuf.AuditMetadataOption audit_option = 5;</code>
+       * @return The enum numeric value on the wire for auditOption.
        */
-      @java.lang.Override public int getAuditValue() {
-        return audit_;
+      @java.lang.Override public int getAuditOptionValue() {
+        return auditOption_;
       }
       /**
        * <pre>
        * 审核结果
        * </pre>
        *
-       * <code>.api.protobuf.AuditMetadataOption audit = 5;</code>
-       * @param value The enum numeric value on the wire for audit to set.
+       * <code>.api.protobuf.AuditMetadataOption audit_option = 5;</code>
+       * @param value The enum numeric value on the wire for auditOption to set.
        * @return This builder for chaining.
        */
-      public Builder setAuditValue(int value) {
+      public Builder setAuditOptionValue(int value) {
         
-        audit_ = value;
+        auditOption_ = value;
         onChanged();
         return this;
       }
@@ -7806,13 +9294,13 @@ public final class AuthRpcMessage {
        * 审核结果
        * </pre>
        *
-       * <code>.api.protobuf.AuditMetadataOption audit = 5;</code>
-       * @return The audit.
+       * <code>.api.protobuf.AuditMetadataOption audit_option = 5;</code>
+       * @return The auditOption.
        */
       @java.lang.Override
-      public com.platon.rosettanet.admin.grpc.service.AuditMetadataOption getAudit() {
+      public com.platon.rosettanet.admin.grpc.service.AuditMetadataOption getAuditOption() {
         @SuppressWarnings("deprecation")
-        com.platon.rosettanet.admin.grpc.service.AuditMetadataOption result = com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.valueOf(audit_);
+        com.platon.rosettanet.admin.grpc.service.AuditMetadataOption result = com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.valueOf(auditOption_);
         return result == null ? com.platon.rosettanet.admin.grpc.service.AuditMetadataOption.UNRECOGNIZED : result;
       }
       /**
@@ -7820,16 +9308,16 @@ public final class AuthRpcMessage {
        * 审核结果
        * </pre>
        *
-       * <code>.api.protobuf.AuditMetadataOption audit = 5;</code>
-       * @param value The audit to set.
+       * <code>.api.protobuf.AuditMetadataOption audit_option = 5;</code>
+       * @param value The auditOption to set.
        * @return This builder for chaining.
        */
-      public Builder setAudit(com.platon.rosettanet.admin.grpc.service.AuditMetadataOption value) {
+      public Builder setAuditOption(com.platon.rosettanet.admin.grpc.service.AuditMetadataOption value) {
         if (value == null) {
           throw new NullPointerException();
         }
         
-        audit_ = value.getNumber();
+        auditOption_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -7838,14 +9326,265 @@ public final class AuthRpcMessage {
        * 审核结果
        * </pre>
        *
-       * <code>.api.protobuf.AuditMetadataOption audit = 5;</code>
+       * <code>.api.protobuf.AuditMetadataOption audit_option = 5;</code>
        * @return This builder for chaining.
        */
-      public Builder clearAudit() {
+      public Builder clearAuditOption() {
         
-        audit_ = 0;
+        auditOption_ = 0;
         onChanged();
         return this;
+      }
+
+      private java.lang.Object auditSuggestion_ = "";
+      /**
+       * <pre>
+       * 审核意见 (允许""字符)
+       * </pre>
+       *
+       * <code>string audit_suggestion = 6;</code>
+       * @return The auditSuggestion.
+       */
+      public java.lang.String getAuditSuggestion() {
+        java.lang.Object ref = auditSuggestion_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          auditSuggestion_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 审核意见 (允许""字符)
+       * </pre>
+       *
+       * <code>string audit_suggestion = 6;</code>
+       * @return The bytes for auditSuggestion.
+       */
+      public com.google.protobuf.ByteString
+          getAuditSuggestionBytes() {
+        java.lang.Object ref = auditSuggestion_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          auditSuggestion_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 审核意见 (允许""字符)
+       * </pre>
+       *
+       * <code>string audit_suggestion = 6;</code>
+       * @param value The auditSuggestion to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuditSuggestion(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        auditSuggestion_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 审核意见 (允许""字符)
+       * </pre>
+       *
+       * <code>string audit_suggestion = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAuditSuggestion() {
+        
+        auditSuggestion_ = getDefaultInstance().getAuditSuggestion();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 审核意见 (允许""字符)
+       * </pre>
+       *
+       * <code>string audit_suggestion = 6;</code>
+       * @param value The bytes for auditSuggestion to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAuditSuggestionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        auditSuggestion_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo usedQuo_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo, com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.Builder, com.platon.rosettanet.admin.grpc.service.MetadataUsedQuoOrBuilder> usedQuoBuilder_;
+      /**
+       * <pre>
+       * 对应数据授权信息中元数据的使用实况
+       * </pre>
+       *
+       * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+       * @return Whether the usedQuo field is set.
+       */
+      public boolean hasUsedQuo() {
+        return usedQuoBuilder_ != null || usedQuo_ != null;
+      }
+      /**
+       * <pre>
+       * 对应数据授权信息中元数据的使用实况
+       * </pre>
+       *
+       * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+       * @return The usedQuo.
+       */
+      public com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo getUsedQuo() {
+        if (usedQuoBuilder_ == null) {
+          return usedQuo_ == null ? com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.getDefaultInstance() : usedQuo_;
+        } else {
+          return usedQuoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * 对应数据授权信息中元数据的使用实况
+       * </pre>
+       *
+       * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+       */
+      public Builder setUsedQuo(com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo value) {
+        if (usedQuoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          usedQuo_ = value;
+          onChanged();
+        } else {
+          usedQuoBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * 对应数据授权信息中元数据的使用实况
+       * </pre>
+       *
+       * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+       */
+      public Builder setUsedQuo(
+          com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.Builder builderForValue) {
+        if (usedQuoBuilder_ == null) {
+          usedQuo_ = builderForValue.build();
+          onChanged();
+        } else {
+          usedQuoBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * 对应数据授权信息中元数据的使用实况
+       * </pre>
+       *
+       * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+       */
+      public Builder mergeUsedQuo(com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo value) {
+        if (usedQuoBuilder_ == null) {
+          if (usedQuo_ != null) {
+            usedQuo_ =
+              com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.newBuilder(usedQuo_).mergeFrom(value).buildPartial();
+          } else {
+            usedQuo_ = value;
+          }
+          onChanged();
+        } else {
+          usedQuoBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * 对应数据授权信息中元数据的使用实况
+       * </pre>
+       *
+       * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+       */
+      public Builder clearUsedQuo() {
+        if (usedQuoBuilder_ == null) {
+          usedQuo_ = null;
+          onChanged();
+        } else {
+          usedQuo_ = null;
+          usedQuoBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * 对应数据授权信息中元数据的使用实况
+       * </pre>
+       *
+       * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+       */
+      public com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.Builder getUsedQuoBuilder() {
+        
+        onChanged();
+        return getUsedQuoFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * 对应数据授权信息中元数据的使用实况
+       * </pre>
+       *
+       * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+       */
+      public com.platon.rosettanet.admin.grpc.service.MetadataUsedQuoOrBuilder getUsedQuoOrBuilder() {
+        if (usedQuoBuilder_ != null) {
+          return usedQuoBuilder_.getMessageOrBuilder();
+        } else {
+          return usedQuo_ == null ?
+              com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.getDefaultInstance() : usedQuo_;
+        }
+      }
+      /**
+       * <pre>
+       * 对应数据授权信息中元数据的使用实况
+       * </pre>
+       *
+       * <code>.types.MetadataUsedQuo used_quo = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo, com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.Builder, com.platon.rosettanet.admin.grpc.service.MetadataUsedQuoOrBuilder> 
+          getUsedQuoFieldBuilder() {
+        if (usedQuoBuilder_ == null) {
+          usedQuoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo, com.platon.rosettanet.admin.grpc.service.MetadataUsedQuo.Builder, com.platon.rosettanet.admin.grpc.service.MetadataUsedQuoOrBuilder>(
+                  getUsedQuo(),
+                  getParentForChildren(),
+                  isClean());
+          usedQuo_ = null;
+        }
+        return usedQuoBuilder_;
       }
 
       private long applyAt_ ;
@@ -7854,7 +9593,7 @@ public final class AuthRpcMessage {
        * 发起授权申请的时间 (单位: ms)
        * </pre>
        *
-       * <code>uint64 apply_at = 6;</code>
+       * <code>uint64 apply_at = 8;</code>
        * @return The applyAt.
        */
       @java.lang.Override
@@ -7866,7 +9605,7 @@ public final class AuthRpcMessage {
        * 发起授权申请的时间 (单位: ms)
        * </pre>
        *
-       * <code>uint64 apply_at = 6;</code>
+       * <code>uint64 apply_at = 8;</code>
        * @param value The applyAt to set.
        * @return This builder for chaining.
        */
@@ -7881,7 +9620,7 @@ public final class AuthRpcMessage {
        * 发起授权申请的时间 (单位: ms)
        * </pre>
        *
-       * <code>uint64 apply_at = 6;</code>
+       * <code>uint64 apply_at = 8;</code>
        * @return This builder for chaining.
        */
       public Builder clearApplyAt() {
@@ -7897,7 +9636,7 @@ public final class AuthRpcMessage {
        * 审核授权申请的时间 (单位: ms)
        * </pre>
        *
-       * <code>uint64 audit_at = 7;</code>
+       * <code>uint64 audit_at = 9;</code>
        * @return The auditAt.
        */
       @java.lang.Override
@@ -7909,7 +9648,7 @@ public final class AuthRpcMessage {
        * 审核授权申请的时间 (单位: ms)
        * </pre>
        *
-       * <code>uint64 audit_at = 7;</code>
+       * <code>uint64 audit_at = 9;</code>
        * @param value The auditAt to set.
        * @return This builder for chaining.
        */
@@ -7924,12 +9663,86 @@ public final class AuthRpcMessage {
        * 审核授权申请的时间 (单位: ms)
        * </pre>
        *
-       * <code>uint64 audit_at = 7;</code>
+       * <code>uint64 audit_at = 9;</code>
        * @return This builder for chaining.
        */
       public Builder clearAuditAt() {
         
         auditAt_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int state_ = 0;
+      /**
+       * <pre>
+       * 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 &lt;失效前主动撤回的&gt;; 4: 已经失效的数据授权 &lt;过期or达到使用上限的&gt;)
+       * </pre>
+       *
+       * <code>.api.protobuf.MetadataAuthorityState state = 10;</code>
+       * @return The enum numeric value on the wire for state.
+       */
+      @java.lang.Override public int getStateValue() {
+        return state_;
+      }
+      /**
+       * <pre>
+       * 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 &lt;失效前主动撤回的&gt;; 4: 已经失效的数据授权 &lt;过期or达到使用上限的&gt;)
+       * </pre>
+       *
+       * <code>.api.protobuf.MetadataAuthorityState state = 10;</code>
+       * @param value The enum numeric value on the wire for state to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStateValue(int value) {
+        
+        state_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 &lt;失效前主动撤回的&gt;; 4: 已经失效的数据授权 &lt;过期or达到使用上限的&gt;)
+       * </pre>
+       *
+       * <code>.api.protobuf.MetadataAuthorityState state = 10;</code>
+       * @return The state.
+       */
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState getState() {
+        @SuppressWarnings("deprecation")
+        com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState result = com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState.valueOf(state_);
+        return result == null ? com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 &lt;失效前主动撤回的&gt;; 4: 已经失效的数据授权 &lt;过期or达到使用上限的&gt;)
+       * </pre>
+       *
+       * <code>.api.protobuf.MetadataAuthorityState state = 10;</code>
+       * @param value The state to set.
+       * @return This builder for chaining.
+       */
+      public Builder setState(com.platon.rosettanet.admin.grpc.service.MetadataAuthorityState value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        state_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 &lt;失效前主动撤回的&gt;; 4: 已经失效的数据授权 &lt;过期or达到使用上限的&gt;)
+       * </pre>
+       *
+       * <code>.api.protobuf.MetadataAuthorityState state = 10;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearState() {
+        
+        state_ = 0;
         onChanged();
         return this;
       }
@@ -8066,7 +9879,7 @@ public final class AuthRpcMessage {
   }
   /**
    * <pre>
-   * 当前组织的所有元数据的授权申请及审核结果详情列表 resp
+   * 当前(组织or用户)的所有元数据的授权申请及审核结果详情列表 resp
    * </pre>
    *
    * Protobuf type {@code rpcapi.GetMetadataAuthorityListResponse}
@@ -8472,7 +10285,7 @@ public final class AuthRpcMessage {
     }
     /**
      * <pre>
-     * 当前组织的所有元数据的授权申请及审核结果详情列表 resp
+     * 当前(组织or用户)的所有元数据的授权申请及审核结果详情列表 resp
      * </pre>
      *
      * Protobuf type {@code rpcapi.GetMetadataAuthorityListResponse}
@@ -9175,6 +10988,761 @@ public final class AuthRpcMessage {
 
   }
 
+  public interface GetMetadataAuthorityListByUserRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:rpcapi.GetMetadataAuthorityListByUserRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * 发起任务的用户的信息 (数据授权 是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The user.
+     */
+    java.lang.String getUser();
+    /**
+     * <pre>
+     * 发起任务的用户的信息 (数据授权 是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The bytes for user.
+     */
+    com.google.protobuf.ByteString
+        getUserBytes();
+
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.api.protobuf.UserType user_type = 2;</code>
+     * @return The enum numeric value on the wire for userType.
+     */
+    int getUserTypeValue();
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.api.protobuf.UserType user_type = 2;</code>
+     * @return The userType.
+     */
+    com.platon.rosettanet.admin.grpc.service.UserType getUserType();
+  }
+  /**
+   * <pre>
+   * 当前(用户)的所有元数据的授权申请及审核结果详情列表 req
+   * </pre>
+   *
+   * Protobuf type {@code rpcapi.GetMetadataAuthorityListByUserRequest}
+   */
+  public static final class GetMetadataAuthorityListByUserRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:rpcapi.GetMetadataAuthorityListByUserRequest)
+      GetMetadataAuthorityListByUserRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use GetMetadataAuthorityListByUserRequest.newBuilder() to construct.
+    private GetMetadataAuthorityListByUserRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private GetMetadataAuthorityListByUserRequest() {
+      user_ = "";
+      userType_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new GetMetadataAuthorityListByUserRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GetMetadataAuthorityListByUserRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              user_ = s;
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+
+              userType_ = rawValue;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.internal_static_rpcapi_GetMetadataAuthorityListByUserRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.internal_static_rpcapi_GetMetadataAuthorityListByUserRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest.class, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest.Builder.class);
+    }
+
+    public static final int USER_FIELD_NUMBER = 1;
+    private volatile java.lang.Object user_;
+    /**
+     * <pre>
+     * 发起任务的用户的信息 (数据授权 是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The user.
+     */
+    @java.lang.Override
+    public java.lang.String getUser() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        user_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * 发起任务的用户的信息 (数据授权 是属于用户的)
+     * </pre>
+     *
+     * <code>string user = 1;</code>
+     * @return The bytes for user.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getUserBytes() {
+      java.lang.Object ref = user_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        user_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USER_TYPE_FIELD_NUMBER = 2;
+    private int userType_;
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.api.protobuf.UserType user_type = 2;</code>
+     * @return The enum numeric value on the wire for userType.
+     */
+    @java.lang.Override public int getUserTypeValue() {
+      return userType_;
+    }
+    /**
+     * <pre>
+     * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+     * </pre>
+     *
+     * <code>.api.protobuf.UserType user_type = 2;</code>
+     * @return The userType.
+     */
+    @java.lang.Override public com.platon.rosettanet.admin.grpc.service.UserType getUserType() {
+      @SuppressWarnings("deprecation")
+      com.platon.rosettanet.admin.grpc.service.UserType result = com.platon.rosettanet.admin.grpc.service.UserType.valueOf(userType_);
+      return result == null ? com.platon.rosettanet.admin.grpc.service.UserType.UNRECOGNIZED : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getUserBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, user_);
+      }
+      if (userType_ != com.platon.rosettanet.admin.grpc.service.UserType.User_Unknown.getNumber()) {
+        output.writeEnum(2, userType_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getUserBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, user_);
+      }
+      if (userType_ != com.platon.rosettanet.admin.grpc.service.UserType.User_Unknown.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, userType_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest)) {
+        return super.equals(obj);
+      }
+      com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest other = (com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest) obj;
+
+      if (!getUser()
+          .equals(other.getUser())) return false;
+      if (userType_ != other.userType_) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + USER_FIELD_NUMBER;
+      hash = (53 * hash) + getUser().hashCode();
+      hash = (37 * hash) + USER_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + userType_;
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * 当前(用户)的所有元数据的授权申请及审核结果详情列表 req
+     * </pre>
+     *
+     * Protobuf type {@code rpcapi.GetMetadataAuthorityListByUserRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:rpcapi.GetMetadataAuthorityListByUserRequest)
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.internal_static_rpcapi_GetMetadataAuthorityListByUserRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.internal_static_rpcapi_GetMetadataAuthorityListByUserRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest.class, com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest.Builder.class);
+      }
+
+      // Construct using com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        user_ = "";
+
+        userType_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.internal_static_rpcapi_GetMetadataAuthorityListByUserRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest getDefaultInstanceForType() {
+        return com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest build() {
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest buildPartial() {
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest result = new com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest(this);
+        result.user_ = user_;
+        result.userType_ = userType_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest) {
+          return mergeFrom((com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest other) {
+        if (other == com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest.getDefaultInstance()) return this;
+        if (!other.getUser().isEmpty()) {
+          user_ = other.user_;
+          onChanged();
+        }
+        if (other.userType_ != 0) {
+          setUserTypeValue(other.getUserTypeValue());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object user_ = "";
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (数据授权 是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @return The user.
+       */
+      public java.lang.String getUser() {
+        java.lang.Object ref = user_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          user_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (数据授权 是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @return The bytes for user.
+       */
+      public com.google.protobuf.ByteString
+          getUserBytes() {
+        java.lang.Object ref = user_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          user_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (数据授权 是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @param value The user to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUser(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        user_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (数据授权 是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUser() {
+        
+        user_ = getDefaultInstance().getUser();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 发起任务的用户的信息 (数据授权 是属于用户的)
+       * </pre>
+       *
+       * <code>string user = 1;</code>
+       * @param value The bytes for user to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        user_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int userType_ = 0;
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.api.protobuf.UserType user_type = 2;</code>
+       * @return The enum numeric value on the wire for userType.
+       */
+      @java.lang.Override public int getUserTypeValue() {
+        return userType_;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.api.protobuf.UserType user_type = 2;</code>
+       * @param value The enum numeric value on the wire for userType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserTypeValue(int value) {
+        
+        userType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.api.protobuf.UserType user_type = 2;</code>
+       * @return The userType.
+       */
+      @java.lang.Override
+      public com.platon.rosettanet.admin.grpc.service.UserType getUserType() {
+        @SuppressWarnings("deprecation")
+        com.platon.rosettanet.admin.grpc.service.UserType result = com.platon.rosettanet.admin.grpc.service.UserType.valueOf(userType_);
+        return result == null ? com.platon.rosettanet.admin.grpc.service.UserType.UNRECOGNIZED : result;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.api.protobuf.UserType user_type = 2;</code>
+       * @param value The userType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserType(com.platon.rosettanet.admin.grpc.service.UserType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        userType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+       * </pre>
+       *
+       * <code>.api.protobuf.UserType user_type = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserType() {
+        
+        userType_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:rpcapi.GetMetadataAuthorityListByUserRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:rpcapi.GetMetadataAuthorityListByUserRequest)
+    private static final com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest();
+    }
+
+    public static com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<GetMetadataAuthorityListByUserRequest>
+        PARSER = new com.google.protobuf.AbstractParser<GetMetadataAuthorityListByUserRequest>() {
+      @java.lang.Override
+      public GetMetadataAuthorityListByUserRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GetMetadataAuthorityListByUserRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<GetMetadataAuthorityListByUserRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GetMetadataAuthorityListByUserRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.platon.rosettanet.admin.grpc.service.AuthRpcMessage.GetMetadataAuthorityListByUserRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_ApplyIdentityJoinRequest_descriptor;
   private static final 
@@ -9201,6 +11769,11 @@ public final class AuthRpcMessage {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_ApplyMetadataAuthorityResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_RevokeMetadataAuthorityRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_RevokeMetadataAuthorityRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpcapi_AuditMetadataAuthorityRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -9220,6 +11793,11 @@ public final class AuthRpcMessage {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpcapi_GetMetadataAuthorityListResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpcapi_GetMetadataAuthorityListByUserRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpcapi_GetMetadataAuthorityListByUserRequest_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -9245,46 +11823,64 @@ public final class AuthRpcMessage {
       "\003 \001(\0132\030.types.MetadataAuthority\022\014\n\004sign\030" +
       "\004 \001(\014\"W\n\036ApplyMetadataAuthorityResponse\022" +
       "\016\n\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\022\030\n\020metadata" +
-      "_auth_id\030\003 \001(\t\"k\n\035AuditMetadataAuthority" +
-      "Request\022\030\n\020metadata_auth_id\030\001 \001(\t\0220\n\005aud" +
-      "it\030\002 \001(\0162!.api.protobuf.AuditMetadataOpt" +
-      "ion\"o\n\036AuditMetadataAuthorityResponse\022\016\n" +
-      "\006status\030\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0220\n\005audit\030\003 \001(" +
-      "\0162!.api.protobuf.AuditMetadataOption\"\347\001\n" +
-      "\024GetMetadataAuthority\022\030\n\020metadata_auth_i" +
-      "d\030\001 \001(\t\022\014\n\004user\030\002 \001(\t\022)\n\tuser_type\030\003 \001(\016" +
-      "2\026.api.protobuf.UserType\022&\n\004auth\030\004 \001(\0132\030" +
-      ".types.MetadataAuthority\0220\n\005audit\030\005 \001(\0162" +
-      "!.api.protobuf.AuditMetadataOption\022\020\n\010ap" +
-      "ply_at\030\006 \001(\004\022\020\n\010audit_at\030\007 \001(\004\"k\n GetMet" +
+      "_auth_id\030\003 \001(\t\"\201\001\n\036RevokeMetadataAuthori" +
+      "tyRequest\022\014\n\004user\030\001 \001(\t\022)\n\tuser_type\030\002 \001" +
+      "(\0162\026.api.protobuf.UserType\022\030\n\020metadata_a" +
+      "uth_id\030\003 \001(\t\022\014\n\004sign\030\004 \001(\014\"\177\n\035AuditMetad" +
+      "ataAuthorityRequest\022\030\n\020metadata_auth_id\030" +
+      "\001 \001(\t\0220\n\005audit\030\002 \001(\0162!.api.protobuf.Audi" +
+      "tMetadataOption\022\022\n\nsuggestion\030\003 \001(\t\"o\n\036A" +
+      "uditMetadataAuthorityResponse\022\016\n\006status\030" +
+      "\001 \001(\005\022\013\n\003msg\030\002 \001(\t\0220\n\005audit\030\003 \001(\0162!.api." +
+      "protobuf.AuditMetadataOption\"\347\002\n\024GetMeta" +
+      "dataAuthority\022\030\n\020metadata_auth_id\030\001 \001(\t\022" +
+      "\014\n\004user\030\002 \001(\t\022)\n\tuser_type\030\003 \001(\0162\026.api.p" +
+      "rotobuf.UserType\022&\n\004auth\030\004 \001(\0132\030.types.M" +
+      "etadataAuthority\0227\n\014audit_option\030\005 \001(\0162!" +
+      ".api.protobuf.AuditMetadataOption\022\030\n\020aud" +
+      "it_suggestion\030\006 \001(\t\022(\n\010used_quo\030\007 \001(\0132\026." +
+      "types.MetadataUsedQuo\022\020\n\010apply_at\030\010 \001(\004\022" +
+      "\020\n\010audit_at\030\t \001(\004\0223\n\005state\030\n \001(\0162$.api.p" +
+      "rotobuf.MetadataAuthorityState\"k\n GetMet" +
       "adataAuthorityListResponse\022\016\n\006status\030\001 \001" +
       "(\005\022\013\n\003msg\030\002 \001(\t\022*\n\004list\030\003 \003(\0132\034.rpcapi.G" +
-      "etMetadataAuthority2\257\007\n\013AuthService\022\226\001\n\026" +
-      "ApplyMetadataAuthority\022%.rpcapi.ApplyMet" +
-      "adataAuthorityRequest\032&.rpcapi.ApplyMeta" +
+      "etMetadataAuthority\"`\n%GetMetadataAuthor" +
+      "ityListByUserRequest\022\014\n\004user\030\001 \001(\t\022)\n\tus" +
+      "er_type\030\002 \001(\0162\026.api.protobuf.UserType2\361\t" +
+      "\n\013AuthService\022~\n\021ApplyIdentityJoin\022 .rpc" +
+      "api.ApplyIdentityJoinRequest\032\034.api.proto" +
+      "buf.SimpleResponse\")\202\323\344\223\002#\"\036/carrier/v1/" +
+      "auth/applyIdentity:\001*\022v\n\022RevokeIdentityJ" +
+      "oin\022\026.google.protobuf.Empty\032\034.api.protob" +
+      "uf.SimpleResponse\"*\202\323\344\223\002$\"\037/carrier/v1/a" +
+      "uth/revokeIdentity:\001*\022s\n\017GetNodeIdentity" +
+      "\022\026.google.protobuf.Empty\032\037.rpcapi.GetNod" +
+      "eIdentityResponse\"\'\202\323\344\223\002!\"\034/carrier/v1/a" +
+      "uth/getIdentity:\001*\022t\n\017GetIdentityList\022\026." +
+      "google.protobuf.Empty\032\037.rpcapi.GetIdenti" +
+      "tyListResponse\"(\202\323\344\223\002\"\"\035/carrier/v1/auth" +
+      "/identityList:\001*\022\226\001\n\026ApplyMetadataAuthor" +
+      "ity\022%.rpcapi.ApplyMetadataAuthorityReque" +
+      "st\032&.rpcapi.ApplyMetadataAuthorityRespon" +
+      "se\"-\202\323\344\223\002\'\"\"/carrier/v1/auth/applyMetaDa" +
+      "taAuth:\001*\022\217\001\n\027RevokeMetadataAuthority\022&." +
+      "rpcapi.RevokeMetadataAuthorityRequest\032\034." +
+      "api.protobuf.SimpleResponse\".\202\323\344\223\002(\"#/ca" +
+      "rrier/v1/auth/revokeMetaDataAuth:\001*\022\226\001\n\026" +
+      "AuditMetadataAuthority\022%.rpcapi.AuditMet" +
+      "adataAuthorityRequest\032&.rpcapi.AuditMeta" +
       "dataAuthorityResponse\"-\202\323\344\223\002\'\"\"/carrier/" +
-      "v1/auth/applyMetaDataAuth:\001*\022\226\001\n\026AuditMe" +
-      "tadataAuthority\022%.rpcapi.AuditMetadataAu" +
-      "thorityRequest\032&.rpcapi.AuditMetadataAut" +
-      "horityResponse\"-\202\323\344\223\002\'\"\"/carrier/v1/auth" +
-      "/auditMetaDataAuth:\001*\022\212\001\n\030GetMetadataAut" +
-      "horityList\022\026.google.protobuf.Empty\032(.rpc" +
-      "api.GetMetadataAuthorityListResponse\",\202\323" +
-      "\344\223\002&\"!/carrier/v1/auth/metaDataAuthList:" +
-      "\001*\022~\n\021ApplyIdentityJoin\022 .rpcapi.ApplyId" +
-      "entityJoinRequest\032\034.api.protobuf.SimpleR" +
-      "esponse\")\202\323\344\223\002#\"\036/carrier/v1/auth/applyI" +
-      "dentity:\001*\022v\n\022RevokeIdentityJoin\022\026.googl" +
-      "e.protobuf.Empty\032\034.api.protobuf.SimpleRe" +
-      "sponse\"*\202\323\344\223\002$\"\037/carrier/v1/auth/revokeI" +
-      "dentity:\001*\022s\n\017GetNodeIdentity\022\026.google.p" +
-      "rotobuf.Empty\032\037.rpcapi.GetNodeIdentityRe" +
-      "sponse\"\'\202\323\344\223\002!\"\034/carrier/v1/auth/getIden" +
-      "tity:\001*\022t\n\017GetIdentityList\022\026.google.prot" +
-      "obuf.Empty\032\037.rpcapi.GetIdentityListRespo" +
-      "nse\"(\202\323\344\223\002\"\"\035/carrier/v1/auth/identityLi" +
-      "st:\001*B:\n(com.platon.rosettanet.admin.grp" +
-      "c.serviceB\016AuthRpcMessageb\006proto3"
+      "v1/auth/auditMetaDataAuth:\001*\022\212\001\n\030GetMeta" +
+      "dataAuthorityList\022\026.google.protobuf.Empt" +
+      "y\032(.rpcapi.GetMetadataAuthorityListRespo" +
+      "nse\",\202\323\344\223\002&\"!/carrier/v1/auth/metaDataAu" +
+      "thList:\001*\022\255\001\n\036GetMetadataAuthorityListBy" +
+      "User\022-.rpcapi.GetMetadataAuthorityListBy" +
+      "UserRequest\032(.rpcapi.GetMetadataAuthorit" +
+      "yListResponse\"2\202\323\344\223\002,\"\'/carrier/v1/auth/" +
+      "metaDataAuthListByUser:\001*B:\n(com.platon." +
+      "rosettanet.admin.grpc.serviceB\016AuthRpcMe" +
+      "ssageb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -9324,30 +11920,42 @@ public final class AuthRpcMessage {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_ApplyMetadataAuthorityResponse_descriptor,
         new java.lang.String[] { "Status", "Msg", "MetadataAuthId", });
-    internal_static_rpcapi_AuditMetadataAuthorityRequest_descriptor =
+    internal_static_rpcapi_RevokeMetadataAuthorityRequest_descriptor =
       getDescriptor().getMessageTypes().get(5);
+    internal_static_rpcapi_RevokeMetadataAuthorityRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_RevokeMetadataAuthorityRequest_descriptor,
+        new java.lang.String[] { "User", "UserType", "MetadataAuthId", "Sign", });
+    internal_static_rpcapi_AuditMetadataAuthorityRequest_descriptor =
+      getDescriptor().getMessageTypes().get(6);
     internal_static_rpcapi_AuditMetadataAuthorityRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_AuditMetadataAuthorityRequest_descriptor,
-        new java.lang.String[] { "MetadataAuthId", "Audit", });
+        new java.lang.String[] { "MetadataAuthId", "Audit", "Suggestion", });
     internal_static_rpcapi_AuditMetadataAuthorityResponse_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_rpcapi_AuditMetadataAuthorityResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_AuditMetadataAuthorityResponse_descriptor,
         new java.lang.String[] { "Status", "Msg", "Audit", });
     internal_static_rpcapi_GetMetadataAuthority_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_rpcapi_GetMetadataAuthority_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetMetadataAuthority_descriptor,
-        new java.lang.String[] { "MetadataAuthId", "User", "UserType", "Auth", "Audit", "ApplyAt", "AuditAt", });
+        new java.lang.String[] { "MetadataAuthId", "User", "UserType", "Auth", "AuditOption", "AuditSuggestion", "UsedQuo", "ApplyAt", "AuditAt", "State", });
     internal_static_rpcapi_GetMetadataAuthorityListResponse_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_rpcapi_GetMetadataAuthorityListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpcapi_GetMetadataAuthorityListResponse_descriptor,
         new java.lang.String[] { "Status", "Msg", "List", });
+    internal_static_rpcapi_GetMetadataAuthorityListByUserRequest_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_rpcapi_GetMetadataAuthorityListByUserRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpcapi_GetMetadataAuthorityListByUserRequest_descriptor,
+        new java.lang.String[] { "User", "UserType", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();
     registry.add(com.platon.rosettanet.admin.grpc.service.AnnotationsProto.http);
