@@ -1,6 +1,7 @@
 package com.platon.rosettanet.admin.grpc.client;
 
 import cn.hutool.json.JSONUtil;
+import com.platon.rosettanet.admin.dao.enums.FileTypeEnum;
 import com.platon.rosettanet.admin.grpc.entity.CommonResp;
 import com.platon.rosettanet.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.rosettanet.admin.grpc.entity.YarnGetNodeInfoResp;
@@ -47,7 +48,7 @@ public class YarnClientTest extends BaseClientTest{
 //        log.info(JSONUtil.toJsonStr(resp));
 
         long size = 10*1024*1024*1024*1024*1024;
-        YarnAvailableDataNodeResp resp = yarnClient.getAvailableDataNode(size, "csv");
+        YarnAvailableDataNodeResp resp = yarnClient.getAvailableDataNode(size, FileTypeEnum.FILETYPE_CSV);
         log.info(JSONUtil.toJsonStr(resp));
     }
 

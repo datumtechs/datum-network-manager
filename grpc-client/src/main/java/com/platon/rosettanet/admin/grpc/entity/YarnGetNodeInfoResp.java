@@ -39,6 +39,6 @@ public class YarnGetNodeInfoResp extends CommonResp{
     private String externalPort; // 调度服务的外网 port, 给 外部做p2p用
     private String identityType; // 身份认证标识的类型 (ca 或者 did)
     private String identityId;   // 身份认证标识的id
-    private String state;         // 调度服务自身的状态信息 (active: 活跃; leave: 离开网络; join: 加入网络 unuseful: 不可用)
+    private Integer state;         // 调度服务自身的状态信息 (0:unknown未知、1: active活跃、2:leave: 离开网络、3:join加入网络 4:unuseful不可用)
     private String name;          // 组织的Name
 }

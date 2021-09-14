@@ -1,5 +1,6 @@
 package com.platon.rosettanet.admin.grpc.client;
 
+import com.google.protobuf.Empty;
 import com.platon.rosettanet.admin.dao.entity.GlobalPower;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
@@ -54,7 +55,7 @@ public class PowerClient {
         }
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
-        return jobNodeResponse.getJobNode();
+        return jobNodeResponse.getNode();
     }
 
     /**
@@ -83,7 +84,7 @@ public class PowerClient {
         }
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
-        return jobNodeResponse.getJobNode();
+        return jobNodeResponse.getNode();
     }
 
     /**
@@ -92,7 +93,7 @@ public class PowerClient {
     public void deletePowerNode(String powerNodeId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        CommonMessage.SimpleResponseCode simpleResponseCode;
+        SimpleResponse simpleResponseCode;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -123,7 +124,7 @@ public class PowerClient {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams jobNodeListRequest = CommonMessage.EmptyGetParams.newBuilder().build();
+            Empty jobNodeListRequest = Empty.newBuilder().build();
             //3.调用rpc,获取response
             jobNodeListResponse = YarnServiceGrpc.newBlockingStub(channel).getJobNodeList(jobNodeListRequest);
             //4.处理response
@@ -171,7 +172,7 @@ public class PowerClient {
     public void revokePower(String powerId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        CommonMessage.SimpleResponseCode revokePowerResponse;
+        SimpleResponse revokePowerResponse;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -203,7 +204,7 @@ public class PowerClient {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams emptyGetParams = CommonMessage.EmptyGetParams.newBuilder().build();
+            Empty emptyGetParams = Empty.newBuilder().build();
             //3.调用rpc,获取response
             getSingleDetailListResponse = PowerServiceGrpc.newBlockingStub(channel).getPowerSingleDetailList(emptyGetParams);
             //4.处理response
@@ -228,9 +229,7 @@ public class PowerClient {
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
-                    .newBuilder()
-                    .build();
+            Empty request = Empty.newBuilder().build();
             //3.调用rpc,获取response
             PowerRpcMessage.GetPowerTotalDetailListResponse response = PowerServiceGrpc.newBlockingStub(channel).getPowerTotalDetailList(request);
             //4.处理response
@@ -238,9 +237,9 @@ public class PowerClient {
             List<GlobalPower> globalPowerList = new ArrayList<>();
             powerList.forEach(powerResponse -> {
                 // 算力拥有者信息
-                CommonMessage.OrganizationIdentityInfo owner = powerResponse.getOwner();
+                Organization owner = powerResponse.getOwner();
                 String identityId = owner.getIdentityId();
-                String orgName = owner.getName();
+                String orgName = owner.getNodeName();
     //            //  总算力详情
     //            message PowerTotalDetail {
     //                ResourceUsedDetailShow information        = 1;                 // 算力实况
@@ -249,7 +248,7 @@ public class PowerClient {
     //                repeated PowerTask     tasks              = 4;                       // 算力上正在执行的任务详情信息
     //                string                 state              = 5;                       // 算力状态 (create: 还未发布的算力; release: 已发布的算力; revoke: 已撤销的算力)
     //            }
-                PowerRpcMessage.PowerTotalDetail powerDetail = powerResponse.getPower();
+                PowerUsageDetail powerDetail = powerResponse.getPower();
     //            message ResourceUsedDetailShow {
     //                uint64 total_mem       = 2;             // 服务系统的总内存 (单位: byte)
     //                uint64 used_mem        = 3;              // 服务系统的已用内存 (单位: byte)
@@ -258,7 +257,7 @@ public class PowerClient {
     //                uint64 total_bandwidth = 6;       // 服务的总带宽数 (单位: bps)
     //                uint64 used_bandwidth  = 7;        // 服务的已用带宽数 (单位: bps)
     //            }
-                CommonMessage.ResourceUsedDetail information = powerDetail.getInformation();// 算力实况
+                ResourceUsageOverview information = powerDetail.getInformation();// 算力实况
                 GlobalPower globalPower = new GlobalPower();
                 globalPower.setIdentityId(identityId);
                 globalPower.setOrgName(orgName);

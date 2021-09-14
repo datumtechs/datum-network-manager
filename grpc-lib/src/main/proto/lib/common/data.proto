@@ -1,0 +1,18 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.platon.rosettanet.admin.grpc.service";
+
+package api.protobuf;
+
+
+// 任务需要花费的资源声明
+message TaskResourceCostDeclare {
+  // 任务所需的内存 (单位: byte)
+  uint64 memory = 1;
+  // 任务所需的核数 (单位: 个)
+  uint32 processor = 2;
+  // 任务所需的带宽 (单位: bps)
+  uint64 bandwidth = 3;
+  // 任务所需的运行时长 (单位: ms)
+  uint64 duration = 4;
+}

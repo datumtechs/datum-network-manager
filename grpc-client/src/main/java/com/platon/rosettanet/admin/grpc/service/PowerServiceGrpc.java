@@ -5,13 +5,14 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  * <pre>
  * ## 算力 相关接口
- * /           【注意】 算力和元数据 不一样, 对外面人来说, 算力只需要知道总的, 而元数据则需要知道单个单个的;
- *                    对自己来说, 算力和元数据都需要知道单个单个的.
+ * /           【注意】 算力和元数据 不一样,
+ *                    查看外部组织时, 只需要知道外部组织的总算力, 而外部组织的元数据则需要知道单个单个的;
+ *                    查看自己组织时, 自己组织的算力和元数据都需要知道单个单个的.
  * </pre>
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.38.0)",
-    comments = "Source: carrier/api/power_rpc_api.proto")
+    comments = "Source: lib/api/power_rpc_api.proto")
 public final class PowerServiceGrpc {
 
   private PowerServiceGrpc() {}
@@ -19,27 +20,27 @@ public final class PowerServiceGrpc {
   public static final String SERVICE_NAME = "rpcapi.PowerService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+  private static volatile io.grpc.MethodDescriptor<com.google.protobuf.Empty,
       com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> getGetPowerTotalDetailListMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetPowerTotalDetailList",
-      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.class,
+      requestType = com.google.protobuf.Empty.class,
       responseType = com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+  public static io.grpc.MethodDescriptor<com.google.protobuf.Empty,
       com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> getGetPowerTotalDetailListMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> getGetPowerTotalDetailListMethod;
+    io.grpc.MethodDescriptor<com.google.protobuf.Empty, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> getGetPowerTotalDetailListMethod;
     if ((getGetPowerTotalDetailListMethod = PowerServiceGrpc.getGetPowerTotalDetailListMethod) == null) {
       synchronized (PowerServiceGrpc.class) {
         if ((getGetPowerTotalDetailListMethod = PowerServiceGrpc.getGetPowerTotalDetailListMethod) == null) {
           PowerServiceGrpc.getGetPowerTotalDetailListMethod = getGetPowerTotalDetailListMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.google.protobuf.Empty, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetPowerTotalDetailList"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.getDefaultInstance()))
+                  com.google.protobuf.Empty.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse.getDefaultInstance()))
               .setSchemaDescriptor(new PowerServiceMethodDescriptorSupplier("GetPowerTotalDetailList"))
@@ -50,27 +51,27 @@ public final class PowerServiceGrpc {
     return getGetPowerTotalDetailListMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+  private static volatile io.grpc.MethodDescriptor<com.google.protobuf.Empty,
       com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> getGetPowerSingleDetailListMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetPowerSingleDetailList",
-      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.class,
+      requestType = com.google.protobuf.Empty.class,
       responseType = com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+  public static io.grpc.MethodDescriptor<com.google.protobuf.Empty,
       com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> getGetPowerSingleDetailListMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> getGetPowerSingleDetailListMethod;
+    io.grpc.MethodDescriptor<com.google.protobuf.Empty, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> getGetPowerSingleDetailListMethod;
     if ((getGetPowerSingleDetailListMethod = PowerServiceGrpc.getGetPowerSingleDetailListMethod) == null) {
       synchronized (PowerServiceGrpc.class) {
         if ((getGetPowerSingleDetailListMethod = PowerServiceGrpc.getGetPowerSingleDetailListMethod) == null) {
           PowerServiceGrpc.getGetPowerSingleDetailListMethod = getGetPowerSingleDetailListMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.google.protobuf.Empty, com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetPowerSingleDetailList"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.getDefaultInstance()))
+                  com.google.protobuf.Empty.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse.getDefaultInstance()))
               .setSchemaDescriptor(new PowerServiceMethodDescriptorSupplier("GetPowerSingleDetailList"))
@@ -113,28 +114,28 @@ public final class PowerServiceGrpc {
   }
 
   private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest,
-      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getRevokePowerMethod;
+      com.platon.rosettanet.admin.grpc.service.SimpleResponse> getRevokePowerMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "RevokePower",
       requestType = com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest.class,
-      responseType = com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.SimpleResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest,
-      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getRevokePowerMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getRevokePowerMethod;
+      com.platon.rosettanet.admin.grpc.service.SimpleResponse> getRevokePowerMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest, com.platon.rosettanet.admin.grpc.service.SimpleResponse> getRevokePowerMethod;
     if ((getRevokePowerMethod = PowerServiceGrpc.getRevokePowerMethod) == null) {
       synchronized (PowerServiceGrpc.class) {
         if ((getRevokePowerMethod = PowerServiceGrpc.getRevokePowerMethod) == null) {
           PowerServiceGrpc.getRevokePowerMethod = getRevokePowerMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest, com.platon.rosettanet.admin.grpc.service.SimpleResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "RevokePower"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.SimpleResponse.getDefaultInstance()))
               .setSchemaDescriptor(new PowerServiceMethodDescriptorSupplier("RevokePower"))
               .build();
         }
@@ -190,28 +191,29 @@ public final class PowerServiceGrpc {
   /**
    * <pre>
    * ## 算力 相关接口
-   * /           【注意】 算力和元数据 不一样, 对外面人来说, 算力只需要知道总的, 而元数据则需要知道单个单个的;
-   *                    对自己来说, 算力和元数据都需要知道单个单个的.
+   * /           【注意】 算力和元数据 不一样,
+   *                    查看外部组织时, 只需要知道外部组织的总算力, 而外部组织的元数据则需要知道单个单个的;
+   *                    查看自己组织时, 自己组织的算力和元数据都需要知道单个单个的.
    * </pre>
    */
   public static abstract class PowerServiceImplBase implements io.grpc.BindableService {
 
     /**
      * <pre>
-     * 查看各个节点的总算力详情列表
+     * 查看全网各个组织的总算力详情列表
      * </pre>
      */
-    public void getPowerTotalDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+    public void getPowerTotalDetailList(com.google.protobuf.Empty request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetPowerTotalDetailListMethod(), responseObserver);
     }
 
     /**
      * <pre>
-     * 查看某个节点各个单算力详情列表
+     * 查看本组织的各个单算力详情列表
      * </pre>
      */
-    public void getPowerSingleDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+    public void getPowerSingleDetailList(com.google.protobuf.Empty request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetPowerSingleDetailListMethod(), responseObserver);
     }
@@ -232,7 +234,7 @@ public final class PowerServiceGrpc {
      * </pre>
      */
     public void revokePower(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRevokePowerMethod(), responseObserver);
     }
 
@@ -242,14 +244,14 @@ public final class PowerServiceGrpc {
             getGetPowerTotalDetailListMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+                com.google.protobuf.Empty,
                 com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse>(
                   this, METHODID_GET_POWER_TOTAL_DETAIL_LIST)))
           .addMethod(
             getGetPowerSingleDetailListMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+                com.google.protobuf.Empty,
                 com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse>(
                   this, METHODID_GET_POWER_SINGLE_DETAIL_LIST)))
           .addMethod(
@@ -264,7 +266,7 @@ public final class PowerServiceGrpc {
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
                 com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest,
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>(
+                com.platon.rosettanet.admin.grpc.service.SimpleResponse>(
                   this, METHODID_REVOKE_POWER)))
           .build();
     }
@@ -273,8 +275,9 @@ public final class PowerServiceGrpc {
   /**
    * <pre>
    * ## 算力 相关接口
-   * /           【注意】 算力和元数据 不一样, 对外面人来说, 算力只需要知道总的, 而元数据则需要知道单个单个的;
-   *                    对自己来说, 算力和元数据都需要知道单个单个的.
+   * /           【注意】 算力和元数据 不一样,
+   *                    查看外部组织时, 只需要知道外部组织的总算力, 而外部组织的元数据则需要知道单个单个的;
+   *                    查看自己组织时, 自己组织的算力和元数据都需要知道单个单个的.
    * </pre>
    */
   public static final class PowerServiceStub extends io.grpc.stub.AbstractAsyncStub<PowerServiceStub> {
@@ -291,10 +294,10 @@ public final class PowerServiceGrpc {
 
     /**
      * <pre>
-     * 查看各个节点的总算力详情列表
+     * 查看全网各个组织的总算力详情列表
      * </pre>
      */
-    public void getPowerTotalDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+    public void getPowerTotalDetailList(com.google.protobuf.Empty request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetPowerTotalDetailListMethod(), getCallOptions()), request, responseObserver);
@@ -302,10 +305,10 @@ public final class PowerServiceGrpc {
 
     /**
      * <pre>
-     * 查看某个节点各个单算力详情列表
+     * 查看本组织的各个单算力详情列表
      * </pre>
      */
-    public void getPowerSingleDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+    public void getPowerSingleDetailList(com.google.protobuf.Empty request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetPowerSingleDetailListMethod(), getCallOptions()), request, responseObserver);
@@ -328,7 +331,7 @@ public final class PowerServiceGrpc {
      * </pre>
      */
     public void revokePower(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getRevokePowerMethod(), getCallOptions()), request, responseObserver);
     }
@@ -337,8 +340,9 @@ public final class PowerServiceGrpc {
   /**
    * <pre>
    * ## 算力 相关接口
-   * /           【注意】 算力和元数据 不一样, 对外面人来说, 算力只需要知道总的, 而元数据则需要知道单个单个的;
-   *                    对自己来说, 算力和元数据都需要知道单个单个的.
+   * /           【注意】 算力和元数据 不一样,
+   *                    查看外部组织时, 只需要知道外部组织的总算力, 而外部组织的元数据则需要知道单个单个的;
+   *                    查看自己组织时, 自己组织的算力和元数据都需要知道单个单个的.
    * </pre>
    */
   public static final class PowerServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<PowerServiceBlockingStub> {
@@ -355,20 +359,20 @@ public final class PowerServiceGrpc {
 
     /**
      * <pre>
-     * 查看各个节点的总算力详情列表
+     * 查看全网各个组织的总算力详情列表
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse getPowerTotalDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
+    public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse getPowerTotalDetailList(com.google.protobuf.Empty request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetPowerTotalDetailListMethod(), getCallOptions(), request);
     }
 
     /**
      * <pre>
-     * 查看某个节点各个单算力详情列表
+     * 查看本组织的各个单算力详情列表
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse getPowerSingleDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
+    public com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse getPowerSingleDetailList(com.google.protobuf.Empty request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetPowerSingleDetailListMethod(), getCallOptions(), request);
     }
@@ -388,7 +392,7 @@ public final class PowerServiceGrpc {
      * 停用算力 (撤销算力)
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode revokePower(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest request) {
+    public com.platon.rosettanet.admin.grpc.service.SimpleResponse revokePower(com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getRevokePowerMethod(), getCallOptions(), request);
     }
@@ -397,8 +401,9 @@ public final class PowerServiceGrpc {
   /**
    * <pre>
    * ## 算力 相关接口
-   * /           【注意】 算力和元数据 不一样, 对外面人来说, 算力只需要知道总的, 而元数据则需要知道单个单个的;
-   *                    对自己来说, 算力和元数据都需要知道单个单个的.
+   * /           【注意】 算力和元数据 不一样,
+   *                    查看外部组织时, 只需要知道外部组织的总算力, 而外部组织的元数据则需要知道单个单个的;
+   *                    查看自己组织时, 自己组织的算力和元数据都需要知道单个单个的.
    * </pre>
    */
   public static final class PowerServiceFutureStub extends io.grpc.stub.AbstractFutureStub<PowerServiceFutureStub> {
@@ -415,22 +420,22 @@ public final class PowerServiceGrpc {
 
     /**
      * <pre>
-     * 查看各个节点的总算力详情列表
+     * 查看全网各个组织的总算力详情列表
      * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse> getPowerTotalDetailList(
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
+        com.google.protobuf.Empty request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetPowerTotalDetailListMethod(), getCallOptions()), request);
     }
 
     /**
      * <pre>
-     * 查看某个节点各个单算力详情列表
+     * 查看本组织的各个单算力详情列表
      * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse> getPowerSingleDetailList(
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
+        com.google.protobuf.Empty request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetPowerSingleDetailListMethod(), getCallOptions()), request);
     }
@@ -451,7 +456,7 @@ public final class PowerServiceGrpc {
      * 停用算力 (撤销算力)
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> revokePower(
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.SimpleResponse> revokePower(
         com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getRevokePowerMethod(), getCallOptions()), request);
@@ -481,11 +486,11 @@ public final class PowerServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_GET_POWER_TOTAL_DETAIL_LIST:
-          serviceImpl.getPowerTotalDetailList((com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams) request,
+          serviceImpl.getPowerTotalDetailList((com.google.protobuf.Empty) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerTotalDetailListResponse>) responseObserver);
           break;
         case METHODID_GET_POWER_SINGLE_DETAIL_LIST:
-          serviceImpl.getPowerSingleDetailList((com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams) request,
+          serviceImpl.getPowerSingleDetailList((com.google.protobuf.Empty) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.GetPowerSingleDetailListResponse>) responseObserver);
           break;
         case METHODID_PUBLISH_POWER:
@@ -494,7 +499,7 @@ public final class PowerServiceGrpc {
           break;
         case METHODID_REVOKE_POWER:
           serviceImpl.revokePower((com.platon.rosettanet.admin.grpc.service.PowerRpcMessage.RevokePowerRequest) request,
-              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();

@@ -1,17 +1,13 @@
 package com.platon.rosettanet.admin.grpc.client;
 
-import com.platon.rosettanet.admin.grpc.client.AuthClient;
 import com.platon.rosettanet.admin.grpc.service.AuthRpcMessage;
 import com.platon.rosettanet.admin.grpc.service.AuthServiceGrpc;
 import com.platon.rosettanet.admin.grpc.service.CommonMessage;
+import com.platon.rosettanet.admin.grpc.service.SimpleResponse;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder;
 import io.grpc.stub.StreamObserver;
-import org.junit.Before;
 import org.junit.Test;
-
-import java.io.IOException;
 
 
 /**
@@ -47,7 +43,7 @@ public class DemoClientTest {
         Channel channel =  ManagedChannelBuilder.forAddress("192.168.21.164", 4444).usePlaintext().build();
 
         AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest.newBuilder().build();
-        CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
+        SimpleResponse responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
         System.out.println("###############" + responseCode.getMsg());
         System.out.println("111111111");
     }
@@ -59,10 +55,10 @@ public class DemoClientTest {
     static class AuthServiceImpl extends AuthServiceGrpc.AuthServiceImplBase {
 
         @Override
-        public void applyIdentityJoin(AuthRpcMessage.ApplyIdentityJoinRequest request, StreamObserver<CommonMessage.SimpleResponseCode> responseObserver) {
+        public void applyIdentityJoin(AuthRpcMessage.ApplyIdentityJoinRequest request, StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse> responseObserver) {
             System.out.println(request);
             CommonMessage.SimpleResponseCode code = CommonMessage.SimpleResponseCode.newBuilder().setMsg("goooooooooooo").setStatus(0).build();
-            responseObserver.onNext(code);
+            //responseObserver.onNext(code);
             responseObserver.onCompleted();
         }
     }

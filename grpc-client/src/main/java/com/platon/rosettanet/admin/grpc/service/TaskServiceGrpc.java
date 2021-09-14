@@ -9,7 +9,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.38.0)",
-    comments = "Source: carrier/api/task_rpc_api.proto")
+    comments = "Source: lib/api/task_rpc_api.proto")
 public final class TaskServiceGrpc {
 
   private TaskServiceGrpc() {}
@@ -17,27 +17,27 @@ public final class TaskServiceGrpc {
   public static final String SERVICE_NAME = "rpcapi.TaskService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+  private static volatile io.grpc.MethodDescriptor<com.google.protobuf.Empty,
       com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse> getGetTaskDetailListMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetTaskDetailList",
-      requestType = com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.class,
+      requestType = com.google.protobuf.Empty.class,
       responseType = com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+  public static io.grpc.MethodDescriptor<com.google.protobuf.Empty,
       com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse> getGetTaskDetailListMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse> getGetTaskDetailListMethod;
+    io.grpc.MethodDescriptor<com.google.protobuf.Empty, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse> getGetTaskDetailListMethod;
     if ((getGetTaskDetailListMethod = TaskServiceGrpc.getGetTaskDetailListMethod) == null) {
       synchronized (TaskServiceGrpc.class) {
         if ((getGetTaskDetailListMethod = TaskServiceGrpc.getGetTaskDetailListMethod) == null) {
           TaskServiceGrpc.getGetTaskDetailListMethod = getGetTaskDetailListMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.google.protobuf.Empty, com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetTaskDetailList"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams.getDefaultInstance()))
+                  com.google.protobuf.Empty.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse.getDefaultInstance()))
               .setSchemaDescriptor(new TaskServiceMethodDescriptorSupplier("GetTaskDetailList"))
@@ -142,28 +142,28 @@ public final class TaskServiceGrpc {
   }
 
   private static volatile io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest,
-      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getTerminateTaskMethod;
+      com.platon.rosettanet.admin.grpc.service.SimpleResponse> getTerminateTaskMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "TerminateTask",
       requestType = com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.class,
-      responseType = com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.class,
+      responseType = com.platon.rosettanet.admin.grpc.service.SimpleResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest,
-      com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getTerminateTaskMethod() {
-    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> getTerminateTaskMethod;
+      com.platon.rosettanet.admin.grpc.service.SimpleResponse> getTerminateTaskMethod() {
+    io.grpc.MethodDescriptor<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest, com.platon.rosettanet.admin.grpc.service.SimpleResponse> getTerminateTaskMethod;
     if ((getTerminateTaskMethod = TaskServiceGrpc.getTerminateTaskMethod) == null) {
       synchronized (TaskServiceGrpc.class) {
         if ((getTerminateTaskMethod = TaskServiceGrpc.getTerminateTaskMethod) == null) {
           TaskServiceGrpc.getTerminateTaskMethod = getTerminateTaskMethod =
-              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest, com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>newBuilder()
+              io.grpc.MethodDescriptor.<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest, com.platon.rosettanet.admin.grpc.service.SimpleResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "TerminateTask"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode.getDefaultInstance()))
+                  com.platon.rosettanet.admin.grpc.service.SimpleResponse.getDefaultInstance()))
               .setSchemaDescriptor(new TaskServiceMethodDescriptorSupplier("TerminateTask"))
               .build();
         }
@@ -225,10 +225,10 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
-     * 查看全部任务详情列表
+     * 查看本组织参与过的全部任务详情列表
      * </pre>
      */
-    public void getTaskDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+    public void getTaskDetailList(com.google.protobuf.Empty request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetTaskDetailListMethod(), responseObserver);
     }
@@ -245,7 +245,7 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
-     * 查看某个任务的全部事件列表
+     * 查看多个任务的全部事件列表
      * </pre>
      */
     public void getTaskEventListByTaskIds(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest request,
@@ -269,7 +269,7 @@ public final class TaskServiceGrpc {
      * </pre>
      */
     public void terminateTask(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getTerminateTaskMethod(), responseObserver);
     }
 
@@ -279,7 +279,7 @@ public final class TaskServiceGrpc {
             getGetTaskDetailListMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams,
+                com.google.protobuf.Empty,
                 com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse>(
                   this, METHODID_GET_TASK_DETAIL_LIST)))
           .addMethod(
@@ -308,7 +308,7 @@ public final class TaskServiceGrpc {
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
                 com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest,
-                com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>(
+                com.platon.rosettanet.admin.grpc.service.SimpleResponse>(
                   this, METHODID_TERMINATE_TASK)))
           .build();
     }
@@ -333,10 +333,10 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
-     * 查看全部任务详情列表
+     * 查看本组织参与过的全部任务详情列表
      * </pre>
      */
-    public void getTaskDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request,
+    public void getTaskDetailList(com.google.protobuf.Empty request,
         io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetTaskDetailListMethod(), getCallOptions()), request, responseObserver);
@@ -355,7 +355,7 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
-     * 查看某个任务的全部事件列表
+     * 查看多个任务的全部事件列表
      * </pre>
      */
     public void getTaskEventListByTaskIds(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest request,
@@ -381,7 +381,7 @@ public final class TaskServiceGrpc {
      * </pre>
      */
     public void terminateTask(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest request,
-        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> responseObserver) {
+        io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getTerminateTaskMethod(), getCallOptions()), request, responseObserver);
     }
@@ -406,10 +406,10 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
-     * 查看全部任务详情列表
+     * 查看本组织参与过的全部任务详情列表
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse getTaskDetailList(com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
+    public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse getTaskDetailList(com.google.protobuf.Empty request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetTaskDetailListMethod(), getCallOptions(), request);
     }
@@ -426,7 +426,7 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
-     * 查看某个任务的全部事件列表
+     * 查看多个任务的全部事件列表
      * </pre>
      */
     public com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse getTaskEventListByTaskIds(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListByTaskIdsRequest request) {
@@ -449,7 +449,7 @@ public final class TaskServiceGrpc {
      * 终止任务
      * </pre>
      */
-    public com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode terminateTask(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest request) {
+    public com.platon.rosettanet.admin.grpc.service.SimpleResponse terminateTask(com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getTerminateTaskMethod(), getCallOptions(), request);
     }
@@ -474,11 +474,11 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
-     * 查看全部任务详情列表
+     * 查看本组织参与过的全部任务详情列表
      * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse> getTaskDetailList(
-        com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams request) {
+        com.google.protobuf.Empty request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetTaskDetailListMethod(), getCallOptions()), request);
     }
@@ -496,7 +496,7 @@ public final class TaskServiceGrpc {
 
     /**
      * <pre>
-     * 查看某个任务的全部事件列表
+     * 查看多个任务的全部事件列表
      * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskEventListResponse> getTaskEventListByTaskIds(
@@ -521,7 +521,7 @@ public final class TaskServiceGrpc {
      * 终止任务
      * </pre>
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode> terminateTask(
+    public com.google.common.util.concurrent.ListenableFuture<com.platon.rosettanet.admin.grpc.service.SimpleResponse> terminateTask(
         com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getTerminateTaskMethod(), getCallOptions()), request);
@@ -552,7 +552,7 @@ public final class TaskServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_GET_TASK_DETAIL_LIST:
-          serviceImpl.getTaskDetailList((com.platon.rosettanet.admin.grpc.service.CommonMessage.EmptyGetParams) request,
+          serviceImpl.getTaskDetailList((com.google.protobuf.Empty) request,
               (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse>) responseObserver);
           break;
         case METHODID_GET_TASK_EVENT_LIST:
@@ -569,7 +569,7 @@ public final class TaskServiceGrpc {
           break;
         case METHODID_TERMINATE_TASK:
           serviceImpl.terminateTask((com.platon.rosettanet.admin.grpc.service.TaskRpcMessage.TerminateTaskRequest) request,
-              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.CommonMessage.SimpleResponseCode>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.platon.rosettanet.admin.grpc.service.SimpleResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();

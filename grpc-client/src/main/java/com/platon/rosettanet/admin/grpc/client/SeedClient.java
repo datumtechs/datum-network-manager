@@ -1,16 +1,13 @@
 package com.platon.rosettanet.admin.grpc.client;
 
-import com.platon.rosettanet.admin.dao.entity.GlobalPower;
+import com.google.protobuf.Empty;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
 import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
 import com.platon.rosettanet.admin.grpc.service.*;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Author liushuyu
@@ -52,8 +49,8 @@ public class SeedClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse.toString());
-        return seedNodeResponse.getSeedPeer();
+        log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse);
+        return seedNodeResponse.getNode();
     }
 
     /**
@@ -81,8 +78,8 @@ public class SeedClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse.toString());
-        return seedNodeResponse.getSeedPeer();
+        log.info("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse);
+        return seedNodeResponse.getNode();
     }
 
     /**
@@ -91,7 +88,7 @@ public class SeedClient {
     public void deleteSeedNode(String seedNodeId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        CommonMessage.SimpleResponseCode simpleResponseCode;
+        SimpleResponse simpleResponseCode;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -109,7 +106,7 @@ public class SeedClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode.toString());
+        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode);
     }
 
     /**
@@ -123,7 +120,7 @@ public class SeedClient {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams seedNodeListRequest = CommonMessage.EmptyGetParams.newBuilder().build();
+            Empty seedNodeListRequest = Empty.newBuilder().build();
             //3.调用rpc,获取response
             seedNodeListResponse = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(seedNodeListRequest);
             //4.处理response
@@ -134,7 +131,7 @@ public class SeedClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("查询计算服务列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeListResponse.toString());
+        log.info("查询计算服务列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeListResponse);
         return seedNodeListResponse;
     }
 }

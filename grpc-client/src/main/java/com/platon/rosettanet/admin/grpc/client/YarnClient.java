@@ -2,13 +2,15 @@ package com.platon.rosettanet.admin.grpc.client;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.google.protobuf.Empty;
 import com.platon.rosettanet.admin.common.exception.ApplicationException;
 import com.platon.rosettanet.admin.common.util.ExceptionUtil;
 import com.platon.rosettanet.admin.dao.entity.DataNode;
+import com.platon.rosettanet.admin.dao.enums.FileTypeEnum;
 import com.platon.rosettanet.admin.grpc.channel.BaseChannelManager;
-import com.platon.rosettanet.admin.grpc.constant.GrpcConstant;
 import com.platon.rosettanet.admin.grpc.entity.*;
-import com.platon.rosettanet.admin.grpc.service.CommonMessage;
+import com.platon.rosettanet.admin.grpc.service.OriginFileType;
+import com.platon.rosettanet.admin.grpc.service.SimpleResponse;
 import com.platon.rosettanet.admin.grpc.service.YarnRpcMessage;
 import com.platon.rosettanet.admin.grpc.service.YarnServiceGrpc;
 import io.grpc.Channel;
@@ -61,7 +63,7 @@ public class YarnClient {
             resp.setStatus(setDataNodeResponse.getStatus());
             resp.setMsg(setDataNodeResponse.getMsg());
             if (GRPC_SUCCESS_CODE == setDataNodeResponse.getStatus()) {
-                YarnRpcMessage.YarnRegisteredPeerDetail resDataNode = setDataNodeResponse.getDataNode();
+                YarnRpcMessage.YarnRegisteredPeerDetail resDataNode = setDataNodeResponse.getNode();
                 if (ObjectUtil.isNotNull(resDataNode)) {
                     RegisteredNodeResp nodeResp = new RegisteredNodeResp();
                     nodeResp.setNodeId(resDataNode.getId());
@@ -101,7 +103,7 @@ public class YarnClient {
             resp.setStatus(setDataNodeResponse.getStatus());
             resp.setMsg(setDataNodeResponse.getMsg());
             if (GRPC_SUCCESS_CODE == setDataNodeResponse.getStatus()) {
-                YarnRpcMessage.YarnRegisteredPeerDetail resDataNode = setDataNodeResponse.getDataNode();
+                YarnRpcMessage.YarnRegisteredPeerDetail resDataNode = setDataNodeResponse.getNode();
                 if (ObjectUtil.isNotNull(resDataNode)) {
                     RegisteredNodeResp nodeResp = new RegisteredNodeResp();
                     nodeResp.setNodeId(resDataNode.getId());
@@ -128,7 +130,7 @@ public class YarnClient {
             YarnRpcMessage.DeleteRegisteredNodeRequest request = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
             log.info("调用删除数据节点调度服务,参数:{}",request);
             //3.调用rpc,获取response
-            CommonMessage.SimpleResponseCode simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
+            SimpleResponse simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
             log.info("调用删除数据节点调度服务,响应结果:{}",simpleResponseCode);
             //4.处理response
             CommonResp resp = new CommonResp();
@@ -150,7 +152,7 @@ public class YarnClient {
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams emptyGetParams = CommonMessage.EmptyGetParams.getDefaultInstance();
+            Empty emptyGetParams = Empty.newBuilder().build();
             log.info("调用获取数据节点列表调度服务");
             //3.调用rpc,获取response
             YarnRpcMessage.GetRegisteredNodeListResponse dataNodeListResp = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
@@ -184,10 +186,7 @@ public class YarnClient {
     /**
      * 根据需要上传的文件大小和类型，获取可用的数据节点信息
      */
-    public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize,String fileType) throws ApplicationException{
-        if(StrUtil.isBlank(fileType)){
-            fileType = "csv";
-        }
+    public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize, FileTypeEnum fileType) throws ApplicationException{
         //1.获取rpc连接
         Channel channel = null;
         try{
@@ -196,7 +195,7 @@ public class YarnClient {
             YarnRpcMessage.QueryAvailableDataNodeRequest request = YarnRpcMessage.QueryAvailableDataNodeRequest
                     .newBuilder()
                     .setFileSize(fileSize)
-                    .setFileType(fileType)
+                    .setFileType(OriginFileType.forNumber(fileType.getValue()))
                     .build();
             //3.调用rpc,获取response
             YarnRpcMessage.QueryAvailableDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).queryAvailableDataNode(request);
@@ -267,9 +266,7 @@ public class YarnClient {
         try{
             channel = channelManager.buildChannel(scheduleIP, schedulePort);
             //2.拼装request
-            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
-                    .newBuilder()
-                    .build();
+            Empty request = Empty.newBuilder().build();
             //3.调用rpc,获取response
             YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
         } catch (Throwable throwable) {
@@ -297,9 +294,7 @@ public class YarnClient {
         try{
             channel = channelManager.buildChannel(scheduleIP, schedulePort);
             //2.拼装request
-            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
-                    .newBuilder()
-                    .build();
+            Empty request = Empty.newBuilder().build();
             //3.调用rpc,获取response
             YarnRpcMessage.GetNodeInfoResponse nodeInfo = YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
             //4.处理response
@@ -320,7 +315,7 @@ public class YarnClient {
             resp.setExternalPort(information.getExternalPort());
             resp.setIdentityType(information.getIdentityType());
             resp.setIdentityId(information.getIdentityId());
-            resp.setState(information.getState());
+            resp.setState(information.getState().getNumber());
             resp.setName(information.getName());
             resp.setStatus(GRPC_SUCCESS_CODE);
             resp.setMsg("成功");

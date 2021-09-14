@@ -6,7 +6,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.38.0)",
-    comments = "Source: fighter/data_svc.proto")
+    comments = "Source: lib/fighter/datasvc/data_svc.proto")
 public final class DataProviderGrpc {
 
   private DataProviderGrpc() {}

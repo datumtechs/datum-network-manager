@@ -1,0 +1,101 @@
+syntax = "proto3";
+// 生成类的包名
+option java_package = "com.platon.rosettanet.admin.grpc.service";
+//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
+option java_outer_classname = "MetaDataRpcMessage";
+
+package rpcapi;
+
+
+import "lib/common/base.proto";
+import "lib/types/metadata.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+//  ------------------------  metadata  ------------------------
+
+// 查询单个组织的单个元数据详情 req
+message GetMetadataDetailRequest {
+  string identity_id = 1;      // 组织的身份标识 (可选, 传""则查询当前组织的元数据)
+  string metadata_id = 2;
+}
+// 查询单个组织的单个元数据详情 resp
+message GetMetadataDetailResponse {
+  api.protobuf.Organization owner = 1;              // 元数据的拥有者
+  types.MetadataDetail      information = 2;        // 元文件详情主体
+}
+
+
+// 数据上架 req
+message PublishMetadataRequest {
+  types.MetadataDetail information = 1;             // 元数据详情
+}
+// 数据上架 resp
+message PublishMetadataResponse {
+  int32  status = 1;                         // 响应码
+  string msg = 2;                            // 错误信息
+  string metadata_id = 3;                   // 元数据id
+}
+
+// 数据下架 req
+message RevokeMetadataRequest {
+  string metadata_id = 1;
+}
+
+// 查看 全网元数据列表 or 某个组织元数据列表 resp
+message GetMetadataDetailListResponse {
+  int32                              status = 1;                      // 响应码
+  string                             msg = 2;                         // 错误信息
+  repeated GetMetadataDetailResponse metadata_list = 3;              // 元数据列表
+}
+
+// 查看某个组织元数据列表 req
+message GetMetadataDetailListByOwnerRequest {
+  string identity_id = 1;             // 组织的身份标识 (可选, 传""则查询当前组织的元数据)
+}
+
+// ## 元数据 相关接口
+service MetadataService {
+
+  // 查看单个元数据详情 (包含 列字段描述)
+  rpc GetMetadataDetail (GetMetadataDetailRequest) returns (GetMetadataDetailResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/metadata/detail"
+      body: "*"
+    };
+  }
+
+  // 查看全网元数据列表
+  rpc GetMetadataDetailList (google.protobuf.Empty) returns (GetMetadataDetailListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/metadata/list"
+      body: "*"
+    };
+  }
+
+  // 查看某个组织元数据列表
+  rpc GetMetadataDetailListByOwner (GetMetadataDetailListByOwnerRequest) returns (GetMetadataDetailListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/metadata/listByOwner"
+      body: "*"
+    };
+  }
+
+  // 发布元数据  (新增和编辑 都是发布新的元数据) <底层根据 原始数据Id -- OriginId 来关联 新的MetaDataId>
+  rpc PublishMetadata (PublishMetadataRequest) returns (PublishMetadataResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/metadata/publish"
+      body: "*"
+    };
+  }
+  // 撤销元数据 (从底层网络撤销)
+  rpc RevokeMetadata (RevokeMetadataRequest) returns (api.protobuf.SimpleResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/metadata/revoke"
+      body: "*"
+    };
+  }
+
+  // 分页拉取摘要列表
+  // 分页拉取详情列表
+}
