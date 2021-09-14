@@ -2,10 +2,12 @@ package com.platon.rosettanet.admin.dao.entity;
 
 import com.platon.rosettanet.admin.dao.BaseDomain;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class LocalDataAuth extends BaseDomain {
 
     //序号

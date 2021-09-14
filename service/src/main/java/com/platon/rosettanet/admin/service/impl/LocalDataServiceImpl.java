@@ -13,6 +13,7 @@ import com.platon.rosettanet.admin.common.context.LocalOrgIdentityCache;
 import com.platon.rosettanet.admin.common.util.ExportFileUtil;
 import com.platon.rosettanet.admin.dao.*;
 import com.platon.rosettanet.admin.dao.entity.*;
+import com.platon.rosettanet.admin.dao.enums.FileTypeEnum;
 import com.platon.rosettanet.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.rosettanet.admin.dao.enums.LocalMetaDataColumnVisibleEnum;
 import com.platon.rosettanet.admin.dao.enums.TaskStatusEnum;
@@ -134,7 +135,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         //### 2.获取可用数据节点
         YarnAvailableDataNodeResp availableDataNode = yarnClient.getAvailableDataNode(
                 detail.getSize(),
-                detail.getFileType());
+                detail.getFileType() == FileTypeEnum.FILETYPE_UNKONW.getValue() ? FileTypeEnum.FILETYPE_UNKONW : FileTypeEnum.FILETYPE_CSV);
         //### 3.上传源文件到数据节点
         DataProviderUploadDataResp dataProviderUploadDataResp = null;
         try {
@@ -342,7 +343,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         if(!LocalDataFileStatusEnum.RELEASED.getStatus().equals(localMetaData.getStatus())){
             throw new ServiceException("元数据未上架");
         }
-        //metaDataClient.revokeMetaData(localMetaData.getMetaDataId());?????????????????????????????
+        metaDataClient.revokeMetaData(localMetaData.getMetaDataId());
         //修改文件发布信息
         LocalMetaData metaData = new LocalMetaData();
         metaData.setId(localMetaData.getId());
@@ -372,8 +373,8 @@ public class LocalDataServiceImpl implements LocalDataService {
         dynamicMap.put(ServiceConstant.LOCAL_DATA_RESOURCE_NAME, localMetaData.getMetaDataName());
         detail.setDynamicFields(dynamicMap);
         //调用grpc
-        //String publishMetaDataId = metaDataClient.publishMetaData(detail);?????????????????????????????
-        String publishMetaDataId = "metadata:0x3426733d8fbd4a27ed26f06b35caa6ac63bca1fc09b98e56e1b262da9a357ffd";
+        String publishMetaDataId = metaDataClient.publishMetaData(detail, localMetaData);
+        //String publishMetaDataId = "metadata:0x3426733d8fbd4a27ed26f06b35caa6ac63bca1fc09b98e56e1b262da9a357ffd";
         if(StrUtil.isBlank(publishMetaDataId)){
             throw new ServiceException("调度服务未返回元数据ID");
         }
@@ -408,7 +409,7 @@ public class LocalDataServiceImpl implements LocalDataService {
             LocalDataFileDetail detail = new LocalDataFileDetail();
             detail.setFileName(fileName);
             detail.setIdentityId(LocalOrgIdentityCache.getIdentityId());
-            detail.setFileType(FileUtil.getSuffix(fileName));//获取文件类型
+            detail.setFileType(FileTypeEnum.FILETYPE_CSV.getValue());//todo 目前只有csv类型
             detail.setSize(file.getSize());
             detail.setHasTitle(hasTitle);
             //导入去掉.csv后缀的文件名称，保存前12个字符作为资源名称
@@ -425,7 +426,7 @@ public class LocalDataServiceImpl implements LocalDataService {
             CsvData csvData = reader.read(isr);
             //### 1.先确定确定有多少行
             int rowCount = csvData.getRowCount();//TODO 如果行数太多了，超过Integer.max会报错
-            detail.setRows(Long.valueOf(rowCount));
+            detail.setRows(rowCount);
             //### 2.如果行数大于0则确定有多少列
             if(rowCount > 0){
                 CsvRow header = csvData.getRow(0);
@@ -499,8 +500,8 @@ public class LocalDataServiceImpl implements LocalDataService {
      * @return
      */
     private boolean isTaskStatusPendAndRunning(Task task){
-        String status = task.getStatus();
-        return TaskStatusEnum.PENDING.getStatus().equals(status) || TaskStatusEnum.RUNNING.getStatus().equals(status);
+        Integer status = task.getStatus();
+        return TaskStatusEnum.PENDING.getValue() == status || TaskStatusEnum.RUNNING.getValue() == status;
     }
 
 }

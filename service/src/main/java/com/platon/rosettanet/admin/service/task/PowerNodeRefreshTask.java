@@ -8,14 +8,10 @@ import com.platon.rosettanet.admin.dao.entity.LocalPowerHistory;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.rosettanet.admin.dao.entity.LocalPowerNode;
 import com.platon.rosettanet.admin.grpc.client.PowerClient;
-import com.platon.rosettanet.admin.grpc.service.CommonMessage;
-import com.platon.rosettanet.admin.grpc.service.PowerRpcMessage;
-import com.platon.rosettanet.admin.grpc.service.TaskRpcMessage;
-import com.platon.rosettanet.admin.grpc.service.YarnRpcMessage;
+import com.platon.rosettanet.admin.grpc.service.*;
 import com.platon.rosettanet.admin.service.constant.ServiceConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -100,17 +96,15 @@ public class PowerNodeRefreshTask {
         // 计算节点参数参与的任务
         List<LocalPowerJoinTask> localPowerJoinTaskList = new ArrayList<>();
         for(PowerRpcMessage.GetPowerSingleDetailResponse powerSingleDetail : detailsList) {
-            // 单个算力详情
-            PowerRpcMessage.PowerSingleDetail detail = powerSingleDetail.getPower();
 
             // 保存计算节点历史数据信息, 判断当前时间是否是整点
-            localPowerHistoryList = this.savePowerHistory(detail, localPowerHistoryList);
+            localPowerHistoryList = this.savePowerHistory(powerSingleDetail, localPowerHistoryList);
 
             // 保存当前节点算力信息
-            localPowerNodeList = this.saveLocalPowerNode(detail, localPowerNodeList);
+            localPowerNodeList = this.saveLocalPowerNode(powerSingleDetail, localPowerNodeList);
 
             // 保存计算节点参与的任务列表
-            localPowerJoinTaskList = this.savePowerTaskList(detail, localPowerJoinTaskList);
+            localPowerJoinTaskList = this.savePowerTaskList(powerSingleDetail, localPowerJoinTaskList);
         }
         // 新增计算节点资源历史记录
         if (!localPowerHistoryList.isEmpty()) {
@@ -133,13 +127,14 @@ public class PowerNodeRefreshTask {
 
 
     /** 判断当前时间是否是整点, 是则保存计算节点历史数据信息，否不保存数据 */
-    private List<LocalPowerHistory> savePowerHistory(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerHistory> localPowerHistoryList){
+    private List<LocalPowerHistory> savePowerHistory(PowerRpcMessage.GetPowerSingleDetailResponse powerSingleDetail, List<LocalPowerHistory> localPowerHistoryList){
         // 算力实况
-        CommonMessage.ResourceUsedDetail resourceUsedDetailShow = detail.getInformation();
+        PowerUsageDetail detail = powerSingleDetail.getPower();
+        ResourceUsageOverview resourceUsedDetailShow = detail.getInformation();
         if(System.currentTimeMillis() % ServiceConstant.int_3600000 < ServiceConstant.int_60000){
             LocalPowerHistory localPowerHistory = new LocalPowerHistory();
             // 计算节点id
-            localPowerHistory.setPowerNodeId(detail.getJobNodeId());
+            localPowerHistory.setPowerNodeId(powerSingleDetail.getJobNodeId());
             // 已使用内存
             localPowerHistory.setUsedMemory(resourceUsedDetailShow.getUsedMem());
             // 已使用核数
@@ -172,14 +167,15 @@ public class PowerNodeRefreshTask {
     }
 
     /** 保存当前节点算力信息 */
-    private List<LocalPowerNode> saveLocalPowerNode(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerNode> localPowerNodeList ){
+    private List<LocalPowerNode> saveLocalPowerNode(PowerRpcMessage.GetPowerSingleDetailResponse powerSingleDetail, List<LocalPowerNode> localPowerNodeList ){
         // 算力实况
-        CommonMessage.ResourceUsedDetail resourceUsedDetailShow = detail.getInformation();
+        PowerUsageDetail detail = powerSingleDetail.getPower();
+        ResourceUsageOverview resourceUsedDetailShow = detail.getInformation();
         // 保存计算节点算力信息开始
         LocalPowerNode localPowerNode = new LocalPowerNode();
-        localPowerNode.setPowerNodeId(detail.getJobNodeId());
-        localPowerNode.setPowerId(detail.getPowerId());
-        localPowerNode.setPowerStatus(detail.getState());
+        localPowerNode.setPowerNodeId(powerSingleDetail.getJobNodeId());
+        localPowerNode.setPowerId(powerSingleDetail.getPowerId());
+        localPowerNode.setPowerStatus(detail.getState().getNumber());
         localPowerNode.setMemory(resourceUsedDetailShow.getTotalMem());
         localPowerNode.setCore(Integer.parseInt(String.valueOf(resourceUsedDetailShow.getTotalProcessor())));
         localPowerNode.setBandwidth(resourceUsedDetailShow.getTotalBandwidth());
@@ -191,15 +187,16 @@ public class PowerNodeRefreshTask {
     }
 
     /** 保存节点参与的任务列表 */
-    private List<LocalPowerJoinTask> savePowerTaskList(PowerRpcMessage.PowerSingleDetail detail, List<LocalPowerJoinTask> localPowerJoinTaskList){
+    private List<LocalPowerJoinTask> savePowerTaskList(PowerRpcMessage.GetPowerSingleDetailResponse powerSingleDetail, List<LocalPowerJoinTask> localPowerJoinTaskList){
         // 参与的任务
-        List<PowerRpcMessage.PowerTask> powerTaskList = detail.getTasksList();
+        PowerUsageDetail detail = powerSingleDetail.getPower();
+        List<PowerTask> powerTaskList = detail.getTasksList();
         if (powerTaskList != null && powerTaskList.size() > 0) {
-            for(PowerRpcMessage.PowerTask powerTask : powerTaskList) {
-                TaskRpcMessage.TaskOperationCostDeclare taskOperationCostDeclare = powerTask.getOperationCost();
+            for(PowerTask powerTask : powerTaskList) {
+                TaskResourceCostDeclare taskOperationCostDeclare = powerTask.getOperationCost();
                 LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
                 // 节点id
-                localPowerJoinTask.setPowerNodeId(detail.getJobNodeId());
+                localPowerJoinTask.setPowerNodeId(powerSingleDetail.getJobNodeId());
                 // 任务id
                 localPowerJoinTask.setTaskId(powerTask.getTaskId());
                 // 任务名称
@@ -207,11 +204,11 @@ public class PowerNodeRefreshTask {
                 // 发起时间
                 localPowerJoinTask.setTaskStartTime(DateUtil.date(powerTask.getCreateAt()));
                 // 已使用内存
-                localPowerJoinTask.setUsedMemory(taskOperationCostDeclare.getCostMem());
+                localPowerJoinTask.setUsedMemory(taskOperationCostDeclare.getMemory());
                 // 已使用核数
-                localPowerJoinTask.setUsedCore(Integer.parseInt(String.valueOf(taskOperationCostDeclare.getCostProcessor())));
+                localPowerJoinTask.setUsedCore(Integer.parseInt(String.valueOf(taskOperationCostDeclare.getProcessor())));
                 // 已使用带宽
-                localPowerJoinTask.setUsedBandwidth(taskOperationCostDeclare.getCostBandwidth());
+                localPowerJoinTask.setUsedBandwidth(taskOperationCostDeclare.getBandwidth());
                 // 保存发起方、结果方、协作方
                 localPowerJoinTask = this.saveOwnerAndReceiversAndCoordinate(powerTask, localPowerJoinTask);
                 localPowerJoinTaskList.add(localPowerJoinTask);
@@ -221,23 +218,23 @@ public class PowerNodeRefreshTask {
     }
 
     /** 保存发起方、结果方、协作方 */
-    private LocalPowerJoinTask saveOwnerAndReceiversAndCoordinate(PowerRpcMessage.PowerTask powerTask, LocalPowerJoinTask localPowerJoinTask){
+    private LocalPowerJoinTask saveOwnerAndReceiversAndCoordinate(PowerTask powerTask, LocalPowerJoinTask localPowerJoinTask){
         // 任务发起方身份信息
-        CommonMessage.OrganizationIdentityInfo  ownerIdentityInfo = powerTask.getOwner();
+        Organization  ownerIdentityInfo = powerTask.getOwner();
         // 任务结果方
-        List<CommonMessage.OrganizationIdentityInfo> receiversIdentityInfoList = powerTask.getReceiversList();
+        List<Organization> receiversIdentityInfoList = powerTask.getReceiversList();
         // 任务协作方
-        List<CommonMessage.OrganizationIdentityInfo> patnersIdentityInfoList = powerTask.getPatnersList();
+        List<Organization> patnersIdentityInfoList = powerTask.getPartnersList();
         // 发起方
         localPowerJoinTask.setOwnerIdentityId(ownerIdentityInfo.getIdentityId());
-        localPowerJoinTask.setOwnerIdentityName(ownerIdentityInfo.getName());
+        localPowerJoinTask.setOwnerIdentityName(ownerIdentityInfo.getNodeName());
         // 结果方
         if (receiversIdentityInfoList != null && receiversIdentityInfoList.size() > 0) {
             List idList = new ArrayList();
             List nameList = new ArrayList();
-            for(CommonMessage.OrganizationIdentityInfo organizationIdentityInfo : receiversIdentityInfoList) {
+            for(Organization organizationIdentityInfo : receiversIdentityInfoList) {
                 idList.add(organizationIdentityInfo.getIdentityId());
-                nameList.add(organizationIdentityInfo.getName());
+                nameList.add(organizationIdentityInfo.getNodeName());
             }
             localPowerJoinTask.setResultSideId(StringUtils.collectionToDelimitedString(idList, ","));
             localPowerJoinTask.setResultSideName(StringUtils.collectionToDelimitedString(nameList,","));
@@ -246,9 +243,9 @@ public class PowerNodeRefreshTask {
         if (patnersIdentityInfoList != null && patnersIdentityInfoList.size() > 0) {
             List idList = new ArrayList();
             List nameList = new ArrayList();
-            for(CommonMessage.OrganizationIdentityInfo organizationIdentityInfo : patnersIdentityInfoList) {
+            for(Organization organizationIdentityInfo : patnersIdentityInfoList) {
                 idList.add(organizationIdentityInfo.getIdentityId());
-                nameList.add(organizationIdentityInfo.getName());
+                nameList.add(organizationIdentityInfo.getNodeName());
             }
             localPowerJoinTask.setCoordinateSideId(StringUtils.collectionToDelimitedString(idList,","));
             localPowerJoinTask.setCoordinateSideName(StringUtils.collectionToDelimitedString(nameList,","));

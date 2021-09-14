@@ -18,7 +18,7 @@ public class LocalMetaData {
     private String metaDataId;
     //元数据名称
     private String metaDataName;
-    //数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)
+    //数据的状态 (entered：录入数据(创建未发布新表之前的操作); created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表; deleted:已删除的表)
     private String status;
     //数据是否为另存数据(true:是另存，false:非另存)
     /**

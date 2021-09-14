@@ -27,8 +27,8 @@ public class LocalOrg {
     private String connNodeCount;
     //服务连接时间
     private Date carrierConnTime;
-    //调度服务的状态：active: 活跃; leave: 离开网络; join: 加入网络 unuseful: 不可用
-    private String carrierStatus;
+    //调度服务的状态： (0:unknown未知、1: active活跃、2:leave: 离开网络、3:join加入网络 4:unuseful不可用)
+    private Integer carrierStatus;
     //最后更新时间
     private Date recUpdateTime;
     //0未入网，1已入网

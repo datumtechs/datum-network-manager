@@ -46,9 +46,9 @@ public class GlobalDataFile implements Serializable {
     private String filePath;
 
     /**
-     * 文件后缀/类型, csv
+     * 文件后缀/类型, 0未知、1：csv目前只支持这个
      */
-    private String fileType;
+    private Integer fileType;
 
     /**
      * 资源名称
@@ -63,7 +63,7 @@ public class GlobalDataFile implements Serializable {
     /**
      * 数据行数(不算title)
      */
-    private Long rows;
+    private Integer rows;
 
     /**
      * 数据列数

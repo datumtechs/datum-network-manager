@@ -2,10 +2,12 @@ package com.platon.rosettanet.admin.dao.entity;
 
 import com.platon.rosettanet.admin.dao.BaseDomain;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class LocalDataFile extends BaseDomain {
     /**
      * 序号
@@ -19,12 +21,12 @@ public class LocalDataFile extends BaseDomain {
     private String fileName;
     //文件存储路径
     private String filePath;
-    //文件后缀/类型, csv
-    private String fileType;
+    //文件后缀/类型, 0未知、1：csv目前只支持这个
+    private Integer fileType;
     //文件大小(字节)
     private Long size;
     //数据行数(不算title)
-    private Long rows;
+    private Integer rows;
     //数据列数
     private Integer columns;
     //是否带标题

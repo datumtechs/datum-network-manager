@@ -31,8 +31,8 @@ public class TaskDataDetailResp {
     private Long startAt;
     @ApiModelProperty(name = "endAt",value = "任务结束时间 (时间戳)，单位ms")
     private Long endAt;
-    @ApiModelProperty(name = "status",value = "任务状态 (pending: 等在中; failed: 失败 (计算结束); success: 成功 (计算结束))")
-    private String status;
+    @ApiModelProperty(name = "status",value = "任务状态 (0:unknown未知、1:pending等在中、2:running计算中、3:failed失败、4:success成功)")
+    private Integer status;
     @ApiModelProperty(name = "duration",value = "任务所需资源声明，任务运行耗时时长 (单位: ms)")
     private Long duration;
     @ApiModelProperty(name = "costCore",value = "任务所需的CPU资源 (单位: 个)")
@@ -47,7 +47,7 @@ public class TaskDataDetailResp {
     private Integer userType;
     @ApiModelProperty(name = "reviewed",value = "任务是否被查看过，默认为false(0)")
     private Boolean reviewed;
-    @ApiModelProperty(name = "role",value = "我在任务中的角色 (0: 未定义; 1: 发起方; 2: 数据提供方; 3: 计算参与方; 4: 结果提供方)")
+    @ApiModelProperty(name = "role",value = "我在任务中的角色 (0：unknown 未知、1： owner  任务发起方、2：dataSupplier  数据提供方、 3: powerSupplier  算力提供方、 4： receiver  结果接收方、5：algoSupplier 算法提供方)")
     private Integer role;
     @ApiModelProperty(name = "owner",value = "任务发起方身份信息")
     //任务发起方身份信息
@@ -71,11 +71,11 @@ public class TaskDataDetailResp {
         resp.setId(task.getId());
         resp.setTaskId(task.getTaskId());
         resp.setTaskName(task.getTaskName());
-        resp.setRole(TaskDataPageResp.getRole(task.getRole()));
+        resp.setRole(task.getRole());
         resp.setStatus(task.getStatus());
         resp.setReviewed(task.getReviewed());
         resp.setCostBandwidth(task.getCostBandwidth());
-        resp.setCostCore(task.getCostCore());
+        resp.setCostCore(Long.valueOf(task.getCostCore()));
         resp.setCostMemory(task.getCostMemory());
         resp.setApplyUser(task.getApplyUser());
         resp.setUserType(task.getUserType());

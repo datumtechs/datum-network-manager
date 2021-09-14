@@ -112,7 +112,7 @@ public class LocalDataAuthDetailResp {
         @ApiModelProperty(name = "fileSize", value = "数据文件大小(字节)")
         private Long fileSize;
         @ApiModelProperty(name = "dataRows", value = "数据条数")
-        private Long dataRows;
+        private Integer dataRows;
         @ApiModelProperty(name = "dataColumns", value = "字段数")
         private Integer dataColumns;
         @ApiModelProperty(name = "industry", value = "所属行业 1：金融业（银行）、2：金融业（保险）、3：金融业（证券）、4：金融业（其他）、5：ICT、 6：制造业、 7：能源业、 8：交通运输业、 9 ：医疗健康业、 10 ：公共服务业、 11：传媒广告业、 12 ：其他行业")

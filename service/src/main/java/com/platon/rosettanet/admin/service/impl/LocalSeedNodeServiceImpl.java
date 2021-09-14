@@ -44,7 +44,7 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
         seedNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
         // 计算节点id
         seedNode.setSeedNodeId(seedResp.getId());
-        seedNode.setConnStatus(seedResp.getConnState());
+        seedNode.setConnStatus(seedResp.getConnState().getNumber());
         // 0表示初始节点
         seedNode.setInitFlag(0);
         int count = localSeedNodeMapper.insertSeedNode(seedNode);
@@ -61,7 +61,7 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
         // 种子节点id
         seedNode.setSeedNodeId(seedResp.getId());
         // 连接状态
-        seedNode.setConnStatus(seedResp.getConnState());
+        seedNode.setConnStatus(seedResp.getConnState().getNumber());
         // 1表示不是初始节点
         seedNode.setInitFlag(1);
         int count = localSeedNodeMapper.updateSeedNode(seedNode);

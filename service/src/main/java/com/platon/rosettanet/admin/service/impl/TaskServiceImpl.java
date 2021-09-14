@@ -153,8 +153,8 @@ public class TaskServiceImpl implements TaskService {
      * @return
      */
     private boolean isTaskSucceeFailUnRead(Task task){
-        String status = task.getStatus();
-        return (TaskStatusEnum.SUCCESS.getStatus().equals(status) || TaskStatusEnum.FAILED.getStatus().equals(status)) && !task.getReviewed();
+        int status = task.getStatus();
+        return (TaskStatusEnum.SUCCESS.getValue() == status || TaskStatusEnum.FAILED.getValue() == status) && !task.getReviewed();
     }
 
     /**
@@ -163,8 +163,8 @@ public class TaskServiceImpl implements TaskService {
      * @return
      */
     private boolean isTaskStatusPendAndRunning(Task task){
-        String status = task.getStatus();
-        return TaskStatusEnum.PENDING.getStatus().equals(status) || TaskStatusEnum.RUNNING.getStatus().equals(status);
+        int status = task.getStatus();
+        return TaskStatusEnum.PENDING.getValue() == status || TaskStatusEnum.RUNNING.getValue() == status;
     }
 
     /**
