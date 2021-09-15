@@ -244,6 +244,7 @@ CREATE TABLE `local_org` (
      `carrier_port` int(11) DEFAULT NULL COMMENT '调度服务端口号',
      `carrier_conn_status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '连接状态 enabled：可用, disabled:不可用',
      `carrier_status` tinyint(4) DEFAULT '0' COMMENT '调度服务的状态（0:unknown未知、1: active活跃、2:leave: 离开网络、3:join加入网络 4:unuseful不可用）',
+     `conn_node_count` int(11)  DEFAULT NULL COMMENT '节点连接的数量',
      `carrier_conn_time` datetime DEFAULT NULL COMMENT '服务连接时间',
      `status` tinyint(1) DEFAULT '0' COMMENT '0未入网，1已入网',
      `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
