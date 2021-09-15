@@ -23,6 +23,8 @@ java -jar rosettanet-admin-*.jar --spring.profiles.active=dev
 ### 数据库脚本
 路径：[rosettanet-admin/controller/scripts/rosettanet_admin.sql](./controller/scripts/rosettanet_admin.sql)
 
+### 数据库清空脚本
+路径：[rosettanet-admin/controller/scripts/clearDB.sql](./controller/scripts/clearDB.sql)
 ### grpc相关文档
 [grpc文档](./grpc-lib/README.MD)
 
