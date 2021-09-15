@@ -195,7 +195,7 @@ public class YarnClient {
             YarnRpcMessage.QueryAvailableDataNodeRequest request = YarnRpcMessage.QueryAvailableDataNodeRequest
                     .newBuilder()
                     .setFileSize(fileSize)
-                    .setFileType(OriginFileType.forNumber(fileType.getValue()))
+                    .setFileTypeValue(fileType.getValue())
                     .build();
             //3.调用rpc,获取response
             YarnRpcMessage.QueryAvailableDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).queryAvailableDataNode(request);
