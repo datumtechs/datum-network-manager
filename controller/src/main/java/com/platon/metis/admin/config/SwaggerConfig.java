@@ -23,7 +23,7 @@ public class SwaggerConfig {
 //                .enable(false)
                 .select()
                 //扫描的路径包,设置basePackage会将包下的所有被@Api标记类的所有方法作为api
-                .apis(RequestHandlerSelectors.basePackage("com.platon.rosettanet.admin.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.platon.metis.admin.controller"))
                 //配置如何通过path过滤，指定路径处理PathSelectors.any()代表所有的路径
                 .paths(PathSelectors.any())
                 .build();
@@ -32,7 +32,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 //设置文档标题(API名称)
-                .title("rosettanet-admin项目 API 文档")
+                .title("metis-admin项目 API 文档")
                 //文档描述
                 .description("此API文档使用于前后端分离开发，后端进行了接口变更，不需要更新接口文档，前端可以实时查看接口变更！")
 //                .contact(new Contact("联系人名字", "http://xxx.xxx.com/联系人访问链接", "联系人邮箱"))

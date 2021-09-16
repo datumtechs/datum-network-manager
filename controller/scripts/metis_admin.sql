@@ -1,13 +1,13 @@
-CREATE DATABASE  IF NOT EXISTS rosettanet_admin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE  IF NOT EXISTS metis_admin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-use rosettanet_admin;
+use metis_admin;
 /*
 Navicat MySQL Data Transfer
 
 Source Server         : 192.168.9.191
 Source Server Version : 50724
 Source Host           : 192.168.9.191:3306
-Source Database       : rosettanet_admin
+Source Database       : metis_admin
 
 Target Server Type    : MYSQL
 Target Server Version : 50724

@@ -17,15 +17,15 @@ import javax.annotation.Resource;
 @EnableScheduling
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan(basePackages = {"com.platon.rosettanet.admin.dao"})
+@MapperScan(basePackages = {"com.platon.metis.admin.dao"})
 @Slf4j
-public class RosettaNetAdminApplication {
+public class MetisAdminApplication {
 
     @Resource
     private LocalOrgService localOrgService;
 
     public static void main(String[] args) {
-        SpringApplication.run(RosettaNetAdminApplication.class, args);
+        SpringApplication.run(MetisAdminApplication.class, args);
     }
 
 

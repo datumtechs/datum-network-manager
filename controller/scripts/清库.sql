@@ -1,4 +1,4 @@
-use rosettanet_admin;
+use metis_admin;
 
 TRUNCATE bootstrap_node;
 TRUNCATE global_data_file;

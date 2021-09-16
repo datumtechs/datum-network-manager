@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 @SpringBootApplication(scanBasePackages = "com.platon.metis.admin")
-@MapperScan(basePackages = {"com.platon.rosettanet.admin.dao"})
+@MapperScan(basePackages = {"com.platon.metis.admin.dao"})
 @Slf4j
 public class TestApplication {
 
