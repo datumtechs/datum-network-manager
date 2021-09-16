@@ -1,9 +1,9 @@
-# RosettaNet-Admin
+# Metis-Admin
 
-RosettaNet管理台
+Metis管理台
 
 ###项目模块介绍
-+ 1.rosettanet-admin --父模块
++ 1.metis-admin --父模块
 + 2.common --公共模块，主要包含工具类和一些公共类
 + 3.controller --controller模块，主要包含对外接口相关内容
 + 4.service --service模块，负责业务的主要逻辑代码
@@ -15,13 +15,13 @@ RosettaNet管理台
 mvn clean install
 
 ### 启动
-java -jar rosettanet-admin-*.jar --spring.profiles.active=dev
+java -jar metis-admin-*.jar --spring.profiles.active=dev
 
 ### 接口文档
-启动后在浏览器上输入：http://localhost:9090/rosettanet-admin/doc.html
+启动后在浏览器上输入：http://localhost:9090/metis-admin/doc.html
 
 ### 数据库脚本
-路径：[rosettanet-admin/controller/scripts/rosettanet_admin.sql](./controller/scripts/rosettanet_admin.sql)
+路径：[metis-admin/controller/scripts/metis_admin.sql](./controller/scripts/metis_admin.sql)
 
 ### grpc相关文档
 [grpc文档](./grpc-lib/README.MD)

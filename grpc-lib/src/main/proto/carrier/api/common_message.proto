@@ -1,6 +1,6 @@
 syntax = "proto3";
 // 生成类的包名
-option java_package = "com.platon.rosettanet.admin.grpc.service";
+option java_package = "com.platon.metis.admin.grpc.service";
 option java_outer_classname = "CommonMessage";
 
 package rpcapi;

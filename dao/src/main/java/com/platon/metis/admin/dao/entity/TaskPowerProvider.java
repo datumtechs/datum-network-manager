@@ -1,0 +1,32 @@
+package com.platon.metis.admin.dao.entity;
+
+import com.platon.metis.admin.dao.BaseDomain;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@ToString
+public class TaskPowerProvider extends BaseDomain {
+    private String taskId;
+
+    private String identityId;
+
+    private Long totalCore;
+
+    private Long usedCore;
+
+    private Long totalMemory;
+
+    private Long usedMemory;
+
+    private Long totalBandwidth;
+
+    private Long usedBandwidth;
+
+    private LocalDateTime recUpdateTime;
+
+}

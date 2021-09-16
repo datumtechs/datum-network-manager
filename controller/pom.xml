@@ -3,18 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>rosettanet-admin</artifactId>
-        <groupId>com.platon.rosettanet</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <artifactId>metis-admin</artifactId>
+        <groupId>com.platon.metis</groupId>
+        <version>2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>controller</artifactId>
+    <artifactId>admin-controller</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.platon.rosettanet</groupId>
-            <artifactId>service</artifactId>
+            <groupId>com.platon.metis</groupId>
+            <artifactId>admin-service</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
@@ -64,7 +64,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.platon.rosettanet.admin.RosettaNetAdminApplication</mainClass>
+                    <mainClass>com.platon.metis.admin.MetisAdminApplication</mainClass>
                     <layout>JAR</layout>
                 </configuration>
                 <executions>

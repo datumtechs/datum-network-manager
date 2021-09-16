@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.LocalMetaDataColumnMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn">
+<mapper namespace="com.platon.metis.admin.dao.LocalMetaDataColumnMapper">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalMetaDataColumn">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="meta_id" jdbcType="INTEGER" property="metaId" />
     <result column="column_idx" jdbcType="INTEGER" property="columnIdx" />
@@ -27,7 +27,7 @@
   </select>
 
   <!-- 批量插入数据-->
-  <insert id="batchInsert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn" useGeneratedKeys="true" keyProperty="id">
+  <insert id="batchInsert" parameterType="com.platon.metis.admin.dao.entity.LocalMetaDataColumn" useGeneratedKeys="true" keyProperty="id">
     insert into local_meta_data_column (meta_id, column_idx,
     `column_name`, column_type, `size`,
     remarks, visible, rec_create_time,
@@ -42,7 +42,7 @@
   </insert>
 
   <!-- 根据ID修改数据-->
-  <update id="updateByIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn">
+  <update id="updateByIdSelective" parameterType="com.platon.metis.admin.dao.entity.LocalMetaDataColumn">
     update local_meta_data_column
     <trim suffixOverrides=",">
       <set>
@@ -73,7 +73,7 @@
   </update>
 
   <!-- 根据metaDataId 和 cindex修改数据-->
-  <update id="updateByFileIdAndCindexSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalMetaDataColumn">
+  <update id="updateByFileIdAndCindexSelective" parameterType="com.platon.metis.admin.dao.entity.LocalMetaDataColumn">
     update local_meta_data_column
     <trim suffixOverrides=",">
       <set>

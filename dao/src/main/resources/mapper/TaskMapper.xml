@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.TaskMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.Task">
+<mapper namespace="com.platon.metis.admin.dao.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.Task">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="task_Id" jdbcType="VARCHAR" property="taskId" />
     <result column="task_Name" jdbcType="VARCHAR" property="taskName" />
@@ -75,7 +75,7 @@
 
 
 
-  <select id="selectTaskStatisticsCount" resultType="com.platon.rosettanet.admin.dao.entity.TaskStatistics">
+  <select id="selectTaskStatisticsCount" resultType="com.platon.metis.admin.dao.entity.TaskStatistics">
 
     SELECT totalTaskCount,taskSuccessCount,taskFailedCount,taskPendingCount,taskRunningCount,ownerCount, dataSupplierCount, powerSupplierCount, receiverCount, algoSupplierCount
     FROM (
@@ -159,7 +159,7 @@
     delete from task
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
+  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.Task">
     insert into task (task_Id, task_Name, owner_Identity_id,
       apply_use, user_type,
       create_At, start_At, auth_At, 
@@ -201,7 +201,7 @@
 
 
 
-  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
+  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.Task">
     insert into task
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -322,7 +322,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.metis.admin.dao.entity.Task">
     update task
     <set>
       <if test="taskName != null">
@@ -382,7 +382,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.Task">
+  <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.Task">
     update task
     set task_Name = #{taskName,jdbcType=VARCHAR},
       owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},

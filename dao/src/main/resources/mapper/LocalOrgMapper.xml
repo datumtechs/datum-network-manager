@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--suppress ALL -->
-<mapper namespace="com.platon.rosettanet.admin.dao.LocalOrgMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalOrg">
+<mapper namespace="com.platon.metis.admin.dao.LocalOrgMapper">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalOrg">
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="carrier_node_id" jdbcType="VARCHAR" property="carrierNodeId" />
@@ -47,7 +47,7 @@
   </select>
 
   <!-- 选择性插入字段-->
-  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalOrg">
+  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.LocalOrg">
     insert into local_org
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
@@ -121,7 +121,7 @@
     </trim>
   </insert>
 
-  <update id="updateSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalOrg">
+  <update id="updateSelective" parameterType="com.platon.metis.admin.dao.entity.LocalOrg">
     update local_org
     <set>
       <if test="name != null">

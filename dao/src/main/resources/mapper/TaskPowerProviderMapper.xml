@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.TaskPowerProviderMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
+<mapper namespace="com.platon.metis.admin.dao.TaskPowerProviderMapper">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskPowerProvider">
     <id column="task_id" jdbcType="VARCHAR" property="taskId" />
     <id column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="used_core" jdbcType="INTEGER" property="usedCore" />
@@ -25,7 +25,7 @@
 
 
 
-  <resultMap id="BaseResultMap_With_OrgName" type="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider" extends="BaseResultMap">
+  <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskPowerProvider" extends="BaseResultMap">
     <result column="node_name" property="dynamicFields.nodeName" jdbcType="VARCHAR"/>
     <result column="node_identityId" property="dynamicFields.nodeIdentityId" jdbcType="VARCHAR"/>
     <result column="node_id" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>
@@ -49,7 +49,7 @@
   </delete>
 
 
-  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
+  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.TaskPowerProvider">
     insert into task_power_provider (task_id, identity_id, total_core, used_core,
       total_memory, used_memory, total_Bandwidth, used_Bandwidth, rec_update_time
       )
@@ -78,7 +78,7 @@
 
 
 
-  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
+  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.TaskPowerProvider">
     insert into task_power_provider
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="taskId != null">
@@ -123,7 +123,7 @@
   </insert>
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.metis.admin.dao.entity.TaskPowerProvider">
     update task_power_provider
     <set>
       <if test="usedCore != null">
@@ -145,7 +145,7 @@
 
 
 
-  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.TaskPowerProvider">
+  <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.TaskPowerProvider">
     update task_power_provider
     set
       total_core = #{totalCore,jdbcType=INTEGER},

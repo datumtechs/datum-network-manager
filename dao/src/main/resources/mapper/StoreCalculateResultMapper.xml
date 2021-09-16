@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.StoreCalculateResultMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.StoreCalculateResult">
+<mapper namespace="com.platon.metis.admin.dao.StoreCalculateResultMapper">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.StoreCalculateResult">
     <result column="time_interval" jdbcType="VARCHAR" property="timeInterval" />
     <result column="store_type" jdbcType="VARCHAR" property="storeType" />
     <result column="reside_time" jdbcType="VARCHAR" property="resideTime" />
@@ -21,7 +21,7 @@
   </sql>
 
   <!-- 插入计算结果 -->
-  <insert id="saveMyPublishDataMonth" parameterType="com.platon.rosettanet.admin.dao.entity.StoreCalculateResult">
+  <insert id="saveMyPublishDataMonth" parameterType="com.platon.metis.admin.dao.entity.StoreCalculateResult">
     insert into store_calculate_result (
         time_interval,
         store_type,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.LocalDataAuthMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+<mapper namespace="com.platon.metis.admin.dao.LocalDataAuthMapper">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalDataAuth">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="id" jdbcType="VARCHAR" property="authId" />
     <result column="auth_id" jdbcType="VARCHAR" property="authId" />
@@ -34,7 +34,7 @@
   </select>
 
 
-  <resultMap id="BaseResultMap_With_FileName" type="com.platon.rosettanet.admin.dao.entity.LocalDataAuth" extends="BaseResultMap">
+  <resultMap id="BaseResultMap_With_FileName" type="com.platon.metis.admin.dao.entity.LocalDataAuth" extends="BaseResultMap">
     <result column="resource_name" property="dynamicFields.resourceName" jdbcType="VARCHAR"/>
   </resultMap>
 
@@ -104,7 +104,7 @@
   </delete>
 
 
-  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
     insert into local_data_auth (id, auth_id, meta_data_id, apply_user,
       user_type, auth_type, auth_value_amount,
       auth_value_start_at, auth_value_end_at, create_at, 
@@ -142,7 +142,7 @@
 
 
 
-  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
     insert into local_data_auth
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -253,7 +253,7 @@
   </insert>
 
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+  <update id="updateByPrimaryKeySelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
     update local_data_auth
     <set>
       <if test="authId != null">
@@ -307,7 +307,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataAuth">
+  <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
     update local_data_auth
     set auth_id = #{authId,jdbcType=VARCHAR},
       meta_data_id = #{metaDataId,jdbcType=VARCHAR},
