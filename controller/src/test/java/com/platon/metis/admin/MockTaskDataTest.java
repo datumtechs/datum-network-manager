@@ -3,9 +3,11 @@ package com.platon.metis.admin;
 import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.*;
 import com.platon.metis.admin.dao.entity.*;
+import com.platon.metis.admin.grpc.common.CommonBase;
+import com.platon.metis.admin.grpc.common.CommonData;
 import com.platon.metis.admin.grpc.entity.TaskDataResp;
-import com.platon.metis.admin.grpc.service.CommonMessage;
 import com.platon.metis.admin.grpc.service.TaskRpcMessage;
+import com.platon.metis.admin.grpc.types.Resourcedata;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -61,32 +63,32 @@ public class MockTaskDataTest {
         for (int i = 0; i < 10; i++) {
 
             //owner
-            CommonMessage.TaskOrganizationIdentityInfo ownerData = CommonMessage.TaskOrganizationIdentityInfo.newBuilder()
-                    .setName("ownerName" + i)
+            CommonBase.TaskOrganization ownerData = CommonBase.TaskOrganization.newBuilder()
+                    .setNodeName("ownerName" + i)
                     .setIdentityId("ownerIdentityId" + i)
                     .setNodeId("ownerNodeId" + i)
                     .build();
             //algoSupplier
-            CommonMessage.TaskOrganizationIdentityInfo algoSupplierData = CommonMessage.TaskOrganizationIdentityInfo.newBuilder()
-                    .setName("algoSupplierName" + i)
+            CommonBase.TaskOrganization algoSupplierData = CommonBase.TaskOrganization.newBuilder()
+                    .setNodeName("algoSupplierName" + i)
                     .setIdentityId("algoSupplierIdentityId" + i)
                     .setNodeId("algoSupplierNodeId" + i)
                     .build();
 
             //dataSupplier
-            CommonMessage.TaskOrganizationIdentityInfo memberInfo = CommonMessage.TaskOrganizationIdentityInfo.newBuilder()
-                    .setName("memberInfoName" + i)
+            CommonBase.TaskOrganization memberInfo = CommonBase.TaskOrganization.newBuilder()
+                    .setNodeName("memberInfoName" + i)
                     .setIdentityId("memberInfoIdentityId" + i)
                     .setNodeId("memberInfoNodeId" + i)
                     .build();
-            TaskRpcMessage.TaskDataSupplier dataSupplierShow = TaskRpcMessage.TaskDataSupplier.newBuilder()
-                    .setMetaDataId("dataSupplierMetaDataId" + i)
-                    .setMetaDataName("dataSupplierMetaDataName" + i)
-                    .setMemberInfo(memberInfo)
+            TaskRpcMessage.TaskDataSupplierShow dataSupplierShow = TaskRpcMessage.TaskDataSupplierShow.newBuilder()
+                    .setMetadataId("dataSupplierMetaDataId" + i)
+                    .setMetadataName("dataSupplierMetaDataName" + i)
+                    .setOrganization(memberInfo)
                     .build();
 
             //powerSupplierShow
-            CommonMessage.ResourceUsedDetail resourceUsedDetailShow = CommonMessage.ResourceUsedDetail.newBuilder()
+            Resourcedata.ResourceUsageOverview resourceUsedDetailShow = Resourcedata.ResourceUsageOverview.newBuilder()
                     .setUsedBandwidth(10000)
                     .setUsedMem(100)
                     .setUsedProcessor(100)
@@ -94,32 +96,32 @@ public class MockTaskDataTest {
                     .setTotalMem(200)
                     .setTotalProcessor(300)
                     .build();
-            TaskRpcMessage.TaskPowerSupplier powerSupplierShow = TaskRpcMessage.TaskPowerSupplier.newBuilder()
+            TaskRpcMessage.TaskPowerSupplierShow powerSupplierShow = TaskRpcMessage.TaskPowerSupplierShow.newBuilder()
                     .setPowerInfo(resourceUsedDetailShow)
-                    .setMemberInfo(memberInfo)
+                    .setOrganization(memberInfo)
                     .build();
 
 
             //taskOperationCostDeclare
-            TaskRpcMessage.TaskOperationCostDeclare taskOperationCostDeclare = TaskRpcMessage.TaskOperationCostDeclare.newBuilder()
-                    .setCostBandwidth(666)
-                    .setCostMem(555)
-                    .setCostProcessor(333)
+            CommonData.TaskResourceCostDeclare taskOperationCostDeclare = CommonData.TaskResourceCostDeclare.newBuilder()
+                    .setBandwidth(666)
+                    .setMemory(555)
+                    .setProcessor(333)
                     .setDuration(1626250561)
                     .build();
 
             //taskDetailShow
-            TaskRpcMessage.TaskDetail taskDetailShow = TaskRpcMessage.TaskDetail.newBuilder()
+            TaskRpcMessage.TaskDetailShow taskDetailShow = TaskRpcMessage.TaskDetailShow.newBuilder()
                     .setTaskId("taskId" + i)
                     .setTaskName("taskName" + i)
                     .setAlgoSupplier(algoSupplierData)
-                    .addDataSupplier(dataSupplierShow)
-                    .addPowerSupplier(powerSupplierShow)
+                    .addDataSuppliers(dataSupplierShow)
+                    .addPowerSuppliers(powerSupplierShow)
                     .addReceivers(memberInfo)
                     .setCreateAt(1626244939)
                     .setStartAt(1626244938)
                     .setEndAt(1626244938)
-                    .setState("success")
+                    .setState(CommonBase.TaskState.TaskState_Succeed)
                     .setOperationCost(taskOperationCostDeclare)
                     .build();
             TaskRpcMessage.GetTaskDetailResponse response = TaskRpcMessage.GetTaskDetailResponse.newBuilder().setInformation(taskDetailShow).build();
@@ -262,18 +264,18 @@ public class MockTaskDataTest {
 
         List<Task> taskList = new ArrayList<>();
         for (int i = 0; i < taskDetailList.size(); i++) {
-            TaskRpcMessage.TaskDetail  taskDetail = taskDetailList.get(i).getInformation();
+            TaskRpcMessage.TaskDetailShow taskDetail = taskDetailList.get(i).getInformation();
             String taskId =  taskDetail.getTaskId();
             String taskName =  taskDetail.getTaskName();
-            CommonMessage.TaskOrganizationIdentityInfo algoSupplier = taskDetail.getAlgoSupplier();
-            List<TaskRpcMessage.TaskDataSupplier> dataSupplierList = taskDetail.getDataSupplierList();
-            List<TaskRpcMessage.TaskPowerSupplier> powerSupplierList = taskDetail.getPowerSupplierList();
-            List<CommonMessage.TaskOrganizationIdentityInfo> receiverList = taskDetail.getReceiversList();
+            CommonBase.TaskOrganization algoSupplier = taskDetail.getAlgoSupplier();
+            List<TaskRpcMessage.TaskDataSupplierShow> dataSupplierList = taskDetail.getDataSuppliersList();
+            List<TaskRpcMessage.TaskPowerSupplierShow> powerSupplierList = taskDetail.getPowerSuppliersList();
+            List<CommonBase.TaskOrganization> receiverList = taskDetail.getReceiversList();
             Long createAt = taskDetail.getCreateAt();
             Long startAt = taskDetail.getStartAt();
             Long endAt = taskDetail.getEndAt();
-            String state = taskDetail.getState();
-            TaskRpcMessage.TaskOperationCostDeclare operationCost = taskDetail.getOperationCost();
+            String state = taskDetail.getState().name();
+            CommonData.TaskResourceCostDeclare operationCost = taskDetail.getOperationCost();
 
             //构造Task
             Task task = new Task();
@@ -284,9 +286,9 @@ public class MockTaskDataTest {
             task.setEndAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
             task.setStatus(state);
             task.setAuthAt(LocalDateTime.ofEpochSecond(endAt,0, ZoneOffset.ofHours(8)));
-            task.setCostCore(operationCost.getCostProcessor());
-            task.setCostMemory(operationCost.getCostMem());
-            task.setCostBandwidth(operationCost.getCostBandwidth());
+            task.setCostCore(operationCost.getProcessor());
+            task.setCostMemory(operationCost.getMemory());
+            task.setCostBandwidth(operationCost.getBandwidth());
             task.setDuration(LocalDateTime.ofEpochSecond(operationCost.getDuration(),0, ZoneOffset.ofHours(8)));
 
             //任务发起发owner
@@ -295,47 +297,47 @@ public class MockTaskDataTest {
 
             // 算法提供方algoSupplier
             TaskOrg algoSupplierData = new TaskOrg();
-            algoSupplierData.setName(algoSupplier.getName());
+            algoSupplierData.setName(algoSupplier.getNodeName());
             algoSupplierData.setCarrierNodeId(algoSupplier.getNodeId());
             algoSupplierData.setIdentityId(algoSupplier.getIdentityId());
             task.setAlgoSupplier(algoSupplierData);
 
             //数据提供方dataSupplierList
             List<TaskDataReceiver> taskDataReceiverList = new ArrayList<>();
-            for (TaskRpcMessage.TaskDataSupplier dataSupplier : dataSupplierList) {
+            for (TaskRpcMessage.TaskDataSupplierShow dataSupplier : dataSupplierList) {
                 TaskDataReceiver receiver = new TaskDataReceiver();
                 receiver.setTaskId(taskId);
-                receiver.setMetaDataId(dataSupplier.getMetaDataId());
-                receiver.setIdentityId(dataSupplier.getMemberInfo().getIdentityId());
-                receiver.setMetaDataName(dataSupplier.getMetaDataName());
-                receiver.setDynamicFields(getDynamicFields(dataSupplier.getMemberInfo().getName(), dataSupplier.getMemberInfo().getNodeId()));
+                receiver.setMetaDataId(dataSupplier.getMetadataId());
+                receiver.setIdentityId(dataSupplier.getOrganization().getIdentityId());
+                receiver.setMetaDataName(dataSupplier.getMetadataName());
+                receiver.setDynamicFields(getDynamicFields(dataSupplier.getOrganization().getNodeName(), dataSupplier.getOrganization().getNodeId()));
                 taskDataReceiverList.add(receiver);
             }
             task.setDataSupplier(taskDataReceiverList);
 
             //算力提供方powerSupplierList
             List<TaskPowerProvider> taskPowerProviderList = new ArrayList<>();
-            for (TaskRpcMessage.TaskPowerSupplier taskPowerSupplierShow : powerSupplierList) {
+            for (TaskRpcMessage.TaskPowerSupplierShow taskPowerSupplierShow : powerSupplierList) {
                 TaskPowerProvider powerProvider = new TaskPowerProvider();
                 powerProvider.setTaskId(taskId);
-                powerProvider.setIdentityId(taskPowerSupplierShow.getMemberInfo().getIdentityId());
+                powerProvider.setIdentityId(taskPowerSupplierShow.getOrganization().getIdentityId());
                 powerProvider.setUsedCore(taskPowerSupplierShow.getPowerInfo().getUsedProcessor());
                 powerProvider.setUsedMemory(taskPowerSupplierShow.getPowerInfo().getUsedMem());
                 powerProvider.setUsedBandwidth(taskPowerSupplierShow.getPowerInfo().getUsedBandwidth());
-                powerProvider.setDynamicFields(getDynamicFields(taskPowerSupplierShow.getMemberInfo().getName(), taskPowerSupplierShow.getMemberInfo().getNodeId()));
+                powerProvider.setDynamicFields(getDynamicFields(taskPowerSupplierShow.getOrganization().getNodeName(), taskPowerSupplierShow.getOrganization().getNodeId()));
                 taskPowerProviderList.add(powerProvider);
             }
             task.setPowerSupplier(taskPowerProviderList);
 
             //任务结果方receiverList
             List<TaskResultReceiver> receivers = new ArrayList<>();
-            for (CommonMessage.TaskOrganizationIdentityInfo receiver : receiverList) {
+            for (CommonBase.TaskOrganization receiver : receiverList) {
                 TaskResultReceiver resultReceiver = new TaskResultReceiver();
                 resultReceiver.setTaskId(taskId);
                 resultReceiver.setConsumerIdentityId(receiver.getIdentityId());
                 //待商榷？？
                 resultReceiver.setProducerIdentityId(receiver.getIdentityId());
-                resultReceiver.setDynamicFields(getDynamicFields(receiver.getName(), receiver.getNodeId()));
+                resultReceiver.setDynamicFields(getDynamicFields(receiver.getNodeName(), receiver.getNodeId()));
                 receivers.add(resultReceiver);
             }
             task.setReceivers(receivers);

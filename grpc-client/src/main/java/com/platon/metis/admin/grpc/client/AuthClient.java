@@ -3,12 +3,13 @@ package com.platon.metis.admin.grpc.client;
 import com.platon.metis.admin.common.exception.ApplicationException;
 import com.platon.metis.admin.dao.entity.LocalDataAuth;
 import com.platon.metis.admin.grpc.channel.BaseChannelManager;
+import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.entity.CommonResp;
 import com.platon.metis.admin.grpc.entity.DataAuthResp;
 import com.platon.metis.admin.grpc.service.AuthRpcMessage;
 import com.platon.metis.admin.grpc.service.AuthServiceGrpc;
-import com.platon.metis.admin.grpc.service.CommonMessage;
+import com.platon.metis.admin.grpc.types.Metadata;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -48,9 +49,9 @@ public class AuthClient {
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.OrganizationIdentityInfo orgInfo = CommonMessage.OrganizationIdentityInfo
+            CommonBase.Organization orgInfo = CommonBase.Organization
                     .newBuilder()
-                    .setName(name)
+                    .setNodeName(name)
                     .setIdentityId(identityId)
                     .build();
             AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest
@@ -58,11 +59,11 @@ public class AuthClient {
                     .setMember(orgInfo)
                     .build();
             //3.调用rpc,获取response
-            CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
+            CommonBase.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
             //4.处理response
             CommonResp resp = new CommonResp();
-            resp.setStatus(responseCode.getStatus());
-            resp.setMsg(responseCode.getMsg());
+            resp.setStatus(response.getStatus());
+            resp.setMsg(response.getMsg());
             return resp;
         }finally {
             channelManager.closeChannel(channel);
@@ -79,15 +80,15 @@ public class AuthClient {
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
+            com.google.protobuf.Empty request = com.google.protobuf.Empty
                     .newBuilder()
                     .build();
             //3.调用rpc,获取response
-            CommonMessage.SimpleResponseCode responseCode = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
+            CommonBase.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
             //4.处理response
             CommonResp resp = new CommonResp();
-            resp.setStatus(responseCode.getStatus());
-            resp.setMsg(responseCode.getMsg());
+            resp.setStatus(response.getStatus());
+            resp.setMsg(response.getMsg());
             return resp;
         }finally {
             channelManager.closeChannel(channel);
@@ -105,9 +106,11 @@ public class AuthClient {
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams.newBuilder().build();
+            com.google.protobuf.Empty request = com.google.protobuf.Empty
+                    .newBuilder()
+                    .build();
             //3.调用rpc,获取response
-            AuthRpcMessage.GetMetaDataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getMetaDataAuthorityList(request);
+            AuthRpcMessage.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getMetadataAuthorityList(request);
             log.debug("====> RPC客户端 dataAuthResponse:" + response.getMsg() +" , dataAuthList Size:"+ response.getListList().size());
             //4.处理response
             DataAuthResp dataAuthResp = new DataAuthResp();
@@ -137,15 +140,15 @@ public class AuthClient {
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            AuthRpcMessage.AuditMetaDataOption auditDataStatus =  AuthRpcMessage.AuditMetaDataOption.forNumber(authStatus);
-            AuthRpcMessage.AuditMetaDataAuthorityRequest request =  AuthRpcMessage
-                                                                        .AuditMetaDataAuthorityRequest
+            CommonBase.AuditMetadataOption auditDataStatus =  CommonBase.AuditMetadataOption.forNumber(authStatus);
+            AuthRpcMessage.AuditMetadataAuthorityRequest request =  AuthRpcMessage
+                                                                        .AuditMetadataAuthorityRequest
                                                                         .newBuilder()
-                                                                        .setMetaDataAuthId(metaDataAuthId)
+                                                                        .setMetadataAuthId(metaDataAuthId)
                                                                         .setAudit(auditDataStatus)
                                                                         .build();
             //3.调用rpc,获取response
-            CommonMessage.SimpleResponseCode response = AuthServiceGrpc.newBlockingStub(channel).auditMetaDataAuthority(request);
+            AuthRpcMessage.AuditMetadataAuthorityResponse response = AuthServiceGrpc.newBlockingStub(channel).auditMetadataAuthority(request);
             log.debug("====> RPC客户端 auditAuthResponse:" + response.getMsg());
             //4.处理response
             CommonResp resp = new CommonResp();
@@ -158,44 +161,39 @@ public class AuthClient {
     }
 
 
-
-
-
-    private List<LocalDataAuth> dataConvertToAuthList(AuthRpcMessage.GetMetaDataAuthorityListResponse response){
+    private List<LocalDataAuth> dataConvertToAuthList(AuthRpcMessage.GetMetadataAuthorityListResponse response){
         List<LocalDataAuth> localDataAuthList = new ArrayList<>();
-        List <AuthRpcMessage.GetMetaDataAuthority> metaDataAuthorityList = response.getListList();
+        List <AuthRpcMessage.GetMetadataAuthority> metaDataAuthorityList = response.getListList();
         if(!CollectionUtils.isEmpty(metaDataAuthorityList)){
-            for (AuthRpcMessage.GetMetaDataAuthority dataAuth : metaDataAuthorityList) {
+            for (AuthRpcMessage.GetMetadataAuthority dataAuth : metaDataAuthorityList) {
                   //元数据使用授权
-                  AuthRpcMessage.MetaDataAuthority metaDataAuthority =  dataAuth.getAuth();
-                  CommonMessage.OrganizationIdentityInfo  identityInfo = metaDataAuthority.getOwner();
-                  String metaDataId = metaDataAuthority.getMetaDataId();
-                  AuthRpcMessage.MetaDataUsage  metaDataUsage = metaDataAuthority.getUsage();
-                  long startAt = metaDataUsage.getStartAt();
-                  long endAt = metaDataUsage.getEndAt();
-                  int useAuthNumber = metaDataUsage.getTimes();
-                  int useAuthType = metaDataUsage.getUsageTypeValue();
+                  Metadata.MetadataAuthority metaDataAuthority =  dataAuth.getAuth();
+                  CommonBase.Organization identityInfo = metaDataAuthority.getOwner();
+                  String metaDataId = metaDataAuthority.getMetadataId();
+                  Metadata.MetadataUsageRule metadataUsageRule = metaDataAuthority.getUsageRule();
+                  long startAt = metadataUsageRule.getStartAt();
+                  long endAt = metadataUsageRule.getEndAt();
+                  int useAuthNumber = metadataUsageRule.getTimes();
+                  int useAuthType = metadataUsageRule.getUsageTypeValue();
 
                   LocalDataAuth localDataAuth = new LocalDataAuth();
-                  localDataAuth.setAuthId(dataAuth.getMetaDataAuthId());
+                  localDataAuth.setAuthId(dataAuth.getMetadataAuthId());
                   localDataAuth.setApplyUser(dataAuth.getUser());
                   localDataAuth.setUserType(dataAuth.getUserTypeValue());
                   localDataAuth.setCreateAt(new Date(dataAuth.getApplyAt()));
                   localDataAuth.setAuthAt(new Date(dataAuth.getAuditAt()));
-                  localDataAuth.setStatus(dataAuth.getAuditValue());
+                  localDataAuth.setStatus(dataAuth.getAuditOptionValue());
                   localDataAuth.setAuthType(useAuthType);
                   localDataAuth.setAuthValueStartAt(new Date(startAt));
                   localDataAuth.setAuthValueEndAt(new Date(endAt));
                   localDataAuth.setAuthValueAmount(useAuthNumber);
                   localDataAuth.setMetaDataId(metaDataId);
                   localDataAuth.setIdentityId(identityInfo.getIdentityId());
-                  localDataAuth.setIdentityName(identityInfo.getName());
+                  localDataAuth.setIdentityName(identityInfo.getNodeName());
                   localDataAuth.setIdentityNodeId(identityInfo.getNodeId());
                   localDataAuthList.add(localDataAuth);
             }
         }
         return localDataAuthList;
     }
-
-
 }

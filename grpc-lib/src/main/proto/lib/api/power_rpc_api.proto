@@ -1,0 +1,97 @@
+syntax = "proto3";
+// 生成类的包名
+option java_package = "com.platon.metis.admin.grpc.service";
+//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
+option java_outer_classname = "PowerRpcMessage";
+
+package rpcapi;
+
+import "lib/common/base.proto";
+import "lib/types/resourcedata.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+//  ------------------------  power  ------------------------
+
+// 单个组织的总算力信息
+message GetPowerTotalDetailResponse {
+  api.protobuf.Organization owner = 1;                  // 算力拥有者信息
+  types.PowerUsageDetail    power = 2;                  // 算力总详细
+}
+// 全网各个组织的总算力列表 resp
+message GetPowerTotalDetailListResponse {
+  int32                                status = 1;      // 响应码
+  string                               msg = 2;         // 错误提示信息
+  repeated GetPowerTotalDetailResponse power_list = 3;  // 全网的算力总详情列表
+}
+
+// 单个组织的单个算力信息
+message GetPowerSingleDetailResponse {
+  api.protobuf.Organization owner = 1;                  // 算力拥有者信息
+  types.PowerUsageDetail    power = 2;                  // 算力单个摘要
+  string                    job_node_id = 3;            // 计算服务id (节点内部的)
+  string                    power_id = 4;               // 算力id
+}
+
+// 单个组织的多个算力信息列表 resp
+message GetPowerSingleDetailListResponse {
+  int32                                 status = 1;         // 响应码
+  string                                msg = 2;            // 错误提示信息
+  repeated GetPowerSingleDetailResponse power_list = 3;     // 单个节点的算力总摘要列表
+}
+
+
+// 启用算力 req
+message PublishPowerRequest {
+  string job_node_id = 1;     // 计算服务id (节点内部的)
+}
+// 启用算力 resp
+message PublishPowerResponse {
+  int32  status = 1;                         // 响应码
+  string msg = 2;                            // 错误信息
+  string power_id = 3;                       // 算力id
+}
+
+// 停用算力 req
+message RevokePowerRequest {
+  string power_id = 1;        // 算力id
+}
+
+// ## 算力 相关接口
+///           【注意】 算力和元数据 不一样,
+//                    查看外部组织时, 只需要知道外部组织的总算力, 而外部组织的元数据则需要知道单个单个的;
+//                    查看自己组织时, 自己组织的算力和元数据都需要知道单个单个的.
+service PowerService {
+
+  // 查看全网各个组织的总算力详情列表
+  rpc GetPowerTotalDetailList (google.protobuf.Empty) returns (GetPowerTotalDetailListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/power/totalList"
+      body: "*"
+    };
+  }
+
+  // 查看本组织的各个单算力详情列表
+  rpc GetPowerSingleDetailList (google.protobuf.Empty) returns (GetPowerSingleDetailListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/power/singleList"
+      body: "*"
+    };
+  }
+
+  // 启用算力 (发布算力)
+  rpc PublishPower (PublishPowerRequest) returns (PublishPowerResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/power/publish"
+      body: "*"
+    };
+  }
+
+  // 停用算力 (撤销算力)
+  rpc RevokePower (RevokePowerRequest) returns (api.protobuf.SimpleResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/power/revoke"
+      body: "*"
+    };
+  }
+}

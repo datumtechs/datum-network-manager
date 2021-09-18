@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `bootstrap_node`;
 CREATE TABLE `bootstrap_node` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点ID，添加成功后由调度服务返回',
   `node_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '节点名称，种子节点名称不可重复，设置之后无法修改',
   `internal_ip` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '内部IP',
@@ -40,7 +40,7 @@ CREATE TABLE `bootstrap_node` (
 -- ----------------------------
 DROP TABLE IF EXISTS `global_data_file`;
 CREATE TABLE `global_data_file` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
   `org_name` varchar(256) CHARACTER SET utf8mb4 NOT NULL COMMENT '组织名称',
   `file_id` varchar(256) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID',
@@ -49,9 +49,9 @@ CREATE TABLE `global_data_file` (
   `file_path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件存储路径',
   `file_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件后缀/类型, csv',
   `resource_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数据名称',
-  `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
-  `rows` bigint(20) NOT NULL DEFAULT '0' COMMENT '数据行数(不算title)',
-  `columns` int(11) NOT NULL DEFAULT '0' COMMENT '数据列数',
+  `size` BIGINT NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
+  `rows` BIGINT NOT NULL DEFAULT '0' COMMENT '数据行数(不算title)',
+  `columns` INT NOT NULL DEFAULT '0' COMMENT '数据列数',
   `has_title` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否带标题,0表示不带，1表示带标题',
   `remarks` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '数据描述',
   `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'created' COMMENT '数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)',
@@ -67,12 +67,12 @@ CREATE TABLE `global_data_file` (
 -- ----------------------------
 DROP TABLE IF EXISTS `global_meta_data_column`;
 CREATE TABLE `global_meta_data_column` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `file_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件ID',
-  `column_idx` int(11) DEFAULT NULL COMMENT '列索引',
+  `column_idx` INT DEFAULT NULL COMMENT '列索引',
   `column_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '列名',
   `column_type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '列类型',
-  `size` bigint(20) DEFAULT '0' COMMENT '列大小（byte）',
+  `size` BIGINT DEFAULT '0' COMMENT '列大小（byte）',
   `remarks` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '列描述',
   `visible` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '是否对外可见 Y:可见，N:不可见',
   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -85,15 +85,15 @@ CREATE TABLE `global_meta_data_column` (
 -- ----------------------------
 DROP TABLE IF EXISTS `global_power`;
 CREATE TABLE `global_power` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '算力提供方身份标识',
   `org_name` varchar(128) CHARACTER SET utf8mb4 NOT NULL COMMENT '组织名称',
-  `total_core` int(11) NOT NULL DEFAULT '0' COMMENT '总CPU，单位：个',
-  `total_Memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '总内存，单位：byte',
-  `total_Bandwidth` bigint(20) NOT NULL DEFAULT '0' COMMENT '总带宽，单位：bps',
-  `used_core` int(11) NOT NULL DEFAULT '0' COMMENT '已使用CPU信息，单位：个',
-  `used_Memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '已使用内存，单位：byte',
-  `used_Bandwidth` bigint(20) NOT NULL DEFAULT '0' COMMENT '已使用带宽，单位：bps',
+  `total_core` INT NOT NULL DEFAULT '0' COMMENT '总CPU，单位：个',
+  `total_Memory` BIGINT NOT NULL DEFAULT '0' COMMENT '总内存，单位：byte',
+  `total_Bandwidth` BIGINT NOT NULL DEFAULT '0' COMMENT '总带宽，单位：bps',
+  `used_core` INT NOT NULL DEFAULT '0' COMMENT '已使用CPU信息，单位：个',
+  `used_Memory` BIGINT NOT NULL DEFAULT '0' COMMENT '已使用内存，单位：byte',
+  `used_Bandwidth` BIGINT NOT NULL DEFAULT '0' COMMENT '已使用带宽，单位：bps',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `identity_id` (`identity_id`)
@@ -104,15 +104,15 @@ CREATE TABLE `global_power` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_data_file`;
 CREATE TABLE `local_data_file` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
   `file_id` varchar(256) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '源文件ID，上传文件成功后返回源文件ID',
   `file_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源文件名称',
   `file_path` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件存储路径',
   `file_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件后缀/类型, csv',
-  `size` bigint(20) NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
-  `rows` bigint(20) NOT NULL DEFAULT '0' COMMENT '数据行数(不算title)',
-  `columns` int(11) NOT NULL DEFAULT '0' COMMENT '数据列数',
+  `size` BIGINT NOT NULL DEFAULT '0' COMMENT '文件大小(字节)',
+  `rows` BIGINT NOT NULL DEFAULT '0' COMMENT '数据行数(不算title)',
+  `columns` INT NOT NULL DEFAULT '0' COMMENT '数据列数',
   `has_title` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否带标题,0表示不带，1表示带标题',
   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -125,8 +125,8 @@ CREATE TABLE `local_data_file` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_meta_data`;
 CREATE TABLE `local_meta_data` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `data_file_id` int(11) NOT NULL COMMENT '数据文件表自增id（不是文件id）',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `data_file_id` INT NOT NULL COMMENT '数据文件表自增id（不是文件id）',
   `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据ID,hash',
   `meta_data_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '元数据名称',
   `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'entered' COMMENT '数据的状态 (entered：录入数据(创建未发布新表之前的操作); created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表; deleted:已删除的表)',
@@ -147,12 +147,12 @@ CREATE TABLE `local_meta_data` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_meta_data_column`;
 CREATE TABLE `local_meta_data_column` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `meta_id` int(11) NOT NULL COMMENT '元数据自增id',
-  `column_idx` int(11) DEFAULT NULL COMMENT '列索引',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `meta_id` INT NOT NULL COMMENT '元数据自增id',
+  `column_idx` INT DEFAULT NULL COMMENT '列索引',
   `column_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '列名',
   `column_type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '列类型',
-  `size` bigint(20) DEFAULT '0' COMMENT '列大小（byte）',
+  `size` BIGINT DEFAULT '0' COMMENT '列大小（byte）',
   `remarks` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '列描述',
   `visible` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '是否对外可见 Y:可见，N:不可见',
   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -166,7 +166,7 @@ CREATE TABLE `local_meta_data_column` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_data_auth`;
 CREATE TABLE `local_data_auth` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `auth_id` varchar(256) NOT NULL COMMENT '元数据授权申请Id',
   `meta_data_id` varchar(256) NOT NULL COMMENT '元数据ID',
   `apply_user` varchar(256) DEFAULT NULL COMMENT '发起任务的用户的信息 (task是属于用户的)',
@@ -193,13 +193,13 @@ CREATE TABLE `local_data_auth` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_seed_node`;
 CREATE TABLE `local_seed_node` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组织身份ID',
   `out_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '外部节点id',
   `seed_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
   `seed_node_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点名称',
   `internal_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点内部IP',
-  `internal_port` int(11) DEFAULT NULL COMMENT '节点内部端口',
+  `internal_port` INT DEFAULT NULL COMMENT '节点内部端口',
   `conn_status` int(2) DEFAULT -1 COMMENT '节点状态 -1: 网络连接失败; 0: 网络连接成功',
   `init_flag` int(2) DEFAULT NULL COMMENT '是否是初始节点(0:否, 1:是)',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -213,14 +213,14 @@ CREATE TABLE `local_seed_node` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_data_node`;
 CREATE TABLE `local_data_node` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组织身份ID',
   `node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
   `host_Name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点名称',
   `internal_IP` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点内部IP',
-  `internal_Port` int(11) DEFAULT NULL COMMENT '节点内部端口',
+  `internal_Port` INT DEFAULT NULL COMMENT '节点内部端口',
   `external_IP` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点外部IP',
-  `external_Port` int(11) DEFAULT NULL COMMENT '节点外部端口',
+  `external_Port` INT DEFAULT NULL COMMENT '节点外部端口',
   `conn_Status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '-1' COMMENT '节点状态 -1: 未被调度服务连接上; 0: 连接上;',
   `conn_message` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点(连接失败)信息',
   `conn_Time` datetime DEFAULT NULL COMMENT '节点上一次连接时间',
@@ -240,10 +240,10 @@ CREATE TABLE `local_org` (
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '机构身份标识ID',
   `carrier_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '机构调度服务node id，入网后可以获取到',
   `carrier_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '调度服务IP地址',
-  `carrier_port` int(11) DEFAULT NULL COMMENT '调度服务端口号',
+  `carrier_port` INT DEFAULT NULL COMMENT '调度服务端口号',
   `carrier_conn_status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '连接状态 enabled：可用, disabled:不可用',
   `carrier_status` varchar(10) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '调度服务的状态：active: 活跃; leave: 离开网络; join: 加入网络 unuseful: 不可用',
-  `conn_node_count` int(11)  DEFAULT NULL COMMENT '节点连接的数量',
+  `conn_node_count` INT  DEFAULT NULL COMMENT '节点连接的数量',
   `carrier_conn_time` datetime DEFAULT NULL COMMENT '服务连接时间',
   `status` tinyint(1) DEFAULT '0' COMMENT '0未入网，1已入网',
   `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
@@ -254,12 +254,12 @@ CREATE TABLE `local_org` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_power_history`;
 CREATE TABLE `local_power_history` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `power_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
   `refresh_status` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '刷新时间标志（0：小时，1：天）',
-  `used_memory` bigint(20) DEFAULT '0' COMMENT '使用的内存, 字节',
-  `used_core` int(11) DEFAULT '0' COMMENT '使用的core',
-  `used_bandwidth` bigint(20) DEFAULT '0' COMMENT '使用的带宽, bps',
+  `used_memory` BIGINT DEFAULT '0' COMMENT '使用的内存, 字节',
+  `used_core` INT DEFAULT '0' COMMENT '使用的core',
+  `used_bandwidth` BIGINT DEFAULT '0' COMMENT '使用的带宽, bps',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
@@ -271,7 +271,7 @@ CREATE TABLE `local_power_history` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_power_join_task`;
 CREATE TABLE `local_power_join_task` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `power_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '计算节点ID',
   `task_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务id',
   `task_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务名称',
@@ -282,9 +282,9 @@ CREATE TABLE `local_power_join_task` (
   `result_side_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '结果方名称',
   `coordinate_side_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '协作方ID',
   `coordinate_side_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '协作方名称',
-  `used_memory` bigint(20) DEFAULT '0' COMMENT '使用的内存, 字节（占此节点总算力比）',
-  `used_core` int(11) DEFAULT '0' COMMENT '使用的core（占此节点总算力比）',
-  `used_bandwidth` bigint(20) DEFAULT '0' COMMENT '使用的带宽, bps（占此节点总算力比）',
+  `used_memory` BIGINT DEFAULT '0' COMMENT '使用的内存, 字节（占此节点总算力比）',
+  `used_core` INT DEFAULT '0' COMMENT '使用的core（占此节点总算力比）',
+  `used_bandwidth` BIGINT DEFAULT '0' COMMENT '使用的带宽, bps（占此节点总算力比）',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
@@ -296,14 +296,14 @@ CREATE TABLE `local_power_join_task` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_power_node`;
 CREATE TABLE `local_power_node` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织身份ID',
   `power_node_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
   `power_node_name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点名称(同一个组织不可重复）',
   `internal_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点内网IP',
-  `internal_port` int(11) DEFAULT NULL COMMENT '节点内网端口',
+  `internal_port` INT DEFAULT NULL COMMENT '节点内网端口',
   `external_ip` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点外网IP',
-  `external_port` int(11) DEFAULT NULL COMMENT '节点外网端口',
+  `external_port` INT DEFAULT NULL COMMENT '节点外网端口',
   `start_time` datetime DEFAULT NULL COMMENT '节点启用时间',
   `remarks` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点备注',
   `conn_time` datetime DEFAULT NULL COMMENT '节点上一次连接时间',
@@ -311,12 +311,12 @@ CREATE TABLE `local_power_node` (
   `conn_message` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点(连接失败)信息',
   `power_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '节点启动后底层返回的算力ID',
   `power_status` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '算力状态 (create: 还未发布的算力; release: 已发布的算力; revoke: 已撤销的算力)',
-  `memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '计算host内存, 字节',
-  `core` int(11) NOT NULL DEFAULT '0' COMMENT '计算host core',
-  `bandwidth` bigint(20) NOT NULL DEFAULT '0' COMMENT '计算host带宽, bps',
-  `used_memory` bigint(20) DEFAULT '0' COMMENT '使用的内存, 字节',
-  `used_core` int(11) DEFAULT '0' COMMENT '使用的core',
-  `used_bandwidth` bigint(20) DEFAULT '0' COMMENT '使用的带宽, bps',
+  `memory` BIGINT NOT NULL DEFAULT '0' COMMENT '计算host内存, 字节',
+  `core` INT NOT NULL DEFAULT '0' COMMENT '计算host core',
+  `bandwidth` BIGINT NOT NULL DEFAULT '0' COMMENT '计算host带宽, bps',
+  `used_memory` BIGINT DEFAULT '0' COMMENT '使用的内存, 字节',
+  `used_core` INT DEFAULT '0' COMMENT '使用的core',
+  `used_bandwidth` BIGINT DEFAULT '0' COMMENT '使用的带宽, bps',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`id`),
@@ -329,7 +329,7 @@ CREATE TABLE `local_power_node` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `config_Key` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '配置项',
   `config_Value` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '配置值',
   `status` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '配置状态 enabled：可用, disabled:不可用',
@@ -344,7 +344,7 @@ CREATE TABLE `sys_config` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `user_name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户名',
   `password` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码 MD5加密',
   `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户状态 enabled：可用, disabled:不可用',
@@ -362,7 +362,7 @@ INSERT INTO `sys_user` (`id`, `user_name`, `password`, `status`, `is_Master`, `r
 -- ----------------------------
 DROP TABLE IF EXISTS `task`;
 CREATE TABLE `task` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `task_Id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID',
   `task_Name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务名称',
   `owner_Identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务发起方身份',
@@ -376,9 +376,9 @@ CREATE TABLE `task` (
   `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务状态 pending: 等在中; running: 计算中; failed: 失败; success: 成功)',
   `role` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '我在任务中的角色 (owner: 任务发起方; dataSupplier: 数据提供方: powerSupplier: 算力提供方; receiver: 结果接收方; algoSupplier:算法提供方)',
   `duration` datetime DEFAULT NULL COMMENT '任务声明计算时间',
-  `cost_core` int(11) DEFAULT '0' COMMENT '任务声明所需CPU',
-  `cost_Memory` bigint(20) DEFAULT '0' COMMENT '任务声明所需内存',
-  `cost_Bandwidth` bigint(20) DEFAULT '0' COMMENT '任务声明所需带宽',
+  `cost_core` INT DEFAULT '0' COMMENT '任务声明所需CPU',
+  `cost_Memory` BIGINT DEFAULT '0' COMMENT '任务声明所需内存',
+  `cost_Bandwidth` BIGINT DEFAULT '0' COMMENT '任务声明所需带宽',
   `alg_Identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '算法提供方身份ID',
   `reviewed` tinyint(1) DEFAULT '0' COMMENT '任务是否被查看过，默认为false(0)',
   `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -405,7 +405,7 @@ CREATE TABLE `task_data_provider` (
 -- ----------------------------
 DROP TABLE IF EXISTS `task_event`;
 CREATE TABLE `task_event` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `ID` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `task_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID,hash',
   `event_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '事件类型',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产生事件的组织身份ID',
@@ -434,12 +434,12 @@ DROP TABLE IF EXISTS `task_power_provider`;
 CREATE TABLE `task_power_provider` (
   `task_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID,hash',
   `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '算力提供者组织身份ID',
-  `total_core` int(11) DEFAULT '0' COMMENT '任务总CPU信息',
-  `used_core` int(11) DEFAULT '0' COMMENT '任务占用CPU信息',
-  `total_memory` bigint(20) DEFAULT '0' COMMENT '任务总内存信息',
-  `used_memory` bigint(20) DEFAULT '0' COMMENT '任务占用内存信息',
-  `total_Bandwidth` bigint(20) DEFAULT '0' COMMENT '任务总带宽信息',
-  `used_Bandwidth` bigint(20) DEFAULT '0' COMMENT '任务占用带宽信息',
+  `total_core` INT DEFAULT '0' COMMENT '任务总CPU信息',
+  `used_core` INT DEFAULT '0' COMMENT '任务占用CPU信息',
+  `total_memory` BIGINT DEFAULT '0' COMMENT '任务总内存信息',
+  `used_memory` BIGINT DEFAULT '0' COMMENT '任务占用内存信息',
+  `total_Bandwidth` BIGINT DEFAULT '0' COMMENT '任务总带宽信息',
+  `used_Bandwidth` BIGINT DEFAULT '0' COMMENT '任务占用带宽信息',
   `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`task_id`,`identity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务算力提供方表 任务数据提供方基础信息';
@@ -464,19 +464,12 @@ CREATE TABLE `store_calculate_result` (
     `time_interval` varchar(10) NOT NULL COMMENT '时间间隔',
     `store_type` varchar(50) NOT NULL COMMENT '存储类型',
     `reside_time` varchar(10) NOT NULL COMMENT '所属时间',
-    `calculate_result` bigint(20) DEFAULT 0 COMMENT '计算结果（单位：字节/bps）',
+    `calculate_result` BIGINT DEFAULT 0 COMMENT '计算结果（单位：字节/bps）',
     `status` int(4) DEFAULT 1 COMMENT '是否有效（1:有效，2:无效）',
     `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
     KEY (`store_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='存储计算结果表';
-
-
--- ----------------------------
--- View structure for v_local_stats
--- ----------------------------
-DROP VIEW IF EXISTS `v_local_stats`;
-CREATE VIEW `v_local_stats` AS select `carriernode`.`carrier_conn_status` AS `carrier_conn_Status`,`datanode`.`data_node_count` AS `data_node_count`,`powernode`.`power_node_count` AS `power_node_count`,`powerstats`.`total_core` AS `total_core`,`powerstats`.`total_memory` AS `total_memory`,`powerstats`.`total_bandwidth` AS `total_bandwidth`,`powerstats`.`used_core` AS `used_core`,`powerstats`.`used_memory` AS `used_memory`,`powerstats`.`used_bandwidth` AS `used_bandwidth`,`releasedfile`.`released_data_file_count` AS `released_data_file_count`,`unreleasedfile`.`unreleased_data_file_count` AS `unreleased_data_file_count`,`runingtask`.`task_count` AS `task_count` from ((((((((select `local_org`.`carrier_conn_status` AS `carrier_conn_status` from `local_org`)) `carriernode` join (select count(`local_data_node`.`id`) AS `data_node_count` from `local_data_node`) `datanode`) join (select count(`local_power_node`.`id`) AS `power_node_count` from `local_power_node`) `powernode`) join (select sum(`local_power_node`.`core`) AS `total_core`,sum(`local_power_node`.`memory`) AS `total_memory`,sum(`local_power_node`.`bandwidth`) AS `total_bandwidth`,sum(`local_power_node`.`used_core`) AS `used_core`,sum(`local_power_node`.`used_memory`) AS `used_memory`,sum(`local_power_node`.`used_bandwidth`) AS `used_bandwidth` from `local_power_node`) `powerstats`) join (select count(`local_data_file`.`id`) AS `released_data_file_count` from `local_data_file` where (`local_data_file`.`status` = 'released')) `releasedfile`) join (select count(`local_data_file`.`id`) AS `unreleased_data_file_count` from `local_data_file` where (`local_data_file`.`status` <> 'released')) `unreleasedfile`) join (select count(1) AS `task_count` from (select count(`local_power_join_task`.`task_id`) AS `task_count` from `local_power_join_task` group by `local_power_join_task`.`task_id`) `t`) `runingtask`) ;
 
 -- ----------------------------
 -- View structure for v_past_12_month

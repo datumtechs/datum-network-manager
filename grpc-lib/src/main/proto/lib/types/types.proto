@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package types;
+
+import "lib/types/header.proto";
+import "lib/types/metadata.proto";
+import "lib/types/resourcedata.proto";
+import "lib/types/taskdata.proto";
+import "lib/types/identitydata.proto";
+
+option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
+option java_package = "com.platon.metis.admin.grpc.types";
+//option java_multiple_files = true;
+// Metadata body data struct.
+message BlockData {
+  types.HeaderPb              header = 1;
+  repeated types.MetadataPB     metadata = 2;
+  repeated types.ResourcePB resourcedata = 3;
+  repeated types.IdentityPB identitydata = 4;
+  repeated types.TaskPB     taskdata = 5;
+
+  //
+  uint64 receivedAt = 6;
+  string receivedFrom = 7;
+}
+
+message BodyData {
+  repeated types.MetadataPB     metadata = 1;
+  repeated types.ResourcePB resourcedata = 2;
+  repeated types.IdentityPB identitydata = 3;
+  repeated types.TaskPB     taskdata = 4;
+  bytes                       extraData = 5;
+}
+
+// MetadataLookupEntry is a positional metadata to help looking up the data content of
+// a metadata given only its dataId.
+message DataLookupEntry {
+  bytes  blockHash = 1;
+  uint64 blockIndex = 2;
+  uint64 index = 3;
+  string nodeId = 4;
+  string type = 5;
+}
+
+

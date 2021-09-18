@@ -29,3 +29,12 @@ message TaskReadyGoReply {
     bool ok = 1;
     string msg = 2;
 }
+
+message TaskCancelReq {
+    string task_id = 1;
+}
+
+message TaskCancelReply {
+    bool ok = 1;
+    string msg = 2;
+}

@@ -1,0 +1,178 @@
+syntax = "proto3";
+
+// 生成类的包名
+option java_package = "com.platon.metis.admin.grpc.service";
+//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
+option java_outer_classname = "AuthRpcMessage";
+
+package rpcapi;
+
+import "lib/common/base.proto";
+import "lib/types/metadata.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+//  ------------------------  auth  ------------------------
+
+// 组织身份入网申请 req
+message ApplyIdentityJoinRequest {
+  api.protobuf.Organization member = 1;           // 申请准入身份
+}
+// 查询自己组织的identity信息 resp
+message GetNodeIdentityResponse {
+  int32                     status = 1;                       // 响应码
+  string                    msg = 2;                          // 错误信息
+  api.protobuf.Organization owner = 3;                        // 自己身份信息
+}
+
+// 查询全网组织的身份信息列表(已入网的) resp
+message GetIdentityListResponse {
+  int32                              status = 1;                       // 响应码
+  string                             msg = 2;                          // 错误信息
+  repeated api.protobuf.Organization member_list = 3;                  // 全网身份信息列表
+}
+
+// 发起用户对元数据使用授权申请 req
+message ApplyMetadataAuthorityRequest {
+  string                  user = 1;                            // 发起任务的用户的信息 (授权申请, 是属于用户的)
+  api.protobuf.UserType   user_type = 2;                       // 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+  types.MetadataAuthority auth = 3;                            // 元数据使用授权信息
+  bytes                   sign = 4;                            // 发起数据授权申请的账户的签名
+}
+// 发起用户对元数据使用授权申请 resp
+message ApplyMetadataAuthorityResponse {
+  int32  status = 1;                       // 响应码
+  string msg = 2;                          // 错误信息
+  string metadata_auth_id = 3;             // 元数据授权申请Id
+}
+
+// 撤销用户对元数据使用授权申请 req
+message RevokeMetadataAuthorityRequest {
+  string                  user = 1;                             // 发起任务的用户的信息 (授权申请, 是属于用户的)
+  api.protobuf.UserType   user_type = 2;                        // 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+  string                  metadata_auth_id = 3;                 // 元数据授权申请Id
+  bytes                   sign = 4;                            //  撤销数据授权申请的账户的签名
+}
+
+// 组织对用户的数据授权申请做审核 req
+message AuditMetadataAuthorityRequest {
+  string                            metadata_auth_id = 1;                   // 元数据授权申请Id
+  api.protobuf.AuditMetadataOption  audit = 2;                              // 审核结果
+  string                            suggestion = 3;                         // 审核意见 (允许""字符)
+}
+// 组织对用户的数据授权申请做审核 resp
+message AuditMetadataAuthorityResponse {
+  // the code for response
+  int32 status = 1;
+  // the message for response
+  string msg = 2;
+  api.protobuf.AuditMetadataOption audit = 3;                      // 审核结果 (回显)
+}
+
+// 当前组织的某个用户对单个元数据的授权申请及审核结果详情
+message GetMetadataAuthority {
+  string                                      metadata_auth_id = 1;                 // 元数据授权申请Id
+  string                                      user = 2;                             // 发起任务的用户的信息 (数据授权 是属于用户的)
+  api.protobuf.UserType                       user_type = 3;                        // 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+  types.MetadataAuthority                     auth = 4;                             // 元数据使用授权信息
+  api.protobuf.AuditMetadataOption            audit_option = 5;                     // 审核结果
+  string                                      audit_suggestion = 6;                 // 审核意见 (允许""字符)
+  types.MetadataUsedQuo                       used_quo = 7;                         // 对应数据授权信息中元数据的使用实况
+  uint64                                      apply_at = 8;                         // 发起授权申请的时间 (单位: ms)
+  uint64                                      audit_at = 9;                         // 审核授权申请的时间 (单位: ms)
+  api.protobuf.MetadataAuthorityState         state = 10;                           // 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 <失效前主动撤回的>; 4: 已经失效的数据授权 <过期or达到使用上限的>)
+}
+
+//// 查看某个组织的所有元数据的授权申请及审核结果详情列表 req
+//message GetMetadataAuthorityListRequest {
+//  string identity_id = 1;             // 组织的身份标识 (可选, 传""则查询当前组织的元数据)
+//}
+
+// 当前(组织or用户)的所有元数据的授权申请及审核结果详情列表 resp
+message GetMetadataAuthorityListResponse {
+  int32                         status = 1;                       // 响应码
+  string                        msg = 2;                          // 错误信息
+  repeated GetMetadataAuthority list = 3;                         // 数据授权信息列表
+}
+
+
+// 当前(用户)的所有元数据的授权申请及审核结果详情列表 req
+message GetMetadataAuthorityListByUserRequest {
+  string                    user = 1;                             // 发起任务的用户的信息 (数据授权 是属于用户的)
+  api.protobuf.UserType     user_type = 2;                        // 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+}
+
+service AuthService {
+
+  // 组织身份入网申请
+  rpc ApplyIdentityJoin (ApplyIdentityJoinRequest) returns (api.protobuf.SimpleResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/auth/applyIdentity"
+      body: "*"
+    };
+  }
+
+  // 注销准入网络
+  rpc RevokeIdentityJoin (google.protobuf.Empty) returns (api.protobuf.SimpleResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/auth/revokeIdentity"
+      body: "*"
+    };
+  }
+  // 查询自己组织的identity信息
+  rpc GetNodeIdentity (google.protobuf.Empty)returns (GetNodeIdentityResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/auth/getIdentity"
+      body: "*"
+    };
+  }
+
+  // 查询全网组织的身份信息列表(已入网的)
+  rpc GetIdentityList (google.protobuf.Empty) returns (GetIdentityListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/auth/identityList"
+      body: "*"
+    };
+  }
+
+  // 发起数据授权申请
+  rpc ApplyMetadataAuthority(ApplyMetadataAuthorityRequest) returns (ApplyMetadataAuthorityResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/auth/applyMetaDataAuth"
+      body: "*"
+    };
+  }
+
+  // 撤销数据授权申请
+  rpc RevokeMetadataAuthority(RevokeMetadataAuthorityRequest) returns (api.protobuf.SimpleResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/auth/revokeMetaDataAuth"
+      body: "*"
+    };
+  }
+
+  // 数据授权审核
+  rpc AuditMetadataAuthority(AuditMetadataAuthorityRequest) returns (AuditMetadataAuthorityResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/auth/auditMetaDataAuth"
+      body: "*"
+    };
+  }
+
+  // 当前(组织)的所有元数据的授权申请及审核结果详情列表
+  rpc GetMetadataAuthorityList(google.protobuf.Empty) returns (GetMetadataAuthorityListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/auth/metaDataAuthList"
+      body: "*"
+    };
+  }
+
+  // 当前(用户)的所有元数据的授权申请及审核结果详情列表
+  rpc GetMetadataAuthorityListByUser(GetMetadataAuthorityListByUserRequest) returns (GetMetadataAuthorityListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/auth/metaDataAuthListByUser"
+      body: "*"
+    };
+  }
+
+}

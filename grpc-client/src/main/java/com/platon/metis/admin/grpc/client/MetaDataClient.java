@@ -7,9 +7,10 @@ import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.metis.admin.dao.enums.LocalMetaDataColumnVisibleEnum;
 import com.platon.metis.admin.grpc.channel.BaseChannelManager;
-import com.platon.metis.admin.grpc.service.CommonMessage;
+import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.service.MetaDataRpcMessage;
-import com.platon.metis.admin.grpc.service.MetaDataServiceGrpc;
+import com.platon.metis.admin.grpc.service.MetadataServiceGrpc;
+import com.platon.metis.admin.grpc.types.Metadata;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -49,14 +50,14 @@ public class MetaDataClient {
             //2.拼装request
             //2.1文件所属组织者信息
             LocalOrg localOrgInfo = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-            CommonMessage.OrganizationIdentityInfo orgInfo = CommonMessage.OrganizationIdentityInfo
+            CommonBase.Organization orgInfo = CommonBase.Organization
                     .newBuilder()
-                    .setName(localOrgInfo.getName())
+                    .setNodeName(localOrgInfo.getName())
                     .setNodeId(localOrgInfo.getCarrierNodeId())
                     .setIdentityId(localOrgInfo.getIdentityId())
                     .build();
             //2.2文件元数据信息
-            MetaDataRpcMessage.MetaDataSummary.Builder summaryBuilder = MetaDataRpcMessage.MetaDataSummary
+            Metadata.MetadataSummary.Builder summaryBuilder = Metadata.MetadataSummary
                     .newBuilder()
                     .setOriginId(fileDetail.getFileId())
                     .setTableName((String) fileDetail.getDynamicFields().get("resourceName"))
@@ -64,15 +65,15 @@ public class MetaDataClient {
                     .setRows(fileDetail.getRows().intValue()) // 源文件的行数
                     .setColumns(fileDetail.getColumns())
                     .setSize(fileDetail.getSize().intValue())
-                    .setFileType(fileDetail.getFileType())
+                    .setFileType(CommonBase.OriginFileType.valueOf(fileDetail.getFileType()))
                     .setHasTitle(fileDetail.getHasTitle());
                     //.setState(fileDetail.getStatus());// 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
            /* if(StrUtil.isNotBlank(fileDetail.getRemarks())){
                 summaryBuilder.setDesc(fileDetail.getRemarks());
             }*/
-            MetaDataRpcMessage.MetaDataDetail.Builder builder = MetaDataRpcMessage.MetaDataDetail
+            Metadata.MetadataDetail.Builder builder = Metadata.MetadataDetail
                     .newBuilder()
-                    .setMetaDataSummary(summaryBuilder.build());
+                    .setMetadataSummary(summaryBuilder.build());
             //2.3构建文件元数据列信息
             List<LocalMetaDataColumn> columnList = fileDetail.getLocalMetaDataColumnList();
             for (int i = 0; i < columnList.size(); i++) {
@@ -81,37 +82,37 @@ public class MetaDataClient {
                     //如果不可见则不发布该列元数据
                     continue;
                 }
-                MetaDataRpcMessage.MetaDataColumnDetail.Builder columnDetailBuilder = MetaDataRpcMessage.MetaDataColumnDetail.newBuilder();
-                columnDetailBuilder.setCindex(metaDataColumn.getColumnIdx());
+                Metadata.MetadataColumn.Builder columnDetailBuilder = Metadata.MetadataColumn.newBuilder();
+                columnDetailBuilder.setCIndex(metaDataColumn.getColumnIdx());
                 if (StrUtil.isNotBlank(metaDataColumn.getColumnName())){
-                    columnDetailBuilder.setCname(metaDataColumn.getColumnName());
+                    columnDetailBuilder.setCName(metaDataColumn.getColumnName());
                 }
                 if (StrUtil.isNotBlank(metaDataColumn.getColumnType())){
-                    columnDetailBuilder.setCtype(metaDataColumn.getColumnType());
+                    columnDetailBuilder.setCType(metaDataColumn.getColumnType());
                 }
-                columnDetailBuilder.setCsize(metaDataColumn.getSize() == null ? 0 : metaDataColumn.getSize().intValue());
+                columnDetailBuilder.setCSize(metaDataColumn.getSize() == null ? 0 : metaDataColumn.getSize().intValue());
                 if (StrUtil.isNotBlank(metaDataColumn.getRemarks())){
-                    columnDetailBuilder.setCcomment(metaDataColumn.getRemarks());
+                    columnDetailBuilder.setCComment(metaDataColumn.getRemarks());
                 }
-                builder.addColumnMeta(columnDetailBuilder.build());
+                builder.addMetadataColumns(columnDetailBuilder.build());
             }
             //构建该元数据参与过得任务数 (已完成的和正在执行的)
             builder.setTotalTaskCount(0);//todo 统计该元数据参与过的任务
 
             //2.4收集完成文件信息
-            MetaDataRpcMessage.MetaDataDetail metaDataDetail = builder.build();
+            Metadata.MetadataDetail metadataDetail = builder.build();
             //2.5构建完整的请求信息
-            MetaDataRpcMessage.PublishMetaDataRequest request = MetaDataRpcMessage.PublishMetaDataRequest
+            MetaDataRpcMessage.PublishMetadataRequest request = MetaDataRpcMessage.PublishMetadataRequest
                     .newBuilder()
-                    .setInformation(metaDataDetail)
+                    .setInformation(metadataDetail)
                     .build();
             //3.调用rpc,获取response
-            MetaDataRpcMessage.PublishMetaDataResponse response = MetaDataServiceGrpc.newBlockingStub(channel).publishMetaData(request);
+            MetaDataRpcMessage.PublishMetadataResponse response = MetadataServiceGrpc.newBlockingStub(channel).publishMetadata(request);
             //4.处理response
             if (response.getStatus() != GRPC_SUCCESS_CODE) {
                 throw new ApplicationException(StrUtil.format("元数据信息发布失败:{}",response.getMsg()));
             }
-            return response.getMetaDataId();
+            return response.getMetadataId();
         } finally {
             channelManager.closeChannel(channel);
         }
@@ -136,12 +137,12 @@ public class MetaDataClient {
                     .setNodeId(localOrgInfo.getCarrierNodeId())
                     .setIdentityId(localOrgInfo.getIdentityId())
                     .build();*/
-            MetaDataRpcMessage.RevokeMetaDataRequest request = MetaDataRpcMessage.RevokeMetaDataRequest
+            MetaDataRpcMessage.RevokeMetadataRequest request = MetaDataRpcMessage.RevokeMetadataRequest
                     .newBuilder()
-                    .setMetaDataId(metaDataId)
+                    .setMetadataId(metaDataId)
                     .build();
             //3.调用rpc,获取response
-            CommonMessage.SimpleResponseCode response = MetaDataServiceGrpc.newBlockingStub(channel).revokeMetaData(request);
+            CommonBase.SimpleResponse response = MetadataServiceGrpc.newBlockingStub(channel).revokeMetadata(request);
             //4.处理response
             if (response.getStatus() != GRPC_SUCCESS_CODE) {
                 throw new ApplicationException(StrUtil.format("元数据信息下架失败:{}",response.getMsg()));
@@ -161,27 +162,27 @@ public class MetaDataClient {
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
+            com.google.protobuf.Empty request = com.google.protobuf.Empty
                     .newBuilder()
                     .build();
             //3.调用rpc,获取response
-            MetaDataRpcMessage.GetMetaDataDetailListResponse response = MetaDataServiceGrpc.newBlockingStub(channel).getMetaDataDetailList(request);
+            MetaDataRpcMessage.GetMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getMetadataDetailList(request);
             //4.处理response
             if (response.getStatus() != GRPC_SUCCESS_CODE) {
                 throw new ApplicationException(StrUtil.format("查询全网数据列表失败:{}",response.getMsg()));
             }
-            List<MetaDataRpcMessage.GetMetaDataDetailResponse> metaDataList = response.getMetaDataListList();
+            List<MetaDataRpcMessage.GetMetadataDetailResponse> metaDataList = response.getMetadataListList();
             List<GlobalDataFileDetail> detailList = metaDataList.stream()
                     .map(metaData -> {
                         GlobalDataFileDetail detail = new GlobalDataFileDetail();
                         //元数据的拥有者
-                        CommonMessage.OrganizationIdentityInfo owner = metaData.getOwner();
+                        CommonBase.Organization owner = metaData.getOwner();
                         String identityId = owner.getIdentityId();
-                        String orgName = owner.getName();
+                        String orgName = owner.getNodeName();
                         detail.setIdentityId(identityId);
                         detail.setOrgName(orgName);
                         //元文件详情主体
-                        MetaDataRpcMessage.MetaDataDetail information = metaData.getInformation();
+                        Metadata.MetadataDetail information = metaData.getInformation();
                         //            string meta_data_id = 1;           // 元数据Id
                         //            string origin_id    = 2;              // 源文件Id
                         //            string table_name   = 3;             // 元数据名称 (表名)
@@ -193,8 +194,8 @@ public class MetaDataClient {
                         //            string file_type    = 9;              // 源文件的类型 (目前只有 csv)
                         //            bool   has_title    = 10;             // 源文件是否包含标题
                         //            string state        = 11;                 // 元数据的状态 (create: 还未发布的新表; release: 已发布的表; revoke: 已撤销的表)
-                        MetaDataRpcMessage.MetaDataSummary summary = information.getMetaDataSummary();
-                        detail.setMetaDataId(summary.getMetaDataId());
+                        Metadata.MetadataSummary summary = information.getMetadataSummary();
+                        detail.setMetaDataId(summary.getMetadataId());
                         detail.setFileId(summary.getOriginId());
                         detail.setFileName(summary.getTableName());
                         detail.setResourceName(summary.getTableName());
@@ -203,7 +204,7 @@ public class MetaDataClient {
                         detail.setRows(Long.valueOf(summary.getRows()));
                         detail.setColumns(summary.getColumns());
                         detail.setSize(Long.valueOf(summary.getSize()));
-                        detail.setFileType(summary.getFileType());
+                        detail.setFileType(summary.getFileType().name());
                         detail.setHasTitle(summary.getHasTitle());
                         detail.setStatus(LocalDataFileStatusEnum.RELEASED.getStatus());
                         //            uint32 cindex   = 1;                         // 列的索引
@@ -211,15 +212,15 @@ public class MetaDataClient {
                         //            string ctype    = 3;                          // 列类型
                         //            uint32 csize    = 4;                          // 列大小(单位: byte)
                         //            string ccomment = 5;                       // 列描述
-                        information.getColumnMetaList().forEach(columnDetail -> {
+                        information.getMetadataColumnsList().forEach(columnDetail -> {
                             GlobalMetaDataColumn metaDataColumn = new GlobalMetaDataColumn();
                             metaDataColumn.setFileId(summary.getOriginId());
-                            metaDataColumn.setColumnIdx(columnDetail.getCindex());
-                            metaDataColumn.setColumnName(columnDetail.getCname());
-                            metaDataColumn.setColumnType(columnDetail.getCtype());
-                            metaDataColumn.setSize(Long.valueOf(columnDetail.getCsize()));
+                            metaDataColumn.setColumnIdx(columnDetail.getCIndex());
+                            metaDataColumn.setColumnName(columnDetail.getCName());
+                            metaDataColumn.setColumnType(columnDetail.getCType());
+                            metaDataColumn.setSize(Long.valueOf(columnDetail.getCSize()));
                             metaDataColumn.setVisible(LocalMetaDataColumnVisibleEnum.YES.getIsVisible());
-                            metaDataColumn.setRemarks(columnDetail.getCcomment());
+                            metaDataColumn.setRemarks(columnDetail.getCComment());
                             detail.getMetaDataColumnList().add(metaDataColumn);
                         });
                         return detail;

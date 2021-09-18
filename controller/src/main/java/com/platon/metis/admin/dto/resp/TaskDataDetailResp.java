@@ -38,7 +38,7 @@ public class TaskDataDetailResp {
     @ApiModelProperty(name = "duration",value = "任务所需资源声明，任务运行耗时时长 (单位: ms)")
     private Long duration;
     @ApiModelProperty(name = "costCore",value = "任务所需的CPU资源 (单位: 个)")
-    private Long costCore;
+    private Integer costCore;
     @ApiModelProperty(name = "costMemory",value = "任务所需的内存资源 (单位: byte)")
     private Long costMemory;
     @ApiModelProperty(name = "costBandwidth",value = "任务所需的带宽资源 (单位: bps)")

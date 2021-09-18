@@ -2,7 +2,6 @@ package com.platon.metis.admin.grpc.client;
 
 import cn.hutool.json.JSONUtil;
 import com.platon.metis.admin.grpc.entity.TaskDataResp;
-import com.platon.metis.admin.grpc.service.CommonMessage;
 import com.platon.metis.admin.grpc.service.TaskRpcMessage;
 import com.platon.metis.admin.grpc.service.TaskServiceGrpc;
 import io.grpc.Channel;
@@ -57,8 +56,9 @@ public class TaskClientTest {
     public void test() {
         Channel channel =  ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
 
-
-        CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams.newBuilder().build();
+        com.google.protobuf.Empty request = com.google.protobuf.Empty
+                .newBuilder()
+                .build();
         TaskRpcMessage.GetTaskDetailListResponse taskDetailListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskDetailList(request);
         int status = taskDetailListResponse.getStatus();
         String msg = taskDetailListResponse.getMsg();
@@ -77,11 +77,11 @@ public class TaskClientTest {
     static class TaskServiceImpl extends TaskServiceGrpc.TaskServiceImplBase {
 
         @Override
-        public void getTaskDetailList(CommonMessage.EmptyGetParams request, StreamObserver<TaskRpcMessage.GetTaskDetailListResponse> responseObserver) {
+        public void getTaskDetailList(com.google.protobuf.Empty request, StreamObserver<TaskRpcMessage.GetTaskDetailListResponse> responseObserver) {
             System.out.println("########### request:" + request);
 
 
-            TaskRpcMessage.TaskDetail taskDetailShow = TaskRpcMessage.TaskDetail.newBuilder()
+            TaskRpcMessage.TaskDetailShow taskDetailShow = TaskRpcMessage.TaskDetailShow.newBuilder()
                                                                .setTaskId("001")
                                                                .setTaskName("taskName")
                                                                .build();

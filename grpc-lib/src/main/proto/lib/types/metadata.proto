@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package types;
+
+import "lib/common/base.proto";
+
+option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
+option java_package = "com.platon.metis.admin.grpc.types";
+//option java_multiple_files = true;
+// Metadata body data struct.
+message MetadataPB {
+  string                      metadata_id = 1;                // 元数据ID
+  string                      identity_id = 2;                // 元数据所属的组织的 身份标识
+  string                      node_id = 3;                    // 元数据所属的组织的 p2p公钥
+  string                      node_name = 4;                  // 元数据所属的组织的 组织名称
+  string                      data_id = 5;                    //
+  api.protobuf.DataStatus     data_status = 6;                // the status of data, N means normal, D means deleted.
+  string                      origin_id = 7;                  // 元数据引用的原始文件Id
+  string                      table_name = 8;                 // 元数据的名称 (对外的表名)
+  string                      file_path = 9;                  // 元数据对应的原始文件存储的路径
+  string                      desc = 10;                       // 元数据的摘要(描述)
+  uint32                      rows = 11;                      // 元数据对应原始文件的总行数
+  uint32                      columns = 12;                   // 元数据对应原始文件的总列数
+  uint64                      size = 13;                      // 元数据对应原始文件的总大小 (单位: byte)
+  api.protobuf.OriginFileType file_type = 14;                 // 源文件的类型 (目前只有 csv)
+  api.protobuf.MetadataState  state = 15;                     // 元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)
+  bool                        has_title = 16;                 // 元数据对应原始文件是否有标题行 (true: 包含; false: 不包含)
+  repeated MetadataColumn     metadata_columns = 17;          // 元数据对应原始文件对外暴露的列描述列表
+  string                      industry = 18;                  // 元数据所属的行业
+}
+
+// 元数据中的列描述
+message MetadataColumn {
+  uint32 c_index = 1;           // 列所在原始文件中的索引值
+  string c_name = 2;            // 列名称
+  string c_type = 3;            // 列的数据类型
+  uint32 c_size = 4;            // 列的大小 (单位: byte)
+  string c_comment = 5;         // 列的描述
+}
+
+// 元数据申请记录实体
+message MetadataAuthorityPB {
+  string                                      metadata_auth_id = 1;     // 元数据授权申请Id
+  string                                      user = 2;                 // 申请人地址
+  string                                      data_id = 3;              //
+  api.protobuf.DataStatus                     data_status = 4;          // the status of data, N means normal, D means deleted.
+  api.protobuf.UserType                       user_type = 5;            // 申请人类型
+  MetadataAuthority                           auth = 6;                 // 元数据使用授权信息
+  api.protobuf.AuditMetadataOption            audit_option  = 7;        // 审核结果
+  string                                      audit_suggestion = 8;     // 审核意见 (允许""字符)
+  MetadataUsedQuo                             used_quo = 9;             // 对应数据授权信息中元数据的使用实况
+  uint64                                      apply_at = 10;             // 发起授权申请的时间 (单位: ms)
+  uint64                                      audit_at = 11;             // 审核授权申请的时间 (单位: ms)
+  api.protobuf.MetadataAuthorityState         state = 12;               // 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 <失效前主动撤回的>; 4: 已经失效的数据授权 <过期or达到使用上限的>)
+}
+
+// =============================== For API =========================
+// 元数据的摘要内容 (不包含详细 列描述)
+message MetadataSummary {
+  string                        metadata_id = 1;            // 元数据Id
+  string                        origin_id = 2;              // 源文件Id
+  string                        table_name = 3;             // 元数据名称|数据名称 (表名)
+  string                        desc = 4;                   // 元数据的描述 (摘要)
+  string                        file_path = 5;              // 源文件存放路径
+  uint32                        rows = 6;                   // 源文件的行数
+  uint32                        columns = 7;                // 源文件的列数
+  uint64                        size = 8;                   // 源文件的大小 (单位: byte)
+  api.protobuf.OriginFileType   file_type = 9;              // 源文件的类型 (目前只有 csv)
+  bool                          has_title = 10;             // 源文件是否包含标题 (true: 包含; false: 不包含)
+  string                        industry = 11;              // 元数据所属行业
+  api.protobuf.MetadataState    state = 12;                 // 元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)
+}
+
+// 元数据的详情信息
+message MetadataDetail {
+  MetadataSummary         metadata_summary = 1;            // 元数据摘要
+  repeated MetadataColumn metadata_columns = 2;            // 元数据对应原始文件对外暴露的列描述列表
+  uint32                  total_task_count = 3;            // 该元数据参与过得任务数 (已完成的和正在执行的)
+}
+
+// 元数据的使用方式定义
+message MetadataUsageRule {
+  api.protobuf.MetadataUsageType  usage_type = 1;              // 元数据的使用方式 (0: 未定义; 1: 按照时间段来使用; 2: 按照次数来使用)
+  uint64                          start_at = 2;                // 可使用的开始时间 (当 usage_type 为 1 时才需要的字段)
+  uint64                          end_at = 3;                  // 可使用的结束时间 (当 usage_type 为 1 时才需要的字段)
+  uint32                          times = 4;                   // 可使用的次数 (当 usage_type 为 2 时才需要的字段)
+}
+
+// 元数据使用授权
+message MetadataAuthority {
+  api.protobuf.Organization owner = 1;                   // 元数据所属的组织信息
+  string                    metadata_id = 2;             // 元数据Id
+  MetadataUsageRule         usage_rule = 3;              // 元数据怎么使用
+}
+
+// 对应授权信息中元数据的使用实况定义 (配合数据授权使用)
+message MetadataUsedQuo {
+  api.protobuf.MetadataUsageType  usage_type = 1;               // 元数据的使用方式 (0: 未定义; 1: 按照时间段来使用; 2: 按照次数来使用)
+  bool                            expire = 2;                   // 是否已过期 (当 usage_type 为 1 时才需要的字段)
+  uint32                          used_times = 3;               // 已经使用的次数 (当 usage_type 为 1 时才需要的字段)
+}

@@ -2,8 +2,13 @@ package com.platon.metis.admin.grpc.client;
 
 import com.platon.metis.admin.dao.entity.GlobalPower;
 import com.platon.metis.admin.grpc.channel.BaseChannelManager;
+import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
-import com.platon.metis.admin.grpc.service.*;
+import com.platon.metis.admin.grpc.service.PowerRpcMessage;
+import com.platon.metis.admin.grpc.service.PowerServiceGrpc;
+import com.platon.metis.admin.grpc.service.YarnRpcMessage;
+import com.platon.metis.admin.grpc.service.YarnServiceGrpc;
+import com.platon.metis.admin.grpc.types.Resourcedata;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -54,7 +59,7 @@ public class PowerClient {
         }
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
-        return jobNodeResponse.getJobNode();
+        return jobNodeResponse.getNode();
     }
 
     /**
@@ -83,7 +88,7 @@ public class PowerClient {
         }
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
-        return jobNodeResponse.getJobNode();
+        return jobNodeResponse.getNode();
     }
 
     /**
@@ -92,7 +97,7 @@ public class PowerClient {
     public void deletePowerNode(String powerNodeId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        CommonMessage.SimpleResponseCode simpleResponseCode;
+        CommonBase.SimpleResponse response;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -100,16 +105,16 @@ public class PowerClient {
             YarnRpcMessage.DeleteRegisteredNodeRequest joinRequest = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder()
                     .setId(powerNodeId).build();
             //3.调用rpc,获取response
-            simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
+            response = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
             //4.处理response
-            if (simpleResponseCode.getStatus() != 0 || !GrpcConstant.ok.equals(simpleResponseCode.getMsg())) {
+            if (response.getStatus() != 0 || !GrpcConstant.ok.equals(response.getMsg())) {
                 throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
             }
         } finally {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode.toString());
+        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", response.toString());
     }
 
     /**
@@ -123,9 +128,11 @@ public class PowerClient {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams jobNodeListRequest = CommonMessage.EmptyGetParams.newBuilder().build();
+            com.google.protobuf.Empty request = com.google.protobuf.Empty
+                    .newBuilder()
+                    .build();
             //3.调用rpc,获取response
-            jobNodeListResponse = YarnServiceGrpc.newBlockingStub(channel).getJobNodeList(jobNodeListRequest);
+            jobNodeListResponse = YarnServiceGrpc.newBlockingStub(channel).getJobNodeList(request);
             //4.处理response
             if (jobNodeListResponse.getStatus() != 0 || !GrpcConstant.ok.equals(jobNodeListResponse.getMsg())) {
                 throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
@@ -171,7 +178,7 @@ public class PowerClient {
     public void revokePower(String powerId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        CommonMessage.SimpleResponseCode revokePowerResponse;
+        CommonBase.SimpleResponse response;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -180,16 +187,16 @@ public class PowerClient {
                     .setPowerId(powerId)
                     .build();
             //3.调用rpc,获取response
-            revokePowerResponse = PowerServiceGrpc.newBlockingStub(channel).revokePower(joinRequest);
+            response = PowerServiceGrpc.newBlockingStub(channel).revokePower(joinRequest);
             //4.处理response
-            if (revokePowerResponse.getStatus() != 0 || !GrpcConstant.ok.equals(revokePowerResponse.getMsg())) {
+            if (response.getStatus() != 0 || !GrpcConstant.ok.equals(response.getMsg())) {
                 throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
             }
         } finally {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("停用算力接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", revokePowerResponse.toString());
+        log.info("停用算力接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", response.toString());
     }
 
     /**
@@ -203,9 +210,11 @@ public class PowerClient {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams emptyGetParams = CommonMessage.EmptyGetParams.newBuilder().build();
+            com.google.protobuf.Empty request = com.google.protobuf.Empty
+                    .newBuilder()
+                    .build();
             //3.调用rpc,获取response
-            getSingleDetailListResponse = PowerServiceGrpc.newBlockingStub(channel).getPowerSingleDetailList(emptyGetParams);
+            getSingleDetailListResponse = PowerServiceGrpc.newBlockingStub(channel).getPowerSingleDetailList(request);
             //4.处理response
             if (getSingleDetailListResponse.getStatus() != 0 || !GrpcConstant.ok.equals(getSingleDetailListResponse.getMsg())) {
                 throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
@@ -228,7 +237,7 @@ public class PowerClient {
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams request = CommonMessage.EmptyGetParams
+            com.google.protobuf.Empty request = com.google.protobuf.Empty
                     .newBuilder()
                     .build();
             //3.调用rpc,获取response
@@ -238,9 +247,9 @@ public class PowerClient {
             List<GlobalPower> globalPowerList = new ArrayList<>();
             powerList.forEach(powerResponse -> {
                 // 算力拥有者信息
-                CommonMessage.OrganizationIdentityInfo owner = powerResponse.getOwner();
+                CommonBase.Organization owner = powerResponse.getOwner();
                 String identityId = owner.getIdentityId();
-                String orgName = owner.getName();
+                String orgName = owner.getNodeName();
     //            //  总算力详情
     //            message PowerTotalDetail {
     //                ResourceUsedDetailShow information        = 1;                 // 算力实况
@@ -249,7 +258,7 @@ public class PowerClient {
     //                repeated PowerTask     tasks              = 4;                       // 算力上正在执行的任务详情信息
     //                string                 state              = 5;                       // 算力状态 (create: 还未发布的算力; release: 已发布的算力; revoke: 已撤销的算力)
     //            }
-                PowerRpcMessage.PowerTotalDetail powerDetail = powerResponse.getPower();
+                Resourcedata.PowerUsageDetail powerDetail = powerResponse.getPower();
     //            message ResourceUsedDetailShow {
     //                uint64 total_mem       = 2;             // 服务系统的总内存 (单位: byte)
     //                uint64 used_mem        = 3;              // 服务系统的已用内存 (单位: byte)
@@ -258,7 +267,7 @@ public class PowerClient {
     //                uint64 total_bandwidth = 6;       // 服务的总带宽数 (单位: bps)
     //                uint64 used_bandwidth  = 7;        // 服务的已用带宽数 (单位: bps)
     //            }
-                CommonMessage.ResourceUsedDetail information = powerDetail.getInformation();// 算力实况
+                Resourcedata.ResourceUsageOverview information = powerDetail.getInformation();// 算力实况
                 GlobalPower globalPower = new GlobalPower();
                 globalPower.setIdentityId(identityId);
                 globalPower.setOrgName(orgName);

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package types;
+
+import "lib/common/base.proto";
+
+option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
+option java_package = "com.platon.metis.admin.grpc.types";
+//option java_multiple_files = true;
+// IdentityData represents the stored data structure.
+message IdentityPB {
+  string identity_id = 1;
+  string node_id = 2;
+  string node_name = 3;
+  string data_id = 4;
+  // N means normal, D means deleted
+  api.protobuf.DataStatus data_status = 5;
+  // Y : normal, N non-normal
+  api.protobuf.CommonStatus status = 6;
+  // json format for credential
+  string credential = 7;
+}

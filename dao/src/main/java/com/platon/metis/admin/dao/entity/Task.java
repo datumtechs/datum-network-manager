@@ -30,7 +30,7 @@ public class Task {
 
     private LocalDateTime duration;
 
-    private Long costCore;
+    private Integer costCore;
 
     private Long costMemory;
 

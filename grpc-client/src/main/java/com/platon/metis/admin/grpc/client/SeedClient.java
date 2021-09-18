@@ -1,8 +1,8 @@
 package com.platon.metis.admin.grpc.client;
 
 import com.platon.metis.admin.grpc.channel.BaseChannelManager;
+import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
-import com.platon.metis.admin.grpc.service.CommonMessage;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.grpc.service.YarnServiceGrpc;
 import io.grpc.Channel;
@@ -52,7 +52,7 @@ public class SeedClient {
         }
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse.toString());
-        return seedNodeResponse.getSeedPeer();
+        return seedNodeResponse.getNode();
     }
 
     /**
@@ -81,7 +81,7 @@ public class SeedClient {
         }
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse.toString());
-        return seedNodeResponse.getSeedPeer();
+        return seedNodeResponse.getNode();
     }
 
     /**
@@ -90,7 +90,7 @@ public class SeedClient {
     public void deleteSeedNode(String seedNodeId){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        CommonMessage.SimpleResponseCode simpleResponseCode;
+        CommonBase.SimpleResponse response;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -99,16 +99,16 @@ public class SeedClient {
                     .setId(seedNodeId)
                     .build();
             //3.调用rpc,获取response
-            simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);
+            response = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);
             //4.处理response
-            if (simpleResponseCode.getStatus() != 0 || !GrpcConstant.ok.equals(simpleResponseCode.getMsg())) {
+            if (response.getStatus() != 0 || !GrpcConstant.ok.equals(response.getMsg())) {
                 throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
             }
         } finally {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode.toString());
+        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", response.toString());
     }
 
     /**
@@ -122,9 +122,11 @@ public class SeedClient {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonMessage.EmptyGetParams seedNodeListRequest = CommonMessage.EmptyGetParams.newBuilder().build();
+            com.google.protobuf.Empty request = com.google.protobuf.Empty
+                    .newBuilder()
+                    .build();
             //3.调用rpc,获取response
-            seedNodeListResponse = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(seedNodeListRequest);
+            seedNodeListResponse = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(request);
             //4.处理response
             if (seedNodeListResponse.getStatus() != 0 || !GrpcConstant.ok.equals(seedNodeListResponse.getMsg())) {
                 throw new RuntimeException("gRPC服务调用失败，请稍后重试！");

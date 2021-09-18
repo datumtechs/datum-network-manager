@@ -49,6 +49,13 @@ service DataProvider {
       body: "*"
     };
   }
+
+  rpc HandleCancelTask(common.TaskCancelReq) returns (common.TaskCancelReply) {
+    option(google.api.http) = {
+      post: "/data/handleCancelTask"
+      body: "*"
+    };
+  }
 }
 
 message DownloadRequest {
