@@ -1,11 +1,10 @@
 syntax = "proto3";
 // 生成类的包名
-option java_package = "com.platon.rosettanet.admin.grpc.service";
+option java_package = "com.platon.metis.admin.grpc.service";
 //生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
 option java_outer_classname = "YarnRpcMessage";
 
 package rpcapi;
-
 
 import "lib/common/base.proto";
 import "lib/types/taskdata.proto";
@@ -282,7 +281,7 @@ message GetTaskResultFileSummaryRequest {
 message GetTaskResultFileSummaryResponse {
   string task_id = 1;                 // 任务结果文件对应的任务Id
   string file_name = 2;               // 任务结果文件的名称
-  string meta_data_id = 3;            // 任务结果文件的元数据Id <系统默认生成的元数据>
+  string metadata_id = 3;             // 任务结果文件的元数据Id <系统默认生成的元数据>
   string origin_id = 4;               // 任务结果文件的原始文件Id
   string file_path = 5;               // 任务结果文件的完整相对路径名
   string ip = 6;                      // 任务结果文件所在的 数据服务内网ip

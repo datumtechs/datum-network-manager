@@ -1,8 +1,12 @@
 syntax = "proto3";
-option java_multiple_files = true;
-option java_package = "com.platon.rosettanet.admin.grpc.service";
 
 package api.protobuf;
+
+option go_package = "github.com/RosettaFlow/Carrier-Go/lib/common";
+
+option java_package = "com.platon.metis.admin.grpc.common";
+//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
+option java_outer_classname = "CommonBase";
 
 
 // A represents the basic information of the organization.
@@ -110,7 +114,7 @@ enum TaskState {
   TaskState_Succeed = 4;                  // 成功
 }
 
-// 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 <失效前主动撤回的>; 4: 已经失效的数据授权 <过期or达到使用上限的>)
+// 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 <失效前主动撤回的>; 4: 已经失效的数据授权 <过期or达到使用上限的or被拒绝的>;)
 enum MetadataAuthorityState {
   MAState_Unknown = 0;
   MAState_Created = 1;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.LocalPowerNodeMapper">
+<mapper namespace="com.platon.metis.admin.dao.LocalPowerNodeMapper">
 
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalPowerNode">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerNode">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
@@ -101,7 +101,7 @@
   </delete>
 
   <!-- 插入计算节点数据 -->
-  <insert id="insertPowerNode" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerNode">
+  <insert id="insertPowerNode" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
     insert into local_power_node
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">id,</if>
@@ -156,7 +156,7 @@
   </insert>
 
   <!-- 根据节点id修改计算节点数据 -->
-  <update id="updatePowerNodeByNodeId" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerNode">
+  <update id="updatePowerNodeByNodeId" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
     update local_power_node
     <set>
       <if test="identityId != null">identity_id = #{identityId, jdbcType=VARCHAR},</if>
@@ -216,7 +216,7 @@
   </update>
 
   <!-- 根据id修改计算节点数据 -->
-  <update id="updatePowerNodeById" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerNode">
+  <update id="updatePowerNodeById" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
     update local_power_node
     <set>
       <if test="identityId != null">identity_id = #{identityId, jdbcType=VARCHAR},</if>

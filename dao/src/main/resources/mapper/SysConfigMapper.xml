@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.SysConfigMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.SysConfig">
+<mapper namespace="com.platon.metis.admin.dao.SysConfigMapper">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.SysConfig">
     <result column="id" jdbcType="INTEGER" property="id" />
     <result column="config_Key" jdbcType="VARCHAR" property="configKey" />
     <result column="config_Value" jdbcType="VARCHAR" property="configValue" />
@@ -9,7 +9,7 @@
     <result column="desc" jdbcType="VARCHAR" property="desc" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
-  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.SysConfig">
+  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.SysConfig">
     insert into sys_config
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

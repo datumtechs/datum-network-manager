@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.LocalPowerHistoryMapper">
+<mapper namespace="com.platon.metis.admin.dao.LocalPowerHistoryMapper">
 
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalPowerHistory">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerHistory">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
     <result column="refresh_status" jdbcType="VARCHAR" property="refreshStatus" />
@@ -50,7 +50,7 @@
   </select>
 
   <!-- 插入计算节点数据 -->
-  <insert id="insertPowerHistory" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerHistory">
+  <insert id="insertPowerHistory" parameterType="com.platon.metis.admin.dao.entity.LocalPowerHistory">
     insert into local_power_history
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">id,</if>
@@ -75,7 +75,7 @@
   </insert>
 
   <!-- 批量插入计算节点数据 -->
-  <insert id="batchInsertPowerHistory" parameterType="com.platon.rosettanet.admin.dao.entity.LocalPowerHistory">
+  <insert id="batchInsertPowerHistory" parameterType="com.platon.metis.admin.dao.entity.LocalPowerHistory">
     <foreach collection="list" item = "item" separator=";">
       insert into local_power_history
       <trim prefix="(" suffix=")" suffixOverrides=",">

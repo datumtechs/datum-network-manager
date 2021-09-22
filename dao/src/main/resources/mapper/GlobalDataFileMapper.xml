@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.GlobalDataFileMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.GlobalDataFile">
+<mapper namespace="com.platon.metis.admin.dao.GlobalDataFileMapper">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.GlobalDataFile">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="org_name" jdbcType="VARCHAR" property="orgName" />
@@ -48,7 +48,7 @@
   </select>
 
   <!-- 根据metaDataId进行选择性更新-->
-  <update id="updateByMetaDataIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.GlobalDataFile">
+  <update id="updateByMetaDataIdSelective" parameterType="com.platon.metis.admin.dao.entity.GlobalDataFile">
     update global_data_file
     <set>
       <if test="resourceName != null">

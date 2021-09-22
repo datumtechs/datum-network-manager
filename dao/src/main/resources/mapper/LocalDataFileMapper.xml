@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.rosettanet.admin.dao.LocalDataFileMapper">
-  <resultMap id="BaseResultMap" type="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
+<mapper namespace="com.platon.metis.admin.dao.LocalDataFileMapper">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalDataFile">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="file_id" jdbcType="VARCHAR" property="fileId" />
@@ -32,7 +32,7 @@
   </select>
 
   <!-- 插入不为空的字段-->
-  <insert id="insertSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataFile" useGeneratedKeys="true" keyProperty="id">
     insert into local_data_file
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="identityId != null">
@@ -108,7 +108,7 @@
 
 
  <!--  插入新数数据 -->
-  <insert id="insert" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalDataFile" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into local_data_file (identity_id, file_id, file_name,
       file_path, file_type,
       `size`, `rows`, `columns`, has_title
@@ -121,7 +121,7 @@
 
 
   <!-- 根据metaDataId进行选择性更新-->
-  <update id="updateByFileIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
+  <update id="updateByFileIdSelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataFile">
     update local_data_file
     <set>
       <if test="recUpdateTime != null">
@@ -132,7 +132,7 @@
   </update>
 
   <!-- 根据Id进行选择性更新-->
-  <update id="updateByIdSelective" parameterType="com.platon.rosettanet.admin.dao.entity.LocalDataFile">
+  <update id="updateByIdSelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataFile">
     update local_data_file
     <set>
       <if test="recUpdateTime != null">

@@ -1,14 +1,13 @@
 syntax = "proto3";
-option java_multiple_files = true;
-option java_package = "com.platon.rosettanet.admin.grpc.service";
-option java_outer_classname = "ResourceDataProto";
 
 package types;
 
 import "lib/common/base.proto";
 import "lib/common/data.proto";
 
-
+option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
+option java_package = "com.platon.metis.admin.grpc.types";
+//option java_multiple_files = true;
 // 单个组织的总算力信息
 message ResourcePB {
   string identity_id = 1;                         // 算力所属的组织的 身份标识
