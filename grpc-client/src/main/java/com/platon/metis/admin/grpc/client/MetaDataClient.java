@@ -166,12 +166,12 @@ public class MetaDataClient {
                     .newBuilder()
                     .build();
             //3.调用rpc,获取response
-            MetaDataRpcMessage.GetMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getMetadataDetailList(request);
+            MetaDataRpcMessage.GetTotalMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getTotalMetadataDetailList(request);
             //4.处理response
             if (response.getStatus() != GRPC_SUCCESS_CODE) {
                 throw new ApplicationException(StrUtil.format("查询全网数据列表失败:{}",response.getMsg()));
             }
-            List<MetaDataRpcMessage.GetMetadataDetailResponse> metaDataList = response.getMetadataListList();
+            List<MetaDataRpcMessage.GetTotalMetadataDetailResponse> metaDataList = response.getMetadataListList();
             List<GlobalDataFileDetail> detailList = metaDataList.stream()
                     .map(metaData -> {
                         GlobalDataFileDetail detail = new GlobalDataFileDetail();

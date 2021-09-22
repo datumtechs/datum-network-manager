@@ -202,10 +202,10 @@ public class PowerClient {
     /**
      * 查看当前组织各个算力的详情 (包含 任务信息)
      */
-    public PowerRpcMessage.GetPowerSingleDetailListResponse getPowerSingleDetailList(){
+    public PowerRpcMessage.GetSelfPowerDetailListResponse getSelfPowerDetailList(){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
-        PowerRpcMessage.GetPowerSingleDetailListResponse getSingleDetailListResponse;
+        PowerRpcMessage.GetSelfPowerDetailListResponse getSelfPowerDetailResponse;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
@@ -214,17 +214,17 @@ public class PowerClient {
                     .newBuilder()
                     .build();
             //3.调用rpc,获取response
-            getSingleDetailListResponse = PowerServiceGrpc.newBlockingStub(channel).getPowerSingleDetailList(request);
+            getSelfPowerDetailResponse = PowerServiceGrpc.newBlockingStub(channel).getSelfPowerDetailList(request);
             //4.处理response
-            if (getSingleDetailListResponse.getStatus() != 0 || !GrpcConstant.ok.equals(getSingleDetailListResponse.getMsg())) {
+            if (getSelfPowerDetailResponse.getStatus() != 0 || !GrpcConstant.ok.equals(getSelfPowerDetailResponse.getMsg())) {
                 throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
             }
         } finally {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("查询当前组织各个节点的列表(包含任务列表)接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", getSingleDetailListResponse.toString());
-        return getSingleDetailListResponse;
+        log.info("查询当前组织各个节点的列表(包含任务列表)接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", getSelfPowerDetailResponse.toString());
+        return getSelfPowerDetailResponse;
     }
 
     /**
@@ -241,9 +241,9 @@ public class PowerClient {
                     .newBuilder()
                     .build();
             //3.调用rpc,获取response
-            PowerRpcMessage.GetPowerTotalDetailListResponse response = PowerServiceGrpc.newBlockingStub(channel).getPowerTotalDetailList(request);
+            PowerRpcMessage.GetTotalPowerDetailListResponse response = PowerServiceGrpc.newBlockingStub(channel).getTotalPowerDetailList(request);
             //4.处理response
-            List<PowerRpcMessage.GetPowerTotalDetailResponse> powerList = response.getPowerListList();
+            List<PowerRpcMessage.GetTotalPowerDetailResponse> powerList = response.getPowerListList();
             List<GlobalPower> globalPowerList = new ArrayList<>();
             powerList.forEach(powerResponse -> {
                 // 算力拥有者信息

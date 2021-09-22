@@ -13,15 +13,43 @@ import "google/protobuf/empty.proto";
 
 //  ------------------------  metadata  ------------------------
 
-// 查询单个组织的单个元数据详情 req
-message GetMetadataDetailRequest {
-  string identity_id = 1;      // 组织的身份标识 (可选, 传""则查询当前组织的元数据)
-  string metadata_id = 2;
-}
-// 查询单个组织的单个元数据详情 resp
-message GetMetadataDetailResponse {
+//// 查询单个组织的单个元数据详情 req
+//message GetMetadataDetailRequest {
+//  string identity_id = 1;      // 组织的身份标识 (可选, 传""则查询当前组织的元数据)
+//  string metadata_id = 2;      // 元数据Id
+//}
+//// 查询单个组织的单个元数据详情 resp
+//message GetMetadataDetailResponse {
+//  api.protobuf.Organization owner = 1;              // 元数据的拥有者
+//  types.MetadataDetail      information = 2;        // 元文件详情主体
+//}
+
+
+// (全网) 单个元数据详情 resp
+message GetTotalMetadataDetailResponse {
   api.protobuf.Organization owner = 1;              // 元数据的拥有者
   types.MetadataDetail      information = 2;        // 元文件详情主体
+}
+
+// 查看 全网元数据列表  resp
+message GetTotalMetadataDetailListResponse {
+  int32                                   status = 1;                      // 响应码
+  string                                  msg = 2;                         // 错误信息
+  repeated GetTotalMetadataDetailResponse metadata_list = 3;               // 元数据列表
+}
+
+// (本组织) 单个元数据详情 resp
+message GetSelfMetadataDetailResponse {
+  api.protobuf.Organization owner = 1;              // 元数据的拥有者
+  types.MetadataDetail      information = 2;        // 元文件详情主体
+  bool                      is_local = 3;           // 是否为本组织本地元数据 (不对外的元数据, true: 是本组织元数据; false: 不是)
+}
+
+// 查看 本组织元数据列表  resp
+message GetSelfMetadataDetailListResponse {
+  int32                                   status = 1;                      // 响应码
+  string                                  msg = 2;                         // 错误信息
+  repeated GetSelfMetadataDetailResponse  metadata_list = 3;               // 元数据列表
 }
 
 
@@ -33,7 +61,7 @@ message PublishMetadataRequest {
 message PublishMetadataResponse {
   int32  status = 1;                         // 响应码
   string msg = 2;                            // 错误信息
-  string metadata_id = 3;                   // 元数据id
+  string metadata_id = 3;                    // 元数据id
 }
 
 // 数据下架 req
@@ -41,41 +69,34 @@ message RevokeMetadataRequest {
   string metadata_id = 1;
 }
 
-// 查看 全网元数据列表 or 某个组织元数据列表 resp
-message GetMetadataDetailListResponse {
-  int32                              status = 1;                      // 响应码
-  string                             msg = 2;                         // 错误信息
-  repeated GetMetadataDetailResponse metadata_list = 3;               // 元数据列表
+// 查询某 metadata 参与过的任务的taskId列表 req
+message GetMetadataUsedTaskIdListRequest {
+  string      identity_id = 1;            // 组织的身份标识 (可选, 传""则查询当前组织的元数据)
+  string      metadata_id = 2;            // 元数据id
 }
 
-// 查看某个组织元数据列表 req
-message GetMetadataDetailListByOwnerRequest {
-  string identity_id = 1;             // 组织的身份标识 (可选, 传""则查询当前组织的元数据)
+// 查询某 metadata 参与过的任务的taskId列表 resp
+message GetMetadataUsedTaskIdListResponse {
+  int32                       status = 1;           // 响应码
+  string                      msg = 2;              // 错误信息
+  repeated string             task_ids = 3;         // 任务Id
 }
 
 // ## 元数据 相关接口
 service MetadataService {
 
-  // 查看单个元数据详情 (包含 列字段描述)
-  rpc GetMetadataDetail (GetMetadataDetailRequest) returns (GetMetadataDetailResponse) {
-    option (google.api.http) = {
-      post: "/carrier/v1/metadata/detail"
-      body: "*"
-    };
-  }
-
   // 查看全网元数据列表
-  rpc GetMetadataDetailList (google.protobuf.Empty) returns (GetMetadataDetailListResponse) {
+  rpc GetTotalMetadataDetailList (google.protobuf.Empty) returns (GetTotalMetadataDetailListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/metadata/list"
+      post: "/carrier/v1/metadata/totalList"
       body: "*"
     };
   }
 
-  // 查看某个组织元数据列表
-  rpc GetMetadataDetailListByOwner (GetMetadataDetailListByOwnerRequest) returns (GetMetadataDetailListResponse) {
+  // 查看 本组织元数据列表
+  rpc GetSelfMetadataDetailList (google.protobuf.Empty) returns (GetSelfMetadataDetailListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/metadata/listByOwner"
+      post: "/carrier/v1/metadata/selfList"
       body: "*"
     };
   }
@@ -91,6 +112,15 @@ service MetadataService {
   rpc RevokeMetadata (RevokeMetadataRequest) returns (api.protobuf.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/metadata/revoke"
+      body: "*"
+    };
+  }
+
+  // V 2.0 新增
+  // 查询某 metadata 参与过的任务的taskId列表
+  rpc GetMetadataUsedTaskIdList (GetMetadataUsedTaskIdListRequest) returns (GetMetadataUsedTaskIdListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/metadata/usedTaskIdList"
       body: "*"
     };
   }

@@ -1,6 +1,7 @@
-CREATE DATABASE  IF NOT EXISTS metis_admin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+drop database if exists dev_metis_admin;
+CREATE DATABASE  IF NOT EXISTS dev_metis_admin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-use metis_admin;
+use dev_metis_admin;
 /*
 Navicat MySQL Data Transfer
 
@@ -366,7 +367,7 @@ CREATE TABLE `task` (
   `task_Id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID',
   `task_Name` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务名称',
   `owner_Identity_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务发起方身份',
-  `apply_use` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发起任务的用户的信息 (task是属于用户的)',
+  `apply_user` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发起任务的用户的信息 (task是属于用户的)',
   `user_type` int(4) DEFAULT '0' COMMENT '发起任务用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)',
   `create_At` datetime DEFAULT NULL COMMENT '任务发起时间',
   `start_At` datetime DEFAULT NULL COMMENT '任务启动时间',

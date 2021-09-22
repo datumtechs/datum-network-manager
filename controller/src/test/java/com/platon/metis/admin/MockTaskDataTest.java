@@ -187,7 +187,7 @@ public class MockTaskDataTest {
             taskEvent.setEventAt(LocalDateTime.ofEpochSecond(1626335083,0, ZoneOffset.ofHours(8)));
             taskEvent.setEventContent("taskEventContent" + i);
             taskEvent.setEventType("taskEventType");
-            String identityId = allTaskOrgList.get(i).getIdentityId();
+            String identityId = "allTaskOrgList.get(i).getIdentityId()";
             identityId = (identityId == null) ? "" : identityId;
             taskEvent.setIdentityId(identityId);
             //添加

@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 @EnableScheduling
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan(basePackages = {"com.platon.metis.admin.dao"})
+@MapperScan("com.platon.metis.admin.dao")
 @Slf4j
 public class MetisAdminApplication {
 

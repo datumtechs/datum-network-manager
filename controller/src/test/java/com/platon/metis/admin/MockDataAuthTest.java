@@ -3,8 +3,11 @@ package com.platon.metis.admin;
 
 import com.platon.metis.admin.dao.LocalDataAuthMapper;
 import com.platon.metis.admin.dao.entity.LocalDataAuth;
+import lombok.extern.slf4j.Slf4j;
+import org.jasypt.encryption.StringEncryptor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -12,11 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
 @Transactional //这个有看需要，测试方法如果要作为一个整体事务，则加上
 @Rollback(false) // 默认值：true, UT默认都会回滚数据库，不会增加新数据
+@Slf4j
 public class MockDataAuthTest {
 
     @Resource
@@ -50,4 +55,26 @@ public class MockDataAuthTest {
 
 
     }
+
+    @Test
+    public void listDataAuth() {
+        List<LocalDataAuth> dataAuthList = localDataAuthMapper.selectDataAuthList(0, null);
+        log.info("dataAuthList().size:{}", dataAuthList.size());
+    }
+
+    // 注入StringEncryptor
+    @Autowired
+    private StringEncryptor encryptor;
+
+    @Test
+    public void printUserPwd() {
+        // 加密数据库用户名：testusername
+        String username = encryptor.encrypt("platon");
+        System.out.println(username);         // r7TjsmsdBlasIs/WeqhftWM/4YEbMKym
+
+        // 加密数据库密码：testpassword
+        String password = encryptor.encrypt("platon");
+        System.out.println(password);         // fG1fPPsdfdff0faZpYYZd8FtC9KYwmFc
+    }
+
 }

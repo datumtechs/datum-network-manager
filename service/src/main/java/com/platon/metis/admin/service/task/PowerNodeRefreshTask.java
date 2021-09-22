@@ -86,12 +86,12 @@ public class PowerNodeRefreshTask {
     /** 定时刷新节点及节点任务数据 */
     private void refreshPowerNodeAndTask(){
         long startTime = System.currentTimeMillis();
-        PowerRpcMessage.GetPowerSingleDetailListResponse getSingleDetailListResponse = powerClient.getPowerSingleDetailList();
+        PowerRpcMessage.GetSelfPowerDetailListResponse getSingleDetailListResponse = powerClient.getSelfPowerDetailList();
         if (Objects.isNull(getSingleDetailListResponse)) {
             log.info("获取计算节点详情失败,无返回数据");
             return;
         }
-        List<PowerRpcMessage.GetPowerSingleDetailResponse> detailsList = getSingleDetailListResponse.getPowerListList();
+        List<PowerRpcMessage.GetSelfPowerDetailResponse> detailsList = getSingleDetailListResponse.getPowerListList();
 
         if (detailsList == null || detailsList.size() == 0) {
             log.info("获取计算节点详情失败,无返回数据");
@@ -103,7 +103,7 @@ public class PowerNodeRefreshTask {
         List<LocalPowerNode> localPowerNodeList = new ArrayList<>();
         // 计算节点参数参与的任务
         List<LocalPowerJoinTask> localPowerJoinTaskList = new ArrayList<>();
-        for(PowerRpcMessage.GetPowerSingleDetailResponse powerSingleDetail : detailsList) {
+        for(PowerRpcMessage.GetSelfPowerDetailResponse powerSingleDetail : detailsList) {
             // 单个算力详情
             Resourcedata.PowerUsageDetail detail = powerSingleDetail.getPower();
 
