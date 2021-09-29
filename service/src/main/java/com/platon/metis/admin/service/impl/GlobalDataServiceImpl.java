@@ -5,11 +5,9 @@ import com.github.pagehelper.PageHelper;
 import com.platon.metis.admin.dao.GlobalDataFileMapper;
 import com.platon.metis.admin.dao.GlobalMetaDataColumnMapper;
 import com.platon.metis.admin.dao.entity.GlobalDataFile;
-import com.platon.metis.admin.dao.entity.GlobalDataFileDetail;
 import com.platon.metis.admin.dao.entity.GlobalMetaDataColumn;
 import com.platon.metis.admin.service.GlobalDataService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,13 +36,11 @@ public class GlobalDataServiceImpl implements GlobalDataService {
     public Page<GlobalDataFile> listDataFile(int pageNum, int pageSize, String keyword) {
         Page<GlobalDataFile> globalDataFilePage = PageHelper.startPage(pageNum, pageSize);
         globalDataFileMapper.listDataFile(keyword);
-        List<GlobalDataFileDetail> detailList = globalDataFilePage.stream()
+        List<GlobalDataFile> detailList = globalDataFilePage.stream()
                 .map(dataFile -> {
                     List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByFileId(dataFile.getFileId());
-                    GlobalDataFileDetail detail = new GlobalDataFileDetail();
-                    BeanUtils.copyProperties(dataFile, detail);
-                    detail.setMetaDataColumnList(columnList);
-                    return detail;
+                    dataFile.setMetaDataColumnList(columnList);
+                    return dataFile;
                 })
                 .collect(Collectors.toList());
         globalDataFilePage.clear();
@@ -54,13 +50,10 @@ public class GlobalDataServiceImpl implements GlobalDataService {
     }
 
     @Override
-    public GlobalDataFileDetail detail(Integer id) {
+    public GlobalDataFile findGlobalDataFile(Integer id) {
         GlobalDataFile globalDataFile = globalDataFileMapper.selectById(id);
-
         List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByFileId(globalDataFile.getFileId());
-        GlobalDataFileDetail detail = new GlobalDataFileDetail();
-        BeanUtils.copyProperties(globalDataFile,detail);
-        detail.setMetaDataColumnList(columnList);
-        return detail;
+        globalDataFile.setMetaDataColumnList(columnList);
+        return globalDataFile;
     }
 }

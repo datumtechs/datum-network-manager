@@ -11,11 +11,13 @@ import com.platon.metis.admin.dao.entity.LocalPowerHistory;
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 import com.platon.metis.admin.grpc.client.PowerClient;
+import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.service.LocalPowerNodeService;
 import com.platon.metis.admin.service.constant.ServiceConstant;
 import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -54,15 +56,17 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         if (!NameUtil.isValidName(powerNode.getPowerNodeName())) {
             throw new ServiceException("名称不符合命名规则！");
         }
-        // 调用grpc接口修改计算节点信息
+        // 调用grpc接口增加算力，此时调度服务会连算力节点，如果正常返回，说明连接成功
         YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
                 powerNode.getInternalPort(), powerNode.getExternalPort());
         log.info("新增计算节点数据:{}", jobNode);
         // 计算节点id
         powerNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
         powerNode.setPowerNodeId(jobNode.getId());
-        // 状态1表示已连接，未启用
-        powerNode.setConnStatus(String.valueOf(jobNode.getConnState()));
+        // 设置连接状态
+        powerNode.setConnStatus(jobNode.getConnState().getNumber());
+        // 设置算力状态（未发布）
+        powerNode.setPowerStatus(CommonBase.PowerState.PowerState_Created_VALUE);
         // 内存
         powerNode.setMemory(0L);
         // 核数
@@ -78,22 +82,31 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public void updatePowerNodeByNodeId(LocalPowerNode powerNode) {
         // 判断是否有算力进行中
-        if (localPowerNodeMapper.queryPowerNodeUsing(powerNode.getPowerNodeId()) > 0) {
-            throw new ServiceException("有正在进行中的算力，无法修改此节点！");
+        LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNode.getPowerNodeId());
+
+
+        if(localPowerNode.getConnStatus() == LocalPowerNode.ConnStatus.disconnected.getCode()){
+            throw new ServiceException("算力节点不能连接");
         }
+        //启用的不能修改
+        if(localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Released_VALUE
+                || localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE ){
+            throw new ServiceException("算力节点已经启用");
+        }
+
         // 判断是否有正在进行中的任务
-        List powerTaskList = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNode.getPowerNodeId());
+        /*List powerTaskList = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNode.getPowerNodeId());
         if (null != powerTaskList && powerTaskList.size() > 0) {
             log.info("updatePowerNodeByNodeId--此节点有任务正在进行中:{}", powerTaskList.toString());
             throw new ServiceException("有任务进行中，无法修改此节点！");
-        }
+        }*/
         // 调用grpc接口修改计算节点信息
         YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.updatePowerNode(powerNode.getPowerNodeId(), powerNode.getInternalIp(), powerNode.getExternalIp(),
                 powerNode.getInternalPort(), powerNode.getExternalPort());
         // 计算节点id
         powerNode.setPowerNodeId(jobNode.getId());
-        // 状态
-        powerNode.setConnStatus(String.valueOf(jobNode.getConnState()));
+        // 设置连接状态
+        powerNode.setConnStatus(jobNode.getConnState().getNumber());
         // 内存
         powerNode.setMemory(0L);
         // 核数
@@ -109,15 +122,23 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public void deletePowerNodeByNodeId(String powerNodeId) {
         // 判断是否有算力进行中
-        if (localPowerNodeMapper.queryPowerNodeUsing(powerNodeId) > 0) {
-            throw new ServiceException("有正在进行中的算力，无法删除此节点！");
+        LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
+
+        if(localPowerNode.getConnStatus() == LocalPowerNode.ConnStatus.disconnected.getCode()){
+            throw new ServiceException("算力节点不能连接");
         }
+        //启用的不能删除
+        if(localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Released_VALUE
+                || localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE ){
+            throw new ServiceException("算力节点已经启用");
+        }
+
         // 判断是否有正在进行中的任务
-        List powerTaskList = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNodeId);
+        /*List powerTaskList = localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNodeId);
         if (null != powerTaskList && powerTaskList.size() > 0) {
             log.info("updatePowerNodeByNodeId--此节点有任务正在进行中:{}", powerTaskList.toString());
             throw new ServiceException("有任务进行中，无法删除此节点！");
-        }
+        }*/
         // 删除底层资源
         powerClient.deletePowerNode(powerNodeId);
         // 删除数据
@@ -145,17 +166,25 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setPowerNodeId(powerNodeId);
         localPowerNode.setPowerId(powerId);
+        localPowerNode.setPowerStatus(CommonBase.PowerState.PowerState_Released_VALUE);
         localPowerNode.setStartTime(LocalDateTime.now());
         localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
 
     @Override
     public void revokePower(String powerNodeId) {
-        powerClient.revokePower(powerNodeId);
-        LocalPowerNode localPowerNode = new LocalPowerNode();
-        localPowerNode.setPowerNodeId(powerNodeId);
+        LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
+        if(localPowerNode==null || StringUtils.isEmpty(localPowerNode.getPowerId())){
+            throw new ServiceException("power node not found");
+        }
+        //调用调度服务
+        powerClient.revokePower(localPowerNode.getPowerId());
+
+
+         localPowerNode.setPowerNodeId(powerNodeId);
         // 停用算力需把上次启动的算力id清空
         localPowerNode.setPowerId("");
+        localPowerNode.setPowerStatus(CommonBase.PowerState.PowerState_Revoked_VALUE);
         localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
 

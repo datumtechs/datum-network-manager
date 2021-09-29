@@ -37,7 +37,7 @@ public class SwaggerConfig {
                 .description("此API文档使用于前后端分离开发，后端进行了接口变更，不需要更新接口文档，前端可以实时查看接口变更！")
 //                .contact(new Contact("联系人名字", "http://xxx.xxx.com/联系人访问链接", "联系人邮箱"))
                 //版本号
-                .version("1.0.0")
+                .version("2.0.0")
                 .build();
     }
 }

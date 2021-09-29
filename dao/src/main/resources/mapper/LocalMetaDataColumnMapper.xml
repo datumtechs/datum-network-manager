@@ -3,110 +3,51 @@
 <mapper namespace="com.platon.metis.admin.dao.LocalMetaDataColumnMapper">
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalMetaDataColumn">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="meta_id" jdbcType="INTEGER" property="metaId" />
+    <result column="local_meta_data_db_id" jdbcType="INTEGER" property="localMetaDataDbId" />
     <result column="column_idx" jdbcType="INTEGER" property="columnIdx" />
     <result column="column_name" jdbcType="VARCHAR" property="columnName" />
     <result column="column_type" jdbcType="VARCHAR" property="columnType" />
-    <result column="size" jdbcType="BIGINT" property="size" />
+    <result column="size" jdbcType="INTEGER" property="size" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
-    <result column="visible" jdbcType="VARCHAR" property="visible" />
-    <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
-    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+    <result column="visible" jdbcType="BOOLEAN" property="visible" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, meta_id, column_idx, `column_name`, column_type, `size`, remarks, `visible`,
-    rec_create_time, rec_update_time
+    id, local_meta_data_db_id, column_idx, `column_name`, column_type, `size`, remarks, visible
   </sql>
 
   <!-- 根据metaId查询数据-->
-  <select id="selectByMetaId" resultMap="BaseResultMap">
+  <select id="selectByLocalMetaDataDbId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from local_meta_data_column
-    where meta_id = #{metaId}
+    where local_meta_data_db_id = #{localMetaDataDbId,jdbcType=INTEGER}
   </select>
 
   <!-- 批量插入数据-->
   <insert id="batchInsert" parameterType="com.platon.metis.admin.dao.entity.LocalMetaDataColumn" useGeneratedKeys="true" keyProperty="id">
-    insert into local_meta_data_column (meta_id, column_idx,
+    insert into local_meta_data_column (local_meta_data_db_id, column_idx,
     `column_name`, column_type, `size`,
-    remarks, visible, rec_create_time,
-    rec_update_time)
+    remarks, visible)
     values
     <foreach collection ="columnList" item="metaDataColumn" separator =",">
-      (#{metaDataColumn.metaId},#{metaDataColumn.columnIdx,jdbcType=INTEGER},
-      #{metaDataColumn.columnName,jdbcType=VARCHAR}, #{metaDataColumn.columnType,jdbcType=VARCHAR}, #{metaDataColumn.size,jdbcType=BIGINT},
-      #{metaDataColumn.remarks,jdbcType=VARCHAR}, #{metaDataColumn.visible,jdbcType=VARCHAR}, #{metaDataColumn.recCreateTime,jdbcType=TIMESTAMP},
-      #{metaDataColumn.recUpdateTime,jdbcType=TIMESTAMP})
+      (#{metaDataColumn.localMetaDataDbId,jdbcType=INTEGER},#{metaDataColumn.columnIdx,jdbcType=INTEGER},
+      #{metaDataColumn.columnName,jdbcType=VARCHAR}, #{metaDataColumn.columnType,jdbcType=VARCHAR}, #{metaDataColumn.size,jdbcType=INTEGER},
+      #{metaDataColumn.remarks,jdbcType=VARCHAR}, #{metaDataColumn.visible,jdbcType=BOOLEAN})
     </foreach>
   </insert>
 
   <!-- 根据ID修改数据-->
-  <update id="updateByIdSelective" parameterType="com.platon.metis.admin.dao.entity.LocalMetaDataColumn">
+  <update id="update" parameterType="com.platon.metis.admin.dao.entity.LocalMetaDataColumn">
     update local_meta_data_column
-    <trim suffixOverrides=",">
-      <set>
-        <if test="columnName != null">
-          `column_name` = #{columnName,jdbcType=VARCHAR},
-        </if>
-        <if test="columnType != null">
-          column_type = #{columnType,jdbcType=VARCHAR},
-        </if>
-        <if test="size != null">
-          `size` = #{size,jdbcType=BIGINT},
-        </if>
-        <if test="remarks != null">
-          remarks = #{remarks,jdbcType=VARCHAR},
-        </if>
-        <if test="visible != null">
-          `visible` = #{visible,jdbcType=VARCHAR},
-        </if>
-        <if test="recCreateTime != null">
-          rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-        </if>
-        <if test="recUpdateTime != null">
-          rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-        </if>
-      </set>
-    </trim>
+    set remarks = #{remarks,jdbcType=VARCHAR}
     where id = #{id}
   </update>
 
-  <!-- 根据metaDataId 和 cindex修改数据-->
-  <update id="updateByFileIdAndCindexSelective" parameterType="com.platon.metis.admin.dao.entity.LocalMetaDataColumn">
-    update local_meta_data_column
-    <trim suffixOverrides=",">
-      <set>
-        <if test="columnName != null">
-          `column_name` = #{columnName,jdbcType=VARCHAR},
-        </if>
-        <if test="columnType != null">
-          column_type = #{columnType,jdbcType=VARCHAR},
-        </if>
-        <if test="size != null">
-          `size` = #{size,jdbcType=BIGINT},
-        </if>
-        <if test="remarks != null">
-          remarks = #{remarks,jdbcType=VARCHAR},
-        </if>
-        <if test="visible != null">
-          `visible` = #{visible,jdbcType=VARCHAR},
-        </if>
-        <if test="recCreateTime != null">
-          rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-        </if>
-        <if test="recUpdateTime != null">
-          rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-        </if>
-      </set>
-    </trim>
-    where meta_id = #{metaId} and column_idx = #{columnIdx}
-  </update>
 
-  <!--根据metaDataId删除指定的数据,released的数据不可删除 -->
-  <delete id="deleteByMetaId">
+  <!--根据metaDataId删除指定的数据,released(2)的数据不可删除 -->
+  <delete id="deleteByLocalMetaDataDbId">
     delete from local_meta_data_column
-    where meta_id = #{metaId}
-    and EXISTS (select 1 from local_meta_data lmd where lmd.id = #{metaId} and lmd.`status` != 'released')
+    where local_meta_data_db_id = #{localMetaDataDbId,jdbcType=INTEGER}
+    and EXISTS (select 1 from local_meta_data lmd where lmd.id = #{localMetaDataDbId,jdbcType=INTEGER} and lmd.`status` != 2)
   </delete>
 </mapper>

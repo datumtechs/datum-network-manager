@@ -3,11 +3,10 @@
 <mapper namespace="com.platon.metis.admin.dao.LocalMetaDataMapper">
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalMetaData">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="data_file_id" jdbcType="VARCHAR" property="dataFileId" />
+    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
     <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
     <result column="meta_data_name" jdbcType="VARCHAR" property="metaDataName" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="has_other_save" jdbcType="TINYINT" property="hasOtherSave" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="industry" jdbcType="INTEGER" property="industry" />
@@ -15,7 +14,7 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, data_file_id, meta_data_id, meta_data_name, status, publish_time, remarks, industry, rec_create_time,
+    id, file_id, meta_data_id, meta_data_name, status, publish_time, remarks, industry, rec_create_time,
     rec_update_time
   </sql>
 
@@ -28,14 +27,6 @@
   </select>
 
 
-  <select id="selectByDataFileId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from local_meta_data
-    where data_file_id = #{dataFileId,jdbcType=INTEGER}
-    order by id desc limit 1
-  </select>
-
 
   <select id="selectByMetaDataId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -44,177 +35,89 @@
     where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
   </select>
 
-  <select id="listMetaData" parameterType="java.lang.String" resultType="com.platon.metis.admin.dao.entity.LocalMetaDataItem">
-    SELECT
-	lmd.id AS id,
-	lmd.meta_data_id AS metaDataId,
-	lmd.meta_data_name AS metaDataName,
-	lmd.`status` AS `status`,
-    ldf.size AS `size`,
-	lmd.rec_update_time AS recUpdateTime
-    FROM
-        local_meta_data AS lmd
-    LEFT JOIN local_data_file AS ldf ON lmd.data_file_id = ldf.id
-    WHERE `status` IN ('created', 'released', 'revoked')
-    AND lmd.has_other_save = 1
-    <if test="keyword != null and keyword != ''">
-      and metaDataName like concat('%',#{keyword},'%')
-    </if>
-    ORDER BY recUpdateTime ASC
 
+  <resultMap id="BaseResultMap_for_detail" type="com.platon.metis.admin.dao.entity.LocalMetaData" extends="BaseResultMap">
+    <result column="task_count" property="dynamicFields.taskCount" javaType="int" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <select id="findWithTaskCount" parameterType="java.lang.Integer" resultMap="BaseResultMap_for_detail">
+    select lmd.*, ifnull(t.task_count,0) as task_count
+    from local_meta_data lmd
+    left join (
+      select meta_data_id, count(task_id) task_count
+      from task_data_provider
+      GROUP BY meta_data_id) t on lmd.meta_data_id = t.meta_data_id
+    where lmd.id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+  <resultMap id="BaseResultMap_for_list" type="com.platon.metis.admin.dao.entity.LocalMetaData" extends="BaseResultMap">
+    <result column="size" property="dynamicFields.size" javaType="long" jdbcType="BIGINT"/>
+    <result column="task_count" property="dynamicFields.taskCount" javaType="int" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <select id="listMetaData" parameterType="java.lang.String" resultMap="BaseResultMap_for_list">
+    SELECT lmd.*, ldf.size, ifnull(t.task_count,0) as task_count
+    FROM local_meta_data lmd
+    join local_data_file ldf on lmd.file_id = ldf.file_id
+    left join (
+      select meta_data_id, count(task_id) task_count
+      from task_data_provider
+      GROUP BY meta_data_id) t on lmd.meta_data_id = t.meta_data_id
+    where lmd.status != 4
+    <if test="keyword != null and keyword != ''">
+        and lmd.meta_data_name like concat('%',#{keyword,jdbcType=VARCHAR},'%')
+    </if>
+    ORDER BY lmd.rec_update_time desc
   </select>
 
 
 
   <!-- 根据resourceName查询数据文件-->
-  <select id="selectByResourceName" resultMap="BaseResultMap">
+  <select id="checkResourceName" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from local_meta_data
-    where meta_data_name = #{resourceName}
-    <if test="id != null">
-      and id != #{id}
-    </if>
+    where file_id != #{fileId} and meta_data_name = #{resourceName} and status !=4
   </select>
 
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from local_meta_data
+    update local_meta_data
+    set status = 4
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-    insert into local_meta_data (id, data_file_id, meta_data_id,
-      meta_data_name, status, has_other_save, publish_time,
-      remarks, industry, rec_create_time, rec_update_time
+    insert into local_meta_data (file_id, meta_data_id,
+      meta_data_name, status, publish_time,
+      remarks, industry
       )
-    values (#{id,jdbcType=INTEGER}, #{dataFileId,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR},
-      #{metaDataName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{hasOtherSave,jdbcType=TINYINT}, #{publishTime,jdbcType=TIMESTAMP},
-      #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP}
+    values (#{fileId,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR},
+      #{metaDataName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{publishTime,jdbcType=TIMESTAMP},
+      #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-    insert into local_meta_data
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="dataFileId != null">
-        data_file_id,
-      </if>
-      <if test="metaDataId != null">
-        meta_data_id,
-      </if>
-      <if test="metaDataName != null">
-        meta_data_name,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="hasOtherSave != null">
-        has_other_save,
-      </if>
-      <if test="publishTime != null">
-        publish_time,
-      </if>
-      <if test="remarks != null">
-        remarks,
-      </if>
-      <if test="industry != null">
-        industry,
-      </if>
-      <if test="recCreateTime != null">
-        rec_create_time,
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="dataFileId != null">
-        #{dataFileId,jdbcType=INTEGER},
-      </if>
-      <if test="metaDataId != null">
-        #{metaDataId,jdbcType=VARCHAR},
-      </if>
-      <if test="metaDataName != null">
-        #{metaDataName,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="hasOtherSave != null">
-        #{hasOtherSave,jdbcType=TINYINT},
-      </if>
-      <if test="publishTime != null">
-        #{publishTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remarks != null">
-        #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="industry != null">
-        #{industry,jdbcType=INTEGER},
-      </if>
-      <if test="recCreateTime != null">
-        #{recCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="recUpdateTime != null">
-        #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.platon.metis.admin.dao.entity.LocalMetaData">
-    update local_meta_data
-    <set>
-      <if test="dataFileId != null">
-        data_file_id = #{dataFileId,jdbcType=INTEGER},
-      </if>
-      <if test="metaDataId != null">
-        meta_data_id = #{metaDataId,jdbcType=VARCHAR},
-      </if>
-      <if test="metaDataName != null">
-        meta_data_name = #{metaDataName,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="hasOtherSave != null">
-        has_other_save = #{hasOtherSave,jdbcType=TINYINT},
-      </if>
-      <if test="publishTime != null">
-        publish_time = #{publishTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="industry != null">
-        industry = #{industry,jdbcType=INTEGER},
-      </if>
-      <if test="recCreateTime != null">
-        rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
+
   <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.LocalMetaData">
     update local_meta_data
-    set data_file_id = #{dataFileId,jdbcType=VARCHAR},
+    set file_id = #{fileId,jdbcType=VARCHAR},
       meta_data_id = #{metaDataId,jdbcType=VARCHAR},
       meta_data_name = #{metaDataName,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      has_other_save = #{hasOtherSave,jdbcType=TINYINT},
+      status = #{status,jdbcType=INTEGER},
       publish_time = #{publishTime,jdbcType=TIMESTAMP},
       remarks = #{remarks,jdbcType=VARCHAR},
-      industry = #{industry,jdbcType=INTEGER},
-      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      industry = #{industry,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-
-
+  <update id="updateStatusByFileId">
+    update local_meta_data
+    set status = #{status,jdbcType=INTEGER}
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateStatusById">
+    update local_meta_data
+    set status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

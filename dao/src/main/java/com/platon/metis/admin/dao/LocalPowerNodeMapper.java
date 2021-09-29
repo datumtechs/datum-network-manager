@@ -49,13 +49,6 @@ public interface LocalPowerNodeMapper {
     int deletePowerNode(String powerNodeId);
 
     /**
-     * 根据计算节点是否被占用
-     * @param powerNodeId
-     * @return
-     */
-    int queryPowerNodeUsing(String powerNodeId);
-
-    /**
      * 查询计算节点详情
      * @param powerNodeId
      * @return

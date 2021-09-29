@@ -39,8 +39,36 @@ public class LocalPowerNode {
 
     private LocalDateTime connTime;
 
-    private String connStatus;
+    private Integer connStatus;
 
+    public static enum ConnStatus {
+        disconnected(0, "disconnected"),connected(1, "connected");
+        private int code;
+        private String value;
+
+        ConnStatus(int code, String value) {
+            this.code = code;
+            this.value = value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public static ConnStatus codeOf(int code) {
+            for (ConnStatus status : ConnStatus.values()) {
+                if (status.ordinal()== code) {
+                    return status;
+                }
+            }
+            return null;
+        }
+
+    }
     private Long memory;
 
     private Integer core;
@@ -56,5 +84,4 @@ public class LocalPowerNode {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
-
 }

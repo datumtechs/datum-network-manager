@@ -1,9 +1,10 @@
 package com.platon.metis.admin.dto.resp;
 
-import com.platon.metis.admin.dao.entity.LocalDataFileDetail;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
+import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
-import com.platon.metis.admin.service.constant.ServiceConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,21 +29,14 @@ import java.util.List;
 @ToString
 @ApiModel
 public class LocalDataImportFileResp {
-
-    /**
-     * 序号
-     */
-    @ApiModelProperty(name = "id", value = "序号")
-    private Integer id;
-    //metaData主id
-    @ApiModelProperty(name = "metaDataPKId", value = "metaData主id")
-    private Integer metaDataPKId;
-    //组织身份ID
-    @ApiModelProperty(name = "identityId", value = "组织身份ID")
-    private String identityId;
     //源文件ID，上传文件成功后返回源文件ID
     @ApiModelProperty(name = "fileId", value = "源文件ID，上传文件成功后返回源文件ID")
     private String fileId;
+
+    //组织身份ID
+    @ApiModelProperty(name = "identityId", value = "组织身份ID")
+    private String identityId;
+
     //文件名称
     @ApiModelProperty(name = "fileName", value = "文件名称")
     private String fileName;
@@ -68,9 +64,9 @@ public class LocalDataImportFileResp {
     //数据描述
     @ApiModelProperty(name = "remarks", value = "数据描述")
     private String remarks;
-    //数据的状态 (entered：录入数据(创建未发布新表之前的操作); created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)
-    @ApiModelProperty(name = "status", value = "数据的状态 (entered：录入数据(创建未发布新表之前的操作); created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)")
-    private String status;
+    //元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)
+    @ApiModelProperty(name = "status", value = "元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)")
+    private Integer status;
     //元数据ID,hash
     @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
     private String metaDataId;
@@ -85,17 +81,28 @@ public class LocalDataImportFileResp {
     @ApiModelProperty(name = "localMetaDataColumnList", value = "源文件列信息")
     private List<LocalMetaDataColumn> localMetaDataColumnList = new ArrayList<>();
 
-    public static LocalDataImportFileResp from(LocalDataFileDetail detail){
-        if(detail == null){
+    public static LocalDataImportFileResp from(LocalDataFile localDataFile){
+        if(localDataFile == null){
             return null;
         }
         LocalDataImportFileResp resp = new LocalDataImportFileResp();
-        BeanUtils.copyProperties(detail,resp);
+        BeanUtils.copyProperties(localDataFile,resp);
         resp.setStatus(LocalDataFileStatusEnum.ENTERED.getStatus());
-        resp.setResourceName((String) detail.getDynamicFields().get(ServiceConstant.LOCAL_DATA_RESOURCE_NAME));
-        resp.setMetaDataPKId((Integer) detail.getDynamicFields().get(ServiceConstant.LOCAL_DATA_METADATA_PK_ID));
-        resp.setRecCreateTime(detail.getRecCreateTime() == null? null : detail.getRecCreateTime().getTime());
-        resp.setRecUpdateTime(detail.getRecUpdateTime() == null? null : detail.getRecUpdateTime().getTime());
+        resp.setResourceName(getResourceName(localDataFile.getFileName()));
+        //todo：可以查询数据库，local_data_file上传并insert到db后，会由db产生create/update时间
+        long milliSeconds = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        resp.setRecCreateTime(milliSeconds);
+        resp.setRecUpdateTime(milliSeconds);
+
+        resp.setLocalMetaDataColumnList(localDataFile.getLocalMetaDataColumnList());
         return resp;
+    }
+
+
+    private static String getResourceName(String fileName){
+        //导入去掉.csv后缀的文件名称，保存前12个字符作为资源名称
+        String resourceName = StrUtil.sub(FileUtil.getPrefix(fileName),0,12);
+        //因为上层已做资源文件名称校验，故此处暂时不再做校验
+        return resourceName;
     }
 }

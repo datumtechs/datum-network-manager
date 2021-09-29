@@ -7,6 +7,7 @@ import com.platon.metis.admin.dao.GlobalPowerMapper;
 import com.platon.metis.admin.dao.entity.GlobalPower;
 import com.platon.metis.admin.grpc.client.PowerClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 
 @Slf4j
-//@Component
+@Configuration
 public class GlobalPowerRefreshTask {
 
     @Resource
@@ -36,7 +37,8 @@ public class GlobalPowerRefreshTask {
     /**
      * TODO 后续增加补偿和失败重试等机制
      */
-    @Scheduled(fixedDelay = 10000)
+    //@Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelayString = "${GlobalPowerRefreshTask.fixedDelay}")
     @Transactional
     public void task(){
         StopWatch stopWatch = new StopWatch("全网数据刷新计时");
@@ -44,7 +46,7 @@ public class GlobalPowerRefreshTask {
         stopWatch.start("1.获取全网算力，包括本组织算力");
         List<GlobalPower> powerList = null;
         try{
-            powerList = powerClient.getPowerTotalDetailList();
+            powerList = powerClient.getGlobalPowerDetailList();
         } catch (ApplicationException exception){
             log.info(exception.getErrorMsg());
             return;

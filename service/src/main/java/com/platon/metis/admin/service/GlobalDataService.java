@@ -2,7 +2,6 @@ package com.platon.metis.admin.service;
 
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.GlobalDataFile;
-import com.platon.metis.admin.dao.entity.GlobalDataFileDetail;
 
 public interface GlobalDataService {
 
@@ -19,5 +18,5 @@ public interface GlobalDataService {
      * @param id
      * @return
      */
-    GlobalDataFileDetail detail(Integer id);
+    GlobalDataFile findGlobalDataFile(Integer id);
 }

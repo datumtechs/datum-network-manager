@@ -66,7 +66,7 @@ public class YarnClient {
                 if (ObjectUtil.isNotNull(resDataNode)) {
                     RegisteredNodeResp nodeResp = new RegisteredNodeResp();
                     nodeResp.setNodeId(resDataNode.getId());
-                    nodeResp.setConnStatus(String.valueOf(resDataNode.getConnState()));
+                    nodeResp.setConnStatus(resDataNode.getConnState().getNumber());
                     resp.setNodeResp(nodeResp);
                 }
             }
@@ -106,7 +106,7 @@ public class YarnClient {
                 if (ObjectUtil.isNotNull(resDataNode)) {
                     RegisteredNodeResp nodeResp = new RegisteredNodeResp();
                     nodeResp.setNodeId(resDataNode.getId());
-                    nodeResp.setConnStatus(String.valueOf(resDataNode.getConnState()));
+                    nodeResp.setConnStatus(resDataNode.getConnState().getNumber());
                     resp.setNodeResp(nodeResp);
                 }
             }
@@ -171,7 +171,7 @@ public class YarnClient {
                     nodeResp.setExternalIp(item.getNodeDetail().getExternalIp());
                     String externalPort = item.getNodeDetail().getExternalPort();
                     nodeResp.setExternalPort(externalPort == null ? null : Integer.valueOf(externalPort));
-                    nodeResp.setConnStatus(String.valueOf(item.getNodeDetail().getConnState()));
+                    nodeResp.setConnStatus(item.getNodeDetail().getConnState().getNumber());
                     nodeRespList.add(nodeResp);
                 });
             }

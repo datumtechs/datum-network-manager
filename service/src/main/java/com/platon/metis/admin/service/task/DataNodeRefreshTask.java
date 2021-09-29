@@ -7,6 +7,7 @@ import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.entity.QueryNodeResp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.CollectionUtils;
 
@@ -20,14 +21,15 @@ import java.util.List;
  * @date 2021/7/10 17:07
  */
 @Slf4j
-//@Component
+@Configuration
 public class DataNodeRefreshTask {
     @Resource
     private DataNodeMapper dataNodeMapper;
     @Resource
     private YarnClient yarnClient;
 
-    @Scheduled(fixedDelay = 2000)
+    //@Scheduled(fixedDelay = 2000)
+    @Scheduled(fixedDelayString = "${DataNodeRefreshTask.fixedDelay}")
     public void task() {
         log.info("执行获取数据节点列表定时任务");
         long begin = System.currentTimeMillis();

@@ -43,7 +43,7 @@ public class GlobalMetaDataColumn implements Serializable {
     /**
      * 列大小（byte）
      */
-    private Long size;
+    private Integer size;
 
     /**
      * 列描述

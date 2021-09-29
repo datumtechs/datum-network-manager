@@ -33,12 +33,10 @@ enum YarnNodeState {
 }
 
 // 调度服务和 种子节点 or 计算服务 or 数据服务 的连接状态
-// 调度服务自身的状态信息 (0: 未被调度服务连接上; 1: 连接上; 2: 算力启用<计算服务>; 3: 算力被占用<计算服务算力正在被任务占用>)
+// 调度服务自身的状态信息 (0: 未被调度服务连接上; 1: 连接上; )
 enum ConnState {
   ConnState_UnConnected = 0;
   ConnState_Connected = 1;
-  ConnState_Enabled = 2;
-  ConnState_Occupied = 3;
 }
 
 // 调度服务的信息

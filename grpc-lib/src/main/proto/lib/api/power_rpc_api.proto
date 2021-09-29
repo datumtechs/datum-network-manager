@@ -14,19 +14,19 @@ import "google/protobuf/empty.proto";
 //  ------------------------  power  ------------------------
 
 // 单个组织的总算力信息
-message GetTotalPowerDetailResponse {
+message GetGlobalPowerDetailResponse {
   api.protobuf.Organization owner = 1;                  // 算力拥有者信息
   types.PowerUsageDetail    power = 2;                  // 算力总详细
 }
 // 全网各个组织的总算力列表 resp
-message GetTotalPowerDetailListResponse {
+message GetGlobalPowerDetailListResponse {
   int32                                status = 1;      // 响应码
   string                               msg = 2;         // 错误提示信息
-  repeated GetTotalPowerDetailResponse power_list = 3;  // 全网的算力总详情列表
+  repeated GetGlobalPowerDetailResponse power_list = 3;  // 全网的算力总详情列表
 }
 
 // 本组织的单个算力信息
-message GetSelfPowerDetailResponse {
+message GetLocalPowerDetailResponse {
   api.protobuf.Organization owner = 1;                  // 算力拥有者信息
   types.PowerUsageDetail    power = 2;                  // 算力单个摘要
   string                    job_node_id = 3;            // 计算服务id (节点内部的)
@@ -34,10 +34,10 @@ message GetSelfPowerDetailResponse {
 }
 
 // 本组织的多个算力信息列表 resp
-message GetSelfPowerDetailListResponse {
+message GetLocalPowerDetailListResponse {
   int32                                 status = 1;         // 响应码
   string                                msg = 2;            // 错误提示信息
-  repeated GetSelfPowerDetailResponse   power_list = 3;     // 单个节点的算力总摘要列表
+  repeated GetLocalPowerDetailResponse  power_list = 3;     // 单个节点的算力总摘要列表
 }
 
 
@@ -64,17 +64,17 @@ message RevokePowerRequest {
 service PowerService {
 
   // 查看全网各个组织的总算力详情列表
-  rpc GetTotalPowerDetailList (google.protobuf.Empty) returns (GetTotalPowerDetailListResponse) {
+  rpc GetGlobalPowerDetailList (google.protobuf.Empty) returns (GetGlobalPowerDetailListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/power/totalList"
+      post: "/carrier/v1/power/globalList"
       body: "*"
     };
   }
 
   // 查看本组织的各个单算力详情列表
-  rpc GetSelfPowerDetailList (google.protobuf.Empty) returns (GetSelfPowerDetailListResponse) {
+  rpc GetLocalPowerDetailList (google.protobuf.Empty) returns (GetLocalPowerDetailListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/power/selfList"
+      post: "/carrier/v1/power/localList"
       body: "*"
     };
   }

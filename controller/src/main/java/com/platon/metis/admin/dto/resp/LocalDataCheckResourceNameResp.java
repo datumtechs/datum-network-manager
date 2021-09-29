@@ -22,6 +22,6 @@ public class LocalDataCheckResourceNameResp {
     //是否可用，可用为Y，不可用为N
     @ApiModelProperty(name = "status", value = "是否可用，可用为Y，不可用为N")
     private String status = ControllerConstants.STATUS_NOT_AVAILABLE;
-    @ApiModelProperty(name = "desc", value = "确保文件名称前12个字符不会和已存在的文件前12个字符重复，仅支持中英文与数字输入，最多12个字符")
-    private String desc="确保文件名称前12个字符不会和已存在的文件前12个字符重复，仅支持中英文与数字输入，最多12个字符";
+    @ApiModelProperty(name = "desc", value = "元数据资源名称必须唯一，仅支持中英文与数字输入，最多12个字符")
+    private String desc="元数据资源名称必须唯一，仅支持中英文与数字输入，最多12个字符";
 }

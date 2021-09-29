@@ -4,7 +4,7 @@ import com.platon.metis.admin.dao.BaseDomain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -25,13 +25,13 @@ public class LocalDataAuth extends BaseDomain {
     //授权值(以授权次数)
     private Integer authValueAmount;
     //授权值开始时间
-    private Date authValueStartAt;
+    private LocalDateTime authValueStartAt;
     //授权值结束时间
-    private Date authValueEndAt;
+    private LocalDateTime authValueEndAt;
     //授权申请发起时间
-    private Date createAt;
+    private LocalDateTime createAt;
     //授权数据时间
-    private Date authAt;
+    private LocalDateTime authAt;
     //授权数据状态：0：等待授权审核，1:同意， 2:拒绝
     private Integer status;
     //元数据所属的组织信息，组织名称
@@ -41,9 +41,9 @@ public class LocalDataAuth extends BaseDomain {
     //组织中调度服务的 nodeId
     private String identityNodeId;
     //创建时间
-    private Date recCreateTime;
+    private LocalDateTime recCreateTime;
     //最后更新时间
-    private Date recUpdateTime;
+    private LocalDateTime recUpdateTime;
 
 
 }

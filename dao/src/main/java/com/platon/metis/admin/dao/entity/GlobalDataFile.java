@@ -5,7 +5,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 
@@ -81,9 +83,9 @@ public class GlobalDataFile implements Serializable {
     private String remarks;
 
     /**
-     * 数据的状态 (created: 还未发布的新表; released: 已发布的表; revoked: 已撤销的表)
+     * 元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)
      */
-    private String status;
+    private Integer status;
 
     /**
      * 元数据发布时间
@@ -104,6 +106,9 @@ public class GlobalDataFile implements Serializable {
      * 最后更新时间
      */
     private Date recUpdateTime;
+
+    //源文件列信息
+    private List<GlobalMetaDataColumn> metaDataColumnList = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
 }

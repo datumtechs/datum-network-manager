@@ -109,14 +109,12 @@
       user_type, auth_type, auth_value_amount,
       auth_value_start_at, auth_value_end_at, create_at, 
       auth_at, status,
-      identity_name, identity_id, identity_node_id
-      rec_create_time, rec_update_time)
+      identity_name, identity_id, identity_node_id)
     values (#{id,jdbcType=INTEGER}, #{authId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{applyUser,jdbcType=VARCHAR},
       #{userType,jdbcType=INTEGER}, #{authType,jdbcType=BIT}, #{authValueAmount,jdbcType=INTEGER},
       #{authValueStartAt,jdbcType=TIMESTAMP}, #{authValueEndAt,jdbcType=TIMESTAMP}, #{createAt,jdbcType=TIMESTAMP}, 
       #{authAt,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT},
-      #{identityName,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{identityNodeId,jdbcType=VARCHAR},
-      #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
+      #{identityName,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{identityNodeId,jdbcType=VARCHAR})
   </insert>
 
 
@@ -125,16 +123,16 @@
     user_type, auth_type, auth_value_amount,
     auth_value_start_at, auth_value_end_at, create_at,
     auth_at, status,
-    identity_name, identity_id, identity_node_id
-    rec_create_time, rec_update_time)
+    identity_name, identity_id, identity_node_id)
     values
     <foreach collection ="list" item="item" index="index" separator=",">
-      (#{authId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{applyUser,jdbcType=VARCHAR},
-      #{userType,jdbcType=INTEGER}, #{authType,jdbcType=BIT}, #{authValueAmount,jdbcType=INTEGER},
-      #{authValueStartAt,jdbcType=TIMESTAMP}, #{authValueEndAt,jdbcType=TIMESTAMP}, #{createAt,jdbcType=TIMESTAMP},
-      #{authAt,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT},
-      #{identityName,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{identityNodeId,jdbcType=VARCHAR},
-      #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
+      (#{item.authId,jdbcType=VARCHAR}, #{item.metaDataId,jdbcType=VARCHAR}, #{item.applyUser,jdbcType=VARCHAR},
+      #{item.userType,jdbcType=INTEGER}, #{item.authType,jdbcType=BIT}, #{item.authValueAmount,jdbcType=INTEGER},
+      #{item.authValueStartAt,jdbcType=TIMESTAMP}, #{item.authValueEndAt,jdbcType=TIMESTAMP},
+      #{item.createAt,jdbcType=TIMESTAMP},
+      #{item.authAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=BIT},
+      #{item.identityName,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR},
+      #{item.identityNodeId,jdbcType=VARCHAR})
     </foreach>
   </insert>
 
@@ -190,12 +188,6 @@
       <if test="identityNodeId != null">
         identity_node_id,
       </if>
-      <if test="recCreateTime != null">
-        rec_create_time,
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -242,12 +234,6 @@
       </if>
       <if test="identityNodeId != null">
         #{identityNodeId,jdbcType=VARCHAR},
-      </if>
-      <if test="recCreateTime != null">
-        #{recCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="recUpdateTime != null">
-        #{recUpdateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -298,13 +284,7 @@
       <if test="identityNodeId != null">
         identity_node_id = #{identityNodeId,jdbcType=VARCHAR},
       </if>
-      <if test="recCreateTime != null">
-        rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
+     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
@@ -322,9 +302,7 @@
       status = #{status,jdbcType=BIT},
       identity_name = #{identityName,jdbcType=VARCHAR},
       identity_id = #{identityId,jdbcType=VARCHAR},
-      identity_node_id = #{identityNodeId,jdbcType=VARCHAR},
-      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      identity_node_id = #{identityNodeId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

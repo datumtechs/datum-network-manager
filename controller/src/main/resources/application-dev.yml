@@ -35,3 +35,25 @@ spring:
 
 server:
   port: 9090
+
+
+# =============================== conf for logger ===================================
+logging:
+level: DEBUG
+level.com.platon: DEBUG
+level.org.springframework: INFO
+pattern:
+  console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15}[%line] - %msg%n'
+  file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15}[%line] - %msg%n'
+file:
+  name: logs/admin.log
+
+# =============================== conf for scheduled task ===================================
+CalculateResultTask.cron: 0 10 0 1 * ?
+DataAuthRefreshTask.fixedDelay: 20000
+DataNodeRefreshTask.fixedDelay: 2000
+GlobalDataRefreshTask.fixedDelay: 10000
+GlobalPowerRefreshTask.fixedDelay: 10000
+LocalOrgRefreshTask.fixedDelay: 10000
+LocalTaskRefreshTask.fixedDelay: 20000
+PowerNodeRefreshTask.fixedDelay: 60000

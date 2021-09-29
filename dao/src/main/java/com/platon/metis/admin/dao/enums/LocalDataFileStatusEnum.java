@@ -15,18 +15,17 @@ import lombok.Getter;
 
 @Getter
 public enum LocalDataFileStatusEnum {
+    //(0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)
+    ENTERED(0,"录入数据(创建未发布新表之前的操作)"),
+    CREATED(1,"还未发布的新表"),
+    RELEASED(2,"已发布的表"),
+    REVOKED(3,"已撤销的表");
 
-    ENTERED("entered","录入数据(创建未发布新表之前的操作)"),
-    CREATED("created","还未发布的新表"),
-    RELEASED("released","已发布的表"),
-    REVOKED("revoked","已撤销的表"),
-    DELETED("deleted","已删除的表");
-
-    LocalDataFileStatusEnum(String status,String desc){
+    LocalDataFileStatusEnum(int status,String desc){
         this.status = status;
         this.desc = desc;
     }
 
-    private String status;
+    private int status;
     private String desc;
 }

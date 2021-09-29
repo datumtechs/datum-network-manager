@@ -87,12 +87,13 @@ enum MetadataUsageType {
   Usage_Times = 2;          // 依照次数来使用
 }
 
-// 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力; 3: 已撤销的算力)
+// 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)
 enum PowerState {
   PowerState_Unknown = 0;
   PowerState_Created = 1;
   PowerState_Released = 2;
-  PowerState_Revoked = 3;
+  PowerState_Occupation = 3;
+  PowerState_Revoked = 4;
 }
 
 // 本组织在task中的角色

@@ -4,19 +4,17 @@ import com.platon.metis.admin.dao.BaseDomain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class LocalDataFile extends BaseDomain {
-    /**
-     * 序号
-     */
-    private Integer id;
+    //全网唯一ID，上传文件成功后返回
+    private String fileId;
     //组织身份ID
     private String identityId;
-    //源文件ID，上传文件成功后返回源文件ID
-    private String fileId;
     //文件名称
     private String fileName;
     //文件存储路径
@@ -36,4 +34,6 @@ public class LocalDataFile extends BaseDomain {
     //最后更新时间
     private Date recUpdateTime;
 
+    //源文件列信息
+    private List<LocalMetaDataColumn> localMetaDataColumnList = new ArrayList<>();
 }

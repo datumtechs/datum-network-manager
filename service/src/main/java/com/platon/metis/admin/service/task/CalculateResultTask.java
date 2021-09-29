@@ -3,8 +3,8 @@ package com.platon.metis.admin.service.task;
 import com.platon.metis.admin.dao.StoreCalculateResultMapper;
 import com.platon.metis.admin.dao.entity.StoreCalculateResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
  * @date 2021/7/10 17:07
  */
 @Slf4j
-@Component
+@Configuration
 public class CalculateResultTask {
 
     @Resource
@@ -25,7 +25,8 @@ public class CalculateResultTask {
      *
      * 每月第一天0点
      */
-    @Scheduled(cron = "0 10 0 1 * ?")
+    //@Scheduled(cron = "0 10 0 1 * ?")
+    @Scheduled(cron = "${CalculateResultTask.cron}")
     public void refreshPowerData(){
         long startTime = System.currentTimeMillis();
         // 查询上月我发布的数据

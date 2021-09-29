@@ -8,6 +8,7 @@ import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.entity.TaskDataResp;
 import com.platon.metis.admin.grpc.entity.TaskEventDataResp;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.CollectionUtils;
 
@@ -23,8 +24,8 @@ import static com.platon.metis.admin.grpc.client.TaskClient.NODE_NAME;
  * 计算任务定时任务
  */
 @Slf4j
-//@Component
-public class MyTaskRefreshTask {
+@Configuration
+public class LocalTaskRefreshTask {
 
     @Resource
     private TaskClient taskClient;
@@ -49,7 +50,8 @@ public class MyTaskRefreshTask {
 
 
 
-    @Scheduled(fixedDelay = 20000)
+    //@Scheduled(fixedDelay = 20000)
+    @Scheduled(fixedDelayString = "${LocalTaskRefreshTask.fixedDelay}")
     public void task() {
         log.info("启动执行获取任务数据列表定时任务...........");
         TaskDataResp resp = taskClient.getTaskListData();

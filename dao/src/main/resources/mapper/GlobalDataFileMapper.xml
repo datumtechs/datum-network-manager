@@ -8,14 +8,14 @@
     <result column="file_id" jdbcType="VARCHAR" property="fileId" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
-    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
+    <result column="file_type" jdbcType="INTEGER" property="fileType" />
     <result column="resource_name" jdbcType="VARCHAR" property="resourceName" />
     <result column="size" jdbcType="BIGINT" property="size" />
     <result column="rows" jdbcType="BIGINT" property="rows" />
     <result column="columns" jdbcType="INTEGER" property="columns" />
     <result column="has_title" jdbcType="TINYINT" property="hasTitle" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
     <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
     <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
@@ -58,7 +58,7 @@
         remarks = #{remarks,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        `status` = #{status,jdbcType=VARCHAR},
+        `status` = #{status,jdbcType=INTEGER},
       </if>
       <if test="recUpdateTime != null">
         rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
@@ -88,7 +88,7 @@
           file_path = #{globalDataFile.filePath,jdbcType=VARCHAR},
         </if>
         <if test="globalDataFile.fileType != null">
-          file_type = #{globalDataFile.fileType,jdbcType=VARCHAR},
+          file_type = #{globalDataFile.fileType,jdbcType=INTEGER},
         </if>
         <if test="globalDataFile.resourceName != null">
           resource_name = #{globalDataFile.resourceName,jdbcType=VARCHAR},
@@ -109,7 +109,7 @@
           remarks = #{globalDataFile.remarks,jdbcType=VARCHAR},
         </if>
         <if test="globalDataFile.status != null">
-          `status` = #{globalDataFile.status,jdbcType=VARCHAR},
+          `status` = #{globalDataFile.status,jdbcType=INTEGER},
         </if>
         <if test="globalDataFile.publishTime != null">
           publish_time = #{globalDataFile.publishTime,jdbcType=TIMESTAMP},
@@ -218,7 +218,7 @@
           #{globalDataFile.filePath,jdbcType=VARCHAR},
         </if>
         <if test="globalDataFile.fileType != null">
-          #{globalDataFile.fileType,jdbcType=VARCHAR},
+          #{globalDataFile.fileType,jdbcType=INTEGER},
         </if>
         <if test="globalDataFile.resourceName != null">
           #{globalDataFile.resourceName,jdbcType=VARCHAR},
@@ -239,7 +239,7 @@
           #{globalDataFile.remarks,jdbcType=VARCHAR},
         </if>
         <if test="globalDataFile.status != null">
-          #{globalDataFile.status,jdbcType=VARCHAR},
+          #{globalDataFile.status,jdbcType=INTEGER},
         </if>
         <if test="globalDataFile.publishTime != null">
           #{globalDataFile.publish_time,jdbcType=TIMESTAMP},

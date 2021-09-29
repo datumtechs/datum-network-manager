@@ -29,13 +29,3 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
 
-# =============================== conf for logger ===================================
-logging:
-  level: DEBUG
-  level.com.platon: DEBUG
-  level.org.springframework: DEBUG
-  pattern:
-    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15}[%line] - %msg%n'
-    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15}[%line] - %msg%n'
-  file:
-    name: logs/admin.log

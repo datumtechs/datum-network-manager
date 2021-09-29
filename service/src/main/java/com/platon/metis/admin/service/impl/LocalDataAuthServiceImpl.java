@@ -1,4 +1,5 @@
 package com.platon.metis.admin.service.impl;
+
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.metis.admin.dao.LocalDataAuthMapper;
@@ -16,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,15 +62,15 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         if(Objects.isNull(localDataAuth) || Objects.isNull(localDataAuth.getMetaDataId()) || "".equals(localDataAuth.getMetaDataId())){
              throw new ServiceException("metaDataID异常，不可为空");
         }
+
         LocalMetaData localMetaData = localMetaDataMapper.selectByMetaDataId(localDataAuth.getMetaDataId());
-        if(Objects.isNull(localMetaData) || Objects.isNull(localMetaData.getDataFileId()) || localMetaData.getDataFileId() == 0){
-            throw new ServiceException("localMetaData dataFileId异常，不可为空");
+        if(localMetaData==null){
+            throw new ServiceException("metadata not found");
         }
-        if(Objects.isNull(localMetaData) || Objects.isNull(localMetaData.getId()) || "".equals(localMetaData.getId())){
-            throw new ServiceException("localMetaData id异常，不可为空");
-        }
-        LocalDataFile localDataFile = localDataFileMapper.selectById(localMetaData.getDataFileId());
-        List<LocalMetaDataColumn> localMetaDataColumnList =  localMetaDataColumnMapper.selectByMetaId(localMetaData.getId());
+        List<LocalMetaDataColumn> localMetaDataColumnList =  localMetaDataColumnMapper.selectByLocalMetaDataDbId(localMetaData.getId());
+
+        LocalDataFile localDataFile = localDataFileMapper.selectByFileId(localMetaData.getFileId());
+
 
         LocalDataAuthDetail localDataAuthDetail = new LocalDataAuthDetail();
         localDataAuthDetail.setLocalDataAuth(localDataAuth);
@@ -95,12 +96,10 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
            throw new ServiceException("调用rpc授权失败" + commonResp.getMsg());
         }
 
-        Date time = new Date();
         LocalDataAuth dataAuth = new LocalDataAuth();
         dataAuth.setId(id);
         dataAuth.setStatus(DataAuthStatusEnum.AGREE.getStatus());
-        dataAuth.setAuthAt(time);
-        dataAuth.setRecUpdateTime(time);
+        dataAuth.setAuthAt(LocalDateTime.now());
         AtomicInteger count = new AtomicInteger();
         count.getAndAdd(localDataAuthMapper.updateByPrimaryKeySelective(dataAuth));
         return count.get();
@@ -121,12 +120,10 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
             throw new ServiceException("调用rpc授权失败" + commonResp.getMsg());
         }
 
-        Date time = new Date();
         LocalDataAuth dataAuth = new LocalDataAuth();
         dataAuth.setId(id);
         dataAuth.setStatus(DataAuthStatusEnum.REFUSE.getStatus());
-        dataAuth.setAuthAt(time);
-        dataAuth.setRecUpdateTime(time);
+        dataAuth.setAuthAt(LocalDateTime.now());
         AtomicInteger count = new AtomicInteger();
         count.getAndAdd(localDataAuthMapper.updateByPrimaryKeySelective(dataAuth));
         return count.get();

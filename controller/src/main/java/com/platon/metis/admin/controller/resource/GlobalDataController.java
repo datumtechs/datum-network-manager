@@ -2,7 +2,6 @@ package com.platon.metis.admin.controller.resource;
 
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.GlobalDataFile;
-import com.platon.metis.admin.dao.entity.GlobalDataFileDetail;
 import com.platon.metis.admin.dto.CommonPageReq;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.GlobalDataMetaDataListByKeyWordReq;
@@ -72,7 +71,7 @@ public class GlobalDataController {
     })
     @GetMapping("metaDataInfo")
     public JsonResponse<GlobalDataDetailResp> detail(@Validated @NotBlank(message = "id不为空") Integer id){
-        GlobalDataFileDetail detail = globalDataService.detail(id);
+        GlobalDataFile detail = globalDataService.findGlobalDataFile(id);
         GlobalDataDetailResp resp = GlobalDataDetailResp.from(detail);
         return JsonResponse.success(resp);
     }

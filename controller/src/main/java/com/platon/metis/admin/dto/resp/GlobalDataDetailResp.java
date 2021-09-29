@@ -1,6 +1,6 @@
 package com.platon.metis.admin.dto.resp;
 
-import com.platon.metis.admin.dao.entity.GlobalDataFileDetail;
+import com.platon.metis.admin.dao.entity.GlobalDataFile;
 import com.platon.metis.admin.dao.entity.GlobalMetaDataColumn;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -133,7 +133,7 @@ public class GlobalDataDetailResp  implements Serializable {
     @ApiModelProperty(name = "metaDataColumnList", value = "源文件列信息")
     private List<GlobalMetaDataColumn> metaDataColumnList = new ArrayList<>();
 
-    public static GlobalDataDetailResp from(GlobalDataFileDetail detail){
+    public static GlobalDataDetailResp from(GlobalDataFile detail){
         if(detail == null){
             return null;
         }

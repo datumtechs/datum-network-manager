@@ -1,6 +1,7 @@
 package com.platon.metis.admin.dto.resp;
 
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
+import com.platon.metis.admin.grpc.common.CommonBase;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -50,9 +51,8 @@ public class IndexNodeListResp {
         IndexNodeListResp resp = new IndexNodeListResp();
         resp.setJobNodeId(localPowerNode.getPowerNodeId());
         resp.setJobNodeName(localPowerNode.getPowerNodeName());
-        //节点状态待确定,节点状态，-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用<计算服务>; 2: 算力被占用(计算服务算力正在被任务占用)
         //前端显示计算节点状态：1计算中、0空闲中
-        if("2".equals(localPowerNode.getConnStatus())){//占用
+        if(localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE){//占用
             resp.setStatus("1");
         } else {
             resp.setStatus("0");

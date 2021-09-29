@@ -10,7 +10,7 @@
     <result column="internal_Port" jdbcType="INTEGER" property="internalPort" />
     <result column="external_IP" jdbcType="VARCHAR" property="externalIp" />
     <result column="external_Port" jdbcType="INTEGER" property="externalPort" />
-    <result column="conn_Status" jdbcType="VARCHAR" property="connStatus" />
+    <result column="conn_Status" jdbcType="INTEGER" property="connStatus" />
     <result column="conn_message" jdbcType="VARCHAR" property="connMessage" />
     <result column="conn_Time" jdbcType="TIMESTAMP" property="connTime" />
     <result column="status" jdbcType="VARCHAR" property="status" />
@@ -78,7 +78,7 @@
     )
     values (#{id,jdbcType=INTEGER}, #{identityId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR},
       #{hostName,jdbcType=VARCHAR}, #{internalIp,jdbcType=VARCHAR}, #{internalPort,jdbcType=INTEGER},
-      #{externalIp,jdbcType=VARCHAR}, #{externalPort,jdbcType=INTEGER}, #{connStatus,jdbcType=VARCHAR},
+      #{externalIp,jdbcType=VARCHAR}, #{externalPort,jdbcType=INTEGER}, #{connStatus,jdbcType=INTEGER},
       #{connMessage,jdbcType=VARCHAR}, #{connTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
       #{remarks,jdbcType=VARCHAR}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP}
      )
@@ -90,7 +90,7 @@
       internal_Port = #{internalPort,jdbcType=INTEGER},
       external_IP = #{externalIp,jdbcType=VARCHAR},
       external_Port = #{externalPort,jdbcType=INTEGER},
-      conn_Status = #{connStatus,jdbcType=VARCHAR},
+      conn_Status = #{connStatus,jdbcType=INTEGER},
       rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
     where node_Id = #{nodeId,jdbcType=INTEGER}
   </update>
@@ -101,7 +101,7 @@
       internal_Port = #{item.internalPort,jdbcType=INTEGER},
       external_IP = #{item.externalIp,jdbcType=VARCHAR},
       external_Port = #{item.externalPort,jdbcType=INTEGER},
-      conn_Status = #{item.connStatus,jdbcType=VARCHAR}
+      conn_Status = #{item.connStatus,jdbcType=INTEGER}
       where node_Id = #{item.nodeId,jdbcType=INTEGER}
     </foreach>
   </update>

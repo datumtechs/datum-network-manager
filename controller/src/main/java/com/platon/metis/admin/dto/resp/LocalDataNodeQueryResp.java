@@ -24,8 +24,8 @@ public class LocalDataNodeQueryResp {
     @ApiModelProperty(name = "nodeName",value = "节点名称")
     private String nodeName;
 
-    @ApiModelProperty(name = "connStatus",value = "网络连接状态，0 网络连接成功，-1 网络连接失败")
-    private String connStatus;
+    @ApiModelProperty(name = "connStatus",value = "节点与调度服务的连接状态（0: 未被调度服务连接上; 1: 连接上）")
+    private Integer connStatus;
 
     @ApiModelProperty(name = "internalIp",value = "内部ip地址")
     private String internalIp;

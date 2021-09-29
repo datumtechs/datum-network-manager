@@ -15,7 +15,7 @@ import lombok.ToString;
 public class RegisteredNodeResp {
     private String nodeId;
 
-    private String connStatus;
+    private Integer connStatus;
 
     private String internalIp;
 

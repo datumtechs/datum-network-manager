@@ -9,6 +9,7 @@ import com.platon.metis.admin.dao.enums.LocalOrgStatusEnum;
 import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,7 @@ import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_COD
  */
 
 @Slf4j
-//@Component
+@Configuration
 public class LocalOrgRefreshTask {
 
     @Resource
@@ -32,7 +33,8 @@ public class LocalOrgRefreshTask {
     @Resource
     private YarnClient yarnClient;
 
-    @Scheduled(fixedDelay = 10000)
+    //@Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelayString = "${LocalOrgRefreshTask.fixedDelay}")
     @Transactional
     public void task(){
         LocalOrg localOrg = localOrgMapper.select();

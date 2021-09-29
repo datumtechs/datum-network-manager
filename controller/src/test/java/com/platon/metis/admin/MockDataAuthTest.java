@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -37,8 +37,7 @@ public class MockDataAuthTest {
         localDataAuth.setUserType(1);
         localDataAuth.setAuthType(2);
         localDataAuth.setAuthValueAmount(2);
-        localDataAuth.setCreateAt(new Date());
-        localDataAuth.setRecCreateTime(new Date());
+        localDataAuth.setCreateAt(LocalDateTime.now());
         localDataAuthMapper.insertSelective(localDataAuth);
 
         LocalDataAuth localDataAuth1 = new LocalDataAuth();
@@ -47,10 +46,9 @@ public class MockDataAuthTest {
         localDataAuth1.setApplyUser("user_0bcc975ab55848bda315d7c14799bc17");
         localDataAuth1.setUserType(1);
         localDataAuth1.setAuthType(1);
-        localDataAuth1.setAuthValueStartAt(new Date());
-        localDataAuth1.setAuthValueEndAt(new Date());
-        localDataAuth1.setCreateAt(new Date());
-        localDataAuth1.setRecCreateTime(new Date());
+        localDataAuth1.setAuthValueStartAt(LocalDateTime.now());
+        localDataAuth1.setAuthValueEndAt(LocalDateTime.now());
+        localDataAuth1.setCreateAt(LocalDateTime.now());
         localDataAuthMapper.insertSelective(localDataAuth1);
 
 

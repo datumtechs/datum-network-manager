@@ -15,9 +15,9 @@
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="conn_message" jdbcType="VARCHAR" property="connMessage" />
     <result column="power_id" jdbcType="VARCHAR" property="powerId" />
-    <result column="power_status" jdbcType="VARCHAR" property="powerStatus" />
+    <result column="power_status" jdbcType="INTEGER" property="powerStatus" />
     <result column="conn_time" jdbcType="TIMESTAMP" property="connTime" />
-    <result column="conn_status" jdbcType="VARCHAR" property="connStatus" />
+    <result column="conn_status" jdbcType="INTEGER" property="connStatus" />
     <result column="memory" jdbcType="BIGINT" property="memory" />
     <result column="core" jdbcType="INTEGER" property="core" />
     <result column="bandwidth" jdbcType="BIGINT" property="bandwidth" />
@@ -64,18 +64,6 @@
         power_node_id = #{powerNodeId, jdbcType=VARCHAR}
   </select>
 
-  <!-- 查询计算节点是否被占用 -->
-  <select id="queryPowerNodeUsing" parameterType="java.lang.String" resultType="java.lang.Integer">
-    select
-        count(1)
-    from
-        local_power_node
-    where 1=1
-        and conn_status != "-1"
-        and power_status != "release"
-        and power_node_id = #{powerNodeId, jdbcType=VARCHAR}
-
-  </select>
 
   <!-- 校验计算节点名称 -->
   <select id="checkPowerNodeName" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -141,9 +129,9 @@
       <if test="remarks != null">#{remarks, jdbcType=VARCHAR},</if>
       <if test="connMessage != null">#{connMessage, jdbcType=VARCHAR},</if>
       <if test="powerId != null">#{powerId, jdbcType=VARCHAR},</if>
-      <if test="powerStatus != null">#{powerStatus, jdbcType=VARCHAR},</if>
+      <if test="powerStatus != null">#{powerStatus, jdbcType=INTEGER},</if>
       <if test="connTime != null">#{connTime, jdbcType=TIMESTAMP},</if>
-      <if test="connStatus != null">#{connStatus, jdbcType=VARCHAR},</if>
+      <if test="connStatus != null">#{connStatus, jdbcType=INTEGER},</if>
       <if test="memory != null">#{memory, jdbcType=BIGINT},</if>
       <if test="core != null">#{core, jdbcType=INTEGER},</if>
       <if test="bandwidth != null">#{bandwidth, jdbcType=BIGINT},</if>
@@ -169,9 +157,9 @@
       <if test="remarks != null">remarks = #{remarks, jdbcType=VARCHAR},</if>
       <if test="connMessage != null">conn_message = #{connMessage, jdbcType=VARCHAR},</if>
       <if test="powerId != null">power_id = #{powerId, jdbcType=VARCHAR},</if>
-      <if test="powerStatus != null">power_status = #{powerStatus, jdbcType=VARCHAR},</if>
+      <if test="powerStatus != null">power_status = #{powerStatus, jdbcType=INTEGER},</if>
       <if test="connTime != null">conn_time = #{connTime, jdbcType=TIMESTAMP},</if>
-      <if test="connStatus != null">conn_status = #{connStatus, jdbcType=VARCHAR},</if>
+      <if test="connStatus != null">conn_status = #{connStatus, jdbcType=INTEGER},</if>
       <if test="memory != null">memory = #{memory, jdbcType=BIGINT},</if>
       <if test="core != null">core = #{core, jdbcType=INTEGER},</if>
       <if test="bandwidth != null">bandwidth = #{bandwidth, jdbcType=BIGINT},</if>
@@ -199,9 +187,9 @@
         <if test="item.remarks != null">remarks = #{item.remarks, jdbcType=VARCHAR},</if>
         <if test="item.connMessage != null">conn_message = #{item.connMessage, jdbcType=VARCHAR},</if>
         <if test="item.powerId != null">power_id = #{item.powerId, jdbcType=VARCHAR},</if>
-        <if test="item.powerStatus != null">power_status = #{item.powerStatus, jdbcType=VARCHAR},</if>
+        <if test="item.powerStatus != null">power_status = #{item.powerStatus, jdbcType=INTEGER},</if>
         <if test="item.connTime != null">conn_time = #{item.connTime, jdbcType=TIMESTAMP},</if>
-        <if test="item.connStatus != null">conn_status = #{item.connStatus, jdbcType=VARCHAR},</if>
+        <if test="item.connStatus != null">conn_status = #{item.connStatus, jdbcType=INTEGER},</if>
         <if test="item.memory != null">memory = #{item.memory, jdbcType=BIGINT},</if>
         <if test="item.core != null">core = #{item.core, jdbcType=INTEGER},</if>
         <if test="item.bandwidth != null">bandwidth = #{item.bandwidth, jdbcType=BIGINT},</if>
@@ -230,9 +218,9 @@
       <if test="remarks != null">remarks = #{remarks, jdbcType=VARCHAR},</if>
       <if test="connMessage != null">conn_message = #{connMessage, jdbcType=VARCHAR},</if>
       <if test="powerId != null">power_id = #{powerId, jdbcType=VARCHAR},</if>
-      <if test="powerStatus != null">power_status = #{powerStatus, jdbcType=VARCHAR},</if>
+      <if test="powerStatus != null">power_status = #{powerStatus, jdbcType=INTEGER},</if>
       <if test="connTime != null">conn_time = #{connTime, jdbcType=TIMESTAMP},</if>
-      <if test="connStatus != null">conn_status = #{connStatus, jdbcType=VARCHAR},</if>
+      <if test="connStatus != null">conn_status = #{connStatus, jdbcType=INTEGER},</if>
       <if test="memory != null">memory = #{memory, jdbcType=BIGINT},</if>
       <if test="core != null">core = #{core, jdbcType=INTEGER},</if>
       <if test="bandwidth != null">bandwidth = #{bandwidth, jdbcType=BIGINT},</if>

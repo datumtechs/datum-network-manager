@@ -5,11 +5,13 @@ import com.platon.metis.admin.common.exception.ApplicationException;
 import com.platon.metis.admin.common.util.BatchExecuteUtil;
 import com.platon.metis.admin.dao.GlobalDataFileMapper;
 import com.platon.metis.admin.dao.GlobalMetaDataColumnMapper;
+import com.platon.metis.admin.dao.SyncCheckpointMapper;
 import com.platon.metis.admin.dao.entity.GlobalDataFile;
-import com.platon.metis.admin.dao.entity.GlobalDataFileDetail;
 import com.platon.metis.admin.dao.entity.GlobalMetaDataColumn;
 import com.platon.metis.admin.grpc.client.MetaDataClient;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
@@ -29,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Slf4j
-//@Component
+@Configuration
 public class GlobalDataRefreshTask {
 
     @Resource
@@ -38,42 +40,56 @@ public class GlobalDataRefreshTask {
     private GlobalMetaDataColumnMapper globalMetaDataColumnMapper;
     @Resource
     private MetaDataClient metaDataClient;
-    protected static ArrayBlockingQueue<GlobalDataFileDetail> abq = new ArrayBlockingQueue<>(10000);
+
+    @Resource
+    private SyncCheckpointMapper syncCheckpointMapper;
+
+    protected static ArrayBlockingQueue<GlobalDataFile> localDataFileQueueFetchedFromStorage = new ArrayBlockingQueue<>(10000);
 
     /**
      * TODO 后续增加补偿和失败重试等机制
      */
-    @Scheduled(fixedDelay = 10000)
+    //@Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelayString = "${GlobalDataRefreshTask.fixedDelay}")
     @Transactional
     public void task(){
         StopWatch stopWatch = new StopWatch("全网数据刷新计时");
         //### 1.获取全网数据，包括本组织数据
         stopWatch.start("1.获取全网数据，包括本组织数据");
-        List<GlobalDataFileDetail> detailList = null;
+        List<GlobalDataFile> globalDataFileList = null;
         try{
-            detailList = metaDataClient.getMetaDataDetailList();
+            globalDataFileList = metaDataClient.getGlobalMetaDataList();
         } catch (ApplicationException exception){
             log.info(exception.getErrorMsg());
             return;
         }
+
+        if(CollectionUtils.isEmpty(globalDataFileList)){
+            return;
+        }else{
+            GlobalDataFile last = globalDataFileList.get(globalDataFileList.size()-1);
+            //syncCheckpointMapper.updateMetadata(last.getRecUpdateTime())
+        }
+
         stopWatch.stop();
         //### 2.将数据归类
         stopWatch.start("2.将数据归类");
         //2.1先获取所有已存在数据库中的fileId
         List<String> fileIdList = globalDataFileMapper.selectAllFileId();
         //需要更新的列表
-        List<GlobalDataFileDetail> updateList = new ArrayList<>();
+        List<GlobalDataFile> updateList = new ArrayList<>();
         //需要新增的列表
-        List<GlobalDataFileDetail> addList = new ArrayList<>();
+        List<GlobalDataFile> addList = new ArrayList<>();
         //需要删除的fileId列表
         List<String> deleteList = new ArrayList<>(fileIdList);
         String localOrg = LocalOrgIdentityCache.getIdentityId();
-        detailList.stream()
+
+        globalDataFileList.stream()
                 .filter(detail -> {//先过滤掉本组织数据
                     if(localOrg.equals(detail.getIdentityId())){
                         try {
                             //将指定的元素插入此队列的尾部，如果该队列已满，则一直等到（阻塞）
-                            abq.offer(detail,60, TimeUnit.SECONDS);
+                            localDataFileQueueFetchedFromStorage.offer(detail,60, TimeUnit.SECONDS);
                         } catch (InterruptedException e) {
                             log.error("本地组织数据放入队列失败",e);
                         }
@@ -102,6 +118,7 @@ public class GlobalDataRefreshTask {
         stopWatch.stop();
         //3.2批量新增
         stopWatch.start("3.2批量新增");
+        addList.stream().forEach(s->log.info(s.getMetaDataId()));
         batchAdd(addList);
         stopWatch.stop();
         //3.3批量删除
@@ -112,7 +129,7 @@ public class GlobalDataRefreshTask {
 
     }
 
-    private void batchAdd(List<GlobalDataFileDetail> addList) {
+    private void batchAdd(List<GlobalDataFile> addList) {
         List<GlobalDataFile> localDataFileList = new ArrayList<>();
         List<GlobalMetaDataColumn> columnList = new ArrayList<>();
         addList.forEach(detail -> {
@@ -129,7 +146,7 @@ public class GlobalDataRefreshTask {
         });
     }
 
-    private void batchUpdate(List<GlobalDataFileDetail> updateList) {
+    private void batchUpdate(List<GlobalDataFile> updateList) {
         List<GlobalDataFile> localDataFileList = new ArrayList<>();
         List<GlobalMetaDataColumn> columnList = new ArrayList<>();
         updateList.forEach(detail -> {

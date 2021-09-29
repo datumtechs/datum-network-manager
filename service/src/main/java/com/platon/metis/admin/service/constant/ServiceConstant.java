@@ -27,15 +27,15 @@ public class ServiceConstant {
     public static final long TIME_HOUR_72 = 3 * 24 * 60 * 60 *1000;
 
 
-    /**
+/*    *//**
      * 资源中心--我的数据源文件信息字段
-     */
+     *//*
     public static String LOCAL_DATA_STATUS = "status";
     public static String LOCAL_DATA_METADATA_ID = "metaDataId";
     public static String LOCAL_DATA_REMARKS = "remarks";
     public static String LOCAL_DATA_INDUSTRY = "industry";
     public static String LOCAL_DATA_ATTEND_TASK_COUNT = "attendTaskCount";
     public static String LOCAL_DATA_RESOURCE_NAME = "resourceName";
-    public static String LOCAL_DATA_METADATA_PK_ID = "metaDataPKId";
+    public static String LOCAL_DATA_METADATA_PK_ID = "metaDataPKId";*/
 
 }

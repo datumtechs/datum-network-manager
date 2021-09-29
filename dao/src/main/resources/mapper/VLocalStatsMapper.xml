@@ -59,7 +59,7 @@
     from
         v_past_12_month a left join global_data_file b
         on a.month =  DATE_FORMAT(b.publish_time,'%Y-%m')
-        and b.status = 'released'
+        and b.status = 2
     group by a.month
     order by a.month desc
   </select>
@@ -86,7 +86,7 @@
         UNION select DATE_FORMAT(CURDATE() - INTERVAL 2 MONTH, '%Y-%m') AS `month`) a
         left join global_data_file b
         on a.month = DATE_FORMAT(b.publish_time, '%Y-%m')
-        and b.status = 'released'
+        and b.status = 2
     group by a.month
     order by a.month desc
   </select>
@@ -101,7 +101,7 @@
         UNION select DATE_FORMAT(CURDATE() - INTERVAL 13 MONTH, '%Y-%m') AS `month`) a
         left join global_data_file b
         on a.month = DATE_FORMAT(b.publish_time, '%Y-%m')
-        and b.status = 'released'
+        and b.status = 2
     group by a.month
     order by a.month desc
   </select>
@@ -117,7 +117,7 @@
     where 1=1
         and a.meta_data_id = b.meta_data_id
         and a.status = 0
-        and b.status = 'released'
+        and b.status = 2
     order by a.create_at desc
   </select>
 

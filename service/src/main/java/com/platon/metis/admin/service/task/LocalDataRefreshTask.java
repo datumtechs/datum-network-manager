@@ -1,18 +1,12 @@
 package com.platon.metis.admin.service.task;
 
-import com.platon.metis.admin.dao.LocalDataFileMapper;
-import com.platon.metis.admin.dao.LocalMetaDataColumnMapper;
-import com.platon.metis.admin.dao.entity.GlobalDataFileDetail;
-import com.platon.metis.admin.dao.entity.LocalDataFileDetail;
-import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
-import com.platon.metis.admin.dao.enums.LocalMetaDataColumnVisibleEnum;
+import com.platon.metis.admin.dao.LocalMetaDataMapper;
+import com.platon.metis.admin.dao.entity.GlobalDataFile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @Author liushuyu
@@ -30,66 +24,22 @@ import java.util.List;
 public class LocalDataRefreshTask implements ApplicationRunner {
 
     @Resource
-    private LocalDataFileMapper localDataFileMapper;
-    @Resource
-    private LocalMetaDataColumnMapper localMetaDataColumnMapper;
+    private LocalMetaDataMapper localMetaDataMapper;
 
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        log.debug("本组织数据文件更新线程启动...");
         while(true){
-            GlobalDataFileDetail globalDataFileDetail = null;
-            //获取并移除此队列的头部，如果没有元素则等待（阻塞）
             try {
-                globalDataFileDetail = GlobalDataRefreshTask.abq.take();
-            } catch (InterruptedException e) {
-                log.error("获取本组织数据失败",e);
-                continue;
+                //获取并移除此队列的头部，如果没有元素则等待（阻塞）
+                GlobalDataFile globalDataFile = GlobalDataRefreshTask.localDataFileQueueFetchedFromStorage.take();
+                globalDataFile.getStatus();
+                localMetaDataMapper.updateStatusByFileId( globalDataFile.getFileId(),  globalDataFile.getStatus());
+            } catch (Exception e) {
+                log.error("本组织数据文件更新线程运行出错",e);
             }
-            LocalDataFileDetail dataFile = convert(globalDataFileDetail);
-            localDataFileMapper.updateByFileIdSelective(dataFile);
-            dataFile.getLocalMetaDataColumnList().forEach(localMetaDataColumn -> {
-                localMetaDataColumnMapper.updateByFileIdAndCindexSelective(localMetaDataColumn);
-            });
         }
-    }
-
-
-    private LocalDataFileDetail convert(GlobalDataFileDetail globalDataFileDetail){
-        Date operateDate = new Date();
-        if(globalDataFileDetail == null){
-            return null;
-        }
-        LocalDataFileDetail dataFileDetail = new LocalDataFileDetail();
-        dataFileDetail.setIdentityId(globalDataFileDetail.getIdentityId());
-        dataFileDetail.setFileId(globalDataFileDetail.getFileId());
-        dataFileDetail.setFileName(globalDataFileDetail.getFileName());
-        dataFileDetail.setFilePath(globalDataFileDetail.getFilePath());
-        dataFileDetail.setFileType(globalDataFileDetail.getFileType());
-        //dataFileDetail.setResourceName(globalDataFileDetail.getResourceName());
-        dataFileDetail.setSize(globalDataFileDetail.getSize());
-        dataFileDetail.setRows(globalDataFileDetail.getRows());
-        dataFileDetail.setColumns(globalDataFileDetail.getColumns());
-        dataFileDetail.setHasTitle(globalDataFileDetail.getHasTitle());
-        /*dataFileDetail.setRemarks(globalDataFileDetail.getRemarks());
-        dataFileDetail.setStatus(globalDataFileDetail.getStatus());
-        dataFileDetail.setMetaDataId(globalDataFileDetail.getMetaDataId());*/
-        dataFileDetail.setRecUpdateTime(operateDate);
-        //设置列信息
-        List<LocalMetaDataColumn> localMetaDataColumnList = dataFileDetail.getLocalMetaDataColumnList();
-        globalDataFileDetail.getMetaDataColumnList().forEach(globalMetaDataColumn -> {
-            LocalMetaDataColumn column = new LocalMetaDataColumn();
-            //column.setFileId(dataFileDetail.getFileId());
-            column.setColumnIdx(globalMetaDataColumn.getColumnIdx());
-            column.setColumnName(globalMetaDataColumn.getColumnName());
-            column.setColumnType(globalMetaDataColumn.getColumnType());
-            column.setSize(globalMetaDataColumn.getSize());
-            column.setRemarks(globalMetaDataColumn.getRemarks());
-            column.setVisible(LocalMetaDataColumnVisibleEnum.YES.getIsVisible());
-            column.setRecUpdateTime(operateDate);
-            localMetaDataColumnList.add(column);
-        });
-        return dataFileDetail;
     }
 
 }

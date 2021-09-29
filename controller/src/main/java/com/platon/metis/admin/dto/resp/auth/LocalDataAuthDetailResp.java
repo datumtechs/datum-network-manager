@@ -6,7 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 /**
@@ -58,11 +59,11 @@ public class LocalDataAuthDetailResp {
         return resp;
     }
 
-    private static long getTime(Date date){
-        if(date == null){
+    private static long getTime(LocalDateTime localDateTime){
+        if(localDateTime == null){
             return 0;
         }
-        return date.getTime();
+        return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
     }
 
 

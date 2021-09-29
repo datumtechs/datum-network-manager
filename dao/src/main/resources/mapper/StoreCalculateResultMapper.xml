@@ -52,7 +52,7 @@
             from
                 local_meta_data
             where 1=1
-              and (status = 'released' or status = 'revoked')
+              and (status = 2 or status = 3)
               and DATE_FORMAT(publish_time,'%Y-%m') = DATE_FORMAT((curdate() - interval 1 month),'%Y-%m')
               group by data_file_id) b
     where 1=1

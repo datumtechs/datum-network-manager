@@ -10,10 +10,10 @@ public interface LocalMetaDataColumnMapper {
 
     /**
      * 根据文件id查询数据
-     * @param metaId 关联的local_meta_data表中id
+     * @param localMetaDataDbId 关联的local_meta_data表中id
      * @return
      */
-    List<LocalMetaDataColumn> selectByMetaId(int metaId);
+    List<LocalMetaDataColumn> selectByLocalMetaDataDbId(int localMetaDataDbId);
 
     /**
      * 批量插入
@@ -27,24 +27,13 @@ public interface LocalMetaDataColumnMapper {
      * @param metaId
      * @return
      */
-    int deleteByMetaId(int metaId);
+    int deleteByLocalMetaDataDbId(int metaId);
 
     /**
      * 根据Id进行选择性更新数据
      * @param
      * @return
      */
-    int updateByIdSelective(LocalMetaDataColumn localMetaDataColumn);
-
-    /**
-     * 根据metaDataId 和 cindex修改数据
-     * @param
-     * @return
-     */
-    int updateByFileIdAndCindexSelective(LocalMetaDataColumn localMetaDataColumn);
-
-
-
-
+    int update(LocalMetaDataColumn localMetaDataColumn);
 
 }

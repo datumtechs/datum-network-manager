@@ -1,9 +1,9 @@
 package com.platon.metis.admin.dto.resp;
 
-import com.platon.metis.admin.dao.entity.LocalDataFileDetail;
+import com.platon.metis.admin.dao.entity.LocalDataFile;
+import com.platon.metis.admin.dao.entity.LocalMetaData;
 import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
-import com.platon.metis.admin.service.constant.ServiceConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -11,9 +11,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.beans.BeanUtils;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author liushuyu
@@ -31,7 +31,7 @@ public class LocalDataDetailResp {
     /**
      * 序号
      */
-    @ApiModelProperty(name = "id", value = "meataData序号")
+    @ApiModelProperty(name = "id", value = "localMetaData数据库id")
     private Integer id;
     //组织身份ID
     @ApiModelProperty(name = "identityId", value = "组织身份ID")
@@ -89,28 +89,30 @@ public class LocalDataDetailResp {
     @ApiModelProperty(name = "localMetaDataColumnList", value = "源文件列信息")
     private List<LocalMetaDataColumn> localMetaDataColumnList = new ArrayList<>();
 
-    public static LocalDataDetailResp from(LocalDataFileDetail detail){
-        if(detail == null){
+    public static LocalDataDetailResp from(LocalDataFile localDataFile, LocalMetaData localMetaData){
+        if(localDataFile == null){
             return null;
         }
         LocalDataDetailResp resp = new LocalDataDetailResp();
-        BeanUtils.copyProperties(detail,resp);
-        Map dynamicFields = detail.getDynamicFields();
-        String status = (String) dynamicFields.get(ServiceConstant.LOCAL_DATA_STATUS);
-        resp.setRemarks((String) dynamicFields.get(ServiceConstant.LOCAL_DATA_REMARKS));
-        resp.setIndustry((Integer) dynamicFields.get(ServiceConstant.LOCAL_DATA_INDUSTRY));
-        resp.setMetaDataId((String) dynamicFields.get(ServiceConstant.LOCAL_DATA_METADATA_ID));
-        resp.setAttendTaskCount((Integer) dynamicFields.get(ServiceConstant.LOCAL_DATA_ATTEND_TASK_COUNT));
-        resp.setResourceName((String) dynamicFields.get(ServiceConstant.LOCAL_DATA_RESOURCE_NAME));
-        resp.setId((Integer) dynamicFields.get(ServiceConstant.LOCAL_DATA_METADATA_PK_ID));
+        BeanUtils.copyProperties(localDataFile, resp);
+
+        resp.setLocalMetaDataColumnList(localMetaData.getLocalMetaDataColumnList());
+
+        int status = localMetaData.getStatus();
+        resp.setRemarks(localMetaData.getRemarks());
+        resp.setIndustry(localMetaData.getIndustry());
+        resp.setMetaDataId(localMetaData.getMetaDataId());
+        resp.setAttendTaskCount((Integer)localMetaData.getField("taskCount"));
+        resp.setResourceName(localMetaData.getMetaDataName());
+        resp.setId(localMetaData.getId());
         //元数据状态:1已发布，0未发布
-        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(status)){
+        if(LocalDataFileStatusEnum.RELEASED.getStatus()==status){
             resp.setStatus("1");
         } else {
             resp.setStatus("0");
         }
-        resp.setRecCreateTime(detail.getRecCreateTime() == null? null : detail.getRecCreateTime().getTime());
-        resp.setRecUpdateTime(detail.getRecUpdateTime() == null? null : detail.getRecUpdateTime().getTime());
+        resp.setRecCreateTime(localMetaData.getRecCreateTime() == null? null : localMetaData.getRecCreateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        resp.setRecUpdateTime(localMetaData.getRecUpdateTime() == null? null : localMetaData.getRecUpdateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         return resp;
     }
 }

@@ -30,8 +30,11 @@ public class LocalPowerNodeListResp {
     @ApiModelProperty(value = "节点外网端口", example = "")
     private Integer externalPort;
 
-    @ApiModelProperty(value = "节点状态，-1: 未被调度服务连接上; 0: 连接上; 1: 算力启用<计算服务>; 2: 算力被占用(计算服务算力正在被任务占用)", example = "")
-    private String connStatus;
+    @ApiModelProperty(value = "节点与调度服务的连接状态（0: 未被调度服务连接上; 1: 连接上）", example = "")
+    private Integer connStatus;
+
+    @ApiModelProperty(value = "算力状态 (0:未知、1:未启用、2:空闲(已启用)、3:占用(已启用)、4:已撤销", example = "")
+    private Integer powerStatus;
 
     @ApiModelProperty(value = "算力ID(停用算力时使用的id)", example = "")
     private String powerId;

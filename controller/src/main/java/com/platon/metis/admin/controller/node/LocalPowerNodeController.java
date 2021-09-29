@@ -43,6 +43,8 @@ public class LocalPowerNodeController {
         try {
             LocalPowerNode localPowerNode = new LocalPowerNode();
             BeanUtils.copyProperties(powerAddReq, localPowerNode);
+
+            //localPowerNode.status =
             localPowerNodeService.insertPowerNode(localPowerNode);
             return JsonResponse.success("新增成功");
         } catch (Exception e) {
@@ -125,7 +127,7 @@ public class LocalPowerNodeController {
     @PostMapping("/revokePower")
     @ApiOperation(value="停用算力", response = JsonResponse.class)
     public JsonResponse revokePower(@Validated @RequestBody PowerRevokeReq powerRevokeReq) {
-        localPowerNodeService.revokePower(powerRevokeReq.getPowerId());
+        localPowerNodeService.revokePower(powerRevokeReq.getPowerNodeId());
         return JsonResponse.success("停用成功");
     }
 

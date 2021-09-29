@@ -24,7 +24,7 @@ public class DataNode {
 
     private Integer externalPort;
 
-    private String connStatus;
+    private Integer connStatus;
 
     private String connMessage;
 
@@ -102,11 +102,11 @@ public class DataNode {
         this.externalPort = externalPort;
     }
 
-    public String getConnStatus() {
+    public Integer getConnStatus() {
         return connStatus;
     }
 
-    public void setConnStatus(String connStatus) {
+    public void setConnStatus(Integer connStatus) {
         this.connStatus = connStatus;
     }
 

@@ -16,8 +16,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -182,12 +184,12 @@ public class AuthClient {
                   localDataAuth.setAuthId(dataAuth.getMetadataAuthId());
                   localDataAuth.setApplyUser(dataAuth.getUser());
                   localDataAuth.setUserType(dataAuth.getUserTypeValue());
-                  localDataAuth.setCreateAt(new Date(dataAuth.getApplyAt()));
-                  localDataAuth.setAuthAt(new Date(dataAuth.getAuditAt()));
+                  localDataAuth.setCreateAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getApplyAt()), ZoneOffset.UTC));
+                  localDataAuth.setAuthAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getAuditAt()), ZoneOffset.UTC));
                   localDataAuth.setStatus(dataAuth.getAuditOptionValue());
                   localDataAuth.setAuthType(useAuthType);
-                  localDataAuth.setAuthValueStartAt(new Date(startAt));
-                  localDataAuth.setAuthValueEndAt(new Date(endAt));
+                  localDataAuth.setAuthValueStartAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(startAt), ZoneOffset.UTC));
+                  localDataAuth.setAuthValueEndAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(endAt), ZoneOffset.UTC));
                   localDataAuth.setAuthValueAmount(useAuthNumber);
                   localDataAuth.setMetaDataId(metaDataId);
                   localDataAuth.setIdentityId(identityInfo.getIdentityId());

@@ -2,9 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.metis.admin.dao.LocalDataFileMapper">
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalDataFile">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="file_id" jdbcType="VARCHAR" property="fileId" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
-    <result column="file_id" jdbcType="VARCHAR" property="fileId" />
     <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="file_type" jdbcType="VARCHAR" property="fileType" />
@@ -16,99 +15,13 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, identity_id, file_id,file_name, file_path, file_type, `size`, `rows`, `columns`,
+    identity_id, file_id,file_name, file_path, file_type, `size`, `rows`, `columns`,
     has_title, rec_create_time, rec_update_time
   </sql>
 
-  <!-- 获取所有本组织文件信息-->
-  <select id="listDataFile"  resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from local_data_file
-    <if test="keyword != null and keyword != ''">
-      where resource_name like concat('%',#{keyword},'%')
-    </if>
-    order by rec_update_time desc
-  </select>
-
-  <!-- 插入不为空的字段-->
-  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataFile" useGeneratedKeys="true" keyProperty="id">
-    insert into local_data_file
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="identityId != null">
-        identity_id,
-      </if>
-      <if test="fileId != null">
-        file_id,
-      </if>
-      <if test="fileName != null">
-        file_name,
-      </if>
-      <if test="filePath != null">
-        file_path,
-      </if>
-      <if test="fileType != null">
-        file_type,
-      </if>
-      <if test="size != null">
-        `size`,
-      </if>
-      <if test="rows != null">
-        `rows`,
-      </if>
-      <if test="columns != null">
-        `columns`,
-      </if>
-      <if test="hasTitle != null">
-        has_title,
-      </if>
-      <if test="recCreateTime != null">
-        rec_create_time,
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="identityId != null">
-        #{identityId},
-      </if>
-      <if test="fileId != null">
-        #{fileId},
-      </if>
-      <if test="fileName != null">
-        #{fileName},
-      </if>
-      <if test="filePath != null">
-        #{filePath},
-      </if>
-      <if test="fileType != null">
-        #{fileType},
-      </if>
-      <if test="size != null">
-        #{size},
-      </if>
-      <if test="rows != null">
-        #{rows},
-      </if>
-      <if test="columns != null">
-        #{columns},
-      </if>
-      <if test="hasTitle != null">
-        #{hasTitle},
-      </if>
-      <if test="recCreateTime != null">
-        #{recCreateTime},
-      </if>
-      <if test="recUpdateTime != null">
-        #{recUpdateTime},
-      </if>
-    </trim>
-  </insert>
-
 
  <!--  插入新数数据 -->
-  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalDataFile" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalDataFile">
     insert into local_data_file (identity_id, file_id, file_name,
       file_path, file_type,
       `size`, `rows`, `columns`, has_title
@@ -119,57 +32,10 @@
       )
   </insert>
 
-
-  <!-- 根据metaDataId进行选择性更新-->
-  <update id="updateByFileIdSelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataFile">
-    update local_data_file
-    <set>
-      <if test="recUpdateTime != null">
-        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where file_id = #{fileId,jdbcType=VARCHAR}
-  </update>
-
-  <!-- 根据Id进行选择性更新-->
-  <update id="updateByIdSelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataFile">
-    update local_data_file
-    <set>
-      <if test="recUpdateTime != null">
-        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-
-    </set>
-    where id = #{id}
-  </update>
-
   <!-- 根据Id查询出指定的数据-->
-  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByFileId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from local_data_file
-    where id = #{id}
+    where file_id = #{fileId,jdbcType=VARCHAR}
   </select>
-
-  <!-- 根据resourceName查询数据文件-->
-  <select id="selectByResourceName" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from local_data_file
-    where resource_name = #{resourceName}
-    <if test="id != null">
-      and id != #{id}
-    </if>
-  </select>
-
-  <!--  根据fileId查询指定数据-->
-  <select id="selectByFileId" parameterType="string" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from local_data_file
-    where file_id = #{fileId}
-  </select>
-
-    <!-- 根据metaDataId删除指定的数据,released的数据不可删除-->
-  <delete id="deleteById" parameterType="java.lang.Integer">
-    delete from local_data_file
-    where id = #{id} and `status` != 'released'
-  </delete>
 </mapper>

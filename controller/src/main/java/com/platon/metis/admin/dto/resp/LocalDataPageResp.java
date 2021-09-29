@@ -1,12 +1,12 @@
 package com.platon.metis.admin.dto.resp;
 
-import com.platon.metis.admin.dao.entity.LocalMetaDataItem;
+import com.platon.metis.admin.dao.entity.LocalMetaData;
 import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Author liushuyu
@@ -32,7 +32,7 @@ public class LocalDataPageResp {
     private Long size;
 
     @ApiModelProperty(name = "size", value = "元数据最近更新时间")
-    private Date recUpdateTime;
+    private LocalDateTime recUpdateTime;
 
     @ApiModelProperty(name = "attendTaskCount", value = "参与任务数量")
     private Integer attendTaskCount;
@@ -43,23 +43,23 @@ public class LocalDataPageResp {
 
 
 
-    public static LocalDataPageResp from(LocalMetaDataItem localMetaDataItem){
-        if(localMetaDataItem == null){
+    public static LocalDataPageResp from(LocalMetaData localMetaData){
+        if(localMetaData == null){
             return null;
         }
         LocalDataPageResp localDataPageResp = new LocalDataPageResp();
-        localDataPageResp.setId(localMetaDataItem.getId());
-        localDataPageResp.setFileName(localMetaDataItem.getMetaDataName());
-        localDataPageResp.setMetaDataId(localMetaDataItem.getMetaDataId());
+        localDataPageResp.setId(localMetaData.getId());
+        localDataPageResp.setFileName(localMetaData.getMetaDataName());
+        localDataPageResp.setMetaDataId(localMetaData.getMetaDataId());
         //元数据状态:1已发布，0未发布
-        if(LocalDataFileStatusEnum.RELEASED.getStatus().equals(localMetaDataItem.getStatus())){
+        if(LocalDataFileStatusEnum.RELEASED.getStatus()==localMetaData.getStatus()){
             localDataPageResp.setStatus("1");
         } else {
             localDataPageResp.setStatus("0");
         }
-        localDataPageResp.setSize(localMetaDataItem.getSize());
-        localDataPageResp.setRecUpdateTime(localMetaDataItem.getRecUpdateTime());
-        localDataPageResp.setAttendTaskCount(localMetaDataItem.getDataJoinTaskCount());
+        localDataPageResp.setSize((Long)localMetaData.getField("size"));
+        localDataPageResp.setRecUpdateTime(localMetaData.getRecUpdateTime());
+        localDataPageResp.setAttendTaskCount((Integer)localMetaData.getField("taskCount"));
         return localDataPageResp;
     }
 }

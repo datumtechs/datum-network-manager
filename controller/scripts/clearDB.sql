@@ -1,18 +1,22 @@
 -- 数据中心
-TRUNCATE metis_storage.data_file;
-TRUNCATE metis_storage.data_file_change_history;
-TRUNCATE metis_storage.meta_data_column;
-TRUNCATE metis_storage.org_info;
-TRUNCATE metis_storage.power_change_history;
-TRUNCATE metis_storage.power_server;
-TRUNCATE metis_storage.schedule_server;
-TRUNCATE metis_storage.task;
-TRUNCATE metis_storage.task_algo_provider;
-TRUNCATE metis_storage.task_event;
-TRUNCATE metis_storage.task_meta_data;
-TRUNCATE metis_storage.task_meta_data_column;
-TRUNCATE metis_storage.task_power_provider;
-TRUNCATE metis_storage.task_result_consumer;
+truncate TABLE dev_metis_storage.data_file;
+truncate TABLE dev_metis_storage.data_file_change_history;
+truncate TABLE dev_metis_storage.meta_data_column;
+truncate TABLE dev_metis_storage.org_info;
+truncate TABLE dev_metis_storage.power_change_history;
+truncate TABLE dev_metis_storage.power_server;
+truncate TABLE dev_metis_storage.schedule_server;
+truncate TABLE dev_metis_storage.task;
+truncate TABLE dev_metis_storage.task_algo_provider;
+truncate TABLE dev_metis_storage.task_event;
+truncate TABLE dev_metis_storage.task_meta_data;
+truncate TABLE dev_metis_storage.task_meta_data_column;
+truncate TABLE dev_metis_storage.task_power_provider;
+truncate TABLE dev_metis_storage.task_result_consumer;
+truncate TABLE dev_metis_storage.v_data_file_trend_stats;
+truncate TABLE dev_metis_storage.v_global_stats;
+truncate TABLE dev_metis_storage.v_org_daily_task_stats;
+truncate TABLE dev_metis_storage.v_power_trend_stats;
 
 
 -- 库

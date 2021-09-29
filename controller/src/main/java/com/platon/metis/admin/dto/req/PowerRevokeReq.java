@@ -18,8 +18,8 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "停用算力请求参数")
 public class PowerRevokeReq {
 
-    @NotNull(message = "算力ID不能为空")
-    @ApiModelProperty(value = "算力ID", example = "", required = true)
-    private String powerId;
+    @NotNull(message = "算力NodeID不能为空")
+    @ApiModelProperty(value = "算力NodeID", example = "", required = true)
+    private String powerNodeId;
 
 }

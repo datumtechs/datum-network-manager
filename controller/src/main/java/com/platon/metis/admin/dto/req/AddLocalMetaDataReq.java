@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,15 @@ import java.util.List;
 
 @Data
 @ApiModel
-public class LocalDataAddReq {
+public class AddLocalMetaDataReq {
 
     //数据库id
-    @ApiModelProperty(value = "metaData数据库id",required = true)
+    @ApiModelProperty(value = "fileId, 数据文件全网唯一ID，文件上传成功后由数据节点产生",required = true)
     @NotNull
-    private Integer metaDataPKId;
-    @ApiModelProperty(value = "数据添加类型 1：新增数据、2：另存为新数据",required = true)
+    @NotEmpty
+    private String fileId;
+    @ApiModelProperty(value = "数据添加类型 1：新增数据、2：另存为新数据", required = true)
+
     private Integer addType;
     //资源名称
     @ApiModelProperty(value = "资源名称",required = true)

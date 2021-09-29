@@ -1,9 +1,8 @@
 package com.platon.metis.admin.service;
 
 import com.github.pagehelper.Page;
-import com.platon.metis.admin.dao.entity.LocalDataFileDetail;
+import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
-import com.platon.metis.admin.dao.entity.LocalMetaDataItem;
 import com.platon.metis.admin.dao.entity.Task;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +16,7 @@ public interface LocalDataService {
      * @param pageSize
      * @return
      */
-    Page<LocalMetaDataItem> listDataFile(int pageNo, int pageSize, String keyword);
+    Page<LocalMetaData> listMetaData(int pageNo, int pageSize, String keyword);
 
     /**
      * 获取本组织数据所参与的任务列表
@@ -35,21 +34,15 @@ public interface LocalDataService {
      * @param hasTitle 源文件是否包含表头
      * @return
      */
-    LocalDataFileDetail uploadFile(MultipartFile file, boolean hasTitle);
+    LocalDataFile uploadFile(MultipartFile file, boolean hasTitle);
 
     /**
      * 添加文件信息
-     * @param detail
+     * @param localMetaData
      * @return
      */
-    int add(LocalDataFileDetail detail, LocalMetaData metaData);
+    int addLocalMetaData( LocalMetaData localMetaData);
 
-    /**
-     * 添加文件信息
-     * @param detail
-     * @return
-     */
-    int addAgain(LocalDataFileDetail detail, LocalMetaData metaData);
 
     /**
      * 删除文件元数据
@@ -60,23 +53,17 @@ public interface LocalDataService {
     /**
      * 从数据节点下载源文件
      * @param response
-     * @param id 文件id
+     * @param id 元数据db id
      */
     void downLoad(HttpServletResponse response, Integer id);
 
     /**
      * 修改文件信息
-     * @param req
+     * @param localMetaData
      * @return
      */
-    int update(LocalDataFileDetail req, LocalMetaData metaData);
+    int update(LocalMetaData localMetaData);
 
-    /**
-     * 查询文件信息详情
-     * @param id
-     * @return
-     */
-    LocalDataFileDetail detail(Integer id);
 
     /**
      * 下架文件元数据
@@ -97,5 +84,5 @@ public interface LocalDataService {
      * @param resourceName
      * @return
      */
-    boolean isExistResourceName(String resourceName,Integer id);
+    boolean isExistResourceName(String resourceName, String fileId);
 }

@@ -1,10 +1,11 @@
 syntax = "proto3";
+package datasvc;
+option go_package = "../gateway/data_svc";
+
 // 生成类的包名
 option java_package = "com.platon.metis.admin.grpc.service";
 //生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
 option java_outer_classname = "DataProviderRpcMessage";
-
-package datasvc;
 
 import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
