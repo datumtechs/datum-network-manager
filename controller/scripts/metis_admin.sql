@@ -175,7 +175,6 @@ CREATE TABLE `local_meta_data_column` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_data_auth`;
 CREATE TABLE `local_data_auth` (
-  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `auth_id` varchar(256) NOT NULL COMMENT '元数据授权申请Id',
   `meta_data_id` varchar(256) NOT NULL COMMENT '元数据ID',
   `apply_user` varchar(256) DEFAULT NULL COMMENT '发起任务的用户的信息 (task是属于用户的)',
@@ -192,8 +191,8 @@ CREATE TABLE `local_data_auth` (
   `identity_node_id` varchar(256) DEFAULT NULL COMMENT '组织中调度服务的 nodeId',
   `rec_create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_meta_data_id` (`meta_data_id`) USING BTREE COMMENT '元数据ID唯一'
+  PRIMARY KEY (`auth_id`),
+  KEY (`meta_data_id`)
 ) COMMENT='本组织申请授权数据表';
 
 

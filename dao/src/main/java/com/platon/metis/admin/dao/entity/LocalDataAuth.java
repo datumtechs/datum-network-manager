@@ -9,9 +9,6 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class LocalDataAuth extends BaseDomain {
-
-    //序号
-    private Integer id;
     //元数据授权申请Id
     private String authId;
     //元数据ID

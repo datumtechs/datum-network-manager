@@ -15,9 +15,9 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "数据授权操作Req")
 public class AuthDataActionReq {
     //授权数据Id
-    @NotNull(message = "授权数据Id不能为空")
-    @ApiModelProperty(value = "授权数据Id",required = true)
-    private Integer id;
+    @NotNull(message = "数据授权申请Id不能为空")
+    @ApiModelProperty(value = "数据授权申请Id",required = true)
+    private String authId;
     //授权数据动作 (1: 同意; 2: 拒绝;)
     @NotNull(message = "授权数据action不能为空")
     @ApiModelProperty(value = "授权数据动作 (1: 同意; 2: 拒绝;)",required = true)

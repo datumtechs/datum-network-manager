@@ -2,9 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.metis.admin.dao.LocalDataAuthMapper">
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalDataAuth">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="id" jdbcType="VARCHAR" property="authId" />
-    <result column="auth_id" jdbcType="VARCHAR" property="authId" />
+    <id column="auth_id" jdbcType="VARCHAR" property="authId" />
     <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
     <result column="apply_user" jdbcType="VARCHAR" property="applyUser" />
     <result column="user_type" jdbcType="INTEGER" property="userType" />
@@ -22,15 +20,15 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, auth_id, meta_data_id, apply_user, user_type, auth_type, auth_value_amount,
+    auth_id, meta_data_id, apply_user, user_type, auth_type, auth_value_amount,
     auth_value_start_at, auth_value_end_at, create_at, auth_at, status,
     identity_name, identity_id, identity_node_id, rec_create_time, rec_update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from local_data_auth
-    where id = #{id,jdbcType=INTEGER}
+    where auth_id = #{authId,jdbcType=VARCHAR}
   </select>
 
 
@@ -59,10 +57,15 @@
      ORDER BY lda.create_at DESC
   </select>
 
+  <select id="listAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_data_auth
+  </select>
 
   <select id="selectFinishAuthCount" resultType="java.lang.Integer">
        SELECT
-            COUNT(lda.id)
+            COUNT(lda.auth_id)
         FROM
             local_data_auth AS lda
         WHERE
@@ -72,7 +75,7 @@
 
   <select id="selectUnfinishAuthCount" resultType="java.lang.Integer">
         SELECT
-            COUNT(lda.id)
+            COUNT(lda.auth_id)
         FROM
             local_data_auth AS lda
         WHERE
@@ -92,25 +95,22 @@
         AND UNIX_TIMESTAMP(lda.auth_value_start_at) <![CDATA[<= ]]> UNIX_TIMESTAMP(NOW())
         AND UNIX_TIMESTAMP(lda.auth_value_end_at) <![CDATA[>= ]]> UNIX_TIMESTAMP(NOW())
     )
-
-
-
   </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from local_data_auth
-    where id = #{id,jdbcType=INTEGER}
+    where auth_id = #{autId,jdbcType=VARCHAR}
   </delete>
 
 
   <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
-    insert into local_data_auth (id, auth_id, meta_data_id, apply_user,
+    insert into local_data_auth (auth_id, meta_data_id, apply_user,
       user_type, auth_type, auth_value_amount,
       auth_value_start_at, auth_value_end_at, create_at, 
       auth_at, status,
       identity_name, identity_id, identity_node_id)
-    values (#{id,jdbcType=INTEGER}, #{authId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{applyUser,jdbcType=VARCHAR},
+    values (#{authId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{applyUser,jdbcType=VARCHAR},
       #{userType,jdbcType=INTEGER}, #{authType,jdbcType=BIT}, #{authValueAmount,jdbcType=INTEGER},
       #{authValueStartAt,jdbcType=TIMESTAMP}, #{authValueEndAt,jdbcType=TIMESTAMP}, #{createAt,jdbcType=TIMESTAMP}, 
       #{authAt,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT},
@@ -119,7 +119,7 @@
 
 
   <insert id="insertBatch" parameterType="java.util.List">
-    replace into local_data_auth (auth_id, meta_data_id, apply_user,
+    INSERT INTO local_data_auth (auth_id, meta_data_id, apply_user,
     user_type, auth_type, auth_value_amount,
     auth_value_start_at, auth_value_end_at, create_at,
     auth_at, status,
@@ -143,9 +143,6 @@
   <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
     insert into local_data_auth
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="authId != null">
         auth_id,
       </if>
@@ -190,9 +187,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="authId != null">
         #{authId,jdbcType=VARCHAR},
       </if>
@@ -242,9 +236,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
     update local_data_auth
     <set>
-      <if test="authId != null">
-        auth_id = #{authId,jdbcType=VARCHAR},
-      </if>
       <if test="metaDataId != null">
         meta_data_id = #{metaDataId,jdbcType=VARCHAR},
       </if>
@@ -285,11 +276,11 @@
         identity_node_id = #{identityNodeId,jdbcType=VARCHAR},
       </if>
      </set>
-    where id = #{id,jdbcType=INTEGER}
+    where auth_id = #{authId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
     update local_data_auth
-    set auth_id = #{authId,jdbcType=VARCHAR},
+    set
       meta_data_id = #{metaDataId,jdbcType=VARCHAR},
       apply_user = #{applyUser,jdbcType=VARCHAR},
       user_type = #{userType,jdbcType=INTEGER},
@@ -303,6 +294,6 @@
       identity_name = #{identityName,jdbcType=VARCHAR},
       identity_id = #{identityId,jdbcType=VARCHAR},
       identity_node_id = #{identityNodeId,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    where auth_id = #{authId,jdbcType=VARCHAR}
   </update>
 </mapper>

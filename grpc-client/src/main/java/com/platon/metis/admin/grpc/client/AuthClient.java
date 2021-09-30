@@ -114,7 +114,7 @@ public class AuthClient {
                     .newBuilder()
                     .build();
             //3.调用rpc,获取response
-            AuthRpcMessage.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getMetadataAuthorityList(request);
+            AuthRpcMessage.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getLocalMetadataAuthorityList(request);
             log.debug("====> RPC客户端 dataAuthResponse:" + response.getMsg() +" , dataAuthList Size:"+ response.getListList().size());
             //4.处理response
             DataAuthResp dataAuthResp = new DataAuthResp();

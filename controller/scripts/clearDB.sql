@@ -13,11 +13,6 @@ truncate TABLE dev_metis_storage.task_meta_data;
 truncate TABLE dev_metis_storage.task_meta_data_column;
 truncate TABLE dev_metis_storage.task_power_provider;
 truncate TABLE dev_metis_storage.task_result_consumer;
-truncate TABLE dev_metis_storage.v_data_file_trend_stats;
-truncate TABLE dev_metis_storage.v_global_stats;
-truncate TABLE dev_metis_storage.v_org_daily_task_stats;
-truncate TABLE dev_metis_storage.v_power_trend_stats;
-
 
 -- 库
 TRUNCATE dev_metis_admin.bootstrap_node;

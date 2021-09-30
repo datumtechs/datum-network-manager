@@ -12,7 +12,9 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -37,32 +39,29 @@ public class DataAuthRefreshTask {
             log.info("获取申请数据授权,调度服务调用失败");
             return;
         }
-        if(CollectionUtils.isEmpty(resp.getDataAuthList())){
+
+        //数据中心同步来的data_auth信息
+        List<LocalDataAuth> dataAuthList =  resp.getDataAuthList();
+        if(CollectionUtils.isEmpty(dataAuthList)){
             log.info("RPC获取申请数据授权列表数据为空");
             return;
         }
 
-        //1、筛选出需要更新Auth Data
-        log.info("1、筛选出需要更新Auth Data");
-        List<LocalDataAuth> updateDataAuthList =  resp.getDataAuthList();
-        /*List<String> deleteAuthIds = dataAuthMapper.selectDataAuthByStatusWithAuthFinish();
-        List<LocalDataAuth> updateDataAuthList = allDataAuthList.stream().filter(new Predicate<LocalDataAuth>() {
-                                                                @Override
-                                                                public boolean test(LocalDataAuth dataAuth) {
-                                                                    return !deleteAuthIds.contains(dataAuth.getAuthId());
-                                                                }
-                                                        }).collect(Collectors.toList());*/
-        //2、整理收集待持久化数据
-        log.info("2、整理收集待持久化数据");
-        log.info("待持久化数据updateDataAuthList:" + updateDataAuthList.size());
+        //本地已经存在的data_auth信息
+        List<LocalDataAuth> existingList = dataAuthMapper.listAll();
+        Map<String, Boolean> existingMetaAuthIdMap = existingList.parallelStream().collect(Collectors.toMap(LocalDataAuth::getAuthId, value -> true));
+
+        //过滤掉已经存在的
+        List<LocalDataAuth> newDataAuthList = dataAuthList.parallelStream().filter(item -> !existingMetaAuthIdMap.containsKey(item.getAuthId())).collect(Collectors.toList());
+
 
         //3、批量更新DB
-        log.info("3、批量更新DB");
-        if (!CollectionUtils.isEmpty(updateDataAuthList)) {
-            dataAuthMapper.insertBatch(updateDataAuthList);
+        if (!CollectionUtils.isEmpty(newDataAuthList)) {
+            dataAuthMapper.insertBatch(newDataAuthList);
+            log.info("结束执行数据授权申请定时任务，新增数据授权申请：{}...", newDataAuthList.size() );
+        }else{
+            log.info("结束执行数据授权申请定时任务，新增数据授权申请：0...");
         }
-        log.info("结束执行数据授权申请定时任务...");
-
     }
 
 

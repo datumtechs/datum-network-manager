@@ -17,9 +17,6 @@ import java.time.ZoneOffset;
 @Data
 @ApiModel(value = "授权数据列表响应")
 public class LocalDataAuthPageResp {
-
-    @ApiModelProperty(name = "id", value = "数据ID，序号")
-    private Integer id;
     @ApiModelProperty(name = "authId", value = "元数据授权申请Id")
     private String authId;
     @ApiModelProperty(name = "metaDataId", value = "元数据Id")

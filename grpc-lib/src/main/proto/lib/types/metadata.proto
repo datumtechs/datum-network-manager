@@ -8,6 +8,7 @@ option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
 option java_package = "com.platon.metis.admin.grpc.types";
 //option java_multiple_files = true;
 // Metadata body data struct.
+// Metadata body data struct.
 message MetadataPB {
   string                      metadata_id = 1;                // 元数据ID
   string                      identity_id = 2;                // 元数据所属的组织的 身份标识
@@ -52,6 +53,7 @@ message MetadataAuthorityPB {
   uint64                                      apply_at = 10;             // 发起授权申请的时间 (单位: ms)
   uint64                                      audit_at = 11;             // 审核授权申请的时间 (单位: ms)
   api.protobuf.MetadataAuthorityState         state = 12;               // 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 <失效前主动撤回的>; 4: 已经失效的数据授权 <过期or达到使用上限的>)
+  bytes                                       sign = 13;
 }
 
 // =============================== For API =========================
@@ -97,5 +99,5 @@ message MetadataAuthority {
 message MetadataUsedQuo {
   api.protobuf.MetadataUsageType  usage_type = 1;               // 元数据的使用方式 (0: 未定义; 1: 按照时间段来使用; 2: 按照次数来使用)
   bool                            expire = 2;                   // 是否已过期 (当 usage_type 为 1 时才需要的字段)
-  uint32                          used_times = 3;               // 已经使用的次数 (当 usage_type 为 1 时才需要的字段)
+  uint32                          used_times = 3;               // 已经使用的次数 (当 usage_type 为 2 时才需要的字段)
 }

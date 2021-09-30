@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface LocalDataAuthMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String authId);
 
     int insert(LocalDataAuth record);
 
@@ -14,11 +14,11 @@ public interface LocalDataAuthMapper {
 
     int insertBatch(List<LocalDataAuth> dataAuthList);
 
-    LocalDataAuth selectByPrimaryKey(Integer id);
+    LocalDataAuth selectByPrimaryKey(String authId);
 
     List<LocalDataAuth> selectDataAuthList(@Param("status") int status, @Param("keyword") String keyword);
 
-    List<String> selectDataAuthByStatusWithAuthFinish();
+    List<LocalDataAuth> listAll();
 
     int selectFinishAuthCount();
 

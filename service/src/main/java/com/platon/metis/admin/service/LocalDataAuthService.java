@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalDataAuth;
 import com.platon.metis.admin.dao.entity.LocalDataAuthDetail;
 
+import java.util.List;
+
 public interface LocalDataAuthService {
 
     /**
@@ -13,6 +15,8 @@ public interface LocalDataAuthService {
      * @return
      */
     Page<LocalDataAuth> listLocalDataAuth(int pageNo, int pageSize, int status, String keyword);
+
+    List<LocalDataAuth> listAll();
 
     /**
      * 获取已授权的数据数量（所有的同意 + 拒绝授权数据）
@@ -31,21 +35,21 @@ public interface LocalDataAuthService {
      * @param id
      * @return
      */
-    LocalDataAuthDetail detail(int id);
+    LocalDataAuthDetail detail(String authId);
 
     /**
      * 同意授权数据
      * @param id
      * @return
      */
-    int agreeAuth(int id);
+    int agreeAuth(String authId);
 
     /**
      * 拒绝授权数据
      * @param id
      * @return
      */
-    int refuseAuth(int id);
+    int refuseAuth(String authId);
 
 
 }

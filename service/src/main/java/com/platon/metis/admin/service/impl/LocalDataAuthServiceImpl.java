@@ -46,6 +46,11 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
     }
 
     @Override
+    public List<LocalDataAuth> listAll() {
+        return localDataAuthMapper.listAll();
+    }
+
+    @Override
     public int selectFinishAuthCount() {
         return localDataAuthMapper.selectFinishAuthCount();
     }
@@ -56,9 +61,9 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
     }
 
     @Override
-    public LocalDataAuthDetail detail(int id) {
+    public LocalDataAuthDetail detail(String authId) {
 
-        LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(id);
+        LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
         if(Objects.isNull(localDataAuth) || Objects.isNull(localDataAuth.getMetaDataId()) || "".equals(localDataAuth.getMetaDataId())){
              throw new ServiceException("metaDataID异常，不可为空");
         }
@@ -82,9 +87,9 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
     }
 
     @Override
-    public int agreeAuth(int id) {
+    public int agreeAuth(String authId) {
 
-        LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(id);
+        LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
         if(Objects.isNull(localDataAuth)){
            throw new ServiceException("id可能无效,请检查");
         }
@@ -97,7 +102,7 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         }
 
         LocalDataAuth dataAuth = new LocalDataAuth();
-        dataAuth.setId(id);
+        dataAuth.setAuthId(authId);
         dataAuth.setStatus(DataAuthStatusEnum.AGREE.getStatus());
         dataAuth.setAuthAt(LocalDateTime.now());
         AtomicInteger count = new AtomicInteger();
@@ -106,9 +111,9 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
     }
 
     @Override
-    public int refuseAuth(int id) {
+    public int refuseAuth(String authId) {
 
-        LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(id);
+        LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
         if(Objects.isNull(localDataAuth)){
             throw new ServiceException("id可能无效,请检查");
         }
@@ -121,7 +126,7 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         }
 
         LocalDataAuth dataAuth = new LocalDataAuth();
-        dataAuth.setId(id);
+        dataAuth.setAuthId(authId);
         dataAuth.setStatus(DataAuthStatusEnum.REFUSE.getStatus());
         dataAuth.setAuthAt(LocalDateTime.now());
         AtomicInteger count = new AtomicInteger();

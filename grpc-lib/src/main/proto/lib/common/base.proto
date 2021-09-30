@@ -80,7 +80,7 @@ enum MetadataState {
   MetadataState_Revoked = 3;
 }
 
-// 元数据的使用方式类型枚举
+// 元数据的使用方式类型枚举 (0: 未定义; 1: 按照时间段来使用; 2: 按照次数来使用)
 enum MetadataUsageType {
   Usage_Unknown = 0;        // 未定义类型
   Usage_Period = 1;         // 依照时间段来使用

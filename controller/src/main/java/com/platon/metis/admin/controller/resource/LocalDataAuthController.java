@@ -80,10 +80,10 @@ public class LocalDataAuthController {
         int count = 0;
         switch (action){
             case 1://同意
-                count = localDataAuthService.agreeAuth(req.getId());
+                count = localDataAuthService.agreeAuth(req.getAuthId());
                 break;
             case 2://拒绝
-                count = localDataAuthService.refuseAuth(req.getId());
+                count = localDataAuthService.refuseAuth(req.getAuthId());
                 break;
             default:
                 throw new ApplicationException(StrUtil.format("请输入正确的action[1: 同意; 2: 拒绝]：{}",action));
@@ -101,9 +101,9 @@ public class LocalDataAuthController {
      */
     @ApiOperation(value = "授权申请查看")
     @GetMapping("authDataDetail")
-    public JsonResponse<LocalDataAuthDetailResp> authDataDetail(@ApiParam(name = "id",value = "授权申请数据id", type = "int", required = true) @RequestParam int id){
+    public JsonResponse<LocalDataAuthDetailResp> authDataDetail(@ApiParam(name = "authId",value = "授权申请数据id", type = "string", required = true) @RequestParam String authId){
 
-        LocalDataAuthDetail localDataAuthDetail = localDataAuthService.detail(id);
+        LocalDataAuthDetail localDataAuthDetail = localDataAuthService.detail(authId);
         LocalDataAuthDetailResp resp = LocalDataAuthDetailResp.from(localDataAuthDetail);
         return JsonResponse.success(resp);
     }
