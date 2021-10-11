@@ -6,15 +6,15 @@
     <result column="task_Id" jdbcType="VARCHAR" property="taskId" />
     <result column="task_Name" jdbcType="VARCHAR" property="taskName" />
     <result column="owner_Identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
-    <result column="apply_use" jdbcType="VARCHAR" property="applyUser" />
+    <result column="apply_user" jdbcType="VARCHAR" property="applyUser" />
     <result column="user_type" jdbcType="INTEGER" property="userType" />
     <result column="create_At" jdbcType="TIMESTAMP" property="createAt" />
     <result column="start_At" jdbcType="TIMESTAMP" property="startAt" />
     <result column="auth_At" jdbcType="TIMESTAMP" property="authAt" />
     <result column="auth_Status" jdbcType="VARCHAR" property="authStatus" />
     <result column="end_At" jdbcType="TIMESTAMP" property="endAt" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="role" jdbcType="VARCHAR" property="role" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="role" jdbcType="INTEGER" property="role" />
     <result column="duration" jdbcType="TIMESTAMP" property="duration" />
     <result column="cost_core" jdbcType="INTEGER" property="costCore" />
     <result column="cost_Memory" jdbcType="BIGINT" property="costMemory" />
@@ -25,7 +25,7 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, task_Id, task_Name, owner_Identity_id, apply_use, user_type, create_At, start_At, auth_At, auth_Status, end_At,
+    id, task_Id, task_Name, owner_Identity_id, apply_user, user_type, create_At, start_At, auth_At, auth_Status, end_At,
     `status`, `role`, duration, cost_core, cost_Memory, cost_Bandwidth, alg_Identity_id, reviewed,
     rec_create_time, rec_update_time
   </sql>
@@ -60,7 +60,7 @@
 
   <select id="selectListTaskByStatusWithSuccessAndFailed"  resultType="java.lang.String">
     SELECT t.task_Id FROM task AS t
-    WHERE t.`status` IN ('success', 'failed')
+    WHERE t.`status` IN (3, 4)
   </select>
 
 
@@ -70,7 +70,7 @@
   </select>
 
   <select id="selectTaskRunningCount" resultType="java.lang.Integer">
-     SELECT COUNT(t.id) FROM task AS t WHERE t.status = 'pending' OR t.status = 'running'
+     SELECT COUNT(t.id) FROM task AS t WHERE t.status = 1 OR t.status = 2
   </select>
 
 
@@ -81,23 +81,23 @@
     FROM (
 			(SELECT COUNT(t.id) AS totalTaskCount, 1 as a FROM task AS t) t1
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS taskSuccessCount,1 as a  FROM task AS t WHERE t.`status` = 'success') t2 ON t1.a=t2.a
+			(SELECT COUNT(t.id) AS taskSuccessCount,1 as a  FROM task AS t WHERE t.`status` = 4) t2 ON t1.a=t2.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS taskFailedCount,1 as a FROM task AS t WHERE t.`status` = 'failed') t3 ON t1.a=t3.a
+			(SELECT COUNT(t.id) AS taskFailedCount,1 as a FROM task AS t WHERE t.`status` = 3) t3 ON t1.a=t3.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS taskPendingCount,1 as a FROM task AS t WHERE t.`status` = 'pending') t4 ON t1.a=t4.a
+			(SELECT COUNT(t.id) AS taskPendingCount,1 as a FROM task AS t WHERE t.`status` = 1) t4 ON t1.a=t4.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS taskRunningCount,1 as a FROM task AS t WHERE t.`status` = 'running') t5 ON t1.a=t5.a
+			(SELECT COUNT(t.id) AS taskRunningCount,1 as a FROM task AS t WHERE t.`status` = 2) t5 ON t1.a=t5.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS ownerCount, 1 as a FROM task AS t WHERE t.role = 'owner') t6 ON t1.a = t6.a
+			(SELECT COUNT(t.id) AS ownerCount, 1 as a FROM task AS t WHERE t.role = 1) t6 ON t1.a = t6.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS dataSupplierCount, 1 as a FROM task AS t WHERE t.role = 'dataSupplier') t7 ON t1.a = t7.a
+			(SELECT COUNT(t.id) AS dataSupplierCount, 1 as a FROM task AS t WHERE t.role = 2) t7 ON t1.a = t7.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS powerSupplierCount, 1 as a FROM task AS t WHERE t.role = 'powerSupplier') t8 ON t1.a = t8.a
+			(SELECT COUNT(t.id) AS powerSupplierCount, 1 as a FROM task AS t WHERE t.role = 3) t8 ON t1.a = t8.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS receiverCount, 1 as a FROM task AS t WHERE t.role = 'receiver') t9 ON t1.a = t9.a
+			(SELECT COUNT(t.id) AS receiverCount, 1 as a FROM task AS t WHERE t.role = 4) t9 ON t1.a = t9.a
 			LEFT JOIN
-			(SELECT COUNT(t.id) AS algoSupplierCount, 1 as a  FROM task AS t WHERE t.role = 'algoSupplier') t10 ON t1.a = t10.a
+			(SELECT COUNT(t.id) AS algoSupplierCount, 1 as a  FROM task AS t WHERE t.role = 5) t10 ON t1.a = t10.a
      )
   </select>
 
@@ -124,27 +124,20 @@
 
   <select id="listTask" parameterType="map" resultMap="BaseResultMap">
     SELECT
-    t.id,
-    t.task_Id,
-    t.task_Name,
-    t.`status`,
-    t.create_At,
-    t.reviewed,
-    t.role
-    FROM
-    task t
+    <include refid="Base_Column_List" />
+    FROM task
     <where>
-      <if test="status != null and status != ''">
-        and status = #{status,jdbcType=VARCHAR}
+      <if test="status != null">
+        and status = #{status,jdbcType=INTEGER}
       </if>
-      <if test="role != null and role != '' and role != 'undefined'">
-        and role = #{role,jdbcType=VARCHAR}
+      <if test="role != null">
+        and role = #{role,jdbcType=INTEGER}
       </if>
       <if test="startTimestamp != null">
          and create_At <![CDATA[>= ]]> #{startTimestamp,jdbcType=TIMESTAMP}
       </if>
       <if test="endTimestamp != null">
-        and create_At <![CDATA[<= ]]> #{endTimestamp,jdbcType=TIMESTAMP}
+        and end_At <![CDATA[<= ]]> #{endTimestamp,jdbcType=TIMESTAMP}
       </if>
       <if test="keyWord != null and keyWord != ''">
         and task_Name like CONCAT(CONCAT('%',#{keyWord}),'%')
@@ -161,16 +154,16 @@
   </delete>
   <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.Task">
     insert into task (task_Id, task_Name, owner_Identity_id,
-      apply_use, user_type,
+      apply_user, user_type,
       create_At, start_At, auth_At, 
-      auth_Status, end_At, status, 
+      auth_Status, end_At, status, `role`,
       duration, cost_core, cost_Memory, 
       cost_Bandwidth, alg_Identity_id, reviewed, 
       rec_create_time, rec_update_time)
     values (#{taskId,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR},
-      #{applyUse,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER},
+      #{applyUser,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER},
       #{createAt,jdbcType=TIMESTAMP}, #{startAt,jdbcType=TIMESTAMP}, #{authAt,jdbcType=TIMESTAMP}, 
-      #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+      #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{role,jdbcType=INTEGER},
       #{duration,jdbcType=TIMESTAMP}, #{costCore,jdbcType=INTEGER}, #{costMemory,jdbcType=BIGINT}, 
       #{costBandwidth,jdbcType=BIGINT}, #{algIdentityId,jdbcType=VARCHAR}, #{reviewed,jdbcType=BIT}, 
       #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
@@ -179,18 +172,18 @@
 
   <insert id="insertBatch" parameterType="java.util.List">
     replace into task (task_Id, task_Name, owner_Identity_id,
-    apply_use, user_type,
+    apply_user, user_type,
     create_At, start_At, auth_At,
-    auth_Status, end_At, status, role,
+    auth_Status, end_At, status, `role`,
     duration, cost_core, cost_Memory,
     cost_Bandwidth, alg_Identity_id,
     rec_create_time, rec_update_time)
     values
     <foreach collection ="list" item="item" index="index" separator=",">
       (#{item.taskId,jdbcType=VARCHAR}, #{item.taskName,jdbcType=VARCHAR}, #{item.ownerIdentityId,jdbcType=VARCHAR},
-      #{item.applyUse,jdbcType=VARCHAR}, #{item.userType,jdbcType=INTEGER},
+      #{item.applyUser,jdbcType=VARCHAR}, #{item.userType,jdbcType=INTEGER},
       #{item.createAt,jdbcType=TIMESTAMP}, #{item.startAt,jdbcType=TIMESTAMP}, #{item.authAt,jdbcType=TIMESTAMP},
-      #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=VARCHAR}, #{item.role,jdbcType=VARCHAR},
+      #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}, #{item.role,jdbcType=INTEGER},
       #{item.duration,jdbcType=TIMESTAMP}, #{item.costCore,jdbcType=INTEGER}, #{item.costMemory,jdbcType=BIGINT},
       #{item.costBandwidth,jdbcType=BIGINT}, #{item.algIdentityId,jdbcType=VARCHAR},
       #{item.recCreateTime,jdbcType=TIMESTAMP}, #{item.recUpdateTime,jdbcType=TIMESTAMP})
@@ -213,8 +206,8 @@
       <if test="ownerIdentityId != null">
         owner_Identity_id,
       </if>
-      <if test="applyUse != null">
-        apply_use,
+      <if test="applyUser != null">
+        apply_user,
       </if>
       <if test="userType != null">
         user_type,
@@ -272,8 +265,8 @@
       <if test="ownerIdentityId != null">
         #{ownerIdentityId,jdbcType=VARCHAR},
       </if>
-      <if test="applyUse != null">
-        #{applyUse,jdbcType=VARCHAR},
+      <if test="applyUser != null">
+        #{applyUser,jdbcType=VARCHAR},
       </if>
       <if test="userType != null">
         #{userType,jdbcType=INTEGER},
@@ -294,7 +287,7 @@
         #{endAt,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
-        #{status,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="duration != null">
         #{duration,jdbcType=TIMESTAMP},
@@ -331,8 +324,8 @@
       <if test="ownerIdentityId != null">
         owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
       </if>
-      <if test="applyUse != null">
-       apply_user =  #{applyUse,jdbcType=VARCHAR},
+      <if test="applyUser != null">
+       apply_user =  #{applyUser,jdbcType=VARCHAR},
       </if>
       <if test="userType != null">
         user_type = #{userType,jdbcType=INTEGER},
@@ -353,7 +346,7 @@
         end_At = #{endAt,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="duration != null">
         duration = #{duration,jdbcType=TIMESTAMP},
@@ -386,14 +379,14 @@
     update task
     set task_Name = #{taskName,jdbcType=VARCHAR},
       owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
-      apply_user =  #{applyUse,jdbcType=VARCHAR},
+      apply_user =  #{applyUser,jdbcType=VARCHAR},
       user_type = #{userType,jdbcType=INTEGER},
       create_At = #{createAt,jdbcType=TIMESTAMP},
       start_At = #{startAt,jdbcType=TIMESTAMP},
       auth_At = #{authAt,jdbcType=TIMESTAMP},
       auth_Status = #{authStatus,jdbcType=VARCHAR},
       end_At = #{endAt,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
       duration = #{duration,jdbcType=TIMESTAMP},
       cost_core = #{costCore,jdbcType=INTEGER},
       cost_Memory = #{costMemory,jdbcType=BIGINT},
@@ -421,14 +414,14 @@
       update task
       set task_Name = #{taskName,jdbcType=VARCHAR},
       owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
-      apply_user =  #{applyUse,jdbcType=VARCHAR},
+      apply_user =  #{applyUser,jdbcType=VARCHAR},
       user_type = #{userType,jdbcType=INTEGER},
       create_At = #{createAt,jdbcType=TIMESTAMP},
       start_At = #{startAt,jdbcType=TIMESTAMP},
       auth_At = #{authAt,jdbcType=TIMESTAMP},
       auth_Status = #{authStatus,jdbcType=VARCHAR},
       end_At = #{endAt,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
       duration = #{duration,jdbcType=TIMESTAMP},
       cost_core = #{costCore,jdbcType=INTEGER},
       cost_Memory = #{costMemory,jdbcType=BIGINT},

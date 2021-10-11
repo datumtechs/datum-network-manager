@@ -64,12 +64,15 @@ public class GlobalDataRefreshTask {
             return;
         }
 
+        log.info("globalDataFileList.size():{}", globalDataFileList.size());
+
         if(CollectionUtils.isEmpty(globalDataFileList)){
             return;
         }else{
             GlobalDataFile last = globalDataFileList.get(globalDataFileList.size()-1);
             //syncCheckpointMapper.updateMetadata(last.getRecUpdateTime())
         }
+
 
         stopWatch.stop();
         //### 2.将数据归类

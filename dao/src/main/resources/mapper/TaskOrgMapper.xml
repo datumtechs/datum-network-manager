@@ -30,12 +30,10 @@
 
 
   <insert id="insertBatch" parameterType="java.util.Set">
-    replace into task_org (identity_id, `name`,
-    carrier_node_id)
+    replace into task_org (identity_id, `name`, carrier_node_id)
     values
     <foreach collection ="collection" item="item" separator =",">
-      (#{item.identityId,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},
-       #{item.carrierNodeId,jdbcType=VARCHAR})
+      (#{item.identityId,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},#{item.carrierNodeId,jdbcType=VARCHAR})
     </foreach>
   </insert>
 

@@ -179,8 +179,8 @@ public class TaskClient {
             task.setCostMemory(operationCost.getMemory());
             task.setCostBandwidth(operationCost.getBandwidth());
             task.setDuration(LocalDateTime.ofEpochSecond(operationCost.getDuration()/1000,0, ZoneOffset.ofHours(8)));
-            //task.setApplyUser(applyUser); //todo 待确认是否删除
-            //task.setUserType(userType.getNumber()); //todo 待确认是否删除
+            task.setApplyUser(taskDetail.getTaskId()); //todo 待确认是否删除
+            task.setUserType(taskDetail.getUserType().getNumber()); //todo 待确认是否删除
 
 
             //任务发起发owner

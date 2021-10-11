@@ -43,11 +43,20 @@ public class LocalDataAuthController {
     @ApiOperation(value = "授权数据列表分页查询")
     @PostMapping("authDataList")
     public JsonResponse<List<LocalDataAuthPageResp>> page(@RequestBody @Validated AuthPageReq req){
-        if(req.getStatus() != DtoAuthStatusEnum.AUTH_UNDEFINED.getStatus() && req.getStatus() != DtoAuthStatusEnum.AUTH_UNFINISH.getStatus() &&
-           req.getStatus() != DtoAuthStatusEnum.AUTH_FINISH.getStatus()){
+        Integer status = req.getStatus();
+        if(status == null){
+            status = 0;
+        }
+        if(status != DtoAuthStatusEnum.AUTH_UNDEFINED.getStatus() &&
+                status != DtoAuthStatusEnum.AUTH_UNFINISH.getStatus() &&
+                status != DtoAuthStatusEnum.AUTH_FINISH.getStatus()){
             throw new ServiceException("入参授权状态有误，请核对必须为0：未定义，1:待授权数据，2:已授权数据");
         }
-        Page<LocalDataAuth> localDataAuthPage = localDataAuthService.listLocalDataAuth(req.getPageNumber(), req.getPageSize(), req.getStatus(), req.getKeyWord());
+        //数据库中，授权数据状态：0：等待授权审核，1:同意， 2:拒绝
+        //所以，如果输入参数status=0，则查询（0：等待授权审核，1:同意， 2:拒绝）
+        //如果输入参数status=1，则查询（0：等待授权审核）
+        //如果输入参数status=2，则查询（1:同意， 2:拒绝）
+        Page<LocalDataAuth> localDataAuthPage = localDataAuthService.listLocalDataAuth(req.getPageNumber(), req.getPageSize(), status, req.getKeyWord());
         List<LocalDataAuthPageResp> localDataAuthPageList = localDataAuthPage.getResult().stream().map(LocalDataAuthPageResp::from).collect(Collectors.toList());
         return JsonResponse.page(localDataAuthPage, localDataAuthPageList);
     }

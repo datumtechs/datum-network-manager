@@ -463,7 +463,7 @@ service YarnService {
   // 查询 任务结果文件摘要
   rpc GetTaskResultFileSummary (GetTaskResultFileSummaryRequest) returns (GetTaskResultFileSummaryResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/task/taskResultFileSummary"
+      post: "/carrier/v1/yarn/taskResultFileSummary"
       body: "*"
     };
   }
@@ -471,7 +471,7 @@ service YarnService {
   // 查询当前组织参与的所有任务结果文件摘要
   rpc GetTaskResultFileSummaryList (google.protobuf.Empty) returns (GetTaskResultFileSummaryListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/task/taskResultFileSummaryList"
+      post: "/carrier/v1/yarn/taskResultFileSummaryList"
       body: "*"
     };
   }

@@ -34,7 +34,16 @@ public class TaskController {
     @PostMapping("/taskListByQuery")
     public JsonResponse<TaskDataResp> listMyTask(@Validated @RequestBody TaskPageReq taskPageReq){
         //查询任务列表Data
-        Page<Task> taskPage =  taskService.listTask(taskPageReq.getStatus(),taskPageReq.getRole(),taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getKeyWord(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
+        Integer role = taskPageReq.getRole();
+        Integer status = taskPageReq.getStatus();
+        if (status!=null && status==0){
+            status = null;
+        }
+        if(role!=null && role==0){
+            role = null;
+        }
+
+        Page<Task> taskPage =  taskService.listTask(status,role,taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getKeyWord(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
         List<TaskDataPageResp> taskDataPageList = taskPage.getResult().stream().map(TaskDataPageResp::convert).collect(Collectors.toList());
         //查询任务数量
         TaskStatistics taskStatistics = taskService.selectTaskStatisticsCount();

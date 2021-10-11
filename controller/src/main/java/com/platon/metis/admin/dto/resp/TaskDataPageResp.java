@@ -40,9 +40,9 @@ public class TaskDataPageResp {
         resp.setStatus(task.getStatus());
         resp.setReviewed(task.getReviewed());
         resp.setRole(task.getRole());
-        resp.setCreateAt(task.getCreateAt() == null ? null :task.getCreateAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
-        resp.setStartAt(task.getStartAt() == null ? null :task.getStartAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
-        resp.setEndAt(task.getEndAt() == null ? null :task.getEndAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        resp.setCreateAt(task.getCreateAt() == null ? null :task.getCreateAt().toInstant(ZoneOffset.UTC).toEpochMilli());
+        resp.setStartAt(task.getStartAt() == null ? null :task.getStartAt().toInstant(ZoneOffset.UTC).toEpochMilli());
+        resp.setEndAt(task.getEndAt() == null ? null :task.getEndAt().toInstant(ZoneOffset.UTC).toEpochMilli());
         return resp;
     }
 

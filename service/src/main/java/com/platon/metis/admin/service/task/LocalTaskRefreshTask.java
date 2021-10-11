@@ -66,45 +66,48 @@ public class LocalTaskRefreshTask {
 
         //1、筛选出需要更新Task Data
         log.info("1、筛选出需要更新Task Data");
-        List<String> deleteTaskIds = taskMapper.selectListTaskByStatusWithSuccessAndFailed();
+        List<String> endTaskIds = taskMapper.selectListTaskByStatusWithSuccessAndFailed();
         List<Task> allTaskList =  resp.getTaskList();
-        List<Task> updateTaskList = allTaskList.stream().filter(new Predicate<Task>() {
+        List<Task> tobeUpdateTaskList = allTaskList.stream().filter(new Predicate<Task>() {
                                                                 @Override
                                                                 public boolean test(Task task) {
-                                                                    return !deleteTaskIds.contains(task.getTaskId());
+                                                                    return !endTaskIds.contains(task.getTaskId());
                                                                 }
                                                         }).collect(Collectors.toList());
 
         //2、整理收集待持久化数据
         log.info("2、整理收集待持久化数据");
-        log.info("待持久化数据updateTaskList:" + updateTaskList.size());
+        log.info("待持久化数据updateTaskList:" + tobeUpdateTaskList.size());
 
         List<TaskDataReceiver> dataReceiverList = new ArrayList<>();
         List<TaskPowerProvider> powerProviderList = new ArrayList<>();
         List<TaskResultReceiver> resultReceiverList = new ArrayList<>();
         Set<TaskOrg> taskOrgList = new HashSet<>();
 
-        if(!CollectionUtils.isEmpty(updateTaskList)){
+        if(!CollectionUtils.isEmpty(tobeUpdateTaskList)){
 
-            for (int i = 0; i < updateTaskList.size(); i++) {
-                 Task taskData = updateTaskList.get(i);
-                 List<TaskDataReceiver> dataReceivers = taskData.getDataSupplier();
-                 List<TaskPowerProvider> powerProviders = taskData.getPowerSupplier();
-                 List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
-                 Set<TaskOrg> taskOrgs = getTaskOrgList(taskData);
+            for (int i = 0; i < tobeUpdateTaskList.size(); i++) {
+                 Task task = tobeUpdateTaskList.get(i);
+                 List<TaskDataReceiver> dataReceivers = task.getDataSupplier();
+                 List<TaskPowerProvider> powerProviders = task.getPowerSupplier();
+                 List<TaskResultReceiver> resultReceivers = task.getReceivers();
+                 Set<TaskOrg> taskOrgSet = getTaskOrgList(task);
+                 if(taskOrgSet.size()>0) {
+                     taskOrgList.addAll(taskOrgSet);
+                 }
 
                 //构造数据
                  dataReceiverList.addAll(dataReceivers);
                  powerProviderList.addAll(powerProviders);
                  resultReceiverList.addAll(resultReceivers);
-                 taskOrgList.addAll(taskOrgs);
+
             }
         }
 
         //3、批量更新DB
         log.info("3、批量更新DB");
-        if (checkDataValidity(updateTaskList)) {
-            taskMapper.insertBatch(updateTaskList);
+        if (checkDataValidity(tobeUpdateTaskList)) {
+            taskMapper.insertBatch(tobeUpdateTaskList);
         }
         if (checkDataValidity(dataReceiverList)) {
             taskDataReceiverMapper.insertBatch(dataReceiverList);
@@ -115,20 +118,18 @@ public class LocalTaskRefreshTask {
         if (checkDataValidity(resultReceiverList)) {
             taskResultReceiverMapper.insertBatch(resultReceiverList);
         }
-        if(checkDataValidity(Arrays.asList(taskOrgList))){
+        if(taskOrgList.size()>0){
             taskOrgMapper.insertBatch(taskOrgList);
         }
 
 
         //4、批量TaskEvent获取并更新DB
-        if(checkDataValidity(allTaskList)){
+        if(checkDataValidity(tobeUpdateTaskList)){
             log.info("4、批量TaskEvent获取并更新DB");
-            List<String> taskIdList = allTaskList.stream().map(Task -> Task.getTaskId()).collect(Collectors.toList());
-            List<TaskEvent> taskEventList = new ArrayList<>();
+            List<String> taskIdList = tobeUpdateTaskList.stream().map(Task -> Task.getTaskId()).collect(Collectors.toList());
             List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskIdList);
-            taskEventList.addAll(taskEvents);
-
-            if (checkDataValidity(taskEventList)) {
+            if(taskEvents!=null){
+                List<TaskEvent> taskEventList = new ArrayList<>(taskEvents);
                 taskEventMapper.deleteBatch(taskIdList);
                 taskEventMapper.insertBatch(taskEventList);
             }

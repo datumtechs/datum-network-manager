@@ -4,7 +4,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.metis.admin.dao.*;
 import com.platon.metis.admin.dao.entity.*;
-import com.platon.metis.admin.dao.enums.RoleEnum;
 import com.platon.metis.admin.dao.enums.TaskStatusEnum;
 import com.platon.metis.admin.service.TaskService;
 import com.platon.metis.admin.service.constant.ServiceConstant;
@@ -40,14 +39,14 @@ public class TaskServiceImpl implements TaskService {
 
 
         @Override
-        public Page<Task> listTask(String status, Integer role, Long startTimestamp, Long endTimestamp, String keyWord, int pageNumber, int pageSize) {
+        public Page<Task> listTask(Integer status, Integer role, Long startTimestamp, Long endTimestamp, String keyWord, int pageNumber, int pageSize) {
 
-            String roleParam = RoleEnum.getMessageByCode(role);
+            //String roleParam = RoleEnum.getMessageByCode(role);
             Timestamp startTimestampParam = (startTimestamp == 0) ? null : new Timestamp(startTimestamp);
             Timestamp endTimestampParam = (endTimestamp == 0) ? null : new Timestamp(endTimestamp);
 
             Page<Task> taskPage = PageHelper.startPage(pageNumber, pageSize);
-            List<Task> taskList = taskMapper.listTask(status, roleParam, startTimestampParam, endTimestampParam, keyWord);
+            List<Task> taskList = taskMapper.listTask(status, role, startTimestampParam, endTimestampParam, keyWord);
             taskList.forEach(task -> {
                 if(checkEndAtOver72Hour(task)){
                     task.setReviewed(true);
