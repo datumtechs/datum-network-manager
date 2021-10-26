@@ -1,10 +1,9 @@
 package com.platon.metis.admin.controller.system;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.platon.metis.admin.dao.dto.StatsTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 import com.platon.metis.admin.dto.JsonResponse;
-import com.platon.metis.admin.dto.req.index.DataAndPowerReq;
-import com.platon.metis.admin.dto.req.index.WholeNetDataReq;
 import com.platon.metis.admin.dto.resp.index.DataRatioResp;
 import com.platon.metis.admin.dto.resp.index.MyTaskStatsResp;
 import com.platon.metis.admin.dto.resp.index.UsedResourceResp;
@@ -13,8 +12,10 @@ import com.platon.metis.admin.service.IndexService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -66,9 +67,9 @@ public class IndexController {
 //        return JsonResponse.success(respList);
 //    }
 
-    @ApiOperation(value = "查询总计算资源占用情况")
-    @GetMapping("/queryUsedTotalResource")
-    public JsonResponse<UsedResourceResp> queryUsedTotalResource(){
+    @ApiOperation(value = "查询本地计算资源占用情况")
+    @GetMapping("/localPowerUsage")
+    public JsonResponse<UsedResourceResp> localPowerUsage(){
         try {
             UsedResourceDTO usedResourceDTO = indexService.queryUsedTotalResource();
             return JsonResponse.success(BeanUtil.toBean(usedResourceDTO, UsedResourceResp.class));
@@ -78,11 +79,24 @@ public class IndexController {
         }
     }
 
-    @ApiOperation(value = "查询我发布的数据或算力")
-    @PostMapping("/queryPublishDataOrPower")
-    public JsonResponse<List<Long>> queryPublishDataAndPower(@RequestBody @Validated DataAndPowerReq dataAndPowerReq){
+    @ApiOperation(value = "查询我发布的数据")
+    @PostMapping("/localDataFileStatsTrendMonthly")
+    public JsonResponse<List<StatsTrendDTO>> localDataFileStatsTrendMonthly(){
         try {
-            List<Long> dataPowerList = indexService.queryPublishDataOrPower(dataAndPowerReq.getFlag());
+            List<StatsTrendDTO> dataPowerList = indexService.listLocalDataFileStatsTrendMonthly();
+            return JsonResponse.success(dataPowerList);
+
+        } catch (Exception e) {
+            log.error("index--queryPublishDataOrPower--查询我发布的数据或算力, 错误信息:{}", e.getMessage());
+            return JsonResponse.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "查询我发布的算力")
+    @PostMapping("/localPowerStatsTrendMonthly")
+    public JsonResponse<List<StatsTrendDTO>> localPowerStatsTrendMonthly(){
+        try {
+            List<StatsTrendDTO> dataPowerList = indexService.listLocalPowerStatsTrendMonthly();
             return JsonResponse.success(dataPowerList);
         } catch (Exception e) {
             log.error("index--queryPublishDataOrPower--查询我发布的数据或算力, 错误信息:{}", e.getMessage());
@@ -102,11 +116,23 @@ public class IndexController {
         }
     }
 
-    @ApiOperation(value = "查询全网数据或算力总量走势")
-    @PostMapping("/queryWholeNetDateOrPower")
-    public JsonResponse<List<Long>> queryWholeNetDateAndPower(@Validated @RequestBody WholeNetDataReq wholeNetDataReq){
+    @ApiOperation(value = "查询全网算力总量走势")
+    @GetMapping("/globalPowerStatsTrendMonthly")
+    public JsonResponse<List<StatsTrendDTO>> listGlobalPowerStatsTrendMonthly(){
         try {
-            List<Long> list = indexService.queryWholeNetDateOrPower(wholeNetDataReq.getFlag());
+            List<StatsTrendDTO> list = indexService.listGlobalPowerStatsTrendMonthly();
+            return JsonResponse.success(list);
+        } catch (Exception e) {
+            log.error("index--queryWholeNetDateOrPower--查询全网数据或算力总量走势, 错误信息:{}", e.getMessage());
+            return JsonResponse.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "查询全网有效数据总量，每月新发布数据量走势")
+    @GetMapping("/globalDataFileStatsTrendMonthly")
+    public JsonResponse<List<StatsTrendDTO>> listGlobalDataFileStatsTrendMonthly(){
+        try {
+            List<StatsTrendDTO> list = indexService.listGlobalDataFileStatsTrendMonthly();
             return JsonResponse.success(list);
         } catch (Exception e) {
             log.error("index--queryWholeNetDateOrPower--查询全网数据或算力总量走势, 错误信息:{}", e.getMessage());

@@ -37,6 +37,8 @@ enum YarnNodeState {
 enum ConnState {
   ConnState_UnConnected = 0;
   ConnState_Connected = 1;
+  //  ConnState_Enabled = 2;
+  //  ConnState_Occupied = 3;
 }
 
 // 调度服务的信息
@@ -70,12 +72,12 @@ message YarnRegisteredPeerDetail {
   string          external_ip = 3;                   // 计算or数据服务的外网 ip, 给 多方协作任务用
   string          internal_port = 4;                 // 计算or数据服务的内网 port, 给 管理台用
   string          external_port = 5;                 // 计算or数据服务的外网 port, 给 多方协作任务用
-  ConnState       conn_state = 6;                    // 计算or数据服务的状态 (0: 未被调度服务连接上; 1: 连接上; 2: 算力启用<计算服务>; 3: 算力被占用<计算服务算力正在被任务占用>)
+  ConnState       conn_state = 6;                    // 计算or数据服务的状态 (0: 未被调度服务连接上; 1: 连接上)
   uint64          duration = 7;
-  uint32          task_count = 8;
-  repeated string task_id_list = 9;
-  uint32          file_count = 10;
-  uint32          file_total_size = 11;
+  uint32          task_count = 8;                    // 未使用
+  repeated string task_id_list = 9;                  // 未使用
+  uint32          file_count = 10;                   // 未使用
+  uint32          file_total_size = 11;              // 未使用
 }
 
 message SeedPeer {
@@ -86,39 +88,6 @@ message SeedPeer {
   ConnState       conn_state = 5;                    // 是否被调度服务连接上 (0: 未被调度服务连接上; 1: 连接上)
 }
 
-//// 调度服务上的 计算服务详情信息
-//message YarnRegisteredJobNode {
-//  string                       id = 2;                            // 计算服务的唯一Id
-//  string                       internal_ip = 3;                   // 计算服务的内网 ip, 给 管理台用
-//  string                       external_ip = 4;                   // 计算服务的外网 ip, 给 多方协作任务用
-//  string                       internal_port = 5;                 // 计算服务的内网 port, 给 管理台用
-//  string                       external_port = 6;                 // 计算服务的外网 port, 给 多方协作任务用
-//  ResourceUsedDetail           information = 7;                   // 计算服务的算力资源使用情况
-//  uint64                       duration = 8;                      // 计算服务远行时长 (从加入网络中的时间点计算)
-//  YarnRegisteredJobNodeTaskIds task = 9;                          // 计算服务上的任务Id和个数
-//}
-//
-//message YarnRegisteredJobNodeTaskIds {
-//  uint32          count = 1;
-//  repeated string task_ids = 2;
-//}
-//
-//
-//message YarnRegisteredDataNode {
-//  string                      id = 2;                            // 数据服务的唯一Id
-//  string                      internal_ip = 3;                   // 数据服务的内网 ip, 给 管理台用
-//  string                      external_ip = 4;                   // 数据服务的外网 ip, 给 多方协作任务用
-//  string                      internal_port = 5;                 // 数据服务的内网 port, 给 管理台用
-//  string                      external_port = 6;                 // 数据服务的外网 port, 给 多方协作任务用
-//  ResourceUsedDetail          information = 7;                   // 数据服务的算力资源使用情况
-//  uint64                      duration = 8;                      // 数据服务远行时长 (从加入网络中的时间点计算)
-//  YarnRegisteredDataNodeDelta delta = 9;                         // 数据服务上的文件统计信息
-//}
-//
-//message YarnRegisteredDataNodeDelta {
-//  uint32 fileCount = 1;                           // 数据服务对外公开的源文件个数
-//  uint32 fileTotalSize = 2;                       // 数据服务对外公开的源文件总大小  (单位: byte)
-//}
 
 // 查看自身调度服务信息 resp
 message GetNodeInfoResponse {
@@ -221,16 +190,25 @@ message UpdateJobNodeRequest {
 
 // 数据/计算服务 上报任务事件 req
 message ReportTaskEventRequest {
-  string          party_id = 1;       // 本资源在该 task 中的 partyId
-  types.TaskEvent task_event = 2;     // 事件信息
+  types.TaskEvent task_event = 1;     // 事件信息
 }
 
-// 数据/计算服务 上报资源使用实况 req
-message ReportTaskResourceExpenseRequest {
-  NodeType                    node_type = 1;                        // 计算or数据服务node的类型
-  string                      node_id = 2;                          //  计算or数据服务的 节点Id
-  types.ResourceUsageOverview usage = 3;                            // 计算or数据的资源实况
+// 数据/计算服务 上报任务资源使用实况 req
+message ReportTaskResourceUsageRequest {
+  string                      task_id = 1;                          // 任务Id
+  string                      party_id = 2;                         // 本资源在该 task 中的 partyId
+  NodeType                    node_type = 3;                        // 计算or数据服务node的类型
+  string                      ip = 4;                               // Fighter 的 grpc server IP
+  string                      port = 5;                             // Fighter 的 grpc server PORT
+  types.ResourceUsageOverview usage = 6;                            // 计算or数据的资源实况
 }
+
+//message ReportTaskResourceExpenseRequest {
+//  NodeType                    node_type = 1;                        // 计算or数据服务node的类型
+//  string                      ip = 2;                               // Fighter 的 grpc server IP
+//  string                      port = 3;                             // Fighter 的 grpc server PORT
+//  types.ResourceUsageOverview usage = 4;                            // 计算or数据的资源实况
+//}
 
 // 上报 成功上传的原始文件Id req
 message ReportUpFileSummaryRequest {
@@ -300,8 +278,7 @@ service YarnService {
   // 查看自身调度服务信息
   rpc GetNodeInfo (google.protobuf.Empty) returns (GetNodeInfoResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/yarn/nodeInfo"
-      body: "*"
+      get: "/carrier/v1/yarn/nodeInfo"
     };
   }
 
@@ -340,8 +317,7 @@ service YarnService {
   // 查询种子节点列表
   rpc GetSeedNodeList (google.protobuf.Empty) returns (GetSeedNodeListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/yarn/seedList"
-      body: "*"
+      get: "/carrier/v1/yarn/seedList"
     };
   }
 
@@ -373,8 +349,7 @@ service YarnService {
   // 查询数据服务列表
   rpc GetDataNodeList (google.protobuf.Empty) returns (GetRegisteredNodeListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/yarn/dataNodeList"
-      body: "*"
+      get: "/carrier/v1/yarn/dataNodeList"
     };
   }
 
@@ -403,11 +378,11 @@ service YarnService {
     };
   }
 
-  // 查询计算服务列表
+
+  // 查询计算服务列表 (宿主机的物理信息和网络连接信息)
   rpc GetJobNodeList (google.protobuf.Empty) returns (GetRegisteredNodeListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/yarn/jobNodeList"
-      body: "*"
+      get: "/carrier/v1/yarn/jobNodeList"
     };
   }
 
@@ -421,9 +396,9 @@ service YarnService {
   }
 
   // 数据/计算服务 上报资源使用实况
-  rpc ReportTaskResourceExpense (ReportTaskResourceExpenseRequest) returns (api.protobuf.SimpleResponse) {
+  rpc ReportTaskResourceUsage (ReportTaskResourceUsageRequest) returns (api.protobuf.SimpleResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/yarn/reportTaskResourceExpense"
+      post: "/carrier/v1/yarn/reportTaskResourceUsage"
       body: "*"
     };
   }
@@ -471,8 +446,7 @@ service YarnService {
   // 查询当前组织参与的所有任务结果文件摘要
   rpc GetTaskResultFileSummaryList (google.protobuf.Empty) returns (GetTaskResultFileSummaryListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/yarn/taskResultFileSummaryList"
-      body: "*"
+      get: "/carrier/v1/yarn/taskResultFileSummaryList"
     };
   }
 

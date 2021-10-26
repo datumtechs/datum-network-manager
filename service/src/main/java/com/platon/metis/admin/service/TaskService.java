@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface TaskService {
 
-    Page<Task> listTask(Integer status, Integer role, Long startTimestamp, Long endTimestamp, String keyWord, int pageNumber, int pageSize);
+    Page<Task> listTaskByIdentityIdWithRole(String identityId, Long startTimestamp, Long endTimestamp, int pageNumber, int pageSize);
 
     Integer selectAllTaskCount();
 
     Integer selectTaskRunningCount();
 
-    TaskStatistics selectTaskStatisticsCount();
+    TaskStatistics taskStatistics();
 
 
     Task getTaskDetails(String taskId);

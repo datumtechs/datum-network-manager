@@ -5,19 +5,17 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @ToString
-public class TaskResultReceiver extends BaseDomain {
+public class TaskResultConsumer extends BaseDomain {
     private String taskId;
 
     private String consumerIdentityId;
+    private String consumerPartyId;
 
     private String producerIdentityId;
-
-    private LocalDateTime recUpdateTime;
+    private String producerPartyId;
 
 
 }

@@ -21,7 +21,7 @@ java -jar metis-admin-*.jar --spring.profiles.active=dev
 启动后在浏览器上输入：http://localhost:9090/metis-admin/doc.html
 
 ### 数据库脚本
-路径：[metis-admin/controller/scripts/metis_admin.sql](./controller/scripts/metis_admin.sql)
+路径：[metis-admin/controller/scripts/metis-admin-2.0.0.sql](./controller/scripts/metis-admin-2.0.0.sql)
 
 ### grpc相关文档
 [grpc文档](./grpc-lib/README.MD)

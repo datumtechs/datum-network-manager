@@ -2,13 +2,15 @@ package com.platon.metis.admin.grpc.client;
 
 import cn.hutool.json.JSONUtil;
 import com.google.protobuf.Empty;
-import com.platon.metis.admin.grpc.entity.TaskDataResp;
+import com.platon.metis.admin.dao.entity.Task;
+import com.platon.metis.admin.dao.entity.TaskOrg;
 import com.platon.metis.admin.grpc.service.TaskRpcMessage;
 import com.platon.metis.admin.grpc.service.TaskServiceGrpc;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -27,10 +30,13 @@ public class TaskClientTest {
     @Resource
     TaskClient taskClient;
 
+
+
     @Test
     public void getTaskList(){
-        TaskDataResp taskListData = taskClient.getTaskListData();
-        log.info(JSONUtil.toJsonStr(taskListData));
+        Pair<List<Task>, Map<String, TaskOrg>> resp = taskClient.getLocalTaskList();
+        log.info(JSONUtil.toJsonStr(resp.getLeft()));
+        log.info(JSONUtil.toJsonStr(resp.getRight()));
     }
 
 

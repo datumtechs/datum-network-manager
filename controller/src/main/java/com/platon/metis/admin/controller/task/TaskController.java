@@ -1,6 +1,7 @@
 package com.platon.metis.admin.controller.task;
 
 import com.github.pagehelper.Page;
+import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.dao.entity.Task;
 import com.platon.metis.admin.dao.entity.TaskEvent;
 import com.platon.metis.admin.dao.entity.TaskStatistics;
@@ -29,27 +30,31 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+
+
+
+
+
+    @ApiOperation(value="我参与的任务情况统计")
+    @GetMapping("/myTaskStatistics")
+    public JsonResponse<TaskStatistics> myTaskStatistics(){
+        //查询任务数量
+        TaskStatistics taskStatistics = taskService.taskStatistics();
+        return JsonResponse.success(taskStatistics);
+    }
+
     //根据条件查询组织参与的任务列表
     @ApiOperation(value="条件查询组织参与的任务列表")
-    @PostMapping("/taskListByQuery")
+    @PostMapping("/listMyTask")
     public JsonResponse<TaskDataResp> listMyTask(@Validated @RequestBody TaskPageReq taskPageReq){
         //查询任务列表Data
-        Integer role = taskPageReq.getRole();
-        Integer status = taskPageReq.getStatus();
-        if (status!=null && status==0){
-            status = null;
-        }
-        if(role!=null && role==0){
-            role = null;
-        }
 
-        Page<Task> taskPage =  taskService.listTask(status,role,taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getKeyWord(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
+        Page<Task> taskPage =  taskService.listTaskByIdentityIdWithRole(LocalOrgIdentityCache.getIdentityId(), taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
         List<TaskDataPageResp> taskDataPageList = taskPage.getResult().stream().map(TaskDataPageResp::convert).collect(Collectors.toList());
-        //查询任务数量
-        TaskStatistics taskStatistics = taskService.selectTaskStatisticsCount();
+
         //封装响应数据
-        TaskDataResp taskDataResp = TaskDataResp.from(taskDataPageList, taskStatistics);
-        JsonResponse jsonResponse = JsonResponse.success(taskDataResp);
+        //TaskDataResp taskDataResp = TaskDataResp.from(taskDataPageList);
+        JsonResponse jsonResponse = JsonResponse.success(taskDataPageList);
         jsonResponse.setPageNumber(taskPage.getPageNum());
         jsonResponse.setPageSize(taskPage.getPageSize());
         jsonResponse.setPageTotal(taskPage.getPages());

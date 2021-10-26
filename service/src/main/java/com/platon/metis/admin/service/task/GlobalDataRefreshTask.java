@@ -18,7 +18,6 @@ import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -78,18 +77,16 @@ public class GlobalDataRefreshTask {
         //### 2.将数据归类
         stopWatch.start("2.将数据归类");
         //2.1先获取所有已存在数据库中的fileId
-        List<String> fileIdList = globalDataFileMapper.selectAllFileId();
+        List<String> existMetaDataIdList = globalDataFileMapper.selectAllMetaDataId();
         //需要更新的列表
         List<GlobalDataFile> updateList = new ArrayList<>();
         //需要新增的列表
         List<GlobalDataFile> addList = new ArrayList<>();
-        //需要删除的fileId列表
-        List<String> deleteList = new ArrayList<>(fileIdList);
-        String localOrg = LocalOrgIdentityCache.getIdentityId();
+        String localIdentityId = LocalOrgIdentityCache.getIdentityId();
 
         globalDataFileList.stream()
-                .filter(detail -> {//先过滤掉本组织数据
-                    if(localOrg.equals(detail.getIdentityId())){
+                .filter(detail -> {//本组织数据加入localDataFileQueueFetchedFromStorage队列，有LocalDataRefreshTask更新Local_data_file的状态
+                    if(localIdentityId.equals(detail.getIdentityId())){
                         try {
                             //将指定的元素插入此队列的尾部，如果该队列已满，则一直等到（阻塞）
                             localDataFileQueueFetchedFromStorage.offer(detail,60, TimeUnit.SECONDS);
@@ -102,14 +99,9 @@ public class GlobalDataRefreshTask {
                     }
                 })
                 .forEach(detail -> {//数据归类 TODO 性能方面考虑
-                    deleteList.remove(detail.getFileId());
-                    if(fileIdList.contains(detail.getFileId())){//如果已存在数据库，则进行更新
-                        detail.setRecUpdateTime(new Date());
-                        updateList.add(detail);
+                    if(existMetaDataIdList.contains(detail.getMetaDataId())){//如果已存在数据库，则进行更新
+                          updateList.add(detail);
                     } else {//不存在，则表示是新增
-                        Date date = new Date();
-                        detail.setRecCreateTime(date);
-                        detail.setRecUpdateTime(date);
                         addList.add(detail);
                     }
                 });
@@ -124,12 +116,7 @@ public class GlobalDataRefreshTask {
         addList.stream().forEach(s->log.info(s.getMetaDataId()));
         batchAdd(addList);
         stopWatch.stop();
-        //3.3批量删除
-        stopWatch.start("3.3批量删除");
-        batchDeleteByFileId(deleteList);
-        stopWatch.stop();
         log.info(stopWatch.prettyPrint());
-
     }
 
     private void batchAdd(List<GlobalDataFile> addList) {
@@ -142,37 +129,17 @@ public class GlobalDataRefreshTask {
 
         //批量新增
         BatchExecuteUtil.batchExecute(1000,localDataFileList,(tempList)->{
-            globalDataFileMapper.batchAddSelective(tempList);
+            globalDataFileMapper.batchInsert(tempList);
         });
         BatchExecuteUtil.batchExecute(1000,columnList,(tempList)->{
-            globalMetaDataColumnMapper.batchAddSelective(tempList);
+            globalMetaDataColumnMapper.batchInsert(tempList);
         });
     }
 
     private void batchUpdate(List<GlobalDataFile> updateList) {
-        List<GlobalDataFile> localDataFileList = new ArrayList<>();
-        List<GlobalMetaDataColumn> columnList = new ArrayList<>();
-        updateList.forEach(detail -> {
-            localDataFileList.add(detail);
-            columnList.addAll(detail.getMetaDataColumnList());
-        });
-
         //批量更新
-        BatchExecuteUtil.batchExecute(1000,localDataFileList,(tempList)->{
-            globalDataFileMapper.batchUpdateByFileIdSelective(tempList);
-        });
-        BatchExecuteUtil.batchExecute(1000,columnList,(tempList)->{
-            globalMetaDataColumnMapper.batchUpdateByFileIdSelective(tempList);
+        BatchExecuteUtil.batchExecute(1000,updateList,(tempList)->{
+            globalDataFileMapper.batchUpdate(tempList);
         });
     }
-
-    private void batchDeleteByFileId(List<String> deleteList){
-        BatchExecuteUtil.batchExecute(1000,deleteList,(tempList)->{
-            globalDataFileMapper.batchDeleteByFileId(tempList);
-            globalMetaDataColumnMapper.batchDeleteByFileId(tempList);
-        });
-    }
-
-
-
 }

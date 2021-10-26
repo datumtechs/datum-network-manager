@@ -10,11 +10,7 @@ public interface TaskPowerProviderMapper {
 
     int insert(TaskPowerProvider record);
 
-    int insertSelective(TaskPowerProvider record);
-
     TaskPowerProvider selectByPrimaryKey(@Param("taskId") String taskId, @Param("identityId") String identityId);
-
-    int updateByPrimaryKeySelective(TaskPowerProvider record);
 
     int updateByPrimaryKey(TaskPowerProvider record);
 

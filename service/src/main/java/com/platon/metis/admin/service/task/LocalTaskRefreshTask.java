@@ -5,20 +5,20 @@ import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.dao.enums.TaskStatusEnum;
 import com.platon.metis.admin.grpc.client.TaskClient;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
-import com.platon.metis.admin.grpc.entity.TaskDataResp;
 import com.platon.metis.admin.grpc.entity.TaskEventDataResp;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import static com.platon.metis.admin.grpc.client.TaskClient.NODE_ID;
-import static com.platon.metis.admin.grpc.client.TaskClient.NODE_NAME;
 
 /**
  * 计算任务定时任务
@@ -34,13 +34,17 @@ public class LocalTaskRefreshTask {
     private TaskMapper taskMapper;
 
     @Resource
-    private TaskDataReceiverMapper taskDataReceiverMapper;
+
+    private TaskAlgoProviderMapper  taskAlgoProviderMapper;
+
+    @Resource
+    private TaskDataProviderMapper taskDataProviderMapper;
 
     @Resource
     private TaskPowerProviderMapper taskPowerProviderMapper;
 
     @Resource
-    private TaskResultReceiverMapper taskResultReceiverMapper;
+    private TaskResultConsumerMapper taskResultConsumerMapper;
 
     @Resource
     private TaskOrgMapper taskOrgMapper;
@@ -54,20 +58,15 @@ public class LocalTaskRefreshTask {
     @Scheduled(fixedDelayString = "${LocalTaskRefreshTask.fixedDelay}")
     public void task() {
         log.info("启动执行获取任务数据列表定时任务...........");
-        TaskDataResp resp = taskClient.getTaskListData();
-        if (Objects.isNull(resp) || GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
-            log.info("获取任务列表,调度服务调用失败");
-            return;
-        }
-        if(!checkDataValidity(resp.getTaskList())){
-            log.info("RPC获取任务列表,任务数据为空");
-            return;
-        }
+        Pair<List<Task>, Map<String, TaskOrg>> resp = taskClient.getLocalTaskList();
+
 
         //1、筛选出需要更新Task Data
         log.info("1、筛选出需要更新Task Data");
         List<String> endTaskIds = taskMapper.selectListTaskByStatusWithSuccessAndFailed();
-        List<Task> allTaskList =  resp.getTaskList();
+        List<Task> allTaskList =  resp.getLeft();
+        Map<String, TaskOrg> allTaskOrgMap = resp.getRight();
+
         List<Task> tobeUpdateTaskList = allTaskList.stream().filter(new Predicate<Task>() {
                                                                 @Override
                                                                 public boolean test(Task task) {
@@ -79,27 +78,21 @@ public class LocalTaskRefreshTask {
         log.info("2、整理收集待持久化数据");
         log.info("待持久化数据updateTaskList:" + tobeUpdateTaskList.size());
 
-        List<TaskDataReceiver> dataReceiverList = new ArrayList<>();
+        List<TaskAlgoProvider> algoProviderList = new ArrayList<>();
+        List<TaskDataProvider> dataReceiverList = new ArrayList<>();
         List<TaskPowerProvider> powerProviderList = new ArrayList<>();
-        List<TaskResultReceiver> resultReceiverList = new ArrayList<>();
-        Set<TaskOrg> taskOrgList = new HashSet<>();
+        List<TaskResultConsumer> resultReceiverList = new ArrayList<>();
+
 
         if(!CollectionUtils.isEmpty(tobeUpdateTaskList)){
 
             for (int i = 0; i < tobeUpdateTaskList.size(); i++) {
                  Task task = tobeUpdateTaskList.get(i);
-                 List<TaskDataReceiver> dataReceivers = task.getDataSupplier();
-                 List<TaskPowerProvider> powerProviders = task.getPowerSupplier();
-                 List<TaskResultReceiver> resultReceivers = task.getReceivers();
-                 Set<TaskOrg> taskOrgSet = getTaskOrgList(task);
-                 if(taskOrgSet.size()>0) {
-                     taskOrgList.addAll(taskOrgSet);
-                 }
-
                 //构造数据
-                 dataReceiverList.addAll(dataReceivers);
-                 powerProviderList.addAll(powerProviders);
-                 resultReceiverList.addAll(resultReceivers);
+                algoProviderList.add(task.getAlgoSupplier());
+                 dataReceiverList.addAll(task.getDataSupplier());
+                 powerProviderList.addAll(task.getPowerSupplier());
+                 resultReceiverList.addAll(task.getReceivers());
 
             }
         }
@@ -109,19 +102,21 @@ public class LocalTaskRefreshTask {
         if (checkDataValidity(tobeUpdateTaskList)) {
             taskMapper.insertBatch(tobeUpdateTaskList);
         }
+        if (checkDataValidity(algoProviderList)) {
+            taskAlgoProviderMapper.insertBatch(algoProviderList);
+        }
         if (checkDataValidity(dataReceiverList)) {
-            taskDataReceiverMapper.insertBatch(dataReceiverList);
+            taskDataProviderMapper.insertBatch(dataReceiverList);
         }
         if (checkDataValidity(powerProviderList)) {
             taskPowerProviderMapper.insertBatch(powerProviderList);
         }
         if (checkDataValidity(resultReceiverList)) {
-            taskResultReceiverMapper.insertBatch(resultReceiverList);
+            taskResultConsumerMapper.insertBatch(resultReceiverList);
         }
-        if(taskOrgList.size()>0){
-            taskOrgMapper.insertBatch(taskOrgList);
+        if(allTaskOrgMap.size()>0){
+            taskOrgMapper.insertBatch(allTaskOrgMap.values());
         }
-
 
         //4、批量TaskEvent获取并更新DB
         if(checkDataValidity(tobeUpdateTaskList)){
@@ -177,66 +172,4 @@ public class LocalTaskRefreshTask {
         }
         return newTaskList;
     }
-
-
-    /**
-     * 组装TaskOrg Data，从各个参与方中获取组织信息(记得去重)
-     * @param taskData
-     * @return
-     */
-    private Set<TaskOrg> getTaskOrgList(Task taskData){
-
-        Set<TaskOrg> taskOrgList = new HashSet<>();
-
-        List<TaskDataReceiver> dataReceivers = taskData.getDataSupplier();
-        List<TaskPowerProvider> powerProviders = taskData.getPowerSupplier();
-        List<TaskResultReceiver> resultReceivers = taskData.getReceivers();
-
-        TaskOrg owner = taskData.getOwner();
-        TaskOrg algoSupplier = taskData.getAlgoSupplier();
-
-        for (TaskDataReceiver dataReceiver : dataReceivers) {
-            String identityId = dataReceiver.getIdentityId();
-            Map<String,String> dynamicFields = dataReceiver.getDynamicFields();
-            String nodeName = dynamicFields.get(NODE_NAME);
-            String nodeId = dynamicFields.get(NODE_ID);
-
-            TaskOrg taskOrg = new TaskOrg();
-            taskOrg.setIdentityId(identityId);
-            taskOrg.setCarrierNodeId(nodeId);
-            taskOrg.setName(nodeName);
-            taskOrgList.add(taskOrg);
-        }
-
-        for (TaskPowerProvider taskPowerProvider : powerProviders) {
-            String identityId = taskPowerProvider.getIdentityId();
-            Map<String,String> dynamicFields = taskPowerProvider.getDynamicFields();
-            String nodeName = dynamicFields.get(NODE_NAME);
-            String nodeId = dynamicFields.get(NODE_ID);
-
-            TaskOrg taskOrg = new TaskOrg();
-            taskOrg.setIdentityId(identityId);
-            taskOrg.setCarrierNodeId(nodeId);
-            taskOrg.setName(nodeName);
-            taskOrgList.add(taskOrg);
-        }
-
-        for (TaskResultReceiver taskResultReceiver : resultReceivers) {
-            String identityId = taskResultReceiver.getConsumerIdentityId();
-            Map<String,String> dynamicFields = taskResultReceiver.getDynamicFields();
-            String nodeName = dynamicFields.get(NODE_NAME);
-            String nodeId = dynamicFields.get(NODE_ID);
-
-            TaskOrg taskOrg = new TaskOrg();
-            taskOrg.setIdentityId(identityId);
-            taskOrg.setCarrierNodeId(nodeId);
-            taskOrg.setName(nodeName);
-            taskOrgList.add(taskOrg);
-        }
-
-        taskOrgList.add(owner);
-        taskOrgList.add(algoSupplier);
-        return taskOrgList;
-    }
-
 }

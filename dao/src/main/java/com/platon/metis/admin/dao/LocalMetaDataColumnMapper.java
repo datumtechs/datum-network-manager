@@ -16,6 +16,13 @@ public interface LocalMetaDataColumnMapper {
     List<LocalMetaDataColumn> selectByLocalMetaDataDbId(int localMetaDataDbId);
 
     /**
+     * 根据localMetaDataDbId查询可见的字段，用于发布元数据
+     * @param localMetaDataDbId 关联的local_meta_data表中id
+     * @return
+     */
+    List<LocalMetaDataColumn> selectByLocalMetaDataDbIdToPublish(int localMetaDataDbId);
+
+    /**
      * 批量插入
      * @param columnList
      * @return

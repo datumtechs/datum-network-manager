@@ -31,14 +31,13 @@ public class GlobalDataServiceImpl implements GlobalDataService {
     @Resource
     private GlobalMetaDataColumnMapper globalMetaDataColumnMapper;
 
-
     @Override
     public Page<GlobalDataFile> listDataFile(int pageNum, int pageSize, String keyword) {
         Page<GlobalDataFile> globalDataFilePage = PageHelper.startPage(pageNum, pageSize);
         globalDataFileMapper.listDataFile(keyword);
         List<GlobalDataFile> detailList = globalDataFilePage.stream()
                 .map(dataFile -> {
-                    List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByFileId(dataFile.getFileId());
+                    List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByMetaDataId(dataFile.getMetaDataId());
                     dataFile.setMetaDataColumnList(columnList);
                     return dataFile;
                 })
@@ -50,9 +49,9 @@ public class GlobalDataServiceImpl implements GlobalDataService {
     }
 
     @Override
-    public GlobalDataFile findGlobalDataFile(Integer id) {
-        GlobalDataFile globalDataFile = globalDataFileMapper.selectById(id);
-        List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByFileId(globalDataFile.getFileId());
+    public GlobalDataFile findGlobalDataFile(String metaDataId) {
+        GlobalDataFile globalDataFile = globalDataFileMapper.selectByMetaDataId(metaDataId);
+        List<GlobalMetaDataColumn> columnList = globalMetaDataColumnMapper.selectByMetaDataId(globalDataFile.getFileId());
         globalDataFile.setMetaDataColumnList(columnList);
         return globalDataFile;
     }

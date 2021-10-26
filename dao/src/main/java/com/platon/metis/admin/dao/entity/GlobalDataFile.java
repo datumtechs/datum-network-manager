@@ -18,11 +18,6 @@ import java.util.List;
 @ToString
 public class GlobalDataFile implements Serializable {
     /**
-     * 序号
-     */
-    private Integer id;
-
-    /**
      * 组织身份ID
      */
     private String identityId;
@@ -93,19 +88,14 @@ public class GlobalDataFile implements Serializable {
     private Date publishTime;
 
     /**
+     * 元数据修改时间
+     */
+    private Date updateTime;
+
+    /**
      * 元数据ID,hash
      */
     private String metaDataId;
-
-    /**
-     * 创建时间
-     */
-    private Date recCreateTime;
-
-    /**
-     * 最后更新时间
-     */
-    private Date recUpdateTime;
 
     //源文件列信息
     private List<GlobalMetaDataColumn> metaDataColumnList = new ArrayList<>();

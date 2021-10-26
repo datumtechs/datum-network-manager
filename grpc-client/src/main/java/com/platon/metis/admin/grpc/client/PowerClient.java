@@ -15,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -266,14 +269,18 @@ public class PowerClient {
     //            }
                 Resourcedata.ResourceUsageOverview information = powerDetail.getInformation();// 算力实况
                 GlobalPower globalPower = new GlobalPower();
+                globalPower.setId(powerResponse.getPowerId());
                 globalPower.setIdentityId(identityId);
-                globalPower.setOrgName(orgName);
-                globalPower.setTotalMemory(information.getTotalMem());
-                globalPower.setUsedMemory(information.getUsedMem());
-                globalPower.setTotalCore((int)information.getTotalProcessor());
+                globalPower.setCore(information.getTotalProcessor());
+                globalPower.setMemory(information.getTotalMem());
+                globalPower.setBandwidth(information.getTotalBandwidth());
                 globalPower.setUsedCore((int)information.getUsedProcessor());
-                globalPower.setTotalBandwidth(information.getTotalBandwidth());
+                globalPower.setUsedMemory(information.getUsedMem());
                 globalPower.setUsedBandwidth(information.getUsedBandwidth());
+                globalPower.setStatus(powerDetail.getState().getNumber());
+                globalPower.setPublished(powerDetail.getState().getNumber()==2 || powerDetail.getState().getNumber() ==3);
+                globalPower.setPublishAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(powerDetail.getPublishAt()), ZoneOffset.UTC));
+                globalPower.setUpdateAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(powerDetail.getUpdateAt()), ZoneOffset.UTC));
                 globalPowerList.add(globalPower);
             });
             return globalPowerList;

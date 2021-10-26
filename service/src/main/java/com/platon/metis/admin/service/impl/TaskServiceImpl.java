@@ -27,11 +27,14 @@ public class TaskServiceImpl implements TaskService {
        @Resource
        private TaskOrgMapper taskOrgMapper;
 
-       @Resource
-       private TaskResultReceiverMapper taskResultReceiverMapper;
+        @Resource
+        private TaskAlgoProviderMapper taskAlgoConsumerMapper;
 
        @Resource
-       private TaskDataReceiverMapper taskDataReceiverMapper;
+       private TaskResultConsumerMapper taskResultConsumerMapper;
+
+       @Resource
+       private TaskDataProviderMapper taskDataProviderMapper;
 
        @Resource
        private TaskPowerProviderMapper taskPowerProviderMapper;
@@ -39,14 +42,14 @@ public class TaskServiceImpl implements TaskService {
 
 
         @Override
-        public Page<Task> listTask(Integer status, Integer role, Long startTimestamp, Long endTimestamp, String keyWord, int pageNumber, int pageSize) {
+        public Page<Task> listTaskByIdentityIdWithRole(String identityId, Long startTimestamp, Long endTimestamp, int pageNumber, int pageSize) {
 
             //String roleParam = RoleEnum.getMessageByCode(role);
             Timestamp startTimestampParam = (startTimestamp == 0) ? null : new Timestamp(startTimestamp);
             Timestamp endTimestampParam = (endTimestamp == 0) ? null : new Timestamp(endTimestamp);
 
             Page<Task> taskPage = PageHelper.startPage(pageNumber, pageSize);
-            List<Task> taskList = taskMapper.listTask(status, role, startTimestampParam, endTimestampParam, keyWord);
+            List<Task> taskList = taskMapper.listTaskByIdentityIdWithRole(identityId, startTimestampParam, endTimestampParam);
             taskList.forEach(task -> {
                 if(checkEndAtOver72Hour(task)){
                     task.setReviewed(true);
@@ -96,8 +99,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskStatistics selectTaskStatisticsCount() {
-        return taskMapper.selectTaskStatisticsCount();
+    public TaskStatistics taskStatistics() {
+        return taskMapper.taskStatistics();
     }
 
     @Override
@@ -107,18 +110,24 @@ public class TaskServiceImpl implements TaskService {
         //任务发起方身份信息
         TaskOrg owner = taskOrgMapper.selectTaskOrgByIdentityId(task.getOwnerIdentityId());
         task.setOwner(owner);
+
         //算法提供方
-        TaskOrg algoSupplier = taskOrgMapper.selectTaskOrgByIdentityId(task.getAlgIdentityId());
-        task.setAlgoSupplier(algoSupplier);
-        //结果接收方
-        List<TaskResultReceiver> resultReceiverList = taskResultReceiverMapper.selectTaskResultWithOrgByTaskId(taskId);
-        task.setReceivers(resultReceiverList);
-        //数据提供方
-        List<TaskDataReceiver> dataSupplierList = taskDataReceiverMapper.selectTaskDataWithOrgByTaskId(taskId);
-        task.setDataSupplier(dataSupplierList);
+        TaskAlgoProvider taskAlgoProvider = taskAlgoConsumerMapper.selectTaskAlgoProviderWithOrgNameByTaskId(taskId);
+        task.setAlgoSupplier(taskAlgoProvider);
+
         //算力提供方
         List<TaskPowerProvider> powerSupplierList = taskPowerProviderMapper.selectTaskPowerWithOrgByTaskId(taskId);
         task.setPowerSupplier(powerSupplierList);
+
+        //数据提供方
+        List<TaskDataProvider> dataSupplierList = taskDataProviderMapper.selectTaskDataWithOrgByTaskId(taskId);
+        task.setDataSupplier(dataSupplierList);
+
+        //结果接收方
+        List<TaskResultConsumer> resultReceiverList = taskResultConsumerMapper.selectTaskResultWithOrgByTaskId(taskId);
+        task.setReceivers(resultReceiverList);
+
+
         //更新task查看状态
         taskMapper.updateTaskReviewedById(taskId,true);
         //是否任务结束超过72小时，非最新(已查看)

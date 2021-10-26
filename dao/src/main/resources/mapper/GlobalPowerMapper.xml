@@ -2,21 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.metis.admin.dao.GlobalPowerMapper">
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.GlobalPower">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
-    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
-    <result column="total_core" jdbcType="INTEGER" property="totalCore" />
-    <result column="total_Memory" jdbcType="BIGINT" property="totalMemory" />
-    <result column="total_Bandwidth" jdbcType="BIGINT" property="totalBandwidth" />
+    <result column="memory" jdbcType="BIGINT" property="memory" />
+    <result column="core" jdbcType="INTEGER" property="core" />
+    <result column="bandwidth" jdbcType="BIGINT" property="bandwidth" />
+    <result column="used_memory" jdbcType="BIGINT" property="usedMemory" />
     <result column="used_core" jdbcType="INTEGER" property="usedCore" />
-    <result column="used_Memory" jdbcType="BIGINT" property="usedMemory" />
-    <result column="used_Bandwidth" jdbcType="BIGINT" property="usedBandwidth" />
-    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+    <result column="used_bandwidth" jdbcType="BIGINT" property="usedBandwidth" />
+    <result column="published" jdbcType="BIT" property="published" />
+    <result column="publish_at" jdbcType="TIMESTAMP" property="publishAt" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, identity_id,org_name, total_core, total_Memory, total_Bandwidth, used_core, used_Memory,
-    used_Bandwidth, rec_update_time
+    id, identity_id, memory, core, bandwidth, used_memory, used_core, used_bandwidth, published,
+    publish_at, status, update_at
   </sql>
 
   <!-- 获取全网算力信息-->
@@ -31,122 +33,51 @@
   </select>
 
 
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from global_power
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectAllPowerId" resultType="java.lang.String">
+    select id
+    from global_power
+  </select>
+
   <!-- 批量新增数据，一次建议最多更新1000条-->
-  <insert id="batchAddSelective">
-    <foreach collection="globalPowerList" item="globalPower" separator=";">
-      insert into global_power
-      <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="globalPower.identityId != null">
-          identity_id,
-        </if>
-        <if test="globalPower.orgName != null">
-          org_name,
-        </if>
-        <if test="globalPower.totalCore != null">
-          total_core,
-        </if>
-        <if test="globalPower.totalMemory != null">
-          total_Memory,
-        </if>
-        <if test="globalPower.totalBandwidth != null">
-          total_Bandwidth,
-        </if>
-        <if test="globalPower.usedCore != null">
-          used_core,
-        </if>
-        <if test="globalPower.usedMemory != null">
-          used_Memory,
-        </if>
-        <if test="globalPower.usedBandwidth != null">
-          used_Bandwidth,
-        </if>
-        <if test="globalPower.recUpdateTime != null">
-          rec_update_time,
-        </if>
-      </trim>
-      <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="globalPower.identityId != null">
-          #{globalPower.identityId,jdbcType=VARCHAR},
-        </if>
-        <if test="globalPower.orgName != null">
-          #{globalPower.orgName,jdbcType=VARCHAR},
-        </if>
-        <if test="globalPower.totalCore != null">
-          #{globalPower.totalCore,jdbcType=INTEGER},
-        </if>
-        <if test="globalPower.totalMemory != null">
-          #{globalPower.totalMemory,jdbcType=BIGINT},
-        </if>
-        <if test="globalPower.totalBandwidth != null">
-          #{globalPower.totalBandwidth,jdbcType=BIGINT},
-        </if>
-        <if test="globalPower.usedCore != null">
-          #{globalPower.usedCore,jdbcType=INTEGER},
-        </if>
-        <if test="globalPower.usedMemory != null">
-          #{globalPower.usedMemory,jdbcType=BIGINT},
-        </if>
-        <if test="globalPower.usedBandwidth != null">
-          #{globalPower.usedBandwidth,jdbcType=BIGINT},
-        </if>
-        <if test="globalPower.recUpdateTime != null">
-          #{globalPower.recUpdateTime,jdbcType=TIMESTAMP},
-        </if>
-      </trim>
+  <insert id="batchInsert" >
+    insert into global_power (id, identity_id, memory,
+    core, bandwidth, used_memory,
+    used_core, used_bandwidth, published,
+    publish_at, status, update_at)
+    values
+    <foreach collection ="globalPowerList" item="item" separator =",">
+      (#{item.id,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR}, #{item.memory,jdbcType=BIGINT},
+      #{item.core,jdbcType=INTEGER}, #{item.bandwidth,jdbcType=BIGINT}, #{item.usedMemory,jdbcType=BIGINT},
+      #{item.usedCore,jdbcType=INTEGER}, #{item.usedBandwidth,jdbcType=BIGINT}, #{item.published,jdbcType=BIT},
+      #{item.publishAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER},  #{item.updateAt,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
 
 
   <!-- 批量更新数据，一次建议最多更新1000条-->
-  <update id="batchUpdateByIdentityIdSelective">
-    <foreach collection="globalPowerList" item="globalPower" separator=";">
+  <update id="batchUpdate">
+    <foreach collection="globalPowerList" item="item" separator=";">
       update global_power
-      <set>
-        <if test="globalPower.identityId != null">
-          identity_id = #{globalPower.identityId,jdbcType=VARCHAR},
-        </if>
-        <if test="globalPower.orgName != null">
-          org_name = #{globalPower.orgName,jdbcType=VARCHAR},
-        </if>
-        <if test="globalPower.totalCore != null">
-          total_core = #{globalPower.totalCore,jdbcType=INTEGER},
-        </if>
-        <if test="globalPower.totalMemory != null">
-          total_Memory = #{globalPower.totalMemory,jdbcType=BIGINT},
-        </if>
-        <if test="globalPower.totalBandwidth != null">
-          total_Bandwidth = #{globalPower.totalBandwidth,jdbcType=BIGINT},
-        </if>
-        <if test="globalPower.usedCore != null">
-          used_core = #{globalPower.usedCore,jdbcType=INTEGER},
-        </if>
-        <if test="globalPower.usedMemory != null">
-          used_Memory = #{globalPower.usedMemory,jdbcType=BIGINT},
-        </if>
-        <if test="globalPower.usedBandwidth != null">
-          used_Bandwidth = #{globalPower.usedBandwidth,jdbcType=BIGINT},
-        </if>
-        <if test="globalPower.recUpdateTime != null">
-          rec_update_time = #{globalPower.recUpdateTime,jdbcType=TIMESTAMP},
-        </if>
-      </set>
-      where identity_id = #{globalPower.identityId}
+      set identity_id = #{item.identityId,jdbcType=VARCHAR},
+      memory = #{item.memory,jdbcType=BIGINT},
+      core = #{item.core,jdbcType=INTEGER},
+      bandwidth = #{item.bandwidth,jdbcType=BIGINT},
+      used_memory = #{item.usedMemory,jdbcType=BIGINT},
+      used_core = #{item.usedCore,jdbcType=INTEGER},
+      used_bandwidth = #{item.usedBandwidth,jdbcType=BIGINT},
+      published = #{item.published,jdbcType=BIT},
+      publish_at = #{item.publishAt,jdbcType=TIMESTAMP},
+      status= #{item.status,jdbcType=INTEGER},
+      update_at= #{item.updateAt,jdbcType=TIMESTAMP}
+      where id = #{item.id,jdbcType=VARCHAR}
     </foreach>
   </update>
-
-  <!-- 批量删除数据，一次建议最多删除1000条-->
-  <delete id="batchDeleteByIdentityId">
-    <if test="identityIdList.size() > 0">
-      delete from global_power
-      where identity_id in
-      <foreach collection="identityIdList" item="identityId" separator="," open="(" close=")">
-        #{identityId}
-      </foreach>
-    </if>
-  </delete>
-
-  <select id="selectAllIdentityId" resultType="java.lang.String">
-    select identity_id
-    from global_power
-  </select>
 </mapper>

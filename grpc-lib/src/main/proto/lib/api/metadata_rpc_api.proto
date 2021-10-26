@@ -33,23 +33,23 @@ message GetGlobalMetadataDetailResponse {
 
 // 查看 全网元数据列表  resp
 message GetGlobalMetadataDetailListResponse {
-  int32                                   status = 1;                      // 响应码
-  string                                  msg = 2;                         // 错误信息
-  repeated GetGlobalMetadataDetailResponse metadata_list = 3;               // 元数据列表
+  int32                                     status = 1;                      // 响应码
+  string                                    msg = 2;                         // 错误信息
+  repeated GetGlobalMetadataDetailResponse  metadata_list = 3;               // 元数据列表
 }
 
 // (本组织) 单个元数据详情 resp
-message GetLocalMetadataDetailResponse  {
-  api.protobuf.Organization owner = 1;              // 元数据的拥有者
-  types.MetadataDetail      information = 2;        // 元文件详情主体
-  bool                      is_local = 3;           // 是否为本组织本地元数据 (不对外的元数据, true: 是本组织元数据; false: 不是)
+message GetLocalMetadataDetailResponse {
+  api.protobuf.Organization owner = 1;                  // 元数据的拥有者
+  types.MetadataDetail      information = 2;            // 元文件详情主体
+  bool                      is_internal = 3;            // 是否为本组织内部元数据 (不对外的元数据, true: 是内部元数据; false: 不是)
 }
 
 // 查看 本组织元数据列表  resp
-message GetLocalMetadataDetailListResponse   {
-  int32                                   status = 1;                      // 响应码
-  string                                  msg = 2;                         // 错误信息
-  repeated GetLocalMetadataDetailResponse  metadata_list = 3;               // 元数据列表
+message GetLocalMetadataDetailListResponse {
+  int32                                     status = 1;                      // 响应码
+  string                                    msg = 2;                         // 错误信息
+  repeated GetLocalMetadataDetailResponse   metadata_list = 3;               // 元数据列表
 }
 
 
@@ -85,19 +85,17 @@ message GetMetadataUsedTaskIdListResponse {
 // ## 元数据 相关接口
 service MetadataService {
 
-  // 查看全网元数据列表
+  // 查看 全网元数据列表
   rpc GetGlobalMetadataDetailList (google.protobuf.Empty) returns (GetGlobalMetadataDetailListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/metadata/globalList"
-      body: "*"
+      get: "/carrier/v1/metadata/globalList"
     };
   }
 
   // 查看 本组织元数据列表
   rpc GetLocalMetadataDetailList (google.protobuf.Empty) returns (GetLocalMetadataDetailListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/metadata/localList"
-      body: "*"
+      get: "/carrier/v1/metadata/localList"
     };
   }
 

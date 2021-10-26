@@ -116,16 +116,16 @@ public class GlobalDataDetailResp  implements Serializable {
     private String metaDataId;
 
     /**
-     * 创建时间
+     * 发布时间
      */
-    @ApiModelProperty(name = "recCreateTime", value = "创建时间,单位ms")
-    private Long recCreateTime;
+    @ApiModelProperty(name = "recCreateTime", value = "发布时间,单位ms")
+    private Long publishTime;
 
     /**
      * 最后更新时间
      */
     @ApiModelProperty(name = "recUpdateTime", value = "最后更新时间,单位ms")
-    private Long recUpdateTime;
+    private Long updateTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -139,8 +139,8 @@ public class GlobalDataDetailResp  implements Serializable {
         }
         GlobalDataDetailResp resp = new GlobalDataDetailResp();
         BeanUtils.copyProperties(detail,resp);
-        resp.setRecCreateTime(detail.getRecCreateTime() == null? null : detail.getRecCreateTime().getTime());
-        resp.setRecUpdateTime(detail.getRecUpdateTime() == null? null : detail.getRecUpdateTime().getTime());
+        resp.setPublishTime(detail.getPublishTime() == null? null : detail.getPublishTime().getTime());
+        resp.setUpdateTime(detail.getUpdateTime() == null? null : detail.getUpdateTime().getTime());
         return resp;
     }
 }

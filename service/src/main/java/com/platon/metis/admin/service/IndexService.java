@@ -1,5 +1,6 @@
 package com.platon.metis.admin.service;
 
+import com.platon.metis.admin.dao.dto.StatsTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 
 import java.util.List;
@@ -44,13 +45,6 @@ public interface IndexService {
     List<Map<String, Object>> queryMyCalculateTaskStats();
 
     /**
-     * 查询全网数据或算力总量走势
-     * @param flag
-     * @return
-     */
-    List<Long> queryWholeNetDateOrPower(String flag);
-
-    /**
      * 查询全网数据总量环比
      * @return
      */
@@ -61,4 +55,34 @@ public interface IndexService {
      * @return
      */
     List<Map<String, Object>> queryWaitAuthDataList();
+
+    /**
+     * 查询全网算力（内存）总量月走势
+     * @return
+     */
+    List<StatsTrendDTO> listGlobalPowerStatsTrendMonthly();
+
+    /**
+     * 查询全网数据总量月走势
+     * @return
+     */
+    List<StatsTrendDTO> listGlobalDataFileStatsTrendMonthly();
+
+    /**
+     * 查询本地数据总量月走势
+     * @return
+     */
+    List<StatsTrendDTO> listLocalDataFileStatsTrendMonthly();
+
+    /**
+     * 查询本地算力（内存）总量月走势
+     * @return
+     */
+    List<StatsTrendDTO> listLocalPowerStatsTrendMonthly();
+
+    /**
+     * 查询全网数据总量日走势
+     * @return
+     */
+    List<StatsTrendDTO>  listGlobalDataFileStatsTrendDaily();
 }

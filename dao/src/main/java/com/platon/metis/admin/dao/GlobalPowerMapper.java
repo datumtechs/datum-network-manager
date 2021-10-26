@@ -15,25 +15,29 @@ public interface GlobalPowerMapper {
     List<GlobalPower> listGlobalPower(String keyword);
 
     /**
-     * 批量新增数据，一次建议最多更新1000条
+     * 根据powerId查询出指定的数据
+     * @param powerId
+     * @return
+     */
+    GlobalPower selectByPrimaryKey(String powerId);
+
+    /**
+     * 查询数据库中的所有PowerId
+     * @return
+     */
+    List<String> selectAllPowerId();
+
+    /**
+     * 批量保存数据，存在时更新，否则新增
      * @param globalPowerList
      * @return
      */
-    int batchAddSelective(@Param("globalPowerList") List<GlobalPower> globalPowerList);
+    int batchInsert(@Param("globalPowerList") List<GlobalPower> globalPowerList);
 
     /**
-     * 批量更新数据，一次建议最多更新1000条
-     */
-    int batchUpdateByIdentityIdSelective(@Param("globalPowerList") List<GlobalPower> globalPowerList);
-
-    /**
-     * 批量删除数据，一次建议最多删除1000条
-     */
-    int batchDeleteByIdentityId(@Param("identityIdList") List<String> identityIdList);
-
-    /**
-     * 获取所有已存在数据库中的IdentityId
+     * 批量保存数据，存在时更新，否则新增
+     * @param globalPowerList
      * @return
      */
-    List<String> selectAllIdentityId();
+    int batchUpdate(@Param("globalPowerList") List<GlobalPower> globalPowerList);
 }

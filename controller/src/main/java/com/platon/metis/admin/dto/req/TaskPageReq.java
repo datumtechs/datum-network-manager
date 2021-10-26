@@ -27,18 +27,6 @@ public class TaskPageReq {
     int pageSize;
 
     /**
-     * 任务状态
-     */
-    @ApiModelProperty(value = "任务状态,没有就传0,(0:unknown未知、1:pending等在中、2:running计算中、3:failed失败、4:success成功", example = "success" , required = false)
-    Integer status;
-
-    /**
-     * 任务角色
-     */
-    @ApiModelProperty(value = "任务角色,我在任务中的角色, 没有就传0 (0: 未定义; 1: 任务发起方; 2: 数据提供方; 3: 算力提供方; 4: 结果接收方; 5:算法提供方)", example = "0", required = false)
-    Integer role;
-
-    /**
      * 发起任务开始时间戳
      */
     @NotNull(message = "开始时间不能为空，没有就传0")
@@ -51,15 +39,6 @@ public class TaskPageReq {
     @NotNull(message = "结束时间不能为空，没有就传0")
     @ApiModelProperty(value = "发起任务结束时间戳，时区为UTC+8，没有就传0", example = "1624876140000", required = false)
     Long endTime;
-
-    /**
-     * 关键字
-     */
-    @ApiModelProperty(value = "关键字搜索，没有传入空字符串，依据名称搜索", example = "", required = false)
-    String keyWord;
-
-
-
 
 
 }

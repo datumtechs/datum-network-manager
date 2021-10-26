@@ -1,10 +1,11 @@
 package com.platon.metis.admin.service.impl;
 
+import com.platon.metis.admin.dao.StatsTrendMapper;
 import com.platon.metis.admin.dao.VLocalStatsMapper;
+import com.platon.metis.admin.dao.dto.StatsTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 import com.platon.metis.admin.service.IndexService;
 import com.platon.metis.admin.service.constant.ServiceConstant;
-import com.platon.metis.admin.service.exception.ServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,6 +26,8 @@ public class IndexServiceImpl implements IndexService {
 
     @Resource
     private VLocalStatsMapper localStatsMapper;
+    @Resource
+    private StatsTrendMapper statsTrendMapper;
 
     @Override
     public UsedResourceDTO queryUsedTotalResource() {
@@ -69,16 +72,13 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<Long> queryWholeNetDateOrPower(String flag) {
-        // 查询全网数据走势
-        if (ServiceConstant.constant_1.equals(flag)) {
-           return localStatsMapper.queryWholeNetDateTrend();
-        }
-        // 查询全网算力走势
-        if (ServiceConstant.constant_1.equals(flag)) {
-            return localStatsMapper.queryWholeNetPowerTrend();
-        }
-        throw new ServiceException("请求标志错误，请稍后重试");
+    public List<StatsTrendDTO> listGlobalDataFileStatsTrendMonthly() {
+        return statsTrendMapper.listGlobalDataFileStatsTrendMonthly();
+    }
+
+    @Override
+    public List<StatsTrendDTO> listGlobalPowerStatsTrendMonthly() {
+        return statsTrendMapper.listGlobalPowerStatsTrendMonthly();
     }
 
     @Override
@@ -117,6 +117,21 @@ public class IndexServiceImpl implements IndexService {
     @Override
     public List<Map<String, Object>> queryWaitAuthDataList() {
         return localStatsMapper.queryWaitAuthDataList();
+    }
+
+    @Override
+    public List<StatsTrendDTO> listLocalDataFileStatsTrendMonthly() {
+        return statsTrendMapper.listLocalDataFileStatsTrendMonthly();
+    }
+
+    @Override
+    public List<StatsTrendDTO> listLocalPowerStatsTrendMonthly() {
+        return statsTrendMapper.listLocalPowerStatsTrendMonthly();
+    }
+
+    @Override
+    public List<StatsTrendDTO> listGlobalDataFileStatsTrendDaily() {
+        return statsTrendMapper.listGlobalDataFileStatsTrendDaily();
     }
 
 }

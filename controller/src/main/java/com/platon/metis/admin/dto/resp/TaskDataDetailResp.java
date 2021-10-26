@@ -2,9 +2,9 @@ package com.platon.metis.admin.dto.resp;
 
 import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.entity.Task;
-import com.platon.metis.admin.dao.entity.TaskDataReceiver;
+import com.platon.metis.admin.dao.entity.TaskDataProvider;
 import com.platon.metis.admin.dao.entity.TaskPowerProvider;
-import com.platon.metis.admin.dao.entity.TaskResultReceiver;
+import com.platon.metis.admin.dao.entity.TaskResultConsumer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -73,7 +73,6 @@ public class TaskDataDetailResp {
         resp.setId(task.getId());
         resp.setTaskId(task.getTaskId());
         resp.setTaskName(task.getTaskName());
-        resp.setRole(task.getRole());
         resp.setStatus(task.getStatus());
         resp.setReviewed(task.getReviewed());
         resp.setCostBandwidth(task.getCostBandwidth());
@@ -82,7 +81,7 @@ public class TaskDataDetailResp {
         resp.setApplyUser(task.getApplyUser());
         resp.setUserType(task.getUserType());
         resp.setCreateAt(task.getCreateAt() == null ? null : task.getCreateAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
-        resp.setDuration(task.getDuration() == null ? null : task.getDuration().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        resp.setDuration(task.getDuration());
         resp.setStartAt(task.getStartAt() == null ? null : task.getStartAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
         resp.setEndAt(task.getEndAt() == null ? null : task.getEndAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
 
@@ -92,7 +91,6 @@ public class TaskDataDetailResp {
             owner.setNodeName(task.getOwner().getName());
             owner.setNodeIdentityId(task.getOwner().getIdentityId());
             owner.setCarrierNodeId(task.getOwner().getCarrierNodeId());
-            //BeanUtils.copyProperties(task.getOwner(),owner);
         }
         resp.setOwner(owner);
 
@@ -105,9 +103,8 @@ public class TaskDataDetailResp {
                 BeanUtils.copyProperties(powerProvider,powerSupplier);
             }
             if(!Objects.isNull(powerProvider.getDynamicFields()) && !CollectionUtils.isEmpty(powerProvider.getDynamicFields())){
-                powerSupplier.setCarrierNodeId(powerProvider.getDynamicFields().get(ControllerConstants.NODE_ID).toString());
-                powerSupplier.setNodeIdentityId(powerProvider.getDynamicFields().get(ControllerConstants.NODE_IDENTITY_ID).toString());
-                powerSupplier.setNodeName(powerProvider.getDynamicFields().get(ControllerConstants.NODE_NAME).toString());
+                powerSupplier.setCarrierNodeId(powerProvider.getField(ControllerConstants.NODE_ID).toString());
+                powerSupplier.setNodeName(powerProvider.getField(ControllerConstants.NODE_NAME).toString());
                 powerSupplierList.add(powerSupplier);
             }
 
@@ -116,13 +113,12 @@ public class TaskDataDetailResp {
 
          //Receivers
         List<CommonTaskOrg> receiverList = new ArrayList<>();
-        List<TaskResultReceiver> taskResultReceiverList = task.getReceivers();
-        for (TaskResultReceiver  resultReceiver : taskResultReceiverList) {
+        List<TaskResultConsumer> taskResultConsumerList = task.getReceivers();
+        for (TaskResultConsumer resultReceiver : taskResultConsumerList) {
                 CommonTaskOrg receiver = new CommonTaskOrg();
                 if(!Objects.isNull(resultReceiver.getDynamicFields()) && !CollectionUtils.isEmpty(resultReceiver.getDynamicFields())){
-                    receiver.setCarrierNodeId(resultReceiver.getDynamicFields().get(ControllerConstants.NODE_ID).toString());
-                    receiver.setNodeIdentityId(resultReceiver.getDynamicFields().get(ControllerConstants.NODE_IDENTITY_ID).toString());
-                    receiver.setNodeName(resultReceiver.getDynamicFields().get(ControllerConstants.NODE_NAME).toString());
+                    receiver.setCarrierNodeId(resultReceiver.getField(ControllerConstants.NODE_ID).toString());
+                    receiver.setNodeName(resultReceiver.getField(ControllerConstants.NODE_NAME).toString());
                     receiverList.add(receiver);
                 }
         }
@@ -131,22 +127,20 @@ public class TaskDataDetailResp {
         //algoSupplier
         CommonTaskOrg algoSupplier = new CommonTaskOrg();
         if(task.getAlgoSupplier() != null){
-            algoSupplier.setNodeName(task.getAlgoSupplier().getName());
-            algoSupplier.setCarrierNodeId(task.getAlgoSupplier().getCarrierNodeId());
+            algoSupplier.setNodeName((String)task.getAlgoSupplier().getField(ControllerConstants.NODE_NAME));
+            algoSupplier.setCarrierNodeId((String)task.getAlgoSupplier().getField(ControllerConstants.NODE_ID));
             algoSupplier.setNodeIdentityId(task.getAlgoSupplier().getIdentityId());
-            //BeanUtils.copyProperties(task.getAlgoSupplier(),algoSupplier);
         }
         resp.setAlgoSupplier(algoSupplier);
 
         //DataSupplier
         List<DataSupplier> dataSupplierList = new ArrayList<>();
-        List<TaskDataReceiver> taskDataReceiverList = task.getDataSupplier();
-        for (TaskDataReceiver dataReceiver : taskDataReceiverList) {
+        List<TaskDataProvider> taskDataProviderList = task.getDataSupplier();
+        for (TaskDataProvider dataReceiver : taskDataProviderList) {
               DataSupplier  dataSupplier = new DataSupplier();
               if(!Objects.isNull(dataReceiver.getDynamicFields()) && !CollectionUtils.isEmpty(dataReceiver.getDynamicFields())){
                   BeanUtils.copyProperties(dataReceiver, dataSupplier);
                   dataSupplier.setCarrierNodeId(dataReceiver.getDynamicFields().get(ControllerConstants.NODE_ID).toString());
-                  dataSupplier.setNodeIdentityId(dataReceiver.getDynamicFields().get(ControllerConstants.NODE_IDENTITY_ID).toString());
                   dataSupplier.setNodeName(dataReceiver.getDynamicFields().get(ControllerConstants.NODE_NAME).toString());
                   dataSupplierList.add(dataSupplier);
               }

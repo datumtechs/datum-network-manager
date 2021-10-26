@@ -42,11 +42,10 @@ CREATE TABLE `bootstrap_node` (
 -- ----------------------------
 DROP TABLE IF EXISTS `global_data_file`;
 CREATE TABLE `global_data_file` (
-    `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
+    `meta_data_id` varchar(256) NOT NULL COMMENT '元数据ID,hash',
     `identity_id` varchar(256) NOT NULL COMMENT '组织身份ID',
     `org_name` varchar(256) NOT NULL COMMENT '组织名称',
     `file_id` varchar(256) NOT NULL DEFAULT '' COMMENT '源文件ID',
-    `meta_data_id` varchar(256) DEFAULT NULL COMMENT '元数据ID,hash',
     `file_name` varchar(100) NOT NULL COMMENT '源文件名称',
     `file_path` varchar(100) NOT NULL COMMENT '文件存储路径',
     `file_type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '文件后缀/类型, 0：未知、1：csv(目前只支持这个)',
@@ -58,10 +57,8 @@ CREATE TABLE `global_data_file` (
     `remarks` varchar(100) DEFAULT NULL COMMENT '数据描述',
     `status` INT NOT NULL DEFAULT 0 COMMENT '数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)',
     `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
-    `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `file_id` (`file_id`) USING HASH
+    `update_time` datetime DEFAULT NULL COMMENT '元数据修改时间',
+    PRIMARY KEY (`meta_data_id`)
 ) COMMENT='全网数据文件表';
 
 -- ----------------------------
@@ -69,37 +66,35 @@ CREATE TABLE `global_data_file` (
 -- ----------------------------
 DROP TABLE IF EXISTS `global_meta_data_column`;
 CREATE TABLE `global_meta_data_column` (
-  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `file_id` varchar(256) NOT NULL COMMENT '文件ID',
-  `column_idx` INT DEFAULT NULL COMMENT '列索引',
+  `meta_data_id` varchar(256) NOT NULL COMMENT '元数据ID,hash',
+  `column_idx` INT NOT NULL COMMENT '列索引',
   `column_name` varchar(32) DEFAULT NULL COMMENT '列名',
   `column_type` varchar(32) DEFAULT NULL COMMENT '列类型',
   `size` INT DEFAULT 0 COMMENT '列大小（byte）',
   `remarks` varchar(32) DEFAULT NULL COMMENT '列描述',
   `visible` varchar(1) NOT NULL DEFAULT 'N' COMMENT '是否对外可见 Y:可见，N:不可见',
-  `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`meta_data_id`, `column_idx`)
 ) COMMENT='全网数据文件表列详细表';
 
 -- ----------------------------
 -- Table structure for global_power
 -- ----------------------------
-DROP TABLE IF EXISTS `global_power`;
-CREATE TABLE `global_power` (
-  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `identity_id` varchar(256) NOT NULL COMMENT '算力提供方身份标识',
-  `org_name` varchar(128) NOT NULL COMMENT '组织名称',
-  `total_core` INT NOT NULL DEFAULT '0' COMMENT '总CPU，单位：个',
-  `total_Memory` BIGINT NOT NULL DEFAULT '0' COMMENT '总内存，单位：byte',
-  `total_Bandwidth` BIGINT NOT NULL DEFAULT '0' COMMENT '总带宽，单位：bps',
-  `used_core` INT NOT NULL DEFAULT '0' COMMENT '已使用CPU信息，单位：个',
-  `used_Memory` BIGINT NOT NULL DEFAULT '0' COMMENT '已使用内存，单位：byte',
-  `used_Bandwidth` BIGINT NOT NULL DEFAULT '0' COMMENT '已使用带宽，单位：bps',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `identity_id` (`identity_id`)
-) COMMENT='全网算力资源表 记录全网的算力资源信息';
+DROP TABLE IF EXISTS global_power;
+CREATE TABLE global_power (
+  id VARCHAR(200) NOT NULL comment '计算服务主机ID,hash',
+  identity_id VARCHAR(200) NOT NULL COMMENT '组织身份ID',
+  memory BIGINT  NOT NULL DEFAULT 0 COMMENT '计算服务内存, 字节',
+  core INT NOT NULL DEFAULT 0 COMMENT '计算服务core',
+  bandwidth BIGINT  NOT NULL DEFAULT 0 COMMENT '计算服务带宽, bps',
+  used_memory BIGINT DEFAULT 0 COMMENT '使用的内存, 字节',
+  used_core INT DEFAULT 0 COMMENT '使用的core',
+  used_bandwidth BIGINT DEFAULT 0 COMMENT '使用的带宽, bps',
+  published BOOLEAN NOT NULL DEFAULT FALSE COMMENT '是否发布，true/false',
+  publish_at DATETIME NOT NULL DEFAULT NOW() comment '发布时间',
+  status int COMMENT '算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)',
+  update_at DATETIME NOT NULL comment '(状态)修改时间',
+  PRIMARY KEY (id)
+) comment '计算服务信息';
 
 -- ----------------------------
 -- Table structure for local_data_file
@@ -130,7 +125,7 @@ CREATE TABLE `local_data_file_column` (
     `size` INT DEFAULT 0 COMMENT '列大小（byte）',
     `remarks` varchar(32) DEFAULT NULL COMMENT '列描述',
     PRIMARY KEY (`file_id`, column_idx)
-) COMMENT='全网数据文件表列详细表';
+) COMMENT='本组织数据文件表列详细表';
 
 -- ----------------------------
 -- Table structure for local_meta_data
@@ -377,6 +372,7 @@ CREATE TABLE `task` (
     `task_Id` varchar(256) NOT NULL COMMENT '任务ID',
     `task_Name` varchar(32) DEFAULT NULL COMMENT '任务名称',
     `owner_Identity_id` varchar(256) DEFAULT NULL COMMENT '任务发起方组织ID',
+    `owner_party_id` varchar(256) DEFAULT NULL COMMENT '任务发起方组织ID',
     `apply_user` varchar(256) DEFAULT NULL COMMENT '发起任务的用户ID',
     `user_type` int(4) DEFAULT '0' COMMENT '发起任务用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)',
     `create_At` datetime DEFAULT NULL COMMENT '任务发起时间',
@@ -385,12 +381,10 @@ CREATE TABLE `task` (
     `auth_Status` varchar(10) DEFAULT NULL COMMENT '任务授权状态: pending:等待授权、denied:授权未通过',
     `end_At` datetime DEFAULT NULL COMMENT '任务结束时间',
     `status` tinyint(4) DEFAULT '0' COMMENT '任务状态(0:unknown未知、1:pending等在中、2:running计算中、3:failed失败、4:success成功)',
-    `role` tinyint(4) DEFAULT '0' COMMENT '我在任务中的角色 (0:unknown未知、1:owner任务发起方、2:dataSupplier数据提供方、3:powerSupplier算力提供方、4:receiver结果接收方、5:algoSupplier算法提供方)',
-    `duration` datetime DEFAULT NULL COMMENT '任务声明计算时间',
+    `duration` BIGINT DEFAULT NULL COMMENT '任务声明计算时间',
     `cost_core` INT DEFAULT '0' COMMENT '任务声明所需CPU',
     `cost_Memory` BIGINT DEFAULT '0' COMMENT '任务声明所需内存',
     `cost_Bandwidth` BIGINT DEFAULT '0' COMMENT '任务声明所需带宽',
-    `alg_Identity_id` varchar(256) DEFAULT NULL COMMENT '算法提供方身份ID',
     `reviewed` tinyint(1) DEFAULT '0' COMMENT '任务是否被查看过，默认为false(0)',
     `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -398,7 +392,13 @@ CREATE TABLE `task` (
     UNIQUE KEY `taskID` (`task_Id`) USING BTREE COMMENT 'task_id唯一'
 ) COMMENT='全网任务表 用于同步本地任务数据以及全网的相关数据';
 
-
+DROP TABLE IF EXISTS task_algo_provider;
+CREATE TABLE task_algo_provider (
+    task_id VARCHAR(200) NOT NULL comment '任务ID,hash',
+    identity_id VARCHAR(200) NOT NULL COMMENT '算法提供者组织身份ID',
+    party_id VARCHAR(200) NOT NULL COMMENT '任务参与方在本次任务中的唯一识别ID',
+    PRIMARY KEY (task_ID, identity_id)
+) comment '任务算法提供者';
 
 -- ----------------------------
 -- Table structure for task_data_provider
@@ -407,9 +407,8 @@ DROP TABLE IF EXISTS `task_data_provider`;
 CREATE TABLE `task_data_provider` (
   `task_id` varchar(256) NOT NULL COMMENT '任务ID,hash',
   `meta_data_id` varchar(256) NOT NULL COMMENT '参与任务的元数据ID',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `identity_id` varchar(256) NOT NULL COMMENT '数据提供者组织身份ID',
-  `meta_data_name` varchar(100) NOT NULL COMMENT '元数据名称',
+  party_id VARCHAR(200) NOT NULL COMMENT '参与方在计算任务中的partyId',
   PRIMARY KEY (`task_id`,`meta_data_id`)
 ) COMMENT='任务数据提供方表 存储某个任务数据提供方的信息';
 
@@ -422,9 +421,9 @@ CREATE TABLE `task_event` (
   `task_id` varchar(256) NOT NULL COMMENT '任务ID,hash',
   `event_type` varchar(20) NOT NULL COMMENT '事件类型',
   `identity_id` varchar(256) NOT NULL COMMENT '产生事件的组织身份ID',
+  party_id VARCHAR(200) NOT NULL COMMENT '产生事件的partyId (单个组织可以担任任务的多个party, 区分是哪一方产生的event)',
   `event_at` datetime NOT NULL COMMENT '产生事件的时间',
   `event_content` varchar(512) NOT NULL COMMENT '事件内容',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`ID`)
 ) COMMENT='任务事件表';
 
@@ -436,7 +435,6 @@ CREATE TABLE `task_org` (
   `identity_id` varchar(256) NOT NULL COMMENT '机构身份标识ID(主键)',
   `name` varchar(32) DEFAULT NULL COMMENT '机构名称',
   `carrier_node_id` varchar(256) NOT NULL COMMENT '组织中调度服务的 nodeId',
-  `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`identity_id`)
 ) COMMENT='任务组织信息表，用于存储从调度服务获取的任务数据快照中组织信息数据';
 
@@ -447,13 +445,13 @@ DROP TABLE IF EXISTS `task_power_provider`;
 CREATE TABLE `task_power_provider` (
   `task_id` varchar(256) NOT NULL COMMENT '任务ID,hash',
   `identity_id` varchar(256) NOT NULL COMMENT '算力提供者组织身份ID',
+  party_id VARCHAR(200) NOT NULL COMMENT '参与方在计算任务中的partyId',
   `total_core` INT DEFAULT '0' COMMENT '任务总CPU信息',
   `used_core` INT DEFAULT '0' COMMENT '任务占用CPU信息',
   `total_memory` BIGINT DEFAULT '0' COMMENT '任务总内存信息',
   `used_memory` BIGINT DEFAULT '0' COMMENT '任务占用内存信息',
   `total_Bandwidth` BIGINT DEFAULT '0' COMMENT '任务总带宽信息',
   `used_Bandwidth` BIGINT DEFAULT '0' COMMENT '任务占用带宽信息',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`task_id`,`identity_id`)
 ) COMMENT='任务算力提供方表 任务数据提供方基础信息';
 
@@ -464,53 +462,139 @@ DROP TABLE IF EXISTS `task_result_consumer`;
 CREATE TABLE `task_result_consumer` (
   `task_id` varchar(256) NOT NULL COMMENT '任务ID,hash',
   `consumer_identity_id` varchar(256) NOT NULL COMMENT '结果消费者组织身份ID',
-  `producer_identity_id` varchar(256) NOT NULL COMMENT '结果产生者的组织身份ID',
-  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`task_id`,`consumer_identity_id`,`producer_identity_id`)
+  consumer_party_id VARCHAR(200) NOT NULL COMMENT '参与方在计算任务中的partyId',
+  `producer_identity_id` varchar(256) COMMENT '结果产生者的组织身份ID',
+  producer_party_id VARCHAR(200) COMMENT '参与方在计算任务中的partyId',
+  PRIMARY KEY (`task_id`,`consumer_identity_id`)
 ) COMMENT='任务结果接收方表 任务结果接收方信息';
 
--- ----------------------------
--- Table structure for store_calculate_result
--- ----------------------------
-DROP TABLE IF EXISTS `store_calculate_result`;
-CREATE TABLE `store_calculate_result` (
-    `time_interval` varchar(10) NOT NULL COMMENT '时间间隔',
-    `store_type` varchar(50) NOT NULL COMMENT '存储类型',
-    `reside_time` varchar(10) NOT NULL COMMENT '所属时间',
-    `calculate_result` BIGINT DEFAULT 0 COMMENT '计算结果（单位：字节/bps）',
-    `status` int(4) DEFAULT 1 COMMENT '是否有效（1:有效，2:无效）',
-    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-    KEY (`store_type`)
-) COMMENT='存储计算结果表';
 
--- ----------------------------
--- View structure for v_past_12_month
--- ----------------------------
-drop view if exists v_past_12_month;
-CREATE VIEW `v_past_12_month` AS
-SELECT DATE_FORMAT((CURDATE() - INTERVAL 1 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 2 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 3 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 4 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 5 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 6 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 7 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 8 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 9 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 10 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 11 MONTH), '%Y-%m') AS `MONTH`
-    UNION SELECT DATE_FORMAT((CURDATE() - INTERVAL 12 MONTH), '%Y-%m') AS `MONTH`;
+-- 创建全网元数据月统计视图
+CREATE OR REPLACE VIEW v_global_data_file_stats_monthly as
+SELECT a.stats_time, a.month_size, SUM(b.month_size) AS accu_size
+FROM (
+    SELECT DATE_FORMAT(gdf.publish_time, '%Y-%m')  as stats_time, sum(gdf.size) as month_size
+    FROM global_data_file gdf
+    WHERE gdf.status=2
+    GROUP BY DATE_FORMAT(gdf.publish_time, '%Y-%m')
+    ORDER BY DATE_FORMAT(gdf.publish_time, '%Y-%m')
+) a
+JOIN (
+    SELECT DATE_FORMAT(gdf.publish_time, '%Y-%m')  as stats_time, sum(gdf.size) as month_size
+    FROM global_data_file gdf
+    WHERE gdf.status=2
+    GROUP BY DATE_FORMAT(gdf.publish_time, '%Y-%m')
+    ORDER BY DATE_FORMAT(gdf.publish_time, '%Y-%m')
+) b
+ON a.stats_time >= b.stats_time
+GROUP BY a.stats_time
+ORDER BY a.stats_time;
+
+-- 创建全网元数据日统计视图
+CREATE OR REPLACE VIEW v_global_data_file_stats_daily as
+SELECT a.stats_time, a.day_size, SUM(b.day_size) AS accu_size
+FROM (
+    SELECT DATE(gdf.publish_time) as stats_time, sum(gdf.size) as day_size
+    FROM global_data_file gdf
+    WHERE gdf.status=2
+    GROUP BY DATE(gdf.publish_time)
+    ORDER BY DATE(gdf.publish_time)
+) a
+JOIN (
+    SELECT DATE(gdf.publish_time) as stats_time, sum(gdf.size) as day_size
+    FROM global_data_file gdf
+    WHERE gdf.status=2
+    GROUP BY DATE(gdf.publish_time)
+    ORDER BY DATE(gdf.publish_time)
+) b
+ON a.stats_time >= b.stats_time
+GROUP BY a.stats_time
+ORDER BY a.stats_time;
+
+-- 创建全网算力月统计视图
+CREATE OR REPLACE VIEW v_global_power_stats_monthly as
+SELECT a.stats_time, a.month_core, a.month_memory, a.month_bandwidth, SUM(b.month_core) AS accu_core, SUM(b.month_memory) AS accu_memory, SUM(b.month_bandwidth) AS accu_bandwidth
+FROM (
+    SELECT DATE_FORMAT(gp.publish_at, '%Y-%m')  as stats_time, sum(gp.core) as month_core, sum(gp.memory) as month_memory, sum(gp.bandwidth) as month_bandwidth
+    FROM global_power gp
+    WHERE gp.status=2 or gp.status=3
+    GROUP BY DATE_FORMAT(gp.publish_at, '%Y-%m')
+    ORDER BY DATE_FORMAT(gp.publish_at, '%Y-%m')
+) a
+JOIN (
+    SELECT DATE_FORMAT(gp.publish_at, '%Y-%m')  as stats_time, sum(gp.core) as month_core, sum(gp.memory) as month_memory, sum(gp.bandwidth) as month_bandwidth
+    FROM global_power gp
+    WHERE gp.status=2 or gp.status=3
+    GROUP BY DATE_FORMAT(gp.publish_at, '%Y-%m')
+    ORDER BY DATE_FORMAT(gp.publish_at, '%Y-%m')
+) b
+ON a.stats_time >= b.stats_time
+GROUP BY a.stats_time
+ORDER BY a.stats_time;
 
 
+-- 创建全网算力日统计视图
+CREATE OR REPLACE VIEW v_global_power_stats_daily as
+SELECT a.stats_time, a.day_core, a.day_memory, a.day_bandwidth, SUM(b.day_core) AS accu_core, SUM(b.day_memory) AS accu_memory, SUM(b.day_bandwidth) AS accu_bandwidth
+FROM (
+    SELECT DATE(gp.publish_at)  as stats_time, sum(gp.core) as day_core, sum(gp.memory) as day_memory, sum(gp.bandwidth) as day_bandwidth
+    FROM global_power gp
+    WHERE gp.status=2 or gp.status=3
+    GROUP BY DATE(gp.publish_at)
+    ORDER BY DATE(gp.publish_at)
+) a
+JOIN (
+    SELECT DATE(gp.publish_at)  as stats_time, sum(gp.core) as day_core, sum(gp.memory) as day_memory, sum(gp.bandwidth) as day_bandwidth
+    FROM global_power gp
+    WHERE gp.status=2 or gp.status=3
+    GROUP BY DATE(gp.publish_at)
+    ORDER BY DATE(gp.publish_at)
+) b
+ON a.stats_time >= b.stats_time
+GROUP BY a.stats_time
+ORDER BY a.stats_time;
 
-/*DROP TABLE IF EXISTS `sync_checkpoint`;
-CREATE TABLE `sync_checkpoint` (
-    `metadata_auth` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '元数据授权申请',
-    `org` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '组织',
-    `metadata` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '元数据',
-    `power` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '算力',
-    `task` timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '任务'
-) COMMENT='各种数据同步时间点';
-INSERT INTO sync_checkpoint (metadata_auth, org, metadata, power, task) values (NULL,NULL,NULL,NULL,NULL);
-*/
+-- 本地统计
+
+-- 创建本地元数据月统计视图
+CREATE OR REPLACE VIEW v_local_data_file_stats_monthly as
+SELECT a.stats_time, a.month_size, SUM(b.month_size) AS accu_size
+FROM (
+    SELECT DATE_FORMAT(lmd.publish_time, '%Y-%m')  as stats_time, sum(ldf.size) as month_size
+    FROM local_data_file ldf, local_meta_data lmd
+    WHERE ldf.file_id = lmd.file_id AND lmd.status = 2
+    GROUP BY DATE_FORMAT(lmd.publish_time, '%Y-%m')
+    ORDER BY DATE_FORMAT(lmd.publish_time, '%Y-%m')
+) a
+JOIN (
+    SELECT DATE_FORMAT(lmd.publish_time, '%Y-%m')  as stats_time, sum(ldf.size) as month_size
+    FROM local_data_file ldf, local_meta_data lmd
+    WHERE ldf.file_id = lmd.file_id AND lmd.status = 2
+    GROUP BY DATE_FORMAT(lmd.publish_time, '%Y-%m')
+    ORDER BY DATE_FORMAT(lmd.publish_time, '%Y-%m')
+) b
+ON a.stats_time >= b.stats_time
+GROUP BY a.stats_time
+ORDER BY a.stats_time;
+
+
+-- 创建本地算力月统计视图
+CREATE OR REPLACE VIEW v_local_power_stats_monthly as
+SELECT a.stats_time, a.month_core, a.month_memory, a.month_bandwidth, SUM(b.month_core) AS accu_core, SUM(b.month_memory) AS accu_memory, SUM(b.month_bandwidth) AS accu_bandwidth
+FROM (
+    SELECT DATE_FORMAT(lpn.start_time, '%Y-%m')  as stats_time, sum(lpn.core) as month_core, sum(lpn.memory) as month_memory, sum(lpn.bandwidth) as month_bandwidth
+    FROM local_power_node lpn
+    WHERE lpn.power_status=2 or lpn.power_status=3
+    GROUP BY DATE_FORMAT(lpn.start_time, '%Y-%m')
+    ORDER BY DATE_FORMAT(lpn.start_time, '%Y-%m')
+) a
+JOIN (
+    SELECT DATE_FORMAT(lpn.start_time, '%Y-%m')  as stats_time, sum(lpn.core) as month_core, sum(lpn.memory) as month_memory, sum(lpn.bandwidth) as month_bandwidth
+    FROM local_power_node lpn
+    WHERE lpn.power_status=2 or lpn.power_status=3
+    GROUP BY DATE_FORMAT(lpn.start_time, '%Y-%m')
+    ORDER BY DATE_FORMAT(lpn.start_time, '%Y-%m')
+) b
+ON a.stats_time >= b.stats_time
+GROUP BY a.stats_time
+ORDER BY a.stats_time;

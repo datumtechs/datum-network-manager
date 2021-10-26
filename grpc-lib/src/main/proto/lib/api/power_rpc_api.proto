@@ -14,30 +14,45 @@ import "google/protobuf/empty.proto";
 //  ------------------------  power  ------------------------
 
 // 单个组织的总算力信息
+message GetGlobalPowerSummaryResponse {
+  api.protobuf.Organization owner = 1;                  // 算力拥有者信息
+  types.PowerUsageDetail    power = 2;                  // 算力单个摘要
+}
+
+// 查看全网各个组织的总算力(累加)详情列表 resp
+message GetGlobalPowerSummaryListResponse {
+  int32                                 status = 1;       // 响应码
+  string                                msg = 2;          // 错误提示信息
+  repeated GetGlobalPowerSummaryResponse power_list = 3;  // 全网的各个组织的累加power详情列表
+}
+
+// 单个组织的各个算力信息
 message GetGlobalPowerDetailResponse {
   api.protobuf.Organization owner = 1;                  // 算力拥有者信息
   types.PowerUsageDetail    power = 2;                  // 算力总详细
-}
-// 全网各个组织的总算力列表 resp
-message GetGlobalPowerDetailListResponse {
-  int32                                status = 1;      // 响应码
-  string                               msg = 2;         // 错误提示信息
-  repeated GetGlobalPowerDetailResponse power_list = 3;  // 全网的算力总详情列表
+  string                    power_id = 3;               // 算力id
 }
 
-// 本组织的单个算力信息
+// 全网各个组织的各个算力列表 resp
+message GetGlobalPowerDetailListResponse {
+  int32                                 status = 1;      // 响应码
+  string                                msg = 2;         // 错误提示信息
+  repeated GetGlobalPowerDetailResponse power_list = 3;  // 全网的各个组织的各个power详情列表
+}
+
+// 本组织的单个(宿主机)算力信息 (包含【未发布】和【已发布】的) resp
 message GetLocalPowerDetailResponse {
   api.protobuf.Organization owner = 1;                  // 算力拥有者信息
   types.PowerUsageDetail    power = 2;                  // 算力单个摘要
-  string                    job_node_id = 3;            // 计算服务id (节点内部的)
-  string                    power_id = 4;               // 算力id
+  string                    job_node_id = 3;            // 计算服务id (单个宿主机的id)
+  string                    power_id = 4;               // 算力id (对于未发布的算力, powerId为"")
 }
 
-// 本组织的多个算力信息列表 resp
+// 本组织的多个(宿主机)算力信息 (包含【未发布】和【已发布】的)
 message GetLocalPowerDetailListResponse {
-  int32                                 status = 1;         // 响应码
-  string                                msg = 2;            // 错误提示信息
-  repeated GetLocalPowerDetailResponse  power_list = 3;     // 单个节点的算力总摘要列表
+  int32                                   status = 1;         // 响应码
+  string                                  msg = 2;            // 错误提示信息
+  repeated GetLocalPowerDetailResponse    power_list = 3;     // 单个节点的算力总摘要列表
 }
 
 
@@ -63,19 +78,24 @@ message RevokePowerRequest {
 //                    查看自己组织时, 自己组织的算力和元数据都需要知道单个单个的.
 service PowerService {
 
-  // 查看全网各个组织的总算力详情列表
-  rpc GetGlobalPowerDetailList (google.protobuf.Empty) returns (GetGlobalPowerDetailListResponse) {
+  // 查看全网各个组织的总算力(累加)详情列表
+  rpc GetGlobalPowerSummaryList (google.protobuf.Empty) returns (GetGlobalPowerSummaryListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/power/globalList"
-      body: "*"
+      get: "/carrier/v1/power/globalSummaryList"
     };
   }
 
-  // 查看本组织的各个单算力详情列表
+  // 查看全网各个组织的各个算力详情列表
+  rpc GetGlobalPowerDetailList (google.protobuf.Empty) returns (GetGlobalPowerDetailListResponse) {
+    option (google.api.http) = {
+      get: "/carrier/v1/power/globalDetailList"
+    };
+  }
+
+  // 本组织的所有(宿主机)算力信息列表 (包含【未发布】和【已发布】的)
   rpc GetLocalPowerDetailList (google.protobuf.Empty) returns (GetLocalPowerDetailListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/power/localList"
-      body: "*"
+      get: "/carrier/v1/power/localDetailList"
     };
   }
 

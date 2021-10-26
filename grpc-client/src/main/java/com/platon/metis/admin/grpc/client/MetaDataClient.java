@@ -15,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -174,14 +176,12 @@ public class MetaDataClient {
                         globalDataFile.setFileType(summary.getFileType().getNumber());
                         globalDataFile.setHasTitle(summary.getHasTitle());
                         globalDataFile.setStatus(summary.getState().getNumber());
-                        //            uint32 cindex   = 1;                         // 列的索引
-                        //            string cname    = 2;                          // 列名
-                        //            string ctype    = 3;                          // 列类型
-                        //            uint32 csize    = 4;                          // 列大小(单位: byte)
-                        //            string ccomment = 5;                       // 列描述
+                        globalDataFile.setPublishTime(Date.from(Instant.ofEpochMilli(summary.getPublishAt())));
+                        globalDataFile.setUpdateTime(Date.from(Instant.ofEpochMilli(summary.getUpdateAt())));
+
                         information.getMetadataColumnsList().forEach(columnDetail -> {
                             GlobalMetaDataColumn metaDataColumn = new GlobalMetaDataColumn();
-                            metaDataColumn.setFileId(summary.getOriginId());
+                            metaDataColumn.setMetaDataId(summary.getMetadataId());
                             metaDataColumn.setColumnIdx(columnDetail.getCIndex());
                             metaDataColumn.setColumnName(columnDetail.getCName());
                             metaDataColumn.setColumnType(columnDetail.getCType());

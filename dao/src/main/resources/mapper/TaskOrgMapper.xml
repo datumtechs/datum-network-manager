@@ -5,12 +5,11 @@
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="carrier_node_id" jdbcType="VARCHAR" property="carrierNodeId" />
-    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
 
 
   <sql id="Base_Column_List">
-    identity_id, `name`, carrier_node_id, rec_update_time
+    identity_id, `name`, carrier_node_id
   </sql>
 
 

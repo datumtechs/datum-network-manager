@@ -1,24 +1,31 @@
 package com.platon.metis.admin.dao.entity;
 
+import com.platon.metis.admin.dao.BaseDomain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Setter
 @Getter
 @ToString
-public class TaskOrg {
+public class TaskOrg extends BaseDomain {
     //机构身份标识ID
     private String identityId;
     //机构名称
     private String name;
     //组织中调度服务的 nodeId
     private String carrierNodeId;
-    //更新时间
-    private LocalDateTime recUpdateTime;
+
+    public TaskOrg() {
+    }
+
+    public TaskOrg(String identityId, String name, String carrierNodeId) {
+        this.identityId = identityId;
+        this.name = name;
+        this.carrierNodeId = carrierNodeId;
+    }
 
     @Override
     public boolean equals(Object o) {

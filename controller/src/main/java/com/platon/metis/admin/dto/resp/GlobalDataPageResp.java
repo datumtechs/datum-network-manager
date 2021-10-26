@@ -18,14 +18,11 @@ import java.util.Date;
 @ApiModel(value = "全网数据列表返回参数")
 public class GlobalDataPageResp {
 
-    @ApiModelProperty(name = "id", value = "id")
-    private Integer id;
+    @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
+    private String metaDataId;
 
     @ApiModelProperty(name = "fileName", value = "源文件名称")
     private String fileName;
-
-    @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
-    private String metaDataId;
 
     @ApiModelProperty(name = "identityId", value = "组织身份ID")
     private String identityId;
@@ -48,11 +45,10 @@ public class GlobalDataPageResp {
             return null;
         }
         GlobalDataPageResp dataPageResp = new GlobalDataPageResp();
-        dataPageResp.setId(globalDataFile.getId());
+        dataPageResp.setMetaDataId(globalDataFile.getMetaDataId());
         dataPageResp.setFileName(globalDataFile.getResourceName());
         dataPageResp.setSize(globalDataFile.getSize());
         dataPageResp.setPublishTime(globalDataFile.getPublishTime());
-        dataPageResp.setMetaDataId(globalDataFile.getMetaDataId());
         dataPageResp.setIdentityId(globalDataFile.getIdentityId());
         dataPageResp.setOrgName(globalDataFile.getOrgName());
 

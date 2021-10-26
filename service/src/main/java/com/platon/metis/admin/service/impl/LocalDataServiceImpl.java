@@ -62,7 +62,7 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Resource
     private MetaDataClient metaDataClient;
     @Resource
-    private TaskDataReceiverMapper taskDataReceiverMapper;
+    private TaskDataProviderMapper taskDataProviderMapper;
     @Resource
     private TaskMapper taskMapper;
 
@@ -76,7 +76,7 @@ public class LocalDataServiceImpl implements LocalDataService {
 
     @Override
     public Page<Task> listDataJoinTask(int pageNo, int pageSize, String metaDataId, String keyword) {
-        List<String> taskIdList = taskDataReceiverMapper.selectTaskByMetaDataId(metaDataId);
+        List<String> taskIdList = taskDataProviderMapper.selectTaskByMetaDataId(metaDataId);
 
         Page<Task> dataJoinTaskPage = PageHelper.startPage(pageNo, pageSize);
         List<Task> taskList = taskIdList.stream().map(new Function<String, Task>() {
@@ -267,7 +267,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         if(LocalDataFileStatusEnum.RELEASED.getStatus()==localMetaData.getStatus()){
             throw new ServiceException("元数据已上架");
         }
-        List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByLocalMetaDataDbId(localMetaData.getId());
+        List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByLocalMetaDataDbIdToPublish(localMetaData.getId());
         localMetaData.setLocalMetaDataColumnList(columnList);
         LocalDataFile localDataFile = localDataFileMapper.selectByFileId(localMetaData.getFileId());
 

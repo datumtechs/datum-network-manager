@@ -23,6 +23,14 @@
     where local_meta_data_db_id = #{localMetaDataDbId,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByLocalMetaDataDbIdToPublish" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_meta_data_column
+    where local_meta_data_db_id = #{localMetaDataDbId,jdbcType=INTEGER} AND visible = TRUE
+  </select>
+
+
   <!-- 批量插入数据-->
   <insert id="batchInsert" parameterType="com.platon.metis.admin.dao.entity.LocalMetaDataColumn" useGeneratedKeys="true" keyProperty="id">
     insert into local_meta_data_column (local_meta_data_db_id, column_idx,

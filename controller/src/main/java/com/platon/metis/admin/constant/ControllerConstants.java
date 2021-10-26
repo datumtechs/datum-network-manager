@@ -24,7 +24,6 @@ public class ControllerConstants {
      * 组织节点信息字段
      */
     public static String NODE_NAME = "nodeName";
-    public static String NODE_IDENTITY_ID = "nodeIdentityId";
     public static String NODE_ID = "nodeId";
 
 }

@@ -106,7 +106,10 @@ public class LocalDataController {
 
 
     /**
-     * 导入文件，文件上传+新增元数据信息,进行解析并将解析后的数据返回给前端
+     * 导入文件，并解析文件格式和内容，把文件信息存入local_data_file，把文件列信息返回给前端。
+     * 注意：此时正常逻辑应该把列信息存入local_data_file_column，但是这里并没有。
+     * 为了简化后续操作的数据查询，只是在添加元数据时，把全量的列信息存入local_meta_data_column表中。
+     * 因此，local_data_file_column表其实没有用了。
      */
     @ApiOperation(value = "导入文件")
     @ApiImplicitParams(value = {
@@ -151,8 +154,8 @@ public class LocalDataController {
     }
 
     /**
-     * 数据添加：实际只是更新数据库信息，在上一步导入文件的时候已经插入数据
-     * 另存为新数据：复制一份数据进行保存
+     * 元数据添加：
+     * 在添加元数据时，需要把元数据信息存入local_meta_data表，并把全量的列信息存入local_meta_data_column表中（带visible）。
      */
     @ApiOperation(value = "添加数据/另存为新数据")
     @PostMapping("addLocalMetaData")

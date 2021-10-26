@@ -1,11 +1,15 @@
 package com.platon.metis.admin.controller.resource;
 
+import com.platon.metis.admin.common.context.LocalOrgCache;
+import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
+import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dto.CommonPageReq;
 import com.platon.metis.admin.dto.req.AddLocalMetaDataReq;
 import com.platon.metis.admin.dto.req.LocalDataMetaDataListByKeyWordReq;
 import com.platon.metis.admin.dto.req.LocalDataUpdateReq;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +27,15 @@ import java.util.List;
 public class MetaDataControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    LocalOrgMapper localOrgMapper;
+
+    @BeforeAll
+    public void init(){
+        LocalOrg localOrg = localOrgMapper.select();
+        LocalOrgCache.setLocalOrgInfo(localOrg);;
+    }
 
     @Test
     public void addLocalMetaData(){
@@ -126,4 +139,6 @@ public class MetaDataControllerTest {
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }
+
+
 }

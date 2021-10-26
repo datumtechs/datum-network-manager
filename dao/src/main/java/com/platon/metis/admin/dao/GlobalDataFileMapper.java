@@ -8,11 +8,18 @@ import java.util.List;
 public interface GlobalDataFileMapper {
 
     /**
-     * 根据id查询出指定的数据
-     * @param id
+     * 根据metaDataId查询出指定的数据
+     * @param metaDataId
      * @return
      */
-    GlobalDataFile selectById(Integer id);
+    GlobalDataFile selectByMetaDataId(String metaDataId);
+
+    /**
+     * 查询数据库中的所有MetaDataId
+     * @return
+     */
+    List<String> selectAllMetaDataId();
+
 
     /**
      * 获取所有文件信息
@@ -21,25 +28,16 @@ public interface GlobalDataFileMapper {
     List<GlobalDataFile> listDataFile(String keyword);
 
     /**
-     * 批量更新数据，一次建议最多更新1000条
-     */
-    int batchUpdateByFileIdSelective(@Param("localDataFileList") List<GlobalDataFile> localDataFileList);
-
-    /**
-     * 批量删除数据，一次建议最多删除1000条
-     */
-    int batchDeleteByFileId(@Param("fileIdList") List<String> fileIdList);
-
-    /**
-     * 查询数据库中的所有fileId
+     * 批量保存数据，存在时更新，否则新增
+     * @param globalDataFileList
      * @return
      */
-    List<String> selectAllFileId();
+    int batchInsert(@Param("globalDataFileList") List<GlobalDataFile> globalDataFileList);
 
     /**
-     * 批量新增数据，一次建议最多更新1000条
-     * @param localDataFileList
+     * 批量保存数据，存在时更新，否则新增
+     * @param globalDataFileList
      * @return
      */
-    int batchAddSelective(@Param("localDataFileList") List<GlobalDataFile> localDataFileList);
+    int batchUpdate(@Param("globalDataFileList") List<GlobalDataFile> globalDataFileList);
 }

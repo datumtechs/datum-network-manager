@@ -11,11 +11,7 @@ public interface TaskEventMapper {
 
     int insert(TaskEvent record);
 
-    int insertSelective(TaskEvent record);
-
     TaskEvent selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(TaskEvent record);
 
     int updateByPrimaryKey(TaskEvent record);
 

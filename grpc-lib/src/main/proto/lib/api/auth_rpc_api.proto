@@ -116,8 +116,7 @@ service AuthService {
   // 查询自己组织的identity信息
   rpc GetNodeIdentity (google.protobuf.Empty)returns (GetNodeIdentityResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/auth/getIdentity"
-      body: "*"
+      get: "/carrier/v1/auth/getIdentity"
     };
   }
 
@@ -156,16 +155,14 @@ service AuthService {
   // 查询(本组织)的所有元数据的授权申请及审核结果详情列表
   rpc GetLocalMetadataAuthorityList(google.protobuf.Empty) returns (GetMetadataAuthorityListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/auth/localMetadataAuthList"
-      body: "*"
+      get: "/carrier/v1/auth/localMetadataAuthList"
     };
   }
 
   // 查询(全网)的所有元数据的授权申请及审核结果详情列表
   rpc GetGlobalMetadataAuthorityList(google.protobuf.Empty) returns (GetMetadataAuthorityListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/auth/globalMetadataAuthList"
-      body: "*"
+      get: "/carrier/v1/auth/globalMetadataAuthList"
     };
   }
 

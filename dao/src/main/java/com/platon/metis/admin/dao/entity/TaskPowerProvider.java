@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @ToString
@@ -14,6 +12,7 @@ public class TaskPowerProvider extends BaseDomain {
     private String taskId;
 
     private String identityId;
+    private String partyId;
 
     private Integer totalCore;
 
@@ -26,7 +25,5 @@ public class TaskPowerProvider extends BaseDomain {
     private Long totalBandwidth;
 
     private Long usedBandwidth;
-
-    private LocalDateTime recUpdateTime;
 
 }

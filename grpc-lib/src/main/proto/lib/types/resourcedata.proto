@@ -7,7 +7,7 @@ import "lib/common/data.proto";
 
 option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
 option java_package = "com.platon.metis.admin.grpc.types";
-//option java_multiple_files = true;
+
 // 单个组织的总算力信息
 message ResourcePB {
   string identity_id = 1;                         // 算力所属的组织的 身份标识
@@ -30,6 +30,8 @@ message ResourcePB {
   uint64 used_bandwidth = 12;                     // 算力已使用带宽数 (单位: bps)
   uint64 total_disk = 13;                         // 算力总磁盘容量 (单位: byte)
   uint64 used_disk = 14;                          // 算力已使用磁盘容量 (单位: byte)
+  uint64 publish_at = 16;                         // 数据发布时间
+  uint64 update_at = 17;                          // 数据更新时间
 }
 
 // 单个组织中的单台服务的算力信息
@@ -78,6 +80,9 @@ message PowerUsageDetail {
   uint32                            current_task_count = 3;           // 算力(宿主机)上当前正在执行的任务数
   repeated PowerTask                tasks = 4;                        // 算力(宿主机)上当前正在执行的任务详情信息
   api.protobuf.PowerState           state = 5;                        // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)
+  // v 2.0
+  uint64                            publish_at = 6;                   // 数据发布时间 (表示单条算力时才有值)
+  uint64                            update_at = 7;                    // 数据更新时间 (表示单条算力时才有值)
 }
 
 // 算力上的任务信息

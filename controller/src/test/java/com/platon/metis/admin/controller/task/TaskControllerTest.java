@@ -25,7 +25,14 @@ public class TaskControllerTest {
         req.setPageSize(10);
         req.setStartTime(0L);
         req.setEndTime(0L);
-        ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/task/mytask/taskListByQuery", req, String.class);
+        ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/task/mytask/listMyTask", req, String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+    }
+
+    @Test
+    public void myTaskStatistics(){
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/task/mytask/myTaskStatistics", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }

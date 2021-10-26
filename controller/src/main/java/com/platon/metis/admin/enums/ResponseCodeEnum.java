@@ -13,6 +13,7 @@ import lombok.Getter;
 public enum ResponseCodeEnum {
 
     SUCCESS(0,"成功"),
+    NO_DATA(1,"没有数据"),
     FAIL(500,"失败"),
 
 

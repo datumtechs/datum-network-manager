@@ -167,6 +167,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         localPowerNode.setPowerNodeId(powerNodeId);
         localPowerNode.setPowerId(powerId);
         localPowerNode.setPowerStatus(CommonBase.PowerState.PowerState_Released_VALUE);
+        //todo：这个时间是本地时间，而不是数据中心时间
         localPowerNode.setStartTime(LocalDateTime.now());
         localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }

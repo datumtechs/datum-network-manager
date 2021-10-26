@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author 
@@ -15,15 +14,11 @@ import java.util.Date;
 @Setter
 @ToString
 public class GlobalMetaDataColumn implements Serializable {
-    /**
-     * 序号
-     */
-    private Integer id;
 
     /**
      * 源文件id
      */
-    private String fileId;
+    private String metaDataId;
 
     /**
      * 列索引
@@ -55,15 +50,6 @@ public class GlobalMetaDataColumn implements Serializable {
      */
     private String visible;
 
-    /**
-     * 创建时间
-     */
-    private Date recCreateTime;
-
-    /**
-     * 最后更新时间
-     */
-    private Date recUpdateTime;
 
     private static final long serialVersionUID = 1L;
 }

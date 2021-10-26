@@ -6,12 +6,12 @@
     <result column="task_id" jdbcType="VARCHAR" property="taskId" />
     <result column="event_type" jdbcType="VARCHAR" property="eventType" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="party_id" jdbcType="VARCHAR" property="partyId" />
     <result column="event_at" jdbcType="TIMESTAMP" property="eventAt" />
     <result column="event_content" jdbcType="VARCHAR" property="eventContent" />
-    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, task_id, event_type, identity_id, event_at, event_content, rec_update_time
+    ID, task_id, event_type, identity_id, party_id, event_at, event_content
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,7 +24,7 @@
 
   <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskEvent" extends="BaseResultMap">
     <result column="node_name" property="dynamicFields.nodeName" jdbcType="VARCHAR"/>
-    <result column="node_identityId" property="dynamicFields.nodeIdentityId" jdbcType="VARCHAR"/>
+    <result column="node_identityId" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>
     <result column="node_id" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>
   </resultMap>
 
@@ -59,11 +59,9 @@
 
   <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.TaskEvent">
     insert into task_event (ID, task_id, event_type, 
-      identity_id, event_at, event_content, 
-      rec_update_time)
+      identity_id, party_id, event_at, event_content)
     values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=VARCHAR}, #{eventType,jdbcType=VARCHAR}, 
-      #{identityId,jdbcType=VARCHAR}, #{eventAt,jdbcType=TIMESTAMP}, #{eventContent,jdbcType=VARCHAR}, 
-      #{recUpdateTime,jdbcType=TIMESTAMP})
+      #{identityId,jdbcType=VARCHAR}, #{partyId,jdbcType=VARCHAR}, #{eventAt,jdbcType=TIMESTAMP}, #{eventContent,jdbcType=VARCHAR})
   </insert>
 
 
@@ -80,11 +78,11 @@
 
     begin
         insert into task_event (task_id, event_type,
-        identity_id, event_at, event_content)
+        identity_id, party_id, event_at, event_content)
         values
         <foreach collection ="taskEventList" item="item" separator =",">
           (#{item.taskId,jdbcType=VARCHAR}, #{item.eventType,jdbcType=VARCHAR},
-          #{item.identityId,jdbcType=VARCHAR}, #{item.eventAt,jdbcType=TIMESTAMP}, #{item.eventContent,jdbcType=VARCHAR})
+          #{item.identityId,jdbcType=VARCHAR}, #{item.partyId,jdbcType=VARCHAR}, #{item.eventAt,jdbcType=TIMESTAMP}, #{item.eventContent,jdbcType=VARCHAR})
         </foreach>
     ;end
   </update>
@@ -95,101 +93,22 @@
 
   <insert id="insertBatch" parameterType="list">
     insert into task_event (task_id, event_type,
-        identity_id, event_at, event_content)
+        identity_id, party_id, event_at, event_content)
     values
     <foreach collection ="list" item="item" separator =",">
       (#{item.taskId,jdbcType=VARCHAR}, #{item.eventType,jdbcType=VARCHAR},
-      #{item.identityId,jdbcType=VARCHAR}, #{item.eventAt,jdbcType=TIMESTAMP}, #{item.eventContent,jdbcType=VARCHAR})
+      #{item.identityId,jdbcType=VARCHAR}, #{item.partyId,jdbcType=VARCHAR}, #{item.eventAt,jdbcType=TIMESTAMP}, #{item.eventContent,jdbcType=VARCHAR})
     </foreach>
   </insert>
 
-
-
-
-
-
-
-  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.TaskEvent">
-    insert into task_event
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        ID,
-      </if>
-      <if test="taskId != null">
-        task_id,
-      </if>
-      <if test="eventType != null">
-        event_type,
-      </if>
-      <if test="identityId != null">
-        identity_id,
-      </if>
-      <if test="eventAt != null">
-        event_at,
-      </if>
-      <if test="eventContent != null">
-        event_content,
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="taskId != null">
-        #{taskId,jdbcType=VARCHAR},
-      </if>
-      <if test="eventType != null">
-        #{eventType,jdbcType=VARCHAR},
-      </if>
-      <if test="identityId != null">
-        #{identityId,jdbcType=VARCHAR},
-      </if>
-      <if test="eventAt != null">
-        #{eventAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="eventContent != null">
-        #{eventContent,jdbcType=VARCHAR},
-      </if>
-      <if test="recUpdateTime != null">
-        #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.platon.metis.admin.dao.entity.TaskEvent">
-    update task_event
-    <set>
-      <if test="taskId != null">
-        task_id = #{taskId,jdbcType=VARCHAR},
-      </if>
-      <if test="eventType != null">
-        event_type = #{eventType,jdbcType=VARCHAR},
-      </if>
-      <if test="identityId != null">
-        identity_id = #{identityId,jdbcType=VARCHAR},
-      </if>
-      <if test="eventAt != null">
-        event_at = #{eventAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="eventContent != null">
-        event_content = #{eventContent,jdbcType=VARCHAR},
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where ID = #{id,jdbcType=BIGINT}
-  </update>
   <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.TaskEvent">
     update task_event
     set task_id = #{taskId,jdbcType=VARCHAR},
       event_type = #{eventType,jdbcType=VARCHAR},
       identity_id = #{identityId,jdbcType=VARCHAR},
+      party_id = #{partyId,jdbcType=VARCHAR},
       event_at = #{eventAt,jdbcType=TIMESTAMP},
-      event_content = #{eventContent,jdbcType=VARCHAR},
-      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      event_content = #{eventContent,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

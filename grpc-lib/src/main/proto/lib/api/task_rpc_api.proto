@@ -49,14 +49,15 @@ message TaskEventShow {
   string                    type = 1;                        // 事件类型码
   string                    task_id = 2;                     // 事件对应的任务id
   api.protobuf.Organization owner = 3;                       // 产生事件的节点身份
-  string                    content = 4;                     // 事件内容
-  uint64                    create_at = 5;                   // 事件产生时间 (单位: ms)
+  string                    party_id = 4;                     // 产生事件的partyId (单个组织可以担任任务的多个party, 区分是哪一方产生的event)
+  string                    content = 5;                     // 事件内容
+  uint64                    create_at = 6;                   // 事件产生时间 (单位: ms)
 }
 
 // 查看本组织参与过的全部任务详情列表
 message GetTaskDetailResponse {
-  TaskDetailShow            information = 1;                  // 任务(展示)详情
-  api.protobuf.TaskRole     role = 2;                         // 我在任务中的角色 (0: 未知角色; 1: 任务发起方; 2: 数据提供方: 3: 算力提供方; 4: 结果接收方; 5: 算法提供方)
+  TaskDetailShow                     information = 1;                  // 任务(展示)详情
+  // repeated api.protobuf.TaskRole     roles = 2;                         // 我在任务中的角色 (0: 未知角色; 1: 任务发起方; 2: 数据提供方: 3: 算力提供方; 4: 结果接收方; 5: 算法提供方)
 }
 // 查看本组织参与过的全部任务详情列表 resp
 message GetTaskDetailListResponse {
@@ -129,8 +130,7 @@ service TaskService {
   // 查看本组织参与过的全部任务详情列表
   rpc GetTaskDetailList (google.protobuf.Empty) returns (GetTaskDetailListResponse) {
     option (google.api.http) = {
-      post: "/carrier/v1/task/list"
-      body: "*"
+      get: "/carrier/v1/task/list"
     };
   }
 
@@ -167,4 +167,5 @@ service TaskService {
   }
 
 }
+
 

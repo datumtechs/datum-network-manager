@@ -12,17 +12,13 @@ public interface TaskMapper {
 
     int insert(Task record);
 
-    int insertSelective(Task record);
-
     Task selectByPrimaryKey(String id);
-
-    int updateByPrimaryKeySelective(Task record);
 
     int updateByPrimaryKey(Task record);
 
     int updateTaskReviewedById(@Param("taskId")String taskId, @Param("reviewed") boolean reviewed);
 
-    List<Task> listTask(@Param("status")Integer status, @Param("role")Integer role, @Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp")Timestamp endTimestamp, @Param("keyWord") String keyWord);
+    List<Task> listTaskByIdentityIdWithRole(@Param("identityId")String identityId, @Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp")Timestamp endTimestamp);
 
     List<String> selectListTaskByStatusWithSuccessAndFailed();
 
@@ -32,9 +28,7 @@ public interface TaskMapper {
 
     Integer selectTaskRunningCount();
 
-    TaskStatistics selectTaskStatisticsCount();
-
-    Integer selectTaskRole(@Param("taskId")String taskId);
+    TaskStatistics taskStatistics();
 
     Integer batchUpdate(List<Task> taskList);
 

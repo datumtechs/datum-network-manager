@@ -4,16 +4,16 @@
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskPowerProvider">
     <id column="task_id" jdbcType="VARCHAR" property="taskId" />
     <id column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="party_id" jdbcType="VARCHAR" property="partyId" />
     <result column="used_core" jdbcType="INTEGER" property="usedCore" />
     <result column="total_core" jdbcType="INTEGER" property="totalCore" />
     <result column="used_memory" jdbcType="BIGINT" property="usedMemory" />
     <result column="total_memory" jdbcType="BIGINT" property="totalMemory" />
     <result column="used_Bandwidth" jdbcType="BIGINT" property="usedBandwidth" />
     <result column="total_Bandwidth" jdbcType="BIGINT" property="totalBandwidth" />
-    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    task_id, identity_id, used_core, used_memory, used_Bandwidth, rec_update_time
+    task_id, identity_id, party_id, used_core, used_memory, used_Bandwidth
   </sql>
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     select 
@@ -27,12 +27,11 @@
 
   <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskPowerProvider" extends="BaseResultMap">
     <result column="node_name" property="dynamicFields.nodeName" jdbcType="VARCHAR"/>
-    <result column="node_identityId" property="dynamicFields.nodeIdentityId" jdbcType="VARCHAR"/>
     <result column="node_id" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>
   </resultMap>
 
   <select id="selectTaskPowerWithOrgByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OrgName">
-    SELECT tpp.*, o.`name` AS node_name, o.identity_id AS node_identityId, o.carrier_node_id AS node_id
+    SELECT tpp.*, o.`name` AS node_name, o.carrier_node_id AS node_id
     FROM task_power_provider AS tpp
     LEFT JOIN task_org AS o ON tpp.identity_id = o.identity_id
     WHERE tpp.task_id = #{taskId,jdbcType=VARCHAR}
@@ -50,111 +49,39 @@
 
 
   <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.TaskPowerProvider">
-    insert into task_power_provider (task_id, identity_id, total_core, used_core,
-      total_memory, used_memory, total_Bandwidth, used_Bandwidth, rec_update_time
-      )
-    values (#{taskId,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR},
+    insert into task_power_provider (task_id, identity_id, party_id, total_core, used_core,
+      total_memory, used_memory, total_Bandwidth, used_Bandwidth)
+    values (#{taskId,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{partyId,jdbcType=VARCHAR},
             #{totalCore,jdbcType=INTEGER}, #{usedCore,jdbcType=INTEGER},
             #{totalMemory,jdbcType=BIGINT}, #{usedMemory,jdbcType=BIGINT},
-            #{totalBandwidth,jdbcType=BIGINT}, #{usedBandwidth,jdbcType=BIGINT}, #{recUpdateTime,jdbcType=TIMESTAMP}
-      )
+            #{totalBandwidth,jdbcType=BIGINT}, #{usedBandwidth,jdbcType=BIGINT} )
   </insert>
 
 
 
   <insert id="insertBatch" parameterType="list">
-    replace into task_power_provider (task_id, identity_id, total_core, used_core,
-       total_memory, used_memory, total_Bandwidth, used_Bandwidth, rec_update_time
-    )
+    replace into task_power_provider (task_id, identity_id, party_id, total_core, used_core,
+       total_memory, used_memory, total_Bandwidth, used_Bandwidth )
     values
     <foreach collection ="list" item="item" separator =",">
-      (#{item.taskId,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR},
+      (#{item.taskId,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR}, #{item.partyId,jdbcType=VARCHAR},
        #{item.totalCore,jdbcType=INTEGER}, #{item.usedCore,jdbcType=INTEGER},
        #{item.totalMemory,jdbcType=BIGINT}, #{item.usedMemory,jdbcType=BIGINT},
-       #{item.totalBandwidth,jdbcType=BIGINT}, #{item.usedBandwidth,jdbcType=BIGINT}, #{item.recUpdateTime,jdbcType=TIMESTAMP})
+       #{item.totalBandwidth,jdbcType=BIGINT}, #{item.usedBandwidth,jdbcType=BIGINT})
     </foreach>
   </insert>
-
-
-
-
-  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.TaskPowerProvider">
-    insert into task_power_provider
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="taskId != null">
-        task_id,
-      </if>
-      <if test="identityId != null">
-        identity_id,
-      </if>
-      <if test="usedCore != null">
-        used_core,
-      </if>
-      <if test="usedMemory != null">
-        used_memory,
-      </if>
-      <if test="usedBandwidth != null">
-        used_Bandwidth,
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="taskId != null">
-        #{taskId,jdbcType=VARCHAR},
-      </if>
-      <if test="identityId != null">
-        #{identityId,jdbcType=VARCHAR},
-      </if>
-      <if test="usedCore != null">
-        #{usedCore,jdbcType=INTEGER},
-      </if>
-      <if test="usedMemory != null">
-        #{usedMemory,jdbcType=BIGINT},
-      </if>
-      <if test="usedBandwidth != null">
-        #{usedBandwidth,jdbcType=BIGINT},
-      </if>
-      <if test="recUpdateTime != null">
-        #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-
-
-  <update id="updateByPrimaryKeySelective" parameterType="com.platon.metis.admin.dao.entity.TaskPowerProvider">
-    update task_power_provider
-    <set>
-      <if test="usedCore != null">
-        used_core = #{usedCore,jdbcType=INTEGER},
-      </if>
-      <if test="usedMemory != null">
-        used_memory = #{usedMemory,jdbcType=BIGINT},
-      </if>
-      <if test="usedBandwidth != null">
-        used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT},
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where task_id = #{taskId,jdbcType=VARCHAR}
-      and identity_id = #{identityId,jdbcType=VARCHAR}
-  </update>
-
 
 
   <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.TaskPowerProvider">
     update task_power_provider
     set
+      party_id = #{partyId,jdbcType=VARCHAR},
       total_core = #{totalCore,jdbcType=INTEGER},
       used_core = #{usedCore,jdbcType=INTEGER},
       total_memory = #{totalMemory,jdbcType=BIGINT},
       used_memory = #{usedMemory,jdbcType=BIGINT},
       total_Bandwidth = #{totalBandwidth,jdbcType=BIGINT},
-      used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT},
-      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT}
     where task_id = #{taskId,jdbcType=VARCHAR}
       and identity_id = #{identityId,jdbcType=VARCHAR}
   </update>
@@ -164,13 +91,13 @@
     <foreach collection="list" item="item" index="index" open="" close="" separator=";">
       update task_power_provider
       set
+      party_id = #{partyId,jdbcType=VARCHAR},
       total_core = #{totalCore,jdbcType=INTEGER},
       used_core = #{usedCore,jdbcType=INTEGER},
       total_memory = #{totalMemory,jdbcType=BIGINT},
       used_memory = #{usedMemory,jdbcType=BIGINT},
       total_Bandwidth = #{totalBandwidth,jdbcType=BIGINT},
-      used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT},
-      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      used_Bandwidth = #{usedBandwidth,jdbcType=BIGINT}
       where task_id = #{taskId,jdbcType=VARCHAR}
       and identity_id = #{identityId,jdbcType=VARCHAR}
     </foreach>
