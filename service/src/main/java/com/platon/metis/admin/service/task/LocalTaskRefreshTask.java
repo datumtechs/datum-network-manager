@@ -60,6 +60,11 @@ public class LocalTaskRefreshTask {
         log.info("启动执行获取任务数据列表定时任务...........");
         Pair<List<Task>, Map<String, TaskOrg>> resp = taskClient.getLocalTaskList();
 
+        if(resp==null || resp.getLeft()==null || resp.getLeft().size()==0){
+            log.info("RPC获取任务列表,任务数据为空");
+            return;
+        }
+
 
         //1、筛选出需要更新Task Data
         log.info("1、筛选出需要更新Task Data");
