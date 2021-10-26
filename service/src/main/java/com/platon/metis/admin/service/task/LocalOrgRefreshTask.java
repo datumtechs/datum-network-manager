@@ -9,6 +9,7 @@ import com.platon.metis.admin.dao.enums.LocalOrgStatusEnum;
 import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,7 @@ public class LocalOrgRefreshTask {
     @Transactional
     public void task(){
         LocalOrg localOrg = localOrgMapper.select();
-        if(localOrg == null){
+        if(localOrg == null || StringUtils.isBlank(localOrg.getCarrierIp()) || localOrg.getCarrierPort()==null){
             log.info("请先申请身份标识");
             //刷新缓存
             LocalOrgCache.setLocalOrgInfo(null);
