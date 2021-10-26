@@ -83,6 +83,7 @@ DROP TABLE IF EXISTS global_power;
 CREATE TABLE global_power (
   id VARCHAR(200) NOT NULL comment '计算服务主机ID,hash',
   identity_id VARCHAR(200) NOT NULL COMMENT '组织身份ID',
+  org_name VARCHAR(100) NOT NULL COMMENT '组织名称',
   memory BIGINT  NOT NULL DEFAULT 0 COMMENT '计算服务内存, 字节',
   core INT NOT NULL DEFAULT 0 COMMENT '计算服务core',
   bandwidth BIGINT  NOT NULL DEFAULT 0 COMMENT '计算服务带宽, bps',

@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.GlobalPower">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
     <result column="memory" jdbcType="BIGINT" property="memory" />
     <result column="core" jdbcType="INTEGER" property="core" />
     <result column="bandwidth" jdbcType="BIGINT" property="bandwidth" />
@@ -17,9 +18,10 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, identity_id, memory, core, bandwidth, used_memory, used_core, used_bandwidth, published,
+    id, identity_id, org_name, memory, core, bandwidth, used_memory, used_core, used_bandwidth, published,
     publish_at, status, update_at
   </sql>
+
 
   <!-- 获取全网算力信息-->
   <select id="listGlobalPower"  resultMap="BaseResultMap">
@@ -48,13 +50,13 @@
 
   <!-- 批量新增数据，一次建议最多更新1000条-->
   <insert id="batchInsert" >
-    insert into global_power (id, identity_id, memory,
+    insert into global_power (id, identity_id, org_name, memory,
     core, bandwidth, used_memory,
     used_core, used_bandwidth, published,
     publish_at, status, update_at)
     values
     <foreach collection ="globalPowerList" item="item" separator =",">
-      (#{item.id,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR}, #{item.memory,jdbcType=BIGINT},
+      (#{item.id,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR}, #{item.orgName,jdbcType=VARCHAR}, #{item.memory,jdbcType=BIGINT},
       #{item.core,jdbcType=INTEGER}, #{item.bandwidth,jdbcType=BIGINT}, #{item.usedMemory,jdbcType=BIGINT},
       #{item.usedCore,jdbcType=INTEGER}, #{item.usedBandwidth,jdbcType=BIGINT}, #{item.published,jdbcType=BIT},
       #{item.publishAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER},  #{item.updateAt,jdbcType=TIMESTAMP})
@@ -67,6 +69,7 @@
     <foreach collection="globalPowerList" item="item" separator=";">
       update global_power
       set identity_id = #{item.identityId,jdbcType=VARCHAR},
+      org_name = #{item.orgName,jdbcType=VARCHAR},
       memory = #{item.memory,jdbcType=BIGINT},
       core = #{item.core,jdbcType=INTEGER},
       bandwidth = #{item.bandwidth,jdbcType=BIGINT},

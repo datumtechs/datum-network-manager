@@ -271,6 +271,7 @@ public class PowerClient {
                 GlobalPower globalPower = new GlobalPower();
                 globalPower.setId(powerResponse.getPowerId());
                 globalPower.setIdentityId(identityId);
+                globalPower.setOrgName(powerResponse.getOwner().getNodeName());
                 globalPower.setCore(information.getTotalProcessor());
                 globalPower.setMemory(information.getTotalMem());
                 globalPower.setBandwidth(information.getTotalBandwidth());

@@ -1,10 +1,10 @@
 package com.platon.metis.admin.dao.entity;
 
+import com.platon.metis.admin.dao.BaseDomain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -14,10 +14,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class GlobalPower implements Serializable {
+public class GlobalPower extends BaseDomain {
     private String id;
 
     private String identityId;
+
+    private String orgName;
 
     private Long memory;
 
