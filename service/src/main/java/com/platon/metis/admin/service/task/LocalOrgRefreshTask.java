@@ -39,13 +39,19 @@ public class LocalOrgRefreshTask {
     @Transactional
     public void task(){
         LocalOrg localOrg = localOrgMapper.select();
-        if(localOrg == null || StringUtils.isBlank(localOrg.getCarrierIp()) || localOrg.getCarrierPort()==null){
-            log.info("请先申请身份标识");
+        if(localOrg == null){
+            log.warn("请先申请身份标识");
             //刷新缓存
             LocalOrgCache.setLocalOrgInfo(null);
             LocalOrgIdentityCache.setIdentityId(null);
             return;
         }
+
+        if( StringUtils.isBlank(localOrg.getCarrierIp()) || localOrg.getCarrierPort()==null){
+            log.warn("请先配置调度服务地址");
+            return;
+        }
+
         //### 1.刷新调度服务连接状态
         boolean connect = yarnClient.connectScheduleServer(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         if(connect){

@@ -64,8 +64,8 @@ public class AppContext {
 
 
     public static void main(String[] args) {
-        AppContext.put("a",1,Integer.class);
-        System.out.println(AppContext.get("a"));
+        //AppContext.put("a",1,Integer.class);
+        //System.out.println(AppContext.get("a"));
     }
 
 

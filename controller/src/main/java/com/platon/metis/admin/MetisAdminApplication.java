@@ -44,6 +44,6 @@ public class MetisAdminApplication {
          * 设置组织ID，供全局使用，如果未插入，则返回空
          */
         LocalOrgIdentityCache.setIdentityId(localOrg == null ? null :localOrg.getIdentityId());
-        log.info("执行初始化操作执行完成.............");
+        log.info("执行初始化操作执行完成............");
     }
 }
