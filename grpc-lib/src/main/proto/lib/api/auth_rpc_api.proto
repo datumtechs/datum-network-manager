@@ -35,7 +35,7 @@ message GetIdentityListResponse {
 // 发起用户对元数据使用授权申请 req
 message ApplyMetadataAuthorityRequest {
   string                  user = 1;                            // 发起任务的用户的信息 (授权申请, 是属于用户的)
-  api.protobuf.UserType   user_type = 2;                       // 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+  api.protobuf.UserType   user_type = 2;                       // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
   types.MetadataAuthority auth = 3;                            // 元数据使用授权信息
   bytes                   sign = 4;                            // 发起数据授权申请的账户的签名
 }
@@ -49,7 +49,7 @@ message ApplyMetadataAuthorityResponse {
 // 撤销用户对元数据使用授权申请 req
 message RevokeMetadataAuthorityRequest {
   string                  user = 1;                             // 发起任务的用户的信息 (授权申请, 是属于用户的)
-  api.protobuf.UserType   user_type = 2;                        // 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+  api.protobuf.UserType   user_type = 2;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
   string                  metadata_auth_id = 3;                 // 元数据授权申请Id
   bytes                   sign = 4;                            //  撤销数据授权申请的账户的签名
 }
@@ -73,7 +73,7 @@ message AuditMetadataAuthorityResponse {
 message GetMetadataAuthority {
   string                                      metadata_auth_id = 1;                 // 元数据授权申请Id
   string                                      user = 2;                             // 发起任务的用户的信息 (数据授权 是属于用户的)
-  api.protobuf.UserType                       user_type = 3;                        // 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+  api.protobuf.UserType                       user_type = 3;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
   types.MetadataAuthority                     auth = 4;                             // 元数据使用授权信息
   api.protobuf.AuditMetadataOption            audit_option = 5;                     // 审核结果
   string                                      audit_suggestion = 6;                 // 审核意见 (允许""字符)

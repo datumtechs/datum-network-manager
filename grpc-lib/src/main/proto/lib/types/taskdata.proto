@@ -38,7 +38,7 @@ message TaskPB {
   string                                      contract_extra_params = 28;                 // 任务的合约调用的额外可变入参 (json 字符串, 根据算法来)
   // v2.0
   string                                      user = 29;                                  // 发起任务的用户的信息 (task是属于用户的)
-  api.protobuf.UserType                       user_type = 30;                             // 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+  api.protobuf.UserType                       user_type = 30;                             // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
 }
 
 

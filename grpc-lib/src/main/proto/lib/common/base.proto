@@ -41,9 +41,9 @@ message SimpleResponse {
 
 enum UserType {
   User_Unknown = 0;
-  User_ETH = 1;
-  User_ATP = 2;
-  User_LAT = 3;
+  User_1 = 1;
+  User_2 = 2;
+  User_3 = 3;
 }
 
 // the status of data, N means normal, D means deleted.

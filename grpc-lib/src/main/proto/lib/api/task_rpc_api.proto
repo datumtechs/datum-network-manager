@@ -17,7 +17,7 @@ message TaskDetailShow {
   string                                 task_id = 1;                         // 任务Id
   string                                 task_name = 2;                       // 任务名称
   string                                 user = 3;                            // 发起任务的用户的信息 (task是属于用户的)
-  api.protobuf.UserType                  user_type = 4;                       // 用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+  api.protobuf.UserType                  user_type = 4;                       // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
   api.protobuf.TaskOrganization          sender = 5;                          // 任务发起者 组织信息
   api.protobuf.TaskOrganization          algo_supplier = 6;                   // 算法提供方组织信息 (目前就是和 任务发起方是同一个 ...)
   repeated TaskDataSupplierShow          data_suppliers = 7;                  // 数据提供方组织信息
@@ -85,7 +85,7 @@ message GetTaskEventListResponse {
 message PublishTaskDeclareRequest {
   string                                    task_name = 1;                        //  任务名称
   string                                    user = 2;                             //  发起任务的用户的信息 (task是属于用户的)
-  api.protobuf.UserType                     user_type = 3;                        //  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+  api.protobuf.UserType                     user_type = 3;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
   api.protobuf.TaskOrganization             sender = 4;                           //  任务发起者 组织信息
   api.protobuf.TaskOrganization             algo_supplier = 5;                    //  任务算法提供方 组织信息
   repeated TaskDataSupplierDeclare          data_suppliers = 6;                   //  任务的数据提供方 (包含发起者和参与方)
@@ -119,7 +119,7 @@ message PublishTaskDeclareResponse {
 // 终止任务 req
 message TerminateTaskRequest {
   string                user = 1;                             //  发起任务的用户的信息 (task是属于用户的)
-  api.protobuf.UserType user_type = 2;                        //  用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)
+  api.protobuf.UserType user_type = 2;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
   string                task_id = 3;                          //  任务id
   bytes                 sign = 12;                            //  发起任务的账户的签名
 }
