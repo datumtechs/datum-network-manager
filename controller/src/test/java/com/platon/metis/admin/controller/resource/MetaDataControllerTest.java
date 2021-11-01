@@ -71,13 +71,6 @@ public class MetaDataControllerTest {
     }
 
     @Test
-    public void metaDataInfo(){
-        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/resource/mydata/metaDataInfo?id={1}", String.class, 30);
-        System.out.println(entity.getStatusCode());
-        System.out.println(entity.getBody());
-    }
-
-    @Test
     public void updateMetaData(){
         LocalDataUpdateReq req = new LocalDataUpdateReq();
         req.setId(30);

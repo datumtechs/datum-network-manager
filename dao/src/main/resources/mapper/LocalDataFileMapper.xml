@@ -8,7 +8,7 @@
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="file_type" jdbcType="VARCHAR" property="fileType" />
     <result column="size" jdbcType="BIGINT" property="size" />
-    <result column="rows" jdbcType="BIGINT" property="rows" />
+    <result column="rows" jdbcType="INTEGER" property="rows" />
     <result column="columns" jdbcType="INTEGER" property="columns" />
     <result column="has_title" jdbcType="BIT" property="hasTitle" />
     <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
@@ -28,7 +28,7 @@
     )
     values (#{identityId,jdbcType=VARCHAR}, #{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR},
       #{filePath,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR},
-      #{size,jdbcType=BIGINT}, #{rows,jdbcType=BIGINT}, #{columns,jdbcType=INTEGER}, #{hasTitle,jdbcType=BIT}
+      #{size,jdbcType=BIGINT}, #{rows,jdbcType=INTEGER}, #{columns,jdbcType=INTEGER}, #{hasTitle,jdbcType=BIT}
       )
   </insert>
 

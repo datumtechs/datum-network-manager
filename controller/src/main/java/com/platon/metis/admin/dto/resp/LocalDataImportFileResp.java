@@ -54,7 +54,7 @@ public class LocalDataImportFileResp {
     private Long size;
     //数据行数(不算title)
     @ApiModelProperty(name = "rows", value = "数据行数(不算title)")
-    private Long rows;
+    private Integer rows;
     //数据列数
     @ApiModelProperty(name = "columns", value = "数据列数")
     private Integer columns;

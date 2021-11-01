@@ -11,7 +11,7 @@
     <result column="file_type" jdbcType="INTEGER" property="fileType" />
     <result column="resource_name" jdbcType="VARCHAR" property="resourceName" />
     <result column="size" jdbcType="BIGINT" property="size" />
-    <result column="rows" jdbcType="BIGINT" property="rows" />
+    <result column="rows" jdbcType="INTEGER" property="rows" />
     <result column="columns" jdbcType="INTEGER" property="columns" />
     <result column="has_title" jdbcType="TINYINT" property="hasTitle" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
@@ -80,7 +80,7 @@
     <foreach collection ="globalDataFileList" item="item" separator =",">
       (#{item.metaDataId,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR}, #{item.orgName,jdbcType=VARCHAR},
       #{item.fileId,jdbcType=VARCHAR}, #{item.fileName,jdbcType=VARCHAR}, #{item.filePath,jdbcType=VARCHAR}, #{item.fileType,jdbcType=INTEGER}, #{item.resourceName,jdbcType=VARCHAR}, #{item.size,jdbcType=BIGINT},
-      #{item.rows,jdbcType=BIGINT}, #{item.columns,jdbcType=INTEGER}, #{item.hasTitle,jdbcType=TINYINT}, #{item.remarks,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER},
+      #{item.rows,jdbcType=INTEGER}, #{item.columns,jdbcType=INTEGER}, #{item.hasTitle,jdbcType=TINYINT}, #{item.remarks,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER},
       #{item.publishTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
@@ -98,7 +98,7 @@
           file_type = #{item.fileType,jdbcType=INTEGER},
           resource_name = #{item.resourceName,jdbcType=VARCHAR},
           `size` = #{item.size,jdbcType=BIGINT},
-          `rows` = #{item.rows,jdbcType=BIGINT},
+          `rows` = #{item.rows,jdbcType=INTEGER},
           columns = #{item.columns,jdbcType=INTEGER},
           has_title = #{item.hasTitle,jdbcType=TINYINT},
           remarks = #{item.remarks,jdbcType=VARCHAR},

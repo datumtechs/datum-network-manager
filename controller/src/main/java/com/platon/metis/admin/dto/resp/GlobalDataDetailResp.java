@@ -83,7 +83,7 @@ public class GlobalDataDetailResp  implements Serializable {
      * 数据行数(不算title)
      */
     @ApiModelProperty(name = "rows", value = "数据行数(不算title)")
-    private Long rows;
+    private Integer rows;
 
     /**
      * 数据列数
