@@ -1,4 +1,4 @@
-package com.platon.metis.admin.controller.system;
+package com.platon.metis.admin.controller.overview;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.platon.metis.admin.dao.dto.StatsTrendDTO;
@@ -32,9 +32,9 @@ import java.util.Map;
 
 @Api(tags = "系统概况")
 @RestController
-@RequestMapping("/api/v1/system/index")
+@RequestMapping("/api/v1/overview")
 @Slf4j
-public class IndexController {
+public class OverviewController {
 
     @Resource
     private IndexService indexService;
@@ -105,7 +105,7 @@ public class IndexController {
     }
 
     @ApiOperation(value = "查询我的计算任务概况")
-    @GetMapping("/queryMyCalculateTaskStats")
+    @GetMapping("/myTaskOverview")
     public JsonResponse<MyTaskStatsResp> queryMyCalculateTaskStats(){
         try {
             List<Map<String, Object>> list = indexService.queryMyCalculateTaskStats();

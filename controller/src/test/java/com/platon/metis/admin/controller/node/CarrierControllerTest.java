@@ -13,7 +13,7 @@ import org.springframework.util.MultiValueMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class NodeControllerTest {
+public class CarrierControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 

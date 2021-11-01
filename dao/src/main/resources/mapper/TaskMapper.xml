@@ -53,9 +53,13 @@
 
     </where>
 
-
   </select>
 
+  <select id="listRunningTaskByPowerNodeId" resultMap="BaseResultMap">
+    select t.*
+    from task t
+    left join local_power_node lpn on t.identity_id = lpn.identity_id and lpn.power_node_id = #{powerNodeId,jdbcType=VARCHAR}
+  </select>
 
   <select id="selectListTaskByStatusWithSuccessAndFailed"  resultType="java.lang.String">
     SELECT t.task_Id FROM task AS t

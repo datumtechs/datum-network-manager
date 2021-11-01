@@ -6,6 +6,7 @@ import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dto.CommonPageReq;
 import com.platon.metis.admin.dto.req.AddLocalMetaDataReq;
+import com.platon.metis.admin.dto.req.LocalDataJoinTaskListReq;
 import com.platon.metis.admin.dto.req.LocalDataMetaDataListByKeyWordReq;
 import com.platon.metis.admin.dto.req.LocalDataUpdateReq;
 import org.junit.Test;
@@ -136,6 +137,22 @@ public class MetaDataControllerTest {
         map.add("fileId", "5adc085c654b60511b6da2ea9e9d19f964dd4f4e3a87ebcf3e81a3d6223c376d");
 
         ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/resource/mydata/checkResourceName", map, String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+    }
+
+    @Test
+    public void queryDataJoinTaskList(){
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("resourceName", "44");
+        map.add("fileId", "5adc085c654b60511b6da2ea9e9d19f964dd4f4e3a87ebcf3e81a3d6223c376d");
+
+
+        LocalDataJoinTaskListReq req = new LocalDataJoinTaskListReq();
+        req.setMetaDataId("metadata:0xf283518d022079f68462e26ba2610c08dff03540b2bdd031df6198a9c14f9766");
+        req.setPageSize(20);
+        req.setPageNumber(1);
+        ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/resource/mydata/queryDataJoinTaskList", req, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }

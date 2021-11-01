@@ -27,9 +27,9 @@ import java.util.stream.Collectors;
  * @Description 数据节点控制层
  * @date 2021/7/8 17:10
  */
-@RequestMapping("/api/v1/node/datanode/")
+@RequestMapping("/api/v1/datanode/")
 @RestController
-@Api(tags = "数据节点接口")
+@Api(tags = "数据节点管理")
 public class DataNodeController {
 
     @Resource

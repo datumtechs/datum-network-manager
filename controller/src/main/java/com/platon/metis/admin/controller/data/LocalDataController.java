@@ -1,4 +1,4 @@
-package com.platon.metis.admin.controller.resource;
+package com.platon.metis.admin.controller.data;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.csv.CsvData;
@@ -22,7 +22,10 @@ import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.metis.admin.dto.CommonPageReq;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.*;
-import com.platon.metis.admin.dto.resp.*;
+import com.platon.metis.admin.dto.resp.LocalDataCheckResourceNameResp;
+import com.platon.metis.admin.dto.resp.LocalDataDetailResp;
+import com.platon.metis.admin.dto.resp.LocalDataImportFileResp;
+import com.platon.metis.admin.dto.resp.LocalDataPageResp;
 import com.platon.metis.admin.service.LocalDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -51,7 +54,7 @@ import java.util.stream.Collectors;
 
 @Api(tags = "我的数据")
 @RestController
-@RequestMapping("/api/v1/resource/mydata/")
+@RequestMapping("/api/v1/data/")
 public class LocalDataController {
 
     @Resource
@@ -70,7 +73,7 @@ public class LocalDataController {
      * 展示数据列表，带分页
      */
     @ApiOperation(value = "数据列表分页查询")
-    @PostMapping("metaDataList")
+    @PostMapping("listLocalMetaData")
     public JsonResponse<List<LocalDataPageResp>> listMetaData(@RequestBody @Validated CommonPageReq req){
         Page<LocalMetaData> localDataFilePage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(),null);
         List<LocalDataPageResp> respList = localDataFilePage.getResult().stream()
@@ -83,8 +86,8 @@ public class LocalDataController {
      * 根据关键字查询机构自身的元数据列表摘要信息
      */
     @ApiOperation(value = "数据列表关键字查询")
-    @PostMapping("metaDataListByKeyWord")
-    public JsonResponse<List<LocalDataPageResp>> metaDataListByKeyWord(@RequestBody @Validated LocalDataMetaDataListByKeyWordReq req){
+    @PostMapping("listLocalMetaDataByKeyword")
+    public JsonResponse<List<LocalDataPageResp>> listLocalMetaDataByKeyword(@RequestBody @Validated LocalDataMetaDataListByKeyWordReq req){
         Page<LocalMetaData> localDataFilePage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(),req.getKeyword());
         List<LocalDataPageResp> respList = localDataFilePage.getResult().stream()
                 .map(LocalDataPageResp::from)
@@ -97,11 +100,11 @@ public class LocalDataController {
      * 根据数据id查询数据参与的任务信息列表
      */
     @ApiOperation(value = "数据参与的任务信息列表")
-    @PostMapping("queryDataJoinTaskList")
-    public JsonResponse<List<TaskDataPageResp>> queryDataJoinTaskList(@RequestBody @Validated LocalDataJoinTaskListReq req){
+    @PostMapping("listTaskByMetaDataId")
+    public JsonResponse<List<Task>> listTaskByMetaDataId(@RequestBody @Validated LocalDataJoinTaskListReq req){
         Page<Task> localDataJoinTaskPage = localDataService.listDataJoinTask(req.getPageNumber(), req.getPageSize(),req.getMetaDataId(),req.getKeyword());
-        List<TaskDataPageResp> taskDataPageList = localDataJoinTaskPage.getResult().stream().map(TaskDataPageResp::convert).collect(Collectors.toList());
-        return JsonResponse.page(localDataJoinTaskPage,taskDataPageList);
+        //List<TaskDataPageResp> taskDataPageList = localDataJoinTaskPage.getResult().stream().map(TaskDataPageResp::convert).collect(Collectors.toList());
+        return JsonResponse.page(localDataJoinTaskPage,localDataJoinTaskPage);
     }
 
 
@@ -219,7 +222,7 @@ public class LocalDataController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "id",value = "元数据db key",required = true,paramType = "query",example = "1"),
     })
-    @GetMapping("metaDataInfo")
+    @GetMapping("localMetaDataInfo")
     public JsonResponse<LocalMetaData> detail(@Validated @NotNull(message = "id不为空") Integer id){
         //查询localMetaData，并查询出taskCount放入动态字段
         LocalMetaData localMetaData = localMetaDataMapper.findWithTaskCount(id);
@@ -255,7 +258,7 @@ public class LocalDataController {
      * 修改数据信息
      */
     @ApiOperation(value = "修改元数据信息")
-    @PostMapping("updateMetaData")
+    @PostMapping("updateLocalMetaData")
     public JsonResponse update(@RequestBody @Validated LocalDataUpdateReq req){
         LocalMetaData localMetaData = new LocalMetaData();
         localMetaData.setRemarks(req.getRemarks());
@@ -281,9 +284,9 @@ public class LocalDataController {
      * 元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)
      * 删除源文件，当前版本直接真删除，包括元数据
      */
-    @ApiOperation(value = "元数据上下架和删除")
-    @PostMapping("actionMetaData")
-    public JsonResponse actionMetaData(@RequestBody @Validated LocalDataActionReq req){
+    @ApiOperation(value = "元数据操作：上架、下架和删除")
+    @PostMapping("localMetaDataOp")
+    public JsonResponse localMetaDataOp(@RequestBody @Validated LocalDataActionReq req){
         String action = req.getAction();
         int count = 0;
         switch (action){
@@ -297,7 +300,7 @@ public class LocalDataController {
                 count = localDataService.up(req.getId());
                 break;
             default:
-                throw new ApplicationException(StrUtil.format("请输入正确的action[-1: 删除; 0: 下架; 1: 上架]：{}",action));
+                throw new ApplicationException(StrUtil.format("请输入正确的操作[-1: 删除; 0: 下架; 1: 上架]：{}",action));
         }
         if(count <= 0){
             JsonResponse.fail("操作失败");

@@ -8,7 +8,7 @@ import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
  * @Version
  * @Desc
  */
-public interface NodeService {
+public interface CarrierService {
 
     /**
      * 连接调度节点

@@ -24,14 +24,11 @@ import java.util.stream.Collectors;
 
 @Api(value="计算任务controller",tags={"计算任务相关接口"})
 @RestController
-@RequestMapping("/api/v1/task/mytask")
+@RequestMapping("/api/v1/task")
 public class TaskController {
 
     @Autowired
     private TaskService taskService;
-
-
-
 
 
 
@@ -67,7 +64,7 @@ public class TaskController {
     //查询组织参与的单个任务详情
     @GetMapping("/taskInfo")
     @ApiOperation(value="查询组织参与的单个任务详情")
-    public JsonResponse<TaskDataDetailResp> getTaskDetails(@ApiParam(name = "taskId",value = "任务id", type = "String", required = true) @RequestParam String taskId) {
+    public JsonResponse<TaskDataDetailResp> taskInfo(@ApiParam(name = "taskId",value = "任务id", type = "String", required = true) @RequestParam String taskId) {
         Task task = taskService.getTaskDetails(taskId);
         TaskDataDetailResp taskDataDetailResp = TaskDataDetailResp.convert(task);
         return JsonResponse.success(taskDataDetailResp);
@@ -75,10 +72,10 @@ public class TaskController {
 
 
     //单个任务事件日志列表
-    @GetMapping("/taskEventList")
+    @GetMapping("/listTaskEvent")
     @ApiOperation(value="单个任务事件日志列表")
 
-    public JsonResponse<TaskEventListResp> taskEventList(@ApiParam(name = "taskId",value = "任务id", type = "String", required = true) @RequestParam(required = true) String taskId){
+    public JsonResponse<TaskEventListResp> listTaskEvent(@ApiParam(name = "taskId",value = "任务id", type = "String", required = true) @RequestParam(required = true) String taskId){
         List<TaskEvent> taskEventList = taskService.listTaskEvent(taskId);
         List<TaskEventListResp> taskEventListRespList = taskEventList.stream().map(TaskEventListResp::convert).collect(Collectors.toList());
         return JsonResponse.success(taskEventListRespList);

@@ -1,4 +1,4 @@
-package com.platon.metis.admin.controller.resource;
+package com.platon.metis.admin.controller.power;
 
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.GlobalPower;
@@ -26,9 +26,9 @@ import java.util.stream.Collectors;
  * @Desc
  */
 
-@Api(tags = "算力中心")
+@Api(tags = "全网算力")
 @RestController
-@RequestMapping("/api/v1/resource/powercenter/")
+@RequestMapping("/api/v1/power")
 public class GlobalPowerController {
 
 
@@ -39,7 +39,7 @@ public class GlobalPowerController {
      * 展示数据列表，带分页
      */
     @ApiOperation(value = "数据分页列表")
-    @PostMapping("powerList")
+    @PostMapping("/listGlobalPower")
     public JsonResponse<List<GlobalPowerPageResp>> page(@RequestBody @Validated CommonPageReq req){
         Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(req.getPageNumber(), req.getPageSize(),null);
         List<GlobalPowerPageResp> respList = globalPowerPage.getResult().stream()
@@ -52,7 +52,7 @@ public class GlobalPowerController {
      * 根据关键字查询全网算力信息
      */
     @ApiOperation(value = "关键字查询")
-    @PostMapping("powerListByKeyWord")
+    @PostMapping("/listGlobalPowerByKeyword")
     public JsonResponse<List<GlobalPowerPageResp>> listByKeyWord(@RequestBody @Validated GlobalPowerListByKeyWordReq req){
         Page<GlobalPower> globalPowerPage = globalPowerService.listGlobalPower(req.getPageNumber(), req.getPageSize(),req.getKeyword());
         List<GlobalPowerPageResp> respList = globalPowerPage.getResult().stream()

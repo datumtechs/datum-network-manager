@@ -48,8 +48,9 @@ public class PowerNodeRefreshTask {
     private PowerClient powerClient;
 
     /**
-     *
-     * 执行完毕上次任务后，间隔60秒执行下一次任务
+     * 1.定时刷新算力节点的和调度服务的连接状态
+     * 2 定时查询算力节点参与的正在执行的任务
+     * 间隔60秒执行下一次任务
      */
     //@Scheduled(fixedDelay = 60000)
     @Scheduled(fixedDelayString = "${PowerNodeRefreshTask.fixedDelay}")
@@ -65,7 +66,7 @@ public class PowerNodeRefreshTask {
         long diffStart = System.currentTimeMillis() - startTime;
         log.info("refreshPowerData--定时任务执行结束, 执行时间:{}", diffStart+"ms");
     }
-    /** 定时刷新节点列表 */
+    /** 定时刷新算力节点的和调度服务的连接状态 */
     private void refreshPowerNodeList(){
         YarnRpcMessage.GetRegisteredNodeListResponse powerNodeResponse = powerClient.getJobNodeList();
         if(null != powerNodeResponse && !powerNodeResponse.getNodesList().isEmpty()) {
@@ -85,7 +86,9 @@ public class PowerNodeRefreshTask {
             }
         }
     }
-    /** 定时刷新节点及节点任务数据 */
+
+
+    /** 定时查询算力节点参与的正在执行的任务 */
     private void refreshPowerNodeAndTask(){
         long startTime = System.currentTimeMillis();
         PowerRpcMessage.GetLocalPowerDetailListResponse getSingleDetailListResponse = powerClient.getLocalPowerDetailList();

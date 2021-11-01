@@ -1,4 +1,4 @@
-package com.platon.metis.admin.controller.resource;
+package com.platon.metis.admin.controller.data;
 
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.dto.StatsTrendDTO;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 @Api(tags = "数据中心")
 @RestController
-@RequestMapping("/api/v1/resource/datacenter/")
+@RequestMapping("/api/v1/data/")
 @Slf4j
 public class GlobalDataController {
 
@@ -61,8 +61,8 @@ public class GlobalDataController {
      * 展示数据列表，带分页
      */
     @ApiOperation(value = "数据列表分页查询")
-    @PostMapping("metaDataList")
-    public JsonResponse<List<GlobalDataPageResp>> page(@RequestBody @Validated CommonPageReq req){
+    @PostMapping("listGlobalMetaData")
+    public JsonResponse<List<GlobalDataPageResp>> listGlobalMetaData(@RequestBody @Validated CommonPageReq req){
         Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(req.getPageNumber(), req.getPageSize(),null);
         List<GlobalDataPageResp> respList = globalDataFilePage.getResult().stream()
                 .map(GlobalDataPageResp::from)
@@ -74,8 +74,8 @@ public class GlobalDataController {
      * 根据关键字查询元数据列表摘要信息
      */
     @ApiOperation(value = "数据列表关键字查询")
-    @PostMapping("metaDataListByKeyWord")
-    public JsonResponse<List<GlobalDataPageResp>> metaDataListByKeyWord(@RequestBody @Validated GlobalDataMetaDataListByKeyWordReq req){
+    @PostMapping("listGlobalMetaDataByKeyword")
+    public JsonResponse<List<GlobalDataPageResp>> listGlobalMetaDataByKeyword(@RequestBody @Validated GlobalDataMetaDataListByKeyWordReq req){
         Page<GlobalDataFile> globalDataFilePage = globalDataService.listDataFile(req.getPageNumber(), req.getPageSize(), req.getKeyword());
         List<GlobalDataPageResp> respList = globalDataFilePage.getResult().stream()
                 .map(GlobalDataPageResp::from)
@@ -90,8 +90,8 @@ public class GlobalDataController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "metaDataId",value = "metaDataId:0x",required = true,paramType = "query",example = "metadata:0x245631b081845b7af31c9522b7b18712bf92d1f33111fc39a6aea1039add097d"),
     })
-    @GetMapping("metaDataInfo")
-    public JsonResponse<GlobalDataDetailResp> detail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
+    @GetMapping("globalMetaDataDetail")
+    public JsonResponse<GlobalDataDetailResp> globalMetaDataDetail(@Validated @NotBlank(message = "metaDataId不为空") String metaDataId){
         GlobalDataFile detail = globalDataService.findGlobalDataFile(metaDataId);
         GlobalDataDetailResp resp = GlobalDataDetailResp.from(detail);
         return JsonResponse.success(resp);

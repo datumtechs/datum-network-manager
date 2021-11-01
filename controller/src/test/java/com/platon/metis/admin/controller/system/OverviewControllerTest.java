@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class IndexControllerTest {
+public class OverviewControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -27,6 +27,21 @@ public class IndexControllerTest {
     public void init(){
         LocalOrg localOrg = localOrgMapper.select();
         LocalOrgCache.setLocalOrgInfo(localOrg);;
+    }
+
+
+    @Test
+    public void listLocalPowerStatsTrendMonthly(){
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/system/index/listLocalPowerStatsTrendMonthly", String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+    }
+
+    @Test
+    public void listLocalDataFileStatsTrendMonthly(){
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/system/index/listLocalDataFileStatsTrendMonthly", String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
     }
 
     @Test

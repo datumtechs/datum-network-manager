@@ -10,7 +10,7 @@ import com.platon.metis.admin.grpc.client.AuthClient;
 import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.grpc.entity.CommonResp;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
-import com.platon.metis.admin.service.NodeService;
+import com.platon.metis.admin.service.CarrierService;
 import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_COD
 
 @Slf4j
 @Service
-public class NodeServiceImpl implements NodeService {
+public class CarrierServiceImpl implements CarrierService {
 
     @Resource
     private LocalOrgMapper localOrgMapper;

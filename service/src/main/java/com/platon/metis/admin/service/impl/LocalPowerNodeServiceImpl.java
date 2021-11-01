@@ -256,7 +256,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public Page queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize) {
+    public Page<LocalPowerJoinTask> queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize) {
         Page<LocalPowerJoinTask> page = PageHelper.startPage(pageNumber, pageSize);
         localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNodeId);
         return page;

@@ -1,4 +1,4 @@
-package com.platon.metis.admin.controller.resource;
+package com.platon.metis.admin.controller.data;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 @Api(tags = "数据授权")
 @RestController
-@RequestMapping("/api/v1/resource/auth/")
+@RequestMapping("/api/v1/data/")
 public class LocalDataAuthController {
 
     @Resource
@@ -41,8 +41,8 @@ public class LocalDataAuthController {
      * 授权数据列表，带分页
      */
     @ApiOperation(value = "授权数据列表分页查询")
-    @PostMapping("authDataList")
-    public JsonResponse<List<LocalDataAuthPageResp>> page(@RequestBody @Validated AuthPageReq req){
+    @PostMapping("listLocalDataAuth")
+    public JsonResponse<List<LocalDataAuthPageResp>> listLocalDataAuth(@RequestBody @Validated AuthPageReq req){
         Integer status = req.getStatus();
         if(status == null){
             status = 0;
@@ -67,8 +67,8 @@ public class LocalDataAuthController {
      * 授权数据数量统计
      */
     @ApiOperation(value = "授权数据数量统计")
-    @GetMapping("authDataStatistics")
-    public JsonResponse<LocalDataAuthStatisticsResp> authDataStatistics(){
+    @GetMapping("dataAuthStatistics")
+    public JsonResponse<LocalDataAuthStatisticsResp> dataAuthStatistics(){
 
         int finishAuthCount = localDataAuthService.selectFinishAuthCount();
         int unFinishAuthCount = localDataAuthService.selectUnfinishAuthCount();
@@ -83,8 +83,8 @@ public class LocalDataAuthController {
      * 数据授权动作 (1: 同意; 2: 拒绝)
      */
     @ApiOperation(value = "数据授权同意、拒绝")
-    @PostMapping("actionAuthData")
-    public JsonResponse actionAuthData(@RequestBody @Validated AuthDataActionReq req){
+    @PostMapping("replyDataAuth")
+    public JsonResponse replyDataAuth(@RequestBody @Validated AuthDataActionReq req){
         int action = req.getAction();
         int count = 0;
         switch (action){
@@ -109,8 +109,8 @@ public class LocalDataAuthController {
      * 授权申请查看
      */
     @ApiOperation(value = "授权申请查看")
-    @GetMapping("authDataDetail")
-    public JsonResponse<LocalDataAuthDetailResp> authDataDetail(@ApiParam(name = "authId",value = "授权申请数据id", type = "string", required = true) @RequestParam String authId){
+    @GetMapping("dataAuthDetail")
+    public JsonResponse<LocalDataAuthDetailResp> getDataAuthDetail(@ApiParam(name = "authId",value = "授权申请数据id", type = "string", required = true) @RequestParam String authId){
 
         LocalDataAuthDetail localDataAuthDetail = localDataAuthService.detail(authId);
         LocalDataAuthDetailResp resp = LocalDataAuthDetailResp.from(localDataAuthDetail);

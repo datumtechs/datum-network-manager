@@ -1,5 +1,7 @@
 package com.platon.metis.admin.dao.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,36 +11,40 @@ import java.time.LocalDateTime;
  * 种子节点实体类
  */
 @Data
+@ApiModel(value = "种子节点")
 public class LocalSeedNode {
 
+    @ApiModelProperty(value = "序号ID")
     private Integer id;
 
-    /** 组织id */
+    @ApiModelProperty(value = "组织身份ID")
     private String identityId;
 
-    /** 外部节点id */
+    @ApiModelProperty(value = "外部节点ID")
     private String outNodeId;
 
-    /** 种子节点id */
+    @ApiModelProperty(value = "种子节点ID")
     private String seedNodeId;
 
-    /** 种子节点名称 */
+    @ApiModelProperty(value = "节点名称")
     private String seedNodeName;
 
-    /** 内部ip */
+    @ApiModelProperty(value = "节点内部IP")
     private String internalIp;
 
-    /** 内部端口 */
+    @ApiModelProperty(value = "节点内部端口")
     private Integer internalPort;
 
-    /** 连接状态 */
+    @ApiModelProperty(value = "节点状态 -1: 网络连接失败; 0: 网络连接成功")
     private Integer connStatus;
 
-    /** 是否初始节点 */
+    @ApiModelProperty(value = "是否是初始节点(0:否, 1:是)")
     private Integer initFlag;
 
+    @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
 
+    @ApiModelProperty(value = "最后更新时间")
     private LocalDateTime updateTime;
 
 }

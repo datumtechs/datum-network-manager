@@ -1,6 +1,7 @@
 package com.platon.metis.admin.service;
 
 import com.github.pagehelper.Page;
+import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 
 import java.util.List;
@@ -75,7 +76,7 @@ public interface LocalPowerNodeService {
      * @param pageSize
      * @return
      */
-    Page queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize);
+    Page<LocalPowerJoinTask> queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize);
 
 
     /**

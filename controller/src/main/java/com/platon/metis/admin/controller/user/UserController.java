@@ -1,12 +1,14 @@
-package com.platon.metis.admin.controller.system;
+package com.platon.metis.admin.controller.user;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.platon.metis.admin.constant.ControllerConstants;
+import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.UserApplyOrgIdentityReq;
 import com.platon.metis.admin.dto.req.UserLoginReq;
 import com.platon.metis.admin.dto.req.index.OrgNameReq;
+import com.platon.metis.admin.service.LocalOrgService;
 import com.platon.metis.admin.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,9 +31,9 @@ import javax.servlet.http.HttpSession;
  * 组织身份相关接口
  */
 
-@Api(tags = "用户登录相关接口")
+@Api(tags = "用户相关接口")
 @RestController
-@RequestMapping("/api/v1/system/user/")
+@RequestMapping("/api/v1/user")
 @Slf4j
 public class UserController {
 
@@ -45,7 +47,7 @@ public class UserController {
      * @return
      */
     @ApiOperation(value = "登陆")
-    @PostMapping("login")
+    @PostMapping("/login")
     public JsonResponse<String> login(HttpServletRequest request,@Validated @RequestBody UserLoginReq req){
         HttpSession session = request.getSession(true);
         //校验验证码
@@ -82,7 +84,7 @@ public class UserController {
      * @return
      */
     @ApiOperation(value = "退出登录状态")
-    @PostMapping("logout")
+    @PostMapping("/logout")
     public JsonResponse logout(HttpServletRequest request){
         HttpSession session = request.getSession();
         if(session != null){//将session致为失效
@@ -97,7 +99,7 @@ public class UserController {
      * @return
      */
     @ApiOperation(value = "申请身份标识")
-    @PostMapping("applyOrgIdentity")
+    @PostMapping("/applyOrgIdentity")
     public JsonResponse<String> applyOrgIdentity(@RequestBody @Validated UserApplyOrgIdentityReq req){
         String orgId = userService.applyOrgIdentity(req.getOrgName());
         if(StrUtil.isBlank(orgId)){
@@ -112,7 +114,7 @@ public class UserController {
      * @return
      */
     @ApiOperation(value = "获取验证码")
-    @GetMapping("verificationCode")
+    @GetMapping("/verificationCode")
     public JsonResponse<String> getVerificationCode(HttpServletRequest request){
         int code = RandomUtil.randomInt(1000, 9999);
         //放入session中，方便后面登录校验验证码
@@ -133,4 +135,18 @@ public class UserController {
         }
     }
 
+
+    @Resource
+    private LocalOrgService localOrgService;
+
+    /**
+     * 登录后查询出当前组织信息
+     * @return
+     */
+    @ApiOperation(value = "查询出当前组织信息")
+    @GetMapping("/findLocalOrgInfo")
+    public JsonResponse<LocalOrg> findLocalOrgInfo(){
+        LocalOrg localOrg = localOrgService.getLocalOrg();
+        return JsonResponse.success(localOrg);
+    }
 }

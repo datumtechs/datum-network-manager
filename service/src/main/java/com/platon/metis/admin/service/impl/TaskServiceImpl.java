@@ -89,6 +89,13 @@ public class TaskServiceImpl implements TaskService {
         }
 
     @Override
+    public Page<Task> listRunningTaskByPowerNodeId(String powerNodeId, int pageNumber, int pageSize) {
+        Page<Task> taskPage = PageHelper.startPage(pageNumber, pageSize);
+        taskMapper.listRunningTaskByPowerNodeId(powerNodeId);
+        return taskPage;
+    }
+
+    @Override
     public Integer selectAllTaskCount() {
         return taskMapper.selectAllTaskCount();
     }

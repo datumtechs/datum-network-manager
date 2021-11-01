@@ -110,8 +110,8 @@
   <select id="queryWaitAuthDataList" resultType="java.util.HashMap">
     select
         a.create_at as applyTime,
-        a.apply_user as applyUser,
-        b.meta_data_name as dataName
+        a.identity_name as identityName,
+        b.meta_data_name as metadataName
     from
         local_data_auth a, local_meta_data b
     where 1=1
