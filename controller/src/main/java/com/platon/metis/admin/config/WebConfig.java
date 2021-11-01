@@ -26,9 +26,9 @@ public class WebConfig implements WebMvcConfigurer {
                 "/**/*.css",
                 "/**/*.html",
                 "/**/*.map",
-                "/api/v1/system/user/login",
-                "/api/v1/system/user/logout",
-                "/api/v1/system/user/verificationCode"};
+                "/api/v1/user/login",
+                "/api/v1/user/logout",
+                "/api/v1/user/verificationCode"};
         registry.addInterceptor(new LoginInterceptor())//使用那个拦截器
                 .addPathPatterns("/**")//所有请求都被拦截包括静态资源了。
                 .excludePathPatterns(excludeUrls)//设置要放行的页面。
@@ -36,7 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new ApplyOrgIdentityInterceptor())//使用那个拦截器
                 .addPathPatterns("/**")//所有请求都被拦截包括静态资源了。
                 .excludePathPatterns(excludeUrls)//设置要放行的页面。
-                .excludePathPatterns("/api/v1/system/user/applyOrgIdentity")
+                .excludePathPatterns("/api/v1/user/applyOrgIdentity")
                 .order(1);
     }
 }
