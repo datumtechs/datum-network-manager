@@ -3,6 +3,7 @@ package com.platon.metis.admin.controller.node;
 
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
+import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.*;
@@ -10,13 +11,11 @@ import com.platon.metis.admin.service.LocalPowerNodeService;
 import com.platon.metis.admin.service.TaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -84,18 +83,18 @@ public class LocalPowerNodeController {
         }
     }
 
-    @PostMapping("/queryPowerNodeDetails")
+    @PostMapping("/powerNodeDetails")
     @ApiOperation(value="查询计算节点详情", response = JsonResponse.class)
-    public JsonResponse<LocalPowerNode> queryPowerNodeDetails(@Validated @RequestBody PowerQueryDetailsReq queryDetailsReq) {
-        LocalPowerNode localPowerNode = localPowerNodeService.queryPowerNodeDetails(queryDetailsReq.getPowerNodeId());
+    public JsonResponse<LocalPowerNode> powerNodeDetails(@Validated @RequestBody PowerQueryDetailsReq queryDetailsReq) {
+        LocalPowerNode localPowerNode = localPowerNodeService.findPowerNodeDetails(queryDetailsReq.getPowerNodeId());
         return JsonResponse.success(localPowerNode);
     }
 
     @PostMapping("/listPowerNode")
     @ApiOperation(value="查询计算节点列表", response = JsonResponse.class)
-    public JsonResponse<List<LocalPowerNode>> queryPowerNodeList(@Validated @RequestBody PowerQueryListReq powerReq) {
+    public JsonResponse<List<LocalPowerNode>> listPowerNode(@Validated @RequestBody PowerQueryListReq powerReq) {
         try {
-            Page<LocalPowerNode> page = localPowerNodeService.queryPowerNodeList(powerReq.getIdentityId(), powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
+            Page<LocalPowerNode> page = localPowerNodeService.listPowerNode(powerReq.getIdentityId(), powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
             return JsonResponse.page(page);
         } catch (Exception e) {
             return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "查询失败！");
@@ -143,6 +142,19 @@ public class LocalPowerNodeController {
         } catch (Exception e) {
             long diffTime = System.currentTimeMillis() - startTime;
             log.error("checkPowerNodeName接口执行失败, 执行时间:{}, 错误信息:{}", diffTime +"ms", e);
+            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "校验失败！");
+        }
+    }
+
+    @PostMapping("/listLocalPowerLoadSnapshot")
+    @ApiOperation(value="查询算力节点的最近24小时的负载情况", response = JsonResponse.class)
+    public JsonResponse<List<LocalPowerLoadSnapshot>> listLocalPowerLoadSnapshot(@ApiParam(name = "powerId",value = "算力节点ID", type = "String", required = true) @RequestParam String powerId) {
+        try {
+            //参数，最近多少小时的数据
+            List<LocalPowerLoadSnapshot> list = localPowerNodeService.listLocalPowerLoadSnapshot(powerId, 24);
+            return JsonResponse.success(list);
+        } catch (Exception e) {
+            log.error("查询本地算力负载快照记录出错", e);
             return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "校验失败！");
         }
     }

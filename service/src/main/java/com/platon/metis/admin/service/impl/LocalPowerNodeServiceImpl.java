@@ -6,9 +6,11 @@ import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.dao.LocalPowerHistoryMapper;
 import com.platon.metis.admin.dao.LocalPowerJoinTaskMapper;
+import com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper;
 import com.platon.metis.admin.dao.LocalPowerNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalPowerHistory;
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
+import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 import com.platon.metis.admin.grpc.client.PowerClient;
 import com.platon.metis.admin.grpc.common.CommonBase;
@@ -49,6 +51,10 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Resource
     PowerClient powerClient;
+
+    @Resource
+    LocalPowerLoadSnapshotMapper localPowerLoadSnapshotMapper;
+
 
     @Override
     public void insertPowerNode(LocalPowerNode powerNode) {
@@ -149,12 +155,12 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public LocalPowerNode queryPowerNodeDetails(String powerNodeId) {
+    public LocalPowerNode findPowerNodeDetails(String powerNodeId) {
         return localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
     }
 
     @Override
-    public Page<LocalPowerNode> queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize) {
+    public Page<LocalPowerNode> listPowerNode(String identityId, String keyword, int pageNumber, int pageSize) {
         Page<LocalPowerNode> page = PageHelper.startPage(pageNumber, pageSize);
         localPowerNodeMapper.queryPowerNodeList(keyword);
         return page;
@@ -271,6 +277,11 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         if (count > 0) {
             throw new ServiceException("名称已存在！");
         }
+    }
+
+    @Override
+    public List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshot(String powerId, int hours) {
+        return localPowerLoadSnapshotMapper.listLocalPowerLoadSnapshot(powerId, hours);
     }
 
 }

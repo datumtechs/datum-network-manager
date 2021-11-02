@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper">
+
+    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot">
+        <id column="snapshot_time" jdbcType="VARCHAR" property="snapshotTime" />
+        <result column="core_pct" jdbcType="INTEGER" property="corePct" />
+        <result column="memory_pct" jdbcType="INTEGER" property="memoryPct" />
+        <result column="bandwidth_pct" jdbcType="INTEGER" property="bandwidthPct" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        snapshot_time, core_pct, memory_pct, bandwidth_pct
+    </sql>
+
+    <!-- 查询计算节点详情 -->
+    <select id="listLocalPowerLoadSnapshot"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from local_power_load_snapshot
+        where power_id = #{powerId, jdbcType=VARCHAR}
+        order by snapshot_time desc
+        limit 0, #{hours, jdbcType=INTEGER}
+    </select>
+</mapper>

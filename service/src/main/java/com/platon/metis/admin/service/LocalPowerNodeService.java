@@ -2,6 +2,7 @@ package com.platon.metis.admin.service;
 
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
+import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public interface LocalPowerNodeService {
      * @param powerNodeId
      * @return
      */
-    LocalPowerNode queryPowerNodeDetails(String powerNodeId);
+    LocalPowerNode findPowerNodeDetails(String powerNodeId);
 
     /**
      * 查询计算节点服务列表
@@ -48,7 +49,7 @@ public interface LocalPowerNodeService {
      * @param pageSize
      * @return
      */
-    Page<LocalPowerNode> queryPowerNodeList(String identityId, String keyword, int pageNumber, int pageSize);
+    Page<LocalPowerNode> listPowerNode(String identityId, String keyword, int pageNumber, int pageSize);
 
     /**
      * 启用算力
@@ -87,4 +88,5 @@ public interface LocalPowerNodeService {
     void checkPowerNodeName(String powerNodeName);
 
 
+    List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshot(String powerId, int hours);
 }
