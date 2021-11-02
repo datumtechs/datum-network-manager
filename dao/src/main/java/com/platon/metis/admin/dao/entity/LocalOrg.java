@@ -32,7 +32,7 @@ public class LocalOrg {
     private String carrierConnStatus;
 
     @ApiModelProperty(value = "连接节点的数量")
-    private String connNodeCount;
+    private Integer connNodeCount;
 
     @ApiModelProperty(value = "服务连接时间")
     private Date carrierConnTime;
