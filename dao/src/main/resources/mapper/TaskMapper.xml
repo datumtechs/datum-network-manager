@@ -107,7 +107,7 @@
     join (
       select tmp.task_id, sum(tmp.taskSponsor) as taskSponsor, sum(tmp.powerProvider) as powerProvider , sum(tmp.dataProvider) as dataProvider, sum(tmp.resultConsumer) as resultConsumer, sum(tmp.algoProvider) as algoProvider
       from (
-        select tk.owner_identity_id as identity_id, tk.id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+        select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
         from task tk
         WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
 
