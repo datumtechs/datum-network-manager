@@ -78,17 +78,14 @@
 
 
 
-  <select id="taskStatistics" resultType="com.platon.metis.admin.dao.entity.TaskStatistics">
+  <select id="taskStatistics"  parameterType="java.lang.String" resultType="com.platon.metis.admin.dao.entity.TaskStatistics">
     SELECT `owner`.count as ownerCount, algo.count as algoProviderCount, power.count as powerProviderCount, data.count as dataProviderCount, result.count as resultReceiverCount, success.count as successCount, failed.count as failedCount, running.count as runningCount, pending.count as  pendingCount
-
     from
-
-      (select count(id) as count from task WHERE owner_identity_id = 'identity_b2b2e609a81542558bef5b755b9aaa5c') `owner`,
-      (select count(task_id) as count from task_algo_provider WHERE identity_id = 'identity_b2b2e609a81542558bef5b755b9aaa5c') algo,
-      (select count(task_id) as count from task_power_provider WHERE identity_id = 'identity_b2b2e609a81542558bef5b755b9aaa5c') power,
-      (select count(task_id) as count from task_data_provider WHERE identity_id = 'identity_b2b2e609a81542558bef5b755b9aaa5c') data,
-
-      (select count(task_id) as count from task_result_consumer WHERE consumer_identity_id = 'identity_b2b2e609a81542558bef5b755b9aaa5c') result,
+      (select count(id) as count from task WHERE owner_identity_id = #{identityId,jdbcType=VARCHAR}) `owner`,
+      (select count(task_id) as count from task_algo_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) algo,
+      (select count(task_id) as count from task_power_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) power,
+      (select count(task_id) as count from task_data_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) data,
+      (select count(task_id) as count from task_result_consumer WHERE consumer_identity_id = #{identityId,jdbcType=VARCHAR}) result,
       (SELECT COUNT(id) as count FROM task WHERE `status` = 4) success,
       (SELECT COUNT(id) as count FROM task WHERE `status` = 3) failed,
       (SELECT COUNT(id) as count FROM task WHERE `status` = 2) running,

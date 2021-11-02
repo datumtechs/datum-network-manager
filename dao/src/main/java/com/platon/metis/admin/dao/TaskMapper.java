@@ -28,7 +28,7 @@ public interface TaskMapper {
 
     Integer selectTaskRunningCount();
 
-    TaskStatistics taskStatistics();
+    TaskStatistics taskStatistics(@Param("identityId")String identityId);
 
     Integer batchUpdate(List<Task> taskList);
 

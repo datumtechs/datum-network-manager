@@ -2,6 +2,7 @@ package com.platon.metis.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.dao.*;
 import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.dao.enums.TaskStatusEnum;
@@ -107,7 +108,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskStatistics taskStatistics() {
-        return taskMapper.taskStatistics();
+        String identityId=LocalOrgIdentityCache.getIdentityId();
+        return taskMapper.taskStatistics(identityId);
     }
 
     @Override
