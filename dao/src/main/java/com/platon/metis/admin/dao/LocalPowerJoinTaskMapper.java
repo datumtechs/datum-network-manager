@@ -25,7 +25,7 @@ public interface LocalPowerJoinTaskMapper {
      * @param powerNodeId
      * @return
      */
-    List<LocalPowerJoinTask> queryPowerJoinTaskList(@Param(value = "powerNodeId") String powerNodeId);
+    List<LocalPowerJoinTask> listRunningTaskByPowerNodeId(@Param(value = "powerNodeId") String powerNodeId);
 
     /**
      * 清空表数据

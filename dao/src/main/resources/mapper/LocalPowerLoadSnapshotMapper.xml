@@ -3,6 +3,7 @@
 <mapper namespace="com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper">
 
     <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot">
+        <id column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
         <id column="snapshot_time" jdbcType="VARCHAR" property="snapshotTime" />
         <result column="core_pct" jdbcType="INTEGER" property="corePct" />
         <result column="memory_pct" jdbcType="INTEGER" property="memoryPct" />
@@ -14,11 +15,11 @@
     </sql>
 
     <!-- 查询计算节点详情 -->
-    <select id="listLocalPowerLoadSnapshot"  resultMap="BaseResultMap">
+    <select id="listLocalPowerLoadSnapshotByPowerNodeId"  resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from local_power_load_snapshot
-        where power_id = #{powerId, jdbcType=VARCHAR}
+        where power_node_id = #{powerNodeId, jdbcType=VARCHAR}
         order by snapshot_time desc
         limit 0, #{hours, jdbcType=INTEGER}
     </select>

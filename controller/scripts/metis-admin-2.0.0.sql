@@ -472,12 +472,12 @@ CREATE TABLE `task_result_consumer` (
 
 DROP TABLE IF EXISTS `local_power_load_snapshot`;
 CREATE TABLE `local_power_load_snapshot` (
-    power_id varchar(256) NOT NULL COMMENT '算力节点id',
+    power_node_id varchar(256) NOT NULL COMMENT '算力节点id',
     snapshot_time varchar(13) NOT NULL COMMENT '快照时间点，精确到小时',
     core_pct int NOT NULL COMMENT '核心占用百分比，没有小数，四舍五入，xx%',
     memory_pct int NOT NULL COMMENT '内存占用百分比，没有小数，四舍五入，xx%',
     bandwidth_pct int COMMENT '带宽占用百分比，没有小数，四舍五入，xx%',
-    PRIMARY KEY (power_id, snapshot_time)
+    PRIMARY KEY (power_node_id, snapshot_time)
 ) COMMENT='本地算力负载快照统计';
 
 
@@ -615,13 +615,15 @@ ORDER BY a.stats_time;
 DELIMITER $$
 drop event if EXISTS local_power_load_snapshot_event $$
 CREATE EVENT local_power_load_snapshot_event
-	ON SCHEDULE EVERY 1 HOUR STARTS now()
+	ON SCHEDULE EVERY 1 hour STARTS now()
 	ON COMPLETION PRESERVE
 	DO
 BEGIN
-    INSERT INTO local_power_load_snapshot (power_id, snapshot_time, core_pct, memory_pct, bandwidth_pct)
-    SELECT power_node_id, DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y-%m-%d %H'), CAST(lpd.used_core / lpd.core * 100 as UNSIGNED), CAST(lpd.used_memory / lpd.memory * 100 as UNSIGNED), CAST(lpd.used_bandwidth / lpd.bandwidth * 100 as UNSIGNED)
-    FROM  local_power_node lpd;
+INSERT INTO local_power_load_snapshot (power_node_id, snapshot_time, core_pct, memory_pct, bandwidth_pct)
+SELECT power_node_id, DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y-%m-%d %H'), CAST(sum(lpd.used_core) / lpd.core * 100 as UNSIGNED), CAST(sum(lpd.used_memory) / lpd.memory * 100 as UNSIGNED), CAST(sum(lpd.used_bandwidth) / lpd.bandwidth * 100 as UNSIGNED)
+FROM  local_power_node lpd
+GROUP BY power_node_id;
+
 END$$
 ALTER EVENT local_power_load_snapshot_event ENABLE$$
 DELIMITER ;

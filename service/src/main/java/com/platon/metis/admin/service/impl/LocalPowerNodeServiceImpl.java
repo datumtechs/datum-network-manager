@@ -262,9 +262,9 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public Page<LocalPowerJoinTask> queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize) {
+    public Page<LocalPowerJoinTask> listRunningTaskByPowerNodeId(String powerNodeId, int pageNumber, int pageSize) {
         Page<LocalPowerJoinTask> page = PageHelper.startPage(pageNumber, pageSize);
-        localPowerJoinTaskMapper.queryPowerJoinTaskList(powerNodeId);
+        localPowerJoinTaskMapper.listRunningTaskByPowerNodeId(powerNodeId);
         return page;
     }
 
@@ -280,8 +280,8 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshot(String powerId, int hours) {
-        return localPowerLoadSnapshotMapper.listLocalPowerLoadSnapshot(powerId, hours);
+    public List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshotByPowerNodeId(String powerNodeId, int hours) {
+        return localPowerLoadSnapshotMapper.listLocalPowerLoadSnapshotByPowerNodeId(powerNodeId, hours);
     }
 
 }

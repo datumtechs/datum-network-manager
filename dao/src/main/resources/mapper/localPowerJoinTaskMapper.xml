@@ -41,8 +41,8 @@
   </sql>
 
   <!-- 通过计算节点参数任务详情 -->
-  <select id="queryPowerJoinTaskList" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+  <select id="listRunningTaskByPowerNodeId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
         <include refid="Base_Column_List" />
     from
         local_power_join_task

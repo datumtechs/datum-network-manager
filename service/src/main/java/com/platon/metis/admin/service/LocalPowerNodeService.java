@@ -77,7 +77,7 @@ public interface LocalPowerNodeService {
      * @param pageSize
      * @return
      */
-    Page<LocalPowerJoinTask> queryPowerJoinTaskList(String powerNodeId, int pageNumber, int pageSize);
+    Page<LocalPowerJoinTask> listRunningTaskByPowerNodeId(String powerNodeId, int pageNumber, int pageSize);
 
 
     /**
@@ -88,5 +88,5 @@ public interface LocalPowerNodeService {
     void checkPowerNodeName(String powerNodeName);
 
 
-    List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshot(String powerId, int hours);
+    List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshotByPowerNodeId(String powerNodeId, int hours);
 }

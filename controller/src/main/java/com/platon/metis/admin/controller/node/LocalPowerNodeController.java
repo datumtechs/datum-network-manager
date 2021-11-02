@@ -126,7 +126,7 @@ public class LocalPowerNodeController {
     @PostMapping("/listRunningTaskByPowerNodeId")
     @ApiOperation(value="查询计算节点参与的正在计算中的任务列表", response = JsonResponse.class)
     public JsonResponse<List<LocalPowerJoinTask>> listRunningTaskByPowerNodeId(@Validated @RequestBody PowerJoinTaskReq powerJoinTaskReq) {
-        Page<LocalPowerJoinTask> page = localPowerNodeService.queryPowerJoinTaskList(powerJoinTaskReq.getPowerNodeId(),
+        Page<LocalPowerJoinTask> page = localPowerNodeService.listRunningTaskByPowerNodeId(powerJoinTaskReq.getPowerNodeId(),
                 powerJoinTaskReq.getPageNumber(), powerJoinTaskReq.getPageSize());
 
         return JsonResponse.page(page);
@@ -146,12 +146,12 @@ public class LocalPowerNodeController {
         }
     }
 
-    @PostMapping("/listLocalPowerLoadSnapshot")
+    @PostMapping("/listLocalPowerLoadSnapshotByPowerNodeId")
     @ApiOperation(value="查询算力节点的最近24小时的负载情况", response = JsonResponse.class)
-    public JsonResponse<List<LocalPowerLoadSnapshot>> listLocalPowerLoadSnapshot(@ApiParam(name = "powerId",value = "算力节点ID", type = "String", required = true) @RequestParam String powerId) {
+    public JsonResponse<List<LocalPowerLoadSnapshot>> listLocalPowerLoadSnapshotByPowerNodeId(@ApiParam(name = "powerNodeId",value = "算力节点ID", type = "String", required = true) @RequestParam String powerNodeId) {
         try {
             //参数，最近多少小时的数据
-            List<LocalPowerLoadSnapshot> list = localPowerNodeService.listLocalPowerLoadSnapshot(powerId, 24);
+            List<LocalPowerLoadSnapshot> list = localPowerNodeService.listLocalPowerLoadSnapshotByPowerNodeId(powerNodeId, 24);
             return JsonResponse.success(list);
         } catch (Exception e) {
             log.error("查询本地算力负载快照记录出错", e);

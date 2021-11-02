@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface LocalPowerLoadSnapshotMapper {
-    List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshot(@Param("hours") String powerId, @Param("hours") Integer hours);
+    List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshotByPowerNodeId(@Param("powerNodeId") String powerNodeId, @Param("hours") Integer hours);
 }
