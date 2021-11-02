@@ -82,10 +82,10 @@
     SELECT `owner`.count as ownerCount, algo.count as algoProviderCount, power.count as powerProviderCount, data.count as dataProviderCount, result.count as resultReceiverCount, success.count as successCount, failed.count as failedCount, running.count as runningCount, pending.count as  pendingCount
     from
       (select count(id) as count from task WHERE owner_identity_id = #{identityId,jdbcType=VARCHAR}) `owner`,
-      (select count(task_id) as count from task_algo_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) algo,
-      (select count(task_id) as count from task_power_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) power,
-      (select count(task_id) as count from task_data_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) data,
-      (select count(task_id) as count from task_result_consumer WHERE consumer_identity_id = #{identityId,jdbcType=VARCHAR}) result,
+      (select count(DISTINCT task_id) as count from task_algo_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) algo,
+      (select count(DISTINCT task_id) as count from task_power_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) power,
+      (select count(DISTINCT task_id) as count from task_data_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) data,
+      (select count(DISTINCT task_id) as count from task_result_consumer WHERE consumer_identity_id = #{identityId,jdbcType=VARCHAR}) result,
       (SELECT COUNT(id) as count FROM task WHERE `status` = 4) success,
       (SELECT COUNT(id) as count FROM task WHERE `status` = 3) failed,
       (SELECT COUNT(id) as count FROM task WHERE `status` = 2) running,
@@ -137,7 +137,7 @@
 
       ) tmp
       group by tmp.task_id
-    ) temp on t.id = temp.task_id
+    ) temp on t.task_id = temp.task_id
     <where>
       <if test="startTimestamp != null">
          and t.create_At <![CDATA[>= ]]> #{startTimestamp,jdbcType=TIMESTAMP}
