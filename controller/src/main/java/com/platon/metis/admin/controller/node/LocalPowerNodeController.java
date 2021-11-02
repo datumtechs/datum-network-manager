@@ -146,7 +146,7 @@ public class LocalPowerNodeController {
         }
     }
 
-    @PostMapping("/listLocalPowerLoadSnapshotByPowerNodeId")
+    @GetMapping("/listLocalPowerLoadSnapshotByPowerNodeId")
     @ApiOperation(value="查询算力节点的最近24小时的负载情况", response = JsonResponse.class)
     public JsonResponse<List<LocalPowerLoadSnapshot>> listLocalPowerLoadSnapshotByPowerNodeId(@ApiParam(name = "powerNodeId",value = "算力节点ID", type = "String", required = true) @RequestParam String powerNodeId) {
         try {
