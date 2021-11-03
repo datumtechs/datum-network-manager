@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @ApiModel(value = "种子节点")
 public class LocalSeedNode {
 
-    @ApiModelProperty(value = "序号ID")
-    private Integer id;
+    @ApiModelProperty(value = "种子节点地址")
+    private String seedNodeAddress;
 
     @ApiModelProperty(value = "组织身份ID")
     private String identityId;
@@ -28,9 +28,6 @@ public class LocalSeedNode {
 
     @ApiModelProperty(value = "节点名称")
     private String seedNodeName;
-
-    @ApiModelProperty(value = "种子节点地址")
-    private String seedNodeAddress;
 
     @ApiModelProperty(value = "节点状态 -1: 网络连接失败; 0: 网络连接成功")
     private Integer connStatus;

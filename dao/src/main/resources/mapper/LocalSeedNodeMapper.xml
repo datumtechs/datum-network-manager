@@ -3,11 +3,10 @@
 <mapper namespace="com.platon.metis.admin.dao.LocalSeedNodeMapper">
 
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalSeedNode">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="seed_node_address" jdbcType="INTEGER" property="seedNodeAddress" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="out_node_id" jdbcType="VARCHAR" property="outNodeId" />
     <result column="seed_node_name" jdbcType="VARCHAR" property="seedNodeName" />
-    <result column="seed_node_address" jdbcType="VARCHAR" property="seedNodeAddress" />
     <result column="conn_status" jdbcType="INTEGER" property="connStatus" />
     <result column="init_flag" jdbcType="INTEGER" property="initFlag" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -15,7 +14,6 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id,
     identity_id,
     out_node_id,
     seed_node_name,
@@ -33,7 +31,7 @@
     from
         local_seed_node
     where
-        seed_node_id = #{seedNodeId, jdbcType=VARCHAR}
+    seed_node_address = #{seedNodeAddress, jdbcType=VARCHAR}
   </select>
 
   <!-- 校验种子节点名称 -->
@@ -56,14 +54,13 @@
 
   <!-- 删除种子节点 -->
   <delete id="deleteSeedNode" parameterType="java.lang.String">
-    delete from local_seed_node where seed_node_id = #{address, jdbcType=VARCHAR}
+    delete from local_seed_node where seed_node_address = #{seedNodeAddress, jdbcType=VARCHAR}
   </delete>
 
   <!-- 插入种子节点数据 -->
   <insert id="insertSeedNode" parameterType="com.platon.metis.admin.dao.entity.LocalSeedNode">
     insert into local_seed_node
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">id,</if>
       <if test="identityId != null">identity_id,</if>
       <if test="outNodeId != null">out_node_id,</if>
       <if test="seedNodeName != null">seed_node_name,</if>
@@ -74,7 +71,6 @@
       <if test="updateTime != null">update_time,</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null"> #{id, jdbcType=INTEGER},</if>
       <if test="identityId != null">#{identityId, jdbcType=VARCHAR},</if>
       <if test="outNodeId != null">#{outNodeId, jdbcType=VARCHAR},</if>
       <if test="seedNodeName != null">#{seedNodeName, jdbcType=VARCHAR},</if>
@@ -91,12 +87,11 @@
     update local_seed_node
     <set>
       <if test="outNodeId != null">out_node_id = #{outNodeId, jdbcType=VARCHAR},</if>
-      <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
-      <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
+      <if test="seed_node_name != null">internal_ip = #{seedNodeName, jdbcType=VARCHAR},</if>
       <if test="connStatus != null">conn_status = #{connStatus, jdbcType=INTEGER},</if>
       <if test="initFlag != null">init_flag = #{initFlag, jdbcType=INTEGER},</if>
     </set>
-    where seed_node_id = #{seedNodeId, jdbcType=VARCHAR}
+    where seed_node_address = #{seedNodeAddress, jdbcType=VARCHAR}
   </update>
 
   <!-- 批量修改种子节点-->
@@ -105,12 +100,11 @@
       update local_seed_node
       <set>
         <if test="item.outNodeId != null">out_node_id = #{item.outNodeId, jdbcType=VARCHAR},</if>
-        <if test="item.internalIp != null">internal_ip = #{item.internalIp, jdbcType=VARCHAR},</if>
-        <if test="item.internalPort != null">internal_port = #{item.internalPort, jdbcType=INTEGER},</if>
+        <if test="item.seed_node_name != null">internal_ip = #{item.seedNodeName, jdbcType=VARCHAR},</if>
         <if test="item.connStatus != null">conn_status = #{item.connStatus, jdbcType=INTEGER},</if>
         <if test="item.initFlag != null">init_flag = #{item.initFlag, jdbcType=INTEGER},</if>
       </set>
-      where seed_node_id = #{item.seedNodeId, jdbcType=VARCHAR}
+      where seed_node_address = #{seedNodeAddress, jdbcType=VARCHAR}
     </foreach>
   </update>
 

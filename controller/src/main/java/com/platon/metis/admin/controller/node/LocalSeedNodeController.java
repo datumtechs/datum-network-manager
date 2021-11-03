@@ -48,7 +48,7 @@ public class LocalSeedNodeController {
         }
     }
 
-    @PostMapping("/updateSeedNode")
+    /*@PostMapping("/updateSeedNode")
     @ApiOperation(value="修改种子节点", response = JsonResponse.class)
     public JsonResponse updateSeedNode(@Validated @RequestBody SeedUpdateReq seedUpdateReq) {
         long startTime = System.currentTimeMillis();
@@ -62,7 +62,7 @@ public class LocalSeedNodeController {
             log.error("updateSeedNode--接口失败, 执行时间:{}, 错误信息:{}", diffTime +"ms", e);
             return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "修改失败！");
         }
-    }
+    }*/
 
     @PostMapping("/deleteSeedNode")
     @ApiOperation(value="删除种子节点", response = JsonResponse.class)
