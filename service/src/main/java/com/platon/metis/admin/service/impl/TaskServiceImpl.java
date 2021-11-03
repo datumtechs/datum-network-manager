@@ -115,8 +115,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task getTaskDetails(String taskId) {
         Task task = taskMapper.selectTaskByTaskId(taskId,null);
-        task = (task == null) ? new Task() : task;
-        //任务发起方身份信息
+         //任务发起方身份信息
         TaskOrg owner = taskOrgMapper.selectTaskOrgByIdentityId(task.getOwnerIdentityId());
         task.setOwner(owner);
 
@@ -136,7 +135,6 @@ public class TaskServiceImpl implements TaskService {
         List<TaskResultConsumer> resultReceiverList = taskResultConsumerMapper.selectTaskResultWithOrgByTaskId(taskId);
         task.setReceivers(resultReceiverList);
 
-
         //更新task查看状态
         taskMapper.updateTaskReviewedById(taskId,true);
         //是否任务结束超过72小时，非最新(已查看)
@@ -152,8 +150,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskEvent> listTaskEvent(String taskId) {
-        List<TaskEvent> taskEventList = taskEventMapper.listTaskEventByTaskId(taskId);
+    public List<TaskEvent> listTaskEventWithOrgName(String taskId) {
+        List<TaskEvent> taskEventList = taskEventMapper.listTaskEventWithOrgNameByTaskId(taskId);
         if(!CollectionUtils.isEmpty(taskEventList)){
             //更新task查看状态
             taskMapper.updateTaskReviewedById(taskId,true);

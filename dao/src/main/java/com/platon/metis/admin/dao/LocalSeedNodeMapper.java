@@ -36,10 +36,10 @@ public interface LocalSeedNodeMapper {
 
     /**
      * 删除种子节点
-     * @param seedNodeId
+     * @param address
      * @return
      */
-    int deleteSeedNode(String seedNodeId);
+    int deleteSeedNode(String address);
 
     /**
      * 查询种子节点详情

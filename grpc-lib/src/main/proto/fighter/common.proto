@@ -23,6 +23,7 @@ message TaskReadyGoReq {
     repeated string data_party = 8;         // 各数据方的party_id
     repeated string computation_party = 9;  // 各计算方的party_id
     repeated string result_party = 10;      // 各结果方的party_id
+    uint64 duration = 11;       // 任务预算计算时长(单位: ms)
 }
 
 message TaskReadyGoReply {

@@ -75,13 +75,13 @@ public class Task extends BaseDomain {
     @ApiModelProperty(name = "algoSupplier", value = "任务算法提供者信息")
     private TaskAlgoProvider algoSupplier;
 
-    @ApiModelProperty(name = "receivers", value = "任务结果接收方信息")
+    @ApiModelProperty(name = "receivers", value = "任务结果接收者列表")
     private List<TaskResultConsumer> receivers;
 
-    @ApiModelProperty(name = "dataSupplier", value = "任务数据提供方信息")
+    @ApiModelProperty(name = "dataSupplier", value = "任务数据提供者列表")
     private List<TaskDataProvider> dataSupplier;
 
-    @ApiModelProperty(name = "powerSupplier", value = "任务算力提供方信息")
+    @ApiModelProperty(name = "powerSupplier", value = "任务算力提供者列表")
     private List<TaskPowerProvider> powerSupplier;
 
     //我在任务中的角色 (0：unknown 未知、1： owner  任务发起方、2：dataSupplier  数据提供方、 3: powerSupplier  算力提供方、 4： receiver  结果接收方、5：algoSupplier 算法提供方

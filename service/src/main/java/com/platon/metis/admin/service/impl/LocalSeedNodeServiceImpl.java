@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author houz
@@ -39,11 +38,12 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
             throw new ServiceException("名称不符合命名规则！");
         }
         // 调用grpc接口新增节点信息
-        YarnRpcMessage.SeedPeer seedResp = seedClient.addSeedNode(seedNode.getInternalIp(),
-                seedNode.getInternalPort());
+        YarnRpcMessage.SeedPeer seedResp = seedClient.addSeedNode(seedNode.getSeedNodeAddress());
         seedNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
         // 计算节点id
-        seedNode.setSeedNodeId(seedResp.getId());
+        //seedNode.setSeedNodeId(seedResp.getAddr());
+        seedNode.setSeedNodeAddress(seedResp.getAddr());
+        seedNode.setInitFlag(seedResp.getIsDefault() ? 1 : 0);
         seedNode.setConnStatus(seedResp.getConnState().getNumber());
         // 0表示初始节点
         seedNode.setInitFlag(0);
@@ -53,7 +53,7 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
         }
     }
 
-    @Override
+    /*@Override
     public void updateSeedNode(LocalSeedNode seedNode) {
         // 调用grpc接口修改计算节点信息
         YarnRpcMessage.SeedPeer seedResp = seedClient.updateSeedNode(seedNode.getSeedNodeId(), seedNode.getInternalIp(),
@@ -68,19 +68,19 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
         if (count == 0) {
             throw new ServiceException("修改失败！");
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void updateSeedNodeBatch(List<LocalSeedNode> localSeedNodeList) {
 
-    }
+    }*/
 
     @Override
-    public void deleteSeedNode(String seedNodeId) {
+    public void deleteSeedNode(String address) {
         // 删除底层资源
-        seedClient.deleteSeedNode(seedNodeId);
+        seedClient.deleteSeedNode(address);
         // 删除数据
-        int count = localSeedNodeMapper.deleteSeedNode(seedNodeId);
+        int count = localSeedNodeMapper.deleteSeedNode(address);
         if (count == 0) {
             throw new ServiceException("删除失败！");
         }

@@ -31,7 +31,7 @@ public class SeedClient {
     /**
      * 新增种子节点返回nodeId
      */
-    public YarnRpcMessage.SeedPeer addSeedNode(String internalIp, Integer internalPort){
+    public YarnRpcMessage.SeedPeer addSeedNode(String address){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
         YarnRpcMessage.SetSeedNodeResponse seedNodeResponse;
@@ -40,7 +40,7 @@ public class SeedClient {
             channel = channelManager.getScheduleServer();
             //2.拼装request
             YarnRpcMessage.SetSeedNodeRequest seedRequest = YarnRpcMessage.SetSeedNodeRequest.newBuilder()
-                    .setInternalIp(internalIp).setInternalPort(String.valueOf(internalPort))
+                    .setAddr(address)
                     .build();
             //3.调用rpc,获取response
             seedNodeResponse  = YarnServiceGrpc.newBlockingStub(channel).setSeedNode(seedRequest);
@@ -59,7 +59,7 @@ public class SeedClient {
     /**
      * 修改种子节点返回nodeId
      */
-    public YarnRpcMessage.SeedPeer updateSeedNode(String seedNodeId, String internalIp, Integer internalPort){
+    /*public YarnRpcMessage.SeedPeer updateSeedNode(String seedNodeId, String internalIp, Integer internalPort){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
         YarnRpcMessage.SetSeedNodeResponse seedNodeResponse;
@@ -83,12 +83,12 @@ public class SeedClient {
         long diffTime = System.currentTimeMillis() - startTime;
         log.info("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse);
         return seedNodeResponse.getNode();
-    }
+    }*/
 
     /**
      * 删除种子节点
      */
-    public void deleteSeedNode(String seedNodeId){
+    public void deleteSeedNode(String address){
         long startTime = System.currentTimeMillis();
         Channel channel = null;
         CommonBase.SimpleResponse simpleResponseCode;
@@ -96,8 +96,8 @@ public class SeedClient {
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            YarnRpcMessage.DeleteRegisteredNodeRequest seedRequest = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder()
-                    .setId(seedNodeId)
+            YarnRpcMessage.DeleteSeedNodeRequest seedRequest = YarnRpcMessage.DeleteSeedNodeRequest.newBuilder()
+                    .setAddr(address)
                     .build();
             //3.调用rpc,获取response
             simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);

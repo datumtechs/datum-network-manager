@@ -61,6 +61,7 @@ service DataProvider {
 
 message DownloadRequest {
   string file_path = 1;
+  map<string, string> options = 2;  // e.g.: compress: zip
 }
 
 enum TaskStatus {
@@ -119,16 +120,18 @@ message GetDataDetailReply {
 }
 
 message GetStatusReply {
-  string node_type = 1;
-  string node_id = 2;
-  string state = 3;
-  message Info {
-    string name = 1;
-    string total_disk = 2;
-    string used_disk = 3;
-    string idle_disk = 4;
-  }
-  Info info = 4;
+  uint32 total_cpu = 1;
+  uint32 used_cpu = 2;
+  uint32 idle_cpu = 3;
+  uint64 total_memory = 4;
+  uint64 used_memory = 5;
+  uint64 idle_memory = 6;
+  uint64 total_disk = 7;
+  uint64 used_disk = 8;
+  uint64 idle_disk = 9;
+  uint64 total_bandwidth = 10;
+  uint64 used_bandwidth = 11;
+  uint64 idle_bandwidth = 12;
 }
 
 message SendSharesDataRequest {

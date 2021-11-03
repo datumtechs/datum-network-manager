@@ -37,8 +37,6 @@ enum YarnNodeState {
 enum ConnState {
   ConnState_UnConnected = 0;
   ConnState_Connected = 1;
-  //  ConnState_Enabled = 2;
-  //  ConnState_Occupied = 3;
 }
 
 // 调度服务的信息
@@ -81,11 +79,9 @@ message YarnRegisteredPeerDetail {
 }
 
 message SeedPeer {
-  string          id = 1;                            // 种子节点的唯一Id
-  string          node_id = 2;                       // 种子节点p2p用的nodeId (对应组织信息中的nodeId)
-  string          internal_ip = 3;                   // 种子节点的内网 ip, 给 管理台用
-  string          internal_port = 4;                 // 种子节点的内网 port, 给 管理台用
-  ConnState       conn_state = 5;                    // 是否被调度服务连接上 (0: 未被调度服务连接上; 1: 连接上)
+  string          addr = 1;                          // 种子节点p2p用的addr (目前对应libp2p的MultiAddr)
+  bool            is_default = 2;                    // 是否内置的种子节点 (true: 是内置的; false: 不是; 注: 配置文件或者代码写死的都是内置的, 通过管理台设置的则不是内置的; 内置种子节点不可被删除/修改)
+  ConnState       conn_state = 3;                    // 是否被调度服务连接上 (0: 未被调度服务连接上; 1: 连接上)
 }
 
 
@@ -113,23 +109,20 @@ message DeleteRegisteredNodeRequest {
 
 // 新增种子节点信息 req
 message SetSeedNodeRequest {
-  string node_id = 1;                       // 种子节点p2p用的nodeId (对应组织信息中的nodeId)
-  string internal_ip = 2;                   // 种子节点的内网 ip, 给 管理台用
-  string internal_port = 3;                 // 种子节点的内网 port, 给 管理台用
+  string addr = 1;
 }
-// 新增|修改 种子节点信息 resp
+// 删除种子节点信息 req
+message DeleteSeedNodeRequest {
+  string addr = 1;
+}
+
+// 新增 种子节点信息 resp
 message SetSeedNodeResponse {
   int32    status = 1;                      // 响应码
   string   msg = 2;                         // 错误信息
   SeedPeer node = 3;                        // 种子节点的详情信息
 }
-// 修改种子节点信息 req
-message UpdateSeedNodeRequest {
-  string id = 1;                            // 种子节点的唯一Id
-  string node_id = 2;                       // 种子节点p2p用的nodeId (对应组织信息中的nodeId)
-  string internal_ip = 3;                   // 种子节点的内网 ip, 给 管理台用
-  string internal_port = 4;                 // 种子节点的内网 port, 给 管理台用
-}
+
 // 查询种子节点列表 resp
 message GetSeedNodeListResponse {
   int32             status = 1;                      // 响应码
@@ -298,16 +291,9 @@ service YarnService {
       body: "*"
     };
   }
-  // 修改种子节点信息
-  rpc UpdateSeedNode (UpdateSeedNodeRequest) returns (SetSeedNodeResponse) {
-    option (google.api.http) = {
-      post: "/carrier/v1/yarn/updateSeed"
-      body: "*"
-    };
-  }
 
   // 删除种子节点信息
-  rpc DeleteSeedNode (DeleteRegisteredNodeRequest) returns (api.protobuf.SimpleResponse) {
+  rpc DeleteSeedNode (DeleteSeedNodeRequest) returns (api.protobuf.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/deleteSeed"
       body: "*"

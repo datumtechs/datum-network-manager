@@ -6,10 +6,8 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="out_node_id" jdbcType="VARCHAR" property="outNodeId" />
-    <result column="seed_node_id" jdbcType="VARCHAR" property="seedNodeId" />
     <result column="seed_node_name" jdbcType="VARCHAR" property="seedNodeName" />
-    <result column="internal_ip" jdbcType="VARCHAR" property="internalIp" />
-    <result column="internal_port" jdbcType="INTEGER" property="internalPort" />
+    <result column="seed_node_address" jdbcType="VARCHAR" property="seedNodeAddress" />
     <result column="conn_status" jdbcType="INTEGER" property="connStatus" />
     <result column="init_flag" jdbcType="INTEGER" property="initFlag" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -20,10 +18,8 @@
     id,
     identity_id,
     out_node_id,
-    seed_node_id,
     seed_node_name,
-    internal_ip,
-    internal_port,
+    seed_node_address,
     conn_status,
     init_flag,
     create_time,
@@ -60,7 +56,7 @@
 
   <!-- 删除种子节点 -->
   <delete id="deleteSeedNode" parameterType="java.lang.String">
-    delete from local_seed_node where seed_node_id = #{seedNodeId, jdbcType=VARCHAR}
+    delete from local_seed_node where seed_node_id = #{address, jdbcType=VARCHAR}
   </delete>
 
   <!-- 插入种子节点数据 -->
@@ -70,10 +66,8 @@
       <if test="id != null">id,</if>
       <if test="identityId != null">identity_id,</if>
       <if test="outNodeId != null">out_node_id,</if>
-      <if test="seedNodeId != null">seed_node_id,</if>
       <if test="seedNodeName != null">seed_node_name,</if>
-      <if test="internalIp != null">internal_ip,</if>
-      <if test="internalPort != null">internal_port,</if>
+      <if test="seedNodeAddress != null">seed_node_address,</if>
       <if test="connStatus != null">conn_status,</if>
       <if test="initFlag != null">init_flag,</if>
       <if test="createTime != null">create_time,</if>
@@ -83,10 +77,8 @@
       <if test="id != null"> #{id, jdbcType=INTEGER},</if>
       <if test="identityId != null">#{identityId, jdbcType=VARCHAR},</if>
       <if test="outNodeId != null">#{outNodeId, jdbcType=VARCHAR},</if>
-      <if test="seedNodeId != null">#{seedNodeId, jdbcType=VARCHAR},</if>
       <if test="seedNodeName != null">#{seedNodeName, jdbcType=VARCHAR},</if>
-      <if test="internalIp != null">#{internalIp, jdbcType=VARCHAR},</if>
-      <if test="internalPort != null">#{internalPort, jdbcType=INTEGER},</if>
+      <if test="seedNodeAddress != null">#{seedNodeAddress, jdbcType=VARCHAR},</if>
       <if test="connStatus != null">#{connStatus, jdbcType=INTEGER},</if>
       <if test="initFlag != null">#{initFlag, jdbcType=INTEGER},</if>
       <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>

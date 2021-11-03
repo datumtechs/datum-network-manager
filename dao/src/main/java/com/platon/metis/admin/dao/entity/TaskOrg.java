@@ -1,21 +1,23 @@
 package com.platon.metis.admin.dao.entity;
 
 import com.platon.metis.admin.dao.BaseDomain;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.util.Objects;
 
-@Setter
-@Getter
-@ToString
+@Data
+@ApiModel(value = "任务的计算结果接收者")
 public class TaskOrg extends BaseDomain {
-    //机构身份标识ID
+    @ApiModelProperty(name = "identityId", value = "组织ID")
     private String identityId;
-    //机构名称
+
+    @ApiModelProperty(name = "name", value = "组织名称")
     private String name;
+
     //组织中调度服务的 nodeId
+    @ApiModelProperty(name = "name", value = "组织中调度服务ID")
     private String carrierNodeId;
 
     public TaskOrg() {

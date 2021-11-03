@@ -3,8 +3,6 @@ package com.platon.metis.admin.service;
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 
-import java.util.List;
-
 /**
  * @author houz
  * 种子节点业务接口
@@ -23,14 +21,14 @@ public interface LocalSeedNodeService {
      * @param localSeedNode
      * @return
      */
-    void updateSeedNode(LocalSeedNode localSeedNode);
+    //void updateSeedNode(LocalSeedNode localSeedNode);
 
     /**
      * 批量修改种子节点
      * @param localSeedNodeList
      * @return
      */
-    void updateSeedNodeBatch(List<LocalSeedNode> localSeedNodeList);
+    //void updateSeedNodeBatch(List<LocalSeedNode> localSeedNodeList);
 
     /**
      * 删除种子节点

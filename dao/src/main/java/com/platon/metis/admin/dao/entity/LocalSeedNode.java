@@ -23,17 +23,14 @@ public class LocalSeedNode {
     @ApiModelProperty(value = "外部节点ID")
     private String outNodeId;
 
-    @ApiModelProperty(value = "种子节点ID")
-    private String seedNodeId;
+    /*@ApiModelProperty(value = "种子节点ID")
+    private String seedNodeId;*/
 
     @ApiModelProperty(value = "节点名称")
     private String seedNodeName;
 
-    @ApiModelProperty(value = "节点内部IP")
-    private String internalIp;
-
-    @ApiModelProperty(value = "节点内部端口")
-    private Integer internalPort;
+    @ApiModelProperty(value = "种子节点地址")
+    private String seedNodeAddress;
 
     @ApiModelProperty(value = "节点状态 -1: 网络连接失败; 0: 网络连接成功")
     private Integer connStatus;

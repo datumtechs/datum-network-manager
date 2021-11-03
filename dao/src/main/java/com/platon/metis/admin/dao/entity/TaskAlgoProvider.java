@@ -1,35 +1,19 @@
 package com.platon.metis.admin.dao.entity;
 
 import com.platon.metis.admin.dao.BaseDomain;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
+@Data
+@ApiModel(value = "任务的算法提供者")
 public class TaskAlgoProvider extends BaseDomain {
+    @ApiModelProperty(name = "taskId", value = "任务ID")
     private String taskId;
 
+    @ApiModelProperty(name = "identityId", value = "算法提供者的组织ID")
     private String identityId;
 
+    @ApiModelProperty(name = "partyId", value = "算法提供者在任务中的party ID")
     private String partyId;
-
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
-    public String getIdentityId() {
-        return identityId;
-    }
-
-    public void setIdentityId(String identityId) {
-        this.identityId = identityId;
-    }
-
-    public String getPartyId() {
-        return partyId;
-    }
-
-    public void setPartyId(String partyId) {
-        this.partyId = partyId;
-    }
 }

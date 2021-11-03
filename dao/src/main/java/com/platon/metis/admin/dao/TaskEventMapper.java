@@ -15,7 +15,7 @@ public interface TaskEventMapper {
 
     int updateByPrimaryKey(TaskEvent record);
 
-    List<TaskEvent> listTaskEventByTaskId(@Param("taskId") String taskId);
+    List<TaskEvent> listTaskEventWithOrgNameByTaskId(@Param("taskId") String taskId);
 
     int insertBatch(List<TaskEvent> taskEventList);
 

@@ -1,13 +1,10 @@
 package com.platon.metis.admin.dto.resp;
 
 import com.platon.metis.admin.dao.BaseDomain;
-import com.platon.metis.admin.dao.entity.Task;
 import com.platon.metis.admin.dao.enums.RoleEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.time.ZoneOffset;
 
 @Data
 @ApiModel(value = "查询计算任务列表返回实体")
@@ -29,22 +26,6 @@ public class TaskDataPageResp extends BaseDomain {
     private Integer status;
     @ApiModelProperty(name = "reviewed", value = "是否查看过")
     private Boolean reviewed;
-
-
-    public static TaskDataPageResp convert(Task task){
-        TaskDataPageResp resp = new TaskDataPageResp();
-        resp.setDynamicFields(task.getDynamicFields());
-        resp.setId(task.getId());
-        resp.setTaskId(task.getTaskId());
-        resp.setTaskName(task.getTaskName());
-        resp.setStatus(task.getStatus());
-        resp.setReviewed(task.getReviewed());
-        resp.setCreateAt(task.getCreateAt() == null ? null :task.getCreateAt().toInstant(ZoneOffset.UTC).toEpochMilli());
-        resp.setStartAt(task.getStartAt() == null ? null :task.getStartAt().toInstant(ZoneOffset.UTC).toEpochMilli());
-        resp.setEndAt(task.getEndAt() == null ? null :task.getEndAt().toInstant(ZoneOffset.UTC).toEpochMilli());
-        return resp;
-    }
-
 
 
     /**
