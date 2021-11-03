@@ -34,5 +34,5 @@ public interface TaskMapper {
 
     Integer insertBatch(List<Task> taskList);
 
-    void listRunningTaskByPowerNodeId(@Param("powerNodeId") String powerNodeId);
+    List<Task> listRunningTaskByPowerNodeId(@Param("powerNodeId") String powerNodeId);
 }

@@ -1,6 +1,5 @@
 package com.platon.metis.admin.service;
 
-import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 
 /**
@@ -17,20 +16,6 @@ public interface LocalSeedNodeService {
     void insertSeedNode(LocalSeedNode localSeedNode);
 
     /**
-     * 修改种子节点
-     * @param localSeedNode
-     * @return
-     */
-    //void updateSeedNode(LocalSeedNode localSeedNode);
-
-    /**
-     * 批量修改种子节点
-     * @param localSeedNodeList
-     * @return
-     */
-    //void updateSeedNodeBatch(List<LocalSeedNode> localSeedNodeList);
-
-    /**
      * 删除种子节点
      * @param seedNodeId
      * @return
@@ -45,20 +30,11 @@ public interface LocalSeedNodeService {
     LocalSeedNode querySeedNodeDetails(String seedNodeId);
 
     /**
-     * 查询种子节点列表
-     * @param keyWord
-     * @param pageNumber
-     * @param pageSize
-     * @return
-     */
-    Page<LocalSeedNode> querySeedNodeList(String keyWord, int pageNumber, int pageSize);
-
-    /**
      * 种子节点名称校验
-     * @param seedNodeName
+     * @param seedNodeId
      * @return
      */
-    void checkSeedNodeName(String seedNodeName);
+    void checkSeedNodeId(String seedNodeId);
 
 
 }

@@ -1,6 +1,6 @@
 package com.platon.metis.admin.controller.power;
 
-import com.platon.metis.admin.dto.req.PowerQueryListReq;
+import com.platon.metis.admin.dto.req.PowerJoinTaskReq;
 import com.platon.metis.admin.dto.req.PowerRevokeReq;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,12 +17,12 @@ public class PowerControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
     @Test
-    public void queryPowerNodeList(){
-        PowerQueryListReq req = new PowerQueryListReq();
+    public void listRunningTaskByPowerNodeId(){
+        PowerJoinTaskReq req = new PowerJoinTaskReq();
         req.setPageNumber(1);
         req.setPageSize(20);
-        req.setIdentityId("identity_a3876b82060f4eafbca7257692f1b285");
-        ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/node/powernode/queryPowerNodeList", req, String.class);
+        req.setPowerNodeId("jobNode:0x032d54d4fb1cfa625ecc19ff2cf2a0596b2ad87a32379c455708c41c66ad0318");
+        ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/powernode/listRunningTaskByPowerNodeId", req, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }

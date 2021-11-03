@@ -10,6 +10,7 @@ import java.util.List;
 public interface TaskService {
 
     Page<Task> listTaskByIdentityIdWithRole(String identityId, Long startTimestamp, Long endTimestamp, int pageNumber, int pageSize);
+
     Page<Task> listRunningTaskByPowerNodeId(String powerNodeId, int pageNumber, int pageSize);
 
     Integer selectAllTaskCount();

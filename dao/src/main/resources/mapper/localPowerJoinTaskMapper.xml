@@ -41,7 +41,7 @@
   </sql>
 
   <!-- 通过计算节点参数任务详情 -->
-  <select id="listRunningTaskByPowerNodeId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <!--<select id="listRunningTaskByPowerNodeId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
         <include refid="Base_Column_List" />
     from
@@ -49,7 +49,7 @@
     where
         power_node_id = #{powerNodeId, jdbcType=VARCHAR}
     order by task_start_time desc
-  </select>
+  </select>-->
 
   <!-- 插入计算节点数据 -->
   <insert id="batchInsertPowerTask">

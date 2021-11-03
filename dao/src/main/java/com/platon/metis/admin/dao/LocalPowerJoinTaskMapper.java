@@ -1,7 +1,6 @@
 package com.platon.metis.admin.dao;
 
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public interface LocalPowerJoinTaskMapper {
      * @param powerNodeId
      * @return
      */
-    List<LocalPowerJoinTask> listRunningTaskByPowerNodeId(@Param(value = "powerNodeId") String powerNodeId);
+    //List<LocalPowerJoinTask> listRunningTaskByPowerNodeId(@Param(value = "powerNodeId") String powerNodeId);
 
     /**
      * 清空表数据

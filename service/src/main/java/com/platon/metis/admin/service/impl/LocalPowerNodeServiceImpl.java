@@ -5,17 +5,16 @@ import com.github.pagehelper.PageHelper;
 import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.dao.LocalPowerHistoryMapper;
-import com.platon.metis.admin.dao.LocalPowerJoinTaskMapper;
 import com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper;
 import com.platon.metis.admin.dao.LocalPowerNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalPowerHistory;
-import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 import com.platon.metis.admin.grpc.client.PowerClient;
 import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.service.LocalPowerNodeService;
+import com.platon.metis.admin.service.TaskService;
 import com.platon.metis.admin.service.constant.ServiceConstant;
 import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +46,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     /** 计算节点资源 */
     @Resource
-    LocalPowerJoinTaskMapper localPowerJoinTaskMapper;
+    TaskService taskService;
 
     @Resource
     PowerClient powerClient;
@@ -261,12 +260,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         return resourceList;
     }
 
-    @Override
-    public Page<LocalPowerJoinTask> listRunningTaskByPowerNodeId(String powerNodeId, int pageNumber, int pageSize) {
-        Page<LocalPowerJoinTask> page = PageHelper.startPage(pageNumber, pageSize);
-        localPowerJoinTaskMapper.listRunningTaskByPowerNodeId(powerNodeId);
-        return page;
-    }
+
 
     @Override
     public void checkPowerNodeName(String powerNodeName) {

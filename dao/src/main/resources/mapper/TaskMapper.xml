@@ -55,10 +55,11 @@
 
   </select>
 
-  <select id="listRunningTaskByPowerNodeId" resultMap="BaseResultMap">
+  <select id="listRunningTaskByPowerNodeId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select t.*
     from task t
-    left join local_power_node lpn on t.identity_id = lpn.identity_id and lpn.power_node_id = #{powerNodeId,jdbcType=VARCHAR}
+    left join local_power_join_task lpjt on t.task_id = lpjt.task_id and lpjt.power_node_id = #{powerNodeId,jdbcType=VARCHAR}
+    order by task_start_time desc
   </select>
 
   <select id="selectListTaskByStatusWithSuccessAndFailed"  resultType="java.lang.String">

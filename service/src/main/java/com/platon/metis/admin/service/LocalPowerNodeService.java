@@ -1,7 +1,6 @@
 package com.platon.metis.admin.service;
 
 import com.github.pagehelper.Page;
-import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 
@@ -69,15 +68,6 @@ public interface LocalPowerNodeService {
      * @return
      */
     List queryPowerNodeUseHistory(String powerNodeId, String resourceType, String timeType);
-
-    /**
-     * 查询计算节点参数的任务列表
-     * @param powerNodeId
-     * @param pageNumber
-     * @param pageSize
-     * @return
-     */
-    Page<LocalPowerJoinTask> listRunningTaskByPowerNodeId(String powerNodeId, int pageNumber, int pageSize);
 
 
     /**

@@ -1,10 +1,12 @@
 package com.platon.metis.admin.controller.node;
 
 
-import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 import com.platon.metis.admin.dto.JsonResponse;
-import com.platon.metis.admin.dto.req.seed.*;
+import com.platon.metis.admin.dto.req.seed.AddSeedNodeReq;
+import com.platon.metis.admin.dto.req.seed.CheckSeedNodeIdReq;
+import com.platon.metis.admin.dto.req.seed.SeedDeleteReq;
+import com.platon.metis.admin.dto.req.seed.SeedQueryDetailsReq;
 import com.platon.metis.admin.service.LocalSeedNodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author houzhuang
@@ -34,11 +35,11 @@ public class LocalSeedNodeController {
 
     @PostMapping("/addSeedNode")
     @ApiOperation(value="新增种子节点", response = JsonResponse.class)
-    public JsonResponse addSeedNode(@Validated @RequestBody SeedAddReq seedAddReq) {
+    public JsonResponse addSeedNode(@Validated @RequestBody AddSeedNodeReq addSeedNodeReq) {
         long startTime = System.currentTimeMillis();
         try {
             LocalSeedNode localSeedNode = new LocalSeedNode();
-            BeanUtils.copyProperties(seedAddReq, localSeedNode);
+            BeanUtils.copyProperties(addSeedNodeReq, localSeedNode);
             localSeedNodeService.insertSeedNode(localSeedNode);
             return JsonResponse.success("新增成功");
         } catch (Exception e) {
@@ -47,22 +48,6 @@ public class LocalSeedNodeController {
             return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "新增失败！");
         }
     }
-
-    /*@PostMapping("/updateSeedNode")
-    @ApiOperation(value="修改种子节点", response = JsonResponse.class)
-    public JsonResponse updateSeedNode(@Validated @RequestBody SeedUpdateReq seedUpdateReq) {
-        long startTime = System.currentTimeMillis();
-        try {
-            LocalSeedNode localSeedNode = new LocalSeedNode();
-            BeanUtils.copyProperties(seedUpdateReq, localSeedNode);
-            localSeedNodeService.updateSeedNode(localSeedNode);
-            return JsonResponse.success("修改成功！");
-        } catch (Exception e) {
-            long diffTime = System.currentTimeMillis() - startTime;
-            log.error("updateSeedNode--接口失败, 执行时间:{}, 错误信息:{}", diffTime +"ms", e);
-            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "修改失败！");
-        }
-    }*/
 
     @PostMapping("/deleteSeedNode")
     @ApiOperation(value="删除种子节点", response = JsonResponse.class)
@@ -78,35 +63,22 @@ public class LocalSeedNodeController {
         }
     }
 
-    @PostMapping("/querySeedNodeDetails")
+    @PostMapping("/seedNodeDetails")
     @ApiOperation(value="查询种子节点详情", response = JsonResponse.class)
     public JsonResponse<LocalSeedNode> querySeedNodeDetails(@Validated @RequestBody SeedQueryDetailsReq seedDetailsReq) {
         LocalSeedNode localSeedNode = localSeedNodeService.querySeedNodeDetails(seedDetailsReq.getSeedNodeId());
         return JsonResponse.success(localSeedNode);
     }
 
-    @PostMapping("/querySeedNodeList")
-    @ApiOperation(value="查询种子节点服务列表", response = JsonResponse.class)
-    public JsonResponse<List<LocalSeedNode>> querySeedNodeList(@Validated @RequestBody SeedQueryListReq seedReq) {
-        long startTime = System.currentTimeMillis();
-        try {
-            Page<LocalSeedNode> page = localSeedNodeService.querySeedNodeList(seedReq.getKeyWord(),seedReq.getPageNumber(), seedReq.getPageSize());
-            return JsonResponse.page(page);
-        } catch (Exception e) {
-            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "查询失败！");
-        }
-    }
-
-    @PostMapping("/checkSeedNodeName")
+    @PostMapping("/checkSeedNodeId")
     @ApiOperation(value="校验计算节点名称是否可用", response = JsonResponse.class)
-    public JsonResponse checkSeedNodeName(@Validated @RequestBody SeedCheckNameReq seedCheckNameReq) {
+    public JsonResponse checkSeedNodeId(@Validated @RequestBody CheckSeedNodeIdReq checkSeedNodeIdReq) {
         long startTime = System.currentTimeMillis();
         try {
-            localSeedNodeService.checkSeedNodeName(seedCheckNameReq.getSeedNodeName());
+            localSeedNodeService.checkSeedNodeId(checkSeedNodeIdReq.getSeedNodeId());
             return JsonResponse.success("校验成功");
         } catch (Exception e) {
             return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "校验失败！");
         }
     }
-
 }

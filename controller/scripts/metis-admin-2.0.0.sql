@@ -197,16 +197,11 @@ CREATE TABLE `local_data_auth` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_seed_node`;
 CREATE TABLE `local_seed_node` (
-  `seed_node_address` varchar(256) NOT NULL COMMENT '节点地址',
-  `identity_id` varchar(256) DEFAULT NULL COMMENT '组织身份ID',
-  `out_node_id` varchar(256) DEFAULT NULL COMMENT '外部节点id',
-  `seed_node_name` varchar(32) DEFAULT NULL COMMENT '节点名称',
+  `seed_node_id` varchar(256) NOT NULL COMMENT '节点ID',
   `conn_status` int DEFAULT 0 COMMENT '节点与调度服务的连接状态，0: 未被调度服务连接上; 1: 连接上;',
   `init_flag` int(2) DEFAULT NULL COMMENT '是否是初始节点(0:否, 1:是)',
-  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`seed_node_address`)
-) COMMENT='本组织种子节点配置表 配置当前参与方的种子节点信息';
+  PRIMARY KEY (`seed_node_id`)
+) COMMENT='种子节点配置表';
 
 -- ----------------------------
 -- Table structure for local_data_node

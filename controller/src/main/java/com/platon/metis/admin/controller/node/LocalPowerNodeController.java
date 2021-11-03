@@ -2,9 +2,9 @@ package com.platon.metis.admin.controller.node;
 
 
 import com.github.pagehelper.Page;
-import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
+import com.platon.metis.admin.dao.entity.Task;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.*;
 import com.platon.metis.admin.service.LocalPowerNodeService;
@@ -125,8 +125,8 @@ public class LocalPowerNodeController {
 
     @PostMapping("/listRunningTaskByPowerNodeId")
     @ApiOperation(value="查询计算节点参与的正在计算中的任务列表", response = JsonResponse.class)
-    public JsonResponse<List<LocalPowerJoinTask>> listRunningTaskByPowerNodeId(@Validated @RequestBody PowerJoinTaskReq powerJoinTaskReq) {
-        Page<LocalPowerJoinTask> page = localPowerNodeService.listRunningTaskByPowerNodeId(powerJoinTaskReq.getPowerNodeId(),
+    public JsonResponse<Page<Task>> listRunningTaskByPowerNodeId(@Validated @RequestBody PowerJoinTaskReq powerJoinTaskReq) {
+        Page<Task> page = taskService.listRunningTaskByPowerNodeId(powerJoinTaskReq.getPowerNodeId(),
                 powerJoinTaskReq.getPageNumber(), powerJoinTaskReq.getPageSize());
 
         return JsonResponse.page(page);
