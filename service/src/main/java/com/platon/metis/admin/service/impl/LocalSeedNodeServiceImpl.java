@@ -1,5 +1,7 @@
 package com.platon.metis.admin.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.platon.metis.admin.dao.LocalSeedNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 import com.platon.metis.admin.grpc.client.SeedClient;
@@ -67,6 +69,12 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
         return localSeedNodeMapper.querySeedNodeDetails(seedNodeId);
     }
 
+    @Override
+    public Page<LocalSeedNode> listSeedNode(int pageNumber, int pageSize) {
+        Page<LocalSeedNode> page = PageHelper.startPage(pageNumber, pageSize);
+        localSeedNodeMapper.listSeedNode();
+        return page;
+    }
 
     @Override
     public void checkSeedNodeId(String seedNodeId) {

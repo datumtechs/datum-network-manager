@@ -1,12 +1,10 @@
 package com.platon.metis.admin.controller.node;
 
 
+import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 import com.platon.metis.admin.dto.JsonResponse;
-import com.platon.metis.admin.dto.req.seed.AddSeedNodeReq;
-import com.platon.metis.admin.dto.req.seed.CheckSeedNodeIdReq;
-import com.platon.metis.admin.dto.req.seed.SeedDeleteReq;
-import com.platon.metis.admin.dto.req.seed.SeedQueryDetailsReq;
+import com.platon.metis.admin.dto.req.seed.*;
 import com.platon.metis.admin.service.LocalSeedNodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +22,7 @@ import javax.annotation.Resource;
  * @author houzhuang
  * 种子节点控制类 */
 @RestController
-@RequestMapping("/api/v1/node/seednode")
+@RequestMapping("/api/v1/seednode")
 @Api(tags = "种子节点控制类")
 @Slf4j
 public class LocalSeedNodeController {
@@ -62,6 +60,18 @@ public class LocalSeedNodeController {
             return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "删除失败！");
         }
     }
+
+    @PostMapping("/listSeedNode")
+    @ApiOperation(value="查询种子节点服务列表", response = JsonResponse.class)
+    public JsonResponse<Page<LocalSeedNode>> listSeedNode(@Validated @RequestBody ListSeedNodeReq seedReq) {
+        try {
+            Page<LocalSeedNode> page = localSeedNodeService.listSeedNode(seedReq.getPageNumber(), seedReq.getPageSize());
+            return JsonResponse.page(page);
+        } catch (Exception e) {
+            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "查询失败！");
+        }
+    }
+
 
     @PostMapping("/seedNodeDetails")
     @ApiOperation(value="查询种子节点详情", response = JsonResponse.class)

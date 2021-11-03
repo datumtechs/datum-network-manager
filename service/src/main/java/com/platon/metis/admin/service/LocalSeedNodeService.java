@@ -1,5 +1,6 @@
 package com.platon.metis.admin.service;
 
+import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 
 /**
@@ -28,6 +29,15 @@ public interface LocalSeedNodeService {
      * @return
      */
     LocalSeedNode querySeedNodeDetails(String seedNodeId);
+
+    /**
+     * 查询种子节点列表
+     * @param keyWord
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    Page<LocalSeedNode> listSeedNode(int pageNumber, int pageSize);
 
     /**
      * 种子节点名称校验

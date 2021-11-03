@@ -25,7 +25,7 @@
   </select>
 
   <!-- 查询种子节点列表-->
-  <select id="querySeedNodeList" resultMap="BaseResultMap">
+  <select id="listSeedNode" resultMap="BaseResultMap">
     select
         <include refid="Base_Column_List" />
     from local_seed_node
