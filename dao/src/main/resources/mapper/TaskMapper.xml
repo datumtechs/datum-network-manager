@@ -55,9 +55,14 @@
 
   </select>
 
-  <select id="listRunningTaskByPowerNodeId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select t.*
+  <resultMap id="BaseResultMap_With_OwnerName" type="com.platon.metis.admin.dao.entity.Task" extends="BaseResultMap">
+    <result column="owner_name" property="dynamicFields.ownerName" jdbcType="BOOLEAN"/>
+  </resultMap>
+
+  <select id="listRunningTaskByPowerNodeId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OwnerName">
+    select t.*, o.name as owner_name
     from task t
+    left join task_org o on t.owner_identity_id = o.identity_id
     left join local_power_join_task lpjt on t.task_id = lpjt.task_id and lpjt.power_node_id = #{powerNodeId,jdbcType=VARCHAR}
     order by task_start_time desc
   </select>
