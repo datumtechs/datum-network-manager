@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "删除种子节点请求参数")
-public class SeedDeleteReq {
+public class DeleteSeedNodeReq {
 
     @NotNull(message = "种子节点ID不能为空")
     @ApiModelProperty(value = "种子节点ID", example = "", required = true)

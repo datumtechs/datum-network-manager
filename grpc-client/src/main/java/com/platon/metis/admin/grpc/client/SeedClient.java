@@ -134,7 +134,7 @@ public class SeedClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("查询计算服务列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeListResponse);
+        log.info("查询计算服务列表, 响应时间:{}ms, 响应数据:<< {} >>", diffTime, seedNodeListResponse);
         return seedNodeListResponse;
     }
 }

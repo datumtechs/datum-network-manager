@@ -5,7 +5,7 @@
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalSeedNode">
     <id column="seed_node_id" jdbcType="INTEGER" property="seedNodeId" />
     <result column="conn_status" jdbcType="INTEGER" property="connStatus" />
-    <result column="init_flag" jdbcType="INTEGER" property="initFlag" />
+    <result column="init_flag" jdbcType="BOOLEAN" property="initFlag" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -48,21 +48,18 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="seedNodeId != null">#{seedNodeId, jdbcType=VARCHAR},</if>
       <if test="connStatus != null">#{connStatus, jdbcType=INTEGER},</if>
-      <if test="initFlag != null">#{initFlag, jdbcType=INTEGER},</if>
+      <if test="initFlag != null">#{initFlag, jdbcType=BOOLEAN},</if>
     </trim>
   </insert>
 
 
   <!-- 批量修改种子节点-->
-  <update id="updateSeedNodeBatch" parameterType="java.util.List">
-    <foreach collection="list" item="item" separator=";">
-      update local_seed_node
-      <set>
-        <if test="item.connStatus != null">conn_status = #{item.connStatus, jdbcType=INTEGER},</if>
-        <if test="item.initFlag != null">init_flag = #{item.initFlag, jdbcType=INTEGER},</if>
-      </set>
-      where seed_node_id = #{seedNodeid, jdbcType=VARCHAR}
+  <insert id="replaceBatch" parameterType="list">
+    replace into local_seed_node (seed_node_id, conn_status, init_flag)
+    values
+    <foreach collection ="list" item="item" separator =",">
+      (#{item.seedNodeId, jdbcType=VARCHAR}, #{item.connStatus, jdbcType=INTEGER}, #{item.initFlag, jdbcType=BOOLEAN})
     </foreach>
-  </update>
+  </insert>
 
 </mapper>

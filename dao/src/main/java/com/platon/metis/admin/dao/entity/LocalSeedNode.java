@@ -18,6 +18,6 @@ public class LocalSeedNode {
     @ApiModelProperty(value = "节点状态 -1: 网络连接失败; 0: 网络连接成功")
     private Integer connStatus;
 
-    @ApiModelProperty(value = "是否是初始节点(0:否, 1:是)")
-    private Integer initFlag;
+    @ApiModelProperty(value = "是否是初始节点(false:否, true:是)")
+    private Boolean initFlag;
 }

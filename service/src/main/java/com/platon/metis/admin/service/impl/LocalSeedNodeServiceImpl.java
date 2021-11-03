@@ -40,7 +40,7 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
         }
 
         YarnRpcMessage.SeedPeer seedResp = seedClient.addSeedNode(seedNode.getSeedNodeId());
-        seedNode.setInitFlag(seedResp.getIsDefault() ? 1 : 0);
+        seedNode.setInitFlag(seedResp.getIsDefault());
         seedNode.setConnStatus(seedResp.getConnState().getNumber());
         int count = localSeedNodeMapper.insertSeedNode(seedNode);
         if (count == 0) {
@@ -54,11 +54,20 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
     }*/
 
     @Override
-    public void deleteSeedNode(String address) {
+    public void deleteSeedNode(String seedNodeId) {
+
+        LocalSeedNode localSeedNode = localSeedNodeMapper.querySeedNodeDetails(seedNodeId);
+        if(localSeedNode==null){
+            throw new ServiceException("种子节点信息没有找到！");
+        }
+        if(localSeedNode.getInitFlag()){//内置
+            throw new ServiceException("内置的种子节点不能删除！");
+        }
+
         // 删除底层资源
-        seedClient.deleteSeedNode(address);
+        seedClient.deleteSeedNode(seedNodeId);
         // 删除数据
-        int count = localSeedNodeMapper.deleteSeedNode(address);
+        int count = localSeedNodeMapper.deleteSeedNode(seedNodeId);
         if (count == 0) {
             throw new ServiceException("删除失败！");
         }

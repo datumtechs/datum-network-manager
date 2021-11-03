@@ -3,6 +3,8 @@ package com.platon.metis.admin.dao;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 /**
  * @author houz
@@ -35,4 +37,6 @@ public interface LocalSeedNodeMapper {
 
 
     void listSeedNode();
+
+    void replaceBatch(List<LocalSeedNode> localSeedNodeList);
 }

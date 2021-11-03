@@ -9,7 +9,6 @@ import com.platon.metis.admin.service.LocalSeedNodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,8 +36,9 @@ public class LocalSeedNodeController {
         long startTime = System.currentTimeMillis();
         try {
             LocalSeedNode localSeedNode = new LocalSeedNode();
-            BeanUtils.copyProperties(addSeedNodeReq, localSeedNode);
+            localSeedNode.setSeedNodeId(addSeedNodeReq.getSeedNodeId());
             localSeedNodeService.insertSeedNode(localSeedNode);
+
             return JsonResponse.success("新增成功");
         } catch (Exception e) {
             long diffTime = System.currentTimeMillis() - startTime;
@@ -49,14 +49,12 @@ public class LocalSeedNodeController {
 
     @PostMapping("/deleteSeedNode")
     @ApiOperation(value="删除种子节点", response = JsonResponse.class)
-    public JsonResponse deleteSeedNode(@Validated @RequestBody SeedDeleteReq seedDeleteReq) {
-        long startTime = System.currentTimeMillis();
+    public JsonResponse deleteSeedNode(@Validated @RequestBody DeleteSeedNodeReq deleteSeedNodeReq) {
+
         try {
-            localSeedNodeService.deleteSeedNode(seedDeleteReq.getSeedNodeId());
+            localSeedNodeService.deleteSeedNode(deleteSeedNodeReq.getSeedNodeId());
             return JsonResponse.success("删除成功！");
         } catch (Exception e) {
-            long diffTime = System.currentTimeMillis() - startTime;
-            log.error("deleteSeedNode--接口失败, 执行时间:{}, 错误信息:{}", diffTime +"ms", e);
             return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "删除失败！");
         }
     }
