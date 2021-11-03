@@ -1,5 +1,6 @@
 package com.platon.metis.admin.controller.node;
 
+import com.platon.metis.admin.dto.req.seed.AddSeedNodeReq;
 import com.platon.metis.admin.dto.req.seed.ListSeedNodeReq;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class LocalSeedNodeControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Test
+    public void addSeedNode(){
+        AddSeedNodeReq req  = new AddSeedNodeReq();
+        req.setSeedNodeId("test");
+        ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/seednode/addSeedNode", req, String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+    }
 
     @Test
     public void listSeedNode(){

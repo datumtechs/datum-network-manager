@@ -27,7 +27,7 @@
     <result column="node_id" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>
   </resultMap>
 
-  <select id="listTaskEventByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OrgName">
+  <select id="listTaskEventWithOrgNameByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OrgName">
     SELECT
 	te.*, o.`name` AS org_name, o.carrier_node_id AS node_id
     FROM task_event AS te

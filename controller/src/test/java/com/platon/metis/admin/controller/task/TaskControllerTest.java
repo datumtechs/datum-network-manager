@@ -53,6 +53,14 @@ public class TaskControllerTest {
     }
 
     @Test
+    public void listTaskEvent(){
+        String taskId = "task:0x159405505b7ba76f183813547725b6e679447d7f353d11cf4b52702c7d7bc1ab";
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/task/listTaskEvent?taskId={1}", String.class, taskId);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+    }
+
+    @Test
     public void taskOrgTest(){
         Set<TaskOrg> taskOrgList = new HashSet<>();
 
