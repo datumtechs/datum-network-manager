@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -32,7 +33,12 @@ public class ErrorHandle {
         for (FieldError error : fieldErrors) {
             errorMessage.add(StrUtil.format("{}={}",error.getField(), error.getDefaultMessage()));
         }
-        return JsonResponse.fail(ResponseCodeEnum.FAIL, errorMessage.toString());
+        return JsonResponse.fail(ResponseCodeEnum.FAIL, "method argument invalid");
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public JsonResponse handleException(SQLException exception){
+        return JsonResponse.fail(ResponseCodeEnum.FAIL, "SQL error");
     }
 
     @ExceptionHandler(ServiceException.class)
@@ -58,6 +64,6 @@ public class ErrorHandle {
     @ExceptionHandler(Exception.class)
     public JsonResponse handleException(Exception exception){
         log.error("handleException",exception);
-        return JsonResponse.fail(ResponseCodeEnum.FAIL, exception.getMessage());
+        return JsonResponse.fail(ResponseCodeEnum.FAIL, "System internal error");
     }
 }
