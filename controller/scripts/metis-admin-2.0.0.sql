@@ -464,7 +464,7 @@ CREATE TABLE `task_result_consumer` (
 DROP TABLE IF EXISTS `local_power_load_snapshot`;
 CREATE TABLE `local_power_load_snapshot` (
     power_node_id varchar(256) NOT NULL COMMENT '算力节点id',
-    snapshot_time varchar(13) NOT NULL COMMENT '快照时间点，精确到小时',
+    snapshot_time DATETIME NOT NULL COMMENT '快照时间点，精确到小时',
     core_pct int NOT NULL COMMENT '核心占用百分比，没有小数，四舍五入，xx%',
     memory_pct int NOT NULL COMMENT '内存占用百分比，没有小数，四舍五入，xx%',
     bandwidth_pct int COMMENT '带宽占用百分比，没有小数，四舍五入，xx%',
@@ -611,7 +611,7 @@ CREATE EVENT local_power_load_snapshot_event
 	DO
 BEGIN
     INSERT INTO local_power_load_snapshot (power_node_id, snapshot_time, core_pct, memory_pct, bandwidth_pct)
-    SELECT t1.power_node_id, DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y-%m-%d %H'), CAST(t1.used_core / lpd.core * 100 as UNSIGNED), CAST(t1.used_memory / lpd.memory * 100 as UNSIGNED), CAST(t1.used_bandwidth / lpd.bandwidth * 100 as UNSIGNED)
+    SELECT t1.power_node_id, DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y-%m-%d %H:00:00'), CAST(t1.used_core / lpd.core * 100 as UNSIGNED), CAST(t1.used_memory / lpd.memory * 100 as UNSIGNED), CAST(t1.used_bandwidth / lpd.bandwidth * 100 as UNSIGNED)
     FROM (
          SELECT power_node_id, sum(used_core) as used_core, sum(used_memory) as used_memory, sum(used_bandwidth) as used_bandwidth
          FROM  local_power_join_task

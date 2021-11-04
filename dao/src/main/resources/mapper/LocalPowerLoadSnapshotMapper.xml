@@ -4,7 +4,7 @@
 
     <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot">
         <id column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
-        <id column="snapshot_time" jdbcType="VARCHAR" property="snapshotTime" />
+        <id column="snapshot_time" jdbcType="TIMESTAMP" property="snapshotTime" />
         <result column="core_pct" jdbcType="INTEGER" property="corePct" />
         <result column="memory_pct" jdbcType="INTEGER" property="memoryPct" />
         <result column="bandwidth_pct" jdbcType="INTEGER" property="bandwidthPct" />
