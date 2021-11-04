@@ -610,11 +610,13 @@ CREATE EVENT local_power_load_snapshot_event
 	ON COMPLETION PRESERVE
 	DO
 BEGIN
-INSERT INTO local_power_load_snapshot (power_node_id, snapshot_time, core_pct, memory_pct, bandwidth_pct)
-SELECT power_node_id, DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y-%m-%d %H'), CAST(sum(lpd.used_core) / lpd.core * 100 as UNSIGNED), CAST(sum(lpd.used_memory) / lpd.memory * 100 as UNSIGNED), CAST(sum(lpd.used_bandwidth) / lpd.bandwidth * 100 as UNSIGNED)
-FROM  local_power_node lpd
-GROUP BY power_node_id;
-
+    INSERT INTO local_power_load_snapshot (power_node_id, snapshot_time, core_pct, memory_pct, bandwidth_pct)
+    SELECT t1.power_node_id, DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y-%m-%d %H'), CAST(t1.used_core / lpd.core * 100 as UNSIGNED), CAST(t1.used_memory / lpd.memory * 100 as UNSIGNED), CAST(t1.used_bandwidth / lpd.bandwidth * 100 as UNSIGNED)
+    FROM (
+         SELECT power_node_id, sum(used_core) as used_core, sum(used_memory) as used_memory, sum(used_bandwidth) as used_bandwidth
+         FROM  local_power_join_task
+         GROUP BY power_node_id
+    ) t1 JOIN local_power_node lpd ON t1.power_node_id = lpd.power_node_id;
 END$$
 ALTER EVENT local_power_load_snapshot_event ENABLE$$
 DELIMITER ;

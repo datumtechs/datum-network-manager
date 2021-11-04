@@ -16,16 +16,27 @@ public class PowerControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
     @Test
     public void listRunningTaskByPowerNodeId(){
         PowerJoinTaskReq req = new PowerJoinTaskReq();
         req.setPageNumber(1);
         req.setPageSize(20);
-        req.setPowerNodeId("jobNode:0x032d54d4fb1cfa625ecc19ff2cf2a0596b2ad87a32379c455708c41c66ad0318");
+        req.setPowerNodeId("jobNode:0xaba47f171f3010999e4572c93df637c46cdbf655d0cd74aed43dc184c271e71c");
         ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/powernode/listRunningTaskByPowerNodeId", req, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }
+
+
+    @Test
+    public void listLocalPowerLoadSnapshotByPowerNodeId(){
+        String powerNodeId = "jobNode:0xaba47f171f3010999e4572c93df637c46cdbf655d0cd74aed43dc184c271e71c";
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/powernode/listLocalPowerLoadSnapshotByPowerNodeId?powerNodeId={1}", String.class, powerNodeId);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+    }
+
 
     @Test
     public void revokePower(){

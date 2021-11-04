@@ -39,17 +39,8 @@
 
   <!-- 插入种子节点数据 -->
   <insert id="insertSeedNode" parameterType="com.platon.metis.admin.dao.entity.LocalSeedNode">
-    insert into local_seed_node
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="seedNodeId != null">seed_node_id,</if>
-      <if test="connStatus != null">conn_status,</if>
-      <if test="initFlag != null">init_flag,</if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="seedNodeId != null">#{seedNodeId, jdbcType=VARCHAR},</if>
-      <if test="connStatus != null">#{connStatus, jdbcType=INTEGER},</if>
-      <if test="initFlag != null">#{initFlag, jdbcType=BOOLEAN},</if>
-    </trim>
+    insert into local_seed_node (seed_node_id, conn_status, init_flag)
+    values (#{seedNodeId, jdbcType=VARCHAR}, #{connStatus, jdbcType=INTEGER}, #{initFlag, jdbcType=BOOLEAN})
   </insert>
 
 

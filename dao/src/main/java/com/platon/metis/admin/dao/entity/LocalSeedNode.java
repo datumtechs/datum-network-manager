@@ -15,7 +15,7 @@ public class LocalSeedNode {
     @ApiModelProperty(value = "种子节点ID")
     private String seedNodeId;
 
-    @ApiModelProperty(value = "节点状态 -1: 网络连接失败; 0: 网络连接成功")
+    @ApiModelProperty(value = "节点状态 0: 未被调度服务连接上; 1: 连接上;")
     private Integer connStatus;
 
     @ApiModelProperty(value = "是否是初始节点(false:否, true:是)")
