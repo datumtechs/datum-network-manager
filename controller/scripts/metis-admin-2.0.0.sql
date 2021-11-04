@@ -241,6 +241,8 @@ CREATE TABLE `local_org` (
      `conn_node_count` INT  DEFAULT NULL COMMENT '节点连接的数量',
      `carrier_conn_time` datetime DEFAULT NULL COMMENT '服务连接时间',
      `status` tinyint(1) DEFAULT '0' COMMENT '0未入网，1已入网',
+     local_bootstrap_node varchar(256) DEFAULT NULL COMMENT '当前系统的本地节点，可以作为引导节点提供给三方节点',
+     local_multi_addr varchar(256) DEFAULT NULL COMMENT '当前系统本地的',
      `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
 ) COMMENT='本地组织信息表';
 

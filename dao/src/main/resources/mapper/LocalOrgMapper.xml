@@ -13,6 +13,8 @@
     <result column="conn_node_count" jdbcType="INTEGER" property="connNodeCount" />
     <result column="carrier_status" jdbcType="VARCHAR" property="carrierStatus" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="local_bootstrap_node" jdbcType="VARCHAR" property="localBootstrapNode" />
+    <result column="local_multi_addr" jdbcType="VARCHAR" property="localMultiAddr" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
 
@@ -27,6 +29,8 @@
   conn_node_count,
   carrier_status,
   `status`,
+  local_bootstrap_node,
+  local_multi_addr,
   rec_update_time
   </sql>
 
@@ -80,6 +84,12 @@
       <if test="status != null">
         `status`,
       </if>
+      <if test="localBootstrapNode != null">
+        `local_bootstrap_node`,
+      </if>
+      <if test="localMultiAddr != null">
+        `local_multi_addr`,
+      </if>
       <if test="recUpdateTime != null">
         rec_update_time,
       </if>
@@ -114,6 +124,12 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="localBootstrapNode != null">
+        #{localBootstrapNode,jdbcType=VARCHAR},
+      </if>
+      <if test="localMultiAddr != null">
+        #{localMultiAddr,jdbcType=VARCHAR},
       </if>
       <if test="recUpdateTime != null">
         #{recUpdateTime,jdbcType=TIMESTAMP},
@@ -153,6 +169,12 @@
       </if>
       <if test="status != null">
         `status` = #{status},
+      </if>
+      <if test="localBootstrapNode != null">
+        local_bootstrap_node = #{localBootstrapNode,jdbcType=VARCHAR},
+      </if>
+      <if test="localMultiAddr != null">
+        local_multi_addr = #{localMultiAddr,jdbcType=VARCHAR},
       </if>
       <if test="recUpdateTime != null">
         rec_update_time = #{recUpdateTime},

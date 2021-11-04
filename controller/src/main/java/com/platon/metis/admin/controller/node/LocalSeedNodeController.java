@@ -66,6 +66,7 @@ public class LocalSeedNodeController {
             Page<LocalSeedNode> page = localSeedNodeService.listSeedNode(seedReq.getPageNumber(), seedReq.getPageSize());
             return JsonResponse.page(page);
         } catch (Exception e) {
+            log.error("查询种子节点服务列表错误", e);
             return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "查询失败！");
         }
     }

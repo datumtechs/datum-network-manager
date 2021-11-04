@@ -32,7 +32,6 @@ public interface LocalSeedNodeService {
 
     /**
      * 查询种子节点列表
-     * @param keyWord
      * @param pageNumber
      * @param pageSize
      * @return

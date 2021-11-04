@@ -36,7 +36,7 @@ public interface LocalSeedNodeMapper {
     LocalSeedNode querySeedNodeDetails(String seedNodeId);
 
 
-    void listSeedNode();
+    List<LocalSeedNode> listSeedNode();
 
     void replaceBatch(List<LocalSeedNode> localSeedNodeList);
 }

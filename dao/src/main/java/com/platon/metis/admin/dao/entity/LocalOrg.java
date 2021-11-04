@@ -45,4 +45,10 @@ public class LocalOrg {
 
     @ApiModelProperty(value = "组织入网状态：0未入网，1已入网")
     private Integer status;
+
+    @ApiModelProperty(value = "当前系统的本地节点，可以作为引导节点提供给三方节点")
+    private String localBootstrapNode;
+
+    @ApiModelProperty(value = "当前系统本地的 multiAddr", example = "/ip4/127.0.0.1/tcp/18001/p2p/16Uiu2HAmKMo4Ci5TYcXspnKnMWK4G4CRWSHBV4qCUAFYrtirhcuz")
+    private String localMultiAddr;
 }

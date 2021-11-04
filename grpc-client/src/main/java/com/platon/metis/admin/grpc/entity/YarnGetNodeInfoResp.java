@@ -42,4 +42,6 @@ public class YarnGetNodeInfoResp extends CommonResp{
     private Integer peersCount;       // 调度服务上被注册的种子节点信息
     private Integer state;         // 调度服务自身的状态信息 (0:unknown未知、1: active活跃、2:leave: 离开网络、3:join加入网络 4:unuseful不可用)
     private String name;          // 组织的Name
+    private String localBootstrapNode;          // 当前系统的本地节点，可以作为引导节点提供给三方节点
+    private String localMultiAddr;          // 当前系统本地的 multiAddr, eg: /ip4/127.0.0.1/tcp/18001/p2p/16Uiu2HAmKMo4Ci5TYcXspnKnMWK4G4CRWSHBV4qCUAFYrtirhcuz
 }

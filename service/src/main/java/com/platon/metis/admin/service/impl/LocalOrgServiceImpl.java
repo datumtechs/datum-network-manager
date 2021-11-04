@@ -2,7 +2,9 @@ package com.platon.metis.admin.service.impl;
 
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.entity.LocalOrg;
+import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.service.LocalOrgService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,13 +16,16 @@ import javax.annotation.Resource;
  * @Desc
  */
 
-
+@Slf4j
 @Service
 public class LocalOrgServiceImpl implements LocalOrgService {
 
 
     @Resource
     private LocalOrgMapper localOrgMapper;
+
+    @Resource
+    private YarnClient yarnClient;
 
     @Override
     public String getIdentityId() {
@@ -29,7 +34,6 @@ public class LocalOrgServiceImpl implements LocalOrgService {
 
     @Override
     public LocalOrg getLocalOrg() {
-        LocalOrg localOrg = localOrgMapper.select();
-        return localOrg;
+        return localOrgMapper.select();
     }
 }

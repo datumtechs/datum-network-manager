@@ -24,4 +24,12 @@ public class UserControllerTest {
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }
+
+
+    @Test
+    public void findLocalOrgInfo(){
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/user/findLocalOrgInfo", String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+    }
 }

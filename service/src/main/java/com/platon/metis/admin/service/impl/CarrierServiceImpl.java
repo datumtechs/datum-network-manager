@@ -78,6 +78,8 @@ public class CarrierServiceImpl implements CarrierService {
             localOrg.setCarrierNodeId(nodeInfo.getNodeId());
             localOrg.setCarrierStatus(nodeInfo.getState());
             localOrg.setConnNodeCount(nodeInfo.getPeersCount());
+            localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
+            localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
         }
         localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
         localOrgMapper.updateSelective(localOrg);
@@ -104,6 +106,7 @@ public class CarrierServiceImpl implements CarrierService {
         }
         localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
         localOrg.setCarrierNodeId("");
+        localOrg.setConnNodeCount(0);
         localOrgMapper.updateSelective(localOrg);
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);

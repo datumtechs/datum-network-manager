@@ -316,6 +316,8 @@ public class YarnClient {
             resp.setIdentityId(information.getIdentityId());
             resp.setState(information.getState().getNumber());
             resp.setName(information.getName());
+            resp.setLocalBootstrapNode(information.getLocalBootstrapNode());
+            resp.setLocalMultiAddr(information.getLocalMultiAddr());
             resp.setStatus(GRPC_SUCCESS_CODE);
             resp.setPeersCount(information.getSeedPeersCount());
             resp.setMsg("成功");
