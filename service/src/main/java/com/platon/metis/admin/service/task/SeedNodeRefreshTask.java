@@ -48,7 +48,8 @@ public class SeedNodeRefreshTask {
             }).collect(Collectors.toList());
 
             if(CollectionUtils.isNotEmpty(localSeedNodeList)) {
-                localSeedNodeMapper.replaceBatch(localSeedNodeList);
+                localSeedNodeMapper.truncate();
+                localSeedNodeMapper.insertBatch(localSeedNodeList);
             }
         }
         long diffStart = System.currentTimeMillis() - startTime;

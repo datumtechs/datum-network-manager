@@ -44,9 +44,13 @@
   </insert>
 
 
+  <insert id="truncate">
+    truncate TABLE local_seed_node;
+  </insert>
+
   <!-- 批量修改种子节点-->
-  <insert id="replaceBatch" parameterType="list">
-    replace into local_seed_node (seed_node_id, conn_status, init_flag)
+  <insert id="insertBatch" parameterType="list">
+    insert into local_seed_node (seed_node_id, conn_status, init_flag)
     values
     <foreach collection ="list" item="item" separator =",">
       (#{item.seedNodeId, jdbcType=VARCHAR}, #{item.connStatus, jdbcType=INTEGER}, #{item.initFlag, jdbcType=BOOLEAN})
