@@ -215,11 +215,11 @@ public class TaskClient {
                 powerProvider.setIdentityId(powerSupplier.getOrganization().getIdentityId());
                 powerProvider.setPartyId(powerSupplier.getOrganization().getPartyId());
                 powerProvider.setUsedCore(powerSupplier.getPowerInfo().getUsedProcessor());
-                //powerProvider.setTotalCore(powerSupplier.getPowerInfo().getTotalProcessor());
+                powerProvider.setTotalCore(powerSupplier.getPowerInfo().getTotalProcessor());
                 powerProvider.setUsedMemory(powerSupplier.getPowerInfo().getUsedMem());
-                //powerProvider.setTotalMemory(powerSupplier.getPowerInfo().getTotalMem());
+                powerProvider.setTotalMemory(powerSupplier.getPowerInfo().getTotalMem());
                 powerProvider.setUsedBandwidth(powerSupplier.getPowerInfo().getUsedBandwidth());
-                //powerProvider.setTotalBandwidth(powerSupplier.getPowerInfo().getTotalBandwidth());
+                powerProvider.setTotalBandwidth(powerSupplier.getPowerInfo().getTotalBandwidth());
                 //powerProvider.setDynamicFields(getDynamicFields(powerSupplier.getOrganization().getNodeName(), taskPowerSupplierShow.getOrganization().getNodeId()));
                 taskPowerProviderList.add(powerProvider);
 
