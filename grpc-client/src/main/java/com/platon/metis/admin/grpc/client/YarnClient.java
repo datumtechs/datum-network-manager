@@ -319,7 +319,7 @@ public class YarnClient {
             resp.setLocalBootstrapNode(information.getLocalBootstrapNode());
             resp.setLocalMultiAddr(information.getLocalMultiAddr());
             resp.setStatus(GRPC_SUCCESS_CODE);
-            resp.setPeersCount(information.getSeedPeersCount());
+            resp.setConnCount(information.getRelatePeers());
             resp.setMsg("成功");
         } catch (Exception exception) {
             resp.setStatus(1);

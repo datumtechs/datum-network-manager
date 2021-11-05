@@ -77,7 +77,7 @@ public class CarrierServiceImpl implements CarrierService {
             }
             localOrg.setCarrierNodeId(nodeInfo.getNodeId());
             localOrg.setCarrierStatus(nodeInfo.getState());
-            localOrg.setConnNodeCount(nodeInfo.getPeersCount());
+            localOrg.setConnNodeCount(nodeInfo.getConnCount());
             localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
             localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
         }

@@ -73,7 +73,7 @@ public class LocalOrgRefreshTask {
         } else {
             localOrg.setCarrierStatus(nodeInfo.getState());
             localOrg.setCarrierNodeId(nodeInfo.getNodeId());
-            localOrg.setConnNodeCount(nodeInfo.getPeersCount());
+            localOrg.setConnNodeCount(nodeInfo.getConnCount());
             localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
             localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
         }
