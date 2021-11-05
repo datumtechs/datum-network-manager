@@ -3,6 +3,7 @@ package com.platon.metis.admin.service.task;
 import com.platon.metis.admin.dao.LocalSeedNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 import com.platon.metis.admin.grpc.client.SeedClient;
+import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -38,17 +39,16 @@ public class SeedNodeRefreshTask {
 
         YarnRpcMessage.GetSeedNodeListResponse seedNodeListResponse = seedClient.getJobNodeList();
 
-        if(null != seedNodeListResponse && CollectionUtils.isNotEmpty(seedNodeListResponse.getNodesList())) {
-            List<LocalSeedNode> localSeedNodeList = seedNodeListResponse.getNodesList().parallelStream().map(seedNode -> {
-                LocalSeedNode localSeedNode = new LocalSeedNode();
-                localSeedNode.setSeedNodeId(seedNode.getAddr());
-                localSeedNode.setInitFlag(seedNode.getIsDefault());
-                localSeedNode.setConnStatus(seedNode.getConnStateValue());
-                return localSeedNode;
-            }).collect(Collectors.toList());
-
-            if(CollectionUtils.isNotEmpty(localSeedNodeList)) {
-                localSeedNodeMapper.truncate();
+        if (seedNodeListResponse != null && seedNodeListResponse.getStatus() == GrpcConstant.GRPC_SUCCESS_CODE){
+            localSeedNodeMapper.truncate();
+            if(CollectionUtils.isNotEmpty(seedNodeListResponse.getNodesList())){
+                List<LocalSeedNode> localSeedNodeList = seedNodeListResponse.getNodesList().parallelStream().map(seedNode -> {
+                    LocalSeedNode localSeedNode = new LocalSeedNode();
+                    localSeedNode.setSeedNodeId(seedNode.getAddr());
+                    localSeedNode.setInitFlag(seedNode.getIsDefault());
+                    localSeedNode.setConnStatus(seedNode.getConnStateValue());
+                    return localSeedNode;
+                }).collect(Collectors.toList());
                 localSeedNodeMapper.insertBatch(localSeedNodeList);
             }
         }
