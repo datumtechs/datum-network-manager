@@ -1,5 +1,6 @@
 package com.platon.metis.admin.service;
 
+import com.platon.metis.admin.dao.dto.DataAuthReqDTO;
 import com.platon.metis.admin.dao.dto.StatsTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 
@@ -54,7 +55,7 @@ public interface IndexService {
      * 查询数据待授权列表
      * @return
      */
-    List<Map<String, Object>> queryWaitAuthDataList();
+    List<DataAuthReqDTO> listDataAuthReqWaitingForApprove();
 
     /**
      * 查询全网算力（内存）总量月走势

@@ -1,13 +1,13 @@
 package com.platon.metis.admin.controller.overview;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.platon.metis.admin.dao.dto.DataAuthReqDTO;
 import com.platon.metis.admin.dao.dto.StatsTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.resp.index.DataRatioResp;
 import com.platon.metis.admin.dto.resp.index.MyTaskStatsResp;
 import com.platon.metis.admin.dto.resp.index.UsedResourceResp;
-import com.platon.metis.admin.dto.resp.index.WaitAuthDataResp;
 import com.platon.metis.admin.service.IndexService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -149,11 +149,10 @@ public class OverviewController {
     }
 
     @ApiOperation(value = "查询数据待授权列表")
-    @GetMapping("/queryWaitAuthDataList")
-    public JsonResponse<WaitAuthDataResp> queryWaitAuthDataList(){
-        List<Map<String, Object>> list = indexService.queryWaitAuthDataList();
-        return JsonResponse.success(list == null || list.size() == 0 ? new ArrayList<>() :
-                BeanUtil.copyToList(list, WaitAuthDataResp.class));
+    @GetMapping("/listDataAuthReqWaitingForApprove")
+    public JsonResponse<DataAuthReqDTO> listDataAuthReqWaitingForApprove(){
+        List<DataAuthReqDTO> list = indexService.listDataAuthReqWaitingForApprove();
+        return JsonResponse.success(list == null || list.size() == 0 ? new ArrayList<>() : list);
     }
 
 }

@@ -2,6 +2,7 @@ package com.platon.metis.admin.service.impl;
 
 import com.platon.metis.admin.dao.StatsTrendMapper;
 import com.platon.metis.admin.dao.VLocalStatsMapper;
+import com.platon.metis.admin.dao.dto.DataAuthReqDTO;
 import com.platon.metis.admin.dao.dto.StatsTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 import com.platon.metis.admin.service.IndexService;
@@ -115,8 +116,8 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<Map<String, Object>> queryWaitAuthDataList() {
-        return localStatsMapper.queryWaitAuthDataList();
+    public List<DataAuthReqDTO> listDataAuthReqWaitingForApprove() {
+        return localStatsMapper.listDataAuthReqWaitingForApprove();
     }
 
     @Override

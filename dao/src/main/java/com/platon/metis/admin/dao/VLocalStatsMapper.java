@@ -1,5 +1,6 @@
 package com.platon.metis.admin.dao;
 
+import com.platon.metis.admin.dao.dto.DataAuthReqDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public interface VLocalStatsMapper {
      * 查询待授权数据列表
      * @return
      */
-    List<Map<String, Object>> queryWaitAuthDataList();
+    List<DataAuthReqDTO> listDataAuthReqWaitingForApprove();
 
 
 }

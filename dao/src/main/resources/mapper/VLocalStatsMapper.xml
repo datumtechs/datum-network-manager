@@ -107,11 +107,11 @@
   </select>
 
   <!-- 查询待授权数据列表-->
-  <select id="queryWaitAuthDataList" resultType="java.util.HashMap">
+  <select id="listDataAuthReqWaitingForApprove" resultType="com.platon.metis.admin.dao.dto.DataAuthReqDTO">
     select
         a.create_at as applyTime,
-        a.identity_name as identityName,
-        b.meta_data_name as metadataName
+        a.identity_name as orgName,
+        b.meta_data_name as metaDataName
     from
         local_data_auth a, local_meta_data b
     where 1=1
