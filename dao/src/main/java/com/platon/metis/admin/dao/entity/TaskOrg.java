@@ -13,19 +13,19 @@ public class TaskOrg extends BaseDomain {
     @ApiModelProperty(name = "identityId", value = "组织ID")
     private String identityId;
 
-    @ApiModelProperty(name = "name", value = "组织名称")
-    private String name;
+    @ApiModelProperty(name = "orgName", value = "组织名称")
+    private String orgName;
 
     //组织中调度服务的 nodeId
-    @ApiModelProperty(name = "name", value = "组织中调度服务ID")
+    @ApiModelProperty(name = "carrierNodeId", value = "组织中调度服务ID")
     private String carrierNodeId;
 
     public TaskOrg() {
     }
 
-    public TaskOrg(String identityId, String name, String carrierNodeId) {
+    public TaskOrg(String identityId, String orgName, String carrierNodeId) {
         this.identityId = identityId;
-        this.name = name;
+        this.orgName = orgName;
         this.carrierNodeId = carrierNodeId;
     }
 

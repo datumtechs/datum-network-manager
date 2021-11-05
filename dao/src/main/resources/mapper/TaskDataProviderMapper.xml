@@ -30,12 +30,12 @@
 
 
   <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskDataProvider" extends="BaseResultMap">
-    <result column="node_name" property="dynamicFields.nodeName" jdbcType="VARCHAR"/>
-    <result column="node_id" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>
+    <result column="org_name" property="dynamicFields.orgName" jdbcType="VARCHAR"/>
+    <result column="carrier_node_id" property="dynamicFields.carrierNodeId" jdbcType="VARCHAR"/>
   </resultMap>
 
   <select id="selectTaskDataWithOrgByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OrgName">
-    SELECT tdp.*, o.`name` AS node_name, o.carrier_node_id AS node_id
+    SELECT tdp.*, o.`name` AS org_name, o.carrier_node_id AS carrier_node_id
     FROM task_data_provider AS tdp
     LEFT JOIN task_org AS o ON tdp.identity_id = o.identity_id
     WHERE tdp.task_id = #{taskId,jdbcType=VARCHAR}

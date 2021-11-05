@@ -3,7 +3,7 @@
 <mapper namespace="com.platon.metis.admin.dao.TaskOrgMapper">
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskOrg">
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="name" jdbcType="VARCHAR" property="orgName" />
     <result column="carrier_node_id" jdbcType="VARCHAR" property="carrierNodeId" />
   </resultMap>
 
@@ -20,10 +20,53 @@
   </select>
 
 
-  <select id="selectTaskOrgByIdentityId" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from task_org
+  <resultMap id="BaseResultMap_with_role" type="com.platon.metis.admin.dao.entity.TaskOrg" extends="BaseResultMap">
+    <result column="taskSponsor" property="dynamicFields.taskSponsor" jdbcType="BOOLEAN"/>
+    <result column="powerProvider" property="dynamicFields.powerProvider" jdbcType="BOOLEAN"/>
+    <result column="dataProvider" property="dynamicFields.dataProvider" jdbcType="BOOLEAN"/>
+    <result column="resultConsumer" property="dynamicFields.resultConsumer" jdbcType="BOOLEAN"/>
+    <result column="algoProvider" property="dynamicFields.algoProvider" jdbcType="BOOLEAN"/>
+  </resultMap>
+  <select id="findOrgWitRoleByTaskIdAndIdentityId"  resultMap="BaseResultMap_with_role">
+    select t1.*, t2.*
+    from(
+      select o.*
+      from task_org o
+      where o.identity_id = #{identityId,jdbcType=VARCHAR}
+    ) t1, (
+      select sum(tmp.taskSponsor) as taskSponsor, sum(tmp.powerProvider) as powerProvider , sum(tmp.dataProvider) as dataProvider, sum(tmp.resultConsumer) as resultConsumer, sum(tmp.algoProvider) as algoProvider
+      from (
+         select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+         from task tk
+         WHERE tk.task_id = #{taskId,jdbcType=VARCHAR} and tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
+
+         union
+
+         select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
+         from task_algo_provider tap
+         WHERE tap.task_id = #{taskId,jdbcType=VARCHAR} and tap.identity_id = #{identityId,jdbcType=VARCHAR}
+
+         union
+
+         select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+         from task_power_provider tpp
+         WHERE tpp.task_id = #{taskId,jdbcType=VARCHAR} and tpp.identity_id = #{identityId,jdbcType=VARCHAR}
+
+         union
+
+         select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
+         from task_data_provider tdp
+         WHERE tdp.task_id = #{taskId,jdbcType=VARCHAR} and tdp.identity_id = #{identityId,jdbcType=VARCHAR}
+
+         union
+
+         select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
+         from task_result_consumer trc
+         WHERE trc.task_id = #{taskId,jdbcType=VARCHAR} and trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
+
+       ) tmp
+    ) t2
+
     where identity_id = #{identityId,jdbcType=VARCHAR}
   </select>
 

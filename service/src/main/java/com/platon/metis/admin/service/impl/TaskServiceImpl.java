@@ -116,7 +116,7 @@ public class TaskServiceImpl implements TaskService {
     public Task getTaskDetails(String taskId) {
         Task task = taskMapper.selectTaskByTaskId(taskId,null);
          //任务发起方身份信息
-        TaskOrg owner = taskOrgMapper.selectTaskOrgByIdentityId(task.getOwnerIdentityId());
+        TaskOrg owner = taskOrgMapper.findOrgWitRoleByTaskIdAndIdentityId(task.getTaskId(),task.getOwnerIdentityId());
         task.setOwner(owner);
 
         //算法提供方

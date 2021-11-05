@@ -61,19 +61,27 @@ public class TaskControllerTest {
     }
 
     @Test
+    public void taskInfo(){
+        String taskId = "task:0x1ab2cd7bf725e02271b972e6a6ca886d4fd8b43286e160d9fc045512d951c34a";
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/task/taskInfo?taskId={1}", String.class, taskId);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+    }
+
+    @Test
     public void taskOrgTest(){
         Set<TaskOrg> taskOrgList = new HashSet<>();
 
         TaskOrg taskOrg = new TaskOrg();
         taskOrg.setIdentityId("identityId");
         taskOrg.setCarrierNodeId("nodeId");
-        taskOrg.setName("nodeName");
+        taskOrg.setOrgName("orgName");
         taskOrgList.add(taskOrg);
 
         TaskOrg taskOrg2 = new TaskOrg();
         taskOrg2.setIdentityId("identityId");
         taskOrg2.setCarrierNodeId("nodeId");
-        taskOrg2.setName("nodeName");
+        taskOrg2.setOrgName("orgName");
         taskOrgList.add(taskOrg2);
 
         System.out.println(taskOrgList.size());

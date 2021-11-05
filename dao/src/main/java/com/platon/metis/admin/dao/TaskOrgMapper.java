@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TaskOrgMapper {
 
-    TaskOrg selectTaskOrgByIdentityId(@Param("identityId") String identityId);
+    TaskOrg findOrgWitRoleByTaskIdAndIdentityId(@Param("taskId") String taskId, @Param("identityId") String identityId);
 
     int insertBatch(Collection<TaskOrg> powerProviderList);
 

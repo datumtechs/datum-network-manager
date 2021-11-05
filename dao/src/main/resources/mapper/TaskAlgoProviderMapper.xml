@@ -16,12 +16,12 @@
         where task_id = #{taskId,jdbcType=VARCHAR}
     </select>
 
-    <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskAlgoProvider">
-        <result column="node_name" property="dynamicFields.nodeName" jdbcType="VARCHAR"/>
-        <result column="node_id" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>
+    <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskAlgoProvider" extends="BaseResultMap">
+        <result column="org_name" property="dynamicFields.orgName" jdbcType="VARCHAR"/>
+        <result column="carrier_node_id" property="dynamicFields.carrierNodeId" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="selectTaskAlgoProviderWithOrgNameByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OrgName">
-        select tap.*, o.`name` AS node_name, o.carrier_node_id AS node_id
+        select tap.*, o.`name` AS org_name, o.carrier_node_id AS carrier_node_id
         from task_algo_provider tap
         left join task_org o on tap.identity_id = o.identity_id
         where tap.task_id = #{taskId,jdbcType=VARCHAR}
