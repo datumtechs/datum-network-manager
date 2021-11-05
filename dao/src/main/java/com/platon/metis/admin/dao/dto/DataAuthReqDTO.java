@@ -17,8 +17,8 @@ public class DataAuthReqDTO {
     @ApiModelProperty(value = "申请时间")
     private Date applyTime;
 
-    @ApiModelProperty(value = "申请的组织名称")
-    private String orgName;
+    @ApiModelProperty(value = "申请的用户钱包地址")
+    private String applyUser;
 
     @ApiModelProperty(value = "元数据名称")
     private String metaDataName;

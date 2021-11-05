@@ -110,7 +110,7 @@
   <select id="listDataAuthReqWaitingForApprove" resultType="com.platon.metis.admin.dao.dto.DataAuthReqDTO">
     select
         a.create_at as applyTime,
-        a.identity_name as orgName,
+        a.apply_user as applyUser,
         b.meta_data_name as metaDataName
     from
         local_data_auth a, local_meta_data b
