@@ -145,6 +145,9 @@
       group by tmp.task_id
     ) temp on t.task_id = temp.task_id
     <where>
+      <if test="statusFilter != null">
+        and t.status = #{statusFilter,jdbcType=INTEGER}
+      </if>
       <if test="startTimestamp != null">
          and t.create_At <![CDATA[>= ]]> #{startTimestamp,jdbcType=TIMESTAMP}
       </if>

@@ -5,6 +5,7 @@ import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.entity.TaskOrg;
 import com.platon.metis.admin.dto.req.TaskPageReq;
+import com.platon.metis.admin.grpc.common.CommonBase;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
@@ -40,6 +41,7 @@ public class TaskControllerTest {
         req.setPageSize(10);
         req.setStartTime(0L);
         req.setEndTime(0L);
+        req.setStatus(CommonBase.TaskState.TaskState_Succeed.getNumber());
         ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/task/listMyTask", req, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());

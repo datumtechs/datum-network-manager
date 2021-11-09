@@ -41,8 +41,12 @@ public class TaskController {
     @PostMapping("/listMyTask")
     public JsonResponse<TaskDataResp> listMyTask(@Validated @RequestBody TaskPageReq taskPageReq){
         //查询任务列表Data
+        Integer statusFilter = taskPageReq.getStatus();
+        if (statusFilter == null || statusFilter == 0) {
+            statusFilter = null;
+        }
 
-        Page<Task> taskPage =  taskService.listTaskByIdentityIdWithRole(LocalOrgIdentityCache.getIdentityId(), taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
+        Page<Task> taskPage =  taskService.listTaskByIdentityIdWithRole(LocalOrgIdentityCache.getIdentityId(), statusFilter, taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
 
         //封装响应数据
         //TaskDataResp taskDataResp = TaskDataResp.from(taskDataPageList);

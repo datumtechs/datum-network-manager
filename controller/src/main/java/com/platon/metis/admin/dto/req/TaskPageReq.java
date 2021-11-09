@@ -40,5 +40,6 @@ public class TaskPageReq {
     @ApiModelProperty(value = "发起任务结束时间戳，时区为UTC+8，没有就传0", example = "1624876140000", required = false)
     Long endTime;
 
-
+    @ApiModelProperty(value = "任务状态", notes="任务状态(0:所有状态、1:pending等在中、2:running计算中、3:failed失败、4:success成功)", required = false)
+    Integer status;
 }
