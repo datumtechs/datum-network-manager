@@ -88,14 +88,16 @@ public class DataProviderClient {
             byte[] bytes = new byte[MAX_BUFFER_SIZE];
             BufferedInputStream bufferInputStream = new BufferedInputStream(file.getInputStream());
             //从文件中按字节读取内容，到文件尾部时read方法将返回-1
-            while (bufferInputStream.read(bytes) != -1) {
+            int bytesRead;
+            while ( (bytesRead = bufferInputStream.read(bytes)) != -1) {
                 // 每次发送不大于4M数据
                 DataProviderRpcMessage.UploadRequest first = DataProviderRpcMessage.UploadRequest
                         .newBuilder()
-                        .setContent(ByteString.copyFrom(bytes))
+                        .setContent(ByteString.copyFrom(bytes, 0, bytesRead))
                         .build();
                 requestObserver.onNext(first);
             }
+
             /** 第二次传输 */
             DataProviderRpcMessage.FileInfo fileInfo = DataProviderRpcMessage.FileInfo
                     .newBuilder()
@@ -108,6 +110,7 @@ public class DataProviderClient {
                     .build();
             requestObserver.onNext(second);
             requestObserver.onCompleted();
+
             /**
              * 由于调度服务rpc接口也在开发阶段，如果直接返回调度服务的response，一旦response发生变化，则调用该方法的地方都需要修改
              * 故将response转换后再放给service类使用
