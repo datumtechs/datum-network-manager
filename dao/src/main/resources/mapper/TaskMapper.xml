@@ -107,7 +107,7 @@
     <result column="algoProvider" property="dynamicFields.algoProvider" jdbcType="BOOLEAN"/>
   </resultMap>
 
-  <select id="listTaskByIdentityIdWithRole" parameterType="map" resultMap="BaseResultMap_With_Role">
+  <select id="listTaskByIdentityIdWithRole" resultMap="BaseResultMap_With_Role">
     SELECT t.*, temp.taskSponsor, temp.powerProvider, temp.dataProvider, temp.resultConsumer, temp.algoProvider
     from task t
     join (
@@ -127,13 +127,13 @@
 
         select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
         from task_power_provider tpp
-        WHERE tpp.identity_id= #{identityId,jdbcType=VARCHAR}
+        WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
 
         union
 
         select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
         from task_data_provider tdp
-        WHERE tdp.identity_id= #{identityId,jdbcType=VARCHAR}
+        WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
 
         union
 
@@ -155,6 +155,47 @@
     order by t.create_At DESC
   </select>
 
+
+  <select id="listTaskByIdentityIdAndMetaDataIdWithRole" resultMap="BaseResultMap_With_Role">
+
+    SELECT t.*, temp.taskSponsor, temp.powerProvider, temp.dataProvider, temp.resultConsumer, temp.algoProvider
+    FROM task t
+    JOIN task_data_provider tdp ON t.task_id = tdp.task_id AND tdp.meta_data_id = #{metaDataId,jdbcType=VARCHAR}
+    JOIN (
+        select tmp.task_id, sum(tmp.taskSponsor) as taskSponsor, sum(tmp.powerProvider) as powerProvider , sum(tmp.dataProvider) as dataProvider, sum(tmp.resultConsumer) as resultConsumer, sum(tmp.algoProvider) as algoProvider
+        from (
+           select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+           from task tk
+           WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
+
+           union
+
+           select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
+           from task_algo_provider tap
+           WHERE tap.identity_id = #{identityId,jdbcType=VARCHAR}
+
+           union
+
+           select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+           from task_power_provider tpp
+           WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
+
+           union
+
+           select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
+           from task_data_provider tdp
+           WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
+
+           union
+
+           select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
+           from task_result_consumer trc
+           WHERE trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
+        ) tmp
+        group by tmp.task_id
+    ) temp on t.task_id = temp.task_id
+    order by t.create_At DESC
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from task

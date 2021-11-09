@@ -19,6 +19,8 @@ public interface TaskMapper {
     int updateTaskReviewedById(@Param("taskId")String taskId, @Param("reviewed") boolean reviewed);
 
     List<Task> listTaskByIdentityIdWithRole(@Param("identityId")String identityId, @Param("startTimestamp") Timestamp startTimestamp, @Param("endTimestamp")Timestamp endTimestamp);
+    List<Task> listTaskByIdentityIdAndMetaDataIdWithRole(@Param("identityId")String identityId, @Param("metaDataId")String metaDataId);
+
 
     List<String> selectListTaskByStatusWithSuccessAndFailed();
 

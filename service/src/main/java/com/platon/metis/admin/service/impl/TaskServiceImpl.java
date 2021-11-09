@@ -14,7 +14,9 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -56,38 +58,16 @@ public class TaskServiceImpl implements TaskService {
                     task.setReviewed(true);
                 }
             });
-            /**
-             * 排序规则：
-             * 1、任务已完成（”成功“/”失败“）但从未被查看，则将其置顶，并标记为“新”；
-             * 2、进行中任务，即”等待中“和”计算中“的任务置顶，按照发起时间排列；
-             * 3、已结束任务，即“成功”和“失败”的任务按照发起时间排列。
-             */
-            Collections.sort(taskList, new Comparator<Task>() {
-                @Override
-                public int compare(Task o1, Task o2) {
-                    Boolean value1 = isTaskSucceeFailUnRead(o1);
-                    Boolean value2 = isTaskSucceeFailUnRead(o2);
-                    //对描述1场景，进行排序
-                    if(0 < value1.compareTo(value2)){
-                        return -1;
-                    }else if(0 > value1.compareTo(value2)){
-                        return 1;
-                    }else if(0 == value1.compareTo(value2)){
-                         //对描述2、3场景，进行排序
-                         Boolean value3 = isTaskStatusPendAndRunning(o1);
-                         Boolean value4 = isTaskStatusPendAndRunning(o2);
-                         if(0 < value3.compareTo(value4)){
-                              return -1;
-                         }else if(0 > value3.compareTo(value4)){
-                             return 1;
-                         }
-                    }
-                    return 0;
-                }
-            });
 
             return taskPage;
         }
+
+    @Override
+    public Page<Task> listTaskByIdentityIdAndMetaDataIdWithRole(String identityId, String metaDataId, int pageNumber, int pageSize) {
+        Page<Task> taskPage = PageHelper.startPage(pageNumber, pageSize);
+        taskMapper.listTaskByIdentityIdAndMetaDataIdWithRole(identityId, metaDataId);
+        return taskPage;
+    }
 
     @Override
     public Page<Task> listRunningTaskByPowerNodeId(String powerNodeId, int pageNumber, int pageSize) {

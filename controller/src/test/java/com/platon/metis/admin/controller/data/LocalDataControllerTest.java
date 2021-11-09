@@ -1,5 +1,6 @@
 package com.platon.metis.admin.controller.data;
 
+import com.platon.metis.admin.dto.req.LocalDataJoinTaskListReq;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,19 @@ public class LocalDataControllerTest {
     @Test
     public void auditAuth(){
         ResponseEntity<String> entity  = restTemplate.getForEntity("/api/v1/data/localMetaDataInfo?id={1}", String.class, 5);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+    }
+
+
+    @Test
+    public void listTaskByMetaDataId(){
+        String metaDataId = "metadata:0xec2d3aa112c59fe6127605bde1784c0d10af2af47a4d10de6cf0719a7aa245c9";
+        LocalDataJoinTaskListReq req = new LocalDataJoinTaskListReq();
+        req.setMetaDataId(metaDataId);
+        req.setPageNumber(1);
+        req.setPageSize(10);
+        ResponseEntity<String> entity  = restTemplate.postForEntity("/api/v1/data/listTaskByMetaDataId", req, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }

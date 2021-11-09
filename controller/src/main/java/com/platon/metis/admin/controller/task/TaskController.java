@@ -37,7 +37,7 @@ public class TaskController {
     }
 
     //根据条件查询组织参与的任务列表
-    @ApiOperation(value="条件查询组织参与的任务列表")
+    @ApiOperation(value="条件查询组织参与的任务列表", notes="返回数据的每个task中，包含如下的动态字段：</br>taskSponsor, powerProvider, dataProvider, resultConsumer, algoProvider </br>当这些字段值等于1时表示本组织在任务中的相应角色")
     @PostMapping("/listMyTask")
     public JsonResponse<TaskDataResp> listMyTask(@Validated @RequestBody TaskPageReq taskPageReq){
         //查询任务列表Data

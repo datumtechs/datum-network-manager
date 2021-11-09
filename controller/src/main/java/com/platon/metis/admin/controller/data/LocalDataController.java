@@ -6,6 +6,7 @@ import cn.hutool.core.text.csv.CsvReader;
 import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
+import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.common.exception.ApplicationException;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.constant.ControllerConstants;
@@ -27,6 +28,7 @@ import com.platon.metis.admin.dto.resp.LocalDataDetailResp;
 import com.platon.metis.admin.dto.resp.LocalDataImportFileResp;
 import com.platon.metis.admin.dto.resp.LocalDataPageResp;
 import com.platon.metis.admin.service.LocalDataService;
+import com.platon.metis.admin.service.TaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -59,6 +61,9 @@ public class LocalDataController {
 
     @Resource
     private LocalDataService localDataService;
+
+    @Resource
+    private TaskService taskService;
 
     @Resource
     private LocalDataFileMapper localDataFileMapper;
@@ -99,11 +104,10 @@ public class LocalDataController {
     /**
      * 根据数据id查询数据参与的任务信息列表
      */
-    @ApiOperation(value = "数据参与的任务信息列表")
+    @ApiOperation(value = "数据参与的任务信息列表", notes="返回数据的每个task中，包含如下的动态字段：</br>taskSponsor, powerProvider, dataProvider, resultConsumer, algoProvider </br>当这些字段值等于1时表示本组织在任务中的相应角色")
     @PostMapping("listTaskByMetaDataId")
     public JsonResponse<List<Task>> listTaskByMetaDataId(@RequestBody @Validated LocalDataJoinTaskListReq req){
-        Page<Task> localDataJoinTaskPage = localDataService.listDataJoinTask(req.getPageNumber(), req.getPageSize(),req.getMetaDataId(),req.getKeyword());
-        //List<TaskDataPageResp> taskDataPageList = localDataJoinTaskPage.getResult().stream().map(TaskDataPageResp::convert).collect(Collectors.toList());
+        Page<Task> localDataJoinTaskPage = taskService.listTaskByIdentityIdAndMetaDataIdWithRole(LocalOrgIdentityCache.getIdentityId(), req.getMetaDataId(), req.getPageNumber(), req.getPageSize());
         return JsonResponse.page(localDataJoinTaskPage,localDataJoinTaskPage);
     }
 

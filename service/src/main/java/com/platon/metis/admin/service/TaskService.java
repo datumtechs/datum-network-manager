@@ -11,6 +11,8 @@ public interface TaskService {
 
     Page<Task> listTaskByIdentityIdWithRole(String identityId, Long startTimestamp, Long endTimestamp, int pageNumber, int pageSize);
 
+    Page<Task> listTaskByIdentityIdAndMetaDataIdWithRole(String identityId, String metaDataId, int pageNumber, int pageSize);
+
     Page<Task> listRunningTaskByPowerNodeId(String powerNodeId, int pageNumber, int pageSize);
 
     Integer selectAllTaskCount();

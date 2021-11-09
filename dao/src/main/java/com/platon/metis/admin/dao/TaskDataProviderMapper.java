@@ -12,8 +12,6 @@ public interface TaskDataProviderMapper {
 
     TaskDataProvider selectByPrimaryKey(@Param("taskId") String taskId, @Param("metaDataId") String metaDataId);
 
-    List<String> selectTaskByMetaDataId(@Param("metaDataId") String metaDataId);
-
     List<TaskDataProvider> selectTaskDataWithOrgByTaskId(@Param("taskId") String taskId);
 
     int insertBatch(List<TaskDataProvider> dataReceiverList);

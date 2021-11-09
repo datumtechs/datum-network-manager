@@ -19,16 +19,6 @@
   </select>
 
 
-  <select id="selectTaskByMetaDataId" resultType="java.lang.String">
-    SELECT
-        tdp.task_id
-    FROM
-        task_data_provider AS tdp
-    WHERE
-        tdp.meta_data_id = #{metaDataId,jdbcType=VARCHAR}
-  </select>
-
-
   <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskDataProvider" extends="BaseResultMap">
     <result column="org_name" property="dynamicFields.orgName" jdbcType="VARCHAR"/>
     <result column="carrier_node_id" property="dynamicFields.carrierNodeId" jdbcType="VARCHAR"/>

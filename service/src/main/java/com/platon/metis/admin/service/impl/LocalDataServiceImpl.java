@@ -39,9 +39,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -73,52 +74,6 @@ public class LocalDataServiceImpl implements LocalDataService {
         localMetaDataMapper.listMetaData(keyword);
         return localDataMetaPage;
     }
-
-    @Override
-    public Page<Task> listDataJoinTask(int pageNo, int pageSize, String metaDataId, String keyword) {
-        List<String> taskIdList = taskDataProviderMapper.selectTaskByMetaDataId(metaDataId);
-
-        Page<Task> dataJoinTaskPage = PageHelper.startPage(pageNo, pageSize);
-        List<Task> taskList = taskIdList.stream().map(new Function<String, Task>() {
-            @Override
-            public Task apply(String taskId) {
-                return taskMapper.selectTaskByTaskId(taskId,keyword);
-            }
-        }).collect(Collectors.toList());
-
-       /* Page<Task> dataJoinTaskPage = new Page<Task>();
-        dataJoinTaskPage.setTotal(dataJoinTaskIdPage.getTotal());
-        dataJoinTaskPage.setPageNum(dataJoinTaskIdPage.getPageNum());
-        dataJoinTaskPage.setPageSize(dataJoinTaskIdPage.getPageSize());
-        dataJoinTaskPage.setPages(dataJoinTaskIdPage.getPages());
-        dataJoinTaskPage.addAll(taskList);*/
-
-
-
-        /**
-         * 排序规则：
-         * 1、进行中任务，即”等待中“和”计算中“的任务置顶，按照发起时间排列；
-         * 2、已结束任务，即“成功”和“失败”任务按照发起时间排列
-         */
-        Collections.sort(taskList, new Comparator<Task>() {
-            @Override
-            public int compare(Task o1, Task o2) {
-                Boolean value1 = isTaskStatusPendAndRunning(o1);
-                Boolean value2 = isTaskStatusPendAndRunning(o2);
-                //对描述1场景，进行排序
-                if(0 < value1.compareTo(value2)){
-                    return -1;
-                }else if(0 > value1.compareTo(value2)){
-                    return 1;
-                }
-                return o1.getCreateAt().compareTo(o2.getCreateAt());
-            }
-        });
-
-        return dataJoinTaskPage;
-    }
-
-
 
 
     @Transactional

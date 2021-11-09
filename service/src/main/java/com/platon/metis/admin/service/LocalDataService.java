@@ -3,7 +3,6 @@ package com.platon.metis.admin.service;
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
-import com.platon.metis.admin.dao.entity.Task;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,16 +16,6 @@ public interface LocalDataService {
      * @return
      */
     Page<LocalMetaData> listMetaData(int pageNo, int pageSize, String keyword);
-
-    /**
-     * 获取本组织数据所参与的任务列表
-     * @param pageNo
-     * @param pageSize
-     * @param metaDataId
-     * @return
-     */
-    Page<Task> listDataJoinTask(int pageNo, int pageSize, String metaDataId, String keyword);
-
 
     /**
      * 上传源文件到数据节点
