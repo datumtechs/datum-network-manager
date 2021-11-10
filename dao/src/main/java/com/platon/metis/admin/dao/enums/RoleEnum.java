@@ -6,8 +6,8 @@ public enum RoleEnum {
 
     UNDEFINED(0, "undefined","未定义"),
     OWNER(1, "owner", "任务发起方"),
-    DATASUPPLIER(2, "dataSupplier","数据提供方"),
-    POWERSUPPLIER(3, "powerSupplier","算力提供方"),
+    POWERSUPPLIER(2, "powerSupplier","算力提供方"),
+    DATASUPPLIER(3, "dataSupplier","数据提供方"),
     RECEIVER(4, "receiver", "结果接收方"),
     ALGOSUPPLIER(5, "algoSupplier", "算法提供方");
 

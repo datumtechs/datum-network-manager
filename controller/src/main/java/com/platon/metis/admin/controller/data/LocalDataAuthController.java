@@ -86,19 +86,15 @@ public class LocalDataAuthController {
     @PostMapping("replyDataAuth")
     public JsonResponse replyDataAuth(@RequestBody @Validated AuthDataActionReq req){
         int action = req.getAction();
-        int count = 0;
         switch (action){
             case 1://同意
-                count = localDataAuthService.agreeAuth(req.getAuthId());
+                localDataAuthService.agreeAuth(req.getAuthId());
                 break;
             case 2://拒绝
-                count = localDataAuthService.refuseAuth(req.getAuthId());
+                localDataAuthService.refuseAuth(req.getAuthId());
                 break;
             default:
                 throw new ApplicationException(StrUtil.format("请输入正确的action[1: 同意; 2: 拒绝]：{}",action));
-        }
-        if(count <= 0){
-            JsonResponse.fail("操作失败");
         }
         return JsonResponse.success();
     }

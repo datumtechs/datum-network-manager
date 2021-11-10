@@ -32,24 +32,24 @@ public interface LocalDataAuthService {
 
     /**
      * 查询数据授权详情
-     * @param id
+     * @param authId
      * @return
      */
     LocalDataAuthDetail detail(String authId);
 
     /**
      * 同意授权数据
-     * @param id
+     * @param authId
      * @return
      */
-    int agreeAuth(String authId);
+    void agreeAuth(String authId);
 
     /**
      * 拒绝授权数据
-     * @param id
+     * @param authId
      * @return
      */
-    int refuseAuth(String authId);
+    void refuseAuth(String authId);
 
 
 }

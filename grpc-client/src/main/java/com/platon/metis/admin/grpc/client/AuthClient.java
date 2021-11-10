@@ -135,16 +135,17 @@ public class AuthClient {
     /**
      * 数据授权审核
      * @param metaDataAuthId ：元数据授权申请Id
-     * @param authStatus ：授权数据状态：0：等待授权审核，1:同意， 2:拒绝
+     * @param auditOption ：授权数据状态：0：等待授权审核，1:同意， 2:拒绝
+     * param auditDesc
      * @return
      */
-    public CommonResp auditMetaData(String metaDataAuthId, int authStatus) throws ApplicationException {
+    public AuthRpcMessage.AuditMetadataAuthorityResponse auditMetaData(String metaDataAuthId, int auditOption) throws ApplicationException {
         //1.获取rpc连接
         Channel channel = null;
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            CommonBase.AuditMetadataOption auditDataStatus =  CommonBase.AuditMetadataOption.forNumber(authStatus);
+            CommonBase.AuditMetadataOption auditDataStatus =  CommonBase.AuditMetadataOption.forNumber(auditOption);
             AuthRpcMessage.AuditMetadataAuthorityRequest request =  AuthRpcMessage
                                                                         .AuditMetadataAuthorityRequest
                                                                         .newBuilder()
@@ -153,12 +154,7 @@ public class AuthClient {
                                                                         .build();
             //3.调用rpc,获取response
             AuthRpcMessage.AuditMetadataAuthorityResponse response = AuthServiceGrpc.newBlockingStub(channel).auditMetadataAuthority(request);
-            log.debug("====> RPC客户端 auditAuthResponse:" + response.getMsg());
-            //4.处理response
-            CommonResp resp = new CommonResp();
-            resp.setStatus(response.getStatus());
-            resp.setMsg(response.getMsg());
-            return resp;
+            return response;
         }finally {
             channelManager.closeChannel(channel);
         }

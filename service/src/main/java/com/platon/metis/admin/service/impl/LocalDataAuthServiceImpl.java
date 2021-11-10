@@ -10,7 +10,7 @@ import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.dao.enums.DataAuthStatusEnum;
 import com.platon.metis.admin.grpc.client.AuthClient;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
-import com.platon.metis.admin.grpc.entity.CommonResp;
+import com.platon.metis.admin.grpc.service.AuthRpcMessage;
 import com.platon.metis.admin.service.LocalDataAuthService;
 import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,6 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Service
@@ -87,7 +86,7 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
     }
 
     @Override
-    public int agreeAuth(String authId) {
+    public void agreeAuth(String authId) {
 
         LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
         if(Objects.isNull(localDataAuth)){
@@ -96,22 +95,22 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
             throw new ServiceException("此数据已经授权过,不能重复授权");
         }
-        CommonResp commonResp = authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.AGREE.getStatus());
-        if(commonResp.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
-           throw new ServiceException("调用rpc授权失败" + commonResp.getMsg());
-        }
 
-        LocalDataAuth dataAuth = new LocalDataAuth();
-        dataAuth.setAuthId(authId);
-        dataAuth.setStatus(DataAuthStatusEnum.AGREE.getStatus());
-        dataAuth.setAuthAt(LocalDateTime.now());
-        AtomicInteger count = new AtomicInteger();
-        count.getAndAdd(localDataAuthMapper.updateByPrimaryKeySelective(dataAuth));
-        return count.get();
+        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.AGREE.getStatus());
+
+        if(response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
+           throw new ServiceException("调用rpc授权失败" + response.getMsg());
+        }else{
+            LocalDataAuth dataAuth = new LocalDataAuth();
+            dataAuth.setAuthId(authId);
+            dataAuth.setStatus(response.getAuditValue());
+            dataAuth.setAuthAt(LocalDateTime.now());
+            localDataAuthMapper.updateByPrimaryKeySelective(dataAuth);
+        }
     }
 
     @Override
-    public int refuseAuth(String authId) {
+    public void refuseAuth(String authId) {
 
         LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
         if(Objects.isNull(localDataAuth)){
@@ -120,17 +119,15 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
             throw new ServiceException("此数据已经授权过,不能重复授权");
         }
-        CommonResp commonResp = authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus());
-        if(commonResp.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
-            throw new ServiceException("调用rpc授权失败" + commonResp.getMsg());
+        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus());
+        if(response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
+            throw new ServiceException("调用rpc授权失败" + response.getMsg());
+        }else{
+            LocalDataAuth dataAuth = new LocalDataAuth();
+            dataAuth.setAuthId(authId);
+            dataAuth.setStatus(response.getAuditValue());
+            dataAuth.setAuthAt(LocalDateTime.now());
+            localDataAuthMapper.updateByPrimaryKeySelective(dataAuth);
         }
-
-        LocalDataAuth dataAuth = new LocalDataAuth();
-        dataAuth.setAuthId(authId);
-        dataAuth.setStatus(DataAuthStatusEnum.REFUSE.getStatus());
-        dataAuth.setAuthAt(LocalDateTime.now());
-        AtomicInteger count = new AtomicInteger();
-        count.getAndAdd(localDataAuthMapper.updateByPrimaryKeySelective(dataAuth));
-        return count.get();
     }
 }
