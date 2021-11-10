@@ -427,7 +427,7 @@ CREATE TABLE `task_event` (
 DROP TABLE IF EXISTS `task_org`;
 CREATE TABLE `task_org` (
   `identity_id` varchar(256) NOT NULL COMMENT '机构身份标识ID(主键)',
-  `name` varchar(32) DEFAULT NULL COMMENT '机构名称',
+  `org_name` varchar(32) DEFAULT NULL COMMENT '机构名称',
   `carrier_node_id` varchar(256) NOT NULL COMMENT '组织中调度服务的 nodeId',
   PRIMARY KEY (`identity_id`)
 ) COMMENT='任务组织信息表，用于存储从调度服务获取的任务数据快照中组织信息数据';
