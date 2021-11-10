@@ -60,7 +60,7 @@
   </resultMap>
 
   <select id="listRunningTaskByPowerNodeId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OwnerName">
-    select t.*, o.name as owner_name
+    select t.*, o.org_name as owner_name
     from task t
     join task_org o on t.owner_identity_id = o.identity_id
     join local_power_join_task lpjt on t.task_id = lpjt.task_id and lpjt.power_node_id = #{powerNodeId,jdbcType=VARCHAR}
