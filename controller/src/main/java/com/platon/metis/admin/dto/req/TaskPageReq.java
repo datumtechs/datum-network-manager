@@ -42,4 +42,7 @@ public class TaskPageReq {
 
     @ApiModelProperty(value = "任务状态</br>(0:所有状态</br>1:pending等在中</br>2:running计算中</br>3:failed失败</br>4:success成功)", required = false)
     Integer status;
+
+    @ApiModelProperty(value = "在任务中角色</br>(0:所有角色</br>1:创建者</br>2:算力提供者</br>3:数据提供者</br>4:结果接收者</br>5:算法提供者)", required = false)
+    Integer role;
 }

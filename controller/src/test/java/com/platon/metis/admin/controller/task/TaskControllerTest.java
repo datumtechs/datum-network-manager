@@ -42,6 +42,7 @@ public class TaskControllerTest {
         req.setStartTime(0L);
         req.setEndTime(0L);
         req.setStatus(CommonBase.TaskState.TaskState_Succeed.getNumber());
+        req.setRole(2);
         ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/task/listMyTask", req, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
@@ -64,7 +65,7 @@ public class TaskControllerTest {
 
     @Test
     public void taskInfo(){
-        String taskId = "task:0x1ab2cd7bf725e02271b972e6a6ca886d4fd8b43286e160d9fc045512d951c34a";
+        String taskId = "task:0xf42b15a1ce6759ab27e4a40a71a614680067ac91d5e1706f05cbff58d87eae44";
         ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/task/taskInfo?taskId={1}", String.class, taskId);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());

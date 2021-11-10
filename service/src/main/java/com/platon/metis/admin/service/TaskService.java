@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    Page<Task> listTaskByIdentityIdWithRole(String identityId, Integer statusFilter, Long startTimestamp, Long endTimestamp, int pageNumber, int pageSize);
+    Page<Task> listTaskByIdentityIdWithRole(String identityId, Integer statusFilter, Integer roleFilter, Long startTimestamp, Long endTimestamp, int pageNumber, int pageSize);
 
     Page<Task> listTaskByIdentityIdAndMetaDataIdWithRole(String identityId, String metaDataId, int pageNumber, int pageSize);
 

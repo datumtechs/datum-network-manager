@@ -113,33 +113,60 @@
     join (
       select tmp.task_id, sum(tmp.taskSponsor) as taskSponsor, sum(tmp.powerProvider) as powerProvider , sum(tmp.dataProvider) as dataProvider, sum(tmp.resultConsumer) as resultConsumer, sum(tmp.algoProvider) as algoProvider
       from (
-        select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
-        from task tk
-        WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
+        <if test="roleFilter == null">
+          select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+          from task tk
+          WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
 
-        union
+          union
 
-        select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
-        from task_algo_provider tap
-        WHERE tap.identity_id = #{identityId,jdbcType=VARCHAR}
+          select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
+          from task_algo_provider tap
+          WHERE tap.identity_id = #{identityId,jdbcType=VARCHAR}
 
-        union
+          union
 
-        select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
-        from task_power_provider tpp
-        WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
+          select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+          from task_power_provider tpp
+          WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
 
-        union
+          union
 
-        select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
-        from task_data_provider tdp
-        WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
+          select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
+          from task_data_provider tdp
+          WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
 
-        union
+          union
 
-        select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
-        from task_result_consumer trc
-        WHERE trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
+          select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
+          from task_result_consumer trc
+          WHERE trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
+        </if>
+        <if test="roleFilter != null and roleFilter == 1">
+          select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+          from task tk
+          WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
+        </if>
+        <if test="roleFilter != null and roleFilter == 5">
+          select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
+          from task_algo_provider tap
+          WHERE tap.identity_id = #{identityId,jdbcType=VARCHAR}
+        </if>
+        <if test="roleFilter != null and roleFilter == 2">
+          select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+          from task_power_provider tpp
+          WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
+        </if>
+        <if test="roleFilter != null and roleFilter == 3">
+          select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
+          from task_data_provider tdp
+          WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
+        </if>
+        <if test="roleFilter != null and roleFilter == 4">
+          select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
+          from task_result_consumer trc
+          WHERE trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
+        </if>
 
       ) tmp
       group by tmp.task_id

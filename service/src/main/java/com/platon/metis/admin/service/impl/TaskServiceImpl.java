@@ -45,14 +45,14 @@ public class TaskServiceImpl implements TaskService {
 
 
         @Override
-        public Page<Task> listTaskByIdentityIdWithRole(String identityId, Integer statusFilter, Long startTimestamp, Long endTimestamp, int pageNumber, int pageSize) {
+        public Page<Task> listTaskByIdentityIdWithRole(String identityId, Integer statusFilter, Integer roleFilter, Long startTimestamp, Long endTimestamp, int pageNumber, int pageSize) {
 
             //String roleParam = RoleEnum.getMessageByCode(role);
             Timestamp startTimestampParam = (startTimestamp == 0) ? null : new Timestamp(startTimestamp);
             Timestamp endTimestampParam = (endTimestamp == 0) ? null : new Timestamp(endTimestamp);
 
             Page<Task> taskPage = PageHelper.startPage(pageNumber, pageSize);
-            List<Task> taskList = taskMapper.listTaskByIdentityIdWithRole(identityId, statusFilter, startTimestampParam, endTimestampParam);
+            List<Task> taskList = taskMapper.listTaskByIdentityIdWithRole(identityId, statusFilter, roleFilter, startTimestampParam, endTimestampParam);
             taskList.forEach(task -> {
                 if(checkEndAtOver72Hour(task)){
                     task.setReviewed(true);

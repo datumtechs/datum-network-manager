@@ -46,7 +46,12 @@ public class TaskController {
             statusFilter = null;
         }
 
-        Page<Task> taskPage =  taskService.listTaskByIdentityIdWithRole(LocalOrgIdentityCache.getIdentityId(), statusFilter, taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
+        Integer roleFilter = taskPageReq.getRole();
+        if (roleFilter == null || roleFilter == 0) {
+            roleFilter = null;
+        }
+
+        Page<Task> taskPage =  taskService.listTaskByIdentityIdWithRole(LocalOrgIdentityCache.getIdentityId(), statusFilter, roleFilter, taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
 
         //封装响应数据
         //TaskDataResp taskDataResp = TaskDataResp.from(taskDataPageList);
