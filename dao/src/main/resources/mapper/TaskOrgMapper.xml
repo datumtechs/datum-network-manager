@@ -3,13 +3,13 @@
 <mapper namespace="com.platon.metis.admin.dao.TaskOrgMapper">
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskOrg">
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
-    <result column="name" jdbcType="VARCHAR" property="orgName" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
     <result column="carrier_node_id" jdbcType="VARCHAR" property="carrierNodeId" />
   </resultMap>
 
 
   <sql id="Base_Column_List">
-    identity_id, `name`, carrier_node_id
+    identity_id, `org_name`, carrier_node_id
   </sql>
 
 
@@ -72,10 +72,10 @@
 
 
   <insert id="insertBatch" parameterType="java.util.Set">
-    replace into task_org (identity_id, `name`, carrier_node_id)
+    replace into task_org (identity_id, `org_name`, carrier_node_id)
     values
     <foreach collection ="collection" item="item" separator =",">
-      (#{item.identityId,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},#{item.carrierNodeId,jdbcType=VARCHAR})
+      (#{item.identityId,jdbcType=VARCHAR},#{item.orgName,jdbcType=VARCHAR},#{item.carrierNodeId,jdbcType=VARCHAR})
     </foreach>
   </insert>
 
