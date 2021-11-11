@@ -26,7 +26,6 @@ import com.platon.metis.admin.dto.req.*;
 import com.platon.metis.admin.dto.resp.LocalDataCheckResourceNameResp;
 import com.platon.metis.admin.dto.resp.LocalDataDetailResp;
 import com.platon.metis.admin.dto.resp.LocalDataImportFileResp;
-import com.platon.metis.admin.dto.resp.LocalDataPageResp;
 import com.platon.metis.admin.service.LocalDataService;
 import com.platon.metis.admin.service.TaskService;
 import io.swagger.annotations.Api;
@@ -44,7 +43,6 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Author liushuyu
@@ -79,12 +77,10 @@ public class LocalDataController {
      */
     @ApiOperation(value = "数据列表分页查询")
     @PostMapping("listLocalMetaData")
-    public JsonResponse<List<LocalDataPageResp>> listMetaData(@RequestBody @Validated CommonPageReq req){
-        Page<LocalMetaData> localDataFilePage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(),null);
-        List<LocalDataPageResp> respList = localDataFilePage.getResult().stream()
-                .map(LocalDataPageResp::from)
-                .collect(Collectors.toList());
-        return JsonResponse.page(localDataFilePage,respList);
+    public JsonResponse<List<LocalMetaData>> listMetaData(@RequestBody @Validated CommonPageReq req){
+        Page<LocalMetaData> localMetaDataPage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(),null);
+
+        return JsonResponse.page(localMetaDataPage);
     }
 
     /**
@@ -92,12 +88,9 @@ public class LocalDataController {
      */
     @ApiOperation(value = "数据列表关键字查询")
     @PostMapping("listLocalMetaDataByKeyword")
-    public JsonResponse<List<LocalDataPageResp>> listLocalMetaDataByKeyword(@RequestBody @Validated LocalDataMetaDataListByKeyWordReq req){
-        Page<LocalMetaData> localDataFilePage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(),req.getKeyword());
-        List<LocalDataPageResp> respList = localDataFilePage.getResult().stream()
-                .map(LocalDataPageResp::from)
-                .collect(Collectors.toList());
-        return JsonResponse.page(localDataFilePage,respList);
+    public JsonResponse<List<LocalMetaData>> listLocalMetaDataByKeyword(@RequestBody @Validated LocalDataMetaDataListByKeyWordReq req){
+        Page<LocalMetaData> localMetaDataPage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(),req.getKeyword());
+        return JsonResponse.page(localMetaDataPage);
     }
 
 

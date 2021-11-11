@@ -1,7 +1,5 @@
 package com.platon.metis.admin.dto.resp;
 
-import com.platon.metis.admin.dao.entity.LocalMetaData;
-import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -39,27 +37,4 @@ public class LocalDataPageResp {
 
     @ApiModelProperty(name = "metaDataId", value = "元数据ID,hash")
     private String metaDataId;
-
-
-
-
-    public static LocalDataPageResp from(LocalMetaData localMetaData){
-        if(localMetaData == null){
-            return null;
-        }
-        LocalDataPageResp localDataPageResp = new LocalDataPageResp();
-        localDataPageResp.setId(localMetaData.getId());
-        localDataPageResp.setFileName(localMetaData.getMetaDataName());
-        localDataPageResp.setMetaDataId(localMetaData.getMetaDataId());
-        //元数据状态:1已发布，0未发布
-        if(LocalDataFileStatusEnum.RELEASED.getStatus()==localMetaData.getStatus()){
-            localDataPageResp.setStatus("1");
-        } else {
-            localDataPageResp.setStatus("0");
-        }
-        localDataPageResp.setSize((Long)localMetaData.getField("size"));
-        localDataPageResp.setRecUpdateTime(localMetaData.getRecUpdateTime());
-        localDataPageResp.setAttendTaskCount((Integer)localMetaData.getField("taskCount"));
-        return localDataPageResp;
-    }
 }
