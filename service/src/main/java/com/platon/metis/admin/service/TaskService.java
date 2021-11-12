@@ -9,6 +9,17 @@ import java.util.List;
 
 public interface TaskService {
 
+    /**
+     *
+     * @param identityId
+     * @param statusFilter
+     * @param roleFilter
+     * @param startTimestamp 精确到毫秒
+     * @param endTimestamp      精确到毫秒
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
     Page<Task> listTaskByIdentityIdWithRole(String identityId, Integer statusFilter, Integer roleFilter, Long startTimestamp, Long endTimestamp, int pageNumber, int pageSize);
 
     Page<Task> listTaskByIdentityIdAndMetaDataIdWithRole(String identityId, String metaDataId, int pageNumber, int pageSize);

@@ -30,14 +30,14 @@ public class TaskPageReq {
      * 发起任务开始时间戳
      */
     @NotNull(message = "开始时间不能为空，没有就传0")
-    @ApiModelProperty(value = "发起任务开始时间戳，时区为UTC+8，没有就传0", example = "1623148140000", required = false)
+    @ApiModelProperty(value = "发起任务开始时间戳（精确到秒），时区为UTC+8，没有就传0", example = "1623148140000", required = false)
     Long startTime;
 
     /**
      * 发起任务结束时间戳
      */
     @NotNull(message = "结束时间不能为空，没有就传0")
-    @ApiModelProperty(value = "发起任务结束时间戳，时区为UTC+8，没有就传0", example = "1624876140000", required = false)
+    @ApiModelProperty(value = "发起任务结束时间戳（精确到秒），时区为UTC+8，没有就传0", example = "1624876140000", required = false)
     Long endTime;
 
     @ApiModelProperty(value = "任务状态 (0:所有状态 1:pending 2:running 3:failed 4:success)", required = false)
