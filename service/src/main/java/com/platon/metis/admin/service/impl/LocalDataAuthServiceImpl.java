@@ -99,11 +99,13 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         }
 
         int auditOption = DataAuthStatusEnum.AGREE.getStatus();
-        //过期了，即使审核同意也需要变成“拒绝”
+        String auditDesc = "";
+        //过期了
         if(localDataAuth.getAuthType() == DataAuthTypeEnum.TIME_PERIOD.type && localDataAuth.getAuthValueEndAt().isBefore(LocalDateTime.now(ZoneOffset.UTC))){
             auditOption =  DataAuthStatusEnum.REFUSE.getStatus();
+            auditDesc = "data auth request is expired.";
         }
-        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), auditOption);
+        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
 
         if(response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
            throw new ServiceException("调用rpc授权失败" + response.getMsg());
@@ -126,7 +128,7 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
             throw new ServiceException("此数据已经授权过,不能重复授权");
         }
-        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus());
+        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus(), "");
         if(response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
             throw new ServiceException("调用rpc授权失败" + response.getMsg());
         }else{
