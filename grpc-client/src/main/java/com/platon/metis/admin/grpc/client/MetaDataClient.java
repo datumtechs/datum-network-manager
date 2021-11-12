@@ -55,7 +55,7 @@ public class MetaDataClient {
             Metadata.MetadataSummary metadataSummary = Metadata.MetadataSummary.newBuilder()
                                                     .setMetadataId("") //必须有个值
                                                     .setOriginId(localDateFile.getFileId())
-                                                    .setTableName(localDateFile.getFileName())
+                                                    .setTableName(localMetaData.getMetaDataName())
                                                     .setDesc(localMetaData.getRemarks())
                                                     .setFilePath(localDateFile.getFilePath())
                                                     .setRows(localDateFile.getRows())
