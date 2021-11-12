@@ -139,7 +139,7 @@ public class AuthClient {
      * param auditDesc
      * @return
      */
-    public AuthRpcMessage.AuditMetadataAuthorityResponse auditMetaData(String metaDataAuthId, int auditOption) throws ApplicationException {
+    public AuthRpcMessage.AuditMetadataAuthorityResponse auditMetaData(String metaDataAuthId, int auditOption, String auditDesc) throws ApplicationException {
         //1.获取rpc连接
         Channel channel = null;
         try{
@@ -151,6 +151,7 @@ public class AuthClient {
                                                                         .newBuilder()
                                                                         .setMetadataAuthId(metaDataAuthId)
                                                                         .setAudit(auditDataStatus)
+                                                                        .setSuggestion(auditDesc)
                                                                         .build();
             //3.调用rpc,获取response
             AuthRpcMessage.AuditMetadataAuthorityResponse response = AuthServiceGrpc.newBlockingStub(channel).auditMetadataAuthority(request);
