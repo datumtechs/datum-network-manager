@@ -46,7 +46,7 @@ public class GlobalPowerRefreshTask {
         try{
             powerList = powerClient.getGlobalPowerDetailList();
         } catch (ApplicationException exception){
-            log.info(exception.getErrorMsg());
+            log.error("获取全网算力出错", exception);
             return;
         }
         stopWatch.stop();
