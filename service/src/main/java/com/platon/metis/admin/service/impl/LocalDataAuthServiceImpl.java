@@ -113,8 +113,7 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         dataAuth.setAuthId(authId);
         dataAuth.setStatus(auditOption);
         dataAuth.setAuthAt(LocalDateTime.now());
-        localDataAuthMapper.updateByPrimaryKeySelective(dataAuth)
-        return;
+        localDataAuthMapper.updateByPrimaryKeySelective(dataAuth);
     }
 
     @Override
