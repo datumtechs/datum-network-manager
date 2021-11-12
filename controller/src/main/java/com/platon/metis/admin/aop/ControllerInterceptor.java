@@ -6,6 +6,7 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.platon.metis.admin.dto.JsonResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -47,12 +48,13 @@ public class ControllerInterceptor {
             log.info("request class : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
 
 
-            if(joinPoint.getArgs().length == 0){
-                log.info("request param : " + "{}");
-            }else {
+            if(ArrayUtils.isNotEmpty(joinPoint.getArgs()) ){
                 Object[] args = joinPoint.getArgs();
                 for (int i = 0; i <args.length; i++) {
                     Object parameter = args[i];
+                    if (parameter==null){
+                        return;
+                    }
                     if(ClassUtil.isSimpleValueType(parameter.getClass())){
                         log.info(StrUtil.format("request param-{}: {}",i,parameter));
                     }else if(parameter instanceof ServletResponse){
