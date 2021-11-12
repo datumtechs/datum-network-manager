@@ -8,6 +8,7 @@ import com.platon.metis.admin.dao.LocalMetaDataColumnMapper;
 import com.platon.metis.admin.dao.LocalMetaDataMapper;
 import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.dao.enums.DataAuthStatusEnum;
+import com.platon.metis.admin.dao.enums.DataAuthTypeEnum;
 import com.platon.metis.admin.grpc.client.AuthClient;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.AuthRpcMessage;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,17 +98,23 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
             throw new ServiceException("此数据已经授权过,不能重复授权");
         }
 
-        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.AGREE.getStatus());
+        int auditOption = DataAuthStatusEnum.AGREE.getStatus();
+        //过期了，即使审核同意也需要变成“拒绝”
+        if(localDataAuth.getAuthType() == DataAuthTypeEnum.TIME_PERIOD.type && localDataAuth.getAuthValueEndAt().isBefore(LocalDateTime.now(ZoneOffset.UTC))){
+            auditOption =  DataAuthStatusEnum.REFUSE.getStatus();
+        }
+        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), auditOption);
 
         if(response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
            throw new ServiceException("调用rpc授权失败" + response.getMsg());
-        }else{
-            LocalDataAuth dataAuth = new LocalDataAuth();
-            dataAuth.setAuthId(authId);
-            dataAuth.setStatus(response.getAuditValue());
-            dataAuth.setAuthAt(LocalDateTime.now());
-            localDataAuthMapper.updateByPrimaryKeySelective(dataAuth);
         }
+
+        LocalDataAuth dataAuth = new LocalDataAuth();
+        dataAuth.setAuthId(authId);
+        dataAuth.setStatus(auditOption);
+        dataAuth.setAuthAt(LocalDateTime.now());
+        localDataAuthMapper.updateByPrimaryKeySelective(dataAuth)
+        return;
     }
 
     @Override
