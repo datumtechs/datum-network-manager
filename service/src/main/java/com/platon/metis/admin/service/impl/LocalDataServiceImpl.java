@@ -94,10 +94,11 @@ public class LocalDataServiceImpl implements LocalDataService {
                     localDataFile.getFileName(),
                     file);
         } catch (Exception e) {
-            throw new ServiceException("上传文件失败",e);
+            log.error("上传文件到数据节点失败，数据节点地址：{}:{}", availableDataNode.getIp(), availableDataNode.getPort(), e);
+            throw new ServiceException("上传文件到数据节点失败", e);
         }
         if(StringUtils.isEmpty(dataProviderUploadDataResp.getFileId()) || StringUtils.isEmpty(dataProviderUploadDataResp.getFilePath())) {
-            throw new ServiceException("上传文件失败文件ID或路径缺失");
+            throw new ServiceException("上传文件到数据节点失败（文件ID或路径缺失）");
         }
         //### 4.补充源文件信息
         localDataFile.setFileId(dataProviderUploadDataResp.getFileId());
