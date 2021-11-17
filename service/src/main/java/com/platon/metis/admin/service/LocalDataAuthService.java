@@ -44,6 +44,7 @@ public interface LocalDataAuthService {
      */
     void agreeAuth(String authId);
 
+    boolean autoApproveDataAuth(LocalDataAuth localDataAuth);
     /**
      * 拒绝授权数据
      * @param authId

@@ -119,6 +119,32 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
     }
 
     @Override
+    public boolean autoApproveDataAuth(LocalDataAuth localDataAuth) {
+        if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
+            log.warn("dataAuthRequest will be ignored because it is audited. authId:{}", localDataAuth.getAuthId());
+            return false;
+        }
+        int auditOption = DataAuthStatusEnum.AGREE.getStatus();
+        String auditDesc = "";
+        //过期了
+        if(localDataAuth.getAuthType() == DataAuthTypeEnum.TIME_PERIOD.type && localDataAuth.getAuthValueEndAt().isBefore(LocalDateTime.now(ZoneOffset.UTC))){
+            log.warn("dataAuthRequest is refused because it is expired. authId:{}", localDataAuth.getAuthId());
+            auditOption =  DataAuthStatusEnum.REFUSE.getStatus();
+            auditDesc = "data auth request is expired.";
+        }
+        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
+
+        if(response.getStatus()!=GrpcConstant.GRPC_SUCCESS_CODE){
+            log.warn("Carrier audit dataAuthRequest error. authId:{}", localDataAuth.getAuthId());
+        }
+        //设置最后结果是：同意，还是拒绝
+        localDataAuth.setStatus(auditOption);
+
+        //上面设置的最后结果，只有在return true时才有效
+        return response.getStatus() == GrpcConstant.GRPC_SUCCESS_CODE;
+    }
+
+    @Override
     public void refuseAuth(String authId) {
 
         LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
