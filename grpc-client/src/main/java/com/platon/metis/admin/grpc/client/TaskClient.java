@@ -173,8 +173,8 @@ public class TaskClient {
             task.setCostMemory(operationCost.getMemory());
             task.setCostBandwidth(operationCost.getBandwidth());
             task.setDuration(operationCost.getDuration());
-            task.setApplyUser(taskDetail.getTaskId()); //todo 待确认是否删除
-            task.setUserType(taskDetail.getUserType().getNumber()); //todo 待确认是否删除
+            task.setApplyUser(taskDetail.getUser()); //发起任务的用户的信息 (task是属于用户的)
+            task.setUserType(taskDetail.getUserType().getNumber()); //发起任务的用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
 
 
             //搜集taskOrg，任务发起者
