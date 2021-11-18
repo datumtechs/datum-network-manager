@@ -139,7 +139,7 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         }
         //设置最后结果是：同意，还是拒绝
         localDataAuth.setStatus(auditOption);
-
+        localDataAuth.setAuthAt(LocalDateTime.now());
         //上面设置的最后结果，只有在return true时才有效
         return response.getStatus() == GrpcConstant.GRPC_SUCCESS_CODE;
     }
