@@ -234,13 +234,12 @@
   </update>
 
   <resultMap id="PowerLoadResultMap" type="com.platon.metis.admin.dao.entity.PowerLoad">
-    <id column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
     <result column="core_pct" jdbcType="INTEGER" property="corePct" />
     <result column="memory_pct" jdbcType="INTEGER" property="memoryPct" />
     <result column="bandwidth_pct" jdbcType="INTEGER" property="bandwidthPct" />
   </resultMap>
   <select id="getCurrentLocalPowerLoadByPowerNodeId" resultMap="PowerLoadResultMap">
-    SELECT t1.power_node_id, CAST(t1.used_core / t2.core * 100 as UNSIGNED) as core_pct, CAST(t1.used_memory / t2.memory * 100 as UNSIGNED) as memeory_pct, CAST(t1.used_bandwidth / t2.bandwidth * 100 as UNSIGNED) as bandwidth_pct
+    SELECT t1.power_node_id, CAST(t1.used_core / t2.core * 100 as UNSIGNED) as core_pct, CAST(t1.used_memory / t2.memory * 100 as UNSIGNED) as memory_pct, CAST(t1.used_bandwidth / t2.bandwidth * 100 as UNSIGNED) as bandwidth_pct
     FROM (
       SELECT lpjk.power_node_id, sum(lpjk.used_core) as used_core, sum(lpjk.used_memory) as used_memory, sum(lpjk.used_bandwidth) as used_bandwidth
       FROM  local_power_join_task lpjk
