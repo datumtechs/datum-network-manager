@@ -1,5 +1,7 @@
 # ==================================== tidb conf  ==========================================
 spring:
+  application:
+    name: metis-admin
   profiles:
     active: dev
   servlet:
