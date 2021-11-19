@@ -56,7 +56,7 @@ CREATE TABLE `global_data_file` (
     `has_title` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否带标题,0表示不带，1表示带标题',
     `remarks` varchar(100) DEFAULT NULL COMMENT '数据描述',
     `status` INT NOT NULL DEFAULT 0 COMMENT '数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)',
-    `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
+    `publish_time` datetime(3) DEFAULT NULL COMMENT '元数据发布时间',
     `update_time` datetime DEFAULT NULL COMMENT '元数据修改时间',
     PRIMARY KEY (`meta_data_id`)
 ) COMMENT='全网数据文件表';
@@ -91,7 +91,7 @@ CREATE TABLE global_power (
   used_core INT DEFAULT 0 COMMENT '使用的core',
   used_bandwidth BIGINT DEFAULT 0 COMMENT '使用的带宽, bps',
   published BOOLEAN NOT NULL DEFAULT FALSE COMMENT '是否发布，true/false',
-  publish_at DATETIME NOT NULL DEFAULT NOW() comment '发布时间',
+  publish_at DATETIME(3) NOT NULL DEFAULT NOW() comment '发布时间',
   status int COMMENT '算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)',
   update_at DATETIME NOT NULL comment '(状态)修改时间',
   PRIMARY KEY (id)
@@ -179,8 +179,8 @@ CREATE TABLE `local_data_auth` (
   `auth_value_amount` int(100) DEFAULT '0' COMMENT '授权值(以授权次数)，auth_type = 2使用此字段',
   `auth_value_start_at` datetime DEFAULT NULL COMMENT '授权值开始时间，auth_type = 1使用此字段',
   `auth_value_end_at` datetime DEFAULT NULL COMMENT '授权值结束时间，auth_type = 1使用此字段',
-  `create_at` datetime DEFAULT NULL COMMENT '授权申请发起时间',
-  `auth_at` datetime DEFAULT NULL COMMENT '授权数据时间',
+  `create_at` datetime(3) DEFAULT NULL COMMENT '授权申请发起时间',
+  `auth_at` datetime(3) DEFAULT NULL COMMENT '授权数据时间',
   `status` int(4) DEFAULT '0' COMMENT '授权数据状态：0：等待授权审核，1:同意， 2:拒绝 ',
   `identity_name` varchar(256) DEFAULT NULL COMMENT '元数据所属的组织信息，组织名称',
   `identity_id` varchar(256) DEFAULT NULL COMMENT '元数据所属的组织信息,组织的身份标识Id',
@@ -369,11 +369,11 @@ CREATE TABLE `task` (
     `owner_party_id` varchar(256) DEFAULT NULL COMMENT '任务发起方组织ID',
     `apply_user` varchar(256) DEFAULT NULL COMMENT '发起任务的用户ID',
     `user_type` int(4) DEFAULT '0' COMMENT '发起任务用户类型 (0: 未定义; 1: 以太坊地址; 2: Alaya地址; 3: PlatON地址)',
-    `create_At` datetime DEFAULT NULL COMMENT '任务发起时间',
-    `start_At` datetime DEFAULT NULL COMMENT '任务启动时间',
-    `auth_At` datetime DEFAULT NULL COMMENT '任务授权时间',
+    `create_At` datetime(3) DEFAULT NULL COMMENT '任务发起时间',
+    `start_At` datetime(3) DEFAULT NULL COMMENT '任务启动时间',
+    `auth_At` datetime(3) DEFAULT NULL COMMENT '任务授权时间',
     `auth_Status` varchar(10) DEFAULT NULL COMMENT '任务授权状态: pending:等待授权、denied:授权未通过',
-    `end_At` datetime DEFAULT NULL COMMENT '任务结束时间',
+    `end_At` datetime(3) DEFAULT NULL COMMENT '任务结束时间',
     `status` tinyint(4) DEFAULT '0' COMMENT '任务状态(0:unknown未知、1:pending等在中、2:running计算中、3:failed失败、4:success成功)',
     `duration` BIGINT DEFAULT NULL COMMENT '任务声明计算时间',
     `cost_core` INT DEFAULT '0' COMMENT '任务声明所需CPU',
@@ -416,7 +416,7 @@ CREATE TABLE `task_event` (
   `event_type` varchar(20) NOT NULL COMMENT '事件类型',
   `identity_id` varchar(256) NOT NULL COMMENT '产生事件的组织身份ID',
   party_id VARCHAR(200) NOT NULL COMMENT '产生事件的partyId (单个组织可以担任任务的多个party, 区分是哪一方产生的event)',
-  `event_at` datetime NOT NULL COMMENT '产生事件的时间',
+  `event_at` datetime(3) NOT NULL COMMENT '产生事件的时间',
   `event_content` varchar(512) NOT NULL COMMENT '事件内容',
   PRIMARY KEY (`ID`)
 ) COMMENT='任务事件表';
