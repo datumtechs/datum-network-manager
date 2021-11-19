@@ -12,12 +12,12 @@ public class LocalPowerLoadSnapshot {
     @ApiModelProperty(value = "时间点", notes = "UTC时间, 显示时要转成本地时间", example="2021-11-04T06:00:00")
     private LocalDateTime snapshotTime;
 
-    @ApiModelProperty(value = "核心负载百分比")
-    private Integer corePct;
+    @ApiModelProperty(value = "核心使用数")
+    private Integer usedCore;
 
-    @ApiModelProperty(value = "内存负载百分比")
-    private Integer memoryPct;
+    @ApiModelProperty(value = "内存使用数")
+    private Long usedMemory;
 
-    @ApiModelProperty(value = "带宽负载百分比")
-    private Integer bandwidthPct;
+    @ApiModelProperty(value = "带宽使用数")
+    private Long usedBandwidth;
 }

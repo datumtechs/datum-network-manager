@@ -10,6 +10,7 @@ import com.platon.metis.admin.dao.LocalPowerNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalPowerHistory;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
+import com.platon.metis.admin.dao.entity.PowerLoad;
 import com.platon.metis.admin.grpc.client.PowerClient;
 import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
@@ -276,6 +277,11 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshotByPowerNodeId(String powerNodeId, int hours) {
         return localPowerLoadSnapshotMapper.listLocalPowerLoadSnapshotByPowerNodeId(powerNodeId, hours);
+    }
+
+    @Override
+    public PowerLoad getCurrentLocalPowerLoadByPowerNodeId(String powerNodeId) {
+        return localPowerNodeMapper.getCurrentLocalPowerLoadByPowerNodeId(powerNodeId);
     }
 
 }

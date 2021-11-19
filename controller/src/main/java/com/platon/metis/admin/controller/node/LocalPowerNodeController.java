@@ -4,6 +4,7 @@ package com.platon.metis.admin.controller.node;
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
+import com.platon.metis.admin.dao.entity.PowerLoad;
 import com.platon.metis.admin.dao.entity.Task;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.*;
@@ -152,6 +153,18 @@ public class LocalPowerNodeController {
         try {
             //参数，最近多少小时的数据
             List<LocalPowerLoadSnapshot> list = localPowerNodeService.listLocalPowerLoadSnapshotByPowerNodeId(powerNodeId, 24);
+            return JsonResponse.success(list);
+        } catch (Exception e) {
+            log.error("查询本地算力负载快照记录出错", e);
+            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "校验失败！");
+        }
+    }
+
+    @GetMapping("/getCurrentLocalPowerLoadByPowerNodeId")
+    @ApiOperation(value="查询算力节点当前的负载情况", response = JsonResponse.class)
+    public JsonResponse<PowerLoad> getCurrentLocalPowerLoadByPowerNodeId(@ApiParam(name = "powerNodeId",value = "算力节点ID", type = "String", required = true) @RequestParam String powerNodeId) {
+        try {
+            PowerLoad list = localPowerNodeService.getCurrentLocalPowerLoadByPowerNodeId(powerNodeId);
             return JsonResponse.success(list);
         } catch (Exception e) {
             log.error("查询本地算力负载快照记录出错", e);
