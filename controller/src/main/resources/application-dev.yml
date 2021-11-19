@@ -38,15 +38,30 @@ server:
 
 
 # =============================== conf for logger ===================================
+# 日志配置
 logging:
-level: DEBUG
-level.com.platon: DEBUG
-level.org.springframework: INFO
-pattern:
-  console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15}[%line] - %msg%n'
-  file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15}[%line] - %msg%n'
-file:
-  name: logs/admin.log
+  # 日志级别
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.platon: DEBUG
+  file:
+    # 日志文件名格式
+    name: ./logs/${spring.application.name}.log
+  pattern:
+    # 日志记录格式[组件名称] [时间戳] [日志级别] [类名.方法名] [消息文本]
+    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %C / %line - %msg%n'
+    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %C / %line - %msg%n'
+  logback:
+    rollingpolicy:
+      # 根据文件大小归档，超过2KB自动归档，次日启动服务时也会自动归档
+      file-name-pattern: ./logs/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz
+      # 最大日志文件大小(默认为10MB，这里为了测试归档，暂时设置为2KB)
+      max-file-size: 2KB
+      # 要保留的日志备份的总大小(默认为0B)
+      total-size-cap: 1GB
+      # 保存存档日志文件的最大天数(默认为7天)
+      max-history: 20
 
 # =============================== conf for scheduled task ===================================
 DataAuthRefreshTask.fixedDelay: 20000
