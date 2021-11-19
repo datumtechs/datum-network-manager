@@ -3,6 +3,7 @@ package com.platon.metis.admin.service;
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
+import com.platon.metis.admin.dao.entity.PowerLoad;
 
 import java.util.List;
 
@@ -79,4 +80,6 @@ public interface LocalPowerNodeService {
 
 
     List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshotByPowerNodeId(String powerNodeId, int hours);
+
+    PowerLoad getCurrentLocalPowerLoadByPowerNodeId(String powerNodeId);
 }

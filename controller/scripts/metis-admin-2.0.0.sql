@@ -467,9 +467,9 @@ DROP TABLE IF EXISTS `local_power_load_snapshot`;
 CREATE TABLE `local_power_load_snapshot` (
     power_node_id varchar(256) NOT NULL COMMENT '算力节点id',
     snapshot_time DATETIME NOT NULL COMMENT '快照时间点，精确到小时',
-    core_pct int NOT NULL COMMENT '核心占用百分比，没有小数，四舍五入，xx%',
-    memory_pct int NOT NULL COMMENT '内存占用百分比，没有小数，四舍五入，xx%',
-    bandwidth_pct int COMMENT '带宽占用百分比，没有小数，四舍五入，xx%',
+    used_core int COMMENT '核心使用数',
+    used_memory BIGINT COMMENT '内存使用数',
+    used_bandwidth BIGINT COMMENT '带宽使用数',
     PRIMARY KEY (power_node_id, snapshot_time)
 ) COMMENT='本地算力负载快照统计';
 
@@ -612,13 +612,10 @@ CREATE EVENT local_power_load_snapshot_event
 	ON COMPLETION PRESERVE
 	DO
 BEGIN
-    INSERT INTO local_power_load_snapshot (power_node_id, snapshot_time, core_pct, memory_pct, bandwidth_pct)
-    SELECT t1.power_node_id, DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y-%m-%d %H:00:00'), CAST(t1.used_core / lpd.core * 100 as UNSIGNED), CAST(t1.used_memory / lpd.memory * 100 as UNSIGNED), CAST(t1.used_bandwidth / lpd.bandwidth * 100 as UNSIGNED)
-    FROM (
-         SELECT power_node_id, sum(used_core) as used_core, sum(used_memory) as used_memory, sum(used_bandwidth) as used_bandwidth
-         FROM  local_power_join_task
-         GROUP BY power_node_id
-    ) t1 JOIN local_power_node lpd ON t1.power_node_id = lpd.power_node_id;
+    INSERT INTO local_power_load_snapshot (power_node_id, snapshot_time, used_core, used_memory, used_bandwidth)
+    SELECT power_node_id, DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y-%m-%d %H:00:00'), sum(used_core) as used_core, sum(used_memory) as used_memory, sum(used_bandwidth) as used_bandwidth
+    FROM  local_power_join_task
+    GROUP BY power_node_id;
 END$$
 ALTER EVENT local_power_load_snapshot_event ENABLE$$
 DELIMITER ;

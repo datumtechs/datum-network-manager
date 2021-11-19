@@ -1,6 +1,8 @@
 package com.platon.metis.admin.dao;
 
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
+import com.platon.metis.admin.dao.entity.PowerLoad;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -46,27 +48,28 @@ public interface LocalPowerNodeMapper {
      * @param powerNodeId
      * @return
      */
-    int deletePowerNode(String powerNodeId);
+    int deletePowerNode(@Param("powerNodeId") String powerNodeId);
 
     /**
      * 查询计算节点详情
      * @param powerNodeId
      * @return
      */
-    LocalPowerNode queryPowerNodeDetails(String powerNodeId);
+    LocalPowerNode queryPowerNodeDetails(@Param("powerNodeId") String powerNodeId);
 
     /**
      * 查询计算节点列表
      * @param keyword
      * @return
      */
-    List<LocalPowerNode> queryPowerNodeList(String keyword);
+    List<LocalPowerNode> queryPowerNodeList(@Param("keyword") String keyword);
 
     /**
      * 计算节点名称校验
      * @param powerNodeName
      * @return
      */
-    int checkPowerNodeName(String powerNodeName);
+    int checkPowerNodeName(@Param("powerNodeName") String powerNodeName);
 
+    PowerLoad getCurrentLocalPowerLoadByPowerNodeId(@Param("powerNodeId") String powerNodeId);
 }
