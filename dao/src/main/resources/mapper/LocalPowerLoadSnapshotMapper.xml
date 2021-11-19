@@ -16,11 +16,38 @@
 
     <!-- 查询计算节点详情 -->
     <select id="listLocalPowerLoadSnapshotByPowerNodeId"  resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from local_power_load_snapshot
-        where power_node_id = #{powerNodeId, jdbcType=VARCHAR}
-        order by snapshot_time desc
-        limit 0, #{hours, jdbcType=INTEGER}
+        SELECT t.snapshot_time, IFNULL(d.used_core,0) as used_core, IFNULL(d.used_memory,0) as used_memory, IFNULL(d.used_bandwidth,0) as used_bandwidth
+        FROM (
+            SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 23 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 22 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 21 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 20 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 19 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 18 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 17 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 16 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 15 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 14 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 13 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 12 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 11 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 10 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 9 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 8 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 7 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 6 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 5 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 4 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 3 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 2 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 1 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
+            UNION SELECT DATE_FORMAT(CURRENT_TIME(), '%Y-%m-%d %H:00:00') AS snapshot_time
+        ) t
+        LEFT JOIN (
+            SELECT snapshot_time, used_core, used_memory, used_bandwidth
+            FROM local_power_load_snapshot
+            WHERE power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+        ) d ON t.snapshot_time = d.snapshot_time
+        ORDER BY t.snapshot_time
     </select>
 </mapper>
