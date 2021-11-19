@@ -56,12 +56,12 @@ logging:
     rollingpolicy:
       # 根据文件大小归档，超过2KB自动归档，次日启动服务时也会自动归档
       file-name-pattern: ./logs/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz
-      # 最大日志文件大小(默认为10MB，这里为了测试归档，暂时设置为2KB)
-      max-file-size: 2KB
+      # 最大日志文件大小(默认为10MB)
+      max-file-size: 200MB
       # 要保留的日志备份的总大小(默认为0B)
-      total-size-cap: 1GB
+      # total-size-cap: 1GB
       # 保存存档日志文件的最大天数(默认为7天)
-      max-history: 20
+      # max-history: 20
 
 # =============================== conf for scheduled task ===================================
 DataAuthRefreshTask.fixedDelay: 20000
