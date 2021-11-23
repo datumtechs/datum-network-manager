@@ -8,7 +8,6 @@ import com.platon.metis.admin.grpc.entity.DataAuthResp;
 import com.platon.metis.admin.service.LocalDataAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -35,7 +34,7 @@ public class DataAuthRefreshTask {
     private LocalDataAuthService localDataAuthService;
 
     //@Scheduled(fixedDelay = 20000)
-    @Scheduled(fixedDelayString = "${DataAuthRefreshTask.fixedDelay}")
+    //@Scheduled(fixedDelayString = "${DataAuthRefreshTask.fixedDelay}")
     public void getRpcDataAuthList() {
         log.info("启动数据授权申请定时任务...");
         DataAuthResp resp = authClient.getMetaDataAuthorityList();
