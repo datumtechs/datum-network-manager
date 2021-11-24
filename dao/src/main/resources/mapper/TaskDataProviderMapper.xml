@@ -4,11 +4,12 @@
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskDataProvider">
     <id column="task_id" jdbcType="VARCHAR" property="taskId" />
     <id column="meta_data_id" jdbcType="VARCHAR" property="metaDataId" />
+    <result column="meta_data_name" jdbcType="VARCHAR" property="metaDataName" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
     <result column="party_id" jdbcType="VARCHAR" property="partyId" />
   </resultMap>
   <sql id="Base_Column_List">
-    task_id, meta_data_id, identity_id, party_id
+    task_id, meta_data_id, meta_data_name, identity_id, party_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
     select 
@@ -40,17 +41,17 @@
 
 
   <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.TaskDataProvider">
-    insert into task_data_provider (task_id, meta_data_id, identity_id, party_id )
-    values (#{taskId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{partyId,jdbcType=VARCHAR}}
+    insert into task_data_provider (task_id, meta_data_id, meta_data_name, identity_id, party_id )
+    values (#{taskId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{metaDataName,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{partyId,jdbcType=VARCHAR}}
       )
   </insert>
 
 
   <insert id="insertBatch" parameterType="list">
-    replace into task_data_provider (task_id, meta_data_id, identity_id, party_id)
+    replace into task_data_provider (task_id, meta_data_id, meta_data_name, identity_id, party_id)
     values
     <foreach collection ="list" item="item" separator =",">
-      (#{item.taskId,jdbcType=VARCHAR}, #{item.metaDataId,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR}, #{item.partyId,jdbcType=VARCHAR})
+      (#{item.taskId,jdbcType=VARCHAR}, #{item.metaDataId,jdbcType=VARCHAR}, #{item.metaDataName,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR}, #{item.partyId,jdbcType=VARCHAR})
     </foreach>
   </insert>
 </mapper>
