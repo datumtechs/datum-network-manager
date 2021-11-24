@@ -40,9 +40,13 @@
     where carrier_conn_status = 'enabled' and carrier_status = 'enabled'
   </select>
 
-  <select id="select" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List"/>
-    from local_org
+  <resultMap id="BaseResultMap_runningTask" type="com.platon.metis.admin.dao.entity.LocalOrg" extends="BaseResultMap">
+    <result column="running_task" property="dynamicFields.runningTask" jdbcType="BOOLEAN"/>
+  </resultMap>
+
+  <select id="select" resultMap="BaseResultMap_runningTask">
+    select o.*, t.running_task
+    from local_org o, (select count(id) as running_task from local_power_join_task) t
   </select>
 
 
