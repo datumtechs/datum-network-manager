@@ -84,7 +84,7 @@ public class LocalTaskRefreshTask {
         log.info("待持久化数据updateTaskList:" + tobeUpdateTaskList.size());
 
         List<TaskAlgoProvider> algoProviderList = new ArrayList<>();
-        List<TaskDataProvider> dataReceiverList = new ArrayList<>();
+        List<TaskDataProvider> dataProviderList = new ArrayList<>();
         List<TaskPowerProvider> powerProviderList = new ArrayList<>();
         List<TaskResultConsumer> resultReceiverList = new ArrayList<>();
 
@@ -95,10 +95,9 @@ public class LocalTaskRefreshTask {
                  Task task = tobeUpdateTaskList.get(i);
                 //构造数据
                 algoProviderList.add(task.getAlgoSupplier());
-                 dataReceiverList.addAll(task.getDataSupplier());
+                 dataProviderList.addAll(task.getDataSupplier());
                  powerProviderList.addAll(task.getPowerSupplier());
                  resultReceiverList.addAll(task.getReceivers());
-
             }
         }
 
@@ -110,8 +109,8 @@ public class LocalTaskRefreshTask {
         if (checkDataValidity(algoProviderList)) {
             taskAlgoProviderMapper.insertBatch(algoProviderList);
         }
-        if (checkDataValidity(dataReceiverList)) {
-            taskDataProviderMapper.insertBatch(dataReceiverList);
+        if (checkDataValidity(dataProviderList)) {
+            taskDataProviderMapper.insertBatch(dataProviderList);
         }
         if (checkDataValidity(powerProviderList)) {
             taskPowerProviderMapper.insertBatch(powerProviderList);

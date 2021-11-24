@@ -197,6 +197,7 @@ public class TaskClient {
                 TaskDataProvider dataProvider = new TaskDataProvider();
                 dataProvider.setTaskId(taskId);
                 dataProvider.setMetaDataId(dataSupplier.getMetadataId());
+                dataProvider.setMetaDataName(dataSupplier.getMetadataName());
                 dataProvider.setIdentityId(dataSupplier.getOrganization().getIdentityId());
                 dataProvider.setPartyId(dataSupplier.getOrganization().getPartyId());
                 //dataProvider.setMetaDataName(dataSupplier.getMetadataName());
