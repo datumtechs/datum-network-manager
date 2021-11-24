@@ -1,6 +1,7 @@
 package com.platon.metis.admin.dao.entity;
 
 
+import com.platon.metis.admin.dao.BaseDomain;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel
-public class LocalOrg {
+public class LocalOrg extends BaseDomain {
     @ApiModelProperty(value = "机构名称")
     private String name;
 
