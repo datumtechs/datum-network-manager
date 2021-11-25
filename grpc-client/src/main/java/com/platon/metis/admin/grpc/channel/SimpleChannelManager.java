@@ -22,6 +22,7 @@ public class SimpleChannelManager extends BaseChannelManager{
         ManagedChannel channel = ManagedChannelBuilder
                 .forAddress(ip, port)
                 .usePlaintext()
+                .keepAliveWithoutCalls(true)
                 .build();
         return channel;
     }
