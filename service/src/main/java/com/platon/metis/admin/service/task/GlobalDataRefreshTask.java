@@ -14,7 +14,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -52,9 +51,7 @@ public class GlobalDataRefreshTask {
     @Scheduled(fixedDelayString = "${GlobalDataRefreshTask.fixedDelay}")
     @Transactional
     public void task(){
-        StopWatch stopWatch = new StopWatch("全网数据刷新计时");
-        //### 1.获取全网数据，包括本组织数据
-        stopWatch.start("1.获取全网数据，包括本组织数据");
+        log.debug("定时获取全网（包括本组织）的元数据...");
         List<GlobalDataFile> globalDataFileList = null;
         try{
             globalDataFileList = metaDataClient.getGlobalMetaDataList();
@@ -63,7 +60,7 @@ public class GlobalDataRefreshTask {
             return;
         }
 
-        log.info("globalDataFileList.size():{}", globalDataFileList.size());
+        log.debug("globalDataFileList.size():{}", globalDataFileList.size());
 
         if(CollectionUtils.isEmpty(globalDataFileList)){
             return;
@@ -72,10 +69,6 @@ public class GlobalDataRefreshTask {
             //syncCheckpointMapper.updateMetadata(last.getRecUpdateTime())
         }
 
-
-        stopWatch.stop();
-        //### 2.将数据归类
-        stopWatch.start("2.将数据归类");
         //2.1先获取所有已存在数据库中的fileId
         List<String> existMetaDataIdList = globalDataFileMapper.selectAllMetaDataId();
         //需要更新的列表
@@ -91,7 +84,7 @@ public class GlobalDataRefreshTask {
                             //将指定的元素插入此队列的尾部，如果该队列已满，则一直等到（阻塞）
                             localDataFileQueueFetchedFromStorage.offer(detail,60, TimeUnit.SECONDS);
                         } catch (InterruptedException e) {
-                            log.error("本地组织数据放入队列失败",e);
+                            log.error("定时获取全网（包括本组织）的元数据失败",e);
                         }
                         return false;
                     } else {
@@ -105,18 +98,14 @@ public class GlobalDataRefreshTask {
                         addList.add(detail);
                     }
                 });
-        stopWatch.stop();
         //### 3.入库
         //3.1批量更新
-        stopWatch.start("3.1批量更新");
         batchUpdate(updateList);
-        stopWatch.stop();
         //3.2批量新增
-        stopWatch.start("3.2批量新增");
         addList.stream().forEach(s->log.info(s.getMetaDataId()));
         batchAdd(addList);
-        stopWatch.stop();
-        log.info(stopWatch.prettyPrint());
+
+        log.debug("定时获取全网（包括本组织）的元数据结束...");
     }
 
     private void batchAdd(List<GlobalDataFile> addList) {

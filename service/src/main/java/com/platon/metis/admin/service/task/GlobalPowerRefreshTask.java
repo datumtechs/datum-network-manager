@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StopWatch;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -39,19 +38,15 @@ public class GlobalPowerRefreshTask {
     @Scheduled(fixedDelayString = "${GlobalPowerRefreshTask.fixedDelay}")
     @Transactional
     public void task(){
-        StopWatch stopWatch = new StopWatch("全网数据刷新计时");
-        //### 1.获取全网算力，包括本组织算力
-        stopWatch.start("1.获取全网算力，包括本组织算力");
+        log.debug("定时获取全网（包括本组织）的算力...");
         List<GlobalPower> powerList = null;
         try{
             powerList = powerClient.getGlobalPowerDetailList();
         } catch (ApplicationException exception){
-            log.error("获取全网算力出错", exception);
+            log.error("定时获取全网（包括本组织）的算力", exception);
             return;
         }
-        stopWatch.stop();
-        //### 2.将数据归类
-        stopWatch.start("2.将数据归类");
+
         //2.1先获取所有已存在数据库中的IdentityId
         List<String> allPowerId = globalPowerMapper.selectAllPowerId();
         //需要更新的列表
@@ -67,18 +62,17 @@ public class GlobalPowerRefreshTask {
                         addList.add(power);
                     }
                 });
-        stopWatch.stop();
+
         //### 3.入库
         //3.1批量更新
-        stopWatch.start("3.1批量更新");
-        batchUpdate(updateList);
-        stopWatch.stop();
-        //3.2批量新增
-        stopWatch.start("3.2批量新增");
-        batchAdd(addList);
-        stopWatch.stop();
-        log.info(stopWatch.prettyPrint());
 
+        batchUpdate(updateList);
+
+        //3.2批量新增
+
+        batchAdd(addList);
+
+        log.debug("定时获取全网（包括本组织）的算力结束...");
     }
 
     private void batchAdd(List<GlobalPower> addList) {

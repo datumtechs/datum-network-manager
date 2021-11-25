@@ -35,7 +35,7 @@ public class SeedNodeRefreshTask {
     //@Scheduled(fixedDelay = 30000)
     @Scheduled(fixedDelayString = "${SeedNodeRefreshTask.fixedDelay}")
     public void refreshSeedNode(){
-        long startTime = System.currentTimeMillis();
+        log.debug("定时刷新种子节点信息...");
 
         YarnRpcMessage.GetSeedNodeListResponse seedNodeListResponse = seedClient.getJobNodeList();
 
@@ -52,7 +52,6 @@ public class SeedNodeRefreshTask {
                 localSeedNodeMapper.insertBatch(localSeedNodeList);
             }
         }
-        long diffStart = System.currentTimeMillis() - startTime;
-        log.info("refreshSeedNode--定时任务执行结束, 执行时间:{}", diffStart+"ms");
+        log.debug("定时刷新种子节点信息结束");
     }
 }

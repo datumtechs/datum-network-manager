@@ -52,7 +52,7 @@ public class SeedClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse);
+        log.debug("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse);
         return seedNodeResponse.getNode();
     }
 
@@ -109,7 +109,7 @@ public class SeedClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode);
+        log.debug("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode);
     }
 
     /**
@@ -134,7 +134,7 @@ public class SeedClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("查询计算服务列表, 响应时间:{}ms, 响应数据:<< {} >>", diffTime, seedNodeListResponse);
+        log.debug("查询计算服务列表, 响应时间:{}ms, 响应数据:<< {} >>", diffTime, seedNodeListResponse);
         return seedNodeListResponse;
     }
 }
