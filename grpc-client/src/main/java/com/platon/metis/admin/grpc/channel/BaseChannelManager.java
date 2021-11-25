@@ -30,7 +30,7 @@ public abstract class BaseChannelManager {
      * @param port
      * @return
      */
-    public ManagedChannel getChannel(String ip, int port){
+    public synchronized ManagedChannel getChannel(String ip, int port){
         String channelKey = getKey(ip,port);
         //1.先从缓存获取
         ManagedChannel channel = channelContainer.get(channelKey);
@@ -38,7 +38,6 @@ public abstract class BaseChannelManager {
             //2.缓存不存在则新建连接，并放到缓存中,这时候需要考虑到多个线程并发更新的问题
             channel = buildChannel(ip,port);
             channelContainer.put(channelKey,channel);
-        } else {
         }
         return channel;
     }
