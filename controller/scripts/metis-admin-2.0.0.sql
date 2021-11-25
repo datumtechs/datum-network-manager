@@ -272,7 +272,7 @@ CREATE TABLE `local_power_join_task` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `power_node_id` varchar(256) DEFAULT NULL COMMENT '计算节点ID',
   `task_id` varchar(256) DEFAULT NULL COMMENT '任务id',
-  `task_name` varchar(32) DEFAULT NULL COMMENT '任务名称',
+  `task_name` varchar(100) DEFAULT NULL COMMENT '任务名称',
   `owner_identity_id` varchar(256) DEFAULT NULL COMMENT '发起方ID',
   `owner_identity_name` varchar(128) DEFAULT NULL COMMENT '发起方名称',
   `task_start_time` datetime DEFAULT NULL COMMENT '发起时间',
