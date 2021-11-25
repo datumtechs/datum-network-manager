@@ -31,11 +31,11 @@ public class DataNodeRefreshTask {
     //@Scheduled(fixedDelay = 2000)
     @Scheduled(fixedDelayString = "${DataNodeRefreshTask.fixedDelay}")
     public void task() {
-        log.info("执行获取数据节点列表定时任务");
-        long begin = System.currentTimeMillis();
+        log.debug("定时刷新数据节点的和调度服务的连接状态...");
+
         QueryNodeResp resp = yarnClient.getDataNodeList();
         if (GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
-            log.info("获取数据节点列表,调度服务调用失败");
+            log.error("调度服务调用失败");
             return;
         }
         List<DataNode> dataNodeList = new ArrayList<>();
@@ -48,7 +48,7 @@ public class DataNodeRefreshTask {
             //批量更新
             dataNodeMapper.batchUpdate(dataNodeList);
         }
-        long end = System.currentTimeMillis();
-        System.out.println("调度更新数据节点列表任务耗时=" + (end - begin));
+
+        log.debug("定时刷新数据节点的和调度服务的连接状态结束...");
     }
 }

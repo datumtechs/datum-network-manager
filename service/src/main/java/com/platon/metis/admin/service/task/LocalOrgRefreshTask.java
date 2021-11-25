@@ -38,6 +38,7 @@ public class LocalOrgRefreshTask {
     @Scheduled(fixedDelayString = "${LocalOrgRefreshTask.fixedDelay}")
     @Transactional
     public void task(){
+        log.debug("定时刷新本地组织信息，以及调度服务信息...");
         LocalOrg localOrg = localOrgMapper.select();
         if(localOrg == null){
             log.warn("请先申请身份标识");
@@ -60,15 +61,16 @@ public class LocalOrgRefreshTask {
             localOrg.setCarrierConnStatus(CarrierConnStatusEnum.DISABLED.getStatus());
         }
 
-        localOrgMapper.updateSelective(localOrg);
-        //刷新缓存
-        LocalOrgCache.setLocalOrgInfo(localOrg);
-        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
-
         //### 2.刷新调度服务状态和入网状态
         YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         if(nodeInfo.getStatus() != GRPC_SUCCESS_CODE){
-            log.info("获取调度服务节点信息失败：" + nodeInfo.getMsg());
+            log.error("定时刷新本地组织信息，以及调度服务信息结束, errorMsg:{}...", nodeInfo.getMsg());
+
+            //在第二次调用调度服务失败时，要把第一次调用调度服务的结果刷新到db
+            localOrgMapper.updateSelective(localOrg);
+            //刷新缓存
+            LocalOrgCache.setLocalOrgInfo(localOrg);
+            LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
             return;
         } else {
             localOrg.setCarrierStatus(nodeInfo.getState());
@@ -87,6 +89,8 @@ public class LocalOrgRefreshTask {
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
         LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
+
+        log.debug("定时刷新本地组织信息，以及调度服务信息结束...");
     }
 
 }

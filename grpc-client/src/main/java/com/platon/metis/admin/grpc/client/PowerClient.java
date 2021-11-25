@@ -62,7 +62,7 @@ public class PowerClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
+        log.debug("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
         return jobNodeResponse.getNode();
     }
 
@@ -91,7 +91,7 @@ public class PowerClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
+        log.debug("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeResponse.toString());
         return jobNodeResponse.getNode();
     }
 
@@ -118,7 +118,7 @@ public class PowerClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode.toString());
+        log.debug("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode.toString());
     }
 
     /**
@@ -143,7 +143,7 @@ public class PowerClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("查询计算服务列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeListResponse.toString());
+        log.debug("查询计算服务列表, 响应时间:{}, 响应数据:{}", diffTime+"ms", jobNodeListResponse.toString());
         return jobNodeListResponse;
     }
 
@@ -170,7 +170,7 @@ public class PowerClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("启用算力接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", publishPowerResponse.toString());
+        log.debug("启用算力接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", publishPowerResponse.toString());
         return publishPowerResponse.getPowerId();
     }
 
@@ -198,7 +198,7 @@ public class PowerClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("停用算力接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", revokePowerResponse.toString());
+        log.debug("停用算力接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", revokePowerResponse.toString());
     }
 
     /**
@@ -223,7 +223,7 @@ public class PowerClient {
             channelManager.closeChannel(channel);
         }
         long diffTime = System.currentTimeMillis() - startTime;
-        log.info("查询当前组织各个节点的列表(包含任务列表)接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", getLocalPowerDetailListResponse.toString());
+        log.debug("查询当前组织各个节点的列表(包含任务列表)接口, 响应时间:{}, 响应数据:{}", diffTime+"ms", getLocalPowerDetailListResponse.toString());
         return getLocalPowerDetailListResponse;
     }
 

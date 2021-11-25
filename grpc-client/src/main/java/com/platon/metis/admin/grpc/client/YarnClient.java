@@ -53,10 +53,10 @@ public class YarnClient {
                     setInternalPort(String.valueOf(dataNode.getInternalPort())).
                     setExternalIp(dataNode.getExternalIp()).
                     setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
-            log.info("调用新增数据节点调度服务,参数:{}",setDataNodeRequest);
+            log.debug("调用新增数据节点调度服务,参数:{}",setDataNodeRequest);
             //3.调用rpc,获取response
             YarnRpcMessage.SetDataNodeResponse setDataNodeResponse = YarnServiceGrpc.newBlockingStub(channel).setDataNode(setDataNodeRequest);
-            log.info("调用新增数据节点调度服务,返回结果:{}",setDataNodeResponse);
+            log.debug("调用新增数据节点调度服务,返回结果:{}",setDataNodeResponse);
             //4.处理response
             FormatSetDataNodeResp resp = new FormatSetDataNodeResp();
             resp.setStatus(setDataNodeResponse.getStatus());
@@ -93,10 +93,10 @@ public class YarnClient {
                             setInternalPort(String.valueOf(dataNode.getInternalPort())).
                             setExternalIp(dataNode.getExternalIp()).
                             setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
-            log.info("调用修改数据节点调度服务,参数:{}",request);
+            log.debug("调用修改数据节点调度服务,参数:{}",request);
             //3.调用rpc,获取response
             YarnRpcMessage.SetDataNodeResponse setDataNodeResponse = YarnServiceGrpc.newBlockingStub(channel).updateDataNode(request);
-            log.info("调用修改数据节点调度服务,相应结果:{}",setDataNodeResponse);
+            log.debug("调用修改数据节点调度服务,相应结果:{}",setDataNodeResponse);
             //4.处理response
             FormatSetDataNodeResp resp = new FormatSetDataNodeResp();
             resp.setStatus(setDataNodeResponse.getStatus());
@@ -127,10 +127,10 @@ public class YarnClient {
             channel = channelManager.getScheduleServer();
             //2.拼装request
             YarnRpcMessage.DeleteRegisteredNodeRequest request = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
-            log.info("调用删除数据节点调度服务,参数:{}",request);
+            log.debug("调用删除数据节点调度服务,参数:{}",request);
             //3.调用rpc,获取response
             CommonBase.SimpleResponse simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
-            log.info("调用删除数据节点调度服务,响应结果:{}",simpleResponseCode);
+            log.debug("调用删除数据节点调度服务,响应结果:{}",simpleResponseCode);
             //4.处理response
             CommonResp resp = new CommonResp();
             resp.setMsg(simpleResponseCode.getMsg());
@@ -152,10 +152,10 @@ public class YarnClient {
             channel = channelManager.getScheduleServer();
             //2.拼装request
             Empty emptyGetParams = Empty.newBuilder().build();
-            log.info("调用获取数据节点列表调度服务");
+            log.debug("调用获取数据节点列表调度服务");
             //3.调用rpc,获取response
             YarnRpcMessage.GetRegisteredNodeListResponse dataNodeListResp = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
-            log.info("调用获取数据节点列表调度服务,响应结果:{}",dataNodeListResp);
+            log.debug("调用获取数据节点列表调度服务,响应结果:{}",dataNodeListResp);
             //4.处理response
             QueryNodeResp queryNodeResp = new QueryNodeResp();
             queryNodeResp.setMsg(dataNodeListResp.getMsg());
@@ -291,11 +291,14 @@ public class YarnClient {
         //1.获取rpc连接
         Channel channel = null;
         try{
+            log.debug("查看调度服务信息");
             channel = channelManager.buildChannel(scheduleIP, schedulePort);
             //2.拼装request
             Empty request = Empty.newBuilder().build();
             //3.调用rpc,获取response
             YarnRpcMessage.GetNodeInfoResponse nodeInfo = YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
+            log.debug("查看调度服务信息,响应结果:{}",nodeInfo);
+
             //4.处理response
             if (nodeInfo.getStatus() != GRPC_SUCCESS_CODE) {
                 throw new ApplicationException(StrUtil.format("查看自身调度服务信息失败：status:{},message:{}",

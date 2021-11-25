@@ -57,17 +57,16 @@ public class LocalTaskRefreshTask {
     //@Scheduled(fixedDelay = 20000)
     @Scheduled(fixedDelayString = "${LocalTaskRefreshTask.fixedDelay}")
     public void task() {
-        log.info("启动执行获取任务数据列表定时任务...........");
+        log.debug("定时获取本组织相关的任务列表...");
         Pair<List<Task>, Map<String, TaskOrg>> resp = taskClient.getLocalTaskList();
 
         if(resp==null || resp.getLeft()==null || resp.getLeft().size()==0){
-            log.info("RPC获取任务列表,任务数据为空");
+            log.warn("RPC获取任务列表,任务数据为空");
             return;
         }
 
 
         //1、筛选出需要更新Task Data
-        log.info("1、筛选出需要更新Task Data");
         List<String> endTaskIds = taskMapper.selectListTaskByStatusWithSuccessAndFailed();
         List<Task> allTaskList =  resp.getLeft();
         Map<String, TaskOrg> allTaskOrgMap = resp.getRight();
@@ -80,9 +79,6 @@ public class LocalTaskRefreshTask {
                                                         }).collect(Collectors.toList());
 
         //2、整理收集待持久化数据
-        log.info("2、整理收集待持久化数据");
-        log.info("待持久化数据updateTaskList:" + tobeUpdateTaskList.size());
-
         List<TaskAlgoProvider> algoProviderList = new ArrayList<>();
         List<TaskDataProvider> dataProviderList = new ArrayList<>();
         List<TaskPowerProvider> powerProviderList = new ArrayList<>();
@@ -102,7 +98,6 @@ public class LocalTaskRefreshTask {
         }
 
         //3、批量更新DB
-        log.info("3、批量更新DB");
         if (checkDataValidity(tobeUpdateTaskList)) {
             taskMapper.insertBatch(tobeUpdateTaskList);
         }
@@ -124,7 +119,6 @@ public class LocalTaskRefreshTask {
 
         //4、批量TaskEvent获取并更新DB
         if(checkDataValidity(tobeUpdateTaskList)){
-            log.info("4、批量TaskEvent获取并更新DB");
             List<String> taskIdList = tobeUpdateTaskList.stream().map(Task -> Task.getTaskId()).collect(Collectors.toList());
             List<TaskEvent> taskEvents = getRpcTaskEventByTaskId(taskIdList);
             if(taskEvents!=null){
@@ -134,7 +128,7 @@ public class LocalTaskRefreshTask {
             }
         }
 
-        log.info("结束执行获取任务数据列表定时任务...........");
+        log.debug("定时获取本组织相关的任务列表结束...");
 
     }
 

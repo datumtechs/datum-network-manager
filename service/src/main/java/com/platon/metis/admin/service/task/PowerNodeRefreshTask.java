@@ -55,16 +55,15 @@ public class PowerNodeRefreshTask {
     //@Scheduled(fixedDelay = 60000)
     @Scheduled(fixedDelayString = "${PowerNodeRefreshTask.fixedDelay}")
     public void refreshPowerData(){
-        long startTime = System.currentTimeMillis();
-
+        log.debug("定时刷新算力节点的和调度服务的连接状态...");
         // 定时刷新节点列表数据
         this.refreshPowerNodeList();
 
+        log.debug("定时查询算力节点参与的正在执行的任务...");
         // 定时刷新节点及节点任务数据
         this.refreshPowerNodeAndTask();
 
-        long diffStart = System.currentTimeMillis() - startTime;
-        log.info("refreshPowerData--定时任务执行结束, 执行时间:{}", diffStart+"ms");
+        log.debug("定时任务执行结束...");
     }
     /** 定时刷新算力节点的和调度服务的连接状态 */
     private void refreshPowerNodeList(){

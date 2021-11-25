@@ -54,7 +54,7 @@ public class DataProviderClient {
             StreamObserver<DataProviderRpcMessage.UploadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.UploadReply>() {
                 @Override
                 public void onNext(DataProviderRpcMessage.UploadReply uploadReply) {
-                    log.info("观察者模式执行了onNext-========================:{}", uploadReply.toString());
+                    log.debug("观察者模式执行了onNext-========================:{}", uploadReply.toString());
                     //5.处理response
                     if(!uploadReply.getOk()){
                         ex.set(new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName)));
@@ -68,13 +68,13 @@ public class DataProviderClient {
                 }
                 @Override
                 public void onError(Throwable throwable) {
-                    log.info("观察者模式执行了onError-========================:{}", throwable.toString());
+                    log.debug("观察者模式执行了onError-========================:{}", throwable.toString());
                     count.countDown();
                     ex.set(new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName),throwable));
                 }
                 @Override
                 public void onCompleted() {
-                    log.info("观察者模式执行了onCompleted-========================:{}", "观察者模式执行了onCompleted");
+                    log.debug("观察者模式执行了onCompleted-========================:{}", "观察者模式执行了onCompleted");
                     count.countDown();
                 }
             };
@@ -178,10 +178,10 @@ public class DataProviderClient {
                          */
                         switch (status.getNumber()){
                             case 0:
-                                log.info("开始下载文件filePath:{}，状态:{}.......",filePath,"Start");
+                                log.debug("开始下载文件filePath:{}，状态:{}.......",filePath,"Start");
                                 break;
                             case 1:
-                                log.info("下载完成文件filePath:{}，状态:{}.......",filePath,"Finished");
+                                log.debug("下载完成文件filePath:{}，状态:{}.......",filePath,"Finished");
                                 break;
                             case 2:
                                 ex.set(new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Cancelled")));

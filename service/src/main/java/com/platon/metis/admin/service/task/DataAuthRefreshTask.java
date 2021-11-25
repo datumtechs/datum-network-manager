@@ -33,17 +33,17 @@ public class DataAuthRefreshTask {
     //@Scheduled(fixedDelay = 20000)
     @Scheduled(fixedDelayString = "${DataAuthRefreshTask.fixedDelay}")
     public void getRpcDataAuthList() {
-        log.info("启动数据授权申请定时任务...");
+        log.debug("定时获取元数据授权申请...");
         DataAuthResp resp = authClient.getMetaDataAuthorityList();
         if (Objects.isNull(resp) || GrpcConstant.GRPC_SUCCESS_CODE != resp.getStatus()) {
-            log.info("获取申请数据授权,调度服务调用失败");
+            log.error("调度服务调用失败");
             return;
         }
 
         //数据中心同步来的data_auth信息
         List<LocalDataAuth> dataAuthList =  resp.getDataAuthList();
         if(CollectionUtils.isEmpty(dataAuthList)){
-            log.info("RPC获取申请数据授权列表数据为空");
+            log.warn("获取元数据授权申请列表数据为空");
             return;
         }
 
@@ -58,10 +58,12 @@ public class DataAuthRefreshTask {
         //3、批量更新DB
         if (!CollectionUtils.isEmpty(newDataAuthList)) {
             dataAuthMapper.insertBatch(newDataAuthList);
-            log.info("结束执行数据授权申请定时任务，新增数据授权申请：{}...", newDataAuthList.size() );
+            log.debug("新增数据授权申请：{}", newDataAuthList.size() );
         }else{
-            log.info("结束执行数据授权申请定时任务，新增数据授权申请：0...");
+            log.debug("新增数据授权申请：0");
         }
+
+        log.debug("定时获取元数据授权申请结束...");
     }
 
 
