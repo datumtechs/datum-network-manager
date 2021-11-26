@@ -33,8 +33,15 @@ spring:
           config:
             multi-statement-allow: true
 
+# ==================================== server conf  ==========================================
 server:
-  port: 9090
+  tomcat:
+    uri-encoding: UTF-8
+    threads.max: 1000
+    threads.min-spare: 30
+  port: 8080
+  servlet:
+    context-path: /metis-admin
 
 
 # =============================== conf for logger ===================================
