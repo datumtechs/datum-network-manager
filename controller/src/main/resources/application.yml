@@ -9,15 +9,6 @@ spring:
       file-size-threshold: 1099511627776
       max-file-size: 1099511627776
       max-request-size: 1099511627776
-# ==================================== server conf  ==========================================
-server:
-  tomcat:
-    uri-encoding: UTF-8
-    threads.max: 1000
-    threads.min-spare: 30
-  port: 8080
-  servlet:
-    context-path: /metis-admin
 
 # ==================================== conf for mybatis =====================================
 mybatis:
