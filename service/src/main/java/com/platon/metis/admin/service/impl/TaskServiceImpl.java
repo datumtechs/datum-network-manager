@@ -2,6 +2,7 @@ package com.platon.metis.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.platon.metis.admin.common.context.LocalOrgCache;
 import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.dao.*;
 import com.platon.metis.admin.dao.entity.*;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -96,8 +98,12 @@ public class TaskServiceImpl implements TaskService {
     public Task getTaskDetails(String taskId) {
         Task task = taskMapper.selectTaskByTaskId(taskId,null);
          //任务发起方身份信息
-        TaskOrg owner = taskOrgMapper.findOrgWitRoleByTaskIdAndIdentityId(task.getTaskId(),task.getOwnerIdentityId());
+        TaskOrg owner = taskOrgMapper.findOrgByIdentityId(task.getOwnerIdentityId());
         task.setOwner(owner);
+
+        //本组织在此任务中的身份
+        Map<String, Boolean> roleMap = taskMapper.listRoleByTaskIdAndIdentityId(taskId, ((LocalOrg)LocalOrgCache.getLocalOrgInfo()).getIdentityId());
+        task.setDynamicFields(roleMap);
 
         //算法提供方
         TaskAlgoProvider taskAlgoProvider = taskAlgoConsumerMapper.selectTaskAlgoProviderWithOrgNameByTaskId(taskId);
