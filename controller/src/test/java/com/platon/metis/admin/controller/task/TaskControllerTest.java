@@ -65,7 +65,7 @@ public class TaskControllerTest {
 
     @Test
     public void taskInfo(){
-        String taskId = "task:0x8e08f4b987ea501752de840eeb7db2a99246126ca57703666e64c9f1cee19cb0";
+        String taskId = "task:0x18e84ffff0c37c93321978ebad97e3ae5674a124cbd047aff30168b8b586f091";
         ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/task/taskInfo?taskId={1}", String.class, taskId);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
