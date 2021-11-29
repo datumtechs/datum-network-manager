@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 public interface TaskMapper {
     int deleteByPrimaryKey(String id);
@@ -25,6 +26,8 @@ public interface TaskMapper {
     List<String> selectListTaskByStatusWithSuccessAndFailed();
 
     Task selectTaskByTaskId(@Param("taskId")String taskId, @Param("keyword")String keyword);
+
+    Map<String, Boolean> listRoleByTaskIdAndIdentityId(@Param("taskId")String taskId, @Param("identityId")String identityId);
 
     Integer selectAllTaskCount();
 

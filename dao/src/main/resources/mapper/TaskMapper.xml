@@ -227,10 +227,45 @@
     order by t.create_At DESC
   </select>
 
+
+  <select id="listRoleByTaskIdAndIdentityId"  resultType="java.util.HashMap">
+    select sum(tmp.taskSponsor) as taskSponsor, sum(tmp.powerProvider) as powerProvider , sum(tmp.dataProvider) as dataProvider, sum(tmp.resultConsumer) as resultConsumer, sum(tmp.algoProvider) as algoProvider
+    from (
+      select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+      from task tk
+      WHERE tk.task_id = #{taskId,jdbcType=VARCHAR} and tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
+
+      union
+
+      select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
+      from task_algo_provider tap
+      WHERE tap.task_id = #{taskId,jdbcType=VARCHAR} and tap.identity_id = #{identityId,jdbcType=VARCHAR}
+
+      union
+
+      select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+      from task_power_provider tpp
+      WHERE tpp.task_id = #{taskId,jdbcType=VARCHAR} and tpp.identity_id = #{identityId,jdbcType=VARCHAR}
+
+      union
+
+      select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
+      from task_data_provider tdp
+      WHERE tdp.task_id = #{taskId,jdbcType=VARCHAR} and tdp.identity_id = #{identityId,jdbcType=VARCHAR}
+
+      union
+
+      select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
+      from task_result_consumer trc
+      WHERE trc.task_id = #{taskId,jdbcType=VARCHAR} and trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
+    ) tmp
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from task
     where id = #{id,jdbcType=VARCHAR}
   </delete>
+
   <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.Task">
     insert into task (task_Id, task_name, owner_identity_id, owner_party_id,
       apply_user, user_type,
