@@ -19,6 +19,11 @@ message GetGlobalPowerSummaryResponse {
   types.PowerUsageDetail    power = 2;                  // 算力单个摘要
 }
 
+message GetGlobalPowerSummaryListRequest {
+  uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
+}
+
+
 // 查看全网各个组织的总算力(累加)详情列表 resp
 message GetGlobalPowerSummaryListResponse {
   int32                                 status = 1;       // 响应码
@@ -31,6 +36,10 @@ message GetGlobalPowerDetailResponse {
   api.protobuf.Organization owner = 1;                  // 算力拥有者信息
   types.PowerUsageDetail    power = 2;                  // 算力总详细
   string                    power_id = 3;               // 算力id
+}
+
+message GetGlobalPowerDetailListRequest {
+  uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
 }
 
 // 全网各个组织的各个算力列表 resp
@@ -47,6 +56,7 @@ message GetLocalPowerDetailResponse {
   string                    job_node_id = 3;            // 计算服务id (单个宿主机的id)
   string                    power_id = 4;               // 算力id (对于未发布的算力, powerId为"")
 }
+
 
 // 本组织的多个(宿主机)算力信息 (包含【未发布】和【已发布】的)
 message GetLocalPowerDetailListResponse {
@@ -79,20 +89,20 @@ message RevokePowerRequest {
 service PowerService {
 
   // 查看全网各个组织的总算力(累加)详情列表
-  rpc GetGlobalPowerSummaryList (google.protobuf.Empty) returns (GetGlobalPowerSummaryListResponse) {
+  rpc GetGlobalPowerSummaryList (GetGlobalPowerSummaryListRequest) returns (GetGlobalPowerSummaryListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/power/globalSummaryList"
     };
   }
 
   // 查看全网各个组织的各个算力详情列表
-  rpc GetGlobalPowerDetailList (google.protobuf.Empty) returns (GetGlobalPowerDetailListResponse) {
+  rpc GetGlobalPowerDetailList (GetGlobalPowerDetailListRequest) returns (GetGlobalPowerDetailListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/power/globalDetailList"
     };
   }
 
-  // 本组织的所有(宿主机)算力信息列表 (包含【未发布】和【已发布】的)
+  // 查询本组织的算力主机，在当前正在执行的任务中的资源使用情况
   rpc GetLocalPowerDetailList (google.protobuf.Empty) returns (GetLocalPowerDetailListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/power/localDetailList"

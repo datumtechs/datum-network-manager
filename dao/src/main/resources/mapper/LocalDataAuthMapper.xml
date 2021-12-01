@@ -109,12 +109,12 @@
       user_type, auth_type, auth_value_amount,
       auth_value_start_at, auth_value_end_at, create_at, 
       auth_at, status,
-      identity_name, identity_id, identity_node_id)
+      identity_name, identity_id, identity_node_id, rec_create_time, rec_update_time)
     values (#{authId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{applyUser,jdbcType=VARCHAR},
       #{userType,jdbcType=INTEGER}, #{authType,jdbcType=BIT}, #{authValueAmount,jdbcType=INTEGER},
       #{authValueStartAt,jdbcType=TIMESTAMP}, #{authValueEndAt,jdbcType=TIMESTAMP}, #{createAt,jdbcType=TIMESTAMP}, 
       #{authAt,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT},
-      #{identityName,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{identityNodeId,jdbcType=VARCHAR})
+      #{identityName,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{identityNodeId,jdbcType=VARCHAR}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
   </insert>
 
 
@@ -123,7 +123,7 @@
     user_type, auth_type, auth_value_amount,
     auth_value_start_at, auth_value_end_at, create_at,
     auth_at, status,
-    identity_name, identity_id, identity_node_id)
+    identity_name, identity_id, identity_node_id, rec_create_time, rec_update_time)
     values
     <foreach collection ="list" item="item" index="index" separator=",">
       (#{item.authId,jdbcType=VARCHAR}, #{item.metaDataId,jdbcType=VARCHAR}, #{item.applyUser,jdbcType=VARCHAR},
@@ -132,105 +132,29 @@
       #{item.createAt,jdbcType=TIMESTAMP},
       #{item.authAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=BIT},
       #{item.identityName,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR},
-      #{item.identityNodeId,jdbcType=VARCHAR})
+      #{item.identityNodeId,jdbcType=VARCHAR}, #{item.recCreateTime,jdbcType=TIMESTAMP}, #{item.recUpdateTime,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
 
 
-
-
-
-  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
-    insert into local_data_auth
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="authId != null">
-        auth_id,
-      </if>
-      <if test="metaDataId != null">
-        meta_data_id,
-      </if>
-      <if test="applyUser != null">
-        apply_user,
-      </if>
-      <if test="userType != null">
-        user_type,
-      </if>
-      <if test="authType != null">
-        auth_type,
-      </if>
-      <if test="authValueAmount != null">
-        auth_value_amount,
-      </if>
-      <if test="authValueStartAt != null">
-        auth_value_start_at,
-      </if>
-      <if test="authValueEndAt != null">
-        auth_value_end_at,
-      </if>
-      <if test="createAt != null">
-        create_at,
-      </if>
-      <if test="authAt != null">
-        auth_at,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="identityName != null">
-        identity_name,
-      </if>
-      <if test="identityId != null">
-        identity_id,
-      </if>
-      <if test="identityNodeId != null">
-        identity_node_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="authId != null">
-        #{authId,jdbcType=VARCHAR},
-      </if>
-      <if test="metaDataId != null">
-        #{metaDataId,jdbcType=VARCHAR},
-      </if>
-      <if test="applyUser != null">
-        #{applyUser,jdbcType=VARCHAR},
-      </if>
-      <if test="userType != null">
-        #{userType,jdbcType=INTEGER},
-      </if>
-      <if test="authType != null">
-        #{authType,jdbcType=BIT},
-      </if>
-      <if test="authValueAmount != null">
-        #{authValueAmount,jdbcType=INTEGER},
-      </if>
-      <if test="authValueStartAt != null">
-        #{authValueStartAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="authValueEndAt != null">
-        #{authValueEndAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createAt != null">
-        #{createAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="authAt != null">
-        #{authAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=BIT},
-      </if>
-      <if test="identityName != null">
-        #{identityName,jdbcType=VARCHAR},
-      </if>
-      <if test="identityId != null">
-        #{identityId,jdbcType=VARCHAR},
-      </if>
-      <if test="identityNodeId != null">
-        #{identityNodeId,jdbcType=VARCHAR},
-      </if>
-    </trim>
+  <insert id="replaceBatch" parameterType="java.util.List">
+    REPLACE INTO local_data_auth (auth_id, meta_data_id, apply_user,
+    user_type, auth_type, auth_value_amount,
+    auth_value_start_at, auth_value_end_at, create_at,
+    auth_at, status,
+    identity_name, identity_id, identity_node_id, rec_create_time, rec_update_time)
+    values
+    <foreach collection ="list" item="item" index="index" separator=",">
+      (#{item.authId,jdbcType=VARCHAR}, #{item.metaDataId,jdbcType=VARCHAR}, #{item.applyUser,jdbcType=VARCHAR},
+      #{item.userType,jdbcType=INTEGER}, #{item.authType,jdbcType=BIT}, #{item.authValueAmount,jdbcType=INTEGER},
+      #{item.authValueStartAt,jdbcType=TIMESTAMP}, #{item.authValueEndAt,jdbcType=TIMESTAMP},
+      #{item.createAt,jdbcType=TIMESTAMP},
+      #{item.authAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=BIT},
+      #{item.identityName,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR},
+      #{item.identityNodeId,jdbcType=VARCHAR}, #{item.recCreateTime,jdbcType=TIMESTAMP}, #{item.recUpdateTime,jdbcType=TIMESTAMP})
+    </foreach>
   </insert>
+
 
 
   <update id="updateByPrimaryKeySelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
@@ -293,7 +217,9 @@
       status = #{status,jdbcType=BIT},
       identity_name = #{identityName,jdbcType=VARCHAR},
       identity_id = #{identityId,jdbcType=VARCHAR},
-      identity_node_id = #{identityNodeId,jdbcType=VARCHAR}
+      identity_node_id = #{identityNodeId,jdbcType=VARCHAR},
+      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
+      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
     where auth_id = #{authId,jdbcType=VARCHAR}
   </update>
 </mapper>

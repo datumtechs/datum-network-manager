@@ -14,7 +14,7 @@ public interface TaskDataProviderMapper {
 
     List<TaskDataProvider> selectTaskDataWithOrgByTaskId(@Param("taskId") String taskId);
 
-    int insertBatch(List<TaskDataProvider> dataReceiverList);
+    int replaceBatch(List<TaskDataProvider> dataReceiverList);
 
 
 

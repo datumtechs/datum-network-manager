@@ -18,6 +18,6 @@ public interface TaskPowerProviderMapper {
 
     int batchUpdate(List<TaskPowerProvider> powerProviderList);
 
-    int insertBatch(List<TaskPowerProvider> powerProviderList);
+    int replaceBatch(List<TaskPowerProvider> powerProviderList);
 
 }

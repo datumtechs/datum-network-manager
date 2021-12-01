@@ -64,14 +64,6 @@ public interface LocalPowerNodeService {
     void revokePower(String powerNodeId);
 
     /**
-     * 查询计算节点使用历史记录
-     * @param powerNodeId
-     * @return
-     */
-    List queryPowerNodeUseHistory(String powerNodeId, String resourceType, String timeType);
-
-
-    /**
      * 计算节点名称校验
      * @param powerNodeName
      * @return

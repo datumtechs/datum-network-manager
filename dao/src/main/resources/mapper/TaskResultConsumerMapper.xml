@@ -52,7 +52,7 @@
 
 
 
-  <insert id="insertBatch" parameterType="list">
+  <insert id="replaceBatch" parameterType="list">
     replace into task_result_consumer (task_id, consumer_identity_id, consumer_party_id)
     values
     <foreach collection ="list" item="item" separator =",">

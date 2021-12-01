@@ -110,14 +110,19 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <update id="updateStatusByFileId">
-    update local_meta_data
-    set status = #{status,jdbcType=INTEGER}
-    where file_id = #{fileId,jdbcType=VARCHAR}
-  </update>
   <update id="updateStatusById">
     update local_meta_data
     set status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateStatusByMetaDataIdBatch">
+    <foreach collection="localMetaDataList" item="item" separator=";">
+      update local_meta_data
+      set status = #{item.status,jdbcType=INTEGER},
+          publish_time =  #{item.publishTime,jdbcType=TIMESTAMP},
+          rec_update_time =  #{item.recUpdateTime,jdbcType=TIMESTAMP}
+      where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
+    </foreach>
   </update>
 </mapper>

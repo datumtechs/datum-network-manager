@@ -52,7 +52,7 @@
   </select>-->
 
   <!-- 插入计算节点数据 -->
-  <insert id="batchInsertPowerTask">
+  <insert id="insertBatch">
     <foreach collection="list" item="item" separator=";">
       insert into local_power_join_task
       <trim prefix="(" suffix=")" suffixOverrides=",">

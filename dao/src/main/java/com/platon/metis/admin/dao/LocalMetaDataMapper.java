@@ -25,7 +25,12 @@ public interface LocalMetaDataMapper {
 
     int updateByPrimaryKey(LocalMetaData record);
 
-    void updateStatusByFileId(@Param("fileId") String fileId, @Param("status")Integer status);
+    /**
+     * 根据metaDataId, 更新 status, publish_time, rec_update_time
+     *
+     * @param localMetaDataList
+     */
+    void updateStatusByMetaDataIdBatch(@Param("localMetaDataList") List<LocalMetaData> localMetaDataList);
 
     int updateStatusById(@Param("id") Integer id, @Param("status")Integer status);
 }

@@ -3,8 +3,6 @@ package com.platon.metis.admin.service.task;
 import com.platon.metis.admin.dao.LocalSeedNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 import com.platon.metis.admin.grpc.client.SeedClient;
-import com.platon.metis.admin.grpc.constant.GrpcConstant;
-import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author houz
@@ -35,24 +32,14 @@ public class SeedNodeRefreshTask {
     //@Scheduled(fixedDelay = 30000)
     @Scheduled(fixedDelayString = "${SeedNodeRefreshTask.fixedDelay}")
     public void refreshSeedNode(){
-        long startTime = System.currentTimeMillis();
+        log.debug("刷新种子节点定时任务开始>>>");
 
-        YarnRpcMessage.GetSeedNodeListResponse seedNodeListResponse = seedClient.getJobNodeList();
-
-        if (seedNodeListResponse != null && seedNodeListResponse.getStatus() == GrpcConstant.GRPC_SUCCESS_CODE){
-            localSeedNodeMapper.truncate();
-            if(CollectionUtils.isNotEmpty(seedNodeListResponse.getNodesList())){
-                List<LocalSeedNode> localSeedNodeList = seedNodeListResponse.getNodesList().parallelStream().map(seedNode -> {
-                    LocalSeedNode localSeedNode = new LocalSeedNode();
-                    localSeedNode.setSeedNodeId(seedNode.getAddr());
-                    localSeedNode.setInitFlag(seedNode.getIsDefault());
-                    localSeedNode.setConnStatus(seedNode.getConnStateValue());
-                    return localSeedNode;
-                }).collect(Collectors.toList());
-                localSeedNodeMapper.insertBatch(localSeedNodeList);
-            }
+        List<LocalSeedNode> localSeedNodeList = seedClient.getSeedNodeList();
+        if(CollectionUtils.isEmpty(localSeedNodeList)){
+            return;
         }
-        long diffStart = System.currentTimeMillis() - startTime;
-        log.info("refreshSeedNode--定时任务执行结束, 执行时间:{}", diffStart+"ms");
+        localSeedNodeMapper.insertBatch(localSeedNodeList);
+
+        log.info("刷新种子节点定时任务结束|||");
     }
 }

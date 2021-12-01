@@ -116,13 +116,13 @@ public class LocalPowerNodeController {
         return JsonResponse.success("停用成功");
     }
 
-    @PostMapping("/listPowerNodeUseHistory")
+/*    @PostMapping("/listPowerNodeUseHistory")
     @ApiOperation(value="查询计算节点历史记录", response = JsonResponse.class)
     public JsonResponse listPowerNodeUseHistory(@Validated @RequestBody PowerHistoryReq powerHistoryReq) {
         List dataList = localPowerNodeService.queryPowerNodeUseHistory(powerHistoryReq.getPowerNodeId(),
                 powerHistoryReq.getResourceType(), powerHistoryReq.getTimeType());
         return JsonResponse.success(dataList);
-    }
+    }*/
 
     @PostMapping("/listRunningTaskByPowerNodeId")
     @ApiOperation(value="查询计算节点参与的正在计算中的任务列表", response = JsonResponse.class)

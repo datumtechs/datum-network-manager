@@ -27,7 +27,7 @@
     </select>
 
 
-  <insert id="insertBatch" parameterType="java.util.Set">
+  <insert id="replaceBatch" parameterType="java.util.Set">
     replace into task_org (identity_id, `org_name`, carrier_node_id)
     values
     <foreach collection ="collection" item="item" separator =",">

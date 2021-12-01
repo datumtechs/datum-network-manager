@@ -285,23 +285,20 @@ public class LocalDataController {
     @PostMapping("localMetaDataOp")
     public JsonResponse localMetaDataOp(@RequestBody @Validated LocalDataActionReq req){
         String action = req.getAction();
-        int count = 0;
         switch (action){
             case "-1"://删除
-                count = localDataService.delete(req.getId());
+                localDataService.delete(req.getId());
                 break;
             case "0"://下架
-                count = localDataService.down(req.getId());
+                localDataService.down(req.getId());
                 break;
             case "1"://上架
-                count = localDataService.up(req.getId());
+                localDataService.up(req.getId());
                 break;
             default:
                 throw new ApplicationException(StrUtil.format("请输入正确的操作[-1: 删除; 0: 下架; 1: 上架]：{}",action));
         }
-        if(count <= 0){
-            JsonResponse.fail("操作失败");
-        }
+
         return JsonResponse.success();
     }
 

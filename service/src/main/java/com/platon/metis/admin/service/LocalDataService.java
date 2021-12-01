@@ -59,7 +59,7 @@ public interface LocalDataService {
      * @param id
      * @return
      */
-    int down(Integer id);
+    void down(Integer id);
 
     /**
      * 上架文件元数据

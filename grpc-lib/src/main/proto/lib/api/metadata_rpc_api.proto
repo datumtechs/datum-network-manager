@@ -31,6 +31,10 @@ message GetGlobalMetadataDetailResponse {
   types.MetadataDetail      information = 2;        // 元文件详情主体
 }
 
+message GetGlobalMetadataDetailListRequest {
+  uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
+}
+
 // 查看 全网元数据列表  resp
 message GetGlobalMetadataDetailListResponse {
   int32                                     status = 1;                      // 响应码
@@ -43,6 +47,10 @@ message GetLocalMetadataDetailResponse {
   api.protobuf.Organization owner = 1;                  // 元数据的拥有者
   types.MetadataDetail      information = 2;            // 元文件详情主体
   bool                      is_internal = 3;            // 是否为本组织内部元数据 (不对外的元数据, true: 是内部元数据; false: 不是)
+}
+
+message GetLocalMetadataDetailListRequest {
+  uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
 }
 
 // 查看 本组织元数据列表  resp
@@ -86,14 +94,14 @@ message GetMetadataUsedTaskIdListResponse {
 service MetadataService {
 
   // 查看 全网元数据列表
-  rpc GetGlobalMetadataDetailList (google.protobuf.Empty) returns (GetGlobalMetadataDetailListResponse) {
+  rpc GetGlobalMetadataDetailList (GetGlobalMetadataDetailListRequest) returns (GetGlobalMetadataDetailListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/metadata/globalList"
     };
   }
 
   // 查看 本组织元数据列表
-  rpc GetLocalMetadataDetailList (google.protobuf.Empty) returns (GetLocalMetadataDetailListResponse) {
+  rpc GetLocalMetadataDetailList (GetLocalMetadataDetailListRequest) returns (GetLocalMetadataDetailListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/metadata/localList"
     };

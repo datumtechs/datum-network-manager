@@ -6,7 +6,6 @@ import com.platon.metis.admin.grpc.channel.BaseChannelManager;
 import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.entity.CommonResp;
-import com.platon.metis.admin.grpc.entity.DataAuthResp;
 import com.platon.metis.admin.grpc.service.AuthRpcMessage;
 import com.platon.metis.admin.grpc.service.AuthServiceGrpc;
 import com.platon.metis.admin.grpc.types.Metadata;
@@ -104,28 +103,26 @@ public class AuthClient {
      * 获取数据授权申请列表
      * @return
      */
-    public DataAuthResp getMetaDataAuthorityList(){
+    public List<LocalDataAuth> getMetaDataAuthorityList(LocalDateTime latestSynced){
             //1.获取rpc连接
         Channel channel = null;
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            com.google.protobuf.Empty request = com.google.protobuf.Empty
+            AuthRpcMessage.GetMetadataAuthorityListRequest request = AuthRpcMessage.GetMetadataAuthorityListRequest
                     .newBuilder()
+                    .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
                     .build();
             //3.调用rpc,获取response
             AuthRpcMessage.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getLocalMetadataAuthorityList(request);
-            log.debug("====> RPC客户端 dataAuthResponse:" + response.getMsg() +" , dataAuthList Size:"+ response.getListList().size());
             //4.处理response
-            DataAuthResp dataAuthResp = new DataAuthResp();
-            if(!Objects.isNull(response)){
-                dataAuthResp.setStatus(response.getStatus());
-                dataAuthResp.setMsg(response.getMsg());
-                if(GrpcConstant.GRPC_SUCCESS_CODE == response.getStatus()){
-                    dataAuthResp.setDataAuthList(dataConvertToAuthList(response));
-                }
+            if(!Objects.isNull(response) && GrpcConstant.GRPC_SUCCESS_CODE == response.getStatus()){
+                return dataConvertToAuthList(response);
+            }else{
+                log.error("同步元数据授权申请出错, code:{}, errorMsg:{}", response.getStatus(), response.getMsg());
+                return null;
             }
-            return dataAuthResp;
+
         }finally {
             channelManager.closeChannel(channel);
         }

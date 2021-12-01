@@ -1,6 +1,6 @@
 package com.platon.metis.admin.dto.resp;
 
-import com.platon.metis.admin.dao.entity.DataNode;
+import com.platon.metis.admin.dao.entity.LocalDataNode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -39,10 +39,10 @@ public class LocalDataNodeQueryResp {
     @ApiModelProperty(name = "externalPort",value = "外部端口号")
     private Integer externalPort;
 
-    public static LocalDataNodeQueryResp convert(DataNode dataNode) {
+    public static LocalDataNodeQueryResp convert(LocalDataNode localDataNode) {
         LocalDataNodeQueryResp resp = new LocalDataNodeQueryResp();
-        BeanUtils.copyProperties(dataNode, resp);
-        resp.setNodeName(dataNode.getHostName());
+        BeanUtils.copyProperties(localDataNode, resp);
+        resp.setNodeName(localDataNode.getNodeName());
         return resp;
     }
 

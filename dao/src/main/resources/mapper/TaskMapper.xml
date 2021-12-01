@@ -284,7 +284,7 @@
   </insert>
 
 
-  <insert id="insertBatch" parameterType="java.util.List">
+  <insert id="replaceBatch" parameterType="java.util.List">
     replace into task (task_Id, task_name, owner_identity_id, owner_party_id,
     apply_user, user_type,
     create_At, start_At, auth_At,

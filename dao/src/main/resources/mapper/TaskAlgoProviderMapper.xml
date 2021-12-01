@@ -33,7 +33,7 @@
         values (#{taskId,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR}, #{partyId,jdbcType=VARCHAR})
     </insert>
 
-    <insert id="insertBatch">
+    <insert id="replaceBatch">
         replace into task_algo_provider (task_id, identity_id, party_id)
         values
         <foreach collection ="list" item="item" separator =",">

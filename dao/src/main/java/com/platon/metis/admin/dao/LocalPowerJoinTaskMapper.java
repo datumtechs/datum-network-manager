@@ -17,7 +17,7 @@ public interface LocalPowerJoinTaskMapper {
      * @param localPowerJoinTaskList
      * @return
      */
-    int batchInsertPowerTask(List<LocalPowerJoinTask> localPowerJoinTaskList);
+    int insertBatch(List<LocalPowerJoinTask> localPowerJoinTaskList);
 
     /**
      * 查询计算节点参数任务列表

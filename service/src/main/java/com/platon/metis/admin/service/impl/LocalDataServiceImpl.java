@@ -37,8 +37,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStreamReader;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -202,7 +200,7 @@ public class LocalDataServiceImpl implements LocalDataService {
     }
 
       @Override
-    public int down(Integer id) {
+    public void down(Integer id) {
         Date operateDate = new Date();
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
 
@@ -211,8 +209,6 @@ public class LocalDataServiceImpl implements LocalDataService {
             throw new ServiceException("元数据未上架");
         }
         metaDataClient.revokeMetaData(localMetaData.getMetaDataId());
-
-        return localMetaDataMapper.updateStatusById(localMetaData.getId(), LocalDataFileStatusEnum.REVOKED.getStatus());
     }
 
     @Override
@@ -228,15 +224,14 @@ public class LocalDataServiceImpl implements LocalDataService {
         LocalDataFile localDataFile = localDataFileMapper.selectByFileId(localMetaData.getFileId());
 
         //调用grpc
-        String publishMetaDataId = metaDataClient.publishMetaData(localDataFile, localMetaData);
-        //String publishMetaDataId = "metadata:0x3426733d8fbd4a27ed26f06b35caa6ac63bca1fc09b98e56e1b262da9a357ffd";
-        if(StrUtil.isBlank(publishMetaDataId)){
+        String metaDataId = metaDataClient.publishMetaData(localDataFile, localMetaData);
+        if(StrUtil.isEmpty(metaDataId)){
             throw new ServiceException("调度服务未返回元数据ID");
         }
 
-        localMetaData.setMetaDataId(publishMetaDataId);
-        localMetaData.setStatus(LocalDataFileStatusEnum.RELEASED.getStatus());
-        localMetaData.setPublishTime(LocalDateTime.now(ZoneOffset.UTC));
+        localMetaData.setMetaDataId(metaDataId);
+        //localMetaData.setStatus(LocalDataFileStatusEnum.RELEASED.getStatus());
+        //localMetaData.setPublishTime(LocalDateTime.now(ZoneOffset.UTC));
         return localMetaDataMapper.updateByPrimaryKey(localMetaData);
     }
 

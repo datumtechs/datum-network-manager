@@ -3,7 +3,7 @@ package com.platon.metis.admin.controller.node;
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.constant.ControllerConstants;
-import com.platon.metis.admin.dao.entity.DataNode;
+import com.platon.metis.admin.dao.entity.LocalDataNode;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.*;
 import com.platon.metis.admin.dto.resp.AvailableStatusResp;
@@ -42,10 +42,10 @@ public class DataNodeController {
     @ApiOperation(value = "数据节点分页查询", httpMethod = "POST")
     @PostMapping("listNode")
     public JsonResponse <List<LocalDataNodeQueryResp>>listNode(@Validated @RequestBody NodePageReq req) {
-        Page<DataNode> dataNodes = dataNodeService.listNode(req.getPageNumber(), req.getPageSize(), req.getKeyword());
-        List<DataNode> dataList = dataNodes.getResult();
+        Page<LocalDataNode> localDataNodes = dataNodeService.listNode(req.getPageNumber(), req.getPageSize(), req.getKeyword());
+        List<LocalDataNode> dataList = localDataNodes.getResult();
         List<LocalDataNodeQueryResp> respList = dataList.stream().map(LocalDataNodeQueryResp::convert).collect(Collectors.toList());
-        return JsonResponse.page(dataNodes, respList);
+        return JsonResponse.page(localDataNodes, respList);
     }
 
     /**
@@ -62,13 +62,13 @@ public class DataNodeController {
         if(!NameUtil.isValidName(dataNodeAddReq.getNodeName())){
             return JsonResponse.fail("数据节点名称不合法");
         }
-        DataNode dataNode = new DataNode();
-        BeanUtils.copyProperties(dataNodeAddReq, dataNode);
-        dataNode.setHostName(dataNodeAddReq.getNodeName());
-        if (!dataNodeService.checkDataNodeName(dataNode)) {
+        LocalDataNode localDataNode = new LocalDataNode();
+        BeanUtils.copyProperties(dataNodeAddReq, localDataNode);
+        localDataNode.setNodeName(dataNodeAddReq.getNodeName());
+        if (!dataNodeService.checkDataNodeName(localDataNode)) {
             return JsonResponse.fail("数据节点名称已存在");
         }
-        dataNodeService.addDataNode(dataNode);
+        dataNodeService.addDataNode(localDataNode);
         return JsonResponse.success();
     }
 
@@ -81,10 +81,10 @@ public class DataNodeController {
     @ApiOperation(value = "校验数据节点名称是否可用", httpMethod = "POST")
     @PostMapping("checkDataNodeName")
     public JsonResponse <AvailableStatusResp> checkDataNodeName(@Validated @RequestBody CheckDataNodeNameReq checkDataNodeNameReq) {
-        DataNode dataNode = new DataNode();
-        dataNode.setHostName(checkDataNodeNameReq.getNodeName());
+        LocalDataNode localDataNode = new LocalDataNode();
+        localDataNode.setNodeName(checkDataNodeNameReq.getNodeName());
         AvailableStatusResp resp = new AvailableStatusResp();
-        if (dataNodeService.checkDataNodeName(dataNode)) {
+        if (dataNodeService.checkDataNodeName(localDataNode)) {
             resp.setStatus(ControllerConstants.STATUS_AVAILABLE);
         } else {
             resp.setStatus(ControllerConstants.STATUS_NOT_AVAILABLE);
@@ -102,9 +102,9 @@ public class DataNodeController {
     @ApiOperation(value = "修改数据节点", httpMethod = "POST")
     @PostMapping("updateDataNode")
     public JsonResponse updateDataNode(@Validated @RequestBody DataNodeUpdateReq dataNodeUpdateReq) throws Exception {
-        DataNode dataNode = new DataNode();
-        BeanUtils.copyProperties(dataNodeUpdateReq, dataNode);
-        dataNodeService.updateDataNode(dataNode);
+        LocalDataNode localDataNode = new LocalDataNode();
+        BeanUtils.copyProperties(dataNodeUpdateReq, localDataNode);
+        dataNodeService.updateDataNode(localDataNode);
         return JsonResponse.success();
     }
 

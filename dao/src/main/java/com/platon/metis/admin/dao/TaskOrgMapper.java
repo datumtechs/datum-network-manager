@@ -10,7 +10,7 @@ public interface TaskOrgMapper {
 
     TaskOrg findOrgByIdentityId(@Param("identityId") String identityId);
 
-    int insertBatch(Collection<TaskOrg> powerProviderList);
+    int replaceBatch(Collection<TaskOrg> powerProviderList);
 
     List<TaskOrg> selectAllTaskOrg();
 

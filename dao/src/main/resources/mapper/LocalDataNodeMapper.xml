@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.metis.admin.dao.DataNodeMapper">
-  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.DataNode">
-    <id column="id" jdbcType="INTEGER" property="id" />
+<mapper namespace="com.platon.metis.admin.dao.LocalDataNodeMapper">
+  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalDataNode">
+    <id column="node_id" jdbcType="VARCHAR" property="nodeId" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
-    <result column="node_id" jdbcType="VARCHAR" property="nodeId" />
-    <result column="host_Name" jdbcType="VARCHAR" property="hostName" />
+    <result column="node_name" jdbcType="VARCHAR" property="nodeName" />
     <result column="internal_IP" jdbcType="VARCHAR" property="internalIp" />
     <result column="internal_Port" jdbcType="INTEGER" property="internalPort" />
     <result column="external_IP" jdbcType="VARCHAR" property="externalIp" />
@@ -19,7 +18,7 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, identity_id, node_id, host_Name, internal_IP, internal_Port, external_IP, external_Port,
+    node_id, identity_id, node_name, internal_IP, internal_Port, external_IP, external_Port,
     conn_Status, conn_message, conn_Time, status, remarks, rec_create_time, rec_update_time
   </sql>
   <select id="listNode" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -28,7 +27,7 @@
     from local_data_node
     <where>
       <if test="keyword != null and keyword != ''">
-        host_Name like CONCAT('%',#{keyword},'%')
+        node_name like CONCAT('%',#{keyword},'%')
       </if>
     </where>
     ORDER BY CASE conn_status WHEN 'enabled' THEN 1 ELSE 0 END
@@ -38,23 +37,19 @@
     select
     node_id
     from local_data_node
-    where host_Name = #{hostName}
+    where node_name = #{nodeName}
     limit 1
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from local_data_node
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectByNodeId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from local_data_node
-    where node_id = #{nodeId}
+    where node_id = #{nodeId,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectByProperties" parameterType="com.platon.metis.admin.dao.entity.DataNode" resultMap="BaseResultMap">
+
+  <select id="selectByProperties" parameterType="com.platon.metis.admin.dao.entity.LocalDataNode" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from local_data_node
@@ -65,44 +60,55 @@
     and external_Port = #{externalPort,jdbcType=INTEGER}
     limit 1
   </select>
-  <delete id="deleteByNodeId" parameterType="java.lang.String">
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from local_data_node
-    where node_id = #{nodeId}
+    where node_id =  #{nodeId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.DataNode">
-    insert into local_data_node (id, identity_id, node_id,
-      host_Name, internal_IP, internal_Port,
+
+  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalDataNode">
+    insert into local_data_node (node_id, identity_id,
+      node_name, internal_IP, internal_Port,
       external_IP, external_Port, conn_Status,
       conn_message, conn_Time, status,
-      remarks, rec_create_time, rec_update_time
+      remarks
     )
-    values (#{id,jdbcType=INTEGER}, #{identityId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR},
-      #{hostName,jdbcType=VARCHAR}, #{internalIp,jdbcType=VARCHAR}, #{internalPort,jdbcType=INTEGER},
+    values (#{nodeId,jdbcType=VARCHAR}, #{identityId,jdbcType=VARCHAR},
+      #{nodeName,jdbcType=VARCHAR}, #{internalIp,jdbcType=VARCHAR}, #{internalPort,jdbcType=INTEGER},
       #{externalIp,jdbcType=VARCHAR}, #{externalPort,jdbcType=INTEGER}, #{connStatus,jdbcType=INTEGER},
       #{connMessage,jdbcType=VARCHAR}, #{connTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
-      #{remarks,jdbcType=VARCHAR}, #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP}
+      #{remarks,jdbcType=VARCHAR}
      )
   </insert>
-  <update id="updateByNodeId" parameterType="com.platon.metis.admin.dao.entity.DataNode">
+  <update id="update" parameterType="com.platon.metis.admin.dao.entity.LocalDataNode">
     update local_data_node
     set
       internal_IP = #{internalIp,jdbcType=VARCHAR},
       internal_Port = #{internalPort,jdbcType=INTEGER},
       external_IP = #{externalIp,jdbcType=VARCHAR},
       external_Port = #{externalPort,jdbcType=INTEGER},
-      conn_Status = #{connStatus,jdbcType=INTEGER},
-      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      conn_Status = #{connStatus,jdbcType=INTEGER}
     where node_Id = #{nodeId,jdbcType=INTEGER}
   </update>
-  <update id="batchUpdate" parameterType="java.util.List" >
+
+  <update id="replaceBatch" parameterType="java.util.List">
+    replace into local_data_node
+    (node_Id,
+    node_name,
+    internal_IP,
+    internal_Port,
+    external_IP,
+    external_Port,
+    conn_Status)
+    values
     <foreach collection="list" item="item" index="index" open="" close="" separator=";">
-      update local_data_node set
-      internal_IP = #{item.internalIp,jdbcType=VARCHAR},
-      internal_Port = #{item.internalPort,jdbcType=INTEGER},
-      external_IP = #{item.externalIp,jdbcType=VARCHAR},
-      external_Port = #{item.externalPort,jdbcType=INTEGER},
-      conn_Status = #{item.connStatus,jdbcType=INTEGER}
-      where node_Id = #{item.nodeId,jdbcType=INTEGER}
+      (#{item.nodeId,jdbcType=VARCHAR},
+      #{item.nodeName,jdbcType=VARCHAR},
+      #{item.internalIp,jdbcType=VARCHAR},
+      #{item.internalPort,jdbcType=INTEGER},
+      #{item.externalIp,jdbcType=VARCHAR},
+      #{item.externalPort,jdbcType=INTEGER},
+      #{item.connStatus,jdbcType=INTEGER})
     </foreach>
   </update>
 </mapper>

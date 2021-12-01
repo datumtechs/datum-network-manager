@@ -47,7 +47,7 @@
   </insert>
 
 
-  <insert id="insertBatch" parameterType="list">
+  <insert id="replaceBatch" parameterType="list">
     replace into task_data_provider (task_id, meta_data_id, meta_data_name, identity_id, party_id)
     values
     <foreach collection ="list" item="item" separator =",">

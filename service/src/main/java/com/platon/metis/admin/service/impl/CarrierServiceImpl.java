@@ -52,7 +52,7 @@ public class CarrierServiceImpl implements CarrierService {
         localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
         localOrg.setCarrierConnTime(new Date());
         //入库
-        int count = localOrgMapper.updateSelective(localOrg);
+        int count = localOrgMapper.update(localOrg);
         //更新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
         LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
@@ -69,24 +69,26 @@ public class CarrierServiceImpl implements CarrierService {
 
         //入网成功，刷新数据库
         YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
-        if(nodeInfo.getStatus() != GRPC_SUCCESS_CODE){
-            log.info("获取调度服务节点信息失败：" + nodeInfo.getMsg());
-        } else {
+        if(nodeInfo.getStatus() == GRPC_SUCCESS_CODE){
             if(!localOrg.getIdentityId().equals(nodeInfo.getIdentityId())){
-                throw new ServiceException("入网失败：其他组织已通过该调度服务入网");
+                throw new ServiceException("入网失败：其他组织已注册入网");
             }
             localOrg.setCarrierNodeId(nodeInfo.getNodeId());
             localOrg.setCarrierStatus(nodeInfo.getState());
             localOrg.setConnNodeCount(nodeInfo.getConnCount());
             localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
             localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
+
+            localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
+            localOrgMapper.update(localOrg);
+            //刷新缓存
+            LocalOrgCache.setLocalOrgInfo(localOrg);
+            LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
+            return localOrg.getStatus();
+        }else{
+            log.error("入网失败：获取调度服务节点信息失败：{}", nodeInfo.getMsg());
+            throw new ServiceException("入网失败：无法连接网络");
         }
-        localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
-        localOrgMapper.updateSelective(localOrg);
-        //刷新缓存
-        LocalOrgCache.setLocalOrgInfo(localOrg);
-        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
-        return localOrg.getStatus();
     }
 
     @Override
@@ -107,7 +109,7 @@ public class CarrierServiceImpl implements CarrierService {
         localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
         localOrg.setCarrierNodeId("");
         localOrg.setConnNodeCount(0);
-        localOrgMapper.updateSelective(localOrg);
+        localOrgMapper.update(localOrg);
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
         LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());

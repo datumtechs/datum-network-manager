@@ -55,134 +55,49 @@
   </select>
 
   <!-- 选择性插入字段-->
-  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.LocalOrg">
-    insert into local_org
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="identityId != null">
-        identity_id,
-      </if>
-      <if test="carrierNodeId != null">
-        carrier_node_id,
-      </if>
-      <if test="carrierIp != null">
-        carrier_ip,
-      </if>
-      <if test="carrierPort != null">
-        carrier_port,
-      </if>
-      <if test="carrierConnStatus != null">
-        carrier_conn_status,
-      </if>
-      <if test="carrierConnTime != null">
-        carrier_conn_time,
-      </if>
-      <if test="connNodeCount != null">
-        conn_node_count,
-      </if>
-      <if test="carrierStatus != null">
-        carrier_status,
-      </if>
-      <if test="status != null">
-        `status`,
-      </if>
-      <if test="localBootstrapNode != null">
-        `local_bootstrap_node`,
-      </if>
-      <if test="localMultiAddr != null">
-        `local_multi_addr`,
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="identityId != null">
-        #{identityId,jdbcType=VARCHAR},
-      </if>
-      <if test="carrierNodeId != null">
-        #{carrierNodeId,jdbcType=VARCHAR},
-      </if>
-      <if test="carrierIp != null">
-        #{carrierIp,jdbcType=VARCHAR},
-      </if>
-      <if test="carrierPort != null">
-        #{carrierPort,jdbcType=INTEGER},
-      </if>
-      <if test="carrierConnStatus != null">
-        #{carrierConnStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="carrierConnTime != null">
-        #{carrierConnTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="connNodeCount != null">
-        #{connNodeCount, jdbcType=INTEGER},
-      </if>
-      <if test="carrierStatus != null">
-        #{carrierStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="localBootstrapNode != null">
-        #{localBootstrapNode,jdbcType=VARCHAR},
-      </if>
-      <if test="localMultiAddr != null">
-        #{localMultiAddr,jdbcType=VARCHAR},
-      </if>
-      <if test="recUpdateTime != null">
-        #{recUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
+  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalOrg">
+    insert into local_org (`name`,
+    identity_id,
+    carrier_node_id,
+    carrier_ip,
+    carrier_port,
+    carrier_conn_status,
+    carrier_conn_time,
+    conn_node_count,
+    carrier_status,
+    `status`,
+    local_bootstrap_node,
+    local_multi_addr)
+    values (
+    #{name,jdbcType=VARCHAR},
+    #{identityId,jdbcType=VARCHAR},
+    #{carrierNodeId,jdbcType=VARCHAR},
+    #{carrierIp,jdbcType=VARCHAR},
+    #{carrierPort,jdbcType=INTEGER},
+    #{carrierConnStatus,jdbcType=VARCHAR},
+    #{carrierConnTime,jdbcType=TIMESTAMP},
+    #{connNodeCount, jdbcType=INTEGER},
+    #{carrierStatus,jdbcType=VARCHAR},
+    #{status,jdbcType=INTEGER},
+    #{localBootstrapNode,jdbcType=VARCHAR},
+    #{localMultiAddr,jdbcType=VARCHAR}
+    )
   </insert>
 
-  <update id="updateSelective" parameterType="com.platon.metis.admin.dao.entity.LocalOrg">
+  <update id="update" parameterType="com.platon.metis.admin.dao.entity.LocalOrg">
     update local_org
-    <set>
-      <if test="name != null">
-        `name` = #{name},
-      </if>
-      <if test="identityId != null">
-        identity_id = #{identityId},
-      </if>
-      <if test="carrierNodeId != null">
-        carrier_node_id = #{carrierNodeId},
-      </if>
-      <if test="carrierIp != null">
-        carrier_ip = #{carrierIp},
-      </if>
-      <if test="carrierPort != null">
-        carrier_port = #{carrierPort},
-      </if>
-      <if test="carrierConnStatus != null">
-        carrier_conn_status = #{carrierConnStatus},
-      </if>
-      <if test="carrierConnTime != null">
-        carrier_conn_time = #{carrierConnTime},
-      </if>
-      <if test="connNodeCount != null">
-        conn_node_count = #{connNodeCount},
-      </if>
-      <if test="carrierStatus != null">
-        carrier_status = #{carrierStatus},
-      </if>
-      <if test="status != null">
-        `status` = #{status},
-      </if>
-      <if test="localBootstrapNode != null">
-        local_bootstrap_node = #{localBootstrapNode,jdbcType=VARCHAR},
-      </if>
-      <if test="localMultiAddr != null">
-        local_multi_addr = #{localMultiAddr,jdbcType=VARCHAR},
-      </if>
-      <if test="recUpdateTime != null">
-        rec_update_time = #{recUpdateTime},
-      </if>
-    </set>
+    set `name` = #{name},
+    identity_id = #{identityId},
+    carrier_node_id = #{carrierNodeId},
+    carrier_ip = #{carrierIp},
+    carrier_port = #{carrierPort},
+    carrier_conn_status = #{carrierConnStatus},
+    carrier_conn_time = #{carrierConnTime},
+    conn_node_count = #{connNodeCount},
+    carrier_status = #{carrierStatus},
+    `status` = #{status},
+    local_bootstrap_node = #{localBootstrapNode,jdbcType=VARCHAR},
+    local_multi_addr = #{localMultiAddr,jdbcType=VARCHAR},
+    rec_update_time = #{recUpdateTime}
   </update>
 </mapper>

@@ -10,9 +10,8 @@ public interface LocalDataAuthMapper {
 
     int insert(LocalDataAuth record);
 
-    int insertSelective(LocalDataAuth record);
-
     int insertBatch(List<LocalDataAuth> dataAuthList);
+    int replaceBatch(List<LocalDataAuth> dataAuthList);
 
     LocalDataAuth selectByPrimaryKey(String authId);
 

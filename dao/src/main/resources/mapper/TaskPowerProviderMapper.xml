@@ -59,7 +59,7 @@
 
 
 
-  <insert id="insertBatch" parameterType="list">
+  <insert id="replaceBatch" parameterType="list">
     replace into task_power_provider (task_id, identity_id, party_id, total_core, used_core,
        total_memory, used_memory, total_Bandwidth, used_Bandwidth )
     values

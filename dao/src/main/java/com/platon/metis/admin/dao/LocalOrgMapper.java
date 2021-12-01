@@ -30,9 +30,9 @@ public interface LocalOrgMapper {
     String selectIdentityId();
 
     /**
-     * 选择性更新
+     * 更新
      * @param localOrg
      * @return
      */
-    int updateSelective(LocalOrg localOrg);
+    int update(LocalOrg localOrg);
 }

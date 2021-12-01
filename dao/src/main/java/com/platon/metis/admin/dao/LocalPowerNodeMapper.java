@@ -30,11 +30,18 @@ public interface LocalPowerNodeMapper {
     int updatePowerNodeByNodeId(LocalPowerNode localPowerNode);
 
     /**
-     * 批量修改计算节点
+     * 批量replace计算节点的基本信息，以及和调度服务的连接情况
      * @param localPowerNodeList
      * @return
      */
-    int batchUpdatePowerNode(List<LocalPowerNode> localPowerNodeList);
+    int replaceBasicInfoBatch(List<LocalPowerNode> localPowerNodeList);
+
+    /**
+     * 批量修改计算节点的资源信息
+     * @param localPowerNodeList
+     * @return
+     */
+    int updateResourceInfoBatchByPowerNodeId(List<LocalPowerNode> localPowerNodeList);
 
     /**
      * 根据id修改计算节点数据

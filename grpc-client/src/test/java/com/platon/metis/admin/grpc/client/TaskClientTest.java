@@ -1,7 +1,6 @@
 package com.platon.metis.admin.grpc.client;
 
 import cn.hutool.json.JSONUtil;
-import com.google.protobuf.Empty;
 import com.platon.metis.admin.dao.entity.Task;
 import com.platon.metis.admin.dao.entity.TaskOrg;
 import com.platon.metis.admin.grpc.service.TaskRpcMessage;
@@ -18,6 +17,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +36,8 @@ public class TaskClientTest {
 
     @Test
     public void getTaskList(){
-        Pair<List<Task>, Map<String, TaskOrg>> resp = taskClient.getLocalTaskList();
+        LocalDateTime lastUpdated = LocalDateTime.parse("1970-01-01 00:00:00",  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Pair<List<Task>, Map<String, TaskOrg>> resp = taskClient.getLocalTaskList(lastUpdated);
         log.info(JSONUtil.toJsonStr(resp.getLeft()));
         log.info(JSONUtil.toJsonStr(resp.getRight()));
     }
@@ -62,9 +65,12 @@ public class TaskClientTest {
     @Test
     public void test() {
         Channel channel =  ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
+        LocalDateTime lastUpdated = LocalDateTime.parse("1970-01-01 00:00:00",  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        TaskRpcMessage.GetTaskDetailListRequest request = TaskRpcMessage.GetTaskDetailListRequest
+                .newBuilder()
+                .setLastUpdated(lastUpdated.toInstant(ZoneOffset.UTC).toEpochMilli())
+                .build();
 
-
-        Empty request = Empty.newBuilder().build();
         TaskRpcMessage.GetTaskDetailListResponse taskDetailListResponse = TaskServiceGrpc.newBlockingStub(channel).getTaskDetailList(request);
         int status = taskDetailListResponse.getStatus();
         String msg = taskDetailListResponse.getMsg();
@@ -83,7 +89,7 @@ public class TaskClientTest {
     static class TaskServiceImpl extends TaskServiceGrpc.TaskServiceImplBase {
 
         @Override
-        public void getTaskDetailList(Empty request, StreamObserver<TaskRpcMessage.GetTaskDetailListResponse> responseObserver) {
+        public void getTaskDetailList(com.platon.metis.admin.grpc.service.TaskRpcMessage.GetTaskDetailListRequest request, StreamObserver<TaskRpcMessage.GetTaskDetailListResponse> responseObserver) {
             System.out.println("########### request:" + request);
 
 

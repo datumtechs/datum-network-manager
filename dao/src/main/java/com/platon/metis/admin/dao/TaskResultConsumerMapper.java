@@ -16,6 +16,6 @@ public interface TaskResultConsumerMapper {
 
     List<TaskResultConsumer> selectTaskResultWithOrgByTaskId(@Param("taskId") String taskId);
 
-    int insertBatch(List<TaskResultConsumer> resultReceiverList);
+    int replaceBatch(List<TaskResultConsumer> resultReceiverList);
 
 }

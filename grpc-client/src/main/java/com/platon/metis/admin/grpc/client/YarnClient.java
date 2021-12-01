@@ -5,20 +5,23 @@ import cn.hutool.core.util.StrUtil;
 import com.google.protobuf.Empty;
 import com.platon.metis.admin.common.exception.ApplicationException;
 import com.platon.metis.admin.common.util.ExceptionUtil;
-import com.platon.metis.admin.dao.entity.DataNode;
+import com.platon.metis.admin.dao.entity.LocalDataNode;
 import com.platon.metis.admin.dao.enums.FileTypeEnum;
 import com.platon.metis.admin.grpc.channel.BaseChannelManager;
 import com.platon.metis.admin.grpc.common.CommonBase;
+import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.entity.*;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.grpc.service.YarnServiceGrpc;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
 
@@ -39,20 +42,20 @@ public class YarnClient {
 
     /**
      * 调度新增数据节点
-     * @param dataNode           数据节点实体类
+     * @param localDataNode           数据节点实体类
      * @return
      */
-    public FormatSetDataNodeResp setDataNode(DataNode dataNode) {
+    public FormatSetDataNodeResp setDataNode(LocalDataNode localDataNode) {
         //1.获取rpc连接
         Channel channel = null;
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
             YarnRpcMessage.SetDataNodeRequest setDataNodeRequest = YarnRpcMessage.SetDataNodeRequest.newBuilder().
-                    setInternalIp(dataNode.getInternalIp()).
-                    setInternalPort(String.valueOf(dataNode.getInternalPort())).
-                    setExternalIp(dataNode.getExternalIp()).
-                    setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
+                    setInternalIp(localDataNode.getInternalIp()).
+                    setInternalPort(String.valueOf(localDataNode.getInternalPort())).
+                    setExternalIp(localDataNode.getExternalIp()).
+                    setExternalPort(String.valueOf(localDataNode.getExternalPort())).build();
             log.info("调用新增数据节点调度服务,参数:{}",setDataNodeRequest);
             //3.调用rpc,获取response
             YarnRpcMessage.SetDataNodeResponse setDataNodeResponse = YarnServiceGrpc.newBlockingStub(channel).setDataNode(setDataNodeRequest);
@@ -78,21 +81,21 @@ public class YarnClient {
 
     /**
      * 调度修改数据节点
-     * @param dataNode           数据节点实体类
+     * @param localDataNode           数据节点实体类
      * @return
      */
-    public FormatSetDataNodeResp updateDataNode(DataNode dataNode) {
+    public FormatSetDataNodeResp updateDataNode(LocalDataNode localDataNode) {
         //1.获取rpc连接
         Channel channel = null;
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
             YarnRpcMessage.UpdateDataNodeRequest request = YarnRpcMessage.UpdateDataNodeRequest
-                    .newBuilder().setId(dataNode.getNodeId()).
-                            setInternalIp(dataNode.getInternalIp()).
-                            setInternalPort(String.valueOf(dataNode.getInternalPort())).
-                            setExternalIp(dataNode.getExternalIp()).
-                            setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
+                    .newBuilder().setId(localDataNode.getNodeId()).
+                            setInternalIp(localDataNode.getInternalIp()).
+                            setInternalPort(String.valueOf(localDataNode.getInternalPort())).
+                            setExternalIp(localDataNode.getExternalIp()).
+                            setExternalPort(String.valueOf(localDataNode.getExternalPort())).build();
             log.info("调用修改数据节点调度服务,参数:{}",request);
             //3.调用rpc,获取response
             YarnRpcMessage.SetDataNodeResponse setDataNodeResponse = YarnServiceGrpc.newBlockingStub(channel).updateDataNode(request);
@@ -145,7 +148,7 @@ public class YarnClient {
      * 调度获取数据节点列表
      * @return
      */
-    public QueryNodeResp getDataNodeList() {
+    public List<LocalDataNode> getLocalDataNodeList() {
         //1.获取rpc连接
         Channel channel = null;
         try{
@@ -154,31 +157,32 @@ public class YarnClient {
             Empty emptyGetParams = Empty.newBuilder().build();
             log.info("调用获取数据节点列表调度服务");
             //3.调用rpc,获取response
-            YarnRpcMessage.GetRegisteredNodeListResponse dataNodeListResp = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
-            log.info("调用获取数据节点列表调度服务,响应结果:{}",dataNodeListResp);
-            //4.处理response
-            QueryNodeResp queryNodeResp = new QueryNodeResp();
-            queryNodeResp.setMsg(dataNodeListResp.getMsg());
-            queryNodeResp.setStatus(dataNodeListResp.getStatus());
-            List<RegisteredNodeResp> nodeRespList = new ArrayList<>();
-            if (GRPC_SUCCESS_CODE == dataNodeListResp.getStatus()) {
-                dataNodeListResp.getNodesList().forEach(item -> {
-                    RegisteredNodeResp nodeResp = new RegisteredNodeResp();
-                    nodeResp.setNodeId(item.getNodeDetail().getId());
-                    nodeResp.setInternalIp(item.getNodeDetail().getInternalIp());
-                    String internalPort = item.getNodeDetail().getInternalPort();
-                    nodeResp.setInternalPort(internalPort == null ? null : Integer.valueOf(internalPort));
-                    nodeResp.setExternalIp(item.getNodeDetail().getExternalIp());
-                    String externalPort = item.getNodeDetail().getExternalPort();
-                    nodeResp.setExternalPort(externalPort == null ? null : Integer.valueOf(externalPort));
-                    nodeResp.setConnStatus(item.getNodeDetail().getConnState().getNumber());
-                    nodeRespList.add(nodeResp);
-                });
+            YarnRpcMessage.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
+            log.info("调用获取数据节点列表调度服务,响应结果:{}",response);
+
+            if(!Objects.isNull(response) && GrpcConstant.GRPC_SUCCESS_CODE == response.getStatus()){
+                return convertToLocalDataNodeList(response.getNodesList());
+            }else{
+                log.error("同步本地数据节点出错, code:{}, errorMsg:{}", response.getStatus(), response.getMsg());
+                return null;
             }
-            return queryNodeResp;
         } finally {
             channelManager.closeChannel(channel);
         }
+    }
+
+    private List<LocalDataNode> convertToLocalDataNodeList(List<YarnRpcMessage.YarnRegisteredPeer> nodeList) {
+        return nodeList.parallelStream().map(node -> {
+            LocalDataNode localDataNode = new LocalDataNode();
+            localDataNode.setNodeId(node.getNodeDetail().getId());
+            localDataNode.setNodeName("DataStorageNode_"+ node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
+            localDataNode.setInternalIp(node.getNodeDetail().getInternalIp());
+            localDataNode.setInternalPort(StringUtils.isEmpty(node.getNodeDetail().getInternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getInternalPort()));
+            localDataNode.setExternalIp(node.getNodeDetail().getExternalIp());
+            localDataNode.setExternalPort(StringUtils.isEmpty(node.getNodeDetail().getExternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getExternalPort()));
+            localDataNode.setConnStatus(node.getNodeDetail().getConnState().getNumber());
+            return localDataNode;
+        }).collect(Collectors.toList());
     }
 
 

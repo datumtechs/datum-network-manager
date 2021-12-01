@@ -38,7 +38,7 @@ public class MockDataAuthTest {
         localDataAuth.setAuthType(2);
         localDataAuth.setAuthValueAmount(2);
         localDataAuth.setCreateAt(LocalDateTime.now());
-        localDataAuthMapper.insertSelective(localDataAuth);
+        localDataAuthMapper.insert(localDataAuth);
 
         LocalDataAuth localDataAuth1 = new LocalDataAuth();
         localDataAuth1.setAuthId("002");
@@ -49,7 +49,7 @@ public class MockDataAuthTest {
         localDataAuth1.setAuthValueStartAt(LocalDateTime.now());
         localDataAuth1.setAuthValueEndAt(LocalDateTime.now());
         localDataAuth1.setCreateAt(LocalDateTime.now());
-        localDataAuthMapper.insertSelective(localDataAuth1);
+        localDataAuthMapper.insert(localDataAuth1);
 
 
     }

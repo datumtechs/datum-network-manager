@@ -1,6 +1,6 @@
 package com.platon.metis.admin.dao;
 
-import com.platon.metis.admin.dao.entity.DataNode;
+import com.platon.metis.admin.dao.entity.LocalDataNode;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,14 +11,14 @@ import java.util.List;
  * @Description 数据节点mapper接口
  * @date 2021/7/8 17:29
  */
-public interface DataNodeMapper {
+public interface LocalDataNodeMapper {
     /**
      * 根据关键字模糊查询节点名称相关节点
      *
      * @param keyword
      * @return
      */
-    List<DataNode> listNode(@Param(value = "keyword") String keyword);
+    List<LocalDataNode> listNode(@Param(value = "keyword") String keyword);
 
     /**
      * 根据节点名称查询nodeId(非主键id)
@@ -34,7 +34,7 @@ public interface DataNodeMapper {
      * @param nodeId
      * @return
      */
-    int deleteByNodeId(@Param(value = "nodeId") String nodeId);
+    int deleteByPrimaryKey(@Param(value = "nodeId") String nodeId);
 
     /**
      * 新增数据节点
@@ -42,9 +42,8 @@ public interface DataNodeMapper {
      * @param record
      * @return
      */
-    int insert(DataNode record);
+    int insert(LocalDataNode record);
 
-    DataNode selectByPrimaryKey(Integer id);
 
     /**
      * 根据nodeId修改节点
@@ -52,14 +51,14 @@ public interface DataNodeMapper {
      * @param record
      * @return
      */
-    int updateByNodeId(DataNode record);
+    int update(LocalDataNode record);
 
     /**
      * 批量更新数据节点
-     * @param dataNodeList 数据节点服务列表
+     * @param localDataNodeList 数据节点服务列表
      * @return
      */
-    int batchUpdate(List<DataNode> dataNodeList);
+    int replaceBatch(List<LocalDataNode> localDataNodeList);
 
 
     /**
@@ -67,13 +66,13 @@ public interface DataNodeMapper {
      * @param nodeId
      * @return
      */
-    DataNode selectByNodeId(String nodeId);
+    LocalDataNode selectByPrimaryKey(String nodeId);
 
     /**
      * 根据数据节点属性查询nodeId
-     * @param dataNode
+     * @param localDataNode
      * @return
      */
-    DataNode selectByProperties(DataNode dataNode);
+    LocalDataNode selectByProperties(LocalDataNode localDataNode);
 
 }

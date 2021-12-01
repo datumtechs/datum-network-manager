@@ -4,10 +4,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.common.util.NameUtil;
-import com.platon.metis.admin.dao.LocalPowerHistoryMapper;
 import com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper;
 import com.platon.metis.admin.dao.LocalPowerNodeMapper;
-import com.platon.metis.admin.dao.entity.LocalPowerHistory;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 import com.platon.metis.admin.dao.entity.PowerLoad;
@@ -16,7 +14,6 @@ import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.service.LocalPowerNodeService;
 import com.platon.metis.admin.service.TaskService;
-import com.platon.metis.admin.service.constant.ServiceConstant;
 import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,9 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author houz
@@ -40,10 +35,6 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     /** 计算节点 */
     @Resource
     LocalPowerNodeMapper localPowerNodeMapper;
-
-    /** 计算节点资源 */
-    @Resource
-    LocalPowerHistoryMapper localPowerHistoryMapper;
 
     /** 计算节点资源 */
     @Resource
@@ -195,71 +186,6 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
 
-    @Override
-    public List<Map> queryPowerNodeUseHistory(String powerNodeId, String resourceType, String timeType) {
-        // 24小时记录
-        if (ServiceConstant.constant_1.equals(timeType)) {
-            List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "0");
-            if (powerHistoryList != null && powerHistoryList.size() > 0) {
-                return this.historyMethod(powerHistoryList, resourceType, 24);
-            }
-        };
-        // 7天记录
-        if (ServiceConstant.constant_7.equals(timeType)) {
-            List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
-            if (powerHistoryList != null && powerHistoryList.size() > 0) {
-                return this.historyMethod(powerHistoryList, resourceType, 7);
-            }
-        }
-        // 15天记录
-        if (ServiceConstant.constant_15.equals(timeType)) {
-            List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
-            if (powerHistoryList != null && powerHistoryList.size() > 0) {
-                return this.historyMethod(powerHistoryList, resourceType, 15);
-            }
-        }
-        // 30天记录
-        if (ServiceConstant.constant_30.equals(timeType)) {
-            List<LocalPowerHistory> powerHistoryList = localPowerHistoryMapper.queryPowerHistory(powerNodeId, "1");
-            if (powerHistoryList != null && powerHistoryList.size() > 0) {
-                return this.historyMethod(powerHistoryList, resourceType, 24);
-            }
-        }
-        return new ArrayList<>();
-    }
-
-    /** 封装各个时间记录 */
-    private List historyMethod(List<LocalPowerHistory> powerHistoryList, String resourceType, int timeType){
-        List resourceList = new ArrayList();
-        // cpu
-        if (ServiceConstant.constant_1.equals(resourceType)) {
-            for(LocalPowerHistory powerHistory : powerHistoryList) {
-                resourceList.add(powerHistory.getUsedCore());
-                if (resourceList.size() >= timeType) {
-                    break;
-                }
-            }
-        }
-        // 内存
-        if (ServiceConstant.constant_2.equals(resourceType)) {
-            for(LocalPowerHistory powerHistory : powerHistoryList) {
-                resourceList.add(powerHistory.getUsedMemory());
-                if (resourceList.size() >= timeType) {
-                    break;
-                }
-            }
-        }
-        // 带宽
-        if (ServiceConstant.constant_3.equals(resourceType)) {
-            for(LocalPowerHistory powerHistory : powerHistoryList) {
-                resourceList.add(powerHistory.getUsedBandwidth());
-                if (resourceList.size() >= timeType) {
-                    break;
-                }
-            }
-        }
-        return resourceList;
-    }
 
 
 

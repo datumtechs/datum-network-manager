@@ -19,6 +19,7 @@ message Organization  {
   string identity_id = 3;
   // the status for organization(deleted/normal)
   CommonStatus status = 4;
+  uint64 update_at = 5;         // UTC毫秒数
 }
 
 // 任务下的组织信息

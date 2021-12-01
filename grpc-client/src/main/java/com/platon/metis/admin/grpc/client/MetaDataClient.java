@@ -7,6 +7,7 @@ import com.platon.metis.admin.dao.enums.FileTypeEnum;
 import com.platon.metis.admin.dao.enums.LocalMetaDataColumnVisibleEnum;
 import com.platon.metis.admin.grpc.channel.BaseChannelManager;
 import com.platon.metis.admin.grpc.common.CommonBase;
+import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.MetaDataRpcMessage;
 import com.platon.metis.admin.grpc.service.MetadataServiceGrpc;
 import com.platon.metis.admin.grpc.types.Metadata;
@@ -16,9 +17,12 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
@@ -96,10 +100,12 @@ public class MetaDataClient {
             //3.调用rpc,获取response
             MetaDataRpcMessage.PublishMetadataResponse response = MetadataServiceGrpc.newBlockingStub(channel).publishMetadata(request);
             //4.处理response
-            if (response.getStatus() != GRPC_SUCCESS_CODE) {
-                throw new ApplicationException(StrUtil.format("元数据信息发布失败:{}",response.getMsg()));
+            if(!Objects.isNull(response) && GrpcConstant.GRPC_SUCCESS_CODE == response.getStatus()){
+                return response.getMetadataId();
+            }else{
+                log.error("元数据信息发布失败, code:{}, errorMsg:{}", response.getStatus(), response.getMsg());
+                return null;
             }
-            return response.getMetadataId();
         } finally {
             channelManager.closeChannel(channel);
         }
@@ -136,21 +142,27 @@ public class MetaDataClient {
      * 查询全网数据列表
      * @return
      */
-    public List<GlobalDataFile> getGlobalMetaDataList() throws ApplicationException{
+    public List<GlobalDataFile> getGlobalMetaDataList(LocalDateTime latestSynced){
         //1.获取rpc连接
         Channel channel = null;
         try{
             channel = channelManager.getScheduleServer();
             //2.拼装request
-            com.google.protobuf.Empty request = com.google.protobuf.Empty
+            MetaDataRpcMessage.GetGlobalMetadataDetailListRequest request = MetaDataRpcMessage.GetGlobalMetadataDetailListRequest
                     .newBuilder()
+                    .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
                     .build();
             //3.调用rpc,获取response
             MetaDataRpcMessage.GetGlobalMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getGlobalMetadataDetailList(request);
             //4.处理response
-            if (response.getStatus() != GRPC_SUCCESS_CODE) {
-                throw new ApplicationException(StrUtil.format("查询全网数据列表失败:{}",response.getMsg()));
+            if (response == null) {
+                log.error("查询全网元数据失败");
+                return null;
+            } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
+                log.error("查询全网元数据失败:{}", response.getMsg());
+                return null;
             }
+
             List<MetaDataRpcMessage.GetGlobalMetadataDetailResponse> metaDataList = response.getMetadataListList();
             List<GlobalDataFile> globalDataFileList = metaDataList.stream()
                     .map(globalMetadataDetailResponse -> {
@@ -194,6 +206,40 @@ public class MetaDataClient {
                     })
                     .collect(Collectors.toList());
             return globalDataFileList;
+        } finally {
+            channelManager.closeChannel(channel);
+        }
+    }
+
+    public List<LocalMetaData> getLocalMetaDataList(LocalDateTime latestSynced) {
+        //1.获取rpc连接
+        Channel channel = null;
+        try {
+            channel = channelManager.getScheduleServer();
+            //2.拼装request
+            MetaDataRpcMessage.GetLocalMetadataDetailListRequest request = MetaDataRpcMessage.GetLocalMetadataDetailListRequest
+                    .newBuilder()
+                    .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
+                    .build();
+            //3.调用rpc,获取response
+            MetaDataRpcMessage.GetLocalMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getLocalMetadataDetailList(request);
+            //4.处理response
+            if (response == null) {
+                log.error("查询本地元数据状态更新失败");
+                return null;
+            } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
+                log.error("查询本地元数据状态更新失败:{}", response.getMsg());
+                return null;
+            }
+            List<MetaDataRpcMessage.GetLocalMetadataDetailResponse> metaDataList = response.getMetadataListList();
+            return metaDataList.stream().map(localMetaDataDetail -> {
+                Metadata.MetadataSummary summary = localMetaDataDetail.getInformation().getMetadataSummary();
+                LocalMetaData localMetaData = new LocalMetaData();
+                localMetaData.setStatus(summary.getState().getNumber());
+                localMetaData.setPublishTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(summary.getPublishAt()), ZoneOffset.UTC));
+                localMetaData.setRecUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(summary.getUpdateAt()), ZoneOffset.UTC));
+                return localMetaData;
+            }).collect(Collectors.toList());
         } finally {
             channelManager.closeChannel(channel);
         }

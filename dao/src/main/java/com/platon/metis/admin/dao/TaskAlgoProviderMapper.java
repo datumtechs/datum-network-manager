@@ -10,7 +10,7 @@ public interface TaskAlgoProviderMapper {
 
     void insert(TaskAlgoProvider taskAlgoProvider);
 
-    void insertBatch(List<TaskAlgoProvider> taskAlgoProviderList);
+    void replaceBatch(List<TaskAlgoProvider> taskAlgoProviderList);
 
     TaskAlgoProvider selectTaskAlgoProviderWithOrgNameByTaskId(String taskId);
 }

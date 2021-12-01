@@ -1,6 +1,7 @@
 package com.platon.metis.admin.grpc.client;
 
 import com.google.protobuf.Empty;
+import com.platon.metis.admin.dao.entity.LocalSeedNode;
 import com.platon.metis.admin.grpc.channel.BaseChannelManager;
 import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
@@ -11,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @Author liushuyu
@@ -115,26 +119,34 @@ public class SeedClient {
     /**
      * 查询种子服务列表
      */
-    public YarnRpcMessage.GetSeedNodeListResponse getJobNodeList(){
-        long startTime = System.currentTimeMillis();
+    public List<LocalSeedNode> getSeedNodeList(){
         Channel channel = null;
-        YarnRpcMessage.GetSeedNodeListResponse seedNodeListResponse;
         try{
             //1.获取rpc连接
             channel = channelManager.getScheduleServer();
             //2.拼装request
             Empty seedNodeListRequest = Empty.newBuilder().build();
             //3.调用rpc,获取response
-            seedNodeListResponse = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(seedNodeListRequest);
+            YarnRpcMessage.GetSeedNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(seedNodeListRequest);
             //4.处理response
-            if (seedNodeListResponse.getStatus() != 0 || !GrpcConstant.ok.equals(seedNodeListResponse.getMsg())) {
-                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
+            if(!Objects.isNull(response) && GrpcConstant.GRPC_SUCCESS_CODE == response.getStatus()){
+                return convertToLocalSeedNodeList(response.getNodesList());
+            }else{
+                log.error("同步本地数据节点出错, code:{}, errorMsg:{}", response.getStatus(), response.getMsg());
+                return null;
             }
         } finally {
             channelManager.closeChannel(channel);
         }
-        long diffTime = System.currentTimeMillis() - startTime;
-        log.info("查询计算服务列表, 响应时间:{}ms, 响应数据:<< {} >>", diffTime, seedNodeListResponse);
-        return seedNodeListResponse;
+    }
+
+    private List<LocalSeedNode> convertToLocalSeedNodeList(List<YarnRpcMessage.SeedPeer> seedNodeList) {
+        return seedNodeList.parallelStream().map(seedNode -> {
+            LocalSeedNode localSeedNode = new LocalSeedNode();
+            localSeedNode.setSeedNodeId(seedNode.getAddr());
+            localSeedNode.setInitFlag(seedNode.getIsDefault());
+            localSeedNode.setConnStatus(seedNode.getConnState().getNumber());
+            return localSeedNode;
+        }).collect(Collectors.toList());
     }
 }

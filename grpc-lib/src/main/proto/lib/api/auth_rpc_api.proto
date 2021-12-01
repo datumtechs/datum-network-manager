@@ -25,6 +25,10 @@ message GetNodeIdentityResponse {
   api.protobuf.Organization owner = 3;                        // 自己身份信息
 }
 
+message GetIdentityListRequest {
+  uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
+}
+
 // 查询全网组织的身份信息列表(已入网的) resp
 message GetIdentityListResponse {
   int32                              status = 1;                       // 响应码
@@ -81,6 +85,11 @@ message GetMetadataAuthority {
   uint64                                      apply_at = 8;                         // 发起授权申请的时间 (单位: ms)
   uint64                                      audit_at = 9;                         // 审核授权申请的时间 (单位: ms)
   api.protobuf.MetadataAuthorityState         state = 10;                           // 数据授权信息的状态 (0: 未知; 1: 还未发布的数据授权; 2: 已发布的数据授权; 3: 已撤销的数据授权 <失效前主动撤回的>; 4: 已经失效的数据授权 <过期or达到使用上限的>)
+  uint64                                      update_at = 11;                       // 数据的最后更新时间，UTC毫秒数
+}
+
+message GetMetadataAuthorityListRequest {
+  uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
 }
 
 //// 查看某个组织的所有元数据的授权申请及审核结果详情列表 req
@@ -121,7 +130,7 @@ service AuthService {
   }
 
   // 查询全网组织的身份信息列表(已入网的)
-  rpc GetIdentityList (google.protobuf.Empty) returns (GetIdentityListResponse) {
+  rpc GetIdentityList (GetIdentityListRequest) returns (GetIdentityListResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/auth/identityList"
       body: "*"
@@ -153,14 +162,14 @@ service AuthService {
   }
 
   // 查询(本组织)的所有元数据的授权申请及审核结果详情列表
-  rpc GetLocalMetadataAuthorityList(google.protobuf.Empty) returns (GetMetadataAuthorityListResponse) {
+  rpc GetLocalMetadataAuthorityList(GetMetadataAuthorityListRequest) returns (GetMetadataAuthorityListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/auth/localMetadataAuthList"
     };
   }
 
   // 查询(全网)的所有元数据的授权申请及审核结果详情列表
-  rpc GetGlobalMetadataAuthorityList(google.protobuf.Empty) returns (GetMetadataAuthorityListResponse) {
+  rpc GetGlobalMetadataAuthorityList(GetMetadataAuthorityListRequest) returns (GetMetadataAuthorityListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/auth/globalMetadataAuthList"
     };
