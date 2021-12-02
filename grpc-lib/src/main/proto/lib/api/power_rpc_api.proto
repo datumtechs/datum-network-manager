@@ -57,6 +57,13 @@ message GetLocalPowerDetailResponse {
   string                    power_id = 4;               // 算力id (对于未发布的算力, powerId为"")
 }
 
+//不需要了，有调度服务直接返回，不需要从数据中心同步
+/*
+message GetLocalPowerDetailListRequest {
+  uint64 last_updated = 1;  // UTC毫秒级时间戳，上一次最后一条数据的时间戳
+}
+*/
+
 
 // 本组织的多个(宿主机)算力信息 (包含【未发布】和【已发布】的)
 message GetLocalPowerDetailListResponse {
