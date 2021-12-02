@@ -32,18 +32,19 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-  # ========== consul ============
+  # =============================== consul ===============================
   cloud:
     consul:
       host: 192.168.252.121
       port: 8500
+      carrierServiceName: carrier
       discovery:
         prefer-ip-address: true # 这个必须配
-        serviceName: ${spring.application.name}
+        service-name: ${spring.application.name}
         instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}
         tags: ${spring.application.name}
-        healthCheckInterval: 10s
-        healthCheckUrl: http://${spring.cloud.client.ip-address}:${server.port}/actuator/health
+        health-check-interval: 10s
+        health-check-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/health
 
 server:
   port: 9090
