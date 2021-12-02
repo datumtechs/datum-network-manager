@@ -222,7 +222,7 @@ public class PowerClient {
     }
 
     /**
-     * 查看当前组织各个算力的详情 (如果有，则包含正在执行的任务信息)
+     * 查看当前组织各个算力的详情 (如果有任务，则包含正在执行的任务信息)
      */
     public Pair<List<LocalPowerNode>, List<LocalPowerJoinTask>> getLocalPowerNodeListAndJoinTaskList(){
         Channel channel = null;
