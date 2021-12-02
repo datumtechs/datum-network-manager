@@ -48,7 +48,7 @@ public class LocalCarrierStatusRefreshTask {
     private Integer consulPort;
 
     @Value("${spring.cloud.consul.carrierRegisteredName}")
-    private String carrierRegisteredName;
+    private String carrierServiceName;
 
     private final ConsulClient consulClient = new ConsulClient(consulHost, consulPort);
 
@@ -72,7 +72,7 @@ public class LocalCarrierStatusRefreshTask {
                 .setQueryParams(QueryParams.DEFAULT)
                 .build();
 
-        List<HealthService> serviceList =  consulClient.getHealthServices(carrierRegisteredName, request).getValue();
+        List<HealthService> serviceList =  consulClient.getHealthServices(carrierServiceName, request).getValue();
         if(CollectionUtils.isEmpty(serviceList)){
             log.warn("没有查询到调度服务信息");
             return;
