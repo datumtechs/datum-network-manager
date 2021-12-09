@@ -134,16 +134,12 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
             auditOption =  DataAuthStatusEnum.REFUSE.getStatus();
             auditDesc = "data auth request is expired.";
         }
-        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
-
-        if(response.getStatus()!=GrpcConstant.GRPC_SUCCESS_CODE){
-            log.warn("Carrier audit dataAuthRequest error. authId:{}", localDataAuth.getAuthId());
-        }
+        authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
         //设置最后结果是：同意，还是拒绝
         localDataAuth.setStatus(auditOption);
         localDataAuth.setAuthAt(LocalDateTime.now());
         //上面设置的最后结果，只有在return true时才有效
-        return response.getStatus() == GrpcConstant.GRPC_SUCCESS_CODE;
+        return true;
     }
 
     @Override

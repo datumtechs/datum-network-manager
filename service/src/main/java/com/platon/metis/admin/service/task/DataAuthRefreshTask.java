@@ -32,7 +32,7 @@ public class DataAuthRefreshTask {
 
     //@Scheduled(fixedDelay = 20000)
     //@Scheduled(fixedDelayString = "${DataAuthRefreshTask.fixedDelay}")
-    public void getRpcDataAuthList() {
+    public void task() {
         log.debug("启动数据授权申请定时任务...");
 
         try {
