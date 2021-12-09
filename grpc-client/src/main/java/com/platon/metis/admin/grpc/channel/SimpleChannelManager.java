@@ -7,6 +7,8 @@ import io.grpc.ManagedChannelBuilder;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 /**
  * @Author liushuyu
  * @Date 2021/7/7 10:58
@@ -16,14 +18,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleChannelManager extends BaseChannelManager{
-
+    @Resource
+    private TimeoutInterceptor timeoutInterceptor;
 
     @Override
     public ManagedChannel buildChannel(String ip,int port) {
         ManagedChannel channel = ManagedChannelBuilder
                 .forAddress(ip, port)
                 .usePlaintext()
+                .keepAliveWithoutCalls(true)
+                .intercept(timeoutInterceptor)
                 .build();
+
         return channel;
     }
 

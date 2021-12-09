@@ -46,8 +46,15 @@ spring:
         health-check-interval: 10s
         health-check-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/health
 
+# ==================================== server conf  ==========================================
 server:
-  port: 9090
+  tomcat:
+    uri-encoding: UTF-8
+    threads.max: 1000
+    threads.min-spare: 30
+  port: 8080
+  servlet:
+    context-path: /metis-admin
 
 
 # =============================== conf for logger ===================================
@@ -76,14 +83,14 @@ logging:
       # 保存存档日志文件的最大天数(默认为7天)
       # max-history: 20
 
-
-
-
 # =============================== conf for scheduled task ===================================
-LocalDataAuthReqRefreshTask.fixedDelay: 20000     #更新本地数据授权申请以及状态
-LocalDataNodeRefreshTask.fixedDelay: 2000         #更新本地数据节点列表，以及它们和调度服务的连接状态
-LocalMetaDataStatusRefreshTask.fixedDelay: 10000  #更新本地元数据状态
-LocalCarrierStatusRefreshTask.fixedDelay: 10000   #刷新本地调度服务状态
-LocalTaskRefreshTask.fixedDelay: 20000            #更新本地任务详细列表
-LocalPowerNodeRefreshTask.fixedDelay: 60000       #更新本地算力节点的基本信息、状态、拥有的资源、被使用的资源，以及正在执行的任务
-SeedNodeRefreshTask.fixedDelay: 30000             #更新本地的种子节点列表
+DataAuthRefreshTask.fixedDelay: 20000
+DataNodeRefreshTask.fixedDelay: 2000
+GlobalDataRefreshTask.fixedDelay: 10000
+GlobalPowerRefreshTask.fixedDelay: 10000
+LocalOrgRefreshTask.fixedDelay: 10000
+LocalTaskRefreshTask.fixedDelay: 20000
+PowerNodeRefreshTask.fixedDelay: 60000
+SeedNodeRefreshTask.fixedDelay: 30000
+# 超时时间，单位：秒
+grpc-client-timeout: 5

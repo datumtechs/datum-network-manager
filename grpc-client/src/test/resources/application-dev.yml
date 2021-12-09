@@ -3,7 +3,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
     druid:
-      url: jdbc:mysql://192.168.9.191:3306/dev_metis_admin_157?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
+      url: jdbc:mysql://192.168.9.191:3306/dev_metis_admin_157?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
       username: platon
       password: platon
       initial-size: 10
@@ -32,3 +32,54 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+
+# ==================================== server conf  ==========================================
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    threads.max: 1000
+    threads.min-spare: 30
+  port: 8080
+  servlet:
+    context-path: /metis-admin
+
+# 单位：秒
+timeout: 5
+
+# =============================== conf for logger ===================================
+# 日志配置
+logging:
+  # 日志级别
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.platon: DEBUG
+  file:
+    # 日志文件名格式
+    name: ./logs/${spring.application.name}.log
+  pattern:
+    # 日志记录格式[组件名称] [时间戳] [日志级别] [类名.方法名] [消息文本]
+    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %C / %line - %msg%n'
+    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %C / %line - %msg%n'
+  logback:
+    rollingpolicy:
+      # 根据文件大小归档，超过2KB自动归档，次日启动服务时也会自动归档
+      file-name-pattern: ./logs/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz
+      # 最大日志文件大小(默认为10MB)
+      max-file-size: 200MB
+      # 要保留的日志备份的总大小(默认为0B)
+      # total-size-cap: 1GB
+      # 保存存档日志文件的最大天数(默认为7天)
+      # max-history: 20
+
+# =============================== conf for scheduled task ===================================
+DataAuthRefreshTask.fixedDelay: 20000
+DataNodeRefreshTask.fixedDelay: 2000
+GlobalDataRefreshTask.fixedDelay: 10000
+GlobalPowerRefreshTask.fixedDelay: 10000
+LocalOrgRefreshTask.fixedDelay: 10000
+LocalTaskRefreshTask.fixedDelay: 20000
+PowerNodeRefreshTask.fixedDelay: 60000
+SeedNodeRefreshTask.fixedDelay: 30000
+# 超时时间，单位：秒
+grpc-client-timeout: 5
