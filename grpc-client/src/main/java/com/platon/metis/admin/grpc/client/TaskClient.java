@@ -44,8 +44,6 @@ public class TaskClient {
     @Resource(name = "simpleChannelManager")
     private BaseChannelManager channelManager;
 
-    public static  final String SERVER_HOST = "192.168.21.164";
-    public static  final int SERVER_IP = 4444;
     private Channel channel;
 
 
