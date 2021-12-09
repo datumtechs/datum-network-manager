@@ -43,9 +43,6 @@ server:
   servlet:
     context-path: /metis-admin
 
-# 单位：秒
-timeout: 5
-
 # =============================== conf for logger ===================================
 # 日志配置
 logging:
