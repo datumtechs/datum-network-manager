@@ -27,7 +27,6 @@ import com.platon.metis.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.metis.admin.grpc.entity.YarnQueryFilePositionResp;
 import com.platon.metis.admin.service.LocalDataService;
 import com.platon.metis.admin.service.exception.ServiceException;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -149,7 +148,6 @@ public class LocalDataServiceImpl implements LocalDataService {
         return localMetaDataMapper.deleteByPrimaryKey(id);
     }
 
-    @SneakyThrows
     @Override
     public void downLoad(HttpServletResponse response, Integer id) {
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
@@ -163,10 +161,16 @@ public class LocalDataServiceImpl implements LocalDataService {
         }
         //### 2.获取可用的数据节点
         YarnQueryFilePositionResp yarnQueryFilePositionResp = yarnClient.queryFilePosition(localDataFile.getFileId());
-        byte[] bytes = dataProviderClient.downloadData(
-                yarnQueryFilePositionResp.getIp(),
-                yarnQueryFilePositionResp.getPort(),
-                yarnQueryFilePositionResp.getFilePath());
+        byte[] bytes = new byte[0];
+        try {
+            bytes = dataProviderClient.downloadData(
+                    yarnQueryFilePositionResp.getIp(),
+                    yarnQueryFilePositionResp.getPort(),
+                    yarnQueryFilePositionResp.getFilePath());
+        } catch (Exception e) {
+            log.error("下载元数据文件出错", e);
+            throw new ServiceException("下载元数据文件出错", e);
+        }
         ExportFileUtil.exportCsv(localMetaData.getMetaDataName(), bytes,response);
     }
 
@@ -203,16 +207,20 @@ public class LocalDataServiceImpl implements LocalDataService {
 
       @Override
     public int down(Integer id) {
-        Date operateDate = new Date();
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
 
         //已发布状态的元数据不允许修改
         if(LocalDataFileStatusEnum.RELEASED.getStatus()!=localMetaData.getStatus()){
             throw new ServiceException("元数据未上架");
         }
-        metaDataClient.revokeMetaData(localMetaData.getMetaDataId());
+          try {
+              metaDataClient.revokeMetaData(localMetaData.getMetaDataId());
+          } catch (Exception e) {
+              log.error("元数据下架失败", e);
+              throw new ServiceException("元数据下架失败", e);
+          }
 
-        return localMetaDataMapper.updateStatusById(localMetaData.getId(), LocalDataFileStatusEnum.REVOKED.getStatus());
+          return localMetaDataMapper.updateStatusById(localMetaData.getId(), LocalDataFileStatusEnum.REVOKED.getStatus());
     }
 
     @Override

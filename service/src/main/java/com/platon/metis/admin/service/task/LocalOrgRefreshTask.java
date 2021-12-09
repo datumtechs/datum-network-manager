@@ -22,7 +22,7 @@ import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_COD
  * @Author liushuyu
  * @Date 2021/7/12 11:48
  * @Version
- * @Desc 组织状态刷新,以及缓存刷新
+ * @Desc 组织状态刷新, 以及缓存刷新
  */
 
 @Slf4j
@@ -37,59 +37,63 @@ public class LocalOrgRefreshTask {
     //@Scheduled(fixedDelay = 10000)
     @Scheduled(fixedDelayString = "${LocalOrgRefreshTask.fixedDelay}")
     @Transactional
-    public void task(){
+    public void task() {
         log.debug("定时刷新本地组织信息，以及调度服务信息...");
-        LocalOrg localOrg = localOrgMapper.select();
-        if(localOrg == null){
-            log.warn("请先申请身份标识");
-            //刷新缓存
-            LocalOrgCache.setLocalOrgInfo(null);
-            LocalOrgIdentityCache.setIdentityId(null);
-            return;
-        }
+        try {
+            LocalOrg localOrg = localOrgMapper.select();
+            if (localOrg == null) {
+                log.warn("请先申请身份标识");
+                //刷新缓存
+                LocalOrgCache.setLocalOrgInfo(null);
+                LocalOrgIdentityCache.setIdentityId(null);
+                return;
+            }
 
-        if( StringUtils.isBlank(localOrg.getCarrierIp()) || localOrg.getCarrierPort()==null){
-            log.warn("请先配置调度服务地址");
-            return;
-        }
+            if (StringUtils.isBlank(localOrg.getCarrierIp()) || localOrg.getCarrierPort() == null) {
+                log.warn("请先配置调度服务地址");
+                return;
+            }
 
-        //### 1.刷新调度服务连接状态
-        boolean connect = yarnClient.connectScheduleServer(localOrg.getCarrierIp(), localOrg.getCarrierPort());
-        if(connect){
-            localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
-        } else {
-            localOrg.setCarrierConnStatus(CarrierConnStatusEnum.DISABLED.getStatus());
-        }
+            //### 1.刷新调度服务连接状态
+            boolean connect = yarnClient.connectScheduleServer(localOrg.getCarrierIp(), localOrg.getCarrierPort());
+            if (connect) {
+                localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
+            } else {
+                localOrg.setCarrierConnStatus(CarrierConnStatusEnum.DISABLED.getStatus());
+            }
 
-        //### 2.刷新调度服务状态和入网状态
-        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
-        if(nodeInfo.getStatus() != GRPC_SUCCESS_CODE){
-            log.error("定时刷新本地组织信息，以及调度服务信息结束, errorMsg:{}...", nodeInfo.getMsg());
+            //### 2.刷新调度服务状态和入网状态
+            YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
+            if (nodeInfo.getStatus() != GRPC_SUCCESS_CODE) {
+                log.error("定时刷新本地组织信息，以及调度服务信息结束, errorMsg:{}...", nodeInfo.getMsg());
 
-            //在第二次调用调度服务失败时，要把第一次调用调度服务的结果刷新到db
+                //在第二次调用调度服务失败时，要把第一次调用调度服务的结果刷新到db
+                localOrgMapper.updateSelective(localOrg);
+                //刷新缓存
+                LocalOrgCache.setLocalOrgInfo(localOrg);
+                LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
+                return;
+            } else {
+                localOrg.setCarrierStatus(nodeInfo.getState());
+                localOrg.setCarrierNodeId(nodeInfo.getNodeId());
+                localOrg.setConnNodeCount(nodeInfo.getConnCount());
+                localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
+                localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
+            }
+            if (localOrg.getIdentityId().equals(nodeInfo.getIdentityId())) {//相同表示入网了
+                localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
+            } else {
+                localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
+            }
+
             localOrgMapper.updateSelective(localOrg);
             //刷新缓存
             LocalOrgCache.setLocalOrgInfo(localOrg);
             LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
+        } catch (Throwable exception) {
+            log.error("定时刷新本地组织信息，以及调度服务信息出错", exception);
             return;
-        } else {
-            localOrg.setCarrierStatus(nodeInfo.getState());
-            localOrg.setCarrierNodeId(nodeInfo.getNodeId());
-            localOrg.setConnNodeCount(nodeInfo.getConnCount());
-            localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
-            localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
         }
-        if(localOrg.getIdentityId().equals(nodeInfo.getIdentityId())){//相同表示入网了
-            localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
-        } else {
-            localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
-        }
-
-        localOrgMapper.updateSelective(localOrg);
-        //刷新缓存
-        LocalOrgCache.setLocalOrgInfo(localOrg);
-        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
-
         log.debug("定时刷新本地组织信息，以及调度服务信息结束...");
     }
 

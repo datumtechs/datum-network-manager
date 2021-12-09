@@ -3,11 +3,11 @@ package com.platon.metis.admin.grpc.client;
 import cn.hutool.core.util.StrUtil;
 import com.google.protobuf.ByteString;
 import com.platon.metis.admin.common.exception.ApplicationException;
-import com.platon.metis.admin.grpc.channel.BaseChannelManager;
+import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.entity.DataProviderUploadDataResp;
 import com.platon.metis.admin.grpc.service.DataProviderGrpc;
 import com.platon.metis.admin.grpc.service.DataProviderRpcMessage;
-import io.grpc.Channel;
+import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -32,8 +32,8 @@ import java.util.concurrent.atomic.AtomicReference;
 @Slf4j
 public class DataProviderClient {
 
-    @Resource(name = "simpleChannelManager")
-    private BaseChannelManager channelManager;
+    @Resource
+    private SimpleChannelManager channelManager;
 
 
     /**
@@ -45,7 +45,7 @@ public class DataProviderClient {
         byte[] fileContent = file.getBytes();
         //1.获取rpc连接
         CountDownLatch count = new CountDownLatch(1);
-        Channel channel = null;
+        ManagedChannel channel = null;
         try{
             channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
             //2.构建response流观察者
@@ -141,11 +141,11 @@ public class DataProviderClient {
      * @param dataNodePort 数据节点端口
      * @param filePath 要下载文件的文件路径
      */
-    public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath) throws ApplicationException{
+    public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath){
         AtomicReference<ByteString> byteString = new AtomicReference<>(ByteString.EMPTY);
         CountDownLatch count = new CountDownLatch(1);
         //1.获取rpc连接
-        Channel channel = null;
+        ManagedChannel channel = null;
         try{
             channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
             //2.构建请求

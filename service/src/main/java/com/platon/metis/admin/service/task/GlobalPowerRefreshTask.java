@@ -1,6 +1,5 @@
 package com.platon.metis.admin.service.task;
 
-import com.platon.metis.admin.common.exception.ApplicationException;
 import com.platon.metis.admin.common.util.BatchExecuteUtil;
 import com.platon.metis.admin.dao.GlobalPowerMapper;
 import com.platon.metis.admin.dao.entity.GlobalPower;
@@ -39,39 +38,36 @@ public class GlobalPowerRefreshTask {
     @Transactional
     public void task(){
         log.debug("定时获取全网（包括本组织）的算力...");
-        List<GlobalPower> powerList = null;
         try{
-            powerList = powerClient.getGlobalPowerDetailList();
-        } catch (ApplicationException exception){
-            log.error("定时获取全网（包括本组织）的算力", exception);
+            List<GlobalPower> powerList = powerClient.getGlobalPowerDetailList();
+            //2.1先获取所有已存在数据库中的IdentityId
+            List<String> allPowerId = globalPowerMapper.selectAllPowerId();
+            //需要更新的列表
+            List<GlobalPower> updateList = new ArrayList<>();
+            //需要新增的列表
+            List<GlobalPower> addList = new ArrayList<>();
+
+            powerList.stream()
+                    .forEach(power -> {//数据归类 TODO 性能方面考虑
+                        if(allPowerId.contains(power.getId())){//如果已存在数据库，则进行更新
+                            updateList.add(power);
+                        } else {//不存在，则表示是新增
+                            addList.add(power);
+                        }
+                    });
+
+            //### 3.入库
+            //3.1批量更新
+
+            batchUpdate(updateList);
+
+            //3.2批量新增
+
+            batchAdd(addList);
+        } catch (Throwable exception){
+            log.error("定时获取全网（包括本组织）的算力出错", exception);
             return;
         }
-
-        //2.1先获取所有已存在数据库中的IdentityId
-        List<String> allPowerId = globalPowerMapper.selectAllPowerId();
-        //需要更新的列表
-        List<GlobalPower> updateList = new ArrayList<>();
-        //需要新增的列表
-        List<GlobalPower> addList = new ArrayList<>();
-
-        powerList.stream()
-                .forEach(power -> {//数据归类 TODO 性能方面考虑
-                    if(allPowerId.contains(power.getId())){//如果已存在数据库，则进行更新
-                        updateList.add(power);
-                    } else {//不存在，则表示是新增
-                        addList.add(power);
-                    }
-                });
-
-        //### 3.入库
-        //3.1批量更新
-
-        batchUpdate(updateList);
-
-        //3.2批量新增
-
-        batchAdd(addList);
-
         log.debug("定时获取全网（包括本组织）的算力结束...");
     }
 

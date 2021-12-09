@@ -63,8 +63,15 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
             throw new ServiceException("名称不符合命名规则！");
         }
         // 调用grpc接口增加算力，此时调度服务会连算力节点，如果正常返回，说明连接成功
-        YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
-                powerNode.getInternalPort(), powerNode.getExternalPort());
+        YarnRpcMessage.YarnRegisteredPeerDetail jobNode = null;
+        try {
+            jobNode = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
+                    powerNode.getInternalPort(), powerNode.getExternalPort());
+        } catch (Exception e) {
+            log.error("新增计算节点失败", e);
+            throw new ServiceException("新增计算节点失败", e);
+
+        }
         log.info("新增计算节点数据:{}", jobNode);
         // 计算节点id
         powerNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
@@ -86,7 +93,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public void updatePowerNodeByNodeId(LocalPowerNode powerNode) {
+    public void updatePowerNodeByNodeId(LocalPowerNode powerNode) throws Exception {
         // 判断是否有算力进行中
         LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNode.getPowerNodeId());
 
@@ -126,7 +133,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public void deletePowerNodeByNodeId(String powerNodeId) {
+    public void deletePowerNodeByNodeId(String powerNodeId) throws Exception {
         // 判断是否有算力进行中
         LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
 

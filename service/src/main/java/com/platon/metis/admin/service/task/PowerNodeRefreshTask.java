@@ -15,6 +15,7 @@ import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.grpc.types.Resourcedata;
 import com.platon.metis.admin.service.constant.ServiceConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
@@ -24,7 +25,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author houz
@@ -54,7 +54,7 @@ public class PowerNodeRefreshTask {
      */
     //@Scheduled(fixedDelay = 60000)
     @Scheduled(fixedDelayString = "${PowerNodeRefreshTask.fixedDelay}")
-    public void refreshPowerData(){
+    public void task(){
         log.debug("定时刷新算力节点的和调度服务的连接状态...");
         // 定时刷新节点列表数据
         this.refreshPowerNodeList();
@@ -63,77 +63,78 @@ public class PowerNodeRefreshTask {
         // 定时刷新节点及节点任务数据
         this.refreshPowerNodeAndTask();
 
-        log.debug("定时任务执行结束...");
+        log.debug("定时刷新算力节点的和调度服务的连接状态结束...");
     }
     /** 定时刷新算力节点的和调度服务的连接状态 */
     private void refreshPowerNodeList(){
-        YarnRpcMessage.GetRegisteredNodeListResponse powerNodeResponse = powerClient.getJobNodeList();
-        if(null != powerNodeResponse && !powerNodeResponse.getNodesList().isEmpty()) {
-            List localPowerNodeList = new ArrayList();
-            powerNodeResponse.getNodesList().parallelStream().forEach(powerNode -> {
-                LocalPowerNode localPowerNode = new LocalPowerNode();
-                YarnRpcMessage.YarnRegisteredPeerDetail  powerDetails = powerNode.getNodeDetail();
-                if (null != powerDetails) {
-                    localPowerNode.setPowerNodeId(powerDetails.getId());
-                    localPowerNode.setConnStatus(powerDetails.getConnState().getNumber());
-                    localPowerNodeList.add(localPowerNode);
+        try {
+            List<YarnRpcMessage.YarnRegisteredPeer> yarnRegisteredPeerList = powerClient.getJobNodeList();
+            if(CollectionUtils.isNotEmpty(yarnRegisteredPeerList)) {
+                List localPowerNodeList = new ArrayList();
+                yarnRegisteredPeerList.parallelStream().forEach(powerNode -> {
+                    LocalPowerNode localPowerNode = new LocalPowerNode();
+                    YarnRpcMessage.YarnRegisteredPeerDetail  powerDetails = powerNode.getNodeDetail();
+                    if (null != powerDetails) {
+                        localPowerNode.setPowerNodeId(powerDetails.getId());
+                        localPowerNode.setConnStatus(powerDetails.getConnState().getNumber());
+                        localPowerNodeList.add(localPowerNode);
+                    }
+                });
+                // 修改计算节点信息
+                if(!localPowerNodeList.isEmpty()) {
+                    localPowerNodeMapper.batchUpdatePowerNode(localPowerNodeList);
                 }
-            });
-            // 修改计算节点信息
-            if(!localPowerNodeList.isEmpty()) {
-                localPowerNodeMapper.batchUpdatePowerNode(localPowerNodeList);
             }
+        }catch (Exception e){
+            log.error("定时刷新算力节点的和调度服务的连接状态出错", e);
         }
     }
 
 
     /** 定时查询算力节点参与的正在执行的任务 */
     private void refreshPowerNodeAndTask(){
-        long startTime = System.currentTimeMillis();
-        PowerRpcMessage.GetLocalPowerDetailListResponse getSingleDetailListResponse = powerClient.getLocalPowerDetailList();
-        if (Objects.isNull(getSingleDetailListResponse)) {
-            log.info("获取计算节点详情失败,无返回数据");
-            return;
-        }
-        List<PowerRpcMessage.GetLocalPowerDetailResponse> detailsList = getSingleDetailListResponse.getPowerListList();
-        if (detailsList == null || detailsList.size() == 0) {
-            log.info("获取计算节点详情失败,无返回数据");
-            return;
-        }
-        // 节点资源历史记录
-        List<LocalPowerHistory> localPowerHistoryList = new ArrayList<>();
-        // 计算节点
-        List<LocalPowerNode> localPowerNodeList = new ArrayList<>();
-        // 计算节点参数参与的任务
-        List<LocalPowerJoinTask> localPowerJoinTaskList = new ArrayList<>();
-        for(PowerRpcMessage.GetLocalPowerDetailResponse localPowerDetailResponse : detailsList) {
+       try{
+           List<PowerRpcMessage.GetLocalPowerDetailResponse> localPowerDetailList = powerClient.getLocalPowerDetailList();
+            if (CollectionUtils.isEmpty(localPowerDetailList)) {
+                log.error("获取计算节点详情失败,无返回数据");
+                return;
+            }
 
-            // 保存计算节点历史数据信息, 判断当前时间是否是整点
-            this.savePowerHistory(localPowerDetailResponse, localPowerHistoryList);
+            // 节点资源历史记录
+            List<LocalPowerHistory> localPowerHistoryList = new ArrayList<>();
+            // 计算节点
+            List<LocalPowerNode> localPowerNodeList = new ArrayList<>();
+            // 计算节点参数参与的任务
+            List<LocalPowerJoinTask> localPowerJoinTaskList = new ArrayList<>();
+            for(PowerRpcMessage.GetLocalPowerDetailResponse localPowerDetailResponse : localPowerDetailList) {
 
-            // 保存当前节点算力信息
-            this.saveLocalPowerNode(localPowerDetailResponse, localPowerNodeList);
+                // 保存计算节点历史数据信息, 判断当前时间是否是整点
+                this.savePowerHistory(localPowerDetailResponse, localPowerHistoryList);
 
-            // 保存计算节点参与的任务列表
-             this.savePowerTaskList(localPowerDetailResponse, localPowerJoinTaskList);
-        }
-        // 新增计算节点资源历史记录
-        if (!localPowerHistoryList.isEmpty()) {
-            localPowerHistoryMapper.batchInsertPowerHistory(localPowerHistoryList);
-        }
-        // 修改计算节点信息
-        if(!localPowerNodeList.isEmpty()) {
-            localPowerNodeMapper.batchUpdatePowerNode(localPowerNodeList);
-        }
-        // 新增计算节点参与的任务列表
-        // 先清空表数据，如有任务再添加
-        localPowerJoinTaskMapper.truncateTable();
-        if (!localPowerJoinTaskList.isEmpty()) {
-            // 每次新增最新的数据
-            localPowerJoinTaskMapper.batchInsertPowerTask(localPowerJoinTaskList);
-        }
-        long diffStart = System.currentTimeMillis() - startTime;
-        log.info("refreshPowerNodeAndTask--定时刷新节点及节点任务数据结束, 执行时间:{}", diffStart+"ms");
+                // 保存当前节点算力信息
+                this.saveLocalPowerNode(localPowerDetailResponse, localPowerNodeList);
+
+                // 保存计算节点参与的任务列表
+                 this.savePowerTaskList(localPowerDetailResponse, localPowerJoinTaskList);
+            }
+            // 新增计算节点资源历史记录
+            if (!localPowerHistoryList.isEmpty()) {
+                localPowerHistoryMapper.batchInsertPowerHistory(localPowerHistoryList);
+            }
+            // 修改计算节点信息
+            if(!localPowerNodeList.isEmpty()) {
+                localPowerNodeMapper.batchUpdatePowerNode(localPowerNodeList);
+            }
+            // 新增计算节点参与的任务列表
+            // 先清空表数据，如有任务再添加
+            localPowerJoinTaskMapper.truncateTable();
+            if (!localPowerJoinTaskList.isEmpty()) {
+                // 每次新增最新的数据
+                localPowerJoinTaskMapper.batchInsertPowerTask(localPowerJoinTaskList);
+            }
+       }catch (Exception e){
+           log.error("定时查询算力节点参与的正在执行的任务出错", e);
+       }
     }
 
 
