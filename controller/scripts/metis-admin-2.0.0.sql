@@ -418,7 +418,7 @@ CREATE TABLE `task_event` (
   `identity_id` varchar(256) NOT NULL COMMENT '产生事件的组织身份ID',
   party_id VARCHAR(200) NOT NULL COMMENT '产生事件的partyId (单个组织可以担任任务的多个party, 区分是哪一方产生的event)',
   `event_at` datetime(3) NOT NULL COMMENT '产生事件的时间',
-  `event_content` varchar(512) NOT NULL COMMENT '事件内容',
+  `event_content` varchar(1024) NOT NULL COMMENT '事件内容',
   PRIMARY KEY (`ID`)
 ) COMMENT='任务事件表';
 
