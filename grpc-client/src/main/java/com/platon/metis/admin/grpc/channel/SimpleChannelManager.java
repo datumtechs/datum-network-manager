@@ -1,10 +1,13 @@
 package com.platon.metis.admin.grpc.channel;
 
+import com.platon.metis.admin.grpc.interceptor.TimeoutInterceptor;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @Author liushuyu
@@ -15,7 +18,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleChannelManager extends BaseChannelManager{
-
+    @Resource
+    private TimeoutInterceptor timeoutInterceptor;
 
     @Override
     public ManagedChannel buildChannel(String ip,int port) {
@@ -23,7 +27,9 @@ public class SimpleChannelManager extends BaseChannelManager{
                 .forAddress(ip, port)
                 .usePlaintext()
                 .keepAliveWithoutCalls(true)
+                .intercept(timeoutInterceptor)
                 .build();
+
         return channel;
     }
 

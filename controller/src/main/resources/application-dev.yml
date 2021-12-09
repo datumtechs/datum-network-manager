@@ -43,6 +43,8 @@ server:
   servlet:
     context-path: /metis-admin
 
+# 单位：秒
+timeout: 5
 
 # =============================== conf for logger ===================================
 # 日志配置
@@ -79,3 +81,5 @@ LocalOrgRefreshTask.fixedDelay: 10000
 LocalTaskRefreshTask.fixedDelay: 20000
 PowerNodeRefreshTask.fixedDelay: 60000
 SeedNodeRefreshTask.fixedDelay: 30000
+# 超时时间，单位：秒
+grpc-client-timeout: 5
