@@ -1,7 +1,5 @@
 package com.platon.metis.admin.grpc.client;
 
-import cn.hutool.json.JSONUtil;
-import com.platon.metis.admin.grpc.entity.CommonResp;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,13 +29,12 @@ public class AuthClientTest extends BaseClientTest {
     public void testApplyIdentityJoin(){
         String identityId = "identityId_000001";
         String name = "orgName_000001";
-        CommonResp resp = authClient.applyIdentityJoin(identityId, name);
-        log.error(JSONUtil.toJsonStr(resp));
+        authClient.applyIdentityJoin(identityId, name);
+
     }
 
     @Test
     public void testRevokeIdentityJoin(){
-        CommonResp resp = authClient.revokeIdentityJoin();
-        log.error(JSONUtil.toJsonStr(resp));
+        authClient.revokeIdentityJoin();
     }
 }

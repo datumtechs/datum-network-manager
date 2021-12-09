@@ -8,9 +8,7 @@ import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.dao.DataNodeMapper;
 import com.platon.metis.admin.dao.entity.DataNode;
 import com.platon.metis.admin.grpc.client.YarnClient;
-import com.platon.metis.admin.grpc.constant.GrpcConstant;
-import com.platon.metis.admin.grpc.entity.CommonResp;
-import com.platon.metis.admin.grpc.entity.FormatSetDataNodeResp;
+import com.platon.metis.admin.grpc.entity.RegisteredNodeResp;
 import com.platon.metis.admin.service.DataNodeService;
 import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -58,15 +56,14 @@ public class DataNodeServiceImpl implements DataNodeService {
      */
     @Override
     public int addDataNode(DataNode dataNode) {
-        FormatSetDataNodeResp formatSetDataNodeResp = yarnClient.setDataNode(dataNode);
-        if (GrpcConstant.GRPC_SUCCESS_CODE != formatSetDataNodeResp.getStatus()) {
-            throw new ServiceException("调度服务调用失败");
-        }
         if (!checkDataNodeId(dataNode)) {
             throw new ServiceException("相同属性数据节点已存在");
         }
-        dataNode.setNodeId(formatSetDataNodeResp.getNodeResp().getNodeId());
-        dataNode.setConnStatus(formatSetDataNodeResp.getNodeResp().getConnStatus());
+
+        RegisteredNodeResp response = yarnClient.setDataNode(dataNode);
+
+        dataNode.setNodeId(response.getNodeId());
+        dataNode.setConnStatus(response.getConnStatus());
         dataNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
         dataNode.setRecCreateTime(LocalDateTime.now());
         return dataNodeMapper.insert(dataNode);
@@ -98,11 +95,8 @@ public class DataNodeServiceImpl implements DataNodeService {
         if (!checkDataNodeId(dataNode)) {
             throw new ServiceException("相同属性数据节点已存在");
         }
-        FormatSetDataNodeResp formatSetDataNodeResp = yarnClient.updateDataNode(dataNode);
-        if (GrpcConstant.GRPC_SUCCESS_CODE != formatSetDataNodeResp.getStatus()) {
-            throw new ServiceException("调度服务调用失败");
-        }
-        dataNode.setConnStatus(formatSetDataNodeResp.getNodeResp().getConnStatus());
+        RegisteredNodeResp response = yarnClient.updateDataNode(dataNode);
+        dataNode.setConnStatus(response.getConnStatus());
         dataNode.setRecUpdateTime(LocalDateTime.now());
         return dataNodeMapper.updateByNodeId(dataNode);
     }
@@ -115,10 +109,7 @@ public class DataNodeServiceImpl implements DataNodeService {
      */
     @Override
     public int deleteDataNode(String nodeId) {
-        CommonResp commonResp = yarnClient.deleteDataNode(nodeId);
-        if (GrpcConstant.GRPC_SUCCESS_CODE != commonResp.getStatus()) {
-            throw new ServiceException("调度服务调用失败");
-        }
+        yarnClient.deleteDataNode(nodeId);
         return dataNodeMapper.deleteByNodeId(nodeId);
     }
 

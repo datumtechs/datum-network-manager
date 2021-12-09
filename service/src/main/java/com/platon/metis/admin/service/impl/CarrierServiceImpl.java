@@ -8,7 +8,6 @@ import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.metis.admin.dao.enums.LocalOrgStatusEnum;
 import com.platon.metis.admin.grpc.client.AuthClient;
 import com.platon.metis.admin.grpc.client.YarnClient;
-import com.platon.metis.admin.grpc.entity.CommonResp;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
 import com.platon.metis.admin.service.CarrierService;
 import com.platon.metis.admin.service.exception.ServiceException;
@@ -62,9 +61,12 @@ public class CarrierServiceImpl implements CarrierService {
     @Override
     public Integer applyJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-        CommonResp resp = authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName());
-        if(resp.getStatus() != GRPC_SUCCESS_CODE){
-            throw new ServiceException("入网失败：" + resp.getMsg());
+
+        try {
+            authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName());
+        }catch (Exception e){
+            log.error("入网失败:" , e);
+            throw new ServiceException("入网失败:" + e.getMessage());
         }
 
         //入网成功，刷新数据库
@@ -92,9 +94,12 @@ public class CarrierServiceImpl implements CarrierService {
     @Override
     public Integer cancelJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-        CommonResp resp = authClient.revokeIdentityJoin();
-        if(resp.getStatus() != GRPC_SUCCESS_CODE){
-            throw new ServiceException("退网失败：" + resp.getMsg());
+
+        try {
+            authClient.revokeIdentityJoin();
+        }catch (Exception e){
+            log.error("退网失败:" , e);
+            throw new ServiceException("退网失败:" + e.getMessage());
         }
 
         //退网成功，刷新数据库

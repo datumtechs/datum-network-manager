@@ -28,7 +28,7 @@ public class MetaDataClientTest {
     MetaDataClient metaDataClient;
 
     @Test
-    public void getGlobalMetaDataList(){
+    public void getGlobalMetaDataList() throws Exception {
         LocalOrg localOrg = localOrgMapper.select();
         LocalOrgCache.setLocalOrgInfo(localOrg);;
 

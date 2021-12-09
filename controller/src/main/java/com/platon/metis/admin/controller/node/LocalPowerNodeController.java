@@ -94,12 +94,8 @@ public class LocalPowerNodeController {
     @PostMapping("/listPowerNode")
     @ApiOperation(value="查询计算节点列表", response = JsonResponse.class)
     public JsonResponse<List<LocalPowerNode>> listPowerNode(@Validated @RequestBody PowerQueryListReq powerReq) {
-        try {
-            Page<LocalPowerNode> page = localPowerNodeService.listPowerNode(powerReq.getIdentityId(), powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
-            return JsonResponse.page(page);
-        } catch (Exception e) {
-            return JsonResponse.fail(e.getMessage() != null ? e.getMessage() : "查询失败！");
-        }
+        Page<LocalPowerNode> page = localPowerNodeService.listPowerNode(powerReq.getIdentityId(), powerReq.getKeyword(), powerReq.getPageNumber(), powerReq.getPageSize());
+        return JsonResponse.page(page);
     }
 
     @PostMapping("/publishPower")

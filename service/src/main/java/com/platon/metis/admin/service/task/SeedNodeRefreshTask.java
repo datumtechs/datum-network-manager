@@ -3,7 +3,6 @@ package com.platon.metis.admin.service.task;
 import com.platon.metis.admin.dao.LocalSeedNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 import com.platon.metis.admin.grpc.client.SeedClient;
-import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -34,15 +33,13 @@ public class SeedNodeRefreshTask {
      */
     //@Scheduled(fixedDelay = 30000)
     @Scheduled(fixedDelayString = "${SeedNodeRefreshTask.fixedDelay}")
-    public void refreshSeedNode(){
+    public void task(){
         log.debug("定时刷新种子节点信息...");
-
-        YarnRpcMessage.GetSeedNodeListResponse seedNodeListResponse = seedClient.getJobNodeList();
-
-        if (seedNodeListResponse != null && seedNodeListResponse.getStatus() == GrpcConstant.GRPC_SUCCESS_CODE){
+        try {
+            List<YarnRpcMessage.SeedPeer> seedPeerList = seedClient.getJobNodeList();
             localSeedNodeMapper.truncate();
-            if(CollectionUtils.isNotEmpty(seedNodeListResponse.getNodesList())){
-                List<LocalSeedNode> localSeedNodeList = seedNodeListResponse.getNodesList().parallelStream().map(seedNode -> {
+            if (CollectionUtils.isNotEmpty(seedPeerList)) {
+                List<LocalSeedNode> localSeedNodeList = seedPeerList.parallelStream().map(seedNode -> {
                     LocalSeedNode localSeedNode = new LocalSeedNode();
                     localSeedNode.setSeedNodeId(seedNode.getAddr());
                     localSeedNode.setInitFlag(seedNode.getIsDefault());
@@ -51,6 +48,8 @@ public class SeedNodeRefreshTask {
                 }).collect(Collectors.toList());
                 localSeedNodeMapper.insertBatch(localSeedNodeList);
             }
+        }catch (Throwable e){
+            log.error("定时刷新种子节点信息出错", e);
         }
         log.debug("定时刷新种子节点信息结束");
     }
