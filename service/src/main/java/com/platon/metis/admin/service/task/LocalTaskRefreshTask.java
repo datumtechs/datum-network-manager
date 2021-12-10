@@ -1,5 +1,6 @@
 package com.platon.metis.admin.service.task;
 
+import com.alibaba.fastjson.JSON;
 import com.platon.metis.admin.dao.*;
 import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.dao.enums.TaskStatusEnum;
@@ -67,7 +68,12 @@ public class LocalTaskRefreshTask {
 
             //1、筛选出需要更新Task Data
             List<String> endTaskIds = taskMapper.selectListTaskByStatusWithSuccessAndFailed();
+            for (String taskId: endTaskIds) {
+                log.debug("本地显示已经结束的taskId:{}", taskId);
+
+            }
             List<Task> allTaskList = resp.getLeft();
+
             Map<String, TaskOrg> allTaskOrgMap = resp.getRight();
 
             List<Task> tobeUpdateTaskList = allTaskList.stream().filter(new Predicate<Task>() {
@@ -76,6 +82,17 @@ public class LocalTaskRefreshTask {
                     return !endTaskIds.contains(task.getTaskId());
                 }
             }).collect(Collectors.toList());
+
+
+            List<String> toPrintEventsTaskIdList = new ArrayList<>();
+
+            log.debug("从调度服务同步过来，并且需要更新task各信息的数量（带event）:{}", tobeUpdateTaskList.size());
+            for (Task task: tobeUpdateTaskList) {
+                if (task.getStatus()==3 || task.getStatus()==4){
+                    toPrintEventsTaskIdList.add(task.getTaskId());
+                    log.debug("从调度服务同步过来，并且刚刚结束的taskId:{}", task.getTaskId());
+                }
+            }
 
             //2、整理收集待持久化数据
             List<TaskAlgoProvider> algoProviderList = new ArrayList<>();
@@ -119,9 +136,14 @@ public class LocalTaskRefreshTask {
             //4、批量TaskEvent获取并更新DB
             if (checkDataValidity(tobeUpdateTaskList)) {
                 List<String> taskIdList = tobeUpdateTaskList.stream().map(Task -> Task.getTaskId()).collect(Collectors.toList());
-                List<TaskEvent> taskEvents = taskClient.getTaskEventListData(taskIdList);
-                if (taskEvents != null) {
-                    List<TaskEvent> taskEventList = new ArrayList<>(taskEvents);
+                List<TaskEvent> taskEventList = taskClient.getTaskEventListData(taskIdList);
+
+                for (TaskEvent taskEvent: taskEventList) {
+                    if (toPrintEventsTaskIdList.contains(taskEvent.getTaskId())){
+                        log.debug("从调度服务同步过来，并且刚刚结束的任务(taskId:{})的最后的event:{}", taskEvent.getTaskId(), JSON.toJSONString(taskEvent));
+                    }
+                }
+                if (taskEventList != null) {
                     taskEventMapper.deleteBatch(taskIdList);
                     taskEventMapper.insertBatch(taskEventList);
                 }
