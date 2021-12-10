@@ -62,7 +62,7 @@ public class ErrorHandle {
 
     @ExceptionHandler(Exception.class)
     public JsonResponse handleException(Exception exception){
-        log.error("handleException",exception);
-        return JsonResponse.fail(ResponseCodeEnum.FAIL, "System internal error");
+        log.error("handleException", exception);
+        return JsonResponse.fail(ResponseCodeEnum.FAIL, "System internal error:" + exception.getMessage());
     }
 }
