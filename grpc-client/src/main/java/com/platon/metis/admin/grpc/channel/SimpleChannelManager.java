@@ -37,6 +37,7 @@ public class SimpleChannelManager{
                     .usePlaintext()
                     .keepAliveWithoutCalls(true)
                     .intercept(timeoutInterceptor)
+                    .maxInboundMessageSize(1073741824)
                     .build();
 
             return channel;
