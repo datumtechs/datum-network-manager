@@ -1,7 +1,5 @@
 package com.platon.metis.admin.common.context;
 
-import com.platon.metis.admin.common.exception.ApplicationException;
-
 /**
  * @Author liushuyu
  * @Date 2021/7/12 1:02
@@ -13,11 +11,7 @@ public class LocalOrgCache {
     public static final String LOCAL_ORG = "local_org";
 
     public static Object getLocalOrgInfo(){
-        Object localOrgInfo = AppContext.get(LOCAL_ORG);
-        if(localOrgInfo == null){
-            throw new ApplicationException("使用平台功能需要申请身份标识，需要申请身份标识", ApplicationException.ApplicationErrorEnum.IDENTITY_ID_MISSING);
-        }
-        return localOrgInfo;
+        return  AppContext.get(LOCAL_ORG);
     }
 
 

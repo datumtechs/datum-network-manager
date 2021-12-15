@@ -13,13 +13,7 @@ import lombok.Getter;
 public enum ResponseCodeEnum {
 
     SUCCESS(0,"成功"),
-    NO_DATA(1,"没有数据"),
     FAIL(500,"失败"),
-
-
-    NO_LOGIN(1000,"用户未登录"),
-    IDENTITY_ID_MISSING(1001,"使用平台功能需要申请身份标识，需要申请身份标识"),
-    CARRIER_INFO_NOT_CONFIGURED(1002,"无可用的调度服务"),
     ;
 
     ResponseCodeEnum(int code, String message){

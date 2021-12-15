@@ -4,14 +4,16 @@ public enum Errors {
 
     SysException(1, "system internal error."),
     ArgumentException(2, "illegal argument."),
+    CannotConnectGrpcServer(3, "connect gRPC server failed."),
+    CallGrpcServiceFailed(4, "call gRPC service error"),
 
-    CannotConnectGrpcServer(1000, "connect gRPC server failed."),
-    CallGrpcServiceFailed(1001, "call gRPC service error"),
+
+    UserNotLogin(1000, "user not login"),
+    IdentityIdMissing(1001,"user identity not applied"),
 
     CarrierNotConfigured(1002, "carrier not configured."),
     CannotConnectCarrier(1003, "cannot connect to carrier."),
     CallCarrierFailed(1004, "call carrier service error."),
-
     OrgInfoNotFound(1005, "cannot find org info."),
     MetadataAuthorized(1006, "metadata authorized already."),
     DataHostExists(1007, "data host already exists."),
