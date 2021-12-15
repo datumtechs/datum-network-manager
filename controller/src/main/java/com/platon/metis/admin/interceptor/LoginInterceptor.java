@@ -1,9 +1,7 @@
 package com.platon.metis.admin.interceptor;
 
-import cn.hutool.json.JSONUtil;
+import com.platon.metis.admin.common.exception.UserNotLogin;
 import com.platon.metis.admin.constant.ControllerConstants;
-import com.platon.metis.admin.dto.JsonResponse;
-import com.platon.metis.admin.enums.ResponseCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -39,11 +37,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(session != null && session.getAttribute(ControllerConstants.USER_ID) != null){//已登录
             return true;
         } else {//未登录，则返回错误信息
-            servletResponse.setContentType("application/json; charset=utf-8");
-            JsonResponse noLogin = JsonResponse.fail(ResponseCodeEnum.NO_LOGIN);
-            servletResponse.getWriter().write(JSONUtil.toJsonStr(noLogin));
-            servletResponse.setStatus(200);
-            return false;
+            throw new UserNotLogin();
         }
     }
 
