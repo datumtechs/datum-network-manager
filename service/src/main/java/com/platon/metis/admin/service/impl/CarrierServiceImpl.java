@@ -2,13 +2,14 @@ package com.platon.metis.admin.service.impl;
 
 import com.platon.metis.admin.common.context.LocalOrgCache;
 import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
+import com.platon.metis.admin.common.exception.ApplyIdentityIDFailed;
+import com.platon.metis.admin.common.exception.IdentityIDApplied;
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.metis.admin.dao.enums.LocalOrgStatusEnum;
 import com.platon.metis.admin.grpc.client.AuthClient;
 import com.platon.metis.admin.grpc.client.YarnClient;
-import com.platon.metis.admin.grpc.entity.CommonResp;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
 import com.platon.metis.admin.service.CarrierService;
 import com.platon.metis.admin.service.exception.ServiceException;
@@ -62,41 +63,52 @@ public class CarrierServiceImpl implements CarrierService {
     @Override
     public Integer applyJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-        CommonResp resp = authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName());
-        if(resp.getStatus() != GRPC_SUCCESS_CODE){
-            throw new ServiceException("入网失败：" + resp.getMsg());
+
+        try {
+            authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName());
+        }catch (Exception e){
+            log.error("入网失败:" , e);
+            throw new ApplyIdentityIDFailed();
+        }
+
+        YarnGetNodeInfoResp nodeInfo;
+        try {
+            nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
+        }catch (Exception e){
+            log.error("入网失败:" , e);
+            throw new ApplyIdentityIDFailed();
+        }
+
+        if(!localOrg.getIdentityId().equals(nodeInfo.getIdentityId())){
+            throw new IdentityIDApplied();
         }
 
         //入网成功，刷新数据库
-        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
-        if(nodeInfo.getStatus() == GRPC_SUCCESS_CODE){
-            if(!localOrg.getIdentityId().equals(nodeInfo.getIdentityId())){
-                throw new ServiceException("入网失败：其他组织已注册入网");
-            }
-            localOrg.setCarrierNodeId(nodeInfo.getNodeId());
-            localOrg.setCarrierStatus(nodeInfo.getState());
-            localOrg.setConnNodeCount(nodeInfo.getConnCount());
-            localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
-            localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
+        localOrg.setCarrierNodeId(nodeInfo.getNodeId());
+        localOrg.setCarrierStatus(nodeInfo.getState());
+        localOrg.setConnNodeCount(nodeInfo.getConnCount());
+        localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
+        localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
 
-            localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
-            localOrgMapper.update(localOrg);
-            //刷新缓存
-            LocalOrgCache.setLocalOrgInfo(localOrg);
-            LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
-            return localOrg.getStatus();
-        }else{
-            log.error("入网失败：获取调度服务节点信息失败：{}", nodeInfo.getMsg());
-            throw new ServiceException("入网失败：无法连接网络");
-        }
+        localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
+        localOrgMapper.update(localOrg);
+        //刷新缓存
+        LocalOrgCache.setLocalOrgInfo(localOrg);
+        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
+        return localOrg.getStatus();
+
+
     }
 
     @Override
     public Integer cancelJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-        CommonResp resp = authClient.revokeIdentityJoin();
-        if(resp.getStatus() != GRPC_SUCCESS_CODE){
-            throw new ServiceException("退网失败：" + resp.getMsg());
+
+        try {
+            authClient.revokeIdentityJoin();
+        }catch (Exception e){
+            log.error("退网失败:" , e);
+            throw new ServiceException("退网失败:" + e.getMessage());
         }
 
         //退网成功，刷新数据库

@@ -1,10 +1,10 @@
 package com.platon.metis.admin.grpc.client;
 
 import com.google.protobuf.Empty;
+import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
-import com.platon.metis.admin.grpc.channel.BaseChannelManager;
+import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.common.CommonBase;
-import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.grpc.service.YarnServiceGrpc;
 import io.grpc.Channel;
@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
 
 /**
  * @Author liushuyu
@@ -29,115 +30,71 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SeedClient {
 
-    @Resource(name = "simpleChannelManager")
-    private BaseChannelManager channelManager;
+    @Resource
+    private SimpleChannelManager channelManager;
 
     /**
      * 新增种子节点返回nodeId
      */
     public YarnRpcMessage.SeedPeer addSeedNode(String address){
-        long startTime = System.currentTimeMillis();
-        Channel channel = null;
-        YarnRpcMessage.SetSeedNodeResponse seedNodeResponse;
-        try {
-            //1.获取rpc连接
-            channel = channelManager.getScheduleServer();
-            //2.拼装request
-            YarnRpcMessage.SetSeedNodeRequest seedRequest = YarnRpcMessage.SetSeedNodeRequest.newBuilder()
-                    .setAddr(address)
-                    .build();
-            //3.调用rpc,获取response
-            seedNodeResponse  = YarnServiceGrpc.newBlockingStub(channel).setSeedNode(seedRequest);
-            //4.处理response
-            if (seedNodeResponse.getStatus() != 0 || !GrpcConstant.ok.equals(seedNodeResponse.getMsg())) {
-                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
-            }
-        }finally {
-            channelManager.closeChannel(channel);
+        Channel channel = channelManager.getCarrierChannel();
+
+        //2.拼装request
+        YarnRpcMessage.SetSeedNodeRequest seedRequest = YarnRpcMessage.SetSeedNodeRequest.newBuilder()
+                .setAddr(address)
+                .build();
+        //3.调用rpc,获取response
+        YarnRpcMessage.SetSeedNodeResponse response  = YarnServiceGrpc.newBlockingStub(channel).setSeedNode(seedRequest);
+        //4.处理response
+        if (response == null) {
+            throw new CallGrpcServiceFailed();
+        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+            throw new CallGrpcServiceFailed(response.getMsg());
         }
-        long diffTime = System.currentTimeMillis() - startTime;
-        log.info("新增计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse);
-        return seedNodeResponse.getNode();
+
+        return response.getNode();
     }
 
-    /**
-     * 修改种子节点返回nodeId
-     */
-    /*public YarnRpcMessage.SeedPeer updateSeedNode(String seedNodeId, String internalIp, Integer internalPort){
-        long startTime = System.currentTimeMillis();
-        Channel channel = null;
-        YarnRpcMessage.SetSeedNodeResponse seedNodeResponse;
-        try{
-            //1.获取rpc连接
-            channel = channelManager.getScheduleServer();
-            //2.拼装request
-            YarnRpcMessage.UpdateSeedNodeRequest seedRequest = YarnRpcMessage.UpdateSeedNodeRequest.newBuilder()
-                    .setInternalIp(internalIp).setInternalPort(String.valueOf(internalPort))
-                    .setId(seedNodeId)
-                    .build();
-            //3.调用rpc,获取response
-            seedNodeResponse = YarnServiceGrpc.newBlockingStub(channel).updateSeedNode(seedRequest);
-            //4.处理response
-            if (seedNodeResponse.getStatus() != 0 || !GrpcConstant.ok.equals(seedNodeResponse.getMsg())) {
-                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
-            }
-        } finally {
-            channelManager.closeChannel(channel);
-        }
-        long diffTime = System.currentTimeMillis() - startTime;
-        log.info("修改计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", seedNodeResponse);
-        return seedNodeResponse.getNode();
-    }*/
 
     /**
      * 删除种子节点
      */
     public void deleteSeedNode(String address){
-        long startTime = System.currentTimeMillis();
-        Channel channel = null;
-        CommonBase.SimpleResponse simpleResponseCode;
-        try{
-            //1.获取rpc连接
-            channel = channelManager.getScheduleServer();
-            //2.拼装request
-            YarnRpcMessage.DeleteSeedNodeRequest seedRequest = YarnRpcMessage.DeleteSeedNodeRequest.newBuilder()
-                    .setAddr(address)
-                    .build();
-            //3.调用rpc,获取response
-            simpleResponseCode = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);
-            //4.处理response
-            if (simpleResponseCode.getStatus() != 0 || !GrpcConstant.ok.equals(simpleResponseCode.getMsg())) {
-                throw new RuntimeException("gRPC服务调用失败，请稍后重试！");
-            }
-        } finally {
-            channelManager.closeChannel(channel);
+        Channel channel = channelManager.getCarrierChannel();
+
+        //2.拼装request
+        YarnRpcMessage.DeleteSeedNodeRequest seedRequest = YarnRpcMessage.DeleteSeedNodeRequest.newBuilder()
+                .setAddr(address)
+                .build();
+        //3.调用rpc,获取response
+        CommonBase.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);
+        //4.处理response
+        if (response == null) {
+            throw new CallGrpcServiceFailed();
+        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+            throw new CallGrpcServiceFailed(response.getMsg());
         }
-        long diffTime = System.currentTimeMillis() - startTime;
-        log.info("删除计算节点, 响应时间:{}, 响应数据:{}", diffTime+"ms", simpleResponseCode);
     }
 
     /**
      * 查询种子服务列表
      */
     public List<LocalSeedNode> getSeedNodeList(){
-        Channel channel = null;
-        try{
-            //1.获取rpc连接
-            channel = channelManager.getScheduleServer();
-            //2.拼装request
-            Empty seedNodeListRequest = Empty.newBuilder().build();
-            //3.调用rpc,获取response
-            YarnRpcMessage.GetSeedNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(seedNodeListRequest);
-            //4.处理response
-            if(!Objects.isNull(response) && GrpcConstant.GRPC_SUCCESS_CODE == response.getStatus()){
-                return convertToLocalSeedNodeList(response.getNodesList());
-            }else{
-                log.error("同步本地数据节点出错, code:{}, errorMsg:{}", response.getStatus(), response.getMsg());
-                return null;
-            }
-        } finally {
-            channelManager.closeChannel(channel);
+        //1.获取rpc连接
+        Channel channel = channelManager.getCarrierChannel();
+
+        //2.拼装request
+        Empty seedNodeListRequest = Empty.newBuilder().build();
+        //3.调用rpc,获取response
+        YarnRpcMessage.GetSeedNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(seedNodeListRequest);
+        //4.处理response
+        if (response == null) {
+            throw new CallGrpcServiceFailed();
+        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+            throw new CallGrpcServiceFailed(response.getMsg());
         }
+
+        return convertToLocalSeedNodeList(response.getNodesList());
     }
 
     private List<LocalSeedNode> convertToLocalSeedNodeList(List<YarnRpcMessage.SeedPeer> seedNodeList) {

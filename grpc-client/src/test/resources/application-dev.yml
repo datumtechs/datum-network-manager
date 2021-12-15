@@ -32,6 +32,19 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+  # =============================== consul ===============================
+  cloud:
+    consul:
+      host: 192.168.252.121
+      port: 8500
+      carrierServiceName: carrier
+      discovery:
+        prefer-ip-address: true # 这个必须配
+        service-name: ${spring.application.name}
+        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}
+        tags: ${spring.application.name}
+        health-check-interval: 10s
+        health-check-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/health
 
 # ==================================== server conf  ==========================================
 server:
@@ -43,8 +56,6 @@ server:
   servlet:
     context-path: /metis-admin
 
-# 单位：秒
-timeout: 5
 
 # =============================== conf for logger ===================================
 # 日志配置
@@ -73,13 +84,13 @@ logging:
       # max-history: 20
 
 # =============================== conf for scheduled task ===================================
-DataAuthRefreshTask.fixedDelay: 20000
-DataNodeRefreshTask.fixedDelay: 2000
-GlobalDataRefreshTask.fixedDelay: 10000
-GlobalPowerRefreshTask.fixedDelay: 10000
-LocalOrgRefreshTask.fixedDelay: 10000
+LocalCarrierStatusRefreshTask.fixedDelay: 20000
+LocalDataAuthReqRefreshTask.fixedDelay: 20000
+LocalDataNodeRefreshTask.fixedDelay: 2000
+LocalMetaDataStatusRefreshTask.fixedDelay: 10000
+LocalPowerNodeRefreshTask.fixedDelay: 10000
 LocalTaskRefreshTask.fixedDelay: 20000
-PowerNodeRefreshTask.fixedDelay: 60000
 SeedNodeRefreshTask.fixedDelay: 30000
+
 # 超时时间，单位：秒
 grpc-client-timeout: 5

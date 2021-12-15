@@ -8,9 +8,7 @@ import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.dao.LocalDataNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalDataNode;
 import com.platon.metis.admin.grpc.client.YarnClient;
-import com.platon.metis.admin.grpc.constant.GrpcConstant;
-import com.platon.metis.admin.grpc.entity.CommonResp;
-import com.platon.metis.admin.grpc.entity.FormatSetDataNodeResp;
+import com.platon.metis.admin.grpc.entity.RegisteredNodeResp;
 import com.platon.metis.admin.service.DataNodeService;
 import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -46,42 +44,41 @@ public class DataNodeServiceImpl implements DataNodeService {
     @Override
     public Page<LocalDataNode> listNode(Integer pageNumber, Integer pageSize, String keyword) {
         Page<LocalDataNode> taskPage = PageHelper.startPage(pageNumber, pageSize);
-        List<LocalDataNode> localDataNodes = localDataNodeMapper.listNode(keyword);
+        List<LocalDataNode> dataNodes = localDataNodeMapper.listNode(keyword);
         return taskPage;
     }
 
     /**
      * 新增数据节点
      *
-     * @param localDataNode
+     * @param dataNode
      * @return
      */
     @Override
-    public int addDataNode(LocalDataNode localDataNode) {
-        FormatSetDataNodeResp formatSetDataNodeResp = yarnClient.setDataNode(localDataNode);
-        if (GrpcConstant.GRPC_SUCCESS_CODE != formatSetDataNodeResp.getStatus()) {
-            throw new ServiceException("调度服务调用失败");
-        }
-        if (!checkDataNodeId(localDataNode)) {
+    public int addDataNode(LocalDataNode dataNode) {
+        if (!checkDataNodeId(dataNode)) {
             throw new ServiceException("相同属性数据节点已存在");
         }
-        localDataNode.setNodeId(formatSetDataNodeResp.getNodeResp().getNodeId());
-        localDataNode.setConnStatus(formatSetDataNodeResp.getNodeResp().getConnStatus());
-        localDataNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
-        localDataNode.setRecCreateTime(LocalDateTime.now());
-        return localDataNodeMapper.insert(localDataNode);
+
+        RegisteredNodeResp response = yarnClient.setDataNode(dataNode);
+
+        dataNode.setNodeId(response.getNodeId());
+        dataNode.setConnStatus(response.getConnStatus());
+        dataNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
+        dataNode.setRecCreateTime(LocalDateTime.now());
+        return localDataNodeMapper.insert(dataNode);
     }
 
     /**
      * 校验数据节点名称是否可用
      *
-     * @param localDataNode
+     * @param dataNode
      * @return true可用，false不可用
      */
     @Override
-    public boolean checkDataNodeName(LocalDataNode localDataNode) {
-        String dbNodeId = localDataNodeMapper.getDataNodeIdByName(localDataNode.getNodeName());
-        if (!StrUtil.isBlank(dbNodeId) && !dbNodeId.equals(localDataNode.getNodeId())) {
+    public boolean checkDataNodeName(LocalDataNode dataNode) {
+        String dbNodeId = localDataNodeMapper.getDataNodeIdByName(dataNode.getNodeName());
+        if (!StrUtil.isBlank(dbNodeId) && !dbNodeId.equals(dataNode.getNodeId())) {
             return false;
         }
         return true;
@@ -90,21 +87,18 @@ public class DataNodeServiceImpl implements DataNodeService {
     /**
      * 修改数据节点
      *
-     * @param localDataNode
+     * @param dataNode
      * @return
      */
     @Override
-    public int updateDataNode(LocalDataNode localDataNode) {
-        if (!checkDataNodeId(localDataNode)) {
+    public int updateDataNode(LocalDataNode dataNode) {
+        if (!checkDataNodeId(dataNode)) {
             throw new ServiceException("相同属性数据节点已存在");
         }
-        FormatSetDataNodeResp formatSetDataNodeResp = yarnClient.updateDataNode(localDataNode);
-        if (GrpcConstant.GRPC_SUCCESS_CODE != formatSetDataNodeResp.getStatus()) {
-            throw new ServiceException("调度服务调用失败");
-        }
-        localDataNode.setConnStatus(formatSetDataNodeResp.getNodeResp().getConnStatus());
-        localDataNode.setRecUpdateTime(LocalDateTime.now());
-        return localDataNodeMapper.update(localDataNode);
+        RegisteredNodeResp response = yarnClient.updateDataNode(dataNode);
+        dataNode.setConnStatus(response.getConnStatus());
+        dataNode.setRecUpdateTime(LocalDateTime.now());
+        return localDataNodeMapper.update(dataNode);
     }
 
     /**
@@ -115,23 +109,20 @@ public class DataNodeServiceImpl implements DataNodeService {
      */
     @Override
     public int deleteDataNode(String nodeId) {
-        CommonResp commonResp = yarnClient.deleteDataNode(nodeId);
-        if (GrpcConstant.GRPC_SUCCESS_CODE != commonResp.getStatus()) {
-            throw new ServiceException("调度服务调用失败");
-        }
+        yarnClient.deleteDataNode(nodeId);
         return localDataNodeMapper.deleteByPrimaryKey(nodeId);
     }
 
     /**
      * 校验具有相同属性的其他数据节点是否已存在
      *
-     * @param queryLocalDataNode 条件参数
+     * @param queryDataNode 条件参数
      * @return true校验通过，不存在，false校验不通过，已存在
      */
-    public boolean checkDataNodeId(LocalDataNode queryLocalDataNode) {
-        LocalDataNode localDataNode = localDataNodeMapper.selectByProperties(queryLocalDataNode);
+    public boolean checkDataNodeId(LocalDataNode queryDataNode) {
+        LocalDataNode dataNode = localDataNodeMapper.selectByProperties(queryDataNode);
         //数据库存在符合条件的数据，且nodeId与当前数据不一致
-        if (ObjectUtil.isNotNull(localDataNode) && !localDataNode.getNodeId().equals(queryLocalDataNode.getNodeId())) {
+        if (ObjectUtil.isNotNull(dataNode) && !dataNode.getNodeId().equals(queryDataNode.getNodeId())) {
             return false;
         }
         return true;

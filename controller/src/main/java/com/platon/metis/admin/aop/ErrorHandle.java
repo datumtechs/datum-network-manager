@@ -2,6 +2,7 @@ package com.platon.metis.admin.aop;
 
 import cn.hutool.core.util.StrUtil;
 import com.platon.metis.admin.common.exception.ApplicationException;
+import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.enums.ResponseCodeEnum;
 import com.platon.metis.admin.service.exception.ServiceException;
@@ -50,20 +51,18 @@ public class ErrorHandle {
     @ExceptionHandler(ApplicationException.class)
     public JsonResponse handleApplicationException(ApplicationException exception){
         log.error("handleApplicationException",exception);
-        ApplicationException.ApplicationErrorEnum errorCode = exception.getErrorCode();
-        switch (errorCode){
-            case CARRIER_INFO_NOT_CONFIGURED:
-                return JsonResponse.fail(ResponseCodeEnum.CARRIER_INFO_NOT_CONFIGURED);
-            case IDENTITY_ID_MISSING:
-                return JsonResponse.fail(ResponseCodeEnum.IDENTITY_ID_MISSING);
-            default:
-                return JsonResponse.fail(exception.getErrorMsg());
-        }
+        return JsonResponse.fail(exception);
+    }
+
+    @ExceptionHandler(BizException.class)
+    public JsonResponse handleBizException(BizException exception){
+        log.error("handleBizException",exception);
+        return JsonResponse.fail(exception);
     }
 
     @ExceptionHandler(Exception.class)
     public JsonResponse handleException(Exception exception){
-        log.error("handleException",exception);
-        return JsonResponse.fail(ResponseCodeEnum.FAIL, "System internal error");
+        log.error("handleException", exception);
+        return JsonResponse.fail(ResponseCodeEnum.FAIL, "System internal error:" + exception.getMessage());
     }
 }

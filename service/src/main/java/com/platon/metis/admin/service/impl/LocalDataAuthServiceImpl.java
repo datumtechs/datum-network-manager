@@ -2,6 +2,7 @@ package com.platon.metis.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.dao.LocalDataAuthMapper;
 import com.platon.metis.admin.dao.LocalDataFileMapper;
 import com.platon.metis.admin.dao.LocalMetaDataColumnMapper;
@@ -10,8 +11,6 @@ import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.dao.enums.DataAuthStatusEnum;
 import com.platon.metis.admin.dao.enums.DataAuthTypeEnum;
 import com.platon.metis.admin.grpc.client.AuthClient;
-import com.platon.metis.admin.grpc.constant.GrpcConstant;
-import com.platon.metis.admin.grpc.service.AuthRpcMessage;
 import com.platon.metis.admin.service.LocalDataAuthService;
 import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +65,7 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
 
         LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
         if(Objects.isNull(localDataAuth) || Objects.isNull(localDataAuth.getMetaDataId()) || "".equals(localDataAuth.getMetaDataId())){
-             throw new ServiceException("metaDataID异常，不可为空");
+            throw new ServiceException("metaDataID异常，不可为空");
         }
 
         LocalMetaData localMetaData = localMetaDataMapper.selectByMetaDataId(localDataAuth.getMetaDataId());
@@ -92,7 +91,7 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
 
         LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
         if(Objects.isNull(localDataAuth)){
-           throw new ServiceException("id可能无效,请检查");
+            throw new ServiceException("id可能无效,请检查");
         }
         if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
             throw new ServiceException("此数据已经授权过,不能重复授权");
@@ -102,13 +101,16 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
         String auditDesc = "";
         //过期了
         if(localDataAuth.getAuthType() == DataAuthTypeEnum.TIME_PERIOD.type && localDataAuth.getAuthValueEndAt().isBefore(LocalDateTime.now(ZoneOffset.UTC))){
+            log.warn("data auth request is expired, just refuse it.");
             auditOption =  DataAuthStatusEnum.REFUSE.getStatus();
-            auditDesc = "data auth request is expired.";
+            auditDesc = "data auth request is expired, just refuse it.";
         }
-        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
 
-        if(response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
-           throw new ServiceException("调用rpc授权失败" + response.getMsg());
+        try {
+            authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
+        } catch (BizException e) {
+            log.error("审批元数据授权申请失败:" , e);
+            throw new ServiceException("审批元数据授权申请失败：" + e.getMessage());
         }
 
         LocalDataAuth dataAuth = new LocalDataAuth();
@@ -126,17 +128,20 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
             throw new ServiceException("id可能无效,请检查");
         }
         if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
+            log.warn("data auth request is processed already.");
             throw new ServiceException("此数据已经授权过,不能重复授权");
         }
-        AuthRpcMessage.AuditMetadataAuthorityResponse response = authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus(), "");
-        if(response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE){
-            throw new ServiceException("调用rpc授权失败" + response.getMsg());
-        }else{
-            LocalDataAuth dataAuth = new LocalDataAuth();
-            dataAuth.setAuthId(authId);
-            dataAuth.setStatus(response.getAuditValue());
-            dataAuth.setAuthAt(LocalDateTime.now());
-            localDataAuthMapper.updateByPrimaryKeySelective(dataAuth);
+        try {
+            authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus(), "");
+        } catch (BizException e) {
+            log.error("拒绝元数据授权申请失败:" , e);
+            throw new ServiceException("拒绝元数据授权申请失败：" + e.getMessage());
         }
+
+        LocalDataAuth dataAuth = new LocalDataAuth();
+        dataAuth.setAuthId(authId);
+        dataAuth.setStatus(DataAuthStatusEnum.REFUSE.getStatus());
+        dataAuth.setAuthAt(LocalDateTime.now());
+        localDataAuthMapper.updateByPrimaryKeySelective(dataAuth);
     }
 }

@@ -84,13 +84,13 @@ logging:
       # max-history: 20
 
 # =============================== conf for scheduled task ===================================
-DataAuthRefreshTask.fixedDelay: 20000
-DataNodeRefreshTask.fixedDelay: 2000
-GlobalDataRefreshTask.fixedDelay: 10000
-GlobalPowerRefreshTask.fixedDelay: 10000
-LocalOrgRefreshTask.fixedDelay: 10000
+LocalCarrierStatusRefreshTask.fixedDelay: 20000
+LocalDataAuthReqRefreshTask.fixedDelay: 20000
+LocalDataNodeRefreshTask.fixedDelay: 2000
+LocalMetaDataStatusRefreshTask.fixedDelay: 10000
+LocalPowerNodeRefreshTask.fixedDelay: 10000
 LocalTaskRefreshTask.fixedDelay: 20000
-PowerNodeRefreshTask.fixedDelay: 60000
 SeedNodeRefreshTask.fixedDelay: 30000
+
 # 超时时间，单位：秒
 grpc-client-timeout: 5

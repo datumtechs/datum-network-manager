@@ -1,11 +1,10 @@
 package com.platon.metis.admin.grpc.client;
 
-import com.platon.metis.admin.common.exception.ApplicationException;
+import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.*;
-import com.platon.metis.admin.grpc.channel.BaseChannelManager;
+import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.common.CommonData;
-import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.TaskRpcMessage;
 import com.platon.metis.admin.grpc.service.TaskServiceGrpc;
 import io.grpc.Channel;
@@ -18,8 +17,12 @@ import javax.annotation.Resource;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
 
 /**
  * @Author liushuyu
@@ -37,12 +40,8 @@ public class TaskClient {
     public static String NODE_NAME = "nodeName";
     public static String NODE_ID = "nodeId";
 
-    @Resource(name = "simpleChannelManager")
-    private BaseChannelManager channelManager;
-
-    public static  final String SERVER_HOST = "192.168.21.164";
-    public static  final int SERVER_IP = 4444;
-    private Channel channel;
+    @Resource
+    private SimpleChannelManager channelManager;
 
 
     /**
@@ -51,31 +50,23 @@ public class TaskClient {
      */
     public Pair<List<Task>, Map<String, TaskOrg>> getLocalTaskList(LocalDateTime latestSynced) {
 
+        Channel channel = channelManager.getCarrierChannel();
 
-        try {
-            //1.获取rpc连接
-            channel = channelManager.getScheduleServer();
+        //2.构造 request
+        TaskRpcMessage.GetTaskDetailListRequest request = TaskRpcMessage.GetTaskDetailListRequest
+                .newBuilder()
+                .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
+                .build();
 
-            //2.构造 request
-            TaskRpcMessage.GetTaskDetailListRequest request = TaskRpcMessage.GetTaskDetailListRequest
-                    .newBuilder()
-                    .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
-                    .build();
-            //3.调用rpc服务接口
-            TaskRpcMessage.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskDetailList(request);
-            //4.处理response
-            if(GrpcConstant.GRPC_SUCCESS_CODE == response.getStatus()){
-                return dataConvertToTaskList(response.getTaskListList());
-            }else{
-                log.error("查询本组织参与的任务出错, code:{}, errorMsg:{}", response.getStatus(), response.getMsg());
-                return null;
-            }
-        } catch (ApplicationException e) {
-                 e.printStackTrace();
-        } finally {
-            //channelManager.closeChannel(channel);
+        //3.调用rpc服务接口
+        TaskRpcMessage.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskDetailList(request);
+        //4.处理response
+        if (response == null) {
+            throw new CallGrpcServiceFailed();
+        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+            throw new CallGrpcServiceFailed(response.getMsg());
         }
-        return null;
+        return dataConvertToTaskList(response.getTaskListList());
     }
 
 
@@ -85,39 +76,36 @@ public class TaskClient {
      * @return
      */
     public List<TaskEvent> getTaskEventListData(List<String> taskIds) {
-        try {
-            //1.获取rpc连接
-            if(channel == null){
-                 channel = channelManager.getScheduleServer();
-            }
-            //2.构造 request
-            TaskRpcMessage.GetTaskEventListByTaskIdsRequest request = TaskRpcMessage.GetTaskEventListByTaskIdsRequest.newBuilder().addAllTaskIds(taskIds).build();
-            //3.调用rpc服务接口
-            TaskRpcMessage.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskEventListByTaskIds(request);
-            log.debug("====> RPC客户端 taskEventListResponse:" + response.getMsg() +" , taskEventList Size:"+ response.getTaskEventListList().size());
 
-            //4.处理response
-            if(!Objects.isNull(response) && GrpcConstant.GRPC_SUCCESS_CODE == response.getStatus()){
-                List<TaskRpcMessage.TaskEventShow> taskEventShowList = response.getTaskEventListList();
-                //构造taskEvent集合
-                return taskEventShowList.parallelStream().map(taskEvenShow -> {
-                            TaskEvent taskEvent = new TaskEvent();
-                            taskEvent.setTaskId(taskEvenShow.getTaskId());
-                            taskEvent.setEventAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(taskEvenShow.getCreateAt()), ZoneOffset.UTC));
-                            taskEvent.setEventContent(taskEvenShow.getContent());
-                            taskEvent.setEventType(taskEvenShow.getType());
-                            taskEvent.setIdentityId(taskEvenShow.getOwner().getIdentityId());
-                            taskEvent.setPartyId(taskEvenShow.getPartyId());
-                            return taskEvent;
-                }).collect(Collectors.toList());
+        Channel channel = channelManager.getCarrierChannel();
 
-            } else {
-                log.error("获取任务的事件列表出错: code:{}, errorMsg:{}", response.getStatus(), response.getMsg());
-                return null;
-            }
-        } finally {
-            channelManager.closeChannel(channel);
+        //2.构造 request
+        TaskRpcMessage.GetTaskEventListByTaskIdsRequest request = TaskRpcMessage.GetTaskEventListByTaskIdsRequest.newBuilder().addAllTaskIds(taskIds).build();
+        //3.调用rpc服务接口
+        TaskRpcMessage.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskEventListByTaskIds(request);
+
+        //4.处理response
+        if (response == null) {
+            throw new CallGrpcServiceFailed();
+        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+            throw new CallGrpcServiceFailed(response.getMsg());
         }
+
+        List<TaskEvent> taskEventList = new ArrayList<>();
+        //构造taskEvent集合
+        for (TaskRpcMessage.TaskEventShow taskEvenShow : response.getTaskEventListList()) {
+            TaskEvent taskEvent = new TaskEvent();
+            taskEvent.setTaskId(taskEvenShow.getTaskId());
+            taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt()/1000,0, ZoneOffset.ofHours(8)));
+            taskEvent.setEventContent(taskEvenShow.getContent());
+            taskEvent.setEventType(taskEvenShow.getType());
+            taskEvent.setIdentityId(taskEvenShow.getOwner().getIdentityId());
+            taskEvent.setPartyId(taskEvenShow.getPartyId());
+            //添加
+            taskEventList.add(taskEvent);
+        }
+        return taskEventList;
+
     }
 
 

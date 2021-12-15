@@ -3,11 +3,11 @@ package com.platon.metis.admin.grpc.client;
 import cn.hutool.core.util.StrUtil;
 import com.google.protobuf.ByteString;
 import com.platon.metis.admin.common.exception.ApplicationException;
-import com.platon.metis.admin.grpc.channel.BaseChannelManager;
+import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.entity.DataProviderUploadDataResp;
 import com.platon.metis.admin.grpc.service.DataProviderGrpc;
 import com.platon.metis.admin.grpc.service.DataProviderRpcMessage;
-import io.grpc.Channel;
+import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -32,8 +32,8 @@ import java.util.concurrent.atomic.AtomicReference;
 @Slf4j
 public class DataProviderClient {
 
-    @Resource(name = "simpleChannelManager")
-    private BaseChannelManager channelManager;
+    @Resource
+    private SimpleChannelManager channelManager;
 
 
     /**
@@ -45,7 +45,7 @@ public class DataProviderClient {
         byte[] fileContent = file.getBytes();
         //1.获取rpc连接
         CountDownLatch count = new CountDownLatch(1);
-        Channel channel = null;
+        ManagedChannel channel = null;
         try{
             channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
             //2.构建response流观察者
@@ -54,7 +54,7 @@ public class DataProviderClient {
             StreamObserver<DataProviderRpcMessage.UploadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.UploadReply>() {
                 @Override
                 public void onNext(DataProviderRpcMessage.UploadReply uploadReply) {
-                    log.info("观察者模式执行了onNext-========================:{}", uploadReply.toString());
+                    log.debug("观察者模式执行了onNext-========================:{}", uploadReply.toString());
                     //5.处理response
                     if(!uploadReply.getOk()){
                         ex.set(new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName)));
@@ -68,13 +68,13 @@ public class DataProviderClient {
                 }
                 @Override
                 public void onError(Throwable throwable) {
-                    log.info("观察者模式执行了onError-========================:{}", throwable.toString());
+                    log.debug("观察者模式执行了onError-========================:{}", throwable.toString());
                     count.countDown();
                     ex.set(new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName),throwable));
                 }
                 @Override
                 public void onCompleted() {
-                    log.info("观察者模式执行了onCompleted-========================:{}", "观察者模式执行了onCompleted");
+                    log.debug("观察者模式执行了onCompleted-========================:{}", "观察者模式执行了onCompleted");
                     count.countDown();
                 }
             };
@@ -118,7 +118,7 @@ public class DataProviderClient {
             try {
                 //等待服务端数据返回
                 boolean await = count.await(60, TimeUnit.SECONDS);
-                    if(!await){
+                if(!await){
                     throw new ApplicationException(StrUtil.format("超过等待时间，上传文件失败：文件名:{}",fileName));
                 }
             } catch (InterruptedException e) {
@@ -141,11 +141,11 @@ public class DataProviderClient {
      * @param dataNodePort 数据节点端口
      * @param filePath 要下载文件的文件路径
      */
-    public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath) throws ApplicationException{
+    public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath){
         AtomicReference<ByteString> byteString = new AtomicReference<>(ByteString.EMPTY);
         CountDownLatch count = new CountDownLatch(1);
         //1.获取rpc连接
-        Channel channel = null;
+        ManagedChannel channel = null;
         try{
             channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
             //2.构建请求
@@ -178,10 +178,10 @@ public class DataProviderClient {
                          */
                         switch (status.getNumber()){
                             case 0:
-                                log.info("开始下载文件filePath:{}，状态:{}.......",filePath,"Start");
+                                log.debug("开始下载文件filePath:{}，状态:{}.......",filePath,"Start");
                                 break;
                             case 1:
-                                log.info("下载完成文件filePath:{}，状态:{}.......",filePath,"Finished");
+                                log.debug("下载完成文件filePath:{}，状态:{}.......",filePath,"Finished");
                                 break;
                             case 2:
                                 ex.set(new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Cancelled")));

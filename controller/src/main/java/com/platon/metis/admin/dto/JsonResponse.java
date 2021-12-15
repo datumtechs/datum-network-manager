@@ -2,6 +2,8 @@ package com.platon.metis.admin.dto;
 
 
 import com.github.pagehelper.Page;
+import com.platon.metis.admin.common.exception.ApplicationException;
+import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.enums.ResponseCodeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -69,12 +71,19 @@ public class JsonResponse<T> {
         return new JsonResponse(ResponseCodeEnum.FAIL.getCode(), message, null);
     }
 
+    public static JsonResponse fail(BizException e) {
+        return new JsonResponse(e.getErrorCode(), e.getMessage(), null);
+    }
     public static JsonResponse fail(ResponseCodeEnum code) {
         return new JsonResponse(code.getCode(), code.getMessage(), null);
     }
 
     public static JsonResponse fail(ResponseCodeEnum code, String message) {
         return new JsonResponse(code.getCode(), message, null);
+    }
+
+    public static JsonResponse fail(ApplicationException e) {
+        return new JsonResponse(e.getErrorCode().ordinal(), e.getErrorMsg(), null);
     }
 
     /**

@@ -16,15 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
-
-import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
 
 /**
  *
@@ -33,11 +30,11 @@ import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_COD
 
 @Slf4j
 @Configuration
-@EnableScheduling
 public class LocalCarrierStatusRefreshTask {
 
     @Resource
     private LocalOrgMapper localOrgMapper;
+
     @Resource
     private YarnClient yarnClient;
 
@@ -47,15 +44,17 @@ public class LocalCarrierStatusRefreshTask {
     @Value("${spring.cloud.consul.port}")
     private Integer consulPort;
 
-    @Value("${spring.cloud.consul.carrierRegisteredName}")
+    @Value("${spring.cloud.consul.carrierServiceName}")
     private String carrierServiceName;
 
-    private final ConsulClient consulClient = new ConsulClient(consulHost, consulPort);
+    //private final ConsulClient consulClient = new ConsulClient(consulHost, consulPort);
 
-    @Scheduled(fixedDelayString = "${LocalCarrierStatusRefreshTask.fixedDelay}")
+
     @Transactional
+    @Scheduled(fixedDelayString = "${LocalCarrierStatusRefreshTask.fixedDelay}")
     public void task(){
         log.debug("刷新本组织调度服务状态定时任务开始>>>");
+        ConsulClient consulClient = new ConsulClient(consulHost, consulPort);
         LocalOrg localOrg = localOrgMapper.select();
         if(localOrg == null){
             log.warn("请先申请身份标识");
@@ -93,21 +92,17 @@ public class LocalCarrierStatusRefreshTask {
         }else{
             //### 刷新调度服务状态和入网状态
             YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
-            if(nodeInfo.getStatus() != GRPC_SUCCESS_CODE){
-                log.error("获取调度服务节点信息失败：{}", nodeInfo.getMsg());
-            } else {
-                localOrg.setCarrierStatus(nodeInfo.getState());
-                localOrg.setCarrierNodeId(nodeInfo.getNodeId());
-                localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
-                localOrg.setConnNodeCount(nodeInfo.getConnCount());
-                localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
-                localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
+            localOrg.setCarrierStatus(nodeInfo.getState());
+            localOrg.setCarrierNodeId(nodeInfo.getNodeId());
+            localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
+            localOrg.setConnNodeCount(nodeInfo.getConnCount());
+            localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
+            localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
 
-                if(localOrg.getIdentityId().equals(nodeInfo.getIdentityId())){//相同表示入网了
-                    localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
-                } else {
-                    localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
-                }
+            if(localOrg.getIdentityId().equals(nodeInfo.getIdentityId())){//相同表示入网了
+                localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
+            } else {
+                localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
             }
         }
         localOrgMapper.update(localOrg);

@@ -27,7 +27,6 @@ import com.platon.metis.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.metis.admin.grpc.entity.YarnQueryFilePositionResp;
 import com.platon.metis.admin.service.LocalDataService;
 import com.platon.metis.admin.service.exception.ServiceException;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +36,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -147,7 +148,6 @@ public class LocalDataServiceImpl implements LocalDataService {
         return localMetaDataMapper.deleteByPrimaryKey(id);
     }
 
-    @SneakyThrows
     @Override
     public void downLoad(HttpServletResponse response, Integer id) {
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
@@ -201,7 +201,6 @@ public class LocalDataServiceImpl implements LocalDataService {
 
       @Override
     public void down(Integer id) {
-        Date operateDate = new Date();
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
 
         //已发布状态的元数据不允许修改
@@ -224,14 +223,15 @@ public class LocalDataServiceImpl implements LocalDataService {
         LocalDataFile localDataFile = localDataFileMapper.selectByFileId(localMetaData.getFileId());
 
         //调用grpc
-        String metaDataId = metaDataClient.publishMetaData(localDataFile, localMetaData);
-        if(StrUtil.isEmpty(metaDataId)){
+        String publishMetaDataId = metaDataClient.publishMetaData(localDataFile, localMetaData);
+        //String publishMetaDataId = "metadata:0x3426733d8fbd4a27ed26f06b35caa6ac63bca1fc09b98e56e1b262da9a357ffd";
+        if(StrUtil.isBlank(publishMetaDataId)){
             throw new ServiceException("调度服务未返回元数据ID");
         }
 
-        localMetaData.setMetaDataId(metaDataId);
-        //localMetaData.setStatus(LocalDataFileStatusEnum.RELEASED.getStatus());
-        //localMetaData.setPublishTime(LocalDateTime.now(ZoneOffset.UTC));
+        localMetaData.setMetaDataId(publishMetaDataId);
+        localMetaData.setStatus(LocalDataFileStatusEnum.RELEASED.getStatus());
+        localMetaData.setPublishTime(LocalDateTime.now(ZoneOffset.UTC));
         return localMetaDataMapper.updateByPrimaryKey(localMetaData);
     }
 
@@ -314,7 +314,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         //导入去掉.csv后缀的文件名称，保存前12个字符作为资源名称
         String resourceName = StrUtil.sub(FileUtil.getPrefix(fileName),0,12);
         //因为上层已做资源文件名称校验，故此处暂时不再做校验
-       return resourceName;
+        return resourceName;
     }
 
 

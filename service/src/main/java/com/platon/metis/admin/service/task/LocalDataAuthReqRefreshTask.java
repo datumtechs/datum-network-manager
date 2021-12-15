@@ -36,7 +36,7 @@ public class LocalDataAuthReqRefreshTask {
     private DataSyncService dataSyncService;
 
     @Transactional
-    @Scheduled(fixedDelayString = "${SyncLocalDataAuthReqTask.fixedDelay}")
+    @Scheduled(fixedDelayString = "${LocalDataAuthReqRefreshTask.fixedDelay}")
     public void task() {
         log.debug("刷新数据授权申请定时任务开始>>>");
         while(true) {
