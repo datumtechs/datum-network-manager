@@ -68,7 +68,7 @@ DROP TABLE IF EXISTS `global_meta_data_column`;
 CREATE TABLE `global_meta_data_column` (
   `meta_data_id` varchar(256) NOT NULL COMMENT '元数据ID,hash',
   `column_idx` INT NOT NULL COMMENT '列索引',
-  `column_name` varchar(32) DEFAULT NULL COMMENT '列名',
+  `column_name` varchar(100) DEFAULT NULL COMMENT '列名',
   `column_type` varchar(32) DEFAULT NULL COMMENT '列类型',
   `size` INT DEFAULT 0 COMMENT '列大小（byte）',
   `remarks` varchar(32) DEFAULT NULL COMMENT '列描述',
@@ -91,7 +91,7 @@ CREATE TABLE global_power (
   used_core INT DEFAULT 0 COMMENT '使用的core',
   used_bandwidth BIGINT DEFAULT 0 COMMENT '使用的带宽, bps',
   published BOOLEAN NOT NULL DEFAULT FALSE COMMENT '是否发布，true/false',
-  publish_at DATETIME(3) NOT NULL DEFAULT NOW() comment '发布时间',
+  publish_at DATETIME(3) NOT NULL comment '发布时间',
   status int COMMENT '算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)',
   update_at DATETIME NOT NULL comment '(状态)修改时间',
   PRIMARY KEY (id)
@@ -121,7 +121,7 @@ DROP TABLE IF EXISTS `local_data_file_column`;
 CREATE TABLE `local_data_file_column` (
     `file_id` varchar(256) NOT NULL COMMENT '文件ID',
     `column_idx` INT NOT NULL COMMENT '列索引',
-    `column_name` varchar(32) DEFAULT NULL COMMENT '列名',
+    `column_name` varchar(100) DEFAULT NULL COMMENT '列名',
     `column_type` varchar(32) DEFAULT NULL COMMENT '列类型',
     `size` INT DEFAULT 0 COMMENT '列大小（byte）',
     `remarks` varchar(32) DEFAULT NULL COMMENT '列描述',
@@ -157,7 +157,7 @@ CREATE TABLE `local_meta_data_column` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `local_meta_data_db_id` INT NOT NULL COMMENT '元数据local_meta_data自增id',
   `column_idx` INT DEFAULT NULL COMMENT '列索引',
-  `column_name` varchar(32) DEFAULT '' COMMENT '列名',
+  `column_name` varchar(100) DEFAULT '' COMMENT '列名',
   `column_type` varchar(32) DEFAULT '' COMMENT '列类型',
   `size` int DEFAULT 0 COMMENT '列大小（byte）',
   `remarks` varchar(32) DEFAULT '' COMMENT '列描述',
@@ -418,7 +418,7 @@ CREATE TABLE `task_event` (
   `identity_id` varchar(256) NOT NULL COMMENT '产生事件的组织身份ID',
   party_id VARCHAR(200) NOT NULL COMMENT '产生事件的partyId (单个组织可以担任任务的多个party, 区分是哪一方产生的event)',
   `event_at` datetime(3) NOT NULL COMMENT '产生事件的时间',
-  `event_content` varchar(512) NOT NULL COMMENT '事件内容',
+  `event_content` varchar(1024) NOT NULL COMMENT '事件内容',
   PRIMARY KEY (`ID`)
 ) COMMENT='任务事件表';
 
