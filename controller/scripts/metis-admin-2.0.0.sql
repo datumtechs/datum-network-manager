@@ -364,7 +364,7 @@ DROP TABLE IF EXISTS `task`;
 CREATE TABLE `task` (
     `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
     `task_Id` varchar(256) NOT NULL COMMENT '任务ID',
-    `task_Name` varchar(32) DEFAULT NULL COMMENT '任务名称',
+    `task_Name` varchar(100) DEFAULT NULL COMMENT '任务名称',
     `owner_Identity_id` varchar(256) DEFAULT NULL COMMENT '任务发起方组织ID',
     `owner_party_id` varchar(256) DEFAULT NULL COMMENT '任务发起方组织ID',
     `apply_user` varchar(256) DEFAULT NULL COMMENT '发起任务的用户ID',
