@@ -279,8 +279,7 @@
       #{createAt,jdbcType=TIMESTAMP}, #{startAt,jdbcType=TIMESTAMP}, #{authAt,jdbcType=TIMESTAMP}, 
       #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
       #{duration,jdbcType=BIGINT}, #{costCore,jdbcType=INTEGER}, #{costMemory,jdbcType=BIGINT},
-      #{costBandwidth,jdbcType=BIGINT}, #{reviewed,jdbcType=BIT},
-      #{recCreateTime,jdbcType=TIMESTAMP}, #{recUpdateTime,jdbcType=TIMESTAMP})
+      #{costBandwidth,jdbcType=BIGINT}, #{reviewed,jdbcType=BIT})
   </insert>
 
 
@@ -290,8 +289,7 @@
     create_At, start_At, auth_At,
     auth_Status, end_At, status,
     duration, cost_core, cost_Memory,
-    cost_Bandwidth,
-    rec_create_time, rec_update_time)
+    cost_Bandwidth)
     values
     <foreach collection ="list" item="item" index="index" separator=",">
       (#{item.taskId,jdbcType=VARCHAR}, #{item.taskName,jdbcType=VARCHAR}, #{item.ownerIdentityId,jdbcType=VARCHAR}, #{item.ownerPartyId,jdbcType=VARCHAR},
@@ -299,8 +297,7 @@
       #{item.createAt,jdbcType=TIMESTAMP}, #{item.startAt,jdbcType=TIMESTAMP}, #{item.authAt,jdbcType=TIMESTAMP},
       #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER},
       #{item.duration,jdbcType=BIGINT}, #{item.costCore,jdbcType=INTEGER}, #{item.costMemory,jdbcType=BIGINT},
-      #{item.costBandwidth,jdbcType=BIGINT},
-      #{item.recCreateTime,jdbcType=TIMESTAMP}, #{item.recUpdateTime,jdbcType=TIMESTAMP})
+      #{item.costBandwidth,jdbcType=BIGINT})
     </foreach>
   </insert>
 
@@ -324,9 +321,7 @@
       cost_core = #{costCore,jdbcType=INTEGER},
       cost_Memory = #{costMemory,jdbcType=BIGINT},
       cost_Bandwidth = #{costBandwidth,jdbcType=BIGINT},
-      reviewed = #{reviewed,jdbcType=BIT},
-      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      reviewed = #{reviewed,jdbcType=BIT}
     where task_Id = #{taskId,jdbcType=VARCHAR}
   </update>
 
@@ -359,9 +354,7 @@
       cost_core = #{costCore,jdbcType=INTEGER},
       cost_Memory = #{costMemory,jdbcType=BIGINT},
       cost_Bandwidth = #{costBandwidth,jdbcType=BIGINT},
-      reviewed = #{reviewed,jdbcType=BIT},
-      rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
-      rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
+      reviewed = #{reviewed,jdbcType=BIT}
       where task_Id = #{taskId,jdbcType=VARCHAR}
     </foreach>
   </update>
