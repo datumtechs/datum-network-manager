@@ -1,6 +1,6 @@
 package com.platon.metis.admin.common.context;
 
-import com.platon.metis.admin.common.exception.ApplicationException;
+import com.platon.metis.admin.common.exception.IdentityIdMissing;
 
 /**
  * @Author liushuyu
@@ -15,7 +15,7 @@ public class LocalOrgIdentityCache {
     public static String getIdentityId(){
         String identityId = (String)AppContext.get(IDENTITY_ID);
         if(identityId == null){
-            throw new ApplicationException("使用平台功能需要申请身份标识，需要申请身份标识",ApplicationException.ApplicationErrorEnum.IDENTITY_ID_MISSING);
+            throw new IdentityIdMissing();
         }
         return identityId;
     }

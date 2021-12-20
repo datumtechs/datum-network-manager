@@ -83,7 +83,7 @@ public class JsonResponse<T> {
     }
 
     public static JsonResponse fail(ApplicationException e) {
-        return new JsonResponse(e.getErrorCode().ordinal(), e.getErrorMsg(), null);
+        return new JsonResponse(ResponseCodeEnum.FAIL.getCode(), e.getErrorMsg(), null);
     }
 
     /**
