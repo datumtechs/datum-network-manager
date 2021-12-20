@@ -134,7 +134,12 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
             auditOption =  DataAuthStatusEnum.REFUSE.getStatus();
             auditDesc = "data auth request is expired.";
         }
-        authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
+        try {
+            authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
+        }catch(Throwable e){
+            log.error("Failed to call carrier to approve metadata auth request.");
+            return false;
+        }
         //设置最后结果是：同意，还是拒绝
         localDataAuth.setStatus(auditOption);
         localDataAuth.setAuthAt(LocalDateTime.now());
