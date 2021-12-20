@@ -51,7 +51,7 @@ public class ErrorHandle {
     @ExceptionHandler(ApplicationException.class)
     public JsonResponse handleApplicationException(ApplicationException exception){
         log.error("handleApplicationException",exception);
-        return JsonResponse.fail(exception);
+        return JsonResponse.fail(exception.getErrorMsg());
     }
 
     @ExceptionHandler(BizException.class)
