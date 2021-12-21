@@ -2,6 +2,8 @@ package com.platon.metis.admin.controller.user;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import com.platon.metis.admin.common.context.LocalOrgCache;
+import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dto.JsonResponse;
@@ -147,6 +149,13 @@ public class UserController {
     @GetMapping("/findLocalOrgInfo")
     public JsonResponse<LocalOrg> findLocalOrgInfo(){
         LocalOrg localOrg = localOrgService.getLocalOrg();
+        if (localOrg == null){
+            LocalOrgCache.setLocalOrgInfo(null);
+            LocalOrgIdentityCache.setIdentityId(null);
+        }else{
+            LocalOrgCache.setLocalOrgInfo(localOrg);
+            LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
+        }
         return JsonResponse.success(localOrg);
     }
 }

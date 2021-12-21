@@ -117,7 +117,7 @@ public class DataProviderClient {
              */
             try {
                 //等待服务端数据返回
-                boolean await = count.await(60, TimeUnit.SECONDS);
+                boolean await = count.await(1800, TimeUnit.SECONDS);
                     if(!await){
                     throw new ApplicationException(StrUtil.format("超过等待时间，上传文件失败：文件名:{}",fileName));
                 }
@@ -215,7 +215,7 @@ public class DataProviderClient {
              */
             try {
                 //等待服务端数据返回
-                boolean await = count.await(60, TimeUnit.SECONDS);
+                boolean await = count.await(1800, TimeUnit.SECONDS);
                 if(!await){
                     throw new ApplicationException(StrUtil.format("超过等待时间，下载文件失败：文件路劲:{}",filePath));
                 }

@@ -3,12 +3,14 @@ package com.platon.metis.admin.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.metis.admin.common.context.LocalOrgCache;
-import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
+import com.platon.metis.admin.common.exception.IdentityIdMissing;
+import com.platon.metis.admin.common.exception.OrgInfoNotFound;
 import com.platon.metis.admin.dao.*;
 import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.dao.enums.TaskStatusEnum;
 import com.platon.metis.admin.service.TaskService;
 import com.platon.metis.admin.service.constant.ServiceConstant;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -90,8 +92,15 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskStatistics taskStatistics() {
-        String identityId=LocalOrgIdentityCache.getIdentityId();
-        return taskMapper.taskStatistics(identityId);
+        //String identityId = LocalOrgIdentityCache.getIdentityId();
+        LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+        if(localOrg == null){
+            throw new OrgInfoNotFound();
+        }else if(StringUtils.isBlank(localOrg.getIdentityId())){
+            throw new IdentityIdMissing();
+        }
+
+        return taskMapper.taskStatistics(localOrg.getIdentityId());
     }
 
     @Override
@@ -101,8 +110,15 @@ public class TaskServiceImpl implements TaskService {
         TaskOrg owner = taskOrgMapper.findOrgByIdentityId(task.getOwnerIdentityId());
         task.setOwner(owner);
 
+        LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+        if(localOrg == null){
+            throw new OrgInfoNotFound();
+        }else if(StringUtils.isBlank(localOrg.getIdentityId())){
+            throw new IdentityIdMissing();
+        }
+
         //本组织在此任务中的身份
-        Map<String, Boolean> roleMap = taskMapper.listRoleByTaskIdAndIdentityId(taskId, ((LocalOrg)LocalOrgCache.getLocalOrgInfo()).getIdentityId());
+        Map<String, Boolean> roleMap = taskMapper.listRoleByTaskIdAndIdentityId(taskId, localOrg.getIdentityId());
         task.setDynamicFields(roleMap);
 
         //算法提供方

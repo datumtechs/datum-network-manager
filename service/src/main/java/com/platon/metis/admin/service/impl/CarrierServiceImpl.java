@@ -2,6 +2,8 @@ package com.platon.metis.admin.service.impl;
 
 import com.platon.metis.admin.common.context.LocalOrgCache;
 import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
+import com.platon.metis.admin.common.exception.IdentityIdMissing;
+import com.platon.metis.admin.common.exception.OrgInfoNotFound;
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
@@ -12,6 +14,7 @@ import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
 import com.platon.metis.admin.service.CarrierService;
 import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -45,6 +48,12 @@ public class CarrierServiceImpl implements CarrierService {
             return CarrierConnStatusEnum.DISABLED;
         }
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+        if(localOrg == null){
+            throw new OrgInfoNotFound();
+        }else if(StringUtils.isBlank(localOrg.getIdentityId())){
+            throw new IdentityIdMissing();
+        }
+
         localOrg.setRecUpdateTime(new Date());
         localOrg.setCarrierIp(ip);
         localOrg.setCarrierPort(port);
@@ -61,6 +70,11 @@ public class CarrierServiceImpl implements CarrierService {
     @Override
     public Integer applyJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+        if(localOrg == null){
+            throw new OrgInfoNotFound();
+        }else if(StringUtils.isBlank(localOrg.getIdentityId())){
+            throw new IdentityIdMissing();
+        }
 
         try {
             authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName());
@@ -94,6 +108,11 @@ public class CarrierServiceImpl implements CarrierService {
     @Override
     public Integer cancelJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+        if(localOrg == null){
+            throw new OrgInfoNotFound();
+        }else if(StringUtils.isBlank(localOrg.getIdentityId())){
+            throw new IdentityIdMissing();
+        }
 
         try {
             authClient.revokeIdentityJoin();
