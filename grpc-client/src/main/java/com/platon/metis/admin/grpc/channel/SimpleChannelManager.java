@@ -1,15 +1,14 @@
 package com.platon.metis.admin.grpc.channel;
 
 import com.platon.metis.admin.common.context.LocalOrgCache;
-import com.platon.metis.admin.common.exception.ApplicationException;
-import com.platon.metis.admin.common.exception.CannotConnectGrpcServer;
-import com.platon.metis.admin.common.exception.CarrierNotConfigured;
+import com.platon.metis.admin.common.exception.*;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.metis.admin.grpc.interceptor.TimeoutInterceptor;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -84,12 +83,18 @@ public class SimpleChannelManager{
      */
     public ManagedChannel getCarrierChannel() throws CarrierNotConfigured, CannotConnectGrpcServer {
         //获取调度服务的信息
-        LocalOrg localOrgInfo = (LocalOrg) LocalOrgCache.getLocalOrgInfo();
-        if(!CarrierConnStatusEnum.ENABLED.getStatus().equals(localOrgInfo.getCarrierConnStatus())){
+        LocalOrg localOrg = (LocalOrg) LocalOrgCache.getLocalOrgInfo();
+        if(localOrg == null){
+            throw new OrgInfoNotFound();
+        }else if(StringUtils.isBlank(localOrg.getIdentityId())){
+            throw new IdentityIdMissing();
+        }
+
+        if(!CarrierConnStatusEnum.ENABLED.getStatus().equals(localOrg.getCarrierConnStatus())){
             throw new CarrierNotConfigured();
         }
         if (carrierChannel==null){
-            carrierChannel = buildChannel(localOrgInfo.getCarrierIp(), localOrgInfo.getCarrierPort());
+            carrierChannel = buildChannel(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         }
 
         return carrierChannel;
