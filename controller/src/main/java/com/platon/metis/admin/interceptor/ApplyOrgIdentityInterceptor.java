@@ -1,7 +1,6 @@
 package com.platon.metis.admin.interceptor;
 
-import com.platon.metis.admin.common.context.LocalOrgCache;
-import com.platon.metis.admin.common.exception.IdentityIdMissing;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,11 +23,8 @@ public class ApplyOrgIdentityInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest servletRequest, HttpServletResponse servletResponse, Object handler) throws Exception {
 
-        Object localOrgInfo = LocalOrgCache.getLocalOrgInfo();
+        Object localOrgInfo = LocalOrgCache.getLocalOrgIdentityId();
 
-        if(localOrgInfo==null){
-            throw new IdentityIdMissing();
-        }
         return true;
 
         /*return true;

@@ -1,23 +1,23 @@
 package com.platon.metis.admin.grpc.client;
 
-import cn.hutool.core.util.StrUtil;
 import com.google.protobuf.ByteString;
-import com.platon.metis.admin.common.exception.ApplicationException;
+import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
-import com.platon.metis.admin.grpc.entity.DataProviderUploadDataResp;
+import com.platon.metis.admin.grpc.interceptor.TimeoutInterceptor;
 import com.platon.metis.admin.grpc.service.DataProviderGrpc;
 import com.platon.metis.admin.grpc.service.DataProviderRpcMessage;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @Author liushuyu
@@ -35,54 +35,60 @@ public class DataProviderClient {
     @Resource
     private SimpleChannelManager channelManager;
 
+    @Resource
+    private TimeoutInterceptor timeoutInterceptor;
 
     /**
      * 上传文件到数据节点
      * @param dataNodeHost 数据节点IP
      * @param dataNodePort 数据节点端口
      */
-    public DataProviderUploadDataResp uploadData(String dataNodeHost, int dataNodePort, String fileName, MultipartFile file) throws Exception{
-        byte[] fileContent = file.getBytes();
+    public DataProviderRpcMessage.UploadReply uploadData(String dataNodeHost, int dataNodePort, String fileName, MultipartFile file) {
         //1.获取rpc连接
-        CountDownLatch count = new CountDownLatch(1);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
         ManagedChannel channel = null;
         try{
             channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
-            //2.构建response流观察者
-            DataProviderUploadDataResp resp = new DataProviderUploadDataResp();
-            AtomicReference<ApplicationException> ex = new AtomicReference<>();
-            StreamObserver<DataProviderRpcMessage.UploadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.UploadReply>() {
+
+            //2.构建response流观察者，将会异步处理响应
+            ExtendResponseObserver<DataProviderRpcMessage.UploadReply> responseObserver = new ExtendResponseObserver<DataProviderRpcMessage.UploadReply>() {
+
+                //响应
+                private DataProviderRpcMessage.UploadReply response;
+
+                public DataProviderRpcMessage.UploadReply getResponse() {
+                    return response;
+                }
+
                 @Override
                 public void onNext(DataProviderRpcMessage.UploadReply uploadReply) {
-                    log.debug("观察者模式执行了onNext-========================:{}", uploadReply.toString());
                     //5.处理response
-                    if(!uploadReply.getOk()){
-                        ex.set(new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName)));
+                    response = uploadReply;
+
+                    if(!response.getOk()){
+                        countDownLatch.countDown();
                     }
-                    //源文件ID
-                    String dataId = uploadReply.getDataId();
-                    //源文件存储路径
-                    String filePath = uploadReply.getFilePath();
-                    resp.setFileId(dataId);
-                    resp.setFilePath(filePath);
                 }
                 @Override
-                public void onError(Throwable throwable) {
-                    log.debug("观察者模式执行了onError-========================:{}", throwable.toString());
-                    count.countDown();
-                    ex.set(new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName),throwable));
+                public void onError(Throwable t) {
+                    log.error("failed to upload file", t);
+                    if (response==null) {
+                        response = DataProviderRpcMessage.UploadReply.newBuilder().setOk(false).build();
+                    }
+                    countDownLatch.countDown();
                 }
                 @Override
                 public void onCompleted() {
-                    log.debug("观察者模式执行了onCompleted-========================:{}", "观察者模式执行了onCompleted");
-                    count.countDown();
+                    countDownLatch.countDown();
                 }
             };
+
+
             //3.调用rpc,获取request流观察者
             StreamObserver<DataProviderRpcMessage.UploadRequest> requestObserver = DataProviderGrpc.newStub(channel).uploadData(responseObserver);
-            //4.将请求内容塞入到请求流中
+
             //上传的时候FileInfo中填file_name就行，这里有个要求是先传content，再传meta，服务端以收到meta判断是否结束
-            /** 第一次传输 */
+            /** 第一次流式传输文件内容 */
             // 定义4M字节数据大小
             int MAX_BUFFER_SIZE = 4 * 1024 * 1024;
             byte[] bytes = new byte[MAX_BUFFER_SIZE];
@@ -91,44 +97,50 @@ public class DataProviderClient {
             int bytesRead;
             while ( (bytesRead = bufferInputStream.read(bytes)) != -1) {
                 // 每次发送不大于4M数据
-                DataProviderRpcMessage.UploadRequest first = DataProviderRpcMessage.UploadRequest
+                DataProviderRpcMessage.UploadRequest fileChunk = DataProviderRpcMessage.UploadRequest
                         .newBuilder()
                         .setContent(ByteString.copyFrom(bytes, 0, bytesRead))
                         .build();
-                requestObserver.onNext(first);
+                requestObserver.onNext(fileChunk);
             }
 
-            /** 第二次传输 */
+
+            /** 第二次传输文件信息 */
             DataProviderRpcMessage.FileInfo fileInfo = DataProviderRpcMessage.FileInfo
                     .newBuilder()
                     .setFileName(fileName)
                     .build();
-            DataProviderRpcMessage.UploadRequest second = DataProviderRpcMessage.UploadRequest
+            DataProviderRpcMessage.UploadRequest fileMeta = DataProviderRpcMessage.UploadRequest
                     .newBuilder()
-                    .setContent(ByteString.copyFrom(fileContent))
                     .setMeta(fileInfo)
                     .build();
-            requestObserver.onNext(second);
+
+
+            requestObserver.onNext(fileMeta);
             requestObserver.onCompleted();
 
-            /**
-             * 由于调度服务rpc接口也在开发阶段，如果直接返回调度服务的response，一旦response发生变化，则调用该方法的地方都需要修改
-             * 故将response转换后再放给service类使用
-             */
             try {
                 //等待服务端数据返回
-                boolean await = count.await(60, TimeUnit.SECONDS);
+                boolean await = countDownLatch.await(timeoutInterceptor.getTimeout()+10, TimeUnit.SECONDS);
                 if(!await){
-                    throw new ApplicationException(StrUtil.format("超过等待时间，上传文件失败：文件名:{}",fileName));
+                    log.error("call Carrier RPC uploadData timeout");
+                    throw new CallGrpcServiceFailed();
                 }
             } catch (InterruptedException e) {
-                throw new ApplicationException(StrUtil.format("上传文件失败：文件名:{}",fileName),e);
+                log.error("call Carrier RPC uploadData error", e);
+                throw new CallGrpcServiceFailed();
             }
-            //如果上传过程中出现异常，则抛异常
-            if(ex.get() != null){
-                throw ex.get();
+
+            if(responseObserver.getResponse() == null
+                    || responseObserver.getResponse().getOk()==false
+                    || StringUtils.isBlank(responseObserver.getResponse().getDataId())
+                    || StringUtils.isBlank(responseObserver.getResponse().getFilePath())) {
+                throw new CallGrpcServiceFailed();
             }
-            return resp;
+            return responseObserver.getResponse();
+        } catch (IOException e) {
+            log.error("failed to upload file", e);
+            throw new CallGrpcServiceFailed();
         } finally {
             channelManager.closeChannel(channel);
         }
@@ -142,8 +154,7 @@ public class DataProviderClient {
      * @param filePath 要下载文件的文件路径
      */
     public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath){
-        AtomicReference<ByteString> byteString = new AtomicReference<>(ByteString.EMPTY);
-        CountDownLatch count = new CountDownLatch(1);
+
         //1.获取rpc连接
         ManagedChannel channel = null;
         try{
@@ -154,17 +165,23 @@ public class DataProviderClient {
                     .setFilePath(filePath)
                     .build();
 
+            CountDownLatch countDownLatch = new CountDownLatch(1);
+
             //3.构建response流观察者
-            AtomicReference<ApplicationException> ex = new AtomicReference<>();
-            StreamObserver<DataProviderRpcMessage.DownloadReply> responseObserver = new StreamObserver<DataProviderRpcMessage.DownloadReply>() {
+            ExtendResponseObserver<DataProviderRpcMessage.DownloadReply> responseObserver = new ExtendResponseObserver<DataProviderRpcMessage.DownloadReply>() {
+
+                public DataProviderRpcMessage.DownloadReply response;
+                public DataProviderRpcMessage.DownloadReply getResponse(){
+                    return response;
+                }
+
                 @Override
                 public void onNext(DataProviderRpcMessage.DownloadReply downloadReply) {
                     //5.处理response
                     boolean hasContent = downloadReply.hasContent();
                     if(hasContent){
                         ByteString content = downloadReply.getContent();
-                        ByteString bs = byteString.get().concat(content);
-                        byteString.set(bs);
+                        response.getContent().concat(content);
                     }
 
                     boolean hasStatus = downloadReply.hasStatus();
@@ -179,15 +196,17 @@ public class DataProviderClient {
                         switch (status.getNumber()){
                             case 0:
                                 log.debug("开始下载文件filePath:{}，状态:{}.......",filePath,"Start");
+                                response = DataProviderRpcMessage.DownloadReply.newBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Start).build();
                                 break;
                             case 1:
+                                response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Finished);
                                 log.debug("下载完成文件filePath:{}，状态:{}.......",filePath,"Finished");
                                 break;
                             case 2:
-                                ex.set(new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Cancelled")));
+                                response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Cancelled);
                                 break;
                             case 3:
-                                ex.set(new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{},状态:{}",filePath,"Failed")));
+                                response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Failed);
                                 break;
                             default:
                                 break;
@@ -198,35 +217,38 @@ public class DataProviderClient {
 
                 @Override
                 public void onError(Throwable throwable) {
-                    count.countDown();
-                    ex.set(new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{}",filePath),throwable));
+                    countDownLatch.countDown();
+                    response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Failed);
                 }
 
                 @Override
                 public void onCompleted() {
-                    count.countDown();
+                    countDownLatch.countDown();
                 }
             };
+
+
             //3.调用rpc
             DataProviderGrpc.newStub(channel).downloadData(request,responseObserver);
-            /**
-             * 由于调度服务rpc接口也在开发阶段，如果直接返回调度服务的response，一旦response发生变化，则调用该方法的地方都需要修改
-             * 故将response转换后再放给service类使用
-             */
+
             try {
                 //等待服务端数据返回
-                boolean await = count.await(60, TimeUnit.SECONDS);
+                boolean await = countDownLatch.await(timeoutInterceptor.getTimeout()+10, TimeUnit.SECONDS);
                 if(!await){
-                    throw new ApplicationException(StrUtil.format("超过等待时间，下载文件失败：文件路劲:{}",filePath));
+                    log.error("call Carrier RPC downloadData timeout");
+                    throw new CallGrpcServiceFailed();
                 }
             } catch (InterruptedException e) {
-                throw new ApplicationException(StrUtil.format("下载文件失败：文件路劲:{}",filePath),e);
+                log.error("call Carrier RPC downloadData error", e);
+                throw new CallGrpcServiceFailed();
             }
-            //如果下载过程中出现异常，则抛异常
-            if(ex.get() != null){
-                throw ex.get();
+
+            if(responseObserver.getResponse() == null
+                    || responseObserver.getResponse().getStatus() != DataProviderRpcMessage.TaskStatus.Finished) {
+                throw new CallGrpcServiceFailed();
             }
-            return byteString.get().toByteArray();
+            return responseObserver.getResponse().getContent().toByteArray();
+
         } finally {
             channelManager.closeChannel(channel);
         }

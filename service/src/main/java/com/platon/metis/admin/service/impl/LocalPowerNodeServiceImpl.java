@@ -2,10 +2,11 @@ package com.platon.metis.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
+import com.platon.metis.admin.common.exception.*;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper;
 import com.platon.metis.admin.dao.LocalPowerNodeMapper;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 import com.platon.metis.admin.dao.entity.PowerLoad;
@@ -14,7 +15,6 @@ import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.service.LocalPowerNodeService;
 import com.platon.metis.admin.service.TaskService;
-import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -53,21 +53,16 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     public void insertPowerNode(LocalPowerNode powerNode) {
         // 校检名称
         if (!NameUtil.isValidName(powerNode.getPowerNodeName())) {
-            throw new ServiceException("名称不符合命名规则！");
+            log.error("power node name error");
+            throw new ArgumentException();
         }
         // 调用grpc接口增加算力，此时调度服务会连算力节点，如果正常返回，说明连接成功
-        YarnRpcMessage.YarnRegisteredPeerDetail jobNode = null;
-        try {
-            jobNode = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
-                    powerNode.getInternalPort(), powerNode.getExternalPort());
-        } catch (Exception e) {
-            log.error("新增计算节点失败", e);
-            throw new ServiceException("新增计算节点失败", e);
+        YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
+                powerNode.getInternalPort(), powerNode.getExternalPort());
 
-        }
         log.info("新增计算节点数据:{}", jobNode);
         // 计算节点id
-        powerNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
+        powerNode.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
         powerNode.setPowerNodeId(jobNode.getId());
         // 设置连接状态
         powerNode.setConnStatus(jobNode.getConnState().getNumber());
@@ -79,10 +74,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         powerNode.setCore(0);
         // 带宽
         powerNode.setBandwidth(0L);
-        int count = localPowerNodeMapper.insertPowerNode(powerNode);
-        if (count == 0) {
-            throw new ServiceException("新增失败！");
-        }
+        localPowerNodeMapper.insertPowerNode(powerNode);
     }
 
     @Override
@@ -92,12 +84,12 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
 
         if(localPowerNode.getConnStatus() == LocalPowerNode.ConnStatus.disconnected.getCode()){
-            throw new ServiceException("算力节点不能连接");
+            throw new CannotConnectPowerNode ();
         }
         //启用的不能修改
         if(localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Released_VALUE
                 || localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE ){
-            throw new ServiceException("算力节点已经启用");
+            throw new CannotEditPowerNode();
         }
 
         // 判断是否有正在进行中的任务
@@ -119,10 +111,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         powerNode.setCore(0);
         // 带宽
         powerNode.setBandwidth(0L);
-        int count = localPowerNodeMapper.updatePowerNodeByNodeId(powerNode);
-        if (count == 0) {
-            throw new ServiceException("修改失败！");
-        }
+        localPowerNodeMapper.updatePowerNodeByNodeId(powerNode);
     }
 
     @Override
@@ -131,12 +120,12 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
 
         if(localPowerNode.getConnStatus() == LocalPowerNode.ConnStatus.disconnected.getCode()){
-            throw new ServiceException("算力节点不能连接");
+            throw new CannotConnectPowerNode ();
         }
         //启用的不能删除
         if(localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Released_VALUE
                 || localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE ){
-            throw new ServiceException("算力节点已经启用");
+            throw new CannotEditPowerNode();
         }
 
         // 判断是否有正在进行中的任务
@@ -148,10 +137,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         // 删除底层资源
         powerClient.deletePowerNode(powerNodeId);
         // 删除数据
-        int count = localPowerNodeMapper.deletePowerNode(powerNodeId);
-        if (count == 0) {
-            throw new ServiceException("删除失败！");
-        }
+        localPowerNodeMapper.deletePowerNode(powerNodeId);
     }
 
     @Override
@@ -182,7 +168,8 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     public void revokePower(String powerNodeId) {
         LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
         if(localPowerNode==null || StringUtils.isEmpty(localPowerNode.getPowerId())){
-            throw new ServiceException("power node not found");
+            log.error("power node not found");
+            throw new ObjectNotFound();
         }
         //调用调度服务
         powerClient.revokePower(localPowerNode.getPowerId());
@@ -201,11 +188,12 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public void checkPowerNodeName(String powerNodeName) {
         if (!NameUtil.isValidName(powerNodeName)) {
-            throw new ServiceException("名称不符合命名规则！");
+            log.error("power node name error");
+            throw new ArgumentException();
         }
         int count = localPowerNodeMapper.checkPowerNodeName(powerNodeName);
         if (count > 0) {
-            throw new ServiceException("名称已存在！");
+            throw new PowerHostExists();
         }
     }
 

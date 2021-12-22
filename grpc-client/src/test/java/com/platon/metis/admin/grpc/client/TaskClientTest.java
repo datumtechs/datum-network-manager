@@ -1,6 +1,6 @@
 package com.platon.metis.admin.grpc.client;
 
-import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.platon.metis.admin.dao.entity.Task;
 import com.platon.metis.admin.dao.entity.TaskOrg;
 import com.platon.metis.admin.grpc.service.TaskRpcMessage;
@@ -38,8 +38,8 @@ public class TaskClientTest {
     public void getTaskList(){
         LocalDateTime lastUpdated = LocalDateTime.parse("1970-01-01 00:00:00",  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Pair<List<Task>, Map<String, TaskOrg>> resp = taskClient.getLocalTaskList(lastUpdated);
-        log.info(JSONUtil.toJsonStr(resp.getLeft()));
-        log.info(JSONUtil.toJsonStr(resp.getRight()));
+        log.info(JSON.toJSONString(resp.getLeft()));
+        log.info(JSON.toJSONString(resp.getRight()));
     }
 
 

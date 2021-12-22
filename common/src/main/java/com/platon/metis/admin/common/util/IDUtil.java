@@ -1,6 +1,6 @@
 package com.platon.metis.admin.common.util;
 
-import cn.hutool.core.util.IdUtil;
+import java.util.UUID;
 
 /**
  * @Author liushuyu
@@ -18,8 +18,7 @@ public class IDUtil {
      * @example 71a51fcac1164bdaa6af10286670d11d
      */
     public static String generate(){
-        String id = IdUtil.fastSimpleUUID();
-        return id;
+        return  UUID.randomUUID().toString();
     }
 
     /**

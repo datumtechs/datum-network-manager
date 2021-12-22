@@ -1,16 +1,15 @@
 package com.platon.metis.admin.service.impl;
 
-import cn.hutool.core.util.StrUtil;
-import com.platon.metis.admin.common.context.LocalOrgCache;
-import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
+import com.platon.metis.admin.common.exception.OrgInfoExists;
+import com.platon.metis.admin.common.exception.UserAccountInvalid;
 import com.platon.metis.admin.common.util.IDUtil;
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.SysUserMapper;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.entity.SysUser;
 import com.platon.metis.admin.dao.enums.SysUserStatusEnum;
 import com.platon.metis.admin.service.UserService;
-import com.platon.metis.admin.service.exception.ServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,9 +35,8 @@ public class UserServiceImpl implements UserService {
         //### 1.校验是否已存在组织信息
         LocalOrg org = localOrgMapper.select();
         if(org != null){
-            LocalOrgCache.setLocalOrgInfo(org);
-            LocalOrgIdentityCache.setIdentityId(org.getIdentityId());
-            throw new ServiceException(StrUtil.format("已存在组织信息orgId:{},orgName:{}",org.getIdentityId(),org.getName()));
+            //LocalOrgCache.setLocalOrgInfo(org);
+            throw new OrgInfoExists();
         }
         //### 2.新建local org并入库
         String orgId = IDUtil.generate(IDUtil.IDENTITY_ID_PREFIX);
@@ -46,13 +44,10 @@ public class UserServiceImpl implements UserService {
         localOrg.setIdentityId(orgId);
         localOrg.setName(orgName);
         localOrg.setRecUpdateTime(new Date());
-        int count = localOrgMapper.insertSelective(localOrg);
-        if(count <= 0){
-            throw new ServiceException("申请失败");
-        }
+        localOrgMapper.insertSelective(localOrg);
+
         //### 2.新建成功后，设置缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
-        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
         return orgId;
     }
 
@@ -63,7 +58,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         if(SysUserStatusEnum.DISABLED.getStatus().equals(sysUser.getStatus())){
-            throw new ServiceException("用户账号状态异常");
+            throw new UserAccountInvalid();
         }
         return sysUser.getId().toString();
     }

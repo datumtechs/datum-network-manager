@@ -4,9 +4,8 @@ import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.health.HealthServicesRequest;
 import com.ecwid.consul.v1.health.model.HealthService;
-import com.platon.metis.admin.common.context.LocalOrgCache;
-import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.dao.LocalOrgMapper;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.metis.admin.dao.enums.LocalOrgStatusEnum;
@@ -60,7 +59,6 @@ public class LocalCarrierStatusRefreshTask {
             log.warn("请先申请身份标识");
             //刷新缓存
             LocalOrgCache.setLocalOrgInfo(null);
-            LocalOrgIdentityCache.setIdentityId(null);
             return;
         }
 
@@ -82,7 +80,6 @@ public class LocalCarrierStatusRefreshTask {
 
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
-        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
 
         if( StringUtils.isEmpty(localOrg.getCarrierIp()) || localOrg.getCarrierPort()==null){
             log.warn("查询到的调度服务信息错误");
@@ -108,7 +105,6 @@ public class LocalCarrierStatusRefreshTask {
         localOrgMapper.update(localOrg);
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
-        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
         log.debug("刷新本组织调度服务状态定时任务结束|||");
     }
 

@@ -1,10 +1,9 @@
 package com.platon.metis.admin.service.impl;
 
-import com.platon.metis.admin.common.context.LocalOrgCache;
-import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.common.exception.ApplyIdentityIDFailed;
 import com.platon.metis.admin.common.exception.IdentityIDApplied;
 import com.platon.metis.admin.dao.LocalOrgMapper;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.metis.admin.dao.enums.LocalOrgStatusEnum;
@@ -12,7 +11,6 @@ import com.platon.metis.admin.grpc.client.AuthClient;
 import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
 import com.platon.metis.admin.service.CarrierService;
-import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +54,6 @@ public class CarrierServiceImpl implements CarrierService {
         int count = localOrgMapper.update(localOrg);
         //更新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
-        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
         return CarrierConnStatusEnum.ENABLED;
     }
 
@@ -94,7 +91,6 @@ public class CarrierServiceImpl implements CarrierService {
         localOrgMapper.update(localOrg);
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
-        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
         return localOrg.getStatus();
 
 
@@ -103,13 +99,7 @@ public class CarrierServiceImpl implements CarrierService {
     @Override
     public Integer cancelJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-
-        try {
-            authClient.revokeIdentityJoin();
-        }catch (Exception e){
-            log.error("退网失败:" , e);
-            throw new ServiceException("退网失败:" + e.getMessage());
-        }
+        authClient.revokeIdentityJoin();
 
         //退网成功，刷新数据库
         YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
@@ -124,7 +114,6 @@ public class CarrierServiceImpl implements CarrierService {
         localOrgMapper.update(localOrg);
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
-        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
         return localOrg.getStatus();
     }
 }

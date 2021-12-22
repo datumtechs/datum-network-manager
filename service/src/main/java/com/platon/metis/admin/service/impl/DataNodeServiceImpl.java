@@ -1,17 +1,17 @@
 package com.platon.metis.admin.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
+import com.platon.metis.admin.common.exception.DataHostExists;
 import com.platon.metis.admin.dao.LocalDataNodeMapper;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalDataNode;
 import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.grpc.entity.RegisteredNodeResp;
 import com.platon.metis.admin.service.DataNodeService;
-import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -57,14 +57,14 @@ public class DataNodeServiceImpl implements DataNodeService {
     @Override
     public int addDataNode(LocalDataNode dataNode) {
         if (!checkDataNodeId(dataNode)) {
-            throw new ServiceException("相同属性数据节点已存在");
+            throw new DataHostExists();
         }
 
         RegisteredNodeResp response = yarnClient.setDataNode(dataNode);
 
         dataNode.setNodeId(response.getNodeId());
         dataNode.setConnStatus(response.getConnStatus());
-        dataNode.setIdentityId(LocalOrgIdentityCache.getIdentityId());
+        dataNode.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
         dataNode.setRecCreateTime(LocalDateTime.now());
         return localDataNodeMapper.insert(dataNode);
     }
@@ -78,7 +78,7 @@ public class DataNodeServiceImpl implements DataNodeService {
     @Override
     public boolean checkDataNodeName(LocalDataNode dataNode) {
         String dbNodeId = localDataNodeMapper.getDataNodeIdByName(dataNode.getNodeName());
-        if (!StrUtil.isBlank(dbNodeId) && !dbNodeId.equals(dataNode.getNodeId())) {
+        if (!StringUtils.isBlank(dbNodeId) && !dbNodeId.equals(dataNode.getNodeId())) {
             return false;
         }
         return true;
@@ -93,7 +93,7 @@ public class DataNodeServiceImpl implements DataNodeService {
     @Override
     public int updateDataNode(LocalDataNode dataNode) {
         if (!checkDataNodeId(dataNode)) {
-            throw new ServiceException("相同属性数据节点已存在");
+            throw new DataHostExists();
         }
         RegisteredNodeResp response = yarnClient.updateDataNode(dataNode);
         dataNode.setConnStatus(response.getConnStatus());
@@ -122,7 +122,7 @@ public class DataNodeServiceImpl implements DataNodeService {
     public boolean checkDataNodeId(LocalDataNode queryDataNode) {
         LocalDataNode dataNode = localDataNodeMapper.selectByProperties(queryDataNode);
         //数据库存在符合条件的数据，且nodeId与当前数据不一致
-        if (ObjectUtil.isNotNull(dataNode) && !dataNode.getNodeId().equals(queryDataNode.getNodeId())) {
+        if (dataNode!=null && !dataNode.getNodeId().equals(queryDataNode.getNodeId())) {
             return false;
         }
         return true;

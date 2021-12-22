@@ -1,7 +1,7 @@
 package com.platon.metis.admin.controller.system;
 
-import com.platon.metis.admin.common.context.LocalOrgCache;
 import com.platon.metis.admin.dao.LocalOrgMapper;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;

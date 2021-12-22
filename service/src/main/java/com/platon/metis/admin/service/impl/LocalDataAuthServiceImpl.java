@@ -2,7 +2,8 @@ package com.platon.metis.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.metis.admin.common.exception.BizException;
+import com.platon.metis.admin.common.exception.MetadataAuthorized;
+import com.platon.metis.admin.common.exception.ObjectNotFound;
 import com.platon.metis.admin.dao.LocalDataAuthMapper;
 import com.platon.metis.admin.dao.LocalDataFileMapper;
 import com.platon.metis.admin.dao.LocalMetaDataColumnMapper;
@@ -12,7 +13,6 @@ import com.platon.metis.admin.dao.enums.DataAuthStatusEnum;
 import com.platon.metis.admin.dao.enums.DataAuthTypeEnum;
 import com.platon.metis.admin.grpc.client.AuthClient;
 import com.platon.metis.admin.service.LocalDataAuthService;
-import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
+
 
 @Slf4j
 @Service
@@ -65,12 +66,12 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
 
         LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
         if(Objects.isNull(localDataAuth) || Objects.isNull(localDataAuth.getMetaDataId()) || "".equals(localDataAuth.getMetaDataId())){
-            throw new ServiceException("metaDataID异常，不可为空");
+            throw new ObjectNotFound();
         }
 
         LocalMetaData localMetaData = localMetaDataMapper.selectByMetaDataId(localDataAuth.getMetaDataId());
         if(localMetaData==null){
-            throw new ServiceException("metadata not found");
+            throw new ObjectNotFound();
         }
         List<LocalMetaDataColumn> localMetaDataColumnList =  localMetaDataColumnMapper.selectByLocalMetaDataDbId(localMetaData.getId());
 
@@ -91,10 +92,10 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
 
         LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
         if(Objects.isNull(localDataAuth)){
-            throw new ServiceException("id可能无效,请检查");
+            throw new ArithmeticException();
         }
         if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
-            throw new ServiceException("此数据已经授权过,不能重复授权");
+            throw new MetadataAuthorized();
         }
 
         int auditOption = DataAuthStatusEnum.AGREE.getStatus();
@@ -106,12 +107,7 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
             auditDesc = "data auth request is expired, just refuse it.";
         }
 
-        try {
-            authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
-        } catch (BizException e) {
-            log.error("审批元数据授权申请失败:" , e);
-            throw new ServiceException("审批元数据授权申请失败：" + e.getMessage());
-        }
+        authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
 
         LocalDataAuth dataAuth = new LocalDataAuth();
         dataAuth.setAuthId(authId);
@@ -125,18 +121,13 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
 
         LocalDataAuth localDataAuth = localDataAuthMapper.selectByPrimaryKey(authId);
         if(Objects.isNull(localDataAuth)){
-            throw new ServiceException("id可能无效,请检查");
+            throw new ArithmeticException();
         }
         if(localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()){
             log.warn("data auth request is processed already.");
-            throw new ServiceException("此数据已经授权过,不能重复授权");
+            throw new MetadataAuthorized();
         }
-        try {
-            authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus(), "");
-        } catch (BizException e) {
-            log.error("拒绝元数据授权申请失败:" , e);
-            throw new ServiceException("拒绝元数据授权申请失败：" + e.getMessage());
-        }
+        authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus(), "");
 
         LocalDataAuth dataAuth = new LocalDataAuth();
         dataAuth.setAuthId(authId);

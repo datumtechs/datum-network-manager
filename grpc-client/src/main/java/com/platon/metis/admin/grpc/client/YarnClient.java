@@ -1,9 +1,6 @@
 package com.platon.metis.admin.grpc.client;
 
-import cn.hutool.core.util.StrUtil;
 import com.google.protobuf.Empty;
-import com.platon.metis.admin.common.exception.ApplicationException;
-import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.LocalDataNode;
 import com.platon.metis.admin.dao.enums.FileTypeEnum;
@@ -188,11 +185,9 @@ public class YarnClient {
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }
-        if (StrUtil.isEmpty(response.getIp()) || StrUtil.isEmpty(response.getPort())) {
-            throw new BizException(StrUtil.format("获取可用数据节点信息失败：ip:{},port:{}",
-                    response.getIp(),
-                    response.getPort()));
+        }else if (StringUtils.isBlank(response.getIp()) || StringUtils.isBlank(response.getPort())) {
+            log.error("cannot find a available data node.");
+            throw new CallGrpcServiceFailed();
         }
         /**
          * 由于调度服务rpc接口也在开发阶段，如果直接返回调度服务的response，一旦response发生变化，则调用该方法的地方都需要修改
@@ -208,7 +203,7 @@ public class YarnClient {
     /**
      * 查询需要下载的目标原始文件所在的 数据服务信息和文件的完整相对路径
      */
-    public YarnQueryFilePositionResp queryFilePosition(String fileId) throws ApplicationException{
+    public YarnQueryFilePositionResp queryFilePosition(String fileId){
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -222,16 +217,11 @@ public class YarnClient {
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
+        }else if (StringUtils.isBlank(response.getIp()) || StringUtils.isBlank(response.getPort()) || StringUtils.isBlank(response.getFilePath())) {
+            log.error("cannot find the data node that file located.");
+            throw new CallGrpcServiceFailed();
         }
 
-        if (StrUtil.isEmpty(response.getIp())
-                || StrUtil.isEmpty(response.getPort())
-                || StrUtil.isEmpty(response.getFilePath())) {
-            throw new BizException(StrUtil.format("获取可用数据节点信息失败：ip:{},port:{},filePath:{}",
-                    response.getIp(),
-                    response.getPort(),
-                    response.getFilePath()));
-        }
         /**
          * 由于调度服务rpc接口也在开发阶段，如果直接返回调度服务的response，一旦response发生变化，则调用该方法的地方都需要修改
          * 故将response转换后再放给service类使用

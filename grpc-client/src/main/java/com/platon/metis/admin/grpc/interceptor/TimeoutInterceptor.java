@@ -12,7 +12,11 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class TimeoutInterceptor implements ClientInterceptor {
     @Value("${grpc-client-timeout}")
-    private long timeout;
+    private long timeout; //seconds
+
+    public long getTimeout(){
+        return this.timeout;
+    }
 
     @Override
     public <ReqT,RespT> ClientCall<ReqT,RespT> interceptCall(

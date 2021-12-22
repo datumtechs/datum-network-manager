@@ -1,6 +1,6 @@
 package com.platon.metis.admin.common.exception;
 
-public class BizException extends RuntimeException {
+public abstract class BizException extends RuntimeException {
     private int errorCode = -1;
     private String message;
 

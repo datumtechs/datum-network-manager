@@ -2,7 +2,6 @@ package com.platon.metis.admin.dto;
 
 
 import com.github.pagehelper.Page;
-import com.platon.metis.admin.common.exception.ApplicationException;
 import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.enums.ResponseCodeEnum;
 import io.swagger.annotations.ApiModel;
@@ -82,9 +81,6 @@ public class JsonResponse<T> {
         return new JsonResponse(code.getCode(), message, null);
     }
 
-    public static JsonResponse fail(ApplicationException e) {
-        return new JsonResponse(e.getErrorCode().ordinal(), e.getErrorMsg(), null);
-    }
 
     /**
      * @param page 分页信息+列表内容

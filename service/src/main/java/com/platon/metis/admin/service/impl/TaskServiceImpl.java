@@ -2,9 +2,8 @@ package com.platon.metis.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.metis.admin.common.context.LocalOrgCache;
-import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.dao.*;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.dao.enums.TaskStatusEnum;
 import com.platon.metis.admin.service.TaskService;
@@ -90,7 +89,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskStatistics taskStatistics() {
-        String identityId=LocalOrgIdentityCache.getIdentityId();
+        String identityId = LocalOrgCache.getLocalOrgIdentityId();
         return taskMapper.taskStatistics(identityId);
     }
 
@@ -102,7 +101,7 @@ public class TaskServiceImpl implements TaskService {
         task.setOwner(owner);
 
         //本组织在此任务中的身份
-        Map<String, Boolean> roleMap = taskMapper.listRoleByTaskIdAndIdentityId(taskId, ((LocalOrg)LocalOrgCache.getLocalOrgInfo()).getIdentityId());
+        Map<String, Boolean> roleMap = taskMapper.listRoleByTaskIdAndIdentityId(taskId, ((LocalOrg) LocalOrgCache.getLocalOrgInfo()).getIdentityId());
         task.setDynamicFields(roleMap);
 
         //算法提供方

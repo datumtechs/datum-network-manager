@@ -1,6 +1,5 @@
 package com.platon.metis.admin.controller.overview;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.platon.metis.admin.dao.dto.DataAuthReqDTO;
 import com.platon.metis.admin.dao.dto.StatsTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
@@ -72,7 +71,7 @@ public class OverviewController {
     public JsonResponse<UsedResourceResp> localPowerUsage(){
         try {
             UsedResourceDTO usedResourceDTO = indexService.queryUsedTotalResource();
-            return JsonResponse.success(BeanUtil.toBean(usedResourceDTO, UsedResourceResp.class));
+            return JsonResponse.success(usedResourceDTO);
         } catch (Exception e) {
             log.error("index--queryUsedTotalResource--查询总计算资源占用情况, 错误信息:{}", e.getMessage());
             return JsonResponse.fail(e.getMessage());
@@ -109,7 +108,16 @@ public class OverviewController {
     public JsonResponse<MyTaskStatsResp> queryMyCalculateTaskStats(){
         try {
             List<Map<String, Object>> list = indexService.queryMyCalculateTaskStats();
-            return JsonResponse.success(BeanUtil.copyToList(list, MyTaskStatsResp.class));
+            List<MyTaskStatsResp> respList = new ArrayList<>();
+            for(Map<String, Object> map : list){
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    MyTaskStatsResp resp = new MyTaskStatsResp();
+                    resp.setStatus( entry.getKey());
+                    resp.setStatusCount((Integer)entry.getValue());
+                    respList.add(resp);
+                }
+            }
+            return JsonResponse.success(respList);
         } catch (Exception e) {
             log.error("index--queryMyCalculateTaskStats--查询我的计算任务概况, 错误信息:{}", e.getMessage());
             return JsonResponse.fail(e.getMessage());
@@ -143,9 +151,14 @@ public class OverviewController {
 
     @ApiOperation(value = "查询全网数据总量环比")
     @GetMapping("/queryWholeNetDateRatio")
+    @Deprecated
     public JsonResponse<DataRatioResp> queryWholeNetDateRatio(){
         Map<String, Object> map = indexService.queryWholeNetDateTotalRatio();
-        return JsonResponse.success(BeanUtil.toBean(map, DataRatioResp.class));
+
+        DataRatioResp resp = new DataRatioResp();
+        resp.setRingRatio((String)map.get("ringRatio"));
+        resp.setRingRatio((String)map.get("sameRatio"));
+        return JsonResponse.success(resp);
     }
 
     @ApiOperation(value = "查询数据待授权列表")

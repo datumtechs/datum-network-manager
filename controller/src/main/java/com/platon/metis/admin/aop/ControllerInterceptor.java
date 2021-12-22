@@ -1,8 +1,6 @@
 package com.platon.metis.admin.aop;
 
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.platon.metis.admin.dto.JsonResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -55,14 +53,14 @@ public class ControllerInterceptor {
                     if (parameter==null){
                         return;
                     }
-                    if(ClassUtil.isSimpleValueType(parameter.getClass())){
-                        log.info(StrUtil.format("request param-{}: {}",i,parameter));
+                    if(parameter.getClass().isPrimitive()){
+                        log.info("request param-{}: {}",i, parameter);
                     }else if(parameter instanceof ServletResponse){
-                        log.info(StrUtil.format("request param-{}: {}",i,"ServletResponse"));
+                        log.info("request param-{}: {}",i,"ServletResponse");
                     }else if(parameter instanceof ServletRequest){
-                        log.info(StrUtil.format("request param-{}: {}",i,"ServletRequest"));
+                        log.info("request param-{}: {}",i,"ServletRequest");
                     }else{
-                        log.info(StrUtil.format("request param-{}: {}",i, JSONUtil.toJsonStr(parameter)));
+                        log.info("request param-{}: {}",i, JSON.toJSONString(parameter));
                     }
                 }
             }

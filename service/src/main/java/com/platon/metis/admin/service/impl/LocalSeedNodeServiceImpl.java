@@ -2,12 +2,15 @@ package com.platon.metis.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.platon.metis.admin.common.exception.ArgumentException;
+import com.platon.metis.admin.common.exception.CannotDeleteInitSeedNode;
+import com.platon.metis.admin.common.exception.ObjectNotFound;
+import com.platon.metis.admin.common.exception.SeedNodeExists;
 import com.platon.metis.admin.dao.LocalSeedNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 import com.platon.metis.admin.grpc.client.SeedClient;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.service.LocalSeedNodeService;
-import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -33,19 +36,17 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
     public void insertSeedNode(LocalSeedNode seedNode) {
         // 调用grpc接口新增节点信息
         if (!verifySeedNodeId(seedNode.getSeedNodeId())) {
-            throw new ServiceException("种子节点ID不符合规则！");
+            log.error("seed node ID error");
+            throw new ArgumentException();
         }
         if (localSeedNodeMapper.querySeedNodeDetails(seedNode.getSeedNodeId()) != null) {
-            throw new ServiceException("种子节点已经存在！");
+            throw new SeedNodeExists ();
         }
 
         YarnRpcMessage.SeedPeer seedResp = seedClient.addSeedNode(seedNode.getSeedNodeId());
         seedNode.setInitFlag(seedResp.getIsDefault());
         seedNode.setConnStatus(seedResp.getConnState().getNumber());
-        int count = localSeedNodeMapper.insertSeedNode(seedNode);
-        if (count == 0) {
-            throw new ServiceException("新增失败！");
-        }
+        localSeedNodeMapper.insertSeedNode(seedNode);
     }
 
     /*@Override
@@ -58,19 +59,16 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
 
         LocalSeedNode localSeedNode = localSeedNodeMapper.querySeedNodeDetails(seedNodeId);
         if(localSeedNode==null){
-            throw new ServiceException("种子节点信息没有找到！");
+            throw new ObjectNotFound();
         }
         if(localSeedNode.getInitFlag()){//内置
-            throw new ServiceException("内置的种子节点不能删除！");
+            throw new CannotDeleteInitSeedNode ();
         }
 
         // 删除底层资源
         seedClient.deleteSeedNode(seedNodeId);
         // 删除数据
-        int count = localSeedNodeMapper.deleteSeedNode(seedNodeId);
-        if (count == 0) {
-            throw new ServiceException("删除失败！");
-        }
+        localSeedNodeMapper.deleteSeedNode(seedNodeId);
     }
 
     @Override
@@ -88,10 +86,10 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
     @Override
     public void checkSeedNodeId(String seedNodeId) {
         if (!verifySeedNodeId(seedNodeId)) {
-            throw new ServiceException("种子节点ID不符合规则！");
+            throw new ArgumentException();
         }
         if (localSeedNodeMapper.querySeedNodeDetails(seedNodeId) != null) {
-            throw new ServiceException("种子节点已经存在！");
+            throw new SeedNodeExists();
         }
     }
 

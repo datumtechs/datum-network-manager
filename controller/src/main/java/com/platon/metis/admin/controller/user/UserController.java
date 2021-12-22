@@ -1,7 +1,5 @@
 package com.platon.metis.admin.controller.user;
 
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
 import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dto.JsonResponse;
@@ -13,6 +11,8 @@ import com.platon.metis.admin.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +58,7 @@ public class UserController {
         }
         //登录校验 TODO 密码进行加盐+hash操作
         String userId = userService.login(req.getUserName(),req.getPasswd());
-        if(StrUtil.isNotBlank(userId)){
+        if(StringUtils.isNotBlank(userId)){
             session.setAttribute(ControllerConstants.USER_ID,userId);//将登录信息存入session中
             return JsonResponse.success(userId);
         }
@@ -102,7 +102,7 @@ public class UserController {
     @PostMapping("/applyOrgIdentity")
     public JsonResponse<String> applyOrgIdentity(@RequestBody @Validated UserApplyOrgIdentityReq req){
         String orgId = userService.applyOrgIdentity(req.getOrgName());
-        if(StrUtil.isBlank(orgId)){
+        if(StringUtils.isBlank(orgId)){
             return JsonResponse.fail("申请身份标识失败");
         }
         return JsonResponse.success(orgId);
@@ -116,7 +116,7 @@ public class UserController {
     @ApiOperation(value = "获取验证码")
     @GetMapping("/verificationCode")
     public JsonResponse<String> getVerificationCode(HttpServletRequest request){
-        int code = RandomUtil.randomInt(1000, 9999);
+        int code = RandomUtils.nextInt(1000, 9999);
         //放入session中，方便后面登录校验验证码
         HttpSession session = request.getSession(true);
         session.setAttribute(ControllerConstants.VERIFICATION_CODE,String.valueOf(code));

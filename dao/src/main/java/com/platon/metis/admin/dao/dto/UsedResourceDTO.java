@@ -1,8 +1,8 @@
 package com.platon.metis.admin.dao.dto;
 
-import lombok.AllArgsConstructor;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author lyf
@@ -10,26 +10,25 @@ import lombok.NoArgsConstructor;
  * @date 2021/7/9 15:07
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@ApiModel(value = "资源占用概况响应参数")
 public class UsedResourceDTO {
 
-    /** 使用核数 */
+    @ApiModelProperty(value = "使用核数")
     private Integer usedCore;
 
-    /** 使用内存 */
+    @ApiModelProperty(value = "使用内存")
     private Long usedMemory;
 
-    /** 使用带宽 */
+    @ApiModelProperty(value = "使用带宽")
     private Long usedBandwidth;
 
-    /** 总内存 */
+    @ApiModelProperty(value = "总内存")
     private Long totalMemory;
 
-    /** 总核数 */
+    @ApiModelProperty(value = "总核数")
     private Integer totalCore;
 
-    /** 总带宽 */
+    @ApiModelProperty(value = "总带宽")
     private Long totalBandwidth;
 
 }

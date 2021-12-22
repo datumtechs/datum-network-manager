@@ -1,6 +1,5 @@
 package com.platon.metis.admin.grpc.client;
 
-import cn.hutool.core.date.DateUtil;
 import com.google.protobuf.Empty;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
@@ -48,7 +47,7 @@ public class PowerClient {
     /**
      * 新增计算节点返回nodeId
      */
-    public YarnRpcMessage.YarnRegisteredPeerDetail addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort) throws Exception{
+    public YarnRpcMessage.YarnRegisteredPeerDetail addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort) {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
@@ -238,7 +237,7 @@ public class PowerClient {
                 localPowerJoinTask.setTaskName(powerTask.getTaskName());
                 localPowerJoinTask.setOwnerIdentityId(powerTask.getOwner().getIdentityId());
                 localPowerJoinTask.setOwnerIdentityName(powerTask.getOwner().getNodeName());
-                localPowerJoinTask.setTaskStartTime(DateUtil.date(powerTask.getCreateAt()));   // 发起时间
+                localPowerJoinTask.setTaskStartTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(powerTask.getCreateAt()), ZoneOffset.UTC));  // 发起时间
                 localPowerJoinTask.setUsedMemory(powerTask.getOperationSpend().getMemory());// 已使用内存
                 localPowerJoinTask.setUsedCore(powerTask.getOperationSpend().getProcessor()); // 已使用核数
                 localPowerJoinTask.setUsedBandwidth(powerTask.getOperationSpend().getBandwidth());// 已使用带宽

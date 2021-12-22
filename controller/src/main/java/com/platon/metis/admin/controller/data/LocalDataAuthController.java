@@ -1,8 +1,7 @@
 package com.platon.metis.admin.controller.data;
 
-import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
-import com.platon.metis.admin.common.exception.ApplicationException;
+import com.platon.metis.admin.common.exception.ArgumentException;
 import com.platon.metis.admin.dao.entity.LocalDataAuth;
 import com.platon.metis.admin.dao.entity.LocalDataAuthDetail;
 import com.platon.metis.admin.dto.JsonResponse;
@@ -13,10 +12,10 @@ import com.platon.metis.admin.dto.resp.auth.LocalDataAuthPageResp;
 import com.platon.metis.admin.dto.resp.auth.LocalDataAuthStatisticsResp;
 import com.platon.metis.admin.enums.DtoAuthStatusEnum;
 import com.platon.metis.admin.service.LocalDataAuthService;
-import com.platon.metis.admin.service.exception.ServiceException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +29,7 @@ import java.util.stream.Collectors;
 
 
 @Api(tags = "数据授权")
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/data/")
 public class LocalDataAuthController {
@@ -50,7 +50,7 @@ public class LocalDataAuthController {
         if(status != DtoAuthStatusEnum.AUTH_UNDEFINED.getStatus() &&
                 status != DtoAuthStatusEnum.AUTH_UNFINISH.getStatus() &&
                 status != DtoAuthStatusEnum.AUTH_FINISH.getStatus()){
-            throw new ServiceException("入参授权状态有误，请核对必须为0：未定义，1:待授权数据，2:已授权数据");
+            throw new ArgumentException();
         }
         //数据库中，授权数据状态：0：等待授权审核，1:同意， 2:拒绝
         //所以，如果输入参数status=0，则查询（0：等待授权审核，1:同意， 2:拒绝）
@@ -94,7 +94,7 @@ public class LocalDataAuthController {
                 localDataAuthService.refuseAuth(req.getAuthId());
                 break;
             default:
-                throw new ApplicationException(StrUtil.format("请输入正确的action[1: 同意; 2: 拒绝]：{}",action));
+                throw new ArgumentException();
         }
         return JsonResponse.success();
     }

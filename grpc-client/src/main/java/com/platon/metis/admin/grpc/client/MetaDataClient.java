@@ -1,6 +1,5 @@
 package com.platon.metis.admin.grpc.client;
 
-import cn.hutool.core.util.StrUtil;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.dao.enums.FileTypeEnum;
@@ -12,6 +11,7 @@ import com.platon.metis.admin.grpc.service.MetadataServiceGrpc;
 import com.platon.metis.admin.grpc.types.Metadata;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -74,14 +74,14 @@ public class MetaDataClient {
             LocalMetaDataColumn metaDataColumn = columnList.get(i);
             Metadata.MetadataColumn.Builder metadataColumnBuilder = Metadata.MetadataColumn.newBuilder();
             metadataColumnBuilder.setCIndex(metaDataColumn.getColumnIdx());
-            if (StrUtil.isNotBlank(metaDataColumn.getColumnName())){
+            if (StringUtils.isNotBlank(metaDataColumn.getColumnName())){
                 metadataColumnBuilder.setCName(metaDataColumn.getColumnName());
             }
-            if (StrUtil.isNotBlank(metaDataColumn.getColumnType())){
+            if (StringUtils.isNotBlank(metaDataColumn.getColumnType())){
                 metadataColumnBuilder.setCType(metaDataColumn.getColumnType());
             }
             metadataColumnBuilder.setCSize(metaDataColumn.getSize() == null ? 0 : metaDataColumn.getSize());
-            if (StrUtil.isNotBlank(metaDataColumn.getRemarks())){
+            if (StringUtils.isNotBlank(metaDataColumn.getRemarks())){
                 metadataColumnBuilder.setCComment(metaDataColumn.getRemarks());
             }
             metadataColumnList.add(metadataColumnBuilder.build());
@@ -102,8 +102,12 @@ public class MetaDataClient {
         }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        return response.getMetadataId();
+        if(StringUtils.isBlank(response.getMetadataId())){
+            log.error("the metadata ID returned from Carrier is blank.");
+            throw new CallGrpcServiceFailed();
+        }
 
+        return response.getMetadataId();
     }
 
     /**

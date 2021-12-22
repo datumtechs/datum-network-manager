@@ -1,33 +1,30 @@
 package com.platon.metis.admin.service.impl;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.text.csv.CsvData;
-import cn.hutool.core.text.csv.CsvReader;
-import cn.hutool.core.text.csv.CsvRow;
-import cn.hutool.core.text.csv.CsvUtil;
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
+import com.platon.metis.admin.common.exception.*;
 import com.platon.metis.admin.common.util.ExportFileUtil;
+import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.dao.*;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
 import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
-import com.platon.metis.admin.dao.entity.Task;
 import com.platon.metis.admin.dao.enums.FileTypeEnum;
 import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
-import com.platon.metis.admin.dao.enums.TaskStatusEnum;
 import com.platon.metis.admin.grpc.client.DataProviderClient;
 import com.platon.metis.admin.grpc.client.MetaDataClient;
 import com.platon.metis.admin.grpc.client.YarnClient;
-import com.platon.metis.admin.grpc.entity.DataProviderUploadDataResp;
 import com.platon.metis.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.metis.admin.grpc.entity.YarnQueryFilePositionResp;
+import com.platon.metis.admin.grpc.service.DataProviderRpcMessage;
 import com.platon.metis.admin.service.LocalDataService;
-import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -35,13 +32,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+
 
 @Slf4j
 @Service
@@ -85,23 +86,15 @@ public class LocalDataServiceImpl implements LocalDataService {
                 localDataFile.getSize(),
                 localDataFile.getFileType() == FileTypeEnum.FILETYPE_UNKONW.getValue() ? FileTypeEnum.FILETYPE_UNKONW : FileTypeEnum.FILETYPE_CSV);
         //### 3.上传源文件到数据节点
-        DataProviderUploadDataResp dataProviderUploadDataResp = null;
-        try {
-            dataProviderUploadDataResp = dataProviderClient.uploadData(
-                    availableDataNode.getIp(),
-                    availableDataNode.getPort(),
-                    localDataFile.getFileName(),
-                    file);
-        } catch (Exception e) {
-            log.error("上传文件到数据节点失败，数据节点地址：{}:{}", availableDataNode.getIp(), availableDataNode.getPort(), e);
-            throw new ServiceException("上传文件到数据节点失败", e);
-        }
-        if(StringUtils.isEmpty(dataProviderUploadDataResp.getFileId()) || StringUtils.isEmpty(dataProviderUploadDataResp.getFilePath())) {
-            throw new ServiceException("上传文件到数据节点失败（文件ID或路径缺失）");
-        }
+        DataProviderRpcMessage.UploadReply response = dataProviderClient.uploadData(
+                availableDataNode.getIp(),
+                availableDataNode.getPort(),
+                localDataFile.getFileName(),
+                file);
+
         //### 4.补充源文件信息
-        localDataFile.setFileId(dataProviderUploadDataResp.getFileId());
-        localDataFile.setFilePath(dataProviderUploadDataResp.getFilePath());
+        localDataFile.setFileId(response.getDataId());
+        localDataFile.setFilePath(response.getFilePath());
         //localDataFile.getLocalDataFileColumnList().parallelStream().forEach(column -> column.setFileId(localDataFile.getFileId()));
 
 
@@ -140,10 +133,12 @@ public class LocalDataServiceImpl implements LocalDataService {
     public int delete(Integer id) {
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
         if(Objects.isNull(localMetaData)){
-            throw new ServiceException("输入的id有误");
+            log.error("metadata ID is missing.");
+            throw new ArgumentException();
         }
         if(LocalDataFileStatusEnum.RELEASED.getStatus()==localMetaData.getStatus()){
-            throw new ServiceException("已发布状态的数据不能删除");
+            log.error("cannot delete the published data.");
+            throw new CannotDeletePublishedFile();
         }
         return localMetaDataMapper.deleteByPrimaryKey(id);
     }
@@ -152,12 +147,14 @@ public class LocalDataServiceImpl implements LocalDataService {
     public void downLoad(HttpServletResponse response, Integer id) {
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
         if(localMetaData==null){
-            throw new ServiceException("元数据没有找到");
+            log.error("cannot find local metadata.");
+            throw new ObjectNotFound();
         }
         //### 1.获取文件路径
         LocalDataFile localDataFile = localDataFileMapper.selectByFileId(localMetaData.getFileId());
         if(localDataFile==null){
-            throw new ServiceException("元数据的源文件没有找到");
+            log.error("cannot find local data file.");
+            throw new ObjectNotFound();
         }
         //### 2.获取可用的数据节点
         YarnQueryFilePositionResp yarnQueryFilePositionResp = yarnClient.queryFilePosition(localDataFile.getFileId());
@@ -165,7 +162,12 @@ public class LocalDataServiceImpl implements LocalDataService {
                 yarnQueryFilePositionResp.getIp(),
                 yarnQueryFilePositionResp.getPort(),
                 yarnQueryFilePositionResp.getFilePath());
-        ExportFileUtil.exportCsv(localMetaData.getMetaDataName(), bytes,response);
+        try {
+            ExportFileUtil.exportCsv(localMetaData.getMetaDataName(), bytes,response);
+        } catch (IOException e) {
+            log.error("export csv file error", e);
+            throw new SysException();
+        }
     }
 
     @Transactional
@@ -173,11 +175,13 @@ public class LocalDataServiceImpl implements LocalDataService {
     public int update(LocalMetaData localMetaData) {
         LocalMetaData existing = localMetaDataMapper.selectByPrimaryKey(localMetaData.getId());
         if (existing == null ){
-            throw new ServiceException("metadata not found");
+            log.error("cannot find local metadata.");
+            throw new ObjectNotFound();
         }
         //已发布状态的元数据不允许修改
         if(LocalDataFileStatusEnum.RELEASED.getStatus()==existing.getStatus()){
-            throw new ServiceException("已发布状态的元数据不允许修改");
+            log.error("cannot edit the published data.");
+            throw new CannotEditPublishedFile ();
         }
         //只允许修改这两个值
         existing.setRemarks(localMetaData.getRemarks());
@@ -194,18 +198,19 @@ public class LocalDataServiceImpl implements LocalDataService {
             //todo:或者updateBatch，这样就不需要先删除了
             localMetaDataColumnMapper.batchInsert(localMetaData.getLocalMetaDataColumnList());
         }
-
-
         return count;
     }
 
       @Override
     public void down(Integer id) {
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
-
-        //已发布状态的元数据不允许修改
+          if(localMetaData==null){
+              throw new ObjectNotFound();
+          }
+        //下架只能针对上架的数据
         if(LocalDataFileStatusEnum.RELEASED.getStatus()!=localMetaData.getStatus()){
-            throw new ServiceException("元数据未上架");
+            log.error("cannot withdraw un-published metadata.");
+            throw new CannotWithdrawData();
         }
         metaDataClient.revokeMetaData(localMetaData.getMetaDataId());
     }
@@ -214,9 +219,13 @@ public class LocalDataServiceImpl implements LocalDataService {
     public int up(Integer id) {
         //获取文件元数据详情
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
+        if(localMetaData==null){
+            throw new ObjectNotFound();
+        }
         //已发布状态的元数据不允许修改
         if(LocalDataFileStatusEnum.RELEASED.getStatus()==localMetaData.getStatus()){
-            throw new ServiceException("元数据已上架");
+            log.error("cannot publish metadata again.");
+            throw new CannotPublishData();
         }
         List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByLocalMetaDataDbIdToPublish(localMetaData.getId());
         localMetaData.setLocalMetaDataColumnList(columnList);
@@ -225,9 +234,6 @@ public class LocalDataServiceImpl implements LocalDataService {
         //调用grpc
         String publishMetaDataId = metaDataClient.publishMetaData(localDataFile, localMetaData);
         //String publishMetaDataId = "metadata:0x3426733d8fbd4a27ed26f06b35caa6ac63bca1fc09b98e56e1b262da9a357ffd";
-        if(StrUtil.isBlank(publishMetaDataId)){
-            throw new ServiceException("调度服务未返回元数据ID");
-        }
 
         localMetaData.setMetaDataId(publishMetaDataId);
         localMetaData.setStatus(LocalDataFileStatusEnum.RELEASED.getStatus());
@@ -248,84 +254,110 @@ public class LocalDataServiceImpl implements LocalDataService {
      * @return
      */
     private LocalDataFile resolveUploadFile(MultipartFile file, boolean hasTitle){
-        Date operateDate = new Date();
-        try {
-            String fileName = file.getOriginalFilename();
+        if(file.isEmpty()){
+            log.error("file is empty");
+            throw new FileEmpty();
+        }
+
+
+        //校验文件名
+        String originalFilename = file.getOriginalFilename();
+        String resourceName = StringUtils.substring(FilenameUtils.getPrefix(originalFilename),0,12);
+        if(!NameUtil.isValidName(resourceName)){
+            throw new FileNameError();
+        }
+        try(InputStreamReader isr = new InputStreamReader(file.getInputStream())){
+
+            CSVParser csvParser = CSVFormat.DEFAULT.parse(isr);
+
+            //流式读取第一行
+            Optional<CSVRecord> headerRecord = csvParser.stream().findFirst();
+            if(!headerRecord.isPresent()){
+                log.error("file has 0 line");
+                throw new FileEmpty();
+            }
+
+            //第一行就是表头
+            List<String> headerList = headerRecord.get().toList();
+
+            //流式统计后续的行数。注意：前面指针移动过1条记录了
+            long rows = csvParser.stream().count();
+
             LocalDataFile localDataFile = new LocalDataFile();
-            localDataFile.setFileName(fileName);
-            localDataFile.setIdentityId(LocalOrgIdentityCache.getIdentityId());
+            localDataFile.setFileName(file.getOriginalFilename());
+            localDataFile.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
             localDataFile.setFileType(FileTypeEnum.FILETYPE_CSV.getValue());//todo 目前只有csv类型
             localDataFile.setSize(file.getSize());
             localDataFile.setHasTitle(hasTitle);
 
-            localDataFile.setRecCreateTime(operateDate);
-            localDataFile.setRecUpdateTime(operateDate);
-            CsvReader reader = CsvUtil.getReader();
-            InputStreamReader isr = new InputStreamReader(file.getInputStream());
-            CsvData csvData = reader.read(isr);
-            //### 1.先确定确定有多少行
-            int rowCount = csvData.getRowCount();//TODO 如果行数太多了，超过Integer.max会报错
-            localDataFile.setRows(rowCount);
-            //### 2.如果行数大于0则确定有多少列
-            if(rowCount > 0){
-                CsvRow header = csvData.getRow(0);
-                //列数
-                int columnCount = header.size();
-                localDataFile.setColumns(columnCount);
-                List<LocalMetaDataColumn> columnList = new ArrayList<>();
-                //### 3.判断是否有表头
-                if(hasTitle){
-                    for (int i = 0; i < header.size(); i++) {
-                        //common
-                        LocalMetaDataColumn column = new LocalMetaDataColumn();
-                        //unique
-                        column.setColumnIdx(i + 1);
-                        column.setColumnName(header.get(i));
-                        column.setColumnType("string");//TODO 向产品经理确认,数据类型默认为string
-                        column.setSize(0);//TODO 向产品经理确认
-                        columnList.add(column);
-                    }
-                } else { //没有表头
-                    for (int i = 0; i < header.size(); i++) {
-                        //common
-                        LocalMetaDataColumn column = new LocalMetaDataColumn();
-                        //unique
-                        column.setColumnIdx(i + 1);
-                        column.setColumnName("");
-                        column.setColumnType("");//TODO 向产品经理确认,数据类型默认为string
-                        column.setSize(0);//TODO 向产品经理确认
-                        columnList.add(column);
-                    }
+            List<LocalMetaDataColumn> columnList = new ArrayList<>();
+            if (hasTitle){
+                //有表头，后续行数就是有效数据行数
+                localDataFile.setRows(new Long(rows).intValue());
+
+                for (int i = 0; i < headerList.size(); i++) {
+                    //common
+                    LocalMetaDataColumn column = new LocalMetaDataColumn();
+                    //unique
+                    column.setColumnIdx(i + 1);
+                    column.setColumnName(headerList.get(i));
+                    column.setColumnType("string");         //TODO 向产品经理确认,数据类型默认为string
+                    column.setSize(0);                      //TODO 向产品经理确认
+                    columnList.add(column);
                 }
-                localDataFile.setLocalMetaDataColumnList(columnList);
-                return localDataFile;
             } else {
-                throw new ServiceException("CSV文件为空文件");
+                //没有表头，后续行数+1，才是有效数据行数
+                localDataFile.setRows(new Long(rows).intValue()+1);
+
+                for (int i = 0; i < headerList.size(); i++) {
+                    //common
+                    LocalMetaDataColumn column = new LocalMetaDataColumn();
+                    //unique
+                    column.setColumnIdx(i + 1);
+                    column.setColumnName("");
+                    column.setColumnType("");               //TODO 向产品经理确认,数据类型默认为string
+                    column.setSize(0);                      //TODO 向产品经理确认
+                    columnList.add(column);
+                }
             }
-        } catch (ServiceException e){
-            throw e;
-        }catch (Exception exception){
-            throw new ServiceException("解析CSV文件异常",exception);
+            localDataFile.setLocalMetaDataColumnList(columnList);
+            return localDataFile;
+        } catch (IOException e) {
+            log.error("read file content error", e);
+            throw new SysException();
         }
     }
 
 
-    private String getResourceName(String fileName){
-        //导入去掉.csv后缀的文件名称，保存前12个字符作为资源名称
-        String resourceName = StrUtil.sub(FileUtil.getPrefix(fileName),0,12);
-        //因为上层已做资源文件名称校验，故此处暂时不再做校验
-        return resourceName;
-    }
+    public static void main(String[] args){
 
 
-    /**
-     * 任务状态是否为PENDING/RUNNING
-     * @param task
-     * @return
-     */
-    private boolean isTaskStatusPendAndRunning(Task task){
-        Integer status = task.getStatus();
-        return TaskStatusEnum.PENDING.getValue() == status || TaskStatusEnum.RUNNING.getValue() == status;
+        File file = new File("C:\\Users\\mrlvx\\Downloads\\保险训练大数据集.csv");
+
+        try(InputStreamReader isr = new InputStreamReader(new FileInputStream(file),"UTF-8")){
+            CSVParser csvParser = CSVFormat.DEFAULT.parse(isr);
+            Optional<CSVRecord> headerRecord  = csvParser.stream().findFirst();
+            long rows = csvParser.stream().count();
+            if (!headerRecord.isPresent() || rows==0){
+                log.error("file has 0 line");
+                throw new FileEmpty();
+            }
+            List<String> headerList = headerRecord.get().toList();
+
+            System.out.println("rows:" + rows);
+            for (String header : headerList ) {
+                System.out.println("header:" + header);
+            }
+
+
+
+
+        } catch (IOException e) {
+            log.error("read file content error", e);
+            throw new SysException();
+        }
     }
 
 }
+
+

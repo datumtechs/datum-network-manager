@@ -1,6 +1,7 @@
 package com.platon.metis.admin.service.impl;
 
 import com.platon.metis.admin.dao.LocalOrgMapper;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.service.LocalOrgService;
@@ -34,6 +35,8 @@ public class LocalOrgServiceImpl implements LocalOrgService {
 
     @Override
     public LocalOrg getLocalOrg() {
-        return localOrgMapper.select();
+        LocalOrg localOrg =  localOrgMapper.select();
+        LocalOrgCache.setLocalOrgInfo(localOrg);
+        return localOrg;
     }
 }

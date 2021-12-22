@@ -1,7 +1,5 @@
 package com.platon.metis.admin.dto.resp;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
@@ -10,6 +8,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
@@ -101,7 +101,7 @@ public class LocalDataImportFileResp {
 
     private static String getResourceName(String fileName){
         //导入去掉.csv后缀的文件名称，保存前12个字符作为资源名称
-        String resourceName = StrUtil.sub(FileUtil.getPrefix(fileName),0,12);
+        String resourceName = StringUtils.substring(FilenameUtils.getPrefix(fileName),0,12);
         //因为上层已做资源文件名称校验，故此处暂时不再做校验
         return resourceName;
     }

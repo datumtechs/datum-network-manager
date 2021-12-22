@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @author houz
@@ -34,7 +33,7 @@ public class LocalPowerJoinTask {  //todo: 类名改成localPowerRunningTask
     private String ownerIdentityName;
 
     @ApiModelProperty(value = "发起时间")
-    private Date taskStartTime;
+    private LocalDateTime taskStartTime;
 
     @ApiModelProperty(value = "结果接收方组织名称")
     private String resultSideName;

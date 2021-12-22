@@ -1,9 +1,9 @@
 package com.platon.metis.admin.grpc.client;
 
 import com.alibaba.fastjson.JSON;
-import com.platon.metis.admin.common.context.LocalOrgCache;
 import com.platon.metis.admin.dao.DataSyncMapper;
 import com.platon.metis.admin.dao.LocalOrgMapper;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.DataSync;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
 import com.platon.metis.admin.dao.entity.LocalOrg;

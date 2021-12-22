@@ -1,8 +1,8 @@
 package com.platon.metis.admin.config;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
@@ -24,12 +24,12 @@ public class JasyptConfig {
       第二个配置文件路径为本地打包环境路径
      */
     static {
-        File saltFile = FileUtil.file(System.getProperty("user.dir"), "jasypt.properties");
+        File saltFile = FileUtils.getFile(System.getProperty("user.dir"), "jasypt.properties");
         Properties properties = new Properties();
         try (InputStream in = new FileInputStream(saltFile)) {
             properties.load(in);
             String salt = properties.getProperty("jasypt.encryptor.password");
-            if (StrUtil.isBlank(salt)) {
+            if (StringUtils.isBlank(salt)) {
                 throw new RuntimeException("salt not null");
             }
             salt = salt.trim();

@@ -1,11 +1,8 @@
 package com.platon.metis.admin.aop;
 
-import cn.hutool.core.util.StrUtil;
-import com.platon.metis.admin.common.exception.ApplicationException;
 import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.enums.ResponseCodeEnum;
-import com.platon.metis.admin.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -32,7 +29,8 @@ public class ErrorHandle {
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
         StringJoiner errorMessage = new StringJoiner(",");
         for (FieldError error : fieldErrors) {
-            errorMessage.add(StrUtil.format("{}={}",error.getField(), error.getDefaultMessage()));
+
+            errorMessage.add(error.getField() + "_" + error.getDefaultMessage());
         }
         return JsonResponse.fail(ResponseCodeEnum.FAIL, "method argument invalid");
     }
@@ -42,17 +40,6 @@ public class ErrorHandle {
         return JsonResponse.fail(ResponseCodeEnum.FAIL, "SQL error");
     }
 
-    @ExceptionHandler(ServiceException.class)
-    public JsonResponse handleServiceException(ServiceException exception){
-        log.error("handleServiceException",exception);
-        return JsonResponse.fail(exception.getErrorMsg());
-    }
-
-    @ExceptionHandler(ApplicationException.class)
-    public JsonResponse handleApplicationException(ApplicationException exception){
-        log.error("handleApplicationException",exception);
-        return JsonResponse.fail(exception);
-    }
 
     @ExceptionHandler(BizException.class)
     public JsonResponse handleBizException(BizException exception){

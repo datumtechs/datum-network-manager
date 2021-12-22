@@ -1,19 +1,15 @@
 package com.platon.metis.admin.controller.data;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.text.csv.CsvData;
-import cn.hutool.core.text.csv.CsvReader;
-import cn.hutool.core.text.csv.CsvUtil;
-import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
-import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
-import com.platon.metis.admin.common.exception.ApplicationException;
+import com.platon.metis.admin.common.exception.ArgumentException;
+import com.platon.metis.admin.common.exception.ObjectNotFound;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.LocalDataFileColumnMapper;
 import com.platon.metis.admin.dao.LocalDataFileMapper;
 import com.platon.metis.admin.dao.LocalMetaDataColumnMapper;
 import com.platon.metis.admin.dao.LocalMetaDataMapper;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
 import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
@@ -41,7 +37,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -100,7 +95,7 @@ public class LocalDataController {
     @ApiOperation(value = "数据参与的任务信息列表", notes="返回数据的每个task中，包含如下的动态字段：</br>taskSponsor, powerProvider, dataProvider, resultConsumer, algoProvider </br>当这些字段值等于1时表示本组织在任务中的相应角色")
     @PostMapping("listTaskByMetaDataId")
     public JsonResponse<List<Task>> listTaskByMetaDataId(@RequestBody @Validated LocalDataJoinTaskListReq req){
-        Page<Task> localDataJoinTaskPage = taskService.listTaskByIdentityIdAndMetaDataIdWithRole(LocalOrgIdentityCache.getIdentityId(), req.getMetaDataId(), req.getPageNumber(), req.getPageSize());
+        Page<Task> localDataJoinTaskPage = taskService.listTaskByIdentityIdAndMetaDataIdWithRole(LocalOrgCache.getLocalOrgIdentityId(), req.getMetaDataId(), req.getPageNumber(), req.getPageSize());
         return JsonResponse.page(localDataJoinTaskPage,localDataJoinTaskPage);
     }
 
@@ -119,39 +114,12 @@ public class LocalDataController {
     public JsonResponse<LocalDataImportFileResp> importFile(MultipartFile file,
                                                         @Validated @NotNull(message = "hasTitle不为空")Boolean hasTitle) throws IOException {
         //校验文件
-        isValidFile(file);
         LocalDataFile localDataFile = localDataService.uploadFile(file, hasTitle);
         LocalDataImportFileResp resp = LocalDataImportFileResp.from(localDataFile);
         return JsonResponse.success(resp);
     }
 
-    private void isValidFile(MultipartFile file) throws IOException {
-        if(file.isEmpty()){
-            throw new ApplicationException("文件大小为空");
-        }
 
-        //如果是csv文件
-        CsvReader reader = CsvUtil.getReader();
-        InputStreamReader isr = new InputStreamReader(file.getInputStream());
-        CsvData csvData = reader.read(isr);
-        //### 1.先确定确定有多少行
-        int rowCount = csvData.getRowCount();//TODO 如果行数太多了，超过Integer.max会报错
-        if(rowCount <= 0){
-            throw new ApplicationException("CSV文件为空文件");
-        }
-
-        //校验文件名
-        String originalFilename = file.getOriginalFilename();
-        String resourceName = StrUtil.sub(FileUtil.getPrefix(originalFilename),0,12);
-        if(!NameUtil.isValidName(resourceName)){
-            throw new ApplicationException("元数据资源名称错误：仅支持中英文与数字输入，最多12个字符");
-        }
-        //判断文件名称是否重复
-        /*boolean exist = localDataService.isExistResourceName(resourceName,null);
-        if(exist){
-            throw new ApplicationException("文件名称已存在，请修改文件名称前12个字符，确保不会和已存在的文件前12个字符重复！！！");
-        }*/
-    }
 
     /**
      * 元数据添加：
@@ -224,7 +192,7 @@ public class LocalDataController {
         //查询localMetaData，并查询出taskCount放入动态字段
         LocalMetaData localMetaData = localMetaDataMapper.findWithTaskCount(id);
         if(localMetaData==null){
-            throw new ApplicationException("metadata not found");
+            throw new ObjectNotFound();
         }
 
         //查询元数据的localMetaDataColumnList
@@ -296,7 +264,7 @@ public class LocalDataController {
                 localDataService.up(req.getId());
                 break;
             default:
-                throw new ApplicationException(StrUtil.format("请输入正确的操作[-1: 删除; 0: 下架; 1: 上架]：{}",action));
+                throw new ArgumentException();
         }
 
         return JsonResponse.success();
