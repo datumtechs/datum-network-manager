@@ -21,10 +21,10 @@ public class LocalPowerNode {
     private String identityId;
 
     @ApiModelProperty(value = "计算节点ID", example = "")
-    private String powerNodeId;
+    private String nodeId;
 
     @ApiModelProperty(value = "计算节点名称", example = "")
-    private String powerNodeName;
+    private String nodeName;
 
     @ApiModelProperty(value = "节点内网IP", example = "")
     private String internalIp;

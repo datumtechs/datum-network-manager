@@ -1,8 +1,8 @@
-drop database if exists metis_admin;
+drop database if exists `dev_metis_admin_3.0`;
 
-CREATE DATABASE metis_admin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE `dev_metis_admin_3.0` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-use metis_admin;
+use `dev_metis_admin_3.0`;
 /*
 Navicat MySQL Data Transfer
 
@@ -185,8 +185,8 @@ CREATE TABLE `local_data_auth` (
   `identity_name` varchar(256) DEFAULT NULL COMMENT '元数据所属的组织信息，组织名称',
   `identity_id` varchar(256) DEFAULT NULL COMMENT '元数据所属的组织信息,组织的身份标识Id',
   `identity_node_id` varchar(256) DEFAULT NULL COMMENT '组织中调度服务的 nodeId',
-  `rec_create_time` timestamp COMMENT '创建时间',
-  `rec_update_time` timestamp COMMENT '最后更新时间',
+  `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`auth_id`),
   KEY (`meta_data_id`)
 ) COMMENT='本组织申请授权数据表';
@@ -208,7 +208,7 @@ CREATE TABLE `local_seed_node` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_data_node`;
 CREATE TABLE `local_data_node` (
-  `node_id` varchar(256) DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
+  `node_id` varchar(256) NOT NULL COMMENT '发布后底层返回的host唯一ID',
   `node_name` varchar(64) DEFAULT NULL COMMENT '节点名称',
   `internal_IP` varchar(32) DEFAULT NULL COMMENT '节点内部IP',
   `internal_Port` INT DEFAULT NULL COMMENT '节点内部端口',
@@ -219,8 +219,8 @@ CREATE TABLE `local_data_node` (
   `conn_Time` datetime DEFAULT NULL COMMENT '节点上一次连接时间',
   `status` varchar(10) DEFAULT 'disabled' COMMENT '节点状态 enabled：可用, disabled:不可用',
   `remarks` varchar(32) DEFAULT NULL COMMENT '节点备注',
-  `rec_create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `rec_create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
   PRIMARY KEY (`node_id`)
 ) COMMENT='本组织数据节点配置表 配置数据节点相关信息';
 
@@ -241,7 +241,7 @@ CREATE TABLE `local_org` (
      `status` tinyint(1) DEFAULT '0' COMMENT '0未入网，1已入网',
      local_bootstrap_node varchar(256) DEFAULT NULL COMMENT '当前系统的本地节点，可以作为引导节点提供给三方节点',
      local_multi_addr varchar(256) DEFAULT NULL COMMENT '当前系统本地的',
-     `rec_update_time` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
+     `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
 ) COMMENT='本地组织信息表';
 
 
@@ -277,8 +277,8 @@ DROP TABLE IF EXISTS `local_power_node`;
 CREATE TABLE `local_power_node` (
     `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
     `identity_id` varchar(256) NOT NULL COMMENT '组织身份ID',
-    `power_node_id` varchar(256) DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
-    `power_node_name` varchar(32) DEFAULT NULL COMMENT '节点名称(同一个组织不可重复）',
+    `node_id` varchar(256) DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
+    `node_name` varchar(32) DEFAULT NULL COMMENT '节点名称(同一个组织不可重复）',
     `internal_ip` varchar(32) DEFAULT NULL COMMENT '节点内网IP',
     `internal_port` INT DEFAULT NULL COMMENT '节点内网端口',
     `external_ip` varchar(32) DEFAULT NULL COMMENT '节点外网IP',
@@ -299,8 +299,8 @@ CREATE TABLE `local_power_node` (
     `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
     PRIMARY KEY (`id`),
-    KEY `power_node_id` (`power_node_id`),
-    KEY `power_node_name` (`power_node_name`)
+    KEY `node_id` (`node_id`),
+    KEY `node_name` (`node_name`)
 ) COMMENT='本组织计算节点配置表 配置当前参与方的计算节点信息';
 
 
@@ -457,14 +457,16 @@ CREATE TABLE `local_power_load_snapshot` (
 
 
 DROP TABLE IF EXISTS `data_sync`;
-CREATE TABLE `local_power_load_snapshot` (
+CREATE TABLE `data_sync` (
     data_type varchar(256) NOT NULL COMMENT '数据类型',
     latest_synced DATETIME(3) NOT NULL COMMENT '数据最新同步时间点点，精确到毫秒',
     PRIMARY KEY (data_type)
 ) COMMENT='数据同步时间记录';
 
-INSERT INTO data_sync(data_type, latest_synced_time) VALUES('data_auth_req', '1970-01-01 00:00:00');
-INSERT INTO data_sync(data_type, latest_synced_time) VALUES('data_auth_req', '1970-01-01 00:00:00');
+INSERT INTO data_sync(data_type, latest_synced) VALUES('data_auth_req', '1970-01-01 00:00:00');
+INSERT INTO data_sync(data_type, latest_synced) VALUES('local_meta_data', '1970-01-01 00:00:00');
+INSERT INTO data_sync(data_type, latest_synced) VALUES('local_task', '1970-01-01 00:00:00');
+
 
 -- 创建全网元数据月统计视图
 CREATE OR REPLACE VIEW v_global_data_file_stats_monthly as
@@ -604,8 +606,8 @@ CREATE EVENT local_power_load_snapshot_event
 	ON COMPLETION PRESERVE
 	DO
 BEGIN
-    INSERT INTO local_power_load_snapshot (power_node_id, snapshot_time, used_core, used_memory, used_bandwidth)
-    SELECT power_node_id, DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y-%m-%d %H:00:00'), sum(used_core) as used_core, sum(used_memory) as used_memory, sum(used_bandwidth) as used_bandwidth
+    INSERT INTO local_power_load_snapshot (node_id, snapshot_time, used_core, used_memory, used_bandwidth)
+    SELECT node_id, DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y-%m-%d %H:00:00'), sum(used_core) as used_core, sum(used_memory) as used_memory, sum(used_bandwidth) as used_bandwidth
     FROM  local_power_join_task
     GROUP BY power_node_id;
 END$$

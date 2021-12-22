@@ -49,8 +49,8 @@ public class IndexNodeListResp {
             return null;
         }
         IndexNodeListResp resp = new IndexNodeListResp();
-        resp.setJobNodeId(localPowerNode.getPowerNodeId());
-        resp.setJobNodeName(localPowerNode.getPowerNodeName());
+        resp.setJobNodeId(localPowerNode.getNodeId());
+        resp.setJobNodeName(localPowerNode.getNodeName());
         //前端显示计算节点状态：1计算中、0空闲中
         if(localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE){//占用
             resp.setStatus("1");

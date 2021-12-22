@@ -132,8 +132,8 @@ public class PowerClient {
     private List<LocalPowerNode> convertToLocalPowerNodeList(List<YarnRpcMessage.YarnRegisteredPeer> nodeList) {
         return nodeList.parallelStream().map(node -> {
             LocalPowerNode localPowerNode = new LocalPowerNode();
-            localPowerNode.setPowerNodeId(node.getNodeDetail().getId());
-            localPowerNode.setPowerNodeName("PowerNode_"+ node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
+            localPowerNode.setNodeId(node.getNodeDetail().getId());
+            localPowerNode.setNodeName("PowerNode_"+ node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
             localPowerNode.setInternalIp(node.getNodeDetail().getInternalIp());
             localPowerNode.setInternalPort(StringUtils.isEmpty(node.getNodeDetail().getInternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getInternalPort()));
             localPowerNode.setExternalIp(node.getNodeDetail().getExternalIp());
@@ -216,7 +216,7 @@ public class PowerClient {
 
             // 保存计算节点算力信息开始
             LocalPowerNode localPowerNode = new LocalPowerNode();
-            localPowerNode.setPowerNodeId(item.getJobNodeId());
+            localPowerNode.setNodeId(item.getJobNodeId());
             localPowerNode.setPowerId(item.getPowerId());
             localPowerNode.setStartTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(powerUsageDetail.getPublishAt()), ZoneOffset.UTC));
             localPowerNode.setPowerStatus(powerUsageDetail.getState().getNumber()); //更新算力状态

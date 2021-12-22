@@ -26,6 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
                 "/**/*.css",
                 "/**/*.html",
                 "/**/*.map",
+                "/health",
                 "/api/v1/user/login",
                 "/api/v1/user/logout",
                 "/api/v1/user/verificationCode"};

@@ -5,8 +5,8 @@
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerNode">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
-    <result column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
-    <result column="power_node_name" jdbcType="VARCHAR" property="powerNodeName" />
+    <result column="node_id" jdbcType="VARCHAR" property="nodeId" />
+    <result column="node_name" jdbcType="VARCHAR" property="nodeName" />
     <result column="internal_ip" jdbcType="VARCHAR" property="internalIp" />
     <result column="internal_port" jdbcType="INTEGER" property="internalPort" />
     <result column="external_ip" jdbcType="VARCHAR" property="externalIp" />
@@ -31,8 +31,8 @@
   <sql id="Base_Column_List">
     id,
     identity_id,
-    power_node_id,
-    power_node_name,
+    node_id,
+    node_name,
     internal_ip,
     internal_port,
     external_ip,
@@ -61,13 +61,13 @@
     from
         local_power_node
     where
-        power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+        node_id = #{nodeId, jdbcType=VARCHAR}
   </select>
 
 
   <!-- 校验计算节点名称 -->
-  <select id="checkPowerNodeName" parameterType="java.lang.String" resultType="java.lang.Integer">
-    select count(1) from local_power_node where power_node_Name = #{powerNodeName, jdbcType=VARCHAR}
+  <select id="checknodeName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from local_power_node where node_name = #{nodeName, jdbcType=VARCHAR}
   </select>
 
   <!-- 询计算节点列表-->
@@ -78,21 +78,21 @@
         local_power_node
     where 1=1
         <if test="keyword != null and keyword != ''">
-            and power_node_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
+            and node_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
         </if>
     order by (case when conn_status = -1 THEN 0 ELSE 1 END), create_time desc
   </select>
 
   <!-- 根据节点id删除计算节点 -->
   <delete id="deletePowerNode" parameterType="java.lang.String">
-    delete from local_power_node where power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+    delete from local_power_node where node_id = #{nodeId, jdbcType=VARCHAR}
   </delete>
 
   <insert id="replaceBatch">
     replace into local_power_node(
     identity_id,
-    power_node_id,
-    power_node_name,
+    node_id,
+    node_name,
     internal_ip,
     internal_port,
     external_ip,
@@ -121,8 +121,8 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">id,</if>
       <if test="identityId != null">identity_id,</if>
-      <if test="powerNodeId != null">power_node_id,</if>
-      <if test="powerNodeName != null">power_node_name,</if>
+      <if test="nodeId != null">node_id,</if>
+      <if test="nodeName != null">node_name,</if>
       <if test="internalIp != null">internal_ip,</if>
       <if test="internalPort != null">internal_port,</if>
       <if test="externalIp != null">external_ip,</if>
@@ -146,8 +146,8 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null"> #{id, jdbcType=INTEGER},</if>
       <if test="identityId != null">#{identityId, jdbcType=VARCHAR},</if>
-      <if test="powerNodeId != null">#{powerNodeId, jdbcType=VARCHAR},</if>
-      <if test="powerNodeName != null">#{powerNodeName, jdbcType=VARCHAR},</if>
+      <if test="nodeId != null">#{nodeId, jdbcType=VARCHAR},</if>
+      <if test="nodeName != null">#{nodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">#{internalIp, jdbcType=VARCHAR},</if>
       <if test="internalPort != null">#{internalPort, jdbcType=INTEGER},</if>
       <if test="externalIp != null">#{externalIp, jdbcType=VARCHAR},</if>
@@ -175,7 +175,7 @@
     update local_power_node
     <set>
       <if test="identityId != null">identity_id = #{identityId, jdbcType=VARCHAR},</if>
-      <if test="powerNodeName != null">power_node_name = #{powerNodeName, jdbcType=VARCHAR},</if>
+      <if test="nodeName != null">node_name = #{nodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
       <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
       <if test="externalIp != null">external_ip = #{externalIp, jdbcType=VARCHAR},</if>
@@ -196,14 +196,14 @@
       <if test="createTime != null">create_time = #{createTime, jdbcType=TIMESTAMP},</if>
       <if test="updateTime != null">update_time = #{updateTime, jdbcType=TIMESTAMP},</if>
     </set>
-    where power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+    where node_id = #{nodeId, jdbcType=VARCHAR}
   </update>
 
   <!-- 批量replace计算节点的基本信息，以及和调度服务的连接情况-->
   <insert id="replaceBasicInfoBatch" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
     replace into local_power_node (
-      power_node_id,
-      power_node_name,
+      node_id,
+      node_name,
       internal_ip,
       internal_port,
       external_ip,
@@ -211,8 +211,8 @@
       conn_status) values
     <foreach collection="list" item="item" separator=";">
       (
-        #{item.powerNodeIdId, jdbcType=VARCHAR},
-        #{item.powerNodeName, jdbcType=VARCHAR},
+        #{item.nodeIdId, jdbcType=VARCHAR},
+        #{item.nodeName, jdbcType=VARCHAR},
         #{item.internalIp,jdbcType=VARCHAR},
         #{item.internalPort,jdbcType=INTEGER},
         #{item.externalIp,jdbcType=VARCHAR},
@@ -224,7 +224,7 @@
 
 
   <!-- 批量修改计算节点的资源信息-->
-  <update id="updateResourceInfoBatchByPowerNodeId" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
+  <update id="updateResourceInfoBatchBynodeId" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
     <foreach collection="list" item="item" separator=";">
       update local_power_node
       set
@@ -238,7 +238,7 @@
         used_core = #{item.usedCore, jdbcType=INTEGER},
         used_bandwidth = #{item.usedBandwidth, jdbcType=BIGINT},
         update_time = #{item.updateTime, jdbcType=TIMESTAMP}
-      where power_node_id = #{item.powerNodeId, jdbcType=VARCHAR}
+      where node_id = #{item.nodeId, jdbcType=VARCHAR}
     </foreach>
   </update>
 
@@ -250,8 +250,8 @@
     update local_power_node
     <set>
       <if test="identityId != null">identity_id = #{identityId, jdbcType=VARCHAR},</if>
-      <if test="powerNodeId != null">power_node_id = #{powerNodeId, jdbcType=VARCHAR},</if>
-      <if test="powerNodeName != null">power_node_name = #{powerNodeName, jdbcType=VARCHAR},</if>
+      <if test="nodeId != null">node_id = #{nodeId, jdbcType=VARCHAR},</if>
+      <if test="nodeName != null">node_name = #{nodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
       <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
       <if test="externalIp != null">external_ip = #{externalIp, jdbcType=VARCHAR},</if>
@@ -281,16 +281,16 @@
     <result column="bandwidth_pct" jdbcType="INTEGER" property="bandwidthPct" />
   </resultMap>
 
-  <select id="getCurrentLocalPowerLoadByPowerNodeId" resultMap="PowerLoadResultMap">
-    SELECT t1.power_node_id, CAST(t1.used_core / t2.core * 100 as UNSIGNED) as core_pct, CAST(t1.used_memory / t2.memory * 100 as UNSIGNED) as memory_pct, CAST(t1.used_bandwidth / t2.bandwidth * 100 as UNSIGNED) as bandwidth_pct
+  <select id="getCurrentLocalPowerLoadBynodeId" resultMap="PowerLoadResultMap">
+    SELECT t1.node_id, CAST(t1.used_core / t2.core * 100 as UNSIGNED) as core_pct, CAST(t1.used_memory / t2.memory * 100 as UNSIGNED) as memory_pct, CAST(t1.used_bandwidth / t2.bandwidth * 100 as UNSIGNED) as bandwidth_pct
     FROM (
-      SELECT lpjk.power_node_id, sum(lpjk.used_core) as used_core, sum(lpjk.used_memory) as used_memory, sum(lpjk.used_bandwidth) as used_bandwidth
+      SELECT lpjk.node_id, sum(lpjk.used_core) as used_core, sum(lpjk.used_memory) as used_memory, sum(lpjk.used_bandwidth) as used_bandwidth
       FROM  local_power_join_task lpjk
-      WHERE lpjk.power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+      WHERE lpjk.node_id = #{nodeId, jdbcType=VARCHAR}
     ) t1, (
       SELECT lpd.core, lpd.memory, lpd.bandwidth
       FROM local_power_node lpd
-      WHERE lpd.power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+      WHERE lpd.node_id = #{nodeId, jdbcType=VARCHAR}
     ) t2
   </select>
 </mapper>

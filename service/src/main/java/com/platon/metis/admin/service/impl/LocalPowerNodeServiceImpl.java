@@ -52,7 +52,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public void insertPowerNode(LocalPowerNode powerNode) {
         // 校检名称
-        if (!NameUtil.isValidName(powerNode.getPowerNodeName())) {
+        if (!NameUtil.isValidName(powerNode.getNodeName())) {
             log.error("power node name error");
             throw new ArgumentException();
         }
@@ -63,7 +63,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         log.info("新增计算节点数据:{}", jobNode);
         // 计算节点id
         powerNode.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
-        powerNode.setPowerNodeId(jobNode.getId());
+        powerNode.setNodeId(jobNode.getId());
         // 设置连接状态
         powerNode.setConnStatus(jobNode.getConnState().getNumber());
         // 设置算力状态（未发布）
@@ -80,7 +80,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public void updatePowerNodeByNodeId(LocalPowerNode powerNode) throws Exception {
         // 判断是否有算力进行中
-        LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNode.getPowerNodeId());
+        LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNode.getNodeId());
 
 
         if(localPowerNode.getConnStatus() == LocalPowerNode.ConnStatus.disconnected.getCode()){
@@ -99,10 +99,10 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
             throw new ServiceException("有任务进行中，无法修改此节点！");
         }*/
         // 调用grpc接口修改计算节点信息
-        YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.updatePowerNode(powerNode.getPowerNodeId(), powerNode.getInternalIp(), powerNode.getExternalIp(),
+        YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.updatePowerNode(powerNode.getNodeId(), powerNode.getInternalIp(), powerNode.getExternalIp(),
                 powerNode.getInternalPort(), powerNode.getExternalPort());
         // 计算节点id
-        powerNode.setPowerNodeId(jobNode.getId());
+        powerNode.setNodeId(jobNode.getId());
         // 设置连接状态
         powerNode.setConnStatus(jobNode.getConnState().getNumber());
         // 内存
@@ -156,7 +156,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     public void publishPower(String powerNodeId) {
         String powerId = powerClient.publishPower(powerNodeId);
         LocalPowerNode localPowerNode = new LocalPowerNode();
-        localPowerNode.setPowerNodeId(powerNodeId);
+        localPowerNode.setNodeId(powerNodeId);
         localPowerNode.setPowerId(powerId);
         localPowerNode.setPowerStatus(CommonBase.PowerState.PowerState_Released_VALUE);
         //todo：这个时间是本地时间，而不是数据中心时间
@@ -175,7 +175,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         powerClient.revokePower(localPowerNode.getPowerId());
 
 
-        localPowerNode.setPowerNodeId(powerNodeId);
+        localPowerNode.setNodeId(powerNodeId);
         // 停用算力需把上次启动的算力id清空
         localPowerNode.setPowerId("");
         localPowerNode.setPowerStatus(CommonBase.PowerState.PowerState_Revoked_VALUE);

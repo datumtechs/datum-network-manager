@@ -10,7 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -21,20 +23,22 @@ import javax.annotation.Resource;
 @EnableTransactionManagement
 @MapperScan("com.platon.metis.admin.dao")
 @Slf4j
+@RestController
+@RequestMapping("/")
 public class MetisAdminApplication {
 
     @Resource
     private LocalOrgService localOrgService;
 
-    @RequestMapping("/")
-    public String home() {
-        return "Hello Metis";
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(MetisAdminApplication.class, args);
     }
 
+    @GetMapping("/health")
+    public String health() {
+        return "Hello, Metis-Admin";
+    }
 
     //@Bean
     /*public TaskScheduler taskScheduler() {
