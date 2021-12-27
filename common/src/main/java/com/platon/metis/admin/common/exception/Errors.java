@@ -7,7 +7,6 @@ public enum Errors {
     CannotConnectGrpcServer(3, "connect gRPC server failed."),
     CallGrpcServiceFailed(4, "call gRPC service error"),
 
-
     UserNotLogin(1000, "user not login"),
     IdentityIdMissing(1001,"user identity not applied"),
 

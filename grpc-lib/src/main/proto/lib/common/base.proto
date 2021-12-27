@@ -19,7 +19,14 @@ message Organization  {
   string identity_id = 3;
   // the status for organization(deleted/normal)
   CommonStatus status = 4;
-  uint64 update_at = 5;         // UTC毫秒数
+  //v 3.0
+  // the last_update time of corresponding datacenter (unit: UTC ms)
+  uint64 update_at = 5;
+  // the link of face image (with a length limit)
+  string image_url = 6;
+  // description of the node (with a length limit)
+  string details = 7;
+
 }
 
 // 任务下的组织信息

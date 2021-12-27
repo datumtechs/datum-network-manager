@@ -5,6 +5,7 @@ import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.common.CommonData;
+import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.TaskRpcMessage;
 import com.platon.metis.admin.grpc.service.TaskServiceGrpc;
 import io.grpc.Channel;
@@ -56,6 +57,7 @@ public class TaskClient {
         TaskRpcMessage.GetTaskDetailListRequest request = TaskRpcMessage.GetTaskDetailListRequest
                 .newBuilder()
                 .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
+                .setPageSize(GrpcConstant.PageSize)
                 .build();
 
         //3.调用rpc服务接口

@@ -251,7 +251,7 @@ message GetTaskResultFileSummaryRequest {
 // 查询 任务结果文件摘要 resp
 message GetTaskResultFileSummaryResponse {
   string task_id = 1;                 // 任务结果文件对应的任务Id
-  string file_name = 2;               // 任务结果文件的名称
+  string table_name  = 2;             // 任务结果文件的(系统生成的、内部的)元数据名称
   string metadata_id = 3;             // 任务结果文件的元数据Id <系统默认生成的元数据>
   string origin_id = 4;               // 任务结果文件的原始文件Id
   string file_path = 5;               // 任务结果文件的完整相对路径名

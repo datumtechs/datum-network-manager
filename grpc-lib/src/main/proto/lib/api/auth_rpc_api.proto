@@ -27,6 +27,7 @@ message GetNodeIdentityResponse {
 
 message GetIdentityListRequest {
   uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
+  uint64 page_size = 2;     // 单次批量数据的返回条数
 }
 
 // 查询全网组织的身份信息列表(已入网的) resp
@@ -90,6 +91,7 @@ message GetMetadataAuthority {
 
 message GetMetadataAuthorityListRequest {
   uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
+  uint64 page_size = 2;     // 单次批量数据的返回条数
 }
 
 //// 查看某个组织的所有元数据的授权申请及审核结果详情列表 req

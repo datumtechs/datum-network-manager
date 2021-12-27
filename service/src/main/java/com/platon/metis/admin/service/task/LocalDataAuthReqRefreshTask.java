@@ -43,6 +43,9 @@ public class LocalDataAuthReqRefreshTask {
             DataSync dataSync = dataSyncService.findDataSync(DataSync.DataType.DataAuthReq);
 
             List<LocalDataAuth> dataAuthList = authClient.getMetaDataAuthorityList(dataSync.getLatestSynced());
+
+            //可以单独设置每个grpc请求的超时
+            //List<LocalDataAuth> dataAuthList = authClient.getMetaDataAuthorityList(dataSync.getLatestSynced(), fixedDelay);
             if(CollectionUtils.isEmpty(dataAuthList)){
                 break;
             }

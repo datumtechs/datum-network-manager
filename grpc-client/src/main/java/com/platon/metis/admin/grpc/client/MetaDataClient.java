@@ -6,6 +6,7 @@ import com.platon.metis.admin.dao.enums.FileTypeEnum;
 import com.platon.metis.admin.dao.enums.LocalMetaDataColumnVisibleEnum;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.common.CommonBase;
+import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.MetaDataRpcMessage;
 import com.platon.metis.admin.grpc.service.MetadataServiceGrpc;
 import com.platon.metis.admin.grpc.types.Metadata;
@@ -212,6 +213,7 @@ public class MetaDataClient {
         MetaDataRpcMessage.GetLocalMetadataDetailListRequest request = MetaDataRpcMessage.GetLocalMetadataDetailListRequest
                 .newBuilder()
                 .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
+                .setPageSize(GrpcConstant.PageSize)
                 .build();
         //3.调用rpc,获取response
         MetaDataRpcMessage.GetLocalMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getLocalMetadataDetailList(request);

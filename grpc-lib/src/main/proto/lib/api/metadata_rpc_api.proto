@@ -13,18 +13,6 @@ import "google/protobuf/empty.proto";
 
 //  ------------------------  metadata  ------------------------
 
-//// 查询单个组织的单个元数据详情 req
-//message GetMetadataDetailRequest {
-//  string identity_id = 1;      // 组织的身份标识 (可选, 传""则查询当前组织的元数据)
-//  string metadata_id = 2;      // 元数据Id
-//}
-//// 查询单个组织的单个元数据详情 resp
-//message GetMetadataDetailResponse {
-//  api.protobuf.Organization owner = 1;              // 元数据的拥有者
-//  types.MetadataDetail      information = 2;        // 元文件详情主体
-//}
-
-
 // (全网) 单个元数据详情 resp
 message GetGlobalMetadataDetailResponse {
   api.protobuf.Organization owner = 1;              // 元数据的拥有者
@@ -33,6 +21,7 @@ message GetGlobalMetadataDetailResponse {
 
 message GetGlobalMetadataDetailListRequest {
   uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
+  uint64 page_size = 2;     // 单次批量数据的返回条数
 }
 
 // 查看 全网元数据列表  resp
@@ -51,6 +40,7 @@ message GetLocalMetadataDetailResponse {
 
 message GetLocalMetadataDetailListRequest {
   uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
+  uint64 page_size = 2;     // 单次批量数据的返回条数
 }
 
 // 查看 本组织元数据列表  resp
@@ -130,7 +120,4 @@ service MetadataService {
       body: "*"
     };
   }
-
-  // 分页拉取摘要列表
-  // 分页拉取详情列表
 }

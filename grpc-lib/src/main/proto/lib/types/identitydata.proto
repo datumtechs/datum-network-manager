@@ -19,4 +19,10 @@ message IdentityPB {
   api.protobuf.CommonStatus status = 6;
   // json format for credential
   string credential = 7;
+  // v 3.0
+  uint64 update_at = 8;         // UTC毫秒数
+  // the link of face image (with a length limit)
+  string image_url = 9;
+  // description of the node (with a length limit)
+  string details = 10;
 }

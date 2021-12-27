@@ -241,6 +241,8 @@ CREATE TABLE `local_org` (
      `status` tinyint(1) DEFAULT '0' COMMENT '0未入网，1已入网',
      local_bootstrap_node varchar(256) DEFAULT NULL COMMENT '当前系统的本地节点，可以作为引导节点提供给三方节点',
      local_multi_addr varchar(256) DEFAULT NULL COMMENT '当前系统本地的',
+     image_url varchar(256) COMMENT '组织机构图像url',
+     profile  varchar(256) COMMENT '组织机构简介',
      `rec_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
 ) COMMENT='本地组织信息表';
 

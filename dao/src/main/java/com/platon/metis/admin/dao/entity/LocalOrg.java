@@ -47,6 +47,12 @@ public class LocalOrg extends BaseDomain {
     @ApiModelProperty(value = "组织入网状态：0未入网，1已入网")
     private Integer status;
 
+    @ApiModelProperty(value = "组织图像url")
+    private String imageUrl;
+
+    @ApiModelProperty(value = "组织简介")
+    private String profile;
+
     @ApiModelProperty(value = "当前系统的本地节点，可以作为引导节点提供给三方节点")
     private String localBootstrapNode;
 

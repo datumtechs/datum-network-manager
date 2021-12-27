@@ -40,7 +40,9 @@ message GetGlobalPowerDetailResponse {
 
 message GetGlobalPowerDetailListRequest {
   uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
+  uint64 page_size = 2;     // 单次批量数据的返回条数
 }
+
 
 // 全网各个组织的各个算力列表 resp
 message GetGlobalPowerDetailListResponse {
@@ -57,12 +59,10 @@ message GetLocalPowerDetailResponse {
   string                    power_id = 4;               // 算力id (对于未发布的算力, powerId为"")
 }
 
-//不需要了，有调度服务直接返回，不需要从数据中心同步
-/*
 message GetLocalPowerDetailListRequest {
   uint64 last_updated = 1;  // UTC毫秒级时间戳，上一次最后一条数据的时间戳
+  uint64 page_size = 2;     // 单次批量数据的返回条数
 }
-*/
 
 
 // 本组织的多个(宿主机)算力信息 (包含【未发布】和【已发布】的)
@@ -71,7 +71,6 @@ message GetLocalPowerDetailListResponse {
   string                                  msg = 2;            // 错误提示信息
   repeated GetLocalPowerDetailResponse    power_list = 3;     // 单个节点的算力总摘要列表
 }
-
 
 // 启用算力 req
 message PublishPowerRequest {
@@ -103,7 +102,7 @@ service PowerService {
   }
 
   // 查看全网各个组织的各个算力详情列表
-  rpc GetGlobalPowerDetailList (GetGlobalPowerDetailListRequest) returns (GetGlobalPowerDetailListResponse) {
+  rpc GetGlobalPowerDetailList (google.protobuf.Empty) returns (GetGlobalPowerDetailListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/power/globalDetailList"
     };

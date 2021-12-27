@@ -5,6 +5,7 @@ import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.LocalDataAuth;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.common.CommonBase;
+import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.AuthRpcMessage;
 import com.platon.metis.admin.grpc.service.AuthServiceGrpc;
 import com.platon.metis.admin.grpc.types.Metadata;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
 
@@ -45,7 +47,7 @@ public class AuthClient {
      * @param identityId // 组织的身份标识Id
      * @param name               // 组织名称
      */
-    public void applyIdentityJoin(String identityId,String name) {
+    public void applyIdentityJoin(String identityId,String name, String imageUrl, String profile) {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -53,6 +55,8 @@ public class AuthClient {
                 .newBuilder()
                 .setNodeName(name)
                 .setIdentityId(identityId)
+                .setImageUrl(imageUrl)
+                .setDetails(profile)
                 .build();
         AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest
                 .newBuilder()
@@ -88,7 +92,6 @@ public class AuthClient {
         }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-
     }
 
 
@@ -103,6 +106,7 @@ public class AuthClient {
         AuthRpcMessage.GetMetadataAuthorityListRequest request = AuthRpcMessage.GetMetadataAuthorityListRequest
                 .newBuilder()
                 .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
+                .setPageSize(GrpcConstant.PageSize)
                 .build();
         //3.调用rpc,获取response
         AuthRpcMessage.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getLocalMetadataAuthorityList(request);
@@ -114,9 +118,32 @@ public class AuthClient {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
         return dataConvertToAuthList(response);
-
     }
 
+    //可以单独设置每个grpc请求的超时
+    public List<LocalDataAuth> getMetaDataAuthorityList(LocalDateTime latestSynced, long timeout) throws BizException {
+        //1.获取rpc连接
+        ManagedChannel channel = channelManager.getCarrierChannel();
+        //2.拼装request
+        AuthRpcMessage.GetMetadataAuthorityListRequest request = AuthRpcMessage.GetMetadataAuthorityListRequest
+                .newBuilder()
+                .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
+                .build();
+        //3.调用rpc,获取response
+        AuthRpcMessage.GetMetadataAuthorityListResponse response = AuthServiceGrpc
+                .newBlockingStub(channel)
+                .withDeadlineAfter(timeout, TimeUnit.SECONDS)
+                .getLocalMetadataAuthorityList(request);
+
+        //4.处理response
+        if (response == null) {
+            throw new CallGrpcServiceFailed();
+        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+            throw new CallGrpcServiceFailed(response.getMsg());
+        }
+        return dataConvertToAuthList(response);
+
+    }
 
     /**
      * 数据授权审核

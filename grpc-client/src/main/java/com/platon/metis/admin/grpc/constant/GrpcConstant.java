@@ -15,4 +15,7 @@ public class GrpcConstant {
      * OK
      */
     public static final String ok = "ok";
+
+
+    public static final long PageSize = 10;
 }
