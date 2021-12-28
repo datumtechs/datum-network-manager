@@ -11,6 +11,7 @@ import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 import "fighter/common.proto";
 
+
 service DataProvider {
   rpc GetStatus(google.protobuf.Empty) returns (GetStatusReply) {
     option(google.api.http) = {
@@ -61,7 +62,7 @@ service DataProvider {
 
 message DownloadRequest {
   string file_path = 1;
-  map<string, string> options = 2;  // e.g.: compress: zip
+  map<string, string> options = 2;  // e.g.: compress: zip|tar.gz, file_root_dir: data|result
 }
 
 enum TaskStatus {
@@ -88,10 +89,13 @@ message FileInfo {
 }
 
 message UploadRequest {
-  oneof data {
-    FileInfo meta = 1;
-    bytes content = 2;
-  }
+  string file_name = 1;
+  bytes content = 2;
+  string file_type = 3;
+  string description = 4;
+  repeated string columns = 5;
+  repeated string col_dtypes = 6;
+  repeated string keywords = 7;
 }
 
 message UploadReply {
@@ -142,3 +146,4 @@ message SendSharesDataRequest {
 message SendSharesDataReply {
   TaskStatus status = 1;
 }
+

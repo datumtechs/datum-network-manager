@@ -99,25 +99,11 @@ public class DataProviderClient {
                 // 每次发送不大于4M数据
                 DataProviderRpcMessage.UploadRequest fileChunk = DataProviderRpcMessage.UploadRequest
                         .newBuilder()
+                        .setFileName(fileName)
                         .setContent(ByteString.copyFrom(bytes, 0, bytesRead))
                         .build();
                 requestObserver.onNext(fileChunk);
             }
-
-
-            /** 第二次传输文件信息 */
-            DataProviderRpcMessage.FileInfo fileInfo = DataProviderRpcMessage.FileInfo
-                    .newBuilder()
-                    .setFileName(fileName)
-                    .build();
-            DataProviderRpcMessage.UploadRequest fileMeta = DataProviderRpcMessage.UploadRequest
-                    .newBuilder()
-                    .setMeta(fileInfo)
-                    .build();
-
-
-            requestObserver.onNext(fileMeta);
-            requestObserver.onCompleted();
 
             try {
                 //等待服务端数据返回
