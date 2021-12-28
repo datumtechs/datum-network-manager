@@ -78,7 +78,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public void updatePowerNodeByNodeId(LocalPowerNode powerNode) throws Exception {
+    public void updatePowerNodeByNodeId(LocalPowerNode powerNode) {
         // 判断是否有算力进行中
         LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNode.getNodeId());
 
@@ -115,7 +115,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public void deletePowerNodeByNodeId(String powerNodeId) throws Exception {
+    public void deletePowerNodeByNodeId(String powerNodeId) {
         // 判断是否有算力进行中
         LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
 

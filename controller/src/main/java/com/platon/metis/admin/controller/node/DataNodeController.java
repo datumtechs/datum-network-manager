@@ -1,6 +1,8 @@
 package com.platon.metis.admin.controller.node;
 
 import com.github.pagehelper.Page;
+import com.platon.metis.admin.common.exception.NodeNameExists;
+import com.platon.metis.admin.common.exception.NodeNameIllegal;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.entity.LocalDataNode;
@@ -60,13 +62,13 @@ public class DataNodeController {
     public JsonResponse addDataNode(@Validated @RequestBody DataNodeAddReq dataNodeAddReq) throws Exception {
         //判断数据节点名称是否合法
         if(!NameUtil.isValidName(dataNodeAddReq.getNodeName())){
-            return JsonResponse.fail("数据节点名称不合法");
+            throw new NodeNameIllegal();
         }
         LocalDataNode localDataNode = new LocalDataNode();
         BeanUtils.copyProperties(dataNodeAddReq, localDataNode);
         localDataNode.setNodeName(dataNodeAddReq.getNodeName());
         if (!dataNodeService.checkDataNodeName(localDataNode)) {
-            return JsonResponse.fail("数据节点名称已存在");
+            throw new NodeNameExists();
         }
         dataNodeService.addDataNode(localDataNode);
         return JsonResponse.success();

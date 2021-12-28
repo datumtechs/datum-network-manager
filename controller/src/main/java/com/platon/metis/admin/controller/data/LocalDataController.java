@@ -2,6 +2,8 @@ package com.platon.metis.admin.controller.data;
 
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.common.exception.ArgumentException;
+import com.platon.metis.admin.common.exception.MetadataResourceNameExists;
+import com.platon.metis.admin.common.exception.MetadataResourceNameIllegal;
 import com.platon.metis.admin.common.exception.ObjectNotFound;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.constant.ControllerConstants;
@@ -28,6 +30,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +53,7 @@ import java.util.List;
 @Api(tags = "我的数据")
 @RestController
 @RequestMapping("/api/v1/data/")
+@Slf4j
 public class LocalDataController {
 
     @Resource
@@ -131,17 +135,21 @@ public class LocalDataController {
         int count = 0;
         //判断数据添加类型
         if(req.getAddType() != DataAddTypeEnum.ADD.getType() && req.getAddType() != DataAddTypeEnum.ADD_AGAIN.getType()){
-           return JsonResponse.fail("数据添加类型不正确，类型为 1：新增数据、2：另存为新数据");
+            log.error("AddLocalMetaDataReq.type error:{}", req.getAddType());
+            throw new ArgumentException();
         }
         //判断格式是否对
         if(!NameUtil.isValidName(req.getResourceName())){
-            return JsonResponse.fail("元数据资源名称错误:仅支持中英文与数字输入，最多64个字符");
+            log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
+            throw new MetadataResourceNameIllegal();
         }
         //判断是否重复
         boolean exist = localDataService.isExistResourceName(req.getResourceName(),req.getFileId());
         if(exist){
-            return JsonResponse.fail("元数据资源名称已存在！！！");
+            log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
+            throw new MetadataResourceNameExists();
         }
+
         LocalDataFile localDataFile = new LocalDataFile();
         BeanUtils.copyProperties(req, localDataFile);
 
@@ -154,11 +162,8 @@ public class LocalDataController {
 
         localMetaData.setLocalMetaDataColumnList(req.getLocalMetaDataColumnList());
 
-        count = localDataService.addLocalMetaData(localMetaData);
+        localDataService.addLocalMetaData(localMetaData);
 
-        if(count <= 0){
-            return JsonResponse.fail("添加失败");
-        }
         return JsonResponse.success();
     }
 
@@ -230,18 +235,8 @@ public class LocalDataController {
         localMetaData.setIndustry(req.getIndustry());
         localMetaData.setId(req.getId());
         localMetaData.setLocalMetaDataColumnList(req.getLocalMetaDataColumnList());
+        localDataService.update(localMetaData);
 
-       /* List<LocalMetaDataColumn> localMetaDataColumnList = visibleLocalDataColumns(req.getLocalDataFileColumnList());
-
-        if(localMetaDataColumnList.size()>0){
-            localMetaData.setLocalMetaDataColumnList(localMetaDataColumnList);
-        }*/
-
-        int count = localDataService.update(localMetaData);
-
-        if(count <= 0){
-            return JsonResponse.fail("更新失败");
-        }
         return JsonResponse.success();
     }
 

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class NameUtil {
 
-    public static final String NAME_REG_STR = "^[\\u4e00-\\u9fa5a-zA-Z0-9]{1,64}$";
+    public static final String NAME_REG_STR = "^[\\u4e00-\\u9fa5a-zA-Z0-9\\.\\+\\-_@#]{1,64}$";
 
     /**
      * “机构识别名称”与后续的“计算节点名称”、“数据节点名称”、“源文件名称”命名规则：
@@ -24,13 +24,10 @@ public class NameUtil {
     public static boolean isValidName(String name){
         Pattern pattern = Pattern.compile(NAME_REG_STR);
         Matcher matcher = pattern.matcher(name);
-        if(matcher.find()){
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
     public static void main(String[] args) {
-        System.out.println(isValidName("123456789abc"));
+        System.out.println(isValidName("a.3+d-a_ta@d13#4"));
     }
 }

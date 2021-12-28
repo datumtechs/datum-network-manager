@@ -1,5 +1,6 @@
 package com.platon.metis.admin.controller.node;
 
+import com.platon.metis.admin.common.exception.CannotConnectCarrier;
 import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.resp.ApplyJoinResp;
@@ -49,7 +50,7 @@ public class CarrierController {
             connectNodeResp.setCarrierConnStatus(carrierConnStatusEnum.getStatus());
            return JsonResponse.success(connectNodeResp);
         } else {
-            return JsonResponse.fail("连接失败");
+            throw new CannotConnectCarrier()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.platon.metis.admin.controller.user;
 
+import com.platon.metis.admin.common.exception.VerificationCodeError;
 import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dto.JsonResponse;
@@ -12,7 +13,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,15 +54,12 @@ public class UserController {
         String codeInSession = (String)session.getAttribute(ControllerConstants.VERIFICATION_CODE);
         //TODO 现阶段可以不传验证码，如果传了，则必须传对的，否则报错
         if(!checkVerificationCode(codeInSession,req.getCode())){
-            JsonResponse.fail("验证码错误");
+            throw new VerificationCodeError();
         }
         //登录校验 TODO 密码进行加盐+hash操作
         String userId = userService.login(req.getUserName(),req.getPasswd());
-        if(StringUtils.isNotBlank(userId)){
-            session.setAttribute(ControllerConstants.USER_ID,userId);//将登录信息存入session中
-            return JsonResponse.success(userId);
-        }
-        return JsonResponse.fail("用户名或密码错误");
+        return JsonResponse.success(userId);
+
     }
 
     /**
@@ -102,10 +99,8 @@ public class UserController {
     @PostMapping("/applyOrgIdentity")
     public JsonResponse<String> applyOrgIdentity(@RequestBody @Validated UserApplyOrgIdentityReq req){
         String orgId = userService.applyOrgIdentity(req.getOrgName());
-        if(StringUtils.isBlank(orgId)){
-            return JsonResponse.fail("申请身份标识失败");
-        }
         return JsonResponse.success(orgId);
+
     }
 
     /**
@@ -126,13 +121,8 @@ public class UserController {
     @ApiOperation(value = "修改机构识别名称", response = JsonResponse.class)
     @GetMapping("/updateOrgName")
     public JsonResponse updateOrgName(@RequestBody @Validated OrgNameReq orgNameReq){
-        try {
-            userService.updateOrgName(orgNameReq.getIdentityId(), orgNameReq.getIdentityName());
-            return JsonResponse.success("修改成功！");
-        } catch (Exception e) {
-            log.error("updateOrgName--修改机构识别名称失败, 错误信息:{}", e);
-            return JsonResponse.fail("修改失败！");
-        }
+        userService.updateOrgName(orgNameReq.getIdentityId(), orgNameReq.getIdentityName());
+        return JsonResponse.success();
     }
 
 

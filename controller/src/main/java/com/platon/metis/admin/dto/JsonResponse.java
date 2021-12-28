@@ -66,10 +66,6 @@ public class JsonResponse<T> {
         return new JsonResponse(ResponseCodeEnum.FAIL.getCode(), ResponseCodeEnum.FAIL.getMessage(), null);
     }
 
-    public static JsonResponse fail(String message) {
-        return new JsonResponse(ResponseCodeEnum.FAIL.getCode(), message, null);
-    }
-
     public static JsonResponse fail(BizException e) {
         return new JsonResponse(e.getErrorCode(), e.getMessage(), null);
     }

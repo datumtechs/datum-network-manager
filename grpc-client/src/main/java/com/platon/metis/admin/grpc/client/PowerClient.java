@@ -69,7 +69,7 @@ public class PowerClient {
     /**
      * 修改计算节点返回powerNodeId
      */
-    public YarnRpcMessage.YarnRegisteredPeerDetail updatePowerNode(String powerNodeId, String internalIp, String externalIp, Integer internalPort, Integer externalPort) throws Exception{
+    public YarnRpcMessage.YarnRegisteredPeerDetail updatePowerNode(String powerNodeId, String internalIp, String externalIp, Integer internalPort, Integer externalPort) {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
@@ -91,7 +91,7 @@ public class PowerClient {
     /**
      * 根据powerNodeId删除计算节点
      */
-    public void deletePowerNode(String powerNodeId) throws Exception {
+    public void deletePowerNode(String powerNodeId) {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request

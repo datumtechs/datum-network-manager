@@ -46,14 +46,8 @@ public class GlobalDataController {
     @ApiOperation(value = "全网数据日走势图")
     @GetMapping("globalDataFileStatsTrendDaily")
     public JsonResponse<List<StatsTrendDTO>> globalDataFileStatsTrendDaily(){
-
-        try {
-            List<StatsTrendDTO> list = indexService.listGlobalDataFileStatsTrendDaily();
-            return JsonResponse.success(list);
-        } catch (Exception e) {
-            log.error("查询全网数据日走势图错误:{}", e.getMessage());
-            return JsonResponse.fail(e.getMessage());
-        }
+        List<StatsTrendDTO> list = indexService.listGlobalDataFileStatsTrendDaily();
+        return JsonResponse.success(list);
     }
 
 

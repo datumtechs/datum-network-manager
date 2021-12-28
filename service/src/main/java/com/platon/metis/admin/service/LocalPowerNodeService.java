@@ -25,14 +25,14 @@ public interface LocalPowerNodeService {
      * @param localPowerNode
      * @return
      */
-    void updatePowerNodeByNodeId(LocalPowerNode localPowerNode) throws Exception;
+    void updatePowerNodeByNodeId(LocalPowerNode localPowerNode);
 
     /**
      * 根据节点id删除计算节点
      * @param powerNodeId
      * @return
      */
-    void deletePowerNodeByNodeId(String powerNodeId) throws Exception;
+    void deletePowerNodeByNodeId(String powerNodeId);
 
     /**
      * 查询计算节点详情

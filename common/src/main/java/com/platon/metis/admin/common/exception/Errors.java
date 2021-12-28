@@ -24,24 +24,31 @@ public enum Errors {
     ApplyIdentityIDFailed(1013, "apply identity id failed."),
     IdentityIDApplied(1014, "identity id applied already."),
     UserAccountInvalid(1015, "user account invalid."),
-    OrgInfoExists(1016, "org info already exists."),
-    ObjectNotFound(1017, "object not found."),
-    DuplicatedOperation(1018, "duplicated operation."),
+    UserAccountOrPwdError(1016, "user account or password error."),
+    VerificationCodeError(1017, "verification code error."),
+    OrgInfoExists(1018, "org info already exists."),
+    ObjectNotFound(1019, "object not found."),
+    DuplicatedOperation(1020, "duplicated operation."),
 
-    FileNameError(1019, "file name error."),
-    FileEmpty(1020, "file is empty."),
-    CannotDeletePublishedData(1021, "cannot delete published data."),
-    CannotEditPublishedData(1022, "cannot edit published data."),
-    CannotPublishData(1023, "cannot publish data."),
-    CannotWithdrawData(1024, "cannot withdraw data."),
+    FileNameError(1021, "file name error."),
+    FileEmpty(1022, "file is empty."),
+    CannotDeletePublishedData(1023, "cannot delete published data."),
+    CannotEditPublishedData(1024, "cannot edit published data."),
+    CannotPublishData(1025, "cannot publish data."),
+    CannotWithdrawData(1026, "cannot withdraw data."),
 
-    CannotConnectPowerNode(1025, "cannot connect to power node."),
-    CannotEditPowerNode(1026, "cannot edit power node."),
-    PowerNodeNameExists(1027, "power node name exists."),
+    CannotConnectPowerNode(1027, "cannot connect to power node."),
+    CannotEditPowerNode(1028, "cannot edit power node."),
+    PowerNodeNameExists(1029, "power node name exists."),
 
 
-    SeedNodeExists(1028, "seed node exists."),
-    CannotDeleteInitSeedNode(1029, "cannot delete init seed node."),
+    SeedNodeExists(1030, "seed node exists."),
+    CannotDeleteInitSeedNode(1031, "cannot delete init seed node."),
+    MetadataResourceNameExists(1032, "metadata resource name exists."),
+    MetadataResourceNameIllegal(1033, "metadata resource name illegal."),
+
+    NodeNameExists(1034, "node name exists."),
+    NodeNameIllegal(1035, "node name illegal."),
 
 
     ;

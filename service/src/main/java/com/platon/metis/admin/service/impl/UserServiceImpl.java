@@ -2,6 +2,7 @@ package com.platon.metis.admin.service.impl;
 
 import com.platon.metis.admin.common.exception.OrgInfoExists;
 import com.platon.metis.admin.common.exception.UserAccountInvalid;
+import com.platon.metis.admin.common.exception.UserAccountOrPwdError;
 import com.platon.metis.admin.common.util.IDUtil;
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.SysUserMapper;
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
     public String login(String userName, String passwd) {
         SysUser sysUser = sysUserMapper.selectByUserNameAndPwd(userName, passwd);
         if(sysUser == null){
-            return null;
+            throw new UserAccountOrPwdError();
         }
         if(SysUserStatusEnum.DISABLED.getStatus().equals(sysUser.getStatus())){
             throw new UserAccountInvalid();

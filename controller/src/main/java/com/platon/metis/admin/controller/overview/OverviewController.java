@@ -69,83 +69,52 @@ public class OverviewController {
     @ApiOperation(value = "查询本地计算资源占用情况")
     @GetMapping("/localPowerUsage")
     public JsonResponse<UsedResourceResp> localPowerUsage(){
-        try {
-            UsedResourceDTO usedResourceDTO = indexService.queryUsedTotalResource();
-            return JsonResponse.success(usedResourceDTO);
-        } catch (Exception e) {
-            log.error("index--queryUsedTotalResource--查询总计算资源占用情况, 错误信息:{}", e.getMessage());
-            return JsonResponse.fail(e.getMessage());
-        }
+        UsedResourceDTO usedResourceDTO = indexService.queryUsedTotalResource();
+        return JsonResponse.success(usedResourceDTO);
     }
 
     @ApiOperation(value = "查询我发布的数据")
     @PostMapping("/localDataFileStatsTrendMonthly")
     public JsonResponse<List<StatsTrendDTO>> localDataFileStatsTrendMonthly(){
-        try {
-            List<StatsTrendDTO> dataPowerList = indexService.listLocalDataFileStatsTrendMonthly();
-            return JsonResponse.success(dataPowerList);
-
-        } catch (Exception e) {
-            log.error("index--queryPublishDataOrPower--查询我发布的数据或算力, 错误信息:{}", e.getMessage());
-            return JsonResponse.fail(e.getMessage());
-        }
+        List<StatsTrendDTO> dataPowerList = indexService.listLocalDataFileStatsTrendMonthly();
+        return JsonResponse.success(dataPowerList);
     }
 
     @ApiOperation(value = "查询我发布的算力")
     @PostMapping("/localPowerStatsTrendMonthly")
     public JsonResponse<List<StatsTrendDTO>> localPowerStatsTrendMonthly(){
-        try {
-            List<StatsTrendDTO> dataPowerList = indexService.listLocalPowerStatsTrendMonthly();
-            return JsonResponse.success(dataPowerList);
-        } catch (Exception e) {
-            log.error("index--queryPublishDataOrPower--查询我发布的数据或算力, 错误信息:{}", e.getMessage());
-            return JsonResponse.fail(e.getMessage());
-        }
+        List<StatsTrendDTO> dataPowerList = indexService.listLocalPowerStatsTrendMonthly();
+        return JsonResponse.success(dataPowerList);
     }
 
     @ApiOperation(value = "查询我的计算任务概况")
     @GetMapping("/myTaskOverview")
     public JsonResponse<MyTaskStatsResp> queryMyCalculateTaskStats(){
-        try {
-            List<Map<String, Object>> list = indexService.queryMyCalculateTaskStats();
-            List<MyTaskStatsResp> respList = new ArrayList<>();
-            for(Map<String, Object> map : list){
-                for (Map.Entry<String, Object> entry : map.entrySet()) {
-                    MyTaskStatsResp resp = new MyTaskStatsResp();
-                    resp.setStatus( entry.getKey());
-                    resp.setStatusCount((Integer)entry.getValue());
-                    respList.add(resp);
-                }
+        List<Map<String, Object>> list = indexService.queryMyCalculateTaskStats();
+        List<MyTaskStatsResp> respList = new ArrayList<>();
+        for(Map<String, Object> map : list){
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                MyTaskStatsResp resp = new MyTaskStatsResp();
+                resp.setStatus( entry.getKey());
+                resp.setStatusCount((Integer)entry.getValue());
+                respList.add(resp);
             }
-            return JsonResponse.success(respList);
-        } catch (Exception e) {
-            log.error("index--queryMyCalculateTaskStats--查询我的计算任务概况, 错误信息:{}", e.getMessage());
-            return JsonResponse.fail(e.getMessage());
         }
+        return JsonResponse.success(respList);
     }
 
     @ApiOperation(value = "查询全网算力总量走势")
     @GetMapping("/globalPowerStatsTrendMonthly")
     public JsonResponse<List<StatsTrendDTO>> listGlobalPowerStatsTrendMonthly(){
-        try {
-            List<StatsTrendDTO> list = indexService.listGlobalPowerStatsTrendMonthly();
-            return JsonResponse.success(list);
-        } catch (Exception e) {
-            log.error("index--queryWholeNetDateOrPower--查询全网数据或算力总量走势, 错误信息:{}", e.getMessage());
-            return JsonResponse.fail(e.getMessage());
-        }
+        List<StatsTrendDTO> list = indexService.listGlobalPowerStatsTrendMonthly();
+        return JsonResponse.success(list);
     }
 
     @ApiOperation(value = "查询全网有效数据总量，每月新发布数据量走势")
     @GetMapping("/globalDataFileStatsTrendMonthly")
     public JsonResponse<List<StatsTrendDTO>> listGlobalDataFileStatsTrendMonthly(){
-        try {
-            List<StatsTrendDTO> list = indexService.listGlobalDataFileStatsTrendMonthly();
-            return JsonResponse.success(list);
-        } catch (Exception e) {
-            log.error("index--queryWholeNetDateOrPower--查询全网数据或算力总量走势, 错误信息:{}", e.getMessage());
-            return JsonResponse.fail(e.getMessage());
-        }
+        List<StatsTrendDTO> list = indexService.listGlobalDataFileStatsTrendMonthly();
+        return JsonResponse.success(list);
 
     }
 
