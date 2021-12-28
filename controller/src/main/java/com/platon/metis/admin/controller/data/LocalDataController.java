@@ -142,7 +142,7 @@ public class LocalDataController {
 
         //校验文件名
         String originalFilename = file.getOriginalFilename();
-        String resourceName = StrUtil.sub(FileUtil.getPrefix(originalFilename),0,12);
+        String resourceName = StrUtil.sub(FileUtil.getPrefix(originalFilename),0,64);
         if(!NameUtil.isValidName(resourceName)){
             throw new ApplicationException("元数据资源名称错误：仅支持中英文与数字输入，最多12个字符");
         }
