@@ -60,7 +60,7 @@ public class DataNodeController {
     public JsonResponse addDataNode(@Validated @RequestBody DataNodeAddReq dataNodeAddReq) throws Exception {
         //判断数据节点名称是否合法
         if(!NameUtil.isValidName(dataNodeAddReq.getNodeName())){
-            return JsonResponse.fail("数据节点名称不合法");
+            return JsonResponse.fail("节点名称错误:包含非法字符或者超过64个字符");
         }
         DataNode dataNode = new DataNode();
         BeanUtils.copyProperties(dataNodeAddReq, dataNode);

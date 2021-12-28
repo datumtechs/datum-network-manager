@@ -143,8 +143,9 @@ public class LocalDataController {
         //校验文件名
         String originalFilename = file.getOriginalFilename();
         String resourceName = StrUtil.sub(FileUtil.getPrefix(originalFilename),0,64);
+
         if(!NameUtil.isValidName(resourceName)){
-            throw new ApplicationException("元数据资源名称错误：仅支持中英文与数字输入，最多12个字符");
+            throw new ApplicationException("数据文件名称错误:包含非法字符或者超过64个字符");
         }
         //判断文件名称是否重复
         /*boolean exist = localDataService.isExistResourceName(resourceName,null);
@@ -167,7 +168,7 @@ public class LocalDataController {
         }
         //判断格式是否对
         if(!NameUtil.isValidName(req.getResourceName())){
-            return JsonResponse.fail("元数据资源名称错误:仅支持中英文与数字输入，最多12个字符");
+            return JsonResponse.fail("元数据资源名称错误:包含非法字符或者超过64个字符");
         }
         //判断是否重复
         boolean exist = localDataService.isExistResourceName(req.getResourceName(),req.getFileId());

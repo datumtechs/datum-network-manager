@@ -60,7 +60,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     public void insertPowerNode(LocalPowerNode powerNode) {
         // 校检名称
         if (!NameUtil.isValidName(powerNode.getPowerNodeName())) {
-            throw new ServiceException("名称不符合命名规则！");
+            throw new ServiceException("节点名称错误:包含非法字符或者超过64个字符");
         }
         // 调用grpc接口增加算力，此时调度服务会连算力节点，如果正常返回，说明连接成功
         YarnRpcMessage.YarnRegisteredPeerDetail jobNode = null;
@@ -273,7 +273,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public void checkPowerNodeName(String powerNodeName) {
         if (!NameUtil.isValidName(powerNodeName)) {
-            throw new ServiceException("名称不符合命名规则！");
+            throw new ServiceException("节点名称错误:包含非法字符或者超过64个字符");
         }
         int count = localPowerNodeMapper.checkPowerNodeName(powerNodeName);
         if (count > 0) {
