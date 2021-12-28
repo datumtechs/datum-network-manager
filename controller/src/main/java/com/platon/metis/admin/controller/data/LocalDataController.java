@@ -135,7 +135,7 @@ public class LocalDataController {
         }
         //判断格式是否对
         if(!NameUtil.isValidName(req.getResourceName())){
-            return JsonResponse.fail("元数据资源名称错误:仅支持中英文与数字输入，最多12个字符");
+            return JsonResponse.fail("元数据资源名称错误:仅支持中英文与数字输入，最多64个字符");
         }
         //判断是否重复
         boolean exist = localDataService.isExistResourceName(req.getResourceName(),req.getFileId());
