@@ -259,10 +259,9 @@ public class LocalDataServiceImpl implements LocalDataService {
             throw new FileEmpty();
         }
 
-
         //校验文件名
         String originalFilename = file.getOriginalFilename();
-        String resourceName = StringUtils.substring(FilenameUtils.getPrefix(originalFilename),0,12);
+        String resourceName = StringUtils.substring(FilenameUtils.getPrefix(originalFilename),0,64);
         if(!NameUtil.isValidName(resourceName)){
             throw new FileNameError();
         }
