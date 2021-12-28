@@ -1,6 +1,7 @@
 package com.platon.metis.admin.common.util;
 
-import cn.hutool.core.io.file.FileNameUtil;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @Author liushuyu
@@ -10,25 +11,23 @@ import cn.hutool.core.io.file.FileNameUtil;
  */
 public class NameUtil {
 
-    public static final String NAME_REG_STR = "^[\\u4e00-\\u9fa5a-zA-Z0-9]{1,64}$";
+    public static final String NAME_REG_STR = "^[\\u4e00-\\u9fa5a-zA-Z0-9\\.\\+\\-_@#]{1,64}$";
 
     /**
      * “机构识别名称”与后续的“计算节点名称”、“数据节点名称”、“源文件名称”命名规则：
      *   1. 设置之后无法修改；
      *   2. 命名规则相同，仅支持中英文与数字输入；
-     *   3.最多64个字符。
+     *   3.最多12个字符。
      * @param name
      * @return 合法则返回true，否则false
      */
     public static boolean isValidName(String name){
-        if (FileNameUtil.containsInvalid(name) || name.length()>64){
-            return false;
-        }else{
-            return true;
-        }
+        Pattern pattern = Pattern.compile(NAME_REG_STR);
+        Matcher matcher = pattern.matcher(name);
+        return matcher.matches();
     }
 
     public static void main(String[] args) {
-        System.out.println(isValidName("adult_vertial_predict_partyA.csv"));
+        System.out.println(isValidName("a.3+d-a_ta@d13#4"));
     }
 }
