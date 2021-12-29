@@ -4,7 +4,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.metis.admin.common.exception.*;
 import com.platon.metis.admin.common.util.ExportFileUtil;
-import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.dao.*;
 import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
@@ -23,8 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -260,11 +257,6 @@ public class LocalDataServiceImpl implements LocalDataService {
         }
 
         //校验文件名
-        String originalFilename = file.getOriginalFilename();
-        String resourceName = StringUtils.substring(FilenameUtils.getPrefix(originalFilename),0,64);
-        if(!NameUtil.isValidName(resourceName)){
-            throw new FileNameError();
-        }
         try(InputStreamReader isr = new InputStreamReader(file.getInputStream())){
 
             CSVParser csvParser = CSVFormat.DEFAULT.parse(isr);
