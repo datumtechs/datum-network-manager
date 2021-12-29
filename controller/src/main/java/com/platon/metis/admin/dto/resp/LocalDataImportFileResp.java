@@ -1,10 +1,9 @@
 package com.platon.metis.admin.dto.resp;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.StrUtil;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
+import com.platon.metis.admin.util.ConvertUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -88,7 +87,7 @@ public class LocalDataImportFileResp {
         LocalDataImportFileResp resp = new LocalDataImportFileResp();
         BeanUtils.copyProperties(localDataFile,resp);
         resp.setStatus(LocalDataFileStatusEnum.ENTERED.getStatus());
-        resp.setResourceName(getResourceName(localDataFile.getFileName()));
+        resp.setResourceName(ConvertUtil.convertFileNameToResourceName(localDataFile.getFileName()));
         //todo：可以查询数据库，local_data_file上传并insert到db后，会由db产生create/update时间
         long milliSeconds = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         resp.setRecCreateTime(milliSeconds);
@@ -98,11 +97,4 @@ public class LocalDataImportFileResp {
         return resp;
     }
 
-
-    private static String getResourceName(String fileName){
-        //导入去掉.csv后缀的文件名称，保存前12个字符作为资源名称
-        String resourceName = StrUtil.sub(FileUtil.getPrefix(fileName),0,12);
-        //因为上层已做资源文件名称校验，故此处暂时不再做校验
-        return resourceName;
-    }
 }

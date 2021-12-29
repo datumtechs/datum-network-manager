@@ -22,12 +22,15 @@ public class NameUtil {
      * @return 合法则返回true，否则false
      */
     public static boolean isValidName(String name){
+        if(name==null){
+            return false;
+        }
         Pattern pattern = Pattern.compile(NAME_REG_STR);
         Matcher matcher = pattern.matcher(name);
         return matcher.matches();
     }
 
     public static void main(String[] args) {
-        System.out.println(isValidName("a.3+d-a_ta@d13#4"));
+        System.out.println(isValidName(""));
     }
 }

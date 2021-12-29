@@ -1,6 +1,5 @@
 package com.platon.metis.admin.controller.data;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.csv.CsvData;
 import cn.hutool.core.text.csv.CsvReader;
 import cn.hutool.core.text.csv.CsvUtil;
@@ -8,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.common.exception.ApplicationException;
+import com.platon.metis.admin.common.exception.ArgumentException;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.LocalDataFileColumnMapper;
@@ -32,6 +32,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -142,16 +143,9 @@ public class LocalDataController {
 
         //校验文件名
         String originalFilename = file.getOriginalFilename();
-        String resourceName = StrUtil.sub(FileUtil.getPrefix(originalFilename),0,64);
-
-        if(!NameUtil.isValidName(resourceName)){
-            throw new ApplicationException("数据文件名称错误:包含非法字符或者超过64个字符");
+        if (StringUtils.isBlank(originalFilename)){
+            throw new ArgumentException();
         }
-        //判断文件名称是否重复
-        /*boolean exist = localDataService.isExistResourceName(resourceName,null);
-        if(exist){
-            throw new ApplicationException("文件名称已存在，请修改文件名称前12个字符，确保不会和已存在的文件前12个字符重复！！！");
-        }*/
     }
 
     /**
