@@ -62,7 +62,7 @@ public class CarrierServiceImpl implements CarrierService {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
 
         try {
-            authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName());
+            authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName(), localOrg.getImageUrl(), localOrg.getProfile());
         }catch (Exception e){
             log.error("入网失败:" , e);
             throw new ApplyIdentityIDFailed();

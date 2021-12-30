@@ -21,7 +21,7 @@ public class ApplyOrgIdentityInterceptor implements HandlerInterceptor {
      * @throws Exception
      */
     @Override
-    public boolean preHandle(HttpServletRequest servletRequest, HttpServletResponse servletResponse, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest servletRequest, HttpServletResponse servletResponse, Object handler) {
 
         Object localOrgInfo = LocalOrgCache.getLocalOrgIdentityId();
 

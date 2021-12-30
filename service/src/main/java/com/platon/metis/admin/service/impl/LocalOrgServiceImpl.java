@@ -39,4 +39,9 @@ public class LocalOrgServiceImpl implements LocalOrgService {
         LocalOrgCache.setLocalOrgInfo(localOrg);
         return localOrg;
     }
+
+    @Override
+    public void updateLocalOrg(LocalOrg localOrg) {
+        localOrgMapper.update(localOrg);
+    }
 }

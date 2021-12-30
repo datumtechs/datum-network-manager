@@ -29,7 +29,9 @@ public class AuthClientTest extends BaseClientTest {
     public void testApplyIdentityJoin(){
         String identityId = "identityId_000001";
         String name = "orgName_000001";
-        authClient.applyIdentityJoin(identityId, name);
+        String url = "http://url";
+        String profile = "node profile";
+        authClient.applyIdentityJoin(identityId, name, url, profile);
 
     }
 

@@ -22,5 +22,5 @@ public interface LocalOrgService {
      */
     LocalOrg getLocalOrg();
 
-
+    void updateLocalOrg(LocalOrg localOrg);
 }

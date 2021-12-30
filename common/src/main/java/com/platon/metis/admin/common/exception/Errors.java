@@ -1,7 +1,7 @@
 package com.platon.metis.admin.common.exception;
 
 public enum Errors {
-
+    SUCCESS(0, "success."),
     SysException(1, "system internal error."),
     ArgumentException(2, "illegal argument."),
     CannotConnectGrpcServer(3, "connect gRPC server failed."),

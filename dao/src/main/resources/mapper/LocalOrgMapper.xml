@@ -107,7 +107,6 @@
     `image_url` = #{imageUrl},
     `profile` = #{profile},
     local_bootstrap_node = #{localBootstrapNode,jdbcType=VARCHAR},
-    local_multi_addr = #{localMultiAddr,jdbcType=VARCHAR},
-    rec_update_time = #{recUpdateTime}
-  </update>
+    local_multi_addr = #{localMultiAddr,jdbcType=VARCHAR}
+    </update>
 </mapper>

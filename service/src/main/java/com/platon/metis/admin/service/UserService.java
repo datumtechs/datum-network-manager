@@ -17,11 +17,4 @@ public interface UserService {
 
     String login(String userName, String passwd);
 
-    /**
-     * 修改机构识别名称
-     * @param identityName 机构名称
-     * @param identityId 机构id
-     */
-    void updateOrgName(String identityId, String identityName);
-
 }

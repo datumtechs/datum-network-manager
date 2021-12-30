@@ -2,17 +2,20 @@ package com.platon.metis.admin.controller.user;
 
 import com.platon.metis.admin.common.exception.VerificationCodeError;
 import com.platon.metis.admin.constant.ControllerConstants;
+import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dto.JsonResponse;
+import com.platon.metis.admin.dto.req.UpdateLocalOrgReq;
 import com.platon.metis.admin.dto.req.UserApplyOrgIdentityReq;
 import com.platon.metis.admin.dto.req.UserLoginReq;
-import com.platon.metis.admin.dto.req.index.OrgNameReq;
+import com.platon.metis.admin.dto.resp.LoginResp;
 import com.platon.metis.admin.service.LocalOrgService;
 import com.platon.metis.admin.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +43,9 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private LocalOrgService localOrgService;
+
     /**
      * 登陆接口，用于登陆系统，获取会话
      * @param request
@@ -48,7 +54,7 @@ public class UserController {
      */
     @ApiOperation(value = "登陆")
     @PostMapping("/login")
-    public JsonResponse<String> login(HttpServletRequest request,@Validated @RequestBody UserLoginReq req){
+    public JsonResponse<LoginResp> login(HttpServletRequest request,@Validated @RequestBody UserLoginReq req){
         HttpSession session = request.getSession(true);
         //校验验证码
         String codeInSession = (String)session.getAttribute(ControllerConstants.VERIFICATION_CODE);
@@ -58,7 +64,22 @@ public class UserController {
         }
         //登录校验 TODO 密码进行加盐+hash操作
         String userId = userService.login(req.getUserName(),req.getPasswd());
-        return JsonResponse.success(userId);
+
+        LoginResp resp = new LoginResp();
+        resp.setUserId(userId);
+
+        LocalOrg localOrg = localOrgService.getLocalOrg();
+        if(localOrg==null || StringUtils.isBlank(localOrg.getIdentityId())){
+            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.ordinal());
+        }else if(StringUtils.isBlank(localOrg.getImageUrl()) || StringUtils.isBlank(localOrg.getProfile())){
+            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_PROFILE.ordinal());
+        } else if (localOrg.getStatus() == null || localOrg.getStatus() == 0) {
+            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_CONNECT_NET.ordinal());
+        }else if (localOrg.getStatus() == 1) {
+            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.CONNECTED.ordinal());
+        }
+
+        return JsonResponse.success(resp);
 
     }
 
@@ -100,8 +121,10 @@ public class UserController {
     public JsonResponse<String> applyOrgIdentity(@RequestBody @Validated UserApplyOrgIdentityReq req){
         String orgId = userService.applyOrgIdentity(req.getOrgName());
         return JsonResponse.success(orgId);
-
     }
+
+
+
 
     /**
      * 获取验证码
@@ -118,16 +141,29 @@ public class UserController {
         return JsonResponse.success(String.valueOf(code));
     }
 
-    @ApiOperation(value = "修改机构识别名称", response = JsonResponse.class)
-    @GetMapping("/updateOrgName")
-    public JsonResponse updateOrgName(@RequestBody @Validated OrgNameReq orgNameReq){
-        userService.updateOrgName(orgNameReq.getIdentityId(), orgNameReq.getIdentityName());
-        return JsonResponse.success();
+    /**
+     * 更新组织信息
+     * @param req
+     * @return
+     */
+    @ApiOperation(value = "更新组织信息（机构信息识别名称，头像链接，或者描述")
+    @PostMapping("/updateLocalOrg")
+    public JsonResponse<String> updateLocalOrg(@RequestBody UpdateLocalOrgReq req){
+        LocalOrg localOrg = LocalOrgCache.getLocalOrgInfo();
+        if(StringUtils.isNotBlank(req.getName())){
+            localOrg.setName(req.getName());
+        }
+        if(StringUtils.isNotBlank(req.getImageUrl())){
+            localOrg.setImageUrl(req.getImageUrl());
+        }
+        if(StringUtils.isNotBlank(req.getProfile())){
+            localOrg.setProfile(req.getProfile());
+        }
+
+        localOrgService.updateLocalOrg(localOrg);
+         return JsonResponse.success();
     }
 
-
-    @Resource
-    private LocalOrgService localOrgService;
 
     /**
      * 登录后查询出当前组织信息

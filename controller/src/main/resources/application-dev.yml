@@ -59,6 +59,9 @@ server:
   servlet:
     context-path: /metis-admin
 
+# ===== 自定义swagger配置 ===== #
+swagger:
+  enable: true
 
 # =============================== conf for logger ===================================
 # 日志配置

@@ -50,7 +50,7 @@ public class CarrierController {
             connectNodeResp.setCarrierConnStatus(carrierConnStatusEnum.getStatus());
            return JsonResponse.success(connectNodeResp);
         } else {
-            throw new CannotConnectCarrier()
+            throw new CannotConnectCarrier();
         }
     }
 
