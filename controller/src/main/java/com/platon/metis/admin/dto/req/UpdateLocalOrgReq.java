@@ -12,12 +12,12 @@ import lombok.ToString;
 @ToString
 @ApiModel(value = "更新本地组织信息")
 public class UpdateLocalOrgReq {
-    @ApiModelProperty(value = "组织名称", required = true)
+    @ApiModelProperty(value = "组织名称", required = false)
     String name;
 
-    @ApiModelProperty(value = "组织头像URL", required = true)
+    @ApiModelProperty(value = "组织头像URL", required = false)
     String imageUrl;
 
-    @ApiModelProperty(value = "组织描述", required = true)
+    @ApiModelProperty(value = "组织描述", required = false)
     String profile;
 }
