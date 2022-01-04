@@ -1,8 +1,8 @@
-drop database if exists `dev_metis_admin_3.0`;
+drop database if exists `dev_metis_admin_0.3.0`;
 
-CREATE DATABASE `dev_metis_admin_3.0` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE `dev_metis_admin_0.3.0` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-use `dev_metis_admin_3.0`;
+use `dev_metis_admin_0.3.0`;
 /*
 Navicat MySQL Data Transfer
 
