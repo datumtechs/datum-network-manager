@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         localOrg.setIdentityId(orgId);
         localOrg.setName(orgName);
         localOrg.setRecUpdateTime(new Date());
-        localOrgMapper.insertSelective(localOrg);
+        localOrgMapper.insert(localOrg);
 
         //### 2.新建成功后，设置缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
