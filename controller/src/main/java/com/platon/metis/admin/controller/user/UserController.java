@@ -65,6 +65,10 @@ public class UserController {
         //登录校验 TODO 密码进行加盐+hash操作
         String userId = userService.login(req.getUserName(),req.getPasswd());
 
+        if(StringUtils.isNotBlank(userId)){
+            session.setAttribute(ControllerConstants.USER_ID,userId);//将登录信息存入session中
+        }
+
         LoginResp resp = new LoginResp();
         resp.setUserId(userId);
 
