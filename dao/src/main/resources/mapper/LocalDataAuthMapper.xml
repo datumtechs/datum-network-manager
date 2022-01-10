@@ -296,4 +296,10 @@
       identity_node_id = #{identityNodeId,jdbcType=VARCHAR}
     where auth_id = #{authId,jdbcType=VARCHAR}
   </update>
+
+  <update id="updateExpireAuthData">
+    update local_data_auth
+    set status = 2,auth_at = current_timestamp()
+    where auth_type = 1 and status = 0 and auth_value_end_at &lt; current_timestamp();
+  </update>
 </mapper>
