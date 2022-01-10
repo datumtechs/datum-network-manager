@@ -9,7 +9,7 @@ public interface LocalOrgMapper {
      * @param record
      * @return
      */
-    int insertSelective(LocalOrg record);
+    int insert(LocalOrg record);
 
     /**
      * 获取可用的调度服务信息
