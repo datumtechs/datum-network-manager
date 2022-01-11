@@ -35,5 +35,41 @@ public class LocalDataFile extends BaseDomain {
     private Date recUpdateTime;
 
     //源文件列信息
-    private List<LocalMetaDataColumn> localMetaDataColumnList = new ArrayList<>();
+    private List<LocalMetaDataColumn> localMetaDataColumnList;
+
+    public void addLocalMetaDataColumn(LocalMetaDataColumn localMetaDataColumn){
+        if(localMetaDataColumnList==null){
+            localMetaDataColumnList = new ArrayList<>();
+        }
+        localMetaDataColumnList.add(localMetaDataColumn);
+    }
+
+    public static enum FileType {
+        UNKNOWN(0, "unknown"),CSV(1, "csv");
+        private int code;
+        private String value;
+
+        FileType(int code, String value) {
+            this.code = code;
+            this.value = value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public static LocalPowerNode.ConnStatus codeOf(int code) {
+            for (LocalPowerNode.ConnStatus status : LocalPowerNode.ConnStatus.values()) {
+                if (status.ordinal()== code) {
+                    return status;
+                }
+            }
+            return null;
+        }
+
+    }
 }

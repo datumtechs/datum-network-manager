@@ -35,7 +35,8 @@ public class LocalDataNodeRefreshTask {
         if(CollectionUtils.isEmpty(localDataNodeList)){
             return;
         }
-        localDataNodeMapper.replaceBatch(localDataNodeList);
+
+        localDataNodeMapper.replaceBasicInfoExcludingNameBatch(localDataNodeList);
 
         log.debug("刷新数据节点列表定时任务结束|||");
     }

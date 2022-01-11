@@ -8,7 +8,6 @@ import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
-import com.platon.metis.admin.dao.enums.LocalOrgStatusEnum;
 import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +83,7 @@ public class LocalCarrierStatusRefreshTask {
         if( StringUtils.isEmpty(localOrg.getCarrierIp()) || localOrg.getCarrierPort()==null){
             log.warn("查询到的调度服务信息错误");
             localOrg.setCarrierConnStatus(CarrierConnStatusEnum.DISABLED.getStatus());
-            localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
+            //localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
             localOrg.setConnNodeCount(0);
         }else{
             //### 刷新调度服务状态和入网状态
@@ -96,11 +95,11 @@ public class LocalCarrierStatusRefreshTask {
             localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
             localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
 
-            if(localOrg.getIdentityId().equals(nodeInfo.getIdentityId())){//相同表示入网了
+            /*if(localOrg.getIdentityId().equals(nodeInfo.getIdentityId())){//相同表示入网了
                 localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
             } else {
                 localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
-            }
+            }*/
         }
         localOrgMapper.update(localOrg);
         //刷新缓存

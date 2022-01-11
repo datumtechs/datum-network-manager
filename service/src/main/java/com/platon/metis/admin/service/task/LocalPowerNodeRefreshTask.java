@@ -1,5 +1,6 @@
 package com.platon.metis.admin.service.task;
 
+import com.alibaba.fastjson.JSON;
 import com.platon.metis.admin.dao.LocalPowerJoinTaskMapper;
 import com.platon.metis.admin.dao.LocalPowerNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
@@ -39,7 +40,6 @@ public class LocalPowerNodeRefreshTask {
     @Transactional
     @Scheduled(fixedDelayString = "${LocalPowerNodeRefreshTask.fixedDelay}")
     public void task(){
-
         log.debug("刷新本地算力节点的基本信息、状态、拥有的资源、被使用的资源，以及正在执行的任务定时任务开始>>>");
 
         // 定时刷新本地算力节点的基本信息，IP、端口，以及和调度服务的连接情况
@@ -54,10 +54,11 @@ public class LocalPowerNodeRefreshTask {
     // 定时刷新本地算力节点的基本信息，IP、端口，以及和调度服务的连接情况
     private void refreshLocalPowerNodeBasicInfo(){
         List<LocalPowerNode> localPowerNodeList = powerClient.getLocalPowerNodeList();
+        log.debug("localPowerNodeList:{}", JSON.toJSONString(localPowerNodeList));
         if (CollectionUtils.isEmpty(localPowerNodeList)) {
             return;
         }
-        localPowerNodeMapper.replaceBasicInfoBatch(localPowerNodeList);
+        localPowerNodeMapper.replaceBasicInfoExcludingNameBatch(localPowerNodeList);
     }
 
 
@@ -71,13 +72,14 @@ public class LocalPowerNodeRefreshTask {
         List<LocalPowerNode> localPowerNodeList = data.getLeft();
 
         if(CollectionUtils.isNotEmpty(localPowerNodeList)) {
-            localPowerNodeMapper.updateResourceInfoBatchByPowerNodeId(localPowerNodeList);
+            localPowerNodeMapper.updateResourceInfoBatchByNodeId(localPowerNodeList);
         }
         // 新增计算节点参与的任务列表
         // 先清空表数据，如有任务再添加
         List<LocalPowerJoinTask> localPowerJoinTaskList = data.getRight();
         localPowerJoinTaskMapper.truncateTable();
-        if(CollectionUtils.isNotEmpty(localPowerNodeList)) {
+        log.debug("localPowerNodeList:{}", JSON.toJSONString(localPowerJoinTaskList));
+        if(CollectionUtils.isNotEmpty(localPowerJoinTaskList)) {
             // 每次新增最新的数据
             localPowerJoinTaskMapper.insertBatch(localPowerJoinTaskList);
         }

@@ -5,13 +5,11 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.metis.admin.common.exception.DataHostExists;
 import com.platon.metis.admin.dao.LocalDataNodeMapper;
-import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalDataNode;
 import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.grpc.entity.RegisteredNodeResp;
 import com.platon.metis.admin.service.DataNodeService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -64,7 +62,7 @@ public class DataNodeServiceImpl implements DataNodeService {
 
         dataNode.setNodeId(response.getNodeId());
         dataNode.setConnStatus(response.getConnStatus());
-        dataNode.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
+        //dataNode.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
         dataNode.setRecCreateTime(LocalDateTime.now());
         return localDataNodeMapper.insert(dataNode);
     }
@@ -75,14 +73,14 @@ public class DataNodeServiceImpl implements DataNodeService {
      * @param dataNode
      * @return true可用，false不可用
      */
-    @Override
+    /*@Override
     public boolean checkDataNodeName(LocalDataNode dataNode) {
         String dbNodeId = localDataNodeMapper.getDataNodeIdByName(dataNode.getNodeName());
         if (!StringUtils.isBlank(dbNodeId) && !dbNodeId.equals(dataNode.getNodeId())) {
             return false;
         }
         return true;
-    }
+    }*/
 
     /**
      * 修改数据节点
@@ -111,6 +109,16 @@ public class DataNodeServiceImpl implements DataNodeService {
     public int deleteDataNode(String nodeId) {
         yarnClient.deleteDataNode(nodeId);
         return localDataNodeMapper.deleteByPrimaryKey(nodeId);
+    }
+
+    @Override
+    public LocalDataNode findLocalDataNodeByName(String nodeName) {
+        return localDataNodeMapper.findLocalDataNodeByName(nodeName);
+    }
+
+    @Override
+    public void updateLocalDataNodeName(String nodeId, String nodeName) {
+        localDataNodeMapper.updateLocalDataNodeName(nodeId, nodeName);
     }
 
     /**

@@ -4,7 +4,6 @@ import com.platon.metis.admin.dao.dto.DataAuthReqDTO;
 import com.platon.metis.admin.dao.dto.StatsTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 import com.platon.metis.admin.dto.JsonResponse;
-import com.platon.metis.admin.dto.resp.index.DataRatioResp;
 import com.platon.metis.admin.dto.resp.index.MyTaskStatsResp;
 import com.platon.metis.admin.dto.resp.index.UsedResourceResp;
 import com.platon.metis.admin.service.IndexService;
@@ -103,7 +102,7 @@ public class OverviewController {
         return JsonResponse.success(respList);
     }
 
-    @ApiOperation(value = "查询全网算力总量走势")
+    /*@ApiOperation(value = "查询全网算力总量走势")
     @GetMapping("/globalPowerStatsTrendMonthly")
     public JsonResponse<List<StatsTrendDTO>> listGlobalPowerStatsTrendMonthly(){
         List<StatsTrendDTO> list = indexService.listGlobalPowerStatsTrendMonthly();
@@ -128,7 +127,7 @@ public class OverviewController {
         resp.setRingRatio((String)map.get("ringRatio"));
         resp.setRingRatio((String)map.get("sameRatio"));
         return JsonResponse.success(resp);
-    }
+    }*/
 
     @ApiOperation(value = "查询数据待授权列表")
     @GetMapping("/listDataAuthReqWaitingForApprove")

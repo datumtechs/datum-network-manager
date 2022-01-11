@@ -28,14 +28,6 @@ public interface DataNodeService {
     int addDataNode(LocalDataNode localDataNode) throws Exception;
 
     /**
-     * 校验数据节点名称是否可用
-     *
-     * @param localDataNode
-     * @return
-     */
-    boolean checkDataNodeName(LocalDataNode localDataNode);
-
-    /**
      * 修改数据节点
      *
      * @param localDataNode
@@ -52,4 +44,10 @@ public interface DataNodeService {
      * @throws Exception
      */
     int deleteDataNode(String nodeId) throws Exception;
+
+
+    LocalDataNode findLocalDataNodeByName(String nodeName);
+
+    void updateLocalDataNodeName(String nodeId, String nodeName);
+
 }

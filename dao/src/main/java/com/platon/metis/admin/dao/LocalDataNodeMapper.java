@@ -21,14 +21,6 @@ public interface LocalDataNodeMapper {
     List<LocalDataNode> listNode(@Param(value = "keyword") String keyword);
 
     /**
-     * 根据节点名称查询nodeId(非主键id)
-     *
-     * @param hostName
-     * @return
-     */
-    String getDataNodeIdByName(@Param(value = "hostName") String hostName);
-
-    /**
      * 根据nodeId删除节点
      *
      * @param nodeId
@@ -54,11 +46,11 @@ public interface LocalDataNodeMapper {
     int update(LocalDataNode record);
 
     /**
-     * 批量更新数据节点
+     * 批量更新数据节点,
      * @param localDataNodeList 数据节点服务列表
      * @return
      */
-    int replaceBatch(List<LocalDataNode> localDataNodeList);
+    int replaceBasicInfoExcludingNameBatch(List<LocalDataNode> localDataNodeList);
 
 
     /**
@@ -75,4 +67,7 @@ public interface LocalDataNodeMapper {
      */
     LocalDataNode selectByProperties(LocalDataNode localDataNode);
 
+    LocalDataNode findLocalDataNodeByName(@Param("nodeName")  String nodeName);
+
+    void updateLocalDataNodeName(@Param("nodeId") String nodeId, @Param("nodeName") String nodeName);
 }

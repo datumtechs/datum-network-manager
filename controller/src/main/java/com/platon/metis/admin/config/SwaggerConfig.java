@@ -14,9 +14,14 @@ import springfox.documentation.spring.web.plugins.Docket;
  * swagger配置类
  */
 @Configuration
+//@EnableSwagger2	   //开启 Swagger2
+//@EnableOpenApi     //开启 Swagger3 ，可不写
+//@EnableKnife4j     //开启 knife4j ，可不写
 public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
+        // Swagger 2 使用的是：DocumentationType.SWAGGER_2
+        // Swagger 3 使用的是：DocumentationType.OAS_30
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 //是否开启 (true 开启  false隐藏。生产环境建议隐藏)

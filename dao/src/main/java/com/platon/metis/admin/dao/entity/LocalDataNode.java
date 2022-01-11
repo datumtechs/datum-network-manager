@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 public class LocalDataNode {
     private String nodeId;
 
-    private String identityId;
-
     private String nodeName;
 
     private String internalIp;

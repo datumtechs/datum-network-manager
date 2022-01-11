@@ -2,6 +2,10 @@ package com.platon.metis.admin.controller.node;
 
 
 import com.github.pagehelper.Page;
+import com.platon.metis.admin.common.exception.ArgumentException;
+import com.platon.metis.admin.common.exception.NodeNameExists;
+import com.platon.metis.admin.common.exception.NodeNameIllegal;
+import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 import com.platon.metis.admin.dao.entity.PowerLoad;
@@ -14,7 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +40,7 @@ public class LocalPowerNodeController {
     @Resource
     TaskService taskService;
 
-    @PostMapping("/addPowerNode")
+    /*@PostMapping("/addPowerNode")
     @ApiOperation(value="新增计算节点", response = JsonResponse.class)
     public JsonResponse addPowerNode(@Validated @RequestBody PowerAddReq powerAddReq) {
         LocalPowerNode localPowerNode = new LocalPowerNode();
@@ -45,23 +49,35 @@ public class LocalPowerNodeController {
         //localPowerNode.status =
         localPowerNodeService.insertPowerNode(localPowerNode);
         return JsonResponse.success();
-    }
+    }*/
 
-    @PostMapping("/updatePowerNode")
-    @ApiOperation(value="修改计算节点", response = JsonResponse.class)
-    public JsonResponse updatePowerNode(@Validated @RequestBody PowerUpdateReq powerUpdateReq) {
-        LocalPowerNode localPowerNode = new LocalPowerNode();
-        BeanUtils.copyProperties(powerUpdateReq, localPowerNode);
-        localPowerNodeService.updatePowerNodeByNodeId(localPowerNode);
+    @PostMapping("/updateNodeName")
+    @ApiOperation(value="修改计算节点名称", response = JsonResponse.class)
+    public JsonResponse updateNodeName(@Validated @RequestBody PowerUpdateReq powerUpdateReq) {
+        if(powerUpdateReq == null || StringUtils.isBlank(powerUpdateReq.getNodeId()) || StringUtils.isBlank(powerUpdateReq.getNodeName())){
+            throw new ArgumentException();
+        }
+        if(!NameUtil.isValidName(powerUpdateReq.getNodeName())){
+            throw new NodeNameIllegal();
+        }
+        LocalPowerNode localPowerNode = localPowerNodeService.findLocalPowerNodeByName(powerUpdateReq.getNodeName());
+        if (localPowerNode!=null){
+            if (StringUtils.equals(localPowerNode.getNodeId(), powerUpdateReq.getNodeId())) {
+                return JsonResponse.success();
+            }else{
+                throw new NodeNameExists();
+            }
+        }
+        localPowerNodeService.updateLocalPowerNodeName(powerUpdateReq.getNodeId(), powerUpdateReq.getNodeName());
         return JsonResponse.success();
     }
 
-    @PostMapping("/deletePowerNode")
+    /*@PostMapping("/deletePowerNode")
     @ApiOperation(value="删除计算节点", response = JsonResponse.class)
     public JsonResponse deletePowerNode(@Validated @RequestBody PowerDeleteReq powerDeleteReq) {
         localPowerNodeService.deletePowerNodeByNodeId(powerDeleteReq.getPowerNodeId());
         return JsonResponse.success();
-    }
+    }*/
 
     @PostMapping("/powerNodeDetails")
     @ApiOperation(value="查询计算节点详情", response = JsonResponse.class)
@@ -108,12 +124,12 @@ public class LocalPowerNodeController {
         return JsonResponse.page(page);
     }
 
-    @PostMapping("/checkPowerNodeName")
+/*    @PostMapping("/checkPowerNodeName")
     @ApiOperation(value="校验计算节点名称是否可用", response = JsonResponse.class)
     public JsonResponse checkPowerNodeName(@Validated @RequestBody PowerCheckNameReq powerCheckNameReq) {
         localPowerNodeService.checkPowerNodeName(powerCheckNameReq.getPowerNodeName());
         return JsonResponse.success();
-    }
+    }*/
 
     @GetMapping("/listLocalPowerLoadSnapshotByPowerNodeId")
     @ApiOperation(value="查询算力节点的最近24小时的负载情况", response = JsonResponse.class)

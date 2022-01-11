@@ -34,21 +34,15 @@ public interface LocalPowerNodeMapper {
      * @param localPowerNodeList
      * @return
      */
-    int replaceBasicInfoBatch(List<LocalPowerNode> localPowerNodeList);
+    int replaceBasicInfoExcludingNameBatch(List<LocalPowerNode> localPowerNodeList);
 
     /**
      * 批量修改计算节点的资源信息
      * @param localPowerNodeList
      * @return
      */
-    int updateResourceInfoBatchByPowerNodeId(List<LocalPowerNode> localPowerNodeList);
+    int updateResourceInfoBatchByNodeId(List<LocalPowerNode> localPowerNodeList);
 
-    /**
-     * 根据id修改计算节点数据
-     * @param localPowerNode
-     * @return
-     */
-    int updatePowerNodeById(LocalPowerNode localPowerNode);
 
     /**
      * 根据计算id删除计算节点
@@ -79,4 +73,8 @@ public interface LocalPowerNodeMapper {
     int checkPowerNodeName(@Param("powerNodeName") String powerNodeName);
 
     PowerLoad getCurrentLocalPowerLoadByPowerNodeId(@Param("powerNodeId") String powerNodeId);
+
+    LocalPowerNode findLocalPowerNodeByName(@Param("nodeName") String nodeName);
+
+    void updateLocalPowerNodeName(@Param("nodeId") String nodeId, @Param("nodeName") String nodeName);
 }

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,4 +56,11 @@ public class LocalMetaData extends BaseDomain {
 
     @ApiModelProperty(name = "localMetaDataColumnList", value = "元数据的字段定义")
     List<LocalMetaDataColumn> localMetaDataColumnList;
+
+    public void addLocalMetaDataColumn(LocalMetaDataColumn localMetaDataColumn){
+        if(localMetaDataColumnList==null){
+            localMetaDataColumnList = new ArrayList<>();
+        }
+        localMetaDataColumnList.add(localMetaDataColumn);
+    }
 }

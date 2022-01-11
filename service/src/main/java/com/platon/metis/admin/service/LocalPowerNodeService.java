@@ -74,4 +74,8 @@ public interface LocalPowerNodeService {
     List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshotByPowerNodeId(String powerNodeId, int hours);
 
     PowerLoad getCurrentLocalPowerLoadByPowerNodeId(String powerNodeId);
+
+    LocalPowerNode findLocalPowerNodeByName(String nodeName);
+
+    void updateLocalPowerNodeName(String nodeId, String nodeName);
 }

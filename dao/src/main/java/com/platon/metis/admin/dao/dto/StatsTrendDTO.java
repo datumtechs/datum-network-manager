@@ -11,7 +11,17 @@ public class StatsTrendDTO {
     /** 统计时间 */
     String statsTime;
     /** 累计值 */
-    Long totalValue;
+    Long totalMemoryValue;
     /** 增量值 */
-    Long incrementValue;
+    Long incrementMemoryValue;
+
+    /** 累计值 */
+    Long totalCoreValue;
+    /** 增量值 */
+    Long incrementCoreValue;
+
+    /** 累计值 */
+    Long totalBandwidthValue;
+    /** 增量值 */
+    Long incrementBandwidthValue;
 }

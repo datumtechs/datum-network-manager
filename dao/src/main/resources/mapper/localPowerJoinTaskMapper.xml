@@ -51,46 +51,38 @@
     order by task_start_time desc
   </select>-->
 
-  <!-- 插入计算节点数据 -->
+
   <insert id="insertBatch">
-    <foreach collection="list" item="item" separator=";">
-      insert into local_power_join_task
-      <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="item.id != null">id,</if>
-        <if test="item.powerNodeId != null">power_node_id,</if>
-        <if test="item.taskId != null">task_id,</if>
-        <if test="item.taskName != null">task_name,</if>
-        <if test="item.ownerIdentityId != null">owner_identity_id,</if>
-        <if test="item.ownerIdentityName != null">owner_identity_name,</if>
-        <if test="item.taskStartTime != null">task_start_time,</if>
-        <if test="item.resultSideId != null">result_side_id,</if>
-        <if test="item.resultSideName != null">result_side_name,</if>
-        <if test="item.coordinateSideId != null">coordinate_side_id,</if>
-        <if test="item.coordinateSideName != null">coordinate_side_name,</if>
-        <if test="item.usedMemory != null">used_memory,</if>
-        <if test="item.usedCore != null">used_core,</if>
-        <if test="item.usedBandwidth != null">used_bandwidth,</if>
-        <if test="item.createTime != null">create_time,</if>
-        <if test="item.updateTime != null">update_time,</if>
-      </trim>
-      <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="item.id != null"> #{item.id, jdbcType=INTEGER},</if>
-        <if test="item.powerNodeId != null">#{item.powerNodeId, jdbcType=VARCHAR},</if>
-        <if test="item.taskId != null">#{item.taskId, jdbcType=VARCHAR},</if>
-        <if test="item.taskName != null">#{item.taskName, jdbcType=VARCHAR},</if>
-        <if test="item.ownerIdentityId != null">#{item.ownerIdentityId, jdbcType=VARCHAR},</if>
-        <if test="item.ownerIdentityName != null">#{item.ownerIdentityName, jdbcType=VARCHAR},</if>
-        <if test="item.taskStartTime != null">#{item.taskStartTime, jdbcType=TIMESTAMP},</if>
-        <if test="item.resultSideId != null">#{item.resultSideId, jdbcType=VARCHAR},</if>
-        <if test="item.resultSideName != null">#{item.resultSideName, jdbcType=VARCHAR},</if>
-        <if test="item.coordinateSideId != null">#{item.coordinateSideId, jdbcType=VARCHAR},</if>
-        <if test="item.coordinateSideName != null">#{item.coordinateSideName, jdbcType=VARCHAR},</if>
-        <if test="item.usedMemory != null">#{item.usedMemory, jdbcType=BIGINT},</if>
-        <if test="item.usedCore != null">#{item.usedCore, jdbcType=INTEGER},</if>
-        <if test="item.usedBandwidth != null">#{item.usedBandwidth, jdbcType=BIGINT},</if>
-        <if test="item.createTime != null">#{item.createTime, jdbcType=TIMESTAMP},</if>
-        <if test="item.updateTime != null">#{item.updateTime, jdbcType=TIMESTAMP},</if>
-      </trim>
+    insert into local_power_join_task (
+    power_node_id,
+    task_id,
+    task_name,
+    owner_identity_id,
+    owner_identity_name,
+    task_start_time,
+    result_side_id,
+    result_side_name,
+    coordinate_side_id,
+    coordinate_side_name,
+    used_memory,
+    used_core,
+    used_bandwidth)
+    values
+    <foreach collection ="localPowerJoinTaskList" item="item" separator =",">
+      (#{item.powerNodeId, jdbcType=VARCHAR},
+       #{item.taskId, jdbcType=VARCHAR},
+       #{item.taskName, jdbcType=VARCHAR},
+       #{item.ownerIdentityId, jdbcType=VARCHAR},
+       #{item.ownerIdentityName, jdbcType=VARCHAR},
+       #{item.taskStartTime, jdbcType=TIMESTAMP},
+      #{item.resultSideId, jdbcType=VARCHAR},
+      #{item.resultSideName, jdbcType=VARCHAR},
+      #{item.coordinateSideId, jdbcType=VARCHAR},
+      #{item.coordinateSideName, jdbcType=VARCHAR},
+      #{item.usedMemory, jdbcType=BIGINT},
+      #{item.usedCore, jdbcType=INTEGER},
+      #{item.usedBandwidth, jdbcType=BIGINT}
+       )
     </foreach>
   </insert>
 

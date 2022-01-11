@@ -77,10 +77,12 @@ public class UserController {
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.ordinal());
         }else if(StringUtils.isBlank(localOrg.getImageUrl()) || StringUtils.isBlank(localOrg.getProfile())){
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_PROFILE.ordinal());
-        } else if (localOrg.getStatus() == null || localOrg.getStatus() == 0) {
+        } else if (localOrg.getStatus() == null || localOrg.getStatus() == LocalOrg.Status.NOT_CONNECT_NET.getCode()) {
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_CONNECT_NET.ordinal());
-        }else if (localOrg.getStatus() == 1) {
+        }else if (localOrg.getStatus() == LocalOrg.Status.CONNECTED.getCode()) {
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.CONNECTED.ordinal());
+        }else if (localOrg.getStatus() == LocalOrg.Status.LEFT_NET.getCode()) {
+            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.LEFT_NET.ordinal());
         }
 
         return JsonResponse.success(resp);

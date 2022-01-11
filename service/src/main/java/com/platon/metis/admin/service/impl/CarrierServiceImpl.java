@@ -2,11 +2,12 @@ package com.platon.metis.admin.service.impl;
 
 import com.platon.metis.admin.common.exception.ApplyIdentityIDFailed;
 import com.platon.metis.admin.common.exception.IdentityIDApplied;
+import com.platon.metis.admin.common.exception.OrgConnectNetworkAlready;
+import com.platon.metis.admin.common.exception.OrgNotConnectNetwork;
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
-import com.platon.metis.admin.dao.enums.LocalOrgStatusEnum;
 import com.platon.metis.admin.grpc.client.AuthClient;
 import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
@@ -61,6 +62,10 @@ public class CarrierServiceImpl implements CarrierService {
     public Integer applyJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
 
+        if(localOrg.getStatus()==LocalOrg.Status.CONNECTED.getCode()){
+            throw new OrgConnectNetworkAlready ();
+        }
+
         try {
             authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName(), localOrg.getImageUrl(), localOrg.getProfile());
         }catch (Exception e){
@@ -87,7 +92,7 @@ public class CarrierServiceImpl implements CarrierService {
         localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
         localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
 
-        localOrg.setStatus(LocalOrgStatusEnum.JOIN.getStatus());
+        localOrg.setStatus(LocalOrg.Status.CONNECTED.getCode());
         localOrgMapper.update(localOrg);
         //刷新缓存
         LocalOrgCache.setLocalOrgInfo(localOrg);
@@ -99,6 +104,9 @@ public class CarrierServiceImpl implements CarrierService {
     @Override
     public Integer cancelJoinNetwork() {
         LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+        if(localOrg.getStatus()!=LocalOrg.Status.CONNECTED.getCode()){
+           throw new OrgNotConnectNetwork();
+        }
         authClient.revokeIdentityJoin();
 
         //退网成功，刷新数据库
@@ -108,7 +116,7 @@ public class CarrierServiceImpl implements CarrierService {
         } else {
             localOrg.setCarrierStatus(nodeInfo.getState());
         }
-        localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
+        localOrg.setStatus(LocalOrg.Status.LEFT_NET.getCode());
         localOrg.setCarrierNodeId("");
         localOrg.setConnNodeCount(0);
         localOrgMapper.update(localOrg);

@@ -3,9 +3,7 @@
 <mapper namespace="com.platon.metis.admin.dao.LocalPowerNodeMapper">
 
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerNode">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
-    <result column="node_id" jdbcType="VARCHAR" property="nodeId" />
+    <id column="node_id" jdbcType="VARCHAR" property="nodeId" />
     <result column="node_name" jdbcType="VARCHAR" property="nodeName" />
     <result column="internal_ip" jdbcType="VARCHAR" property="internalIp" />
     <result column="internal_port" jdbcType="INTEGER" property="internalPort" />
@@ -29,8 +27,6 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id,
-    identity_id,
     node_id,
     node_name,
     internal_ip,
@@ -65,6 +61,13 @@
   </select>
 
 
+  <select id="findLocalPowerNodeByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_power_node
+    where node_name = #{nodeName,jdbcType=VARCHAR}
+  </select>
+
   <!-- 校验计算节点名称 -->
   <select id="checknodeName" parameterType="java.lang.String" resultType="java.lang.Integer">
     select count(1) from local_power_node where node_name = #{nodeName, jdbcType=VARCHAR}
@@ -88,39 +91,11 @@
     delete from local_power_node where node_id = #{nodeId, jdbcType=VARCHAR}
   </delete>
 
-  <insert id="replaceBatch">
-    replace into local_power_node(
-    identity_id,
-    node_id,
-    node_name,
-    internal_ip,
-    internal_port,
-    external_ip,
-    external_port,
-    start_time,
-    remarks,
-    conn_message,
-    power_id,
-    power_status,
-    conn_time,
-    conn_status,
-    memory,
-    core,
-    bandwidth,
-    used_memory,
-    used_core,
-    used_bandwidth,
-    create_time,
-    update_time)
-    values
-  </insert>
 
   <!-- 插入计算节点数据 -->
   <insert id="insertPowerNode" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
     insert into local_power_node
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">id,</if>
-      <if test="identityId != null">identity_id,</if>
       <if test="nodeId != null">node_id,</if>
       <if test="nodeName != null">node_name,</if>
       <if test="internalIp != null">internal_ip,</if>
@@ -140,12 +115,8 @@
       <if test="usedMemory != null">used_memory,</if>
       <if test="usedCore != null">used_core,</if>
       <if test="usedBandwidth != null">used_bandwidth,</if>
-      <if test="createTime != null">create_time,</if>
-      <if test="updateTime != null">update_time,</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null"> #{id, jdbcType=INTEGER},</if>
-      <if test="identityId != null">#{identityId, jdbcType=VARCHAR},</if>
       <if test="nodeId != null">#{nodeId, jdbcType=VARCHAR},</if>
       <if test="nodeName != null">#{nodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">#{internalIp, jdbcType=VARCHAR},</if>
@@ -165,8 +136,6 @@
       <if test="usedMemory != null">#{usedMemory, jdbcType=BIGINT},</if>
       <if test="usedCore != null">#{usedCore, jdbcType=INTEGER},</if>
       <if test="usedBandwidth != null">#{usedBandwidth, jdbcType=BIGINT},</if>
-      <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
-      <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
     </trim>
   </insert>
 
@@ -174,7 +143,6 @@
   <update id="updatePowerNodeByNodeId" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
     update local_power_node
     <set>
-      <if test="identityId != null">identity_id = #{identityId, jdbcType=VARCHAR},</if>
       <if test="nodeName != null">node_name = #{nodeName, jdbcType=VARCHAR},</if>
       <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
       <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
@@ -193,38 +161,40 @@
       <if test="usedMemory != null">used_memory = #{usedMemory, jdbcType=BIGINT},</if>
       <if test="usedCore != null">used_core = #{usedCore, jdbcType=INTEGER},</if>
       <if test="usedBandwidth != null">used_bandwidth = #{usedBandwidth, jdbcType=BIGINT},</if>
-      <if test="createTime != null">create_time = #{createTime, jdbcType=TIMESTAMP},</if>
-      <if test="updateTime != null">update_time = #{updateTime, jdbcType=TIMESTAMP},</if>
     </set>
     where node_id = #{nodeId, jdbcType=VARCHAR}
   </update>
 
   <!-- 批量replace计算节点的基本信息，以及和调度服务的连接情况-->
-  <insert id="replaceBasicInfoBatch" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
-    replace into local_power_node (
+  <insert id="replaceBasicInfoExcludingNameBatch" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
+    <foreach collection="list" item="item" separator=";">
+      INSERT INTO local_power_node (
       node_id,
-      node_name,
       internal_ip,
       internal_port,
       external_ip,
       external_port,
-      conn_status) values
-    <foreach collection="list" item="item" separator=";">
-      (
-        #{item.nodeIdId, jdbcType=VARCHAR},
-        #{item.nodeName, jdbcType=VARCHAR},
-        #{item.internalIp,jdbcType=VARCHAR},
-        #{item.internalPort,jdbcType=INTEGER},
-        #{item.externalIp,jdbcType=VARCHAR},
-        #{item.externalPort,jdbcType=INTEGER},
-        #{item.connStatus,jdbcType=INTEGER}
+      conn_status)
+      VALUES (
+      #{item.nodeId, jdbcType=VARCHAR},
+      #{item.internalIp,jdbcType=VARCHAR},
+      #{item.internalPort,jdbcType=INTEGER},
+      #{item.externalIp,jdbcType=VARCHAR},
+      #{item.externalPort,jdbcType=INTEGER},
+      #{item.connStatus,jdbcType=INTEGER}
       )
+      ON DUPLICATE KEY
+      UPDATE internal_ip = #{item.internalIp,jdbcType=VARCHAR},
+      internal_port = #{item.internalPort,jdbcType=INTEGER},
+      external_ip = #{item.externalIp,jdbcType=VARCHAR},
+      external_port = #{item.externalPort,jdbcType=INTEGER},
+      conn_status = #{item.connStatus,jdbcType=INTEGER}
     </foreach>
   </insert>
 
 
   <!-- 批量修改计算节点的资源信息-->
-  <update id="updateResourceInfoBatchBynodeId" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
+  <update id="updateResourceInfoBatchByNodeId" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
     <foreach collection="list" item="item" separator=";">
       update local_power_node
       set
@@ -236,44 +206,18 @@
         bandwidth = #{item.bandwidth, jdbcType=BIGINT},
         used_memory = #{item.usedMemory, jdbcType=BIGINT},
         used_core = #{item.usedCore, jdbcType=INTEGER},
-        used_bandwidth = #{item.usedBandwidth, jdbcType=BIGINT},
-        update_time = #{item.updateTime, jdbcType=TIMESTAMP}
+        used_bandwidth = #{item.usedBandwidth, jdbcType=BIGINT}
       where node_id = #{item.nodeId, jdbcType=VARCHAR}
     </foreach>
   </update>
 
 
-
-
-  <!-- 根据id修改计算节点数据 -->
-  <update id="updatePowerNodeById" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
+  <update id="updateLocalPowerNodeName">
     update local_power_node
-    <set>
-      <if test="identityId != null">identity_id = #{identityId, jdbcType=VARCHAR},</if>
-      <if test="nodeId != null">node_id = #{nodeId, jdbcType=VARCHAR},</if>
-      <if test="nodeName != null">node_name = #{nodeName, jdbcType=VARCHAR},</if>
-      <if test="internalIp != null">internal_ip = #{internalIp, jdbcType=VARCHAR},</if>
-      <if test="internalPort != null">internal_port = #{internalPort, jdbcType=INTEGER},</if>
-      <if test="externalIp != null">external_ip = #{externalIp, jdbcType=VARCHAR},</if>
-      <if test="externalPort != null">external_port = #{externalPort, jdbcType=INTEGER},</if>
-      <if test="startTime != null">start_time = #{startTime, jdbcType=TIMESTAMP},</if>
-      <if test="remarks != null">remarks = #{remarks, jdbcType=VARCHAR},</if>
-      <if test="connMessage != null">conn_message = #{connMessage, jdbcType=VARCHAR},</if>
-      <if test="powerId != null">power_id = #{powerId, jdbcType=VARCHAR},</if>
-      <if test="powerStatus != null">power_status = #{powerStatus, jdbcType=INTEGER},</if>
-      <if test="connTime != null">conn_time = #{connTime, jdbcType=TIMESTAMP},</if>
-      <if test="connStatus != null">conn_status = #{connStatus, jdbcType=INTEGER},</if>
-      <if test="memory != null">memory = #{memory, jdbcType=BIGINT},</if>
-      <if test="core != null">core = #{core, jdbcType=INTEGER},</if>
-      <if test="bandwidth != null">bandwidth = #{bandwidth, jdbcType=BIGINT},</if>
-      <if test="usedMemory != null">used_memory = #{usedMemory, jdbcType=BIGINT},</if>
-      <if test="usedCore != null">used_core = #{usedCore, jdbcType=INTEGER},</if>
-      <if test="usedBandwidth != null">used_bandwidth = #{usedBandwidth, jdbcType=BIGINT},</if>
-      <if test="createTime != null">create_time = #{createTime, jdbcType=TIMESTAMP},</if>
-      <if test="updateTime != null">update_time = #{updateTime, jdbcType=TIMESTAMP},</if>
-    </set>
-    where id = #{id, jdbcType=INTEGER}
+    set node_name = #{nodeName,jdbcType=VARCHAR}
+    where node_Id = #{nodeId,jdbcType=VARCHAR}
   </update>
+
 
   <resultMap id="PowerLoadResultMap" type="com.platon.metis.admin.dao.entity.PowerLoad">
     <result column="core_pct" jdbcType="INTEGER" property="corePct" />

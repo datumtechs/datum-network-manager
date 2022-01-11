@@ -50,7 +50,8 @@ public enum Errors {
     NodeNameExists(1034, "node name exists."),
     NodeNameIllegal(1035, "node name illegal."),
 
-
+    OrgConnectNetworkAlready(1036, "local org connect network already."),
+    OrgNotConnectNetwork(1037, "local org not connect network."),
     ;
     Errors(int code, String message) {
         this.code = code;

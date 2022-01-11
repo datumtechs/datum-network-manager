@@ -107,8 +107,24 @@
         ORDER BY t.stats_time
     </select>
 
-    <select id="listLocalPowerStatsTrendMonthly" resultMap="BaseResultMap">
-        SELECT t.stats_time, IFNULL(d.month_memory,0) as increment_value, IFNULL(d.accu_memory,0) as total_value
+
+    <resultMap id="BaseLocalResultMap" type="com.platon.metis.admin.dao.dto.StatsTrendDTO">
+        <result column="stats_time" jdbcType="VARCHAR" property="statsTime" />
+        <result column="increment_memory_value" jdbcType="BIGINT" property="incrementMemoryValue" />
+        <result column="total_memory_value" jdbcType="BIGINT" property="totalMemoryValue" />
+
+        <result column="increment_core_value" jdbcType="BIGINT" property="incrementCoreValue" />
+        <result column="total_core_value" jdbcType="BIGINT" property="totalCoreValue" />
+
+        <result column="increment_bandwidth_value" jdbcType="BIGINT" property="incrementBandwidthValue" />
+        <result column="total_bandwidth_value" jdbcType="BIGINT" property="totalBandwidthValue" />
+    </resultMap>
+
+    <select id="listLocalPowerStatsTrendMonthly" resultMap="BaseLocalResultMap">
+        SELECT t.stats_time,
+               IFNULL(d.month_memory,0) as increment_memory_value, IFNULL(d.accu_memory,0) as total_memory_value,
+               IFNULL(d.month_core,0) as increment_core_value, IFNULL(d.accu_core,0) as total_core_value,
+               IFNULL(d.month_bandwidth,0) as increment_bandwidth_value, IFNULL(d.accu_bandwidth,0) as total_bandwidth_value
         FROM (
             SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 11 MONTH), '%Y-%m') AS stats_time
             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 10 MONTH), '%Y-%m') AS stats_time
@@ -123,7 +139,7 @@
             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%Y-%m') AS stats_time
             UNION SELECT DATE_FORMAT(CURRENT_DATE(), '%Y-%m') AS stats_time
         ) t
-        LEFT JOIN (SELECT stats_time, month_memory, accu_memory FROM v_local_power_stats_monthly) d ON t.stats_time = d.stats_time
+        LEFT JOIN (SELECT stats_time, month_memory, accu_memory, month_core, accu_core, month_bandwidth, accu_bandwidth FROM v_local_power_stats_monthly) d ON t.stats_time = d.stats_time
         ORDER BY t.stats_time
     </select>
 </mapper>

@@ -35,13 +35,13 @@ spring:
   # =============================== consul ===============================
   cloud:
     consul:
-      host: 10.1.1.10
+      host: 192.168.10.150
       port: 8500
       discovery:  # 服务发现配置
         enabled: true
         register: true
         deregister: true
-        prefer-ip-address: true
+        prefer-ip-address: true #true：实例以 IP 的形式注册;false：实例以机器 HOSTNAME 形式注册
         service-name: ${spring.application.name}
         instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port} # 应用名称+服务器IP+端口
         tags: ${spring.application.name}

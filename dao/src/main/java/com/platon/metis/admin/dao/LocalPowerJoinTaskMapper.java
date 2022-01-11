@@ -1,6 +1,7 @@
 package com.platon.metis.admin.dao;
 
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface LocalPowerJoinTaskMapper {
      * @param localPowerJoinTaskList
      * @return
      */
-    int insertBatch(List<LocalPowerJoinTask> localPowerJoinTaskList);
+    int insertBatch(@Param("localPowerJoinTaskList")  List<LocalPowerJoinTask> localPowerJoinTaskList);
 
     /**
      * 查询计算节点参数任务列表

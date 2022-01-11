@@ -155,7 +155,7 @@ CREATE TABLE `local_meta_data` (
 DROP TABLE IF EXISTS `local_meta_data_column`;
 CREATE TABLE `local_meta_data_column` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
-  `local_meta_data_db_id` INT NOT NULL COMMENT '元数据local_meta_data自增id',
+      `local_meta_data_db_id` INT NOT NULL COMMENT '元数据local_meta_data自增id',
   `column_idx` INT DEFAULT NULL COMMENT '列索引',
   `column_name` varchar(100) DEFAULT '' COMMENT '列名',
   `column_type` varchar(32) DEFAULT '' COMMENT '列类型',
@@ -235,10 +235,10 @@ CREATE TABLE `local_org` (
      `carrier_ip` varchar(32) DEFAULT NULL COMMENT '调度服务IP地址',
      `carrier_port` INT DEFAULT NULL COMMENT '调度服务端口号',
      `carrier_conn_status` varchar(10) DEFAULT NULL COMMENT '连接状态 enabled：可用, disabled:不可用',
-     `carrier_status` INT DEFAULT '0' COMMENT '调度服务的状态（0:unknown未知、1: active活跃、2:leave: 离开网络、3:join加入网络 4:unuseful不可用）',
-     `conn_node_count` INT  DEFAULT NULL COMMENT '节点连接的数量',
+     `carrier_status` INT DEFAULT 0 COMMENT '调度服务的状态（0:unknown未知、1: active活跃、2:leave: 离开网络、3:join加入网络 4:unuseful不可用）',
+     `conn_node_count` INT  DEFAULT 0 COMMENT '节点连接的数量',
      `carrier_conn_time` datetime DEFAULT NULL COMMENT '服务连接时间',
-     `status` tinyint(1) DEFAULT '0' COMMENT '0未入网，1已入网',
+     `status` tinyint(1) DEFAULT 0 COMMENT '0未入网，1已入网， 99已退网',
      local_bootstrap_node varchar(256) DEFAULT NULL COMMENT '当前系统的本地节点，可以作为引导节点提供给三方节点',
      local_multi_addr varchar(256) DEFAULT NULL COMMENT '当前系统本地的',
      image_url varchar(256) COMMENT '组织机构图像url',
@@ -277,9 +277,7 @@ CREATE TABLE `local_power_join_task` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_power_node`;
 CREATE TABLE `local_power_node` (
-    `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
-    `identity_id` varchar(256) NOT NULL COMMENT '组织身份ID',
-    `node_id` varchar(256) DEFAULT NULL COMMENT '发布后底层返回的host唯一ID',
+    `node_id` varchar(256) NOT NULL COMMENT '发布后底层返回的host唯一ID',
     `node_name` varchar(32) DEFAULT NULL COMMENT '节点名称(同一个组织不可重复）',
     `internal_ip` varchar(32) DEFAULT NULL COMMENT '节点内网IP',
     `internal_port` INT DEFAULT NULL COMMENT '节点内网端口',
@@ -291,17 +289,16 @@ CREATE TABLE `local_power_node` (
     `conn_status` int DEFAULT 0 COMMENT '节点与调度服务的连接状态，0: 未被调度服务连接上; 1: 连接上; ',
     `conn_message` varchar(32) DEFAULT NULL COMMENT '节点(连接失败)信息',
     `power_id` varchar(256) DEFAULT NULL COMMENT '节点启动后底层返回的算力ID',
-    `power_status` tinyint(4) DEFAULT '0' COMMENT '算力状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)',
-    `memory` BIGINT NOT NULL DEFAULT '0' COMMENT '计算host内存, 字节',
-    `core` INT NOT NULL DEFAULT '0' COMMENT '计算host core',
+    `power_status` tinyint(4) DEFAULT 0 COMMENT '算力状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)',
+    `memory` BIGINT NOT NULL DEFAULT 0 COMMENT '计算host内存, 字节',
+    `core` INT NOT NULL DEFAULT 0 COMMENT '计算host core',
     `bandwidth` BIGINT NOT NULL DEFAULT '0' COMMENT '计算host带宽, bps',
-    `used_memory` BIGINT DEFAULT '0' COMMENT '使用的内存, 字节',
-    `used_core` INT DEFAULT '0' COMMENT '使用的core',
-    `used_bandwidth` BIGINT DEFAULT '0' COMMENT '使用的带宽, bps',
+    `used_memory` BIGINT DEFAULT 0 COMMENT '使用的内存, 字节',
+    `used_core` INT DEFAULT 0 COMMENT '使用的core',
+    `used_bandwidth` BIGINT DEFAULT 0 COMMENT '使用的带宽, bps',
     `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-    PRIMARY KEY (`id`),
-    KEY `node_id` (`node_id`),
+    PRIMARY KEY (`node_id`),
     KEY `node_name` (`node_name`)
 ) COMMENT='本组织计算节点配置表 配置当前参与方的计算节点信息';
 

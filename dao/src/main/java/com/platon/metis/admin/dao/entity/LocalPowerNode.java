@@ -13,13 +13,6 @@ import java.time.LocalDateTime;
 @Data
 @ApiModel(value = "本地计算节点")
 public class LocalPowerNode {
-
-    @ApiModelProperty(value = "序号id", example = "")
-    private Integer id;
-
-    @ApiModelProperty(value = "组织id", example = "")
-    private String identityId;
-
     @ApiModelProperty(value = "计算节点ID", example = "")
     private String nodeId;
 

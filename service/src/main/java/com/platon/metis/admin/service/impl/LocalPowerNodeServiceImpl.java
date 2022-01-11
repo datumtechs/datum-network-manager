@@ -6,7 +6,6 @@ import com.platon.metis.admin.common.exception.*;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper;
 import com.platon.metis.admin.dao.LocalPowerNodeMapper;
-import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 import com.platon.metis.admin.dao.entity.PowerLoad;
@@ -62,7 +61,6 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
         log.info("新增计算节点数据:{}", jobNode);
         // 计算节点id
-        powerNode.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
         powerNode.setNodeId(jobNode.getId());
         // 设置连接状态
         powerNode.setConnStatus(jobNode.getConnState().getNumber());
@@ -205,6 +203,16 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public PowerLoad getCurrentLocalPowerLoadByPowerNodeId(String powerNodeId) {
         return localPowerNodeMapper.getCurrentLocalPowerLoadByPowerNodeId(powerNodeId);
+    }
+
+    @Override
+    public LocalPowerNode findLocalPowerNodeByName(String nodeName) {
+        return localPowerNodeMapper.findLocalPowerNodeByName(nodeName);
+    }
+
+    @Override
+    public void updateLocalPowerNodeName(String nodeId, String nodeName) {
+        localPowerNodeMapper.updateLocalPowerNodeName(nodeId, nodeName);
     }
 
 }

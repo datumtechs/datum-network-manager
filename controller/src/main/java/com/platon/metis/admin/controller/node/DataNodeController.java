@@ -1,19 +1,19 @@
 package com.platon.metis.admin.controller.node;
 
 import com.github.pagehelper.Page;
+import com.platon.metis.admin.common.exception.ArgumentException;
 import com.platon.metis.admin.common.exception.NodeNameExists;
 import com.platon.metis.admin.common.exception.NodeNameIllegal;
 import com.platon.metis.admin.common.util.NameUtil;
-import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.entity.LocalDataNode;
 import com.platon.metis.admin.dto.JsonResponse;
-import com.platon.metis.admin.dto.req.*;
-import com.platon.metis.admin.dto.resp.AvailableStatusResp;
+import com.platon.metis.admin.dto.req.DataNodeUpdateReq;
+import com.platon.metis.admin.dto.req.NodePageReq;
 import com.platon.metis.admin.dto.resp.LocalDataNodeQueryResp;
 import com.platon.metis.admin.service.DataNodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,7 +57,7 @@ public class DataNodeController {
      * @return
      * @throws Exception
      */
-    @ApiOperation(value = "新增数据节点", httpMethod = "POST")
+    /*@ApiOperation(value = "新增数据节点", httpMethod = "POST")
     @PostMapping("addDataNode")
     public JsonResponse addDataNode(@Validated @RequestBody DataNodeAddReq dataNodeAddReq) throws Exception {
         //判断数据节点名称是否合法
@@ -72,7 +72,7 @@ public class DataNodeController {
         }
         dataNodeService.addDataNode(localDataNode);
         return JsonResponse.success();
-    }
+    }*/
 
     /**
      * 校验数据节点名称是否可用
@@ -80,7 +80,7 @@ public class DataNodeController {
      * @param checkDataNodeNameReq
      * @return
      */
-    @ApiOperation(value = "校验数据节点名称是否可用", httpMethod = "POST")
+    /*@ApiOperation(value = "校验数据节点名称是否可用", httpMethod = "POST")
     @PostMapping("checkDataNodeName")
     public JsonResponse <AvailableStatusResp> checkDataNodeName(@Validated @RequestBody CheckDataNodeNameReq checkDataNodeNameReq) {
         LocalDataNode localDataNode = new LocalDataNode();
@@ -93,20 +93,33 @@ public class DataNodeController {
         }
         return JsonResponse.success(resp);
     }
-
+    */
     /**
-     * 修改数据节点
+     * 修改数据节点名称
      *
      * @param dataNodeUpdateReq
      * @return
      * @throws Exception
      */
-    @ApiOperation(value = "修改数据节点", httpMethod = "POST")
-    @PostMapping("updateDataNode")
-    public JsonResponse updateDataNode(@Validated @RequestBody DataNodeUpdateReq dataNodeUpdateReq) throws Exception {
-        LocalDataNode localDataNode = new LocalDataNode();
-        BeanUtils.copyProperties(dataNodeUpdateReq, localDataNode);
-        dataNodeService.updateDataNode(localDataNode);
+    @ApiOperation(value = "修改数据节点名称", httpMethod = "POST")
+    @PostMapping("updateNodeName")
+    public JsonResponse updateNodeName(@Validated @RequestBody DataNodeUpdateReq dataNodeUpdateReq) {
+        if(dataNodeUpdateReq == null || StringUtils.isBlank(dataNodeUpdateReq.getNodeId()) || StringUtils.isBlank(dataNodeUpdateReq.getNodeName())){
+            throw new ArgumentException();
+        }
+        if(!NameUtil.isValidName(dataNodeUpdateReq.getNodeName())){
+            throw new NodeNameIllegal();
+        }
+
+        LocalDataNode localDataNode = dataNodeService.findLocalDataNodeByName(dataNodeUpdateReq.getNodeName());
+        if (localDataNode!=null){
+            if (StringUtils.equals(localDataNode.getNodeId(), dataNodeUpdateReq.getNodeId())) {
+                return JsonResponse.success();
+            }else{
+                throw new NodeNameExists();
+            }
+        }
+        dataNodeService.updateLocalDataNodeName(dataNodeUpdateReq.getNodeId(), dataNodeUpdateReq.getNodeName());
         return JsonResponse.success();
     }
 
@@ -117,11 +130,11 @@ public class DataNodeController {
      * @return
      * @throws Exception
      */
-    @ApiOperation(value = "删除数据节点", httpMethod = "POST")
+    /*@ApiOperation(value = "删除数据节点", httpMethod = "POST")
     @PostMapping("deleteDataNode")
     public JsonResponse deleteDataNode(@Validated @RequestBody DataNodeDeleteReq dataNodeDeleteReq) throws Exception {
         dataNodeService.deleteDataNode(dataNodeDeleteReq.getNodeId());
         return JsonResponse.success();
-    }
+    }*/
 
 }

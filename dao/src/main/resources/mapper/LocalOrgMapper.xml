@@ -11,13 +11,12 @@
     <result column="carrier_conn_status" jdbcType="VARCHAR" property="carrierConnStatus" />
     <result column="carrier_conn_time" jdbcType="TIMESTAMP" property="carrierConnTime" />
     <result column="conn_node_count" jdbcType="INTEGER" property="connNodeCount" />
-    <result column="carrier_status" jdbcType="VARCHAR" property="carrierStatus" />
+    <result column="carrier_status" jdbcType="INTEGER" property="carrierStatus" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="image_url" jdbcType="INTEGER" property="imageUrl" />
-    <result column="profile" jdbcType="INTEGER" property="profile" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="profile" jdbcType="VARCHAR" property="profile" />
     <result column="local_bootstrap_node" jdbcType="VARCHAR" property="localBootstrapNode" />
     <result column="local_multi_addr" jdbcType="VARCHAR" property="localMultiAddr" />
-    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -34,8 +33,7 @@
   image_url,
   profile,
   local_bootstrap_node,
-  local_multi_addr,
-  rec_update_time
+  local_multi_addr
   </sql>
 
   <select id="selectAvailableCarrier" resultMap="BaseResultMap">
@@ -83,7 +81,7 @@
     #{carrierConnStatus,jdbcType=VARCHAR},
     #{carrierConnTime,jdbcType=TIMESTAMP},
     #{connNodeCount, jdbcType=INTEGER},
-    #{carrierStatus,jdbcType=VARCHAR},
+    #{carrierStatus,jdbcType=INTEGER},
     #{status,jdbcType=INTEGER},
     #{imageUrl,jdbcType=VARCHAR},
     #{profile,jdbcType=VARCHAR},

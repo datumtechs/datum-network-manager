@@ -133,7 +133,7 @@ public class PowerClient {
         return nodeList.parallelStream().map(node -> {
             LocalPowerNode localPowerNode = new LocalPowerNode();
             localPowerNode.setNodeId(node.getNodeDetail().getId());
-            localPowerNode.setNodeName("PowerNode_"+ node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
+            //localPowerNode.setNodeName("PowerNode_"+ node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
             localPowerNode.setInternalIp(node.getNodeDetail().getInternalIp());
             localPowerNode.setInternalPort(StringUtils.isEmpty(node.getNodeDetail().getInternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getInternalPort()));
             localPowerNode.setExternalIp(node.getNodeDetail().getExternalIp());
