@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,7 +84,7 @@ public class LocalCarrierStatusRefreshTask {
         if( StringUtils.isEmpty(localOrg.getCarrierIp()) || localOrg.getCarrierPort()==null){
             log.warn("查询到的调度服务信息错误");
             localOrg.setCarrierConnStatus(CarrierConnStatusEnum.DISABLED.getStatus());
-            //localOrg.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
+            localOrg.setCarrierConnTime(new Date());
             localOrg.setConnNodeCount(0);
         }else{
             //### 刷新调度服务状态和入网状态
@@ -91,6 +92,7 @@ public class LocalCarrierStatusRefreshTask {
             localOrg.setCarrierStatus(nodeInfo.getState());
             localOrg.setCarrierNodeId(nodeInfo.getNodeId());
             localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
+            localOrg.setCarrierConnTime(new Date());
             localOrg.setConnNodeCount(nodeInfo.getConnCount());
             localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
             localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());

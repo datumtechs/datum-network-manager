@@ -73,16 +73,18 @@ public class UserController {
         resp.setUserId(userId);
 
         LocalOrg localOrg = localOrgService.getLocalOrg();
-        if(localOrg==null || StringUtils.isBlank(localOrg.getIdentityId())){
-            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.ordinal());
-        }else if(StringUtils.isBlank(localOrg.getImageUrl()) || StringUtils.isBlank(localOrg.getProfile())){
-            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_PROFILE.ordinal());
-        } else if (localOrg.getStatus() == null || localOrg.getStatus() == LocalOrg.Status.NOT_CONNECT_NET.getCode()) {
-            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_CONNECT_NET.ordinal());
-        }else if (localOrg.getStatus() == LocalOrg.Status.CONNECTED.getCode()) {
-            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.CONNECTED.ordinal());
-        }else if (localOrg.getStatus() == LocalOrg.Status.LEFT_NET.getCode()) {
-            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.LEFT_NET.ordinal());
+        if(localOrg==null){
+            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
+            resp.setConnectNetworkStatus(LocalOrg.Status.NOT_CONNECT_NET.getCode());
+        }else{
+            resp.setConnectNetworkStatus(localOrg.getStatus());
+            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.DONE.getLevel());
+            if (StringUtils.isBlank(localOrg.getIdentityId())){
+                resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
+                //resp.setConnectNetworkStatus(LocalOrg.Status.NOT_CONNECT_NET.getCode());
+            }else if(StringUtils.isBlank(localOrg.getImageUrl()) || StringUtils.isBlank(localOrg.getProfile())) {
+                resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_PROFILE.getLevel());
+            }
         }
 
         return JsonResponse.success(resp);

@@ -11,6 +11,7 @@ import com.platon.metis.admin.grpc.service.AuthServiceGrpc;
 import com.platon.metis.admin.grpc.types.Metadata;
 import io.grpc.ManagedChannel;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -55,8 +56,8 @@ public class AuthClient {
                 .newBuilder()
                 .setNodeName(name)
                 .setIdentityId(identityId)
-                .setImageUrl(imageUrl)
-                .setDetails(profile)
+                .setImageUrl(StringUtils.trimToEmpty(imageUrl))
+                .setDetails(StringUtils.trimToEmpty(profile))
                 .build();
         AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest
                 .newBuilder()

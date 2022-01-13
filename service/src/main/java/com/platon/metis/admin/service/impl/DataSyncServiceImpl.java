@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Service
@@ -23,7 +24,7 @@ public class DataSyncServiceImpl implements DataSyncService {
         if(dataSync==null){
             dataSync = new DataSync();
             dataSync.setDataType(dataType);
-            dataSync.setLatestSynced(LocalDateTime.MIN);
+            dataSync.setLatestSynced(LocalDateTime.parse("1970-01-01 00:00:00",  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             dataSyncMapper.insert(dataSync);
         }
         return dataSync;

@@ -14,7 +14,6 @@ import com.platon.metis.admin.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 /**
  * @Author liushuyu
@@ -44,7 +43,7 @@ public class UserServiceImpl implements UserService {
         LocalOrg localOrg = new LocalOrg();
         localOrg.setIdentityId(orgId);
         localOrg.setName(orgName);
-        localOrg.setRecUpdateTime(new Date());
+        localOrg.setStatus(LocalOrg.Status.NOT_CONNECT_NET.getCode());
         localOrgMapper.insert(localOrg);
 
         //### 2.新建成功后，设置缓存

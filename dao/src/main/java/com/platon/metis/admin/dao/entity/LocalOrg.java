@@ -30,28 +30,28 @@ public class LocalOrg extends BaseDomain {
     @ApiModelProperty(value = "调度服务端口号")
     private Integer carrierPort;
 
-    @ApiModelProperty(value = "连接状态 enabled：可用, disabled:不可用")
+    @ApiModelProperty(value = "管理台连接调度服务的状态 enabled：能连接, disabled:不能连接")
     private String carrierConnStatus;
 
-    @ApiModelProperty(value = "连接节点的数量")
+    @ApiModelProperty(value = "调度服务连接其它节点的数量")
     private Integer connNodeCount;
 
-    @ApiModelProperty(value = "服务连接时间")
+    @ApiModelProperty(value = "管理台最近连接调度服务的时间")
     private Date carrierConnTime;
 
-    @ApiModelProperty(value = "调度服务的状态：0:unknown未知、1: active活跃、2:leave: 离开网络、3:join加入网络 4:unuseful不可用")
+    @ApiModelProperty(value = "调度服务本身的状态：0:unknown未知、1: active活跃、2:leave: 离开网络、3:join加入网络 4:unuseful不可用")
     private Integer carrierStatus;
 
     @ApiModelProperty(value = "最后更新时间,单位ms")
     private Date recUpdateTime;
 
-    @ApiModelProperty(value = "组织入网状态：0未入网，1已入网")
+    @ApiModelProperty(value = "本地组织入网状态：0未加入网，1已经加入网，99已退出网络（还可以重新加入）")
     private Integer status;
 
-    @ApiModelProperty(value = "组织图像url")
+    @ApiModelProperty(value = "本地组织图像url")
     private String imageUrl;
 
-    @ApiModelProperty(value = "组织简介")
+    @ApiModelProperty(value = "本地组织简介")
     private String profile;
 
     @ApiModelProperty(value = "当前系统的本地节点，可以作为引导节点提供给三方节点")
