@@ -32,30 +32,30 @@ public class OverviewControllerTest {
 
     @Test
     public void listLocalPowerStatsTrendMonthly(){
-        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/system/index/listLocalPowerStatsTrendMonthly", String.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/overview/localPowerStatsTrendMonthly", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }
 
     @Test
     public void listLocalDataFileStatsTrendMonthly(){
-        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/system/index/listLocalDataFileStatsTrendMonthly", String.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/overview/localDataFileStatsTrendMonthly", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }
 
-    @Test
+    /*@Test
     public void listGlobalPowerStatsTrendMonthly(){
-        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/system/index/listGlobalPowerStatsTrendMonthly", String.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/overview/listGlobalPowerStatsTrendMonthly", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }
 
     @Test
     public void listGlobalDataFileStatsTrendMonthly(){
-        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/system/index/listGlobalDataFileStatsTrendMonthly", String.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/overview/listGlobalDataFileStatsTrendMonthly", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
-    }
+    }*/
 
 }

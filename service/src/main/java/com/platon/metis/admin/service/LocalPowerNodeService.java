@@ -29,10 +29,10 @@ public interface LocalPowerNodeService {
 
     /**
      * 根据节点id删除计算节点
-     * @param powerNodeId
+     * @param nodeId
      * @return
      */
-    void deletePowerNodeByNodeId(String powerNodeId);
+    void deletePowerNodeByNodeId(String nodeId);
 
     /**
      * 查询计算节点详情
@@ -53,27 +53,19 @@ public interface LocalPowerNodeService {
 
     /**
      * 启用算力
-     * @param powerNodeId
+     * @param nodeId
      */
-    void publishPower(String powerNodeId);
+    void publishPower(String nodeId);
 
     /**
      * 停用算力
-     * @param powerNodeId
+     * @param nodeId
      */
-    void revokePower(String powerNodeId);
+    void revokePower(String nodeId);
 
-    /**
-     * 计算节点名称校验
-     * @param powerNodeName
-     * @return
-     */
-    void checkPowerNodeName(String powerNodeName);
+    List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshotByNodeId(String nodeId, int hours);
 
-
-    List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshotByPowerNodeId(String powerNodeId, int hours);
-
-    PowerLoad getCurrentLocalPowerLoadByPowerNodeId(String powerNodeId);
+    PowerLoad getCurrentLocalPowerLoadByNodeId(String nodeId);
 
     LocalPowerNode findLocalPowerNodeByName(String nodeName);
 

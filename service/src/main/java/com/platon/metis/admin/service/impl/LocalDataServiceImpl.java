@@ -210,6 +210,10 @@ public class LocalDataServiceImpl implements LocalDataService {
             throw new CannotWithdrawData();
         }
         metaDataClient.revokeMetaData(localMetaData.getMetaDataId());
+
+        //修改文件发布信息
+        localMetaDataMapper.updateStatusById(localMetaData.getId(), LocalDataFileStatusEnum.REVOKED.getStatus());
+
     }
 
     @Override
@@ -268,13 +272,17 @@ public class LocalDataServiceImpl implements LocalDataService {
                 throw new FileEmpty();
             }
 
+            LocalDataFile localDataFile = new LocalDataFile();
+
             //第一行就是表头
             List<String> headerList = headerRecord.get().toList();
+            localDataFile.setColumns(headerList.size());
+
 
             //流式统计后续的行数。注意：前面指针移动过1条记录了
             long rows = csvParser.stream().count();
 
-            LocalDataFile localDataFile = new LocalDataFile();
+
             localDataFile.setFileName(file.getOriginalFilename());
             localDataFile.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
             localDataFile.setFileType(FileTypeEnum.FILETYPE_CSV.getValue());//todo 目前只有csv类型

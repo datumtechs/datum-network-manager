@@ -1,7 +1,7 @@
 package com.platon.metis.admin.service;
 
 import com.platon.metis.admin.dao.dto.DataAuthReqDTO;
-import com.platon.metis.admin.dao.dto.StatsTrendDTO;
+import com.platon.metis.admin.dao.dto.StatsPowerTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 
 import java.util.List;
@@ -61,29 +61,29 @@ public interface IndexService {
      * 查询全网算力（内存）总量月走势
      * @return
      */
-    List<StatsTrendDTO> listGlobalPowerStatsTrendMonthly();
+    List<StatsPowerTrendDTO> listGlobalPowerStatsTrendMonthly();
 
     /**
      * 查询全网数据总量月走势
      * @return
      */
-    List<StatsTrendDTO> listGlobalDataFileStatsTrendMonthly();
+    List<StatsPowerTrendDTO> listGlobalDataFileStatsTrendMonthly();
 
     /**
      * 查询本地数据总量月走势
      * @return
      */
-    List<StatsTrendDTO> listLocalDataFileStatsTrendMonthly();
+    List<StatsPowerTrendDTO> listLocalDataFileStatsTrendMonthly();
 
     /**
      * 查询本地算力（内存）总量月走势
      * @return
      */
-    List<StatsTrendDTO> listLocalPowerStatsTrendMonthly();
+    List<StatsPowerTrendDTO> listLocalPowerStatsTrendMonthly();
 
     /**
      * 查询全网数据总量日走势
      * @return
      */
-    List<StatsTrendDTO>  listGlobalDataFileStatsTrendDaily();
+    List<StatsPowerTrendDTO>  listGlobalDataFileStatsTrendDaily();
 }

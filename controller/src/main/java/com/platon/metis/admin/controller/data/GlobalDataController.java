@@ -1,7 +1,7 @@
 package com.platon.metis.admin.controller.data;
 
 import com.github.pagehelper.Page;
-import com.platon.metis.admin.dao.dto.StatsTrendDTO;
+import com.platon.metis.admin.dao.dto.StatsPowerTrendDTO;
 import com.platon.metis.admin.dao.entity.GlobalDataFile;
 import com.platon.metis.admin.dto.CommonPageReq;
 import com.platon.metis.admin.dto.JsonResponse;
@@ -45,8 +45,8 @@ public class GlobalDataController {
 
     @ApiOperation(value = "全网数据日走势图")
     @GetMapping("globalDataFileStatsTrendDaily")
-    public JsonResponse<List<StatsTrendDTO>> globalDataFileStatsTrendDaily(){
-        List<StatsTrendDTO> list = indexService.listGlobalDataFileStatsTrendDaily();
+    public JsonResponse<List<StatsPowerTrendDTO>> globalDataFileStatsTrendDaily(){
+        List<StatsPowerTrendDTO> list = indexService.listGlobalDataFileStatsTrendDaily();
         return JsonResponse.success(list);
     }
 

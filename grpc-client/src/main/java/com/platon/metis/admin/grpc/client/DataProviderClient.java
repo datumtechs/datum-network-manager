@@ -80,6 +80,7 @@ public class DataProviderClient {
                 @Override
                 public void onCompleted() {
                     countDownLatch.countDown();
+                    log.debug("upload file completed.");
                 }
             };
 
@@ -104,6 +105,9 @@ public class DataProviderClient {
                         .build();
                 requestObserver.onNext(fileChunk);
             }
+
+            // Mark the end of requests
+            requestObserver.onCompleted();
 
             try {
                 //等待服务端数据返回

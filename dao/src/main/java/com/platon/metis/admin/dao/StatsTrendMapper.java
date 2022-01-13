@@ -1,17 +1,17 @@
 package com.platon.metis.admin.dao;
 
-import com.platon.metis.admin.dao.dto.StatsTrendDTO;
+import com.platon.metis.admin.dao.dto.StatsPowerTrendDTO;
 
 import java.util.List;
 
 public interface StatsTrendMapper {
-    List<StatsTrendDTO> listGlobalDataFileStatsTrendMonthly();
+    List<StatsPowerTrendDTO> listGlobalDataFileStatsTrendMonthly();
 
-    List<StatsTrendDTO> listLocalDataFileStatsTrendMonthly();
+    List<StatsPowerTrendDTO> listLocalDataFileStatsTrendMonthly();
 
-    List<StatsTrendDTO> listGlobalDataFileStatsTrendDaily();
+    List<StatsPowerTrendDTO> listGlobalDataFileStatsTrendDaily();
 
-    List<StatsTrendDTO> listGlobalPowerStatsTrendMonthly();
+    List<StatsPowerTrendDTO> listGlobalPowerStatsTrendMonthly();
 
-    List<StatsTrendDTO> listLocalPowerStatsTrendMonthly();
+    List<StatsPowerTrendDTO> listLocalPowerStatsTrendMonthly();
 }

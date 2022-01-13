@@ -135,14 +135,14 @@ public class LocalPowerNodeController {
     @ApiOperation(value="查询算力节点的最近24小时的负载情况", response = JsonResponse.class)
     public JsonResponse<List<LocalPowerLoadSnapshot>> listLocalPowerLoadSnapshotByPowerNodeId(@ApiParam(name = "powerNodeId",value = "算力节点ID", type = "String", required = true) @RequestParam String powerNodeId) {
         //参数，最近多少小时的数据
-        List<LocalPowerLoadSnapshot> list = localPowerNodeService.listLocalPowerLoadSnapshotByPowerNodeId(powerNodeId, 24);
+        List<LocalPowerLoadSnapshot> list = localPowerNodeService.listLocalPowerLoadSnapshotByNodeId(powerNodeId, 24);
         return JsonResponse.success(list);
     }
 
     @GetMapping("/getCurrentLocalPowerLoadByPowerNodeId")
     @ApiOperation(value="查询算力节点当前的负载情况", response = JsonResponse.class)
     public JsonResponse<PowerLoad> getCurrentLocalPowerLoadByPowerNodeId(@ApiParam(name = "powerNodeId",value = "算力节点ID", type = "String", required = true) @RequestParam String powerNodeId) {
-        PowerLoad list = localPowerNodeService.getCurrentLocalPowerLoadByPowerNodeId(powerNodeId);
+        PowerLoad list = localPowerNodeService.getCurrentLocalPowerLoadByNodeId(powerNodeId);
         return JsonResponse.success(list);
     }
 

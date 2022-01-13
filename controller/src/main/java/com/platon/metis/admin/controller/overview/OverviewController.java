@@ -1,7 +1,7 @@
 package com.platon.metis.admin.controller.overview;
 
 import com.platon.metis.admin.dao.dto.DataAuthReqDTO;
-import com.platon.metis.admin.dao.dto.StatsTrendDTO;
+import com.platon.metis.admin.dao.dto.StatsPowerTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.resp.index.MyTaskStatsResp;
@@ -11,7 +11,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -73,16 +72,16 @@ public class OverviewController {
     }
 
     @ApiOperation(value = "查询我发布的数据")
-    @PostMapping("/localDataFileStatsTrendMonthly")
-    public JsonResponse<List<StatsTrendDTO>> localDataFileStatsTrendMonthly(){
-        List<StatsTrendDTO> dataPowerList = indexService.listLocalDataFileStatsTrendMonthly();
+    @GetMapping("/localDataFileStatsTrendMonthly")
+    public JsonResponse<List<StatsPowerTrendDTO>> localDataFileStatsTrendMonthly(){
+        List<StatsPowerTrendDTO> dataPowerList = indexService.listLocalDataFileStatsTrendMonthly();
         return JsonResponse.success(dataPowerList);
     }
 
     @ApiOperation(value = "查询我发布的算力")
-    @PostMapping("/localPowerStatsTrendMonthly")
-    public JsonResponse<List<StatsTrendDTO>> localPowerStatsTrendMonthly(){
-        List<StatsTrendDTO> dataPowerList = indexService.listLocalPowerStatsTrendMonthly();
+    @GetMapping("/localPowerStatsTrendMonthly")
+    public JsonResponse<List<StatsPowerTrendDTO>> localPowerStatsTrendMonthly(){
+        List<StatsPowerTrendDTO> dataPowerList = indexService.listLocalPowerStatsTrendMonthly();
         return JsonResponse.success(dataPowerList);
     }
 

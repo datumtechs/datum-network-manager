@@ -15,7 +15,7 @@
     </sql>
 
     <!-- 查询计算节点详情 -->
-    <select id="listLocalPowerLoadSnapshotByPowerNodeId"  resultMap="BaseResultMap">
+    <select id="listLocalPowerLoadSnapshotByNodeId"  resultMap="BaseResultMap">
         SELECT t.snapshot_time, IFNULL(d.used_core,0) as used_core, IFNULL(d.used_memory,0) as used_memory, IFNULL(d.used_bandwidth,0) as used_bandwidth
         FROM (
             SELECT DATE_FORMAT(DATE_SUB(CURRENT_TIME(), INTERVAL 23 HOUR), '%Y-%m-%d %H:00:00') AS snapshot_time
@@ -46,7 +46,7 @@
         LEFT JOIN (
             SELECT snapshot_time, used_core, used_memory, used_bandwidth
             FROM local_power_load_snapshot
-            WHERE power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+            WHERE power_node_id = #{nodeId, jdbcType=VARCHAR}
         ) d ON t.snapshot_time = d.snapshot_time
         ORDER BY t.snapshot_time
     </select>

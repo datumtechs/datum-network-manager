@@ -2,7 +2,10 @@ package com.platon.metis.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.metis.admin.common.exception.*;
+import com.platon.metis.admin.common.exception.ArgumentException;
+import com.platon.metis.admin.common.exception.CannotConnectPowerNode;
+import com.platon.metis.admin.common.exception.CannotEditPowerNode;
+import com.platon.metis.admin.common.exception.ObjectNotFound;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper;
 import com.platon.metis.admin.dao.LocalPowerNodeMapper;
@@ -113,9 +116,9 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public void deletePowerNodeByNodeId(String powerNodeId) {
+    public void deletePowerNodeByNodeId(String nodeId) {
         // 判断是否有算力进行中
-        LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
+        LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(nodeId);
 
         if(localPowerNode.getConnStatus() == LocalPowerNode.ConnStatus.disconnected.getCode()){
             throw new CannotConnectPowerNode ();
@@ -133,9 +136,9 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
             throw new ServiceException("有任务进行中，无法删除此节点！");
         }*/
         // 删除底层资源
-        powerClient.deletePowerNode(powerNodeId);
+        powerClient.deletePowerNode(nodeId);
         // 删除数据
-        localPowerNodeMapper.deletePowerNode(powerNodeId);
+        localPowerNodeMapper.deletePowerNode(nodeId);
     }
 
     @Override
@@ -151,10 +154,10 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public void publishPower(String powerNodeId) {
-        String powerId = powerClient.publishPower(powerNodeId);
+    public void publishPower(String nodeId) {
+        String powerId = powerClient.publishPower(nodeId);
         LocalPowerNode localPowerNode = new LocalPowerNode();
-        localPowerNode.setNodeId(powerNodeId);
+        localPowerNode.setNodeId(nodeId);
         localPowerNode.setPowerId(powerId);
         localPowerNode.setPowerStatus(CommonBase.PowerState.PowerState_Released_VALUE);
         //todo：这个时间是本地时间，而不是数据中心时间
@@ -163,8 +166,8 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
     @Override
-    public void revokePower(String powerNodeId) {
-        LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNodeId);
+    public void revokePower(String nodeId) {
+        LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(nodeId);
         if(localPowerNode==null || StringUtils.isEmpty(localPowerNode.getPowerId())){
             log.error("power node not found");
             throw new ObjectNotFound();
@@ -173,7 +176,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         powerClient.revokePower(localPowerNode.getPowerId());
 
 
-        localPowerNode.setNodeId(powerNodeId);
+        localPowerNode.setNodeId(nodeId);
         // 停用算力需把上次启动的算力id清空
         localPowerNode.setPowerId("");
         localPowerNode.setPowerStatus(CommonBase.PowerState.PowerState_Revoked_VALUE);
@@ -181,28 +184,14 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     }
 
 
-
-
     @Override
-    public void checkPowerNodeName(String powerNodeName) {
-        if (!NameUtil.isValidName(powerNodeName)) {
-            log.error("power node name error");
-            throw new ArgumentException();
-        }
-        int count = localPowerNodeMapper.checkPowerNodeName(powerNodeName);
-        if (count > 0) {
-            throw new PowerHostExists();
-        }
+    public List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshotByNodeId(String nodeId, int hours) {
+        return localPowerLoadSnapshotMapper.listLocalPowerLoadSnapshotByNodeId(nodeId, hours);
     }
 
     @Override
-    public List<LocalPowerLoadSnapshot> listLocalPowerLoadSnapshotByPowerNodeId(String powerNodeId, int hours) {
-        return localPowerLoadSnapshotMapper.listLocalPowerLoadSnapshotByPowerNodeId(powerNodeId, hours);
-    }
-
-    @Override
-    public PowerLoad getCurrentLocalPowerLoadByPowerNodeId(String powerNodeId) {
-        return localPowerNodeMapper.getCurrentLocalPowerLoadByPowerNodeId(powerNodeId);
+    public PowerLoad getCurrentLocalPowerLoadByNodeId(String nodeId) {
+        return localPowerNodeMapper.getCurrentLocalPowerLoadByNodeId(nodeId);
     }
 
     @Override

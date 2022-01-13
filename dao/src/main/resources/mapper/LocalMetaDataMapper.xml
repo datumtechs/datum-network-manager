@@ -122,7 +122,7 @@
       set status = #{item.status,jdbcType=INTEGER},
           publish_time =  #{item.publishTime,jdbcType=TIMESTAMP},
           rec_update_time =  #{item.recUpdateTime,jdbcType=TIMESTAMP}
-      where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
+      where meta_data_id = #{item.metaDataId,jdbcType=VARCHAR}
     </foreach>
   </update>
 </mapper>

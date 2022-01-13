@@ -46,17 +46,17 @@ public interface LocalPowerNodeMapper {
 
     /**
      * 根据计算id删除计算节点
-     * @param powerNodeId
+     * @param nodeId
      * @return
      */
-    int deletePowerNode(@Param("powerNodeId") String powerNodeId);
+    int deletePowerNode(@Param("nodeId") String nodeId);
 
     /**
      * 查询计算节点详情
-     * @param powerNodeId
+     * @param nodeId
      * @return
      */
-    LocalPowerNode queryPowerNodeDetails(@Param("powerNodeId") String powerNodeId);
+    LocalPowerNode queryPowerNodeDetails(@Param("nodeId") String nodeId);
 
     /**
      * 查询计算节点列表
@@ -65,14 +65,8 @@ public interface LocalPowerNodeMapper {
      */
     List<LocalPowerNode> queryPowerNodeList(@Param("keyword") String keyword);
 
-    /**
-     * 计算节点名称校验
-     * @param powerNodeName
-     * @return
-     */
-    int checkPowerNodeName(@Param("powerNodeName") String powerNodeName);
 
-    PowerLoad getCurrentLocalPowerLoadByPowerNodeId(@Param("powerNodeId") String powerNodeId);
+    PowerLoad getCurrentLocalPowerLoadByNodeId(@Param("nodeId") String nodeId);
 
     LocalPowerNode findLocalPowerNodeByName(@Param("nodeName") String nodeName);
 

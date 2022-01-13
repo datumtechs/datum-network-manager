@@ -2,13 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.metis.admin.dao.StatsTrendMapper">
 
-    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.dto.StatsTrendDTO">
-        <id column="stats_time" jdbcType="VARCHAR" property="statsTime" />
-        <result column="total_value" jdbcType="BIGINT" property="totalValue" />
-        <result column="increment_value" jdbcType="BIGINT" property="incrementValue" />
-    </resultMap>
 
-    <select id="listGlobalDataFileStatsTrendMonthly" resultMap="BaseResultMap">
+
+
+    <!--<select id="listGlobalDataFileStatsTrendMonthly" resultMap="BaseResultMap">
         SELECT t.stats_time, IFNULL(d.month_size,0) as increment_value, IFNULL(d.accu_size,0) as total_value
         FROM (
              SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 11 MONTH), '%Y-%m') AS stats_time
@@ -65,9 +62,14 @@
         ) t
         LEFT JOIN (SELECT stats_time, day_size, accu_size FROM v_global_data_file_stats_daily) d ON t.stats_time = d.stats_time
         ORDER BY t.stats_time
-    </select>
+    </select>-->
 
-    <select id="listLocalDataFileStatsTrendMonthly" resultMap="BaseResultMap">
+    <resultMap id="BaseDataResultMap" type="com.platon.metis.admin.dao.dto.StatsDataTrendDTO">
+        <id column="stats_time" jdbcType="VARCHAR" property="statsTime" />
+        <result column="total_value" jdbcType="BIGINT" property="totalValue" />
+        <result column="increment_value" jdbcType="BIGINT" property="incrementValue" />
+    </resultMap>
+    <select id="listLocalDataFileStatsTrendMonthly" resultMap="BaseDataResultMap">
         SELECT t.stats_time, IFNULL(d.month_size,0) as increment_value, IFNULL(d.accu_size,0) as total_value
         FROM (
             SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 11 MONTH), '%Y-%m') AS stats_time
@@ -87,7 +89,7 @@
         ORDER BY t.stats_time
     </select>
 
-    <select id="listGlobalPowerStatsTrendMonthly" resultMap="BaseResultMap">
+    <!--<select id="listGlobalPowerStatsTrendMonthly" resultMap="BaseResultMap">
         SELECT t.stats_time, IFNULL(d.month_memory,0) as increment_value, IFNULL(d.accu_memory,0) as total_value
         FROM (
             SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 11 MONTH), '%Y-%m') AS stats_time
@@ -106,9 +108,9 @@
         LEFT JOIN (SELECT stats_time, month_memory, accu_memory FROM v_global_power_stats_monthly) d ON t.stats_time = d.stats_time
         ORDER BY t.stats_time
     </select>
+-->
 
-
-    <resultMap id="BaseLocalResultMap" type="com.platon.metis.admin.dao.dto.StatsTrendDTO">
+    <resultMap id="BasePowerResultMap" type="com.platon.metis.admin.dao.dto.StatsPowerTrendDTO">
         <result column="stats_time" jdbcType="VARCHAR" property="statsTime" />
         <result column="increment_memory_value" jdbcType="BIGINT" property="incrementMemoryValue" />
         <result column="total_memory_value" jdbcType="BIGINT" property="totalMemoryValue" />
@@ -120,7 +122,7 @@
         <result column="total_bandwidth_value" jdbcType="BIGINT" property="totalBandwidthValue" />
     </resultMap>
 
-    <select id="listLocalPowerStatsTrendMonthly" resultMap="BaseLocalResultMap">
+    <select id="listLocalPowerStatsTrendMonthly" resultMap="BasePowerResultMap">
         SELECT t.stats_time,
                IFNULL(d.month_memory,0) as increment_memory_value, IFNULL(d.accu_memory,0) as total_memory_value,
                IFNULL(d.month_core,0) as increment_core_value, IFNULL(d.accu_core,0) as total_core_value,

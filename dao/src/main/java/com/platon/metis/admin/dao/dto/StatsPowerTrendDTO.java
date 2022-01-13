@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StatsTrendDTO {
+public class StatsPowerTrendDTO {
     /** 统计时间 */
     String statsTime;
     /** 累计值 */

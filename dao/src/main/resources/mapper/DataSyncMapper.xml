@@ -25,7 +25,7 @@
 
     <update id="update" parameterType="com.platon.metis.admin.dao.entity.DataSync">
         update data_sync
-        from set latest_synced = #{latestSynced,jdbcType=TIMESTAMP}
+        set latest_synced = #{latestSynced,jdbcType=TIMESTAMP}
         where data_type= #{dataType, jdbcType=VARCHAR}
     </update>
 

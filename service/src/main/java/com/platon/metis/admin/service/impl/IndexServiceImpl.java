@@ -3,7 +3,7 @@ package com.platon.metis.admin.service.impl;
 import com.platon.metis.admin.dao.StatsTrendMapper;
 import com.platon.metis.admin.dao.VLocalStatsMapper;
 import com.platon.metis.admin.dao.dto.DataAuthReqDTO;
-import com.platon.metis.admin.dao.dto.StatsTrendDTO;
+import com.platon.metis.admin.dao.dto.StatsPowerTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 import com.platon.metis.admin.service.IndexService;
 import com.platon.metis.admin.service.constant.ServiceConstant;
@@ -73,12 +73,12 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<StatsTrendDTO> listGlobalDataFileStatsTrendMonthly() {
+    public List<StatsPowerTrendDTO> listGlobalDataFileStatsTrendMonthly() {
         return statsTrendMapper.listGlobalDataFileStatsTrendMonthly();
     }
 
     @Override
-    public List<StatsTrendDTO> listGlobalPowerStatsTrendMonthly() {
+    public List<StatsPowerTrendDTO> listGlobalPowerStatsTrendMonthly() {
         return statsTrendMapper.listGlobalPowerStatsTrendMonthly();
     }
 
@@ -121,17 +121,17 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<StatsTrendDTO> listLocalDataFileStatsTrendMonthly() {
+    public List<StatsPowerTrendDTO> listLocalDataFileStatsTrendMonthly() {
         return statsTrendMapper.listLocalDataFileStatsTrendMonthly();
     }
 
     @Override
-    public List<StatsTrendDTO> listLocalPowerStatsTrendMonthly() {
+    public List<StatsPowerTrendDTO> listLocalPowerStatsTrendMonthly() {
         return statsTrendMapper.listLocalPowerStatsTrendMonthly();
     }
 
     @Override
-    public List<StatsTrendDTO> listGlobalDataFileStatsTrendDaily() {
+    public List<StatsPowerTrendDTO> listGlobalDataFileStatsTrendDaily() {
         return statsTrendMapper.listGlobalDataFileStatsTrendDaily();
     }
 
