@@ -10,25 +10,16 @@ import java.util.UUID;
  */
 public class IDUtil {
 
-    public static final String IDENTITY_ID_PREFIX = "identity_";
-
-    /**
-     * 生成 id，项目中需要生成ID的地方都可以使用，第一版可以先使用UUID过渡，后期更新ID生成策略
-     * @return 返回一个32位字符的ID
-     * @example 71a51fcac1164bdaa6af10286670d11d
-     */
-    public static String generate(){
-        return  UUID.randomUUID().toString();
-    }
+    public static final String IDENTITY_ID_PREFIX = "identity:";
 
     /**
      * 生成 带前缀的id，项目中需要生成ID的地方都可以使用，第一版可以先使用UUID过渡，后期更新ID生成策略
      * @param prefix 前缀
      * @return 返回一个ID
-     * @example identity_beff0bf738814a2794cb6fbefe55dc55
+     * @example identity:beff0bf738814a2794cb6fbefe55dc55
      */
     public static String generate(String prefix){
-        String id = generate();
+        String id = UUID.randomUUID().toString().replace("-", "");
         if(prefix == null){
             return id;
         }
@@ -36,7 +27,6 @@ public class IDUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(generate());
-        System.out.println(generate("identity_"));
+        System.out.println(generate(IDENTITY_ID_PREFIX));
     }
 }
