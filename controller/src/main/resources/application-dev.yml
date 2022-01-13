@@ -98,5 +98,8 @@ LocalPowerNodeRefreshTask.fixedDelay: 10000
 LocalTaskRefreshTask.fixedDelay: 20000
 SeedNodeRefreshTask.fixedDelay: 30000
 
-# 超时时间，单位：秒
+# gprc客户端缺省超时时间，单位：秒
 grpc-client-timeout: 5
+
+# gprc客户端上传文件超时时间，单位：秒
+grpc-client-upload-file-timeout: 60

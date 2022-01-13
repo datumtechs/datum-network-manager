@@ -7,6 +7,7 @@ import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.metis.admin.grpc.interceptor.TimeoutInterceptor;
+import com.platon.metis.admin.grpc.interceptor.UploadFileTimeoutInterceptor;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ public class SimpleChannelManager{
     @Resource
     private TimeoutInterceptor timeoutInterceptor;
 
+    @Resource
+    private UploadFileTimeoutInterceptor uploadFileTimeoutInterceptor;
+
     private ManagedChannel carrierChannel;
 
     public ManagedChannel buildChannel(String ip,int port) throws CannotConnectGrpcServer {
@@ -38,6 +42,23 @@ public class SimpleChannelManager{
                     .usePlaintext()
                     .keepAliveWithoutCalls(true)
                     .intercept(timeoutInterceptor)
+                    .maxInboundMessageSize(1073741824)
+                    .build();
+
+            return channel;
+        }catch (Throwable e){
+            log.error("failed to connect to gRPC server {}:{}", ip, port);
+            throw new CannotConnectGrpcServer();
+        }
+    }
+
+    public ManagedChannel buildUploadFileChannel(String ip,int port) throws CannotConnectGrpcServer {
+        try {
+            ManagedChannel channel = ManagedChannelBuilder
+                    .forAddress(ip, port)
+                    .usePlaintext()
+                    .keepAliveWithoutCalls(true)
+                    .intercept(uploadFileTimeoutInterceptor)
                     .maxInboundMessageSize(1073741824)
                     .build();
 

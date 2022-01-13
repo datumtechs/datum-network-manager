@@ -48,7 +48,7 @@ public class DataProviderClient {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         ManagedChannel channel = null;
         try{
-            channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
+            channel = channelManager.buildUploadFileChannel(dataNodeHost, dataNodePort);
 
             //2.构建response流观察者，将会异步处理响应
             ExtendResponseObserver<DataProviderRpcMessage.UploadReply> responseObserver = new ExtendResponseObserver<DataProviderRpcMessage.UploadReply>() {
