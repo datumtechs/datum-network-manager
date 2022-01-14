@@ -198,7 +198,6 @@
     <foreach collection="list" item="item" separator=";">
       update local_power_node
       set
-        start_time = #{item.startTime, jdbcType=TIMESTAMP},
         power_id = #{item.powerId, jdbcType=VARCHAR},
         power_status = #{item.powerStatus, jdbcType=INTEGER},
         memory = #{item.memory, jdbcType=BIGINT},

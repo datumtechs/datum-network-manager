@@ -218,7 +218,7 @@ public class PowerClient {
             LocalPowerNode localPowerNode = new LocalPowerNode();
             localPowerNode.setNodeId(item.getJobNodeId());
             localPowerNode.setPowerId(item.getPowerId());
-            localPowerNode.setStartTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(powerUsageDetail.getPublishAt()), ZoneOffset.UTC));
+            //localPowerNode.setStartTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(powerUsageDetail.getPublishAt()), ZoneOffset.UTC));
             localPowerNode.setPowerStatus(powerUsageDetail.getState().getNumber()); //更新算力状态
             localPowerNode.setMemory(usageOverview.getTotalMem());
             localPowerNode.setCore(usageOverview.getTotalProcessor());
@@ -226,7 +226,7 @@ public class PowerClient {
             localPowerNode.setUsedMemory(usageOverview.getUsedMem());
             localPowerNode.setUsedCore(usageOverview.getUsedProcessor());
             localPowerNode.setUsedBandwidth(usageOverview.getUsedBandwidth());
-            localPowerNode.setUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(powerUsageDetail.getUpdateAt()), ZoneOffset.UTC));
+            //localPowerNode.setUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(powerUsageDetail.getUpdateAt()), ZoneOffset.UTC));
             localPowerNodeList.add(localPowerNode);
 
             List<Resourcedata.PowerTask> powerTaskList = powerUsageDetail.getTasksList();
