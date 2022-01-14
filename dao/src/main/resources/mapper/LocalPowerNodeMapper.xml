@@ -170,6 +170,7 @@
     <foreach collection="list" item="item" separator=";">
       INSERT INTO local_power_node (
       node_id,
+      node_name,
       internal_ip,
       internal_port,
       external_ip,
@@ -177,6 +178,7 @@
       conn_status)
       VALUES (
       #{item.nodeId, jdbcType=VARCHAR},
+      #{item.nodeName, jdbcType=VARCHAR},
       #{item.internalIp,jdbcType=VARCHAR},
       #{item.internalPort,jdbcType=INTEGER},
       #{item.externalIp,jdbcType=VARCHAR},

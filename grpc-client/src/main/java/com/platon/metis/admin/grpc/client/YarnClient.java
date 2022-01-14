@@ -158,7 +158,7 @@ public class YarnClient {
         return nodeList.parallelStream().map(node -> {
             LocalDataNode localDataNode = new LocalDataNode();
             localDataNode.setNodeId(node.getNodeDetail().getId());
-            //localDataNode.setNodeName("DataStorageNode_"+ node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
+            localDataNode.setNodeName("DataStorageNode_"+ node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
             localDataNode.setInternalIp(node.getNodeDetail().getInternalIp());
             localDataNode.setInternalPort(StringUtils.isEmpty(node.getNodeDetail().getInternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getInternalPort()));
             localDataNode.setExternalIp(node.getNodeDetail().getExternalIp());
