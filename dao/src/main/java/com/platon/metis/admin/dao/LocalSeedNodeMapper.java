@@ -37,6 +37,6 @@ public interface LocalSeedNodeMapper {
 
 
     List<LocalSeedNode> listSeedNode();
-    void truncate();
+    void deleteNotInitialized();
     void insertBatch(List<LocalSeedNode> localSeedNodeList);
 }

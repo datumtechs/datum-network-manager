@@ -35,9 +35,12 @@ public class SeedNodeRefreshTask {
         log.debug("刷新种子节点定时任务开始>>>");
 
         List<LocalSeedNode> localSeedNodeList = seedClient.getSeedNodeList();
+        localSeedNodeMapper.deleteNotInitialized();
+
         if(CollectionUtils.isEmpty(localSeedNodeList)){
             return;
         }
+
         localSeedNodeMapper.insertBatch(localSeedNodeList);
 
         log.info("刷新种子节点定时任务结束|||");
