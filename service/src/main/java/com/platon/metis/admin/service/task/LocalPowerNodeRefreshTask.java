@@ -58,7 +58,7 @@ public class LocalPowerNodeRefreshTask {
         if (CollectionUtils.isEmpty(localPowerNodeList)) {
             return;
         }
-        localPowerNodeMapper.replaceBasicInfoExcludingNameBatch(localPowerNodeList);
+        localPowerNodeMapper.initNewPowerNodeBatch(localPowerNodeList);
     }
 
 

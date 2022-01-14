@@ -165,8 +165,8 @@
     where node_id = #{nodeId, jdbcType=VARCHAR}
   </update>
 
-  <!-- 批量replace计算节点的基本信息，以及和调度服务的连接情况-->
-  <insert id="replaceBasicInfoExcludingNameBatch" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
+  <!-- 初始化新计算节点的基本信息，如果相同的key则更新基本信息（不包括节点名称）-->
+  <insert id="initNewPowerNodeBatch" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
     <foreach collection="list" item="item" separator=";">
       INSERT INTO local_power_node (
       node_id,

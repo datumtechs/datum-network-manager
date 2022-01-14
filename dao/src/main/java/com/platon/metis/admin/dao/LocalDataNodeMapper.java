@@ -46,11 +46,11 @@ public interface LocalDataNodeMapper {
     int update(LocalDataNode record);
 
     /**
-     * 批量更新数据节点,
-     * @param localDataNodeList 数据节点服务列表
+     * 初始化新数据节点的基本信息，如果相同的key则更新基本信息（不包括节点名称）
+     * @param localDataNodeList 数据节点列表
      * @return
      */
-    int replaceBasicInfoExcludingNameBatch(List<LocalDataNode> localDataNodeList);
+    int initNewDataNodeBatch(List<LocalDataNode> localDataNodeList);
 
 
     /**

@@ -36,7 +36,7 @@ public class LocalDataNodeRefreshTask {
             return;
         }
 
-        localDataNodeMapper.replaceBasicInfoExcludingNameBatch(localDataNodeList);
+        localDataNodeMapper.initNewDataNodeBatch(localDataNodeList);
 
         log.debug("刷新数据节点列表定时任务结束|||");
     }

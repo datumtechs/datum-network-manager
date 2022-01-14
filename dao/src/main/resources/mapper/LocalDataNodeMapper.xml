@@ -96,7 +96,7 @@
     where node_Id = #{nodeId,jdbcType=VARCHAR}
   </update>
 
-  <update id="replaceBasicInfoExcludingNameBatch" parameterType="java.util.List">
+  <update id="initNewDataNodeBatch" parameterType="java.util.List">
 
     <foreach collection="list" item="item" separator=";">
       INSERT INTO local_data_node (
