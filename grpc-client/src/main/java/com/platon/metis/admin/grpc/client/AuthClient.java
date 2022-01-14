@@ -200,6 +200,9 @@ public class AuthClient {
                 localDataAuth.setCreateAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getApplyAt()), ZoneOffset.UTC));
                 localDataAuth.setAuthAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getAuditAt()), ZoneOffset.UTC));
                 localDataAuth.setStatus(dataAuth.getAuditOptionValue());
+                localDataAuth.setRecUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getUpdateAt()), ZoneOffset.UTC));
+                localDataAuth.setRecUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getApplyAt()), ZoneOffset.UTC));
+
                 localDataAuth.setAuthType(useAuthType);
                 localDataAuth.setAuthValueStartAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(startAt), ZoneOffset.UTC));
                 localDataAuth.setAuthValueEndAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(endAt), ZoneOffset.UTC));
@@ -208,6 +211,7 @@ public class AuthClient {
                 localDataAuth.setIdentityId(identityInfo.getIdentityId());
                 localDataAuth.setIdentityName(identityInfo.getNodeName());
                 localDataAuth.setIdentityNodeId(identityInfo.getNodeId());
+
                 localDataAuthList.add(localDataAuth);
             }
         }
