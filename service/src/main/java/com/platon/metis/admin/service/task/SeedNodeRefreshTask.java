@@ -37,12 +37,9 @@ public class SeedNodeRefreshTask {
         List<LocalSeedNode> localSeedNodeList = seedClient.getSeedNodeList();
         localSeedNodeMapper.deleteNotInitialized();
 
-        if(CollectionUtils.isEmpty(localSeedNodeList)){
-            return;
+        if(CollectionUtils.isNotEmpty(localSeedNodeList)){
+            localSeedNodeMapper.insertBatch(localSeedNodeList);
         }
-
-        localSeedNodeMapper.insertBatch(localSeedNodeList);
-
         log.info("刷新种子节点定时任务结束|||");
     }
 }
