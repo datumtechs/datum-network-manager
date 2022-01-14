@@ -3,7 +3,7 @@ package com.platon.metis.admin.grpc.client;
 import com.google.protobuf.ByteString;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
-import com.platon.metis.admin.grpc.interceptor.TimeoutInterceptor;
+import com.platon.metis.admin.grpc.interceptor.UploadFileTimeoutInterceptor;
 import com.platon.metis.admin.grpc.service.DataProviderGrpc;
 import com.platon.metis.admin.grpc.service.DataProviderRpcMessage;
 import io.grpc.ManagedChannel;
@@ -36,7 +36,7 @@ public class DataProviderClient {
     private SimpleChannelManager channelManager;
 
     @Resource
-    private TimeoutInterceptor timeoutInterceptor;
+    private UploadFileTimeoutInterceptor uploadFileTimeoutInterceptor;
 
     /**
      * 上传文件到数据节点
@@ -111,7 +111,7 @@ public class DataProviderClient {
 
             try {
                 //等待服务端数据返回
-                boolean await = countDownLatch.await(timeoutInterceptor.getTimeout()+10, TimeUnit.SECONDS);
+                boolean await = countDownLatch.await(uploadFileTimeoutInterceptor.getTimeout()+10, TimeUnit.SECONDS);
                 if(!await){
                     log.error("call Carrier RPC uploadData timeout");
                     throw new CallGrpcServiceFailed();
@@ -157,10 +157,12 @@ public class DataProviderClient {
 
             CountDownLatch countDownLatch = new CountDownLatch(1);
 
+
+            //AtomicReference<ByteString> content = new AtomicReference<>(ByteString.EMPTY);
+
             //3.构建response流观察者
             ExtendResponseObserver<DataProviderRpcMessage.DownloadReply> responseObserver = new ExtendResponseObserver<DataProviderRpcMessage.DownloadReply>() {
-
-                public DataProviderRpcMessage.DownloadReply response;
+                public DataProviderRpcMessage.DownloadReply response = DataProviderRpcMessage.DownloadReply.newBuilder().build();
                 public DataProviderRpcMessage.DownloadReply getResponse(){
                     return response;
                 }
@@ -168,35 +170,34 @@ public class DataProviderClient {
                 @Override
                 public void onNext(DataProviderRpcMessage.DownloadReply downloadReply) {
                     //5.处理response
-                    boolean hasContent = downloadReply.hasContent();
-                    if(hasContent){
-                        ByteString content = downloadReply.getContent();
-                        response.getContent().concat(content);
+                    if( downloadReply.hasContent()){
+                        response = response.toBuilder().setContent(response.getContent().concat(downloadReply.getContent())).build();
                     }
-
-                    boolean hasStatus = downloadReply.hasStatus();
-                    if(hasStatus){
-                        DataProviderRpcMessage.TaskStatus status = downloadReply.getStatus();
+                    if(downloadReply.hasStatus()){
                         /**
                          * Start = 0;
                          * Finished = 1;
                          * Cancelled = 2;
                          * Failed = 3;
                          */
-                        switch (status.getNumber()){
+                        switch (downloadReply.getStatus().getNumber()){
                             case 0:
                                 log.debug("开始下载文件filePath:{}，状态:{}.......",filePath,"Start");
-                                response = DataProviderRpcMessage.DownloadReply.newBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Start).build();
+                                //因为oneof,所以此处可以不设置(即使设置也无妨，因为此次response.content还没数据）
+                                //response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Start).build();
                                 break;
                             case 1:
-                                response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Finished);
+                                //因为oneof,此处不能设置（因为设置后，会重置response.content)
                                 log.debug("下载完成文件filePath:{}，状态:{}.......",filePath,"Finished");
+                                //response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Finished).build();
                                 break;
                             case 2:
-                                response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Cancelled);
+                                //因为oneof,必须设置，设置后，会重置response.content
+                                response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Cancelled).build();
                                 break;
                             case 3:
-                                response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Failed);
+                                //因为oneof,必须设置，设置后，会重置response.content
+                                response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Failed).build();
                                 break;
                             default:
                                 break;
@@ -207,8 +208,9 @@ public class DataProviderClient {
 
                 @Override
                 public void onError(Throwable throwable) {
+                    //因为oneof,必须设置，设置后，会重置response.content
+                    response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Failed).build();
                     countDownLatch.countDown();
-                    response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Failed);
                 }
 
                 @Override
@@ -223,7 +225,7 @@ public class DataProviderClient {
 
             try {
                 //等待服务端数据返回
-                boolean await = countDownLatch.await(timeoutInterceptor.getTimeout()+10, TimeUnit.SECONDS);
+                boolean await = countDownLatch.await(uploadFileTimeoutInterceptor.getTimeout()+10, TimeUnit.SECONDS);
                 if(!await){
                     log.error("call Carrier RPC downloadData timeout");
                     throw new CallGrpcServiceFailed();
@@ -233,8 +235,8 @@ public class DataProviderClient {
                 throw new CallGrpcServiceFailed();
             }
 
-            if(responseObserver.getResponse() == null
-                    || responseObserver.getResponse().getStatus() != DataProviderRpcMessage.TaskStatus.Finished) {
+            //只有出错时，才设置了status
+            if(responseObserver.getResponse() == null || responseObserver.getResponse().hasStatus()) {
                 throw new CallGrpcServiceFailed();
             }
             return responseObserver.getResponse().getContent().toByteArray();
