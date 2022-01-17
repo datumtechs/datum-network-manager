@@ -1,13 +1,14 @@
 package com.platon.metis.admin.controller.task;
 
 import com.platon.metis.admin.common.context.LocalOrgCache;
+import com.platon.metis.admin.common.context.LocalOrgIdentityCache;
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.entity.TaskOrg;
 import com.platon.metis.admin.dto.req.TaskPageReq;
 import com.platon.metis.admin.grpc.common.CommonBase;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,10 +29,11 @@ public class TaskControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @BeforeAll
+    @Before
     public void init(){
         LocalOrg localOrg = localOrgMapper.select();
-        LocalOrgCache.setLocalOrgInfo(localOrg);;
+        LocalOrgCache.setLocalOrgInfo(localOrg);
+        LocalOrgIdentityCache.setIdentityId(localOrg.getIdentityId());
     }
 
     @Test
