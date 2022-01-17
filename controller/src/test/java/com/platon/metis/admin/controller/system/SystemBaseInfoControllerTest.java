@@ -3,8 +3,8 @@ package com.platon.metis.admin.controller.system;
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +22,7 @@ public class SystemBaseInfoControllerTest {
     @Autowired
     LocalOrgMapper localOrgMapper;
 
-    @BeforeEach
+    @Before
     public void init(){
         LocalOrg localOrg = localOrgMapper.select();
         LocalOrgCache.setLocalOrgInfo(localOrg);;

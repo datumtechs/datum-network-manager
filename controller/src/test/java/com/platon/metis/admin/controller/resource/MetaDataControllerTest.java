@@ -9,8 +9,8 @@ import com.platon.metis.admin.dto.req.AddLocalMetaDataReq;
 import com.platon.metis.admin.dto.req.LocalDataJoinTaskListReq;
 import com.platon.metis.admin.dto.req.LocalDataMetaDataListByKeyWordReq;
 import com.platon.metis.admin.dto.req.LocalDataUpdateReq;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +32,7 @@ public class MetaDataControllerTest {
     @Autowired
     LocalOrgMapper localOrgMapper;
 
-    @BeforeAll
+    @Before
     public void init(){
         LocalOrg localOrg = localOrgMapper.select();
         LocalOrgCache.setLocalOrgInfo(localOrg);;
