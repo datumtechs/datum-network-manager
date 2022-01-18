@@ -13,7 +13,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -25,7 +24,6 @@ import java.util.Map;
 
 @Slf4j
 @RunWith(SpringRunner.class)
-@ActiveProfiles("dev")
 @SpringBootTest(classes = TestApplication.class)
 public class TaskClientTest {
 
@@ -38,8 +36,8 @@ public class TaskClientTest {
     public void getTaskList(){
         LocalDateTime lastUpdated = LocalDateTime.parse("1970-01-01 00:00:00",  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Pair<List<Task>, Map<String, TaskOrg>> resp = taskClient.getLocalTaskList(lastUpdated);
-        log.info(JSON.toJSONString(resp.getLeft()));
-        log.info(JSON.toJSONString(resp.getRight()));
+        log.info("left:{}", JSON.toJSONString(resp.getLeft()));
+        log.info("right:{}",JSON.toJSONString(resp.getRight()));
     }
 
 

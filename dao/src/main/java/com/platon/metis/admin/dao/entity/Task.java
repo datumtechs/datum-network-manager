@@ -62,9 +62,8 @@ public class Task extends BaseDomain {
     @ApiModelProperty(name = "reviewed", value = "任务是否被查看过，默认为false(0)")
     private Boolean reviewed;
 
-    private LocalDateTime recCreateTime;
-
-    private LocalDateTime recUpdateTime;
+    @ApiModelProperty(name = "updateAt", value = "最近更新时间")
+    private LocalDateTime updateAt;
 
     //任务发起方身份信息
     private List<TaskOrg> taskOrgList;

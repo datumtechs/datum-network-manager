@@ -3,7 +3,7 @@ spring:
   application:
     name: metis-admin
   profiles:
-    active: dev
+    active: dev_10_150
   servlet:
     multipart:
       file-size-threshold: 1099511627776

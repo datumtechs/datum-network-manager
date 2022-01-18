@@ -3,9 +3,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
     druid:
-      url: jdbc:mysql://192.168.9.191:3306/dev_metis_admin_157?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
-      username: platon
-      password: platon
+      url: jdbc:mysql://192.168.10.150/dev_metis_admin_0.3.0?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+      username: metis_admin
+      password: admin_123456
       initial-size: 10
       max-active: 20
       min-idle: 10
@@ -32,19 +32,6 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-  # =============================== consul ===============================
-  cloud:
-    consul:
-      host: 192.168.252.121
-      port: 8500
-      carrierServiceName: carrier
-      discovery:
-        prefer-ip-address: true # 这个必须配
-        service-name: ${spring.application.name}
-        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}
-        tags: ${spring.application.name}
-        health-check-interval: 10s
-        health-check-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/health
 
 # ==================================== server conf  ==========================================
 server:
@@ -56,6 +43,8 @@ server:
   servlet:
     context-path: /metis-admin
 
+# 单位：秒
+timeout: 5
 
 # =============================== conf for logger ===================================
 # 日志配置
@@ -84,13 +73,17 @@ logging:
       # max-history: 20
 
 # =============================== conf for scheduled task ===================================
-LocalCarrierStatusRefreshTask.fixedDelay: 20000
-LocalDataAuthReqRefreshTask.fixedDelay: 20000
-LocalDataNodeRefreshTask.fixedDelay: 2000
-LocalMetaDataStatusRefreshTask.fixedDelay: 10000
-LocalPowerNodeRefreshTask.fixedDelay: 10000
+DataAuthRefreshTask.fixedDelay: 20000
+DataNodeRefreshTask.fixedDelay: 2000
+GlobalDataRefreshTask.fixedDelay: 10000
+GlobalPowerRefreshTask.fixedDelay: 10000
+LocalOrgRefreshTask.fixedDelay: 10000
 LocalTaskRefreshTask.fixedDelay: 20000
+PowerNodeRefreshTask.fixedDelay: 60000
 SeedNodeRefreshTask.fixedDelay: 30000
 
-# 超时时间，单位：秒
+# gprc客户端缺省超时时间，单位：秒
 grpc-client-timeout: 5
+
+# gprc客户端上传文件超时时间，单位：秒
+grpc-client-upload-file-timeout: 60

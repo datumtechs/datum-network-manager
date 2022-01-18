@@ -153,7 +153,7 @@ public class TaskClient {
             task.setDuration(operationCost.getDuration());
             task.setApplyUser(taskDetail.getUser()); //发起任务的用户的信息 (task是属于用户的)
             task.setUserType(taskDetail.getUserType().getNumber()); //发起任务的用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
-
+            task.setUpdateAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(taskDetail.getUpdateAt()), ZoneOffset.UTC));
 
             //搜集taskOrg，任务发起者
             taskOrgMap.put(taskDetail.getSender().getIdentityId(), new TaskOrg(taskDetail.getSender().getIdentityId(), taskDetail.getSender().getNodeName(), taskDetail.getSender().getNodeId()));

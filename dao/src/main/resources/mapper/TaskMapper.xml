@@ -20,13 +20,12 @@
     <result column="cost_Memory" jdbcType="BIGINT" property="costMemory" />
     <result column="cost_Bandwidth" jdbcType="BIGINT" property="costBandwidth" />
     <result column="reviewed" jdbcType="BIT" property="reviewed" />
-    <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
-    <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
   </resultMap>
   <sql id="Base_Column_List">
     id, task_Id, task_Name, owner_Identity_id, owner_party_id, apply_user, user_type, create_At, start_At, auth_At, auth_Status, end_At,
     `status`, duration, cost_core, cost_Memory, cost_Bandwidth, reviewed,
-    rec_create_time, rec_update_time
+    update_at
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -273,13 +272,14 @@
       auth_Status, end_At, status,
       duration, cost_core, cost_Memory, 
       cost_Bandwidth, reviewed,
-      rec_create_time, rec_update_time)
+      update_at)
     values (#{taskId,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR}, #{ownerPartyId,jdbcType=VARCHAR},
       #{applyUser,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER},
       #{createAt,jdbcType=TIMESTAMP}, #{startAt,jdbcType=TIMESTAMP}, #{authAt,jdbcType=TIMESTAMP}, 
       #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
       #{duration,jdbcType=BIGINT}, #{costCore,jdbcType=INTEGER}, #{costMemory,jdbcType=BIGINT},
-      #{costBandwidth,jdbcType=BIGINT}, #{reviewed,jdbcType=BIT})
+      #{costBandwidth,jdbcType=BIGINT}, #{reviewed,jdbcType=BIT},
+      #{updateAt,jdbcType=TIMESTAMP})
   </insert>
 
 
