@@ -44,6 +44,16 @@ public class OverviewControllerTest {
         System.out.println(entity.getBody());
     }
 
+
+    @Test
+    public void queryMyCalculateTaskStats(){
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/overview/myTaskOverview",String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+
+    }
+
+
     /*@Test
     public void listGlobalPowerStatsTrendMonthly(){
         ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/overview/listGlobalPowerStatsTrendMonthly", String.class);

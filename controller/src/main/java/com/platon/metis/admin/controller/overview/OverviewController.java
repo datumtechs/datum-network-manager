@@ -91,12 +91,10 @@ public class    OverviewController {
         List<Map<String, Object>> list = indexService.queryMyCalculateTaskStats();
         List<MyTaskStatsResp> respList = new ArrayList<>();
         for(Map<String, Object> map : list){
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                MyTaskStatsResp resp = new MyTaskStatsResp();
-                resp.setStatus( entry.getKey());
-                resp.setStatusCount(Integer.parseInt(entry.getValue().toString()));
-                respList.add(resp);
-            }
+            MyTaskStatsResp resp = new MyTaskStatsResp();
+            resp.setStatus(Integer.parseInt(map.get("status").toString()));
+            resp.setStatusCount(Integer.parseInt(map.get("statusCount").toString()));
+            respList.add(resp);
         }
         return JsonResponse.success(respList);
     }
