@@ -360,7 +360,7 @@ CREATE TABLE `task` (
     `cost_Memory` BIGINT DEFAULT 0 COMMENT '任务声明所需内存',
     `cost_Bandwidth` BIGINT DEFAULT 0 COMMENT '任务声明所需带宽',
     `reviewed` tinyint(1) DEFAULT 0 COMMENT '任务是否被查看过，默认为false(0)',
-    `update_at` NOT NULL COMMENT '最后更新时间',
+    `update_at` datetime(3) NOT NULL COMMENT '最后更新时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `taskID` (`task_Id`) USING BTREE COMMENT 'task_id唯一'
 ) COMMENT='全网任务表 用于同步本地任务数据以及全网的相关数据';
