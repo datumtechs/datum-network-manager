@@ -94,7 +94,7 @@ public class    OverviewController {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 MyTaskStatsResp resp = new MyTaskStatsResp();
                 resp.setStatus( entry.getKey());
-                resp.setStatusCount(((Long)entry.getValue()).intValue());
+                resp.setStatusCount(Integer.parseInt(entry.getValue().toString()));
                 respList.add(resp);
             }
         }
