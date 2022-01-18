@@ -31,7 +31,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/overview")
 @Slf4j
-public class OverviewController {
+public class    OverviewController {
 
     @Resource
     private IndexService indexService;
@@ -94,7 +94,7 @@ public class OverviewController {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 MyTaskStatsResp resp = new MyTaskStatsResp();
                 resp.setStatus( entry.getKey());
-                resp.setStatusCount((Integer)entry.getValue());
+                resp.setStatusCount(((Long)entry.getValue()).intValue());
                 respList.add(resp);
             }
         }
