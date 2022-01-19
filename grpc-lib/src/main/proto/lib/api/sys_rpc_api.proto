@@ -50,13 +50,11 @@ message YarnNodeInfo {
   string                      identity_type = 7;                         // 身份认证标识的类型 (ca 或者 did)
   string                      identity_id = 8;                           // 身份认证标识的id
   types.ResourceUsageOverview resource_used = 9;                         // 调度服务系统本身资源信息
-  repeated YarnRegisteredPeer peers = 10;                                // 调度服务上被注册的 计算or数据服务节点信息
-  repeated SeedPeer           seed_peers = 11;                           // 调度服务上被注册的种子节点信息
-  YarnNodeState               state = 12;                                // 调度服务自身的状态信息 (0: 未知; 1: 活跃; 2: 离开网络; 3: 加入网络; 4: 不可用)
-  string                      name = 13;                                 // 组织的Name
-  uint32                      relate_peers = 14;                         // 本调度服务被外部组织(调度服务/种子节点)的连接数目
-  string                      local_bootstrap_node = 15;                 // 当前系统的本地节点，可以作为引导节点提供给三方节点
-  string                      local_multi_addr = 16;                     // 当前系统本地的 multiAddr, eg: /ip4/127.0.0.1/tcp/18001/p2p/16Uiu2HAmKMo4Ci5TYcXspnKnMWK4G4CRWSHBV4qCUAFYrtirhcuz
+  YarnNodeState               state = 10;                                // 调度服务自身的状态信息 (0: 未知; 1: 活跃; 2: 离开网络; 3: 加入网络; 4: 不可用)
+  string                      name = 12;                                 // 组织的Name
+  uint32                      relate_peers = 13;                         // 本调度服务被外部组织(调度服务/种子节点)的连接数目
+  string                      local_bootstrap_node = 14;                 // 当前系统的本地节点，可以作为引导节点提供给三方节点
+  string                      local_multi_addr = 15;                     // 当前系统本地的 multiAddr, eg: /ip4/127.0.0.1/tcp/18001/p2p/16Uiu2HAmKMo4Ci5TYcXspnKnMWK4G4CRWSHBV4qCUAFYrtirhcuz
 }
 
 
@@ -94,16 +92,7 @@ message GetNodeInfoResponse {
   YarnNodeInfo information = 3;                 // 调度服务系统信息
 }
 
-// 查看自身调度服务的 peer注册信息 req
-message GetRegisteredPeersRequest {
-  NodeType node_type = 1;                      // 计算or数据服务node的类型
-}
-// 查看自身调度服务的 peer注册信息 resp
-message GetRegisteredPeersResponse {
-  int32                       status = 1;                               // 响应码
-  string                      msg = 2;                                  // 错误信息
-  repeated YarnRegisteredPeer nodes = 3;                                // 注册在调度服务上的 计算or数据服务信息
-}
+
 // 删除种子or计算or数据服务node信息 req
 message DeleteRegisteredNodeRequest {
   string id = 1;                            // 内部节点的唯一Id
@@ -274,14 +263,6 @@ service YarnService {
   rpc GetNodeInfo (google.protobuf.Empty) returns (GetNodeInfoResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/yarn/nodeInfo"
-    };
-  }
-
-  // 查看自身调度服务的 peer注册信息
-  rpc GetRegisteredPeers (GetRegisteredPeersRequest) returns (GetRegisteredPeersResponse) {
-    option (google.api.http) = {
-      post: "/carrier/v1/yarn/registeredPeers"
-      body: "*"
     };
   }
 
