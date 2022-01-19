@@ -9,6 +9,10 @@ spring:
       file-size-threshold: 1099511627776
       max-file-size: 1099511627776
       max-request-size: 1099511627776
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
 # ==================================== server conf  ==========================================
 server:
   tomcat:
