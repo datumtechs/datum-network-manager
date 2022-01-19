@@ -44,6 +44,7 @@ public class DataProviderClient {
      * @param dataNodePort 数据节点端口
      */
     public DataProviderRpcMessage.UploadReply uploadData(String dataNodeHost, int dataNodePort, String fileName, MultipartFile file) {
+        log.debug("从carrier上传文件，fileName:{}",fileName);
         //1.获取rpc连接
         CountDownLatch countDownLatch = new CountDownLatch(1);
         ManagedChannel channel = null;
@@ -144,7 +145,7 @@ public class DataProviderClient {
      * @param filePath 要下载文件的文件路径
      */
     public byte[] downloadData(String dataNodeHost, int dataNodePort, String filePath){
-
+        log.debug("从carrier下载文件，filePath:{}",filePath);
         //1.获取rpc连接
         ManagedChannel channel = null;
         try{

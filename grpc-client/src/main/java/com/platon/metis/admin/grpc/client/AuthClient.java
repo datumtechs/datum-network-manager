@@ -49,6 +49,7 @@ public class AuthClient {
      * @param name               // 组织名称
      */
     public void applyIdentityJoin(String identityId,String name, String imageUrl, String profile) {
+        log.debug("从carrier申请入网，identityId:{}", identityId);
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -79,6 +80,7 @@ public class AuthClient {
      * 注销准入网络
      */
     public void revokeIdentityJoin() throws BizException {
+        log.debug("从carrier注销入网");
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -101,6 +103,7 @@ public class AuthClient {
      * @return
      */
     public List<LocalDataAuth> getMetaDataAuthorityList(LocalDateTime latestSynced) throws BizException {
+        log.debug("从carrier查询数据授权申请列表，latestSynced：{}", latestSynced);
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -118,6 +121,7 @@ public class AuthClient {
         }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
+        log.debug("从carrier查询数据授权申请列表，数量：{}", response.getListList().size());
         return dataConvertToAuthList(response);
     }
 
@@ -154,6 +158,7 @@ public class AuthClient {
      * @return
      */
     public void auditMetaData(String metaDataAuthId, int auditOption, String auditDesc) throws BizException {
+        log.debug("从carrier审核数据授权申请，metaDataAuthId：{}， auditOption：{}，auditDesc：{}", metaDataAuthId, auditOption, auditDesc);
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
 

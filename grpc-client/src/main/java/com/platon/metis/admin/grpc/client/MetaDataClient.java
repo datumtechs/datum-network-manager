@@ -48,6 +48,7 @@ public class MetaDataClient {
      * @return 上架成功后的元数据ID
      */
     public String publishMetaData(LocalDataFile localDateFile, LocalMetaData localMetaData){
+        log.debug("从carrier发布元数据");
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
 
@@ -117,6 +118,7 @@ public class MetaDataClient {
      * @return 上架成功后的元数据ID
      */
     public void revokeMetaData(String metaDataId){
+        log.debug("从carrier撤消元数据，metaDataId:{}",metaDataId);
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
 
@@ -206,6 +208,8 @@ public class MetaDataClient {
     }
 
     public List<LocalMetaData> getLocalMetaDataList(LocalDateTime latestSynced) {
+
+        log.debug("从carrier查询元数据列表，latestSynced:{}",latestSynced);
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
 
@@ -224,6 +228,8 @@ public class MetaDataClient {
         }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
+
+        log.debug("从carrier查询元数据列表，数量:{}",response.getMetadataListList().size());
 
         List<MetaDataRpcMessage.GetLocalMetadataDetailResponse> metaDataList = response.getMetadataListList();
         return metaDataList.stream().map(localMetaDataDetail -> {

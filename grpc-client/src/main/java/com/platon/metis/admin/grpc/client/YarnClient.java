@@ -136,11 +136,13 @@ public class YarnClient {
      * @return
      */
     public List<LocalDataNode> getLocalDataNodeList() {
+        log.debug("从carrier查询数据节点列表");
+
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
         Empty emptyGetParams = Empty.newBuilder().build();
-        log.debug("调用获取数据节点列表调度服务");
+
         //3.调用rpc,获取response
         YarnRpcMessage.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
 
@@ -150,6 +152,7 @@ public class YarnClient {
         }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
+        log.debug("从carrier查询数据节点列表，数量：{}", response.getNodesList().size());
         return convertToLocalDataNodeList(response.getNodesList());
 
     }
@@ -172,6 +175,9 @@ public class YarnClient {
      * 根据需要上传的文件大小和类型，获取可用的数据节点信息
      */
     public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize, FileTypeEnum fileType){
+
+        log.debug("从carrier查询可用的数据节点");
+
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -196,6 +202,8 @@ public class YarnClient {
         YarnAvailableDataNodeResp node = new YarnAvailableDataNodeResp();
         node.setIp(response.getIp());
         node.setPort(Integer.parseInt(response.getPort()));
+
+        log.debug("从carrier查询可用的数据节点， node:{}", node);
         return node;
 
     }
@@ -204,6 +212,7 @@ public class YarnClient {
      * 查询需要下载的目标原始文件所在的 数据服务信息和文件的完整相对路径
      */
     public YarnQueryFilePositionResp queryFilePosition(String fileId){
+        log.debug("从carrier查询文件路径， fileId:{}", fileId);
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -230,6 +239,8 @@ public class YarnClient {
         resp.setIp(response.getIp());
         resp.setPort(Integer.parseInt(response.getPort()));
         resp.setFilePath(response.getFilePath());
+
+        log.debug("从carrier查询文件路径， fileInfo:{}", resp);
         return resp;
 
     }
@@ -270,7 +281,7 @@ public class YarnClient {
      * @param schedulePort 调度服务端口
      */
     public YarnGetNodeInfoResp getNodeInfo(String scheduleIP,int schedulePort){
-
+        log.debug("从carrier查询调度服务本身状态， ip{}:port{}", scheduleIP,schedulePort);
         //1.获取rpc连接
         ManagedChannel channel = null;
         try{

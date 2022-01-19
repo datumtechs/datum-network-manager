@@ -114,6 +114,9 @@ public class PowerClient {
      * 查询计算服务列表
      */
     public List<LocalPowerNode> getLocalPowerNodeList(){
+
+        log.debug("从carrier查询本组织的计算节点列表");
+
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
         Empty jobNodeListRequest = Empty.newBuilder().build();
@@ -126,6 +129,7 @@ public class PowerClient {
         }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
+        log.debug("从carrier查询本组织的计算节点列表, 数量：{}", response.getNodesList().size());
         return convertToLocalPowerNodeList(response.getNodesList());
     }
 

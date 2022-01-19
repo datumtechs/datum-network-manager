@@ -60,6 +60,8 @@ public class SeedClient {
      * 删除种子节点
      */
     public void deleteSeedNode(String address){
+
+        log.debug("从carrier删除种子节点，address:{}", address);
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
@@ -80,6 +82,7 @@ public class SeedClient {
      * 查询种子服务列表
      */
     public List<LocalSeedNode> getSeedNodeList(){
+        log.debug("从carrier查询种子节点列表");
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
 
@@ -93,7 +96,7 @@ public class SeedClient {
         }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-
+        log.debug("从carrier查询种子节点列表，数量：{}", response.getNodesList().size());
         return convertToLocalSeedNodeList(response.getNodesList());
     }
 

@@ -51,6 +51,8 @@ public class TaskClient {
      */
     public Pair<List<Task>, Map<String, TaskOrg>> getLocalTaskList(LocalDateTime latestSynced) {
 
+        log.debug("从carrier查询本组织参与的任务, latestSynced:{}", latestSynced);
+
         Channel channel = channelManager.getCarrierChannel();
 
         //2.构造 request
@@ -68,6 +70,8 @@ public class TaskClient {
         }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
+        log.debug("从carrier查询本组织参与的任务, 数量:{}", response.getTaskListList().size());
+
         return dataConvertToTaskList(response.getTaskListList());
     }
 
@@ -78,6 +82,8 @@ public class TaskClient {
      * @return
      */
     public List<TaskEvent> getTaskEventListData(List<String> taskIds) {
+
+        log.debug("从carrier批量获取多个任务的全部事件列表, taskIds:{}", taskIds);
 
         Channel channel = channelManager.getCarrierChannel();
 
@@ -92,6 +98,7 @@ public class TaskClient {
         }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
+        log.debug("从carrier批量获取多个任务的全部事件列表, 数量:{}", response.getTaskEventListList().size());
 
         List<TaskEvent> taskEventList = new ArrayList<>();
         //构造taskEvent集合
