@@ -297,7 +297,7 @@
       #{item.createAt,jdbcType=TIMESTAMP}, #{item.startAt,jdbcType=TIMESTAMP}, #{item.authAt,jdbcType=TIMESTAMP},
       #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER},
       #{item.duration,jdbcType=BIGINT}, #{item.costCore,jdbcType=INTEGER}, #{item.costMemory,jdbcType=BIGINT},
-      #{item.costBandwidth,jdbcType=BIGINT}, #{updateAt,jdbcType=TIMESTAMP})
+      #{item.costBandwidth,jdbcType=BIGINT}, #{item.updateAt,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
 
@@ -339,22 +339,23 @@
   <update id="batchUpdate" parameterType="java.util.List" >
     <foreach collection="list" item="item" index="index" open="" close="" separator=";">
       update task
-      set task_Name = #{taskName,jdbcType=VARCHAR},
-      owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
-      owner_party_id = #{ownerPartyId,jdbcType=VARCHAR},
-      apply_user =  #{applyUser,jdbcType=VARCHAR},
-      user_type = #{userType,jdbcType=INTEGER},
-      create_At = #{createAt,jdbcType=TIMESTAMP},
-      start_At = #{startAt,jdbcType=TIMESTAMP},
-      auth_At = #{authAt,jdbcType=TIMESTAMP},
-      auth_Status = #{authStatus,jdbcType=VARCHAR},
-      end_At = #{endAt,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER},
-      duration = #{duration,jdbcType=BIGINT},
-      cost_core = #{costCore,jdbcType=INTEGER},
-      cost_Memory = #{costMemory,jdbcType=BIGINT},
-      cost_Bandwidth = #{costBandwidth,jdbcType=BIGINT},
-      reviewed = #{reviewed,jdbcType=BIT}
+      set task_Name = #{item.taskName,jdbcType=VARCHAR},
+      owner_Identity_id = #{item.ownerIdentityId,jdbcType=VARCHAR},
+      owner_party_id = #{item.ownerPartyId,jdbcType=VARCHAR},
+      apply_user =  #{item.applyUser,jdbcType=VARCHAR},
+      user_type = #{item.userType,jdbcType=INTEGER},
+      create_At = #{item.createAt,jdbcType=TIMESTAMP},
+      start_At = #{item.startAt,jdbcType=TIMESTAMP},
+      auth_At = #{item.authAt,jdbcType=TIMESTAMP},
+      auth_Status = #{item.authStatus,jdbcType=VARCHAR},
+      end_At = #{item.endAt,jdbcType=TIMESTAMP},
+      status = #{item.status,jdbcType=INTEGER},
+      duration = #{item.duration,jdbcType=BIGINT},
+      cost_core = #{item.costCore,jdbcType=INTEGER},
+      cost_Memory = #{item.costMemory,jdbcType=BIGINT},
+      cost_Bandwidth = #{item.costBandwidth,jdbcType=BIGINT},
+      reviewed = #{item.reviewed,jdbcType=BIT},
+      update_at =  #{item.updateAt,jdbcType=TIMESTAMP}
       where task_Id = #{taskId,jdbcType=VARCHAR}
     </foreach>
   </update>
