@@ -4,6 +4,7 @@ import com.platon.metis.admin.dao.LocalDataAuthMapper;
 import com.platon.metis.admin.dao.entity.DataSync;
 import com.platon.metis.admin.dao.entity.LocalDataAuth;
 import com.platon.metis.admin.grpc.client.AuthClient;
+import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.service.DataSyncService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -58,7 +59,7 @@ public class LocalDataAuthReqRefreshTask {
             dataSync.setLatestSynced(localDataAuth.getRecUpdateTime());
             //把最近更新时间update到数据库
             dataSyncService.updateDataSync(dataSync);
-            if(dataAuthList.size()<10){
+            if(dataAuthList.size() < GrpcConstant.PageSize){
                 break;
             }
         }

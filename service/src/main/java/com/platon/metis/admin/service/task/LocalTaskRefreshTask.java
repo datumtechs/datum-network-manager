@@ -2,7 +2,9 @@ package com.platon.metis.admin.service.task;
 
 import com.platon.metis.admin.dao.*;
 import com.platon.metis.admin.dao.entity.*;
+import com.platon.metis.admin.dao.enums.TaskStatusEnum;
 import com.platon.metis.admin.grpc.client.TaskClient;
+import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.service.DataSyncService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -70,8 +72,8 @@ public class LocalTaskRefreshTask {
 
             Map<String, TaskOrg> allTaskOrgMap = resp.getRight();
 
-            //收集本次更新的taskId,用来获取这些task的event列表
-            List<String> taskIdList = new ArrayList<>();
+            //收集本次需要更新的taskId（已经结束的）,用来获取这些task的event列表（正在running的task在列表头部）
+            List<String> endTaskIdList = new ArrayList<>();
 
             List<TaskAlgoProvider> algoProviderList = new ArrayList<>();
             List<TaskDataProvider> dataProviderList = new ArrayList<>();
@@ -83,8 +85,10 @@ public class LocalTaskRefreshTask {
                 dataProviderList.addAll(task.getDataSupplier());
                 powerProviderList.addAll(task.getPowerSupplier());
                 resultReceiverList.addAll(task.getReceivers());
-                taskIdList.add(task.getTaskId());
-            });
+                if(task.getStatus() != null && (TaskStatusEnum.SUCCESS.getValue().intValue() == task.getStatus().intValue() || TaskStatusEnum.FAILED.getValue().intValue() == task.getStatus().intValue())){
+                    endTaskIdList.add(task.getTaskId());
+                }
+              });
 
             //3、批量更新DB
             if (CollectionUtils.isNotEmpty(localTaskList)) {
@@ -107,16 +111,26 @@ public class LocalTaskRefreshTask {
             }
 
             //4、批量TaskEvent获取并更新DB
-            List<TaskEvent> taskEventList = taskClient.getTaskEventListData(taskIdList);
-            if (CollectionUtils.isNotEmpty(taskEventList)) {
-                taskEventMapper.deleteBatch(taskIdList);
-                taskEventMapper.insertBatch(taskEventList);
+            if(endTaskIdList.size()>0){
+                List<TaskEvent> taskEventList = taskClient.getTaskEventListData(endTaskIdList);
+                if (CollectionUtils.isNotEmpty(taskEventList)) {
+                    taskEventMapper.deleteBatch(endTaskIdList);
+                    taskEventMapper.insertBatch(taskEventList);
+                }
             }
 
             Task task = localTaskList.get(localTaskList.size() - 1);
-            dataSync.setLatestSynced(task.getUpdateAt());
-            //把最近更新时间update到数据库
-            dataSyncService.updateDataSync(dataSync);
+
+            //可能返回的列表都是正在running的任务，此时不需要更新LatestSynced
+            if(task.getUpdateAt().isAfter(dataSync.getLatestSynced())){
+                dataSync.setLatestSynced(task.getUpdateAt());
+                //把最近更新时间update到数据库
+                dataSyncService.updateDataSync(dataSync);
+            }
+
+            if(endTaskIdList.size() < GrpcConstant.PageSize){
+                break;
+            }
         }
         log.debug("刷新本组织相关任务详情定时任务结束|||");
     }
