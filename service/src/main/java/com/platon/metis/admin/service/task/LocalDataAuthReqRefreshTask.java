@@ -50,14 +50,14 @@ public class LocalDataAuthReqRefreshTask {
                 break;
             }
 
+            log.debug("本次更新数据授权申请数量：{}", dataAuthList.size());
+
             dataAuthMapper.replaceBatch(dataAuthList);
 
             LocalDataAuth localDataAuth = dataAuthList.get(dataAuthList.size() - 1);
             dataSync.setLatestSynced(localDataAuth.getRecUpdateTime());
             //把最近更新时间update到数据库
             dataSyncService.updateDataSync(dataSync);
-
-            log.debug("本次跟新数据授权申请数量：{}", dataAuthList.size());
             if(dataAuthList.size()<10){
                 break;
             }

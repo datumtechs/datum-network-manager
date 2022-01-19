@@ -60,14 +60,13 @@ public class LocalTaskRefreshTask {
 
             Pair<List<Task>, Map<String, TaskOrg>> resp = taskClient.getLocalTaskList(dataSync.getLatestSynced());
 
-
-
             if (resp == null || CollectionUtils.isEmpty(resp.getLeft())) {
-                log.debug("本次更新任务数量：0");
                 break;
             }
 
+
             List<Task> localTaskList = resp.getLeft();
+            log.debug("本次更新任务数量：{}", localTaskList.size());
 
             Map<String, TaskOrg> allTaskOrgMap = resp.getRight();
 
@@ -118,7 +117,6 @@ public class LocalTaskRefreshTask {
             dataSync.setLatestSynced(task.getUpdateAt());
             //把最近更新时间update到数据库
             dataSyncService.updateDataSync(dataSync);
-            log.debug("本次更新任务数量：{}", localTaskList.size());
         }
         log.debug("刷新本组织相关任务详情定时任务结束|||");
     }

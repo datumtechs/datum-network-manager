@@ -38,6 +38,7 @@ public class SeedNodeRefreshTask {
         //localSeedNodeMapper.deleteNotInitialized();
 
         if(CollectionUtils.isNotEmpty(localSeedNodeList)){
+            log.debug("本次更新种子节点数量：{}", localSeedNodeList.size());
             localSeedNodeMapper.insertBatch(localSeedNodeList);
         }
         log.info("刷新种子节点定时任务结束|||");

@@ -32,11 +32,10 @@ public class LocalDataNodeRefreshTask {
         log.debug("刷新数据节点列表定时任务开始>>>");
 
         List<LocalDataNode> localDataNodeList = yarnClient.getLocalDataNodeList();
-        if(CollectionUtils.isEmpty(localDataNodeList)){
-            return;
+        if(CollectionUtils.isNotEmpty(localDataNodeList)){
+            log.debug("本次更新数据节点状态数量：{}", localDataNodeList.size());
+            localDataNodeMapper.initNewDataNodeBatch(localDataNodeList);
         }
-
-        localDataNodeMapper.initNewDataNodeBatch(localDataNodeList);
 
         log.debug("刷新数据节点列表定时任务结束|||");
     }

@@ -40,6 +40,13 @@ public class TaskClientTest {
         log.info("right:{}",JSON.toJSONString(resp.getRight()));
     }
 
+    @Test
+    public void getTaskListByT(){
+        LocalDateTime lastUpdated = LocalDateTime.parse("1970-01-01 00:00:00",  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Pair<List<Task>, Map<String, TaskOrg>> resp = taskClient.getLocalTaskList(lastUpdated);
+        log.info("left:{}", JSON.toJSONString(resp.getLeft()));
+        log.info("right:{}",JSON.toJSONString(resp.getRight()));
+    }
 
 //    /**
 //     * 启动一个服务

@@ -44,6 +44,8 @@ public class LocalMetaDataStatusRefreshTask {
                 break;
             }
 
+            log.debug("本次更新元数据状态数量：{}", localMetaDataList.size());
+
             localMetaDataMapper.updateStatusByMetaDataIdBatch(localMetaDataList);
 
             LocalMetaData localMetaData = localMetaDataList.get(localMetaDataList.size() - 1);

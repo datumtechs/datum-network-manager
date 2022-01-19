@@ -1,6 +1,5 @@
 package com.platon.metis.admin.service.task;
 
-import com.alibaba.fastjson.JSON;
 import com.platon.metis.admin.dao.LocalPowerJoinTaskMapper;
 import com.platon.metis.admin.dao.LocalPowerNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
@@ -54,10 +53,10 @@ public class LocalPowerNodeRefreshTask {
     // 定时刷新本地算力节点的基本信息，IP、端口，以及和调度服务的连接情况
     private void refreshLocalPowerNodeBasicInfo(){
         List<LocalPowerNode> localPowerNodeList = powerClient.getLocalPowerNodeList();
-        log.debug("localPowerNodeList:{}", JSON.toJSONString(localPowerNodeList));
         if (CollectionUtils.isEmpty(localPowerNodeList)) {
             return;
         }
+        log.debug("本次更新算力节点数量：{}", localPowerNodeList.size());
         localPowerNodeMapper.initNewPowerNodeBatch(localPowerNodeList);
     }
 
@@ -78,7 +77,7 @@ public class LocalPowerNodeRefreshTask {
         // 先清空表数据，如有任务再添加
         List<LocalPowerJoinTask> localPowerJoinTaskList = data.getRight();
         localPowerJoinTaskMapper.truncateTable();
-        log.debug("localPowerNodeList:{}", JSON.toJSONString(localPowerJoinTaskList));
+        log.debug("节点正在执行的任务数量:{}", localPowerJoinTaskList.size());
         if(CollectionUtils.isNotEmpty(localPowerJoinTaskList)) {
             // 每次新增最新的数据
             localPowerJoinTaskMapper.insertBatch(localPowerJoinTaskList);
