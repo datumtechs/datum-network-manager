@@ -289,7 +289,7 @@
     create_At, start_At, auth_At,
     auth_Status, end_At, status,
     duration, cost_core, cost_Memory,
-    cost_Bandwidth)
+    cost_Bandwidth, update_at)
     values
     <foreach collection ="list" item="item" index="index" separator=",">
       (#{item.taskId,jdbcType=VARCHAR}, #{item.taskName,jdbcType=VARCHAR}, #{item.ownerIdentityId,jdbcType=VARCHAR}, #{item.ownerPartyId,jdbcType=VARCHAR},
@@ -297,7 +297,7 @@
       #{item.createAt,jdbcType=TIMESTAMP}, #{item.startAt,jdbcType=TIMESTAMP}, #{item.authAt,jdbcType=TIMESTAMP},
       #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER},
       #{item.duration,jdbcType=BIGINT}, #{item.costCore,jdbcType=INTEGER}, #{item.costMemory,jdbcType=BIGINT},
-      #{item.costBandwidth,jdbcType=BIGINT})
+      #{item.costBandwidth,jdbcType=BIGINT}, #{updateAt,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
 
