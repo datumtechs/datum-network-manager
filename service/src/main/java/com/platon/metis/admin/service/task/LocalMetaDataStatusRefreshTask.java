@@ -4,6 +4,7 @@ import com.platon.metis.admin.dao.LocalMetaDataMapper;
 import com.platon.metis.admin.dao.entity.DataSync;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
 import com.platon.metis.admin.grpc.client.MetaDataClient;
+import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.service.DataSyncService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -53,6 +54,10 @@ public class LocalMetaDataStatusRefreshTask {
 
             //把最近更新时间update到数据库
             dataSyncService.updateDataSync(dataSync);
+
+            if(localMetaDataList.size() < GrpcConstant.PageSize){
+                break;
+            }
         }
         log.debug("刷新本地元数据状态定时任务结束|||");
     }
