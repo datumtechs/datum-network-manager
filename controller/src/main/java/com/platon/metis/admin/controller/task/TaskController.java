@@ -7,7 +7,6 @@ import com.platon.metis.admin.dao.entity.TaskEvent;
 import com.platon.metis.admin.dao.entity.TaskStatistics;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.TaskPageReq;
-import com.platon.metis.admin.dto.resp.TaskDataResp;
 import com.platon.metis.admin.service.TaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +38,7 @@ public class TaskController {
     //根据条件查询组织参与的任务列表
     @ApiOperation(value="条件查询组织参与的任务列表", notes="返回数据的每个task中，包含如下的动态字段：</br>taskSponsor, powerProvider, dataProvider, resultConsumer, algoProvider </br>当这些字段值等于1时表示本组织在任务中的相应角色")
     @PostMapping("/listMyTask")
-    public JsonResponse<TaskDataResp> listMyTask(@Validated @RequestBody TaskPageReq taskPageReq){
+    public JsonResponse<Page<Task>> listMyTask(@Validated @RequestBody TaskPageReq taskPageReq){
         //查询任务列表Data
         Integer statusFilter = taskPageReq.getStatus();
         if (statusFilter == null || statusFilter == 0) {
@@ -82,7 +81,4 @@ public class TaskController {
         List<TaskEvent> taskEventList = taskService.listTaskEventWithOrgName(taskId);
         return JsonResponse.success(taskEventList);
     }
-
-
-
 }
