@@ -79,7 +79,7 @@
         FROM
             local_data_auth AS lda
         WHERE
-            lda.`status` == 0
+            lda.`status` = 0
   </select>
 
 
