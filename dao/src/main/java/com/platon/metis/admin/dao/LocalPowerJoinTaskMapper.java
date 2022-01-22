@@ -20,17 +20,4 @@ public interface LocalPowerJoinTaskMapper {
      */
     int insertBatch(@Param("localPowerJoinTaskList")  List<LocalPowerJoinTask> localPowerJoinTaskList);
 
-    /**
-     * 查询计算节点参数任务列表
-     * @param nodeId
-     * @return
-     */
-    //List<LocalPowerJoinTask> listRunningTaskByPowerNodeId(@Param(value = "nodeId") String nodeId);
-
-    /**
-     * 清空表数据
-     * @return
-     */
-    int truncateTable();
-
 }

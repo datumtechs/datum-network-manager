@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @Data
 @ApiModel(value = "计算节点参与的正在执行的任务")
 public class LocalPowerJoinTask {  //todo: 类名改成localPowerRunningTask
-    @ApiModelProperty(value = "序号ID")
-    private Integer id;
 
     @ApiModelProperty(value = "计算节点ID")
     private String nodeId;

@@ -3,9 +3,8 @@
 <mapper namespace="com.platon.metis.admin.dao.LocalPowerJoinTaskMapper">
 
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerJoinTask">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="node_id" jdbcType="VARCHAR" property="nodeId" />
-    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
+    <id column="node_id" jdbcType="VARCHAR" property="nodeId" />
+    <id column="task_id" jdbcType="VARCHAR" property="taskId" />
     <result column="task_name" jdbcType="VARCHAR" property="taskName" />
     <result column="owner_identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
     <result column="owner_identity_name" jdbcType="VARCHAR" property="ownerIdentityName" />
@@ -22,7 +21,6 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    id,
     node_id,
     task_id,
     task_name,
@@ -51,8 +49,8 @@
     order by task_start_time desc
   </select>-->
 
-
   <insert id="insertBatch">
+    <foreach collection ="localPowerJoinTaskList" item="item" separator =",">
     insert into local_power_join_task (
     node_id,
     task_id,
@@ -67,28 +65,32 @@
     used_memory,
     used_core,
     used_bandwidth)
-    values
-    <foreach collection ="localPowerJoinTaskList" item="item" separator =",">
-      (#{item.nodeId, jdbcType=VARCHAR},
-       #{item.taskId, jdbcType=VARCHAR},
-       #{item.taskName, jdbcType=VARCHAR},
-       #{item.ownerIdentityId, jdbcType=VARCHAR},
-       #{item.ownerIdentityName, jdbcType=VARCHAR},
-       #{item.taskStartTime, jdbcType=TIMESTAMP},
+    values ( #{item.nodeId, jdbcType=VARCHAR},
+      #{item.taskId, jdbcType=VARCHAR},
+      #{item.taskName, jdbcType=VARCHAR},
+      #{item.ownerIdentityId, jdbcType=VARCHAR},
+      #{item.ownerIdentityName, jdbcType=VARCHAR},
+      #{item.taskStartTime, jdbcType=TIMESTAMP},
       #{item.resultSideId, jdbcType=VARCHAR},
       #{item.resultSideName, jdbcType=VARCHAR},
       #{item.coordinateSideId, jdbcType=VARCHAR},
       #{item.coordinateSideName, jdbcType=VARCHAR},
       #{item.usedMemory, jdbcType=BIGINT},
       #{item.usedCore, jdbcType=INTEGER},
-      #{item.usedBandwidth, jdbcType=BIGINT}
-       )
+      #{item.usedBandwidth, jdbcType=BIGINT})
+      ON DUPLICATE KEY
+      UPDATE task_name = #{item.taskName, jdbcType=VARCHAR},
+      owner_identity_id =  #{item.ownerIdentityId, jdbcType=VARCHAR},
+      owner_identity_name =  #{item.ownerIdentityName, jdbcType=VARCHAR},
+      task_start_time =  #{item.taskStartTime, jdbcType=TIMESTAMP},
+      result_side_id =  #{item.resultSideId, jdbcType=VARCHAR},
+      result_side_name = #{item.resultSideName, jdbcType=VARCHAR},
+      coordinate_side_id = #{item.coordinateSideId, jdbcType=VARCHAR},
+      coordinate_side_name =  #{item.coordinateSideName, jdbcType=VARCHAR},
+      used_memory = #{item.usedMemory, jdbcType=BIGINT},
+      used_core = #{item.usedCore, jdbcType=INTEGER},
+      used_bandwidth = #{item.usedBandwidth, jdbcType=BIGINT}
     </foreach>
   </insert>
-
-  <!-- 清空表数据-->
-  <update id="truncateTable">
-    truncate table local_power_join_task
-  </update>
 
 </mapper>

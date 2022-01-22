@@ -252,7 +252,6 @@ CREATE TABLE `local_org` (
 -- ----------------------------
 DROP TABLE IF EXISTS `local_power_join_task`;
 CREATE TABLE `local_power_join_task` (
-  `id` INT NOT NULL AUTO_INCREMENT COMMENT '序号',
   `node_id` varchar(256) DEFAULT NULL COMMENT '计算节点ID',
   `task_id` varchar(256) DEFAULT NULL COMMENT '任务id',
   `task_name` varchar(100) DEFAULT NULL COMMENT '任务名称',
@@ -268,8 +267,7 @@ CREATE TABLE `local_power_join_task` (
   `used_bandwidth` BIGINT DEFAULT '0' COMMENT '使用的带宽, bps（占此节点总算力比）',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  PRIMARY KEY (`id`),
-  KEY `power_node_id` (`power_node_id`)
+  PRIMARY KEY (`node_id`, `task_id`)
 ) COMMENT='计算节点参与任务信息';
 
 -- ----------------------------

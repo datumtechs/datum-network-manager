@@ -76,7 +76,7 @@ public class LocalPowerNodeRefreshTask {
         // 新增计算节点参与的任务列表
         // 先清空表数据，如有任务再添加
         List<LocalPowerJoinTask> localPowerJoinTaskList = data.getRight();
-        localPowerJoinTaskMapper.truncateTable();
+
         log.debug("节点正在执行的任务数量:{}", localPowerJoinTaskList.size());
         if(CollectionUtils.isNotEmpty(localPowerJoinTaskList)) {
             // 每次新增最新的数据
