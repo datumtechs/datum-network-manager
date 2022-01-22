@@ -39,5 +39,5 @@ public interface TaskMapper {
 
     Integer replaceBatch(List<Task> taskList);
 
-    List<Task> listRunningTaskByPowerNodeId(@Param("powerNodeId") String powerNodeId);
+    List<Task> listRunningTaskByPowerNodeId(@Param("nodeId") String nodeId);
 }

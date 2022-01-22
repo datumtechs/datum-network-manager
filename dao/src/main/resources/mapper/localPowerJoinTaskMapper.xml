@@ -4,7 +4,7 @@
 
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerJoinTask">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="node_id" jdbcType="VARCHAR" property="powerNodeId" />
+    <result column="node_id" jdbcType="VARCHAR" property="nodeId" />
     <result column="task_id" jdbcType="VARCHAR" property="taskId" />
     <result column="task_name" jdbcType="VARCHAR" property="taskName" />
     <result column="owner_identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
@@ -69,7 +69,7 @@
     used_bandwidth)
     values
     <foreach collection ="localPowerJoinTaskList" item="item" separator =",">
-      (#{item.powerNodeId, jdbcType=VARCHAR},
+      (#{item.nodeId, jdbcType=VARCHAR},
        #{item.taskId, jdbcType=VARCHAR},
        #{item.taskName, jdbcType=VARCHAR},
        #{item.ownerIdentityId, jdbcType=VARCHAR},

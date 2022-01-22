@@ -22,10 +22,10 @@ public interface LocalPowerJoinTaskMapper {
 
     /**
      * 查询计算节点参数任务列表
-     * @param powerNodeId
+     * @param nodeId
      * @return
      */
-    //List<LocalPowerJoinTask> listRunningTaskByPowerNodeId(@Param(value = "powerNodeId") String powerNodeId);
+    //List<LocalPowerJoinTask> listRunningTaskByPowerNodeId(@Param(value = "nodeId") String nodeId);
 
     /**
      * 清空表数据

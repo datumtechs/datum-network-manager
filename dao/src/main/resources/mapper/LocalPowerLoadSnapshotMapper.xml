@@ -3,8 +3,8 @@
 <mapper namespace="com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper">
 
     <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot">
-        <id column="node_id" jdbcType="VARCHAR" property="powerNodeId" />
-        <id column="snapshot_time" jdbcType="TIMESTAMP" property="snapshotTime" />
+        <id column="node_id" jdbcType="VARCHAR" property="nodeId" />
+        <result column="snapshot_time" jdbcType="TIMESTAMP" property="snapshotTime" />
         <result column="used_core" jdbcType="INTEGER" property="usedCore" />
         <result column="used_memory" jdbcType="BIGINT" property="usedMemory" />
         <result column="used_bandwidth" jdbcType="BIGINT" property="usedBandwidth" />
