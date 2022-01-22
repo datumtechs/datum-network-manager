@@ -207,6 +207,11 @@ public class MetaDataClient {
         return globalDataFileList;
     }
 
+    /**
+     * 这个只会从数据中心同步已经发布的元数据
+     * @param latestSynced
+     * @return
+     */
     public List<LocalMetaData> getLocalMetaDataList(LocalDateTime latestSynced) {
 
         log.debug("从carrier查询元数据列表，latestSynced:{}",latestSynced);

@@ -27,4 +27,10 @@ public interface LocalDataAuthMapper {
 
     int updateByPrimaryKey(LocalDataAuth record);
 
+    /**
+     * 将过期的授权申请设置为拒绝
+     * @return
+     */
+    int updateExpireAuthData();
+
 }

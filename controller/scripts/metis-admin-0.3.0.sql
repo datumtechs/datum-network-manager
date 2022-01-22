@@ -181,7 +181,7 @@ CREATE TABLE `local_data_auth` (
   `auth_value_end_at` datetime DEFAULT NULL COMMENT '授权值结束时间，auth_type = 1使用此字段',
   `create_at` datetime(3) DEFAULT NULL COMMENT '授权申请发起时间',
   `auth_at` datetime(3) DEFAULT NULL COMMENT '授权数据时间',
-  `status` int(4) DEFAULT '0' COMMENT '授权数据状态：0：等待授权审核，1:同意， 2:拒绝 ',
+  `status` int(4) DEFAULT '0' COMMENT '授权数据状态：0：等待授权审核，1:同意， 2:拒绝，3:失效(auth_type=1且auth_value_end_at超时) ',
   `identity_name` varchar(256) DEFAULT NULL COMMENT '元数据所属的组织信息，组织名称',
   `identity_id` varchar(256) DEFAULT NULL COMMENT '元数据所属的组织信息,组织的身份标识Id',
   `identity_node_id` varchar(256) DEFAULT NULL COMMENT '组织中调度服务的 nodeId',

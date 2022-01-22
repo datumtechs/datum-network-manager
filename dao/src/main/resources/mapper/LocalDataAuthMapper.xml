@@ -48,7 +48,7 @@
            and lda.status = 0
          </if>
          <if test="status != null and status == 2">
-           and lda.status in (1,2)
+           and lda.status != 0
          </if>
          <if test="keyword != null and keyword != ''">
            and (lma.meta_data_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
@@ -69,7 +69,7 @@
         FROM
             local_data_auth AS lda
         WHERE
-            lda.`status` IN (1, 2)
+            lda.`status` !=0
   </select>
 
 
@@ -79,22 +79,7 @@
         FROM
             local_data_auth AS lda
         WHERE
-            lda.`status` IN (0)
-  </select>
-
-  <select id="selectDataAuthByStatusWithAuthFinish" resultType="java.lang.String">
-    SELECT
-       lda.auth_id
-    FROM
-       local_data_auth AS lda
-    WHERE
-       lda.`status` = 2
-    OR (
-        lda.auth_type = 1
-        AND lda.`status` = 1
-        AND UNIX_TIMESTAMP(lda.auth_value_start_at) <![CDATA[<= ]]> UNIX_TIMESTAMP(NOW())
-        AND UNIX_TIMESTAMP(lda.auth_value_end_at) <![CDATA[>= ]]> UNIX_TIMESTAMP(NOW())
-    )
+            lda.`status` == 0
   </select>
 
 
@@ -221,5 +206,11 @@
       rec_create_time = #{recCreateTime,jdbcType=TIMESTAMP},
       rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP}
     where auth_id = #{authId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateExpireAuthData">
+    update local_data_auth
+    set status = 3, auth_at = current_timestamp()
+    where auth_type = 1 and status = 0 and auth_value_end_at &lt; current_timestamp();
   </update>
 </mapper>

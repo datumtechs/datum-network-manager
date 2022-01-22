@@ -39,7 +39,10 @@ public class LocalDataAuthReqRefreshTask {
     @Transactional
     @Scheduled(fixedDelayString = "${LocalDataAuthReqRefreshTask.fixedDelay}")
     public void task() {
-        log.debug("刷新数据授权申请定时任务开始>>>");
+        log.debug("刷新数据授权申请(查询过期申请)定时任务开始>>>");
+
+        dataAuthMapper.updateExpireAuthData();
+
         while(true) {
             DataSync dataSync = dataSyncService.findDataSync(DataSync.DataType.DataAuthReq);
 
@@ -63,6 +66,6 @@ public class LocalDataAuthReqRefreshTask {
                 break;
             }
         }
-        log.debug("刷新数据授权申请定时任务结束|||");
+        log.debug("刷新数据授权申请(查询过期申请)定时任务结束|||");
     }
 }
