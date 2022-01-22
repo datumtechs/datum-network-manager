@@ -1,7 +1,6 @@
 package com.platon.metis.admin.dao.entity;
 
 import com.platon.metis.admin.dao.BaseDomain;
-import com.platon.metis.admin.dao.enums.DataAuthStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,10 +29,7 @@ public class LocalDataAuth extends BaseDomain {
     private LocalDateTime createAt;
     //授权数据时间
     private LocalDateTime authAt;
-    /**
-     * 授权数据状态：0：等待授权审核，1:同意， 2:拒绝
-     * {@link DataAuthStatusEnum}
-     */
+    //授权数据状态：0：等待授权审核，1:同意， 2:拒绝
     private Integer status;
     //元数据所属的组织信息，组织名称
     private String identityName;
