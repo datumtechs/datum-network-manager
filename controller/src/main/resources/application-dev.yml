@@ -70,6 +70,7 @@ logging:
       # max-history: 20
 
 # =============================== conf for scheduled task ===================================
+ExpireDataAuthRefreshTask.fixedDelay:2000
 DataAuthRefreshTask.fixedDelay: 20000
 DataNodeRefreshTask.fixedDelay: 2000
 GlobalDataRefreshTask.fixedDelay: 10000

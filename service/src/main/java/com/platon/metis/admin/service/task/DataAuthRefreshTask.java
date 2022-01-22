@@ -53,20 +53,28 @@ public class DataAuthRefreshTask {
             } else {
                 log.debug("新增数据授权申请：0");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("定时获取元数据授权申请出错", e);
         }
         log.debug("定时获取元数据授权申请结束...");
     }
 
 
-
-
-
-
-
-
-
+    /**
+     * 刷新过期数据
+     */
+    @Scheduled(fixedDelayString = "${ExpireDataAuthRefreshTask.fixedDelay}")
+    public void refreshExpireDataTask() {
+        log.debug("定时刷新元数据授权申请过期数据...");
+        //数据中心同步来的data_auth信息
+        try {
+            int i = dataAuthMapper.updateExpireAuthData();
+            log.info("定时刷新元数据授权申请过期数据条数：" + i);
+        } catch (Exception e) {
+            log.error("定时刷新元数据授权申请过期数据出错", e);
+        }
+        log.debug("定时刷新元数据授权申请过期数据结束...");
+    }
 
 
 }
