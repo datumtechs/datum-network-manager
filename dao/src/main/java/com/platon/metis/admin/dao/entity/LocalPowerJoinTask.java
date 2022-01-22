@@ -18,7 +18,7 @@ public class LocalPowerJoinTask {  //todo: 类名改成localPowerRunningTask
     private Integer id;
 
     @ApiModelProperty(value = "计算节点ID")
-    private String powerNodeId;
+    private String nodeId;
 
     @ApiModelProperty(value = "任务ID")
     private String taskId;

@@ -3,7 +3,7 @@
 <mapper namespace="com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper">
 
     <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot">
-        <id column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
+        <id column="node_id" jdbcType="VARCHAR" property="powerNodeId" />
         <id column="snapshot_time" jdbcType="TIMESTAMP" property="snapshotTime" />
         <result column="used_core" jdbcType="INTEGER" property="usedCore" />
         <result column="used_memory" jdbcType="BIGINT" property="usedMemory" />
@@ -46,7 +46,7 @@
         LEFT JOIN (
             SELECT snapshot_time, used_core, used_memory, used_bandwidth
             FROM local_power_load_snapshot
-            WHERE power_node_id = #{nodeId, jdbcType=VARCHAR}
+            WHERE node_id = #{nodeId, jdbcType=VARCHAR}
         ) d ON t.snapshot_time = d.snapshot_time
         ORDER BY t.snapshot_time
     </select>

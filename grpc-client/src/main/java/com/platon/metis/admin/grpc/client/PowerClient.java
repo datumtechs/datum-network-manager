@@ -236,7 +236,7 @@ public class PowerClient {
             List<Resourcedata.PowerTask> powerTaskList = powerUsageDetail.getTasksList();
             localPowerJoinTaskList.addAll(powerTaskList.parallelStream().map(powerTask->{
                 LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
-                localPowerJoinTask.setPowerNodeId(item.getJobNodeId());
+                localPowerJoinTask.setNodeId(item.getJobNodeId());
                 localPowerJoinTask.setTaskId(powerTask.getTaskId());
                 localPowerJoinTask.setTaskName(powerTask.getTaskName());
                 localPowerJoinTask.setOwnerIdentityId(powerTask.getOwner().getIdentityId());

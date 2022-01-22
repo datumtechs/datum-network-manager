@@ -4,7 +4,7 @@
 
   <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerJoinTask">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="power_node_id" jdbcType="VARCHAR" property="powerNodeId" />
+    <result column="node_id" jdbcType="VARCHAR" property="powerNodeId" />
     <result column="task_id" jdbcType="VARCHAR" property="taskId" />
     <result column="task_name" jdbcType="VARCHAR" property="taskName" />
     <result column="owner_identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
@@ -23,7 +23,7 @@
 
   <sql id="Base_Column_List">
     id,
-    power_node_id,
+    node_id,
     task_id,
     task_name,
     owner_identity_id,
@@ -47,14 +47,14 @@
     from
         local_power_join_task
     where
-        power_node_id = #{powerNodeId, jdbcType=VARCHAR}
+        node_id = #{powerNodeId, jdbcType=VARCHAR}
     order by task_start_time desc
   </select>-->
 
 
   <insert id="insertBatch">
     insert into local_power_join_task (
-    power_node_id,
+    node_id,
     task_id,
     task_name,
     owner_identity_id,
