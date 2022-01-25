@@ -465,7 +465,7 @@ INSERT INTO data_sync(data_type, latest_synced) VALUES('local_task', '1970-01-01
 
 
 -- 创建全网元数据月统计视图
-CREATE OR REPLACE VIEW v_global_data_file_stats_monthly as
+/*CREATE OR REPLACE VIEW v_global_data_file_stats_monthly as
 SELECT a.stats_time, a.month_size, SUM(b.month_size) AS accu_size
 FROM (
     SELECT DATE_FORMAT(gdf.publish_time, '%Y-%m')  as stats_time, sum(gdf.size) as month_size
@@ -483,10 +483,10 @@ JOIN (
 ) b
 ON a.stats_time >= b.stats_time
 GROUP BY a.stats_time
-ORDER BY a.stats_time;
+ORDER BY a.stats_time;*/
 
 -- 创建全网元数据日统计视图
-CREATE OR REPLACE VIEW v_global_data_file_stats_daily as
+/*CREATE OR REPLACE VIEW v_global_data_file_stats_daily as
 SELECT a.stats_time, a.day_size, SUM(b.day_size) AS accu_size
 FROM (
     SELECT DATE(gdf.publish_time) as stats_time, sum(gdf.size) as day_size
@@ -504,10 +504,10 @@ JOIN (
 ) b
 ON a.stats_time >= b.stats_time
 GROUP BY a.stats_time
-ORDER BY a.stats_time;
+ORDER BY a.stats_time;*/
 
 -- 创建全网算力月统计视图
-CREATE OR REPLACE VIEW v_global_power_stats_monthly as
+/*CREATE OR REPLACE VIEW v_global_power_stats_monthly as
 SELECT a.stats_time, a.month_core, a.month_memory, a.month_bandwidth, SUM(b.month_core) AS accu_core, SUM(b.month_memory) AS accu_memory, SUM(b.month_bandwidth) AS accu_bandwidth
 FROM (
     SELECT DATE_FORMAT(gp.publish_at, '%Y-%m')  as stats_time, sum(gp.core) as month_core, sum(gp.memory) as month_memory, sum(gp.bandwidth) as month_bandwidth
@@ -525,11 +525,11 @@ JOIN (
 ) b
 ON a.stats_time >= b.stats_time
 GROUP BY a.stats_time
-ORDER BY a.stats_time;
+ORDER BY a.stats_time;*/
 
 
 -- 创建全网算力日统计视图
-CREATE OR REPLACE VIEW v_global_power_stats_daily as
+/*CREATE OR REPLACE VIEW v_global_power_stats_daily as
 SELECT a.stats_time, a.day_core, a.day_memory, a.day_bandwidth, SUM(b.day_core) AS accu_core, SUM(b.day_memory) AS accu_memory, SUM(b.day_bandwidth) AS accu_bandwidth
 FROM (
     SELECT DATE(gp.publish_at)  as stats_time, sum(gp.core) as day_core, sum(gp.memory) as day_memory, sum(gp.bandwidth) as day_bandwidth
@@ -547,7 +547,7 @@ JOIN (
 ) b
 ON a.stats_time >= b.stats_time
 GROUP BY a.stats_time
-ORDER BY a.stats_time;
+ORDER BY a.stats_time;*/
 
 -- 本地统计
 
