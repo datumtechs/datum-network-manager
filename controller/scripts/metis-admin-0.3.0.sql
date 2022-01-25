@@ -598,7 +598,7 @@ ORDER BY a.stats_time;
 DELIMITER $$
 drop event if EXISTS local_power_load_snapshot_event $$
 CREATE EVENT local_power_load_snapshot_event
-	ON SCHEDULE EVERY 1 hour STARTS now()
+	ON SCHEDULE EVERY 1 hour STARTS '2021-01-20 00:00:00'
 	ON COMPLETION PRESERVE
 	DO
 BEGIN
