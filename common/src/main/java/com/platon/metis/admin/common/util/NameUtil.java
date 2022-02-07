@@ -28,6 +28,6 @@ public class NameUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(isValidName("a.3+d-a_ta@d13#4"));
+        System.out.println(isValidName(" breast_cancel_train_副本"));
     }
 }

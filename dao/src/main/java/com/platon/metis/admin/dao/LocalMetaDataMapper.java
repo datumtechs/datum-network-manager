@@ -21,7 +21,7 @@ public interface LocalMetaDataMapper {
 
     LocalMetaData selectByMetaDataId(String metaDataId);
 
-    LocalMetaData checkResourceName(@Param("resourceName") String resourceName, @Param("fileId") String fileId);
+    LocalMetaData checkResourceName(@Param("resourceName") String resourceName);
 
     int updateByPrimaryKey(LocalMetaData record);
 

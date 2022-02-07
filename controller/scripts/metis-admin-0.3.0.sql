@@ -137,7 +137,7 @@ CREATE TABLE `local_meta_data` (
   `file_id` varchar(256) NOT NULL COMMENT '文件ID',
   `meta_data_id` varchar(256) DEFAULT NULL COMMENT '元数据ID,hash',
   `meta_data_name` varchar(100) NOT NULL COMMENT '元数据名称',
-  `status` INT NOT NULL DEFAULT 0 COMMENT '元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)',
+  `status` INT NOT NULL DEFAULT 0 COMMENT '元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表; 4：删除的)',
   `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
   `remarks` varchar(100) DEFAULT '' COMMENT '元数据描述',
   `industry` int(4) DEFAULT NULL COMMENT '所属行业 1：金融业（银行）、2：金融业（保险）、3：金融业（证券）、4：金融业（其他）、5：ICT、 6：制造业、 7：能源业、 8：交通运输业、 9 ：医疗健康业、 10 ：公共服务业、 11：传媒广告业、 12 ：其他行业',

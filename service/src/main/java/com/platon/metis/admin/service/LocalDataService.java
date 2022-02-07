@@ -73,5 +73,5 @@ public interface LocalDataService {
      * @param resourceName
      * @return
      */
-    boolean isExistResourceName(String resourceName, String fileId);
+    boolean isExistResourceName(String resourceName);
 }

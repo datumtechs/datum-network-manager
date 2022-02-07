@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -31,6 +33,16 @@ public class LocalDataControllerTest {
         req.setPageNumber(1);
         req.setPageSize(10);
         ResponseEntity<String> entity  = restTemplate.postForEntity("/api/v1/data/listTaskByMetaDataId", req, String.class);
+        System.out.println(entity.getStatusCode());
+        System.out.println(entity.getBody());
+    }
+
+    @Test
+    public void checkResourceName(){
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("resourceName", "151保险训练中数据集A");
+
+        ResponseEntity<String> entity  = restTemplate.postForEntity("/api/v1/data/checkResourceName", map, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }

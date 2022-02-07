@@ -243,8 +243,8 @@ public class LocalDataServiceImpl implements LocalDataService {
     }
 
     @Override
-    public boolean isExistResourceName(String resourceName, String fileId) {
-        LocalMetaData localMetaData = localMetaDataMapper.checkResourceName(resourceName,fileId);
+    public boolean isExistResourceName(String resourceName) {
+        LocalMetaData localMetaData = localMetaDataMapper.checkResourceName(resourceName);
         return localMetaData != null ? true : false;
     }
 

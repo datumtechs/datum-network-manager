@@ -6,7 +6,6 @@ import com.platon.metis.admin.common.exception.MetadataResourceNameExists;
 import com.platon.metis.admin.common.exception.MetadataResourceNameIllegal;
 import com.platon.metis.admin.common.exception.ObjectNotFound;
 import com.platon.metis.admin.common.util.NameUtil;
-import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.LocalDataFileColumnMapper;
 import com.platon.metis.admin.dao.LocalDataFileMapper;
 import com.platon.metis.admin.dao.LocalMetaDataColumnMapper;
@@ -21,7 +20,6 @@ import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.metis.admin.dto.CommonPageReq;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.*;
-import com.platon.metis.admin.dto.resp.LocalDataCheckResourceNameResp;
 import com.platon.metis.admin.dto.resp.LocalDataDetailResp;
 import com.platon.metis.admin.dto.resp.LocalDataImportFileResp;
 import com.platon.metis.admin.service.LocalDataService;
@@ -144,7 +142,7 @@ public class LocalDataController {
             throw new MetadataResourceNameIllegal();
         }
         //判断是否重复
-        boolean exist = localDataService.isExistResourceName(req.getResourceName(),req.getFileId());
+        boolean exist = localDataService.isExistResourceName(req.getResourceName());
         if(exist){
             log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
             throw new MetadataResourceNameExists();
@@ -249,13 +247,13 @@ public class LocalDataController {
     public JsonResponse localMetaDataOp(@RequestBody @Validated LocalDataActionReq req){
         String action = req.getAction();
         switch (action){
-            case "-1"://删除
+            case "-1"://删除，软删除，status=4
                 localDataService.delete(req.getId());
                 break;
-            case "0"://下架
+            case "0"://下架，status=3
                 localDataService.down(req.getId());
                 break;
-            case "1"://上架
+            case "1"://上架，status=2
                 localDataService.up(req.getId());
                 break;
             default:
@@ -280,24 +278,21 @@ public class LocalDataController {
     /**
      * 校验文件名称是否合法
      */
-    @ApiOperation(value = "校验元数据资源名称是否合法")
+    @ApiOperation(value = "校验元数据名称是否合法")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "resourceName",value = "元数据资源名称",required = true,paramType = "query",example = "filename"),
-            @ApiImplicitParam(name = "fileId",value = "上传数据文件后产生的唯一文件Id",required = true,paramType = "query",example = "1"),
+            @ApiImplicitParam(name = "resourceName",value = "元数据名称",required = true,paramType = "query",example = "filename"),
     })
     @PostMapping("checkResourceName")
-    public JsonResponse<LocalDataCheckResourceNameResp> checkResourceName(String resourceName, String fileId){
-        LocalDataCheckResourceNameResp resp = new LocalDataCheckResourceNameResp();
+    public JsonResponse checkResourceName(String resourceName){
         //判断格式是否对
         if(!NameUtil.isValidName(resourceName)){
-            return JsonResponse.success(resp);
+            return JsonResponse.fail(new MetadataResourceNameIllegal());
         }
         //判断是否重复
-        boolean exist = localDataService.isExistResourceName(resourceName, fileId);
+        boolean exist = localDataService.isExistResourceName(resourceName);
         if(exist){
-            return JsonResponse.success(resp);
+            return JsonResponse.fail(new MetadataResourceNameExists());
         }
-        resp.setStatus(ControllerConstants.STATUS_AVAILABLE);
-        return JsonResponse.success(resp);
+        return JsonResponse.success();
     }
 }
