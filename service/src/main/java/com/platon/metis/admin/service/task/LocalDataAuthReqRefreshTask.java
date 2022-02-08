@@ -13,6 +13,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -58,7 +61,10 @@ public class LocalDataAuthReqRefreshTask {
 
             dataAuthMapper.replaceBatch(dataAuthList);
 
-            LocalDataAuth localDataAuth = dataAuthList.get(dataAuthList.size() - 1);
+            LocalDataAuth localDataAuth = dataAuthList.stream()
+                    .sorted(Comparator.comparing(LocalDataAuth::getRecUpdateTime).reversed())
+                    .findFirst()
+                    .get();
             dataSync.setLatestSynced(localDataAuth.getRecUpdateTime());
             //把最近更新时间update到数据库
             dataSyncService.updateDataSync(dataSync);
