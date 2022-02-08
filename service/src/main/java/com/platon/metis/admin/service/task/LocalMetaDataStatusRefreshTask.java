@@ -2,6 +2,7 @@ package com.platon.metis.admin.service.task;
 
 import com.platon.metis.admin.dao.LocalMetaDataMapper;
 import com.platon.metis.admin.dao.entity.DataSync;
+import com.platon.metis.admin.dao.entity.LocalDataAuth;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
 import com.platon.metis.admin.grpc.client.MetaDataClient;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -49,7 +51,10 @@ public class LocalMetaDataStatusRefreshTask {
 
             localMetaDataMapper.updateStatusByMetaDataIdBatch(localMetaDataList);
 
-            LocalMetaData localMetaData = localMetaDataList.get(localMetaDataList.size() - 1);
+            LocalMetaData localMetaData = localMetaDataList.stream()
+                    .sorted(Comparator.comparing(LocalMetaData::getRecUpdateTime).reversed())
+                    .findFirst()
+                    .get();
             dataSync.setLatestSynced(localMetaData.getRecUpdateTime());
 
             //把最近更新时间update到数据库

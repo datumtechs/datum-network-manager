@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -119,7 +120,10 @@ public class LocalTaskRefreshTask {
                 }
             }
 
-            Task task = localTaskList.get(localTaskList.size() - 1);
+            Task task = localTaskList.stream()
+                    .sorted(Comparator.comparing(Task::getUpdateAt).reversed())
+                    .findFirst()
+                    .get();
 
             //可能返回的列表都是正在running的任务，此时不需要更新LatestSynced
             if(task.getUpdateAt().isAfter(dataSync.getLatestSynced())){
