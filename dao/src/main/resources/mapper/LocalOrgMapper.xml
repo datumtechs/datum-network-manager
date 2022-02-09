@@ -48,7 +48,7 @@
 
   <select id="select" resultMap="BaseResultMap_runningTask">
     select o.*, t.running_task
-    from local_org o, (SELECT COUNT(id) as running_task FROM task WHERE `status` = 2) t
+    from local_org o, (SELECT COUNT(id) as running_task FROM task WHERE `status` = 1 or `status` = 2) t
   </select>
 
 
