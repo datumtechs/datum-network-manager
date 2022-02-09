@@ -9,6 +9,7 @@ import com.platon.metis.admin.dto.req.UpdateLocalOrgReq;
 import com.platon.metis.admin.dto.req.UserApplyOrgIdentityReq;
 import com.platon.metis.admin.dto.req.UserLoginReq;
 import com.platon.metis.admin.dto.resp.LoginResp;
+import com.platon.metis.admin.enums.ResponseCodeEnum;
 import com.platon.metis.admin.service.LocalOrgService;
 import com.platon.metis.admin.service.UserService;
 import io.swagger.annotations.Api;
@@ -158,15 +159,14 @@ public class UserController {
     @PostMapping("/updateLocalOrg")
     public JsonResponse<String> updateLocalOrg(@RequestBody UpdateLocalOrgReq req){
         LocalOrg localOrg = LocalOrgCache.getLocalOrgInfo();
-        if(StringUtils.isNotBlank(req.getName())){
-            localOrg.setName(req.getName());
+        //只有退网之后才能修改组织名称
+        if(!localOrg.getName().equals(req.getName())
+                && localOrg.getStatus() != LocalOrg.Status.LEFT_NET.getCode()){
+            return JsonResponse.fail(ResponseCodeEnum.FAIL,"组织未退网，不能修改组织名称");
         }
-        if(StringUtils.isNotBlank(req.getImageUrl())){
-            localOrg.setImageUrl(req.getImageUrl());
-        }
-        if(StringUtils.isNotBlank(req.getProfile())){
-            localOrg.setProfile(req.getProfile());
-        }
+        localOrg.setName(req.getName());
+        localOrg.setImageUrl(req.getImageUrl());
+        localOrg.setProfile(req.getProfile());
 
         localOrgService.updateLocalOrg(localOrg);
          return JsonResponse.success();
