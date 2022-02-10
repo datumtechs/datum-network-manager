@@ -7,7 +7,7 @@ spring:
   servlet:
     multipart:
       file-size-threshold: 1099511627776
-      max-file-size: 1099511627776
+      max-file-size: 1MB
       max-request-size: 1099511627776
   mvc:
     pathmatch:
