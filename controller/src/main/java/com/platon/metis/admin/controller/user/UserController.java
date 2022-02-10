@@ -49,41 +49,42 @@ public class UserController {
 
     /**
      * 登陆接口，用于登陆系统，获取会话
+     *
      * @param request
      * @param req
      * @return
      */
     @ApiOperation(value = "登陆")
     @PostMapping("/login")
-    public JsonResponse<LoginResp> login(HttpServletRequest request,@Validated @RequestBody UserLoginReq req){
+    public JsonResponse<LoginResp> login(HttpServletRequest request, @Validated @RequestBody UserLoginReq req) {
         HttpSession session = request.getSession(true);
         //校验验证码
-        String codeInSession = (String)session.getAttribute(ControllerConstants.VERIFICATION_CODE);
+        String codeInSession = (String) session.getAttribute(ControllerConstants.VERIFICATION_CODE);
         //TODO 现阶段可以不传验证码，如果传了，则必须传对的，否则报错
-        if(!checkVerificationCode(codeInSession,req.getCode())){
+        if (!checkVerificationCode(codeInSession, req.getCode())) {
             throw new VerificationCodeError();
         }
         //登录校验 TODO 密码进行加盐+hash操作
-        String userId = userService.login(req.getUserName(),req.getPasswd());
+        String userId = userService.login(req.getUserName(), req.getPasswd());
 
-        if(StringUtils.isNotBlank(userId)){
-            session.setAttribute(ControllerConstants.USER_ID,userId);//将登录信息存入session中
+        if (StringUtils.isNotBlank(userId)) {
+            session.setAttribute(ControllerConstants.USER_ID, userId);//将登录信息存入session中
         }
 
         LoginResp resp = new LoginResp();
         resp.setUserId(userId);
 
         LocalOrg localOrg = localOrgService.getLocalOrg();
-        if(localOrg==null){
+        if (localOrg == null) {
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
             resp.setConnectNetworkStatus(LocalOrg.Status.NOT_CONNECT_NET.getCode());
-        }else{
+        } else {
             resp.setConnectNetworkStatus(localOrg.getStatus());
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.DONE.getLevel());
-            if (StringUtils.isBlank(localOrg.getIdentityId())){
+            if (StringUtils.isBlank(localOrg.getIdentityId())) {
                 resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
                 //resp.setConnectNetworkStatus(LocalOrg.Status.NOT_CONNECT_NET.getCode());
-            }else if(StringUtils.isBlank(localOrg.getImageUrl()) || StringUtils.isBlank(localOrg.getProfile())) {
+            } else if (StringUtils.isBlank(localOrg.getImageUrl()) || StringUtils.isBlank(localOrg.getProfile())) {
                 resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_PROFILE.getLevel());
             }
         }
@@ -94,12 +95,13 @@ public class UserController {
 
     /**
      * 校验验证码
+     *
      * @param codeInSession 之前请求验证码接口后存在session中的验证码
-     * @param code 用户填的验证码
+     * @param code          用户填的验证码
      * @return
      */
-    private boolean checkVerificationCode(String codeInSession,String code){
-        if(codeInSession !=null && !codeInSession.equals(code)){
+    private boolean checkVerificationCode(String codeInSession, String code) {
+        if (codeInSession != null && !codeInSession.equals(code)) {
             return false;
         }
         return true;
@@ -107,14 +109,15 @@ public class UserController {
 
     /**
      * 退出登录状态
+     *
      * @param request
      * @return
      */
     @ApiOperation(value = "退出登录状态")
     @PostMapping("/logout")
-    public JsonResponse logout(HttpServletRequest request){
+    public JsonResponse logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if(session != null){//将session致为失效
+        if (session != null) {//将session致为失效
             session.invalidate();
         }
         return JsonResponse.success();
@@ -122,64 +125,70 @@ public class UserController {
 
     /**
      * 申请身份标识，由系统生成后返回
+     *
      * @param req
      * @return
      */
     @ApiOperation(value = "申请身份标识")
     @PostMapping("/applyOrgIdentity")
-    public JsonResponse<String> applyOrgIdentity(@RequestBody @Validated UserApplyOrgIdentityReq req){
+    public JsonResponse<String> applyOrgIdentity(@RequestBody @Validated UserApplyOrgIdentityReq req) {
         String orgId = userService.applyOrgIdentity(req.getOrgName());
         return JsonResponse.success(orgId);
     }
 
 
-
-
     /**
      * 获取验证码
+     *
      * @param request
      * @return
      */
     @ApiOperation(value = "获取验证码")
     @GetMapping("/verificationCode")
-    public JsonResponse<String> getVerificationCode(HttpServletRequest request){
+    public JsonResponse<String> getVerificationCode(HttpServletRequest request) {
         int code = RandomUtils.nextInt(1000, 9999);
         //放入session中，方便后面登录校验验证码
         HttpSession session = request.getSession(true);
-        session.setAttribute(ControllerConstants.VERIFICATION_CODE,String.valueOf(code));
+        session.setAttribute(ControllerConstants.VERIFICATION_CODE, String.valueOf(code));
         return JsonResponse.success(String.valueOf(code));
     }
 
     /**
      * 更新组织信息
+     *
      * @param req
      * @return
      */
     @ApiOperation(value = "更新组织信息（机构信息识别名称，头像链接，或者描述")
     @PostMapping("/updateLocalOrg")
-    public JsonResponse<String> updateLocalOrg(@RequestBody UpdateLocalOrgReq req){
+    public JsonResponse<String> updateLocalOrg(@RequestBody UpdateLocalOrgReq req) {
         LocalOrg localOrg = LocalOrgCache.getLocalOrgInfo();
         //只有退网之后才能修改组织名称
-        if(!localOrg.getName().equals(req.getName())
-                && localOrg.getStatus() != LocalOrg.Status.LEFT_NET.getCode()){
-            return JsonResponse.fail(ResponseCodeEnum.FAIL,"组织未退网，不能修改组织名称");
+        if (localOrg.getStatus() != LocalOrg.Status.LEFT_NET.getCode()) {
+            return JsonResponse.fail(ResponseCodeEnum.FAIL, "组织未退网，不能修改组织信息");
+        }
+        if (StringUtils.equals(req.getName(), localOrg.getName())
+                && StringUtils.equals(req.getImageUrl(), localOrg.getImageUrl())
+                && StringUtils.equals(req.getProfile(), localOrg.getProfile())) {
+            return JsonResponse.fail(ResponseCodeEnum.FAIL, "机构信息识别名称，头像链接，和描述无更新");
         }
         localOrg.setName(req.getName());
         localOrg.setImageUrl(req.getImageUrl());
         localOrg.setProfile(req.getProfile());
 
         localOrgService.updateLocalOrg(localOrg);
-         return JsonResponse.success();
+        return JsonResponse.success();
     }
 
 
     /**
      * 登录后查询出当前组织信息
+     *
      * @return
      */
     @ApiOperation(value = "查询出当前组织信息")
     @GetMapping("/findLocalOrgInfo")
-    public JsonResponse<LocalOrg> findLocalOrgInfo(){
+    public JsonResponse<LocalOrg> findLocalOrgInfo() {
         LocalOrg localOrg = localOrgService.getLocalOrg();
         return JsonResponse.success(localOrg);
     }
