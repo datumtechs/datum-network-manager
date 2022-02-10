@@ -164,13 +164,13 @@ public class UserController {
     public JsonResponse<String> updateLocalOrg(@RequestBody UpdateLocalOrgReq req) {
         LocalOrg localOrg = LocalOrgCache.getLocalOrgInfo();
         //只有退网之后才能修改组织名称
-        if (localOrg.getStatus() != LocalOrg.Status.LEFT_NET.getCode()) {
+        if (localOrg.getStatus() == LocalOrg.Status.CONNECTED.getCode()) {
             return JsonResponse.fail(ResponseCodeEnum.FAIL, "组织未退网，不能修改组织信息");
         }
         if (StringUtils.equals(req.getName(), localOrg.getName())
                 && StringUtils.equals(req.getImageUrl(), localOrg.getImageUrl())
                 && StringUtils.equals(req.getProfile(), localOrg.getProfile())) {
-            return JsonResponse.fail(ResponseCodeEnum.FAIL, "机构信息识别名称，头像链接，和描述无更新");
+            return JsonResponse.success();
         }
         localOrg.setName(req.getName());
         localOrg.setImageUrl(req.getImageUrl());
