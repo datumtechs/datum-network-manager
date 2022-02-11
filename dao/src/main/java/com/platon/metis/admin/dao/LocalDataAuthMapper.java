@@ -33,4 +33,8 @@ public interface LocalDataAuthMapper {
      */
     int updateExpireAuthData();
 
+    /**
+     * 查询出已撤销元数据对应的待审核的数据授权ID
+     */
+    List<String> selectAuthIdListWithRevokedMetaData();
 }

@@ -213,4 +213,11 @@
     set status = 3, auth_at = current_timestamp()
     where auth_type = 1 and status = 0 and auth_value_end_at &lt; current_timestamp();
   </update>
+
+  <select id="selectAuthIdListWithRevokedMetaData" resultType="java.lang.String">
+    select a.auth_id
+    from local_data_auth a
+    LEFT JOIN local_meta_data b on a.meta_data_id = b.meta_data_id
+    where a.`status` = 0 and b.meta_data_id is null
+  </select>
 </mapper>

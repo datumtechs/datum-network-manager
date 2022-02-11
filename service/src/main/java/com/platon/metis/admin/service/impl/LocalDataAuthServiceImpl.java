@@ -100,11 +100,17 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
 
         int auditOption = DataAuthStatusEnum.AGREE.getStatus();
         String auditDesc = "";
+
+        LocalMetaData localMetaData = localMetaDataMapper.selectByMetaDataId(localDataAuth.getMetaDataId());
         //过期了
         if(localDataAuth.getAuthType() == DataAuthTypeEnum.TIME_PERIOD.type && localDataAuth.getAuthValueEndAt().isBefore(LocalDateTime.now(ZoneOffset.UTC))){
             log.warn("data auth request is expired, just refuse it.");
             auditOption =  DataAuthStatusEnum.REFUSE.getStatus();
             auditDesc = "data auth request is expired, just refuse it.";
+        } else if (localMetaData == null){
+            log.warn("meta data was revoked, just refuse it.");
+            auditOption =  DataAuthStatusEnum.REFUSE.getStatus();
+            auditDesc = "meta data was revoked, just refuse it.";
         }
 
         authClient.auditMetaData(localDataAuth.getAuthId(), auditOption, auditDesc);
