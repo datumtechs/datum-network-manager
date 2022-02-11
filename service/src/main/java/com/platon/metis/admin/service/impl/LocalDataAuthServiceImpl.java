@@ -107,7 +107,7 @@ public class LocalDataAuthServiceImpl implements LocalDataAuthService {
             log.warn("data auth request is expired, just refuse it.");
             auditOption =  DataAuthStatusEnum.REFUSE.getStatus();
             auditDesc = "data auth request is expired, just refuse it.";
-        } else if (localMetaData == null){
+        } else if (localMetaData == null || localMetaData.getStatus() == 3){
             log.warn("meta data was revoked, just refuse it.");
             auditOption =  DataAuthStatusEnum.REFUSE.getStatus();
             auditDesc = "meta data was revoked, just refuse it.";

@@ -218,6 +218,6 @@
     select a.auth_id
     from local_data_auth a
     LEFT JOIN local_meta_data b on a.meta_data_id = b.meta_data_id
-    where a.`status` = 0 and b.meta_data_id is null
+    where a.`status` = 0 and (b.meta_data_id is null or b.`status` = 3)
   </select>
 </mapper>
