@@ -204,7 +204,42 @@ public class AuthClient {
                 localDataAuth.setUserType(dataAuth.getUserTypeValue());
                 localDataAuth.setCreateAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getApplyAt()), ZoneOffset.UTC));
                 localDataAuth.setAuthAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getAuditAt()), ZoneOffset.UTC));
-                localDataAuth.setStatus(dataAuth.getAuditOptionValue());
+                /**
+                 * {@link CommonBase.AuditMetadataOption}
+                 */
+                if(dataAuth.getAuditOptionValue() == 0){ //等待审核
+                    /**
+                     * * {@link CommonBase.MetadataAuthorityState}
+                    * 数据授权信息的状态 (
+                    * 0: 未知;
+                    * 1: 还未发布的数据授权;
+                    * 2: 已发布的数据授权;
+                    * 3: 已撤销的数据授权 <失效前主动撤回的>;
+                    * 4: 已经失效的数据授权 <过期or达到使用上限的or被拒绝的>;)
+                    * **/
+                    int stateValue = dataAuth.getStateValue();
+                    switch (stateValue) {
+                        case CommonBase.MetadataAuthorityState.MAState_Unknown_VALUE:
+                            localDataAuth.setStatus(0);
+                            break;
+                        case CommonBase.MetadataAuthorityState.MAState_Created_VALUE:
+                            localDataAuth.setStatus(0);
+                            break;
+                        case CommonBase.MetadataAuthorityState.MAState_Released_VALUE:
+                            localDataAuth.setStatus(0);
+                            break;
+                        case CommonBase.MetadataAuthorityState.MAState_Revoked_VALUE:
+                            localDataAuth.setStatus(2);
+                            break;
+                        case CommonBase.MetadataAuthorityState.MAState_Invalid_VALUE:
+                            localDataAuth.setStatus(3);
+                            break;
+                    }
+                } else if(dataAuth.getAuditOptionValue() == 1 || dataAuth.getAuditOptionValue() == 2){
+                    //'授权数据状态：0：等待授权审核，1:同意， 2:拒绝，3:失效(auth_type=1且auth_value_end_at超时) ',
+                    localDataAuth.setStatus(dataAuth.getAuditOptionValue());
+                }
+
                 localDataAuth.setRecUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getUpdateAt()), ZoneOffset.UTC));
                 localDataAuth.setRecCreateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getApplyAt()), ZoneOffset.UTC));
 
