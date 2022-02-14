@@ -105,7 +105,7 @@ public class TaskClient {
         for (TaskRpcMessage.TaskEventShow taskEvenShow : response.getTaskEventListList()) {
             TaskEvent taskEvent = new TaskEvent();
             taskEvent.setTaskId(taskEvenShow.getTaskId());
-            taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt()/1000,0, ZoneOffset.ofHours(8)));
+            taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt()/1000,0, ZoneOffset.UTC));
             taskEvent.setEventContent(taskEvenShow.getContent());
             taskEvent.setEventType(taskEvenShow.getType());
             taskEvent.setIdentityId(taskEvenShow.getOwner().getIdentityId());

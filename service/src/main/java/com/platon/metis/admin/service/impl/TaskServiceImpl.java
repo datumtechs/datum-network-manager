@@ -174,7 +174,7 @@ public class TaskServiceImpl implements TaskService {
         boolean isOver = false;
         if(!Objects.isNull(task.getStatus()) && isTaskSucceeFailUnRead(task) && !Objects.isNull(task.getEndAt())){
             long currentTime = new Date().getTime();
-            long endAtTime = task.getEndAt().toInstant(ZoneOffset.of("+8")).toEpochMilli();
+            long endAtTime = task.getEndAt().toInstant(ZoneOffset.UTC).toEpochMilli();
             isOver = (currentTime - endAtTime) > ServiceConstant.TIME_HOUR_72;
             return isOver;
         }

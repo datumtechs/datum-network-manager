@@ -64,7 +64,7 @@ public class IndexNodeListResp {
         resp.setTotalBandwidth(localPowerNode.getBandwidth());
         resp.setUsedBandwidth(localPowerNode.getUsedBandwidth());
         //TODO 时区问题
-        resp.setStartTime(localPowerNode.getStartTime() == null? null : localPowerNode.getStartTime().toEpochSecond(ZoneOffset.of("+8")));
+        resp.setStartTime(localPowerNode.getStartTime() == null? null : localPowerNode.getStartTime().toEpochSecond(ZoneOffset.UTC));
         return resp;
     }
 }

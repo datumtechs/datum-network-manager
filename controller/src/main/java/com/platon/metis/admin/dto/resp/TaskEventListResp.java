@@ -37,7 +37,7 @@ public class TaskEventListResp {
     public static TaskEventListResp convert(TaskEvent taskEvent){
         TaskEventListResp resp = new TaskEventListResp();
         resp.setId(taskEvent.getId());
-        resp.setEventAt(taskEvent.getEventAt() == null ? null : taskEvent.getEventAt().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        resp.setEventAt(taskEvent.getEventAt() == null ? null : taskEvent.getEventAt().toInstant(ZoneOffset.UTC).toEpochMilli());
         resp.setEventContent(taskEvent.getEventContent());
         resp.setEventType(taskEvent.getEventType());
         resp.setIdentityId(taskEvent.getIdentityId());
