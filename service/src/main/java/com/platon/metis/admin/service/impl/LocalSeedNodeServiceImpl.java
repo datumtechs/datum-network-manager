@@ -12,6 +12,7 @@ import com.platon.metis.admin.grpc.client.SeedClient;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.service.LocalSeedNodeService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -96,6 +97,10 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
 
     ///ip4/192.168.9.155/tcp/18001/p2p/16Uiu2HAm291kstk4F64bEEuEQqNhLwnDhR4dCnYB4nQawqhixY9f
     private static boolean verifySeedNodeId(String seedNodeId) {
-       return true;
+        //长度校验
+        if(StringUtils.length(seedNodeId) > 256){
+            return false;
+        }
+        return true;
     }
 }
