@@ -240,6 +240,7 @@ public class MetaDataClient {
         return metaDataList.stream().map(localMetaDataDetail -> {
             Metadata.MetadataSummary summary = localMetaDataDetail.getInformation().getMetadataSummary();
             LocalMetaData localMetaData = new LocalMetaData();
+            localMetaData.setMetaDataId(summary.getMetadataId());
             localMetaData.setStatus(summary.getState().getNumber());
             localMetaData.setPublishTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(summary.getPublishAt()), ZoneOffset.UTC));
             localMetaData.setRecUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(summary.getUpdateAt()), ZoneOffset.UTC));

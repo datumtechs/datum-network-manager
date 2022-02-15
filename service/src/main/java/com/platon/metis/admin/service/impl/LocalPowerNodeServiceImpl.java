@@ -161,10 +161,6 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
     @Override
     public void publishPower(String nodeId) {
         LocalPowerNode oldPowerNode = localPowerNodeMapper.queryPowerNodeDetails(nodeId);
-        if (oldPowerNode == null || StringUtils.isEmpty(oldPowerNode.getPowerId())) {
-            log.error("power node not found");
-            throw new ObjectNotFound();
-        }
         if (oldPowerNode.getPowerStatus() == 1 || oldPowerNode.getPowerStatus() == 4) {
             String powerId = powerClient.publishPower(nodeId);
             LocalPowerNode localPowerNode = new LocalPowerNode();
