@@ -43,7 +43,8 @@ public class LocalPowerNode {
     @ApiModelProperty(value = "算力id", example = "")
     private String powerId;
 
-    @ApiModelProperty(value = " 算力状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)", example = "")
+    @ApiModelProperty(value = " 算力状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力;5: 发布中; 6: 撤销中;)", example = "")
+    //算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力;5: 发布中; 6: 撤销中;)
     private Integer powerStatus;
 
     @ApiModelProperty(value = "连接时间", example = "")

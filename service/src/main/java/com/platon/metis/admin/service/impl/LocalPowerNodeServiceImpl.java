@@ -2,10 +2,7 @@ package com.platon.metis.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.metis.admin.common.exception.ArgumentException;
-import com.platon.metis.admin.common.exception.CannotConnectPowerNode;
-import com.platon.metis.admin.common.exception.CannotEditPowerNode;
-import com.platon.metis.admin.common.exception.ObjectNotFound;
+import com.platon.metis.admin.common.exception.*;
 import com.platon.metis.admin.common.util.NameUtil;
 import com.platon.metis.admin.dao.LocalPowerLoadSnapshotMapper;
 import com.platon.metis.admin.dao.LocalPowerNodeMapper;
@@ -34,13 +31,17 @@ import java.util.List;
 public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
 
-    /** 计算节点 */
+    /**
+     * 计算节点
+     */
     @Resource
     LocalPowerNodeMapper localPowerNodeMapper;
 
     /** 计算节点资源 */
 
-    /** 计算节点资源 */
+    /**
+     * 计算节点资源
+     */
     @Resource
     TaskService taskService;
 
@@ -84,13 +85,15 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(powerNode.getNodeId());
 
 
-        if(localPowerNode.getConnStatus() == LocalPowerNode.ConnStatus.disconnected.getCode()){
-            throw new CannotConnectPowerNode ();
+        if (localPowerNode.getConnStatus() == LocalPowerNode.ConnStatus.disconnected.getCode()) {
+            throw new CannotConnectPowerNode();
         }
         //启用的不能修改
-        if(localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Released_VALUE
-                || localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE ){
+        if (localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Released_VALUE
+                || localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE) {
             throw new CannotEditPowerNode();
+        } else if(localPowerNode.getPowerStatus() == 5 || localPowerNode.getPowerStatus() == 6){
+            throw new CannotOpsPowerNode();
         }
 
         // 判断是否有正在进行中的任务
@@ -120,13 +123,15 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         // 判断是否有算力进行中
         LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(nodeId);
 
-        if(localPowerNode.getConnStatus() == LocalPowerNode.ConnStatus.disconnected.getCode()){
-            throw new CannotConnectPowerNode ();
+        if (localPowerNode.getConnStatus() == LocalPowerNode.ConnStatus.disconnected.getCode()) {
+            throw new CannotConnectPowerNode();
         }
         //启用的不能删除
-        if(localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Released_VALUE
-                || localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE ){
+        if (localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Released_VALUE
+                || localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE) {
             throw new CannotEditPowerNode();
+        } else if(localPowerNode.getPowerStatus() == 5 || localPowerNode.getPowerStatus() == 6){
+            throw new CannotOpsPowerNode();
         }
 
         // 判断是否有正在进行中的任务
@@ -155,32 +160,46 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
 
     @Override
     public void publishPower(String nodeId) {
-        String powerId = powerClient.publishPower(nodeId);
-        LocalPowerNode localPowerNode = new LocalPowerNode();
-        localPowerNode.setNodeId(nodeId);
-        localPowerNode.setPowerId(powerId);
-        localPowerNode.setPowerStatus(CommonBase.PowerState.PowerState_Released_VALUE);
-        //todo：这个时间是本地时间，而不是数据中心时间
-        localPowerNode.setStartTime(LocalDateTime.now());
-        localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
+        LocalPowerNode oldPowerNode = localPowerNodeMapper.queryPowerNodeDetails(nodeId);
+        if (oldPowerNode == null || StringUtils.isEmpty(oldPowerNode.getPowerId())) {
+            log.error("power node not found");
+            throw new ObjectNotFound();
+        }
+        if (oldPowerNode.getPowerStatus() == 1 || oldPowerNode.getPowerStatus() == 4) {
+            String powerId = powerClient.publishPower(nodeId);
+            LocalPowerNode localPowerNode = new LocalPowerNode();
+            localPowerNode.setNodeId(nodeId);
+            localPowerNode.setPowerId(powerId);
+            localPowerNode.setPowerStatus(5);
+            //todo：这个时间是本地时间，而不是数据中心时间
+            localPowerNode.setStartTime(LocalDateTime.now());
+            localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
+        } else {
+            throw new CannotOpsPowerNode("only unpublished and revoked nodes can be published");
+        }
+
     }
 
     @Override
     public void revokePower(String nodeId) {
         LocalPowerNode localPowerNode = localPowerNodeMapper.queryPowerNodeDetails(nodeId);
-        if(localPowerNode==null || StringUtils.isEmpty(localPowerNode.getPowerId())){
+        if (localPowerNode == null || StringUtils.isEmpty(localPowerNode.getPowerId())) {
             log.error("power node not found");
             throw new ObjectNotFound();
         }
-        //调用调度服务
-        powerClient.revokePower(localPowerNode.getPowerId());
 
+        if (localPowerNode.getPowerStatus() == 2) {
+            //调用调度服务
+            powerClient.revokePower(localPowerNode.getPowerId());
+            localPowerNode.setNodeId(nodeId);
+            // 停用算力需把上次启动的算力id清空
+            localPowerNode.setPowerId("");
+            localPowerNode.setPowerStatus(6);
+            localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
+        } else {
+            throw new CannotOpsPowerNode("only published nodes can be revoked.");
+        }
 
-        localPowerNode.setNodeId(nodeId);
-        // 停用算力需把上次启动的算力id清空
-        localPowerNode.setPowerId("");
-        localPowerNode.setPowerStatus(CommonBase.PowerState.PowerState_Revoked_VALUE);
-        localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
     }
 
 

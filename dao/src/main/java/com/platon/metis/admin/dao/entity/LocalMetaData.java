@@ -29,7 +29,7 @@ public class LocalMetaData extends BaseDomain {
     @ApiModelProperty(name = "metaDataName", value = "元数据名称")
     private String metaDataName;
     //
-    @ApiModelProperty(name = "status", value = "元数据的状态 (0: 未知; 1: 未发布; 2: 已发布; 3: 已撤销)")
+    @ApiModelProperty(name = "status", value = "元数据的状态 (0: 未知; 1: 未发布; 2: 已发布; 3: 已撤销;4:已删除;5: 发布中; 6：撤回中)")
     private Integer status;
     //数据是否为另存数据(true:是另存，false:非另存)
     /**

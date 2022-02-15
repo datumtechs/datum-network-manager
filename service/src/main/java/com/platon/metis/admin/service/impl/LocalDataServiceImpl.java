@@ -66,7 +66,7 @@ public class LocalDataServiceImpl implements LocalDataService {
 
 
     @Override
-    public Page<LocalMetaData> listMetaData(int pageNo, int pageSize,String keyword) {
+    public Page<LocalMetaData> listMetaData(int pageNo, int pageSize, String keyword) {
         Page<LocalMetaData> localDataMetaPage = PageHelper.startPage(pageNo, pageSize);
         localMetaDataMapper.listMetaData(keyword);
         return localDataMetaPage;
@@ -95,7 +95,6 @@ public class LocalDataServiceImpl implements LocalDataService {
         //localDataFile.getLocalDataFileColumnList().parallelStream().forEach(column -> column.setFileId(localDataFile.getFileId()));
 
 
-
         //### 5.解析完成之后，存数据库
         localDataFileMapper.insert(localDataFile);
         //localDataFileColumnMapper.insertBatch(localDataFile.getLocalDataFileColumnList());
@@ -117,8 +116,8 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Override
     public int addLocalMetaData(LocalMetaData localMetaData) {
         Integer count = localMetaDataMapper.insert(localMetaData);
-        if(!CollectionUtils.isEmpty(localMetaData.getLocalMetaDataColumnList())){
-            localMetaData.getLocalMetaDataColumnList().parallelStream().forEach(column->column.setLocalMetaDataDbId(localMetaData.getId()));
+        if (!CollectionUtils.isEmpty(localMetaData.getLocalMetaDataColumnList())) {
+            localMetaData.getLocalMetaDataColumnList().parallelStream().forEach(column -> column.setLocalMetaDataDbId(localMetaData.getId()));
             localMetaDataColumnMapper.batchInsert(localMetaData.getLocalMetaDataColumnList());
         }
         return count;
@@ -129,13 +128,16 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Override
     public int delete(Integer id) {
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
-        if(Objects.isNull(localMetaData)){
+        if (Objects.isNull(localMetaData)) {
             log.error("metadata ID is missing.");
             throw new ArgumentException();
         }
-        if(LocalDataFileStatusEnum.RELEASED.getStatus()==localMetaData.getStatus()){
+        if (LocalDataFileStatusEnum.RELEASED.getStatus() == localMetaData.getStatus()) {
             log.error("cannot delete the published data.");
             throw new CannotDeletePublishedFile();
+        } else if (LocalDataFileStatusEnum.RELEASING.getStatus() == localMetaData.getStatus()
+                || LocalDataFileStatusEnum.REVOKING.getStatus() == localMetaData.getStatus()) {
+            throw new CannotOpsData();
         }
         return localMetaDataMapper.deleteByPrimaryKey(id);
     }
@@ -143,13 +145,13 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Override
     public void downLoad(HttpServletResponse response, Integer id) {
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
-        if(localMetaData==null){
+        if (localMetaData == null) {
             log.error("cannot find local metadata.");
             throw new ObjectNotFound();
         }
         //### 1.获取文件路径
         LocalDataFile localDataFile = localDataFileMapper.selectByFileId(localMetaData.getFileId());
-        if(localDataFile==null){
+        if (localDataFile == null) {
             log.error("cannot find local data file.");
             throw new ObjectNotFound();
         }
@@ -160,7 +162,7 @@ public class LocalDataServiceImpl implements LocalDataService {
                 yarnQueryFilePositionResp.getPort(),
                 yarnQueryFilePositionResp.getFilePath());
         try {
-            ExportFileUtil.exportCsv(localMetaData.getMetaDataName(), bytes,response);
+            ExportFileUtil.exportCsv(localMetaData.getMetaDataName(), bytes, response);
         } catch (IOException e) {
             log.error("export csv file error", e);
             throw new SysException();
@@ -171,14 +173,17 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Override
     public int update(LocalMetaData localMetaData) {
         LocalMetaData existing = localMetaDataMapper.selectByPrimaryKey(localMetaData.getId());
-        if (existing == null ){
+        if (existing == null) {
             log.error("cannot find local metadata.");
             throw new ObjectNotFound();
         }
         //已发布状态的元数据不允许修改
-        if(LocalDataFileStatusEnum.RELEASED.getStatus()==existing.getStatus()){
+        if (LocalDataFileStatusEnum.RELEASED.getStatus() == existing.getStatus()) {
             log.error("cannot edit the published data.");
-            throw new CannotEditPublishedFile ();
+            throw new CannotEditPublishedFile();
+        } else if (LocalDataFileStatusEnum.RELEASING.getStatus() == localMetaData.getStatus()
+                || LocalDataFileStatusEnum.REVOKING.getStatus() == localMetaData.getStatus()) {
+            throw new CannotOpsData();
         }
         //只允许修改这两个值
         existing.setRemarks(localMetaData.getRemarks());
@@ -190,7 +195,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         localMetaDataColumnMapper.deleteByLocalMetaDataDbId(existing.getId());
 
         //重新添加meta_data_column信息
-        if(!CollectionUtils.isEmpty(localMetaData.getLocalMetaDataColumnList())){
+        if (!CollectionUtils.isEmpty(localMetaData.getLocalMetaDataColumnList())) {
             localMetaData.getLocalMetaDataColumnList().parallelStream().forEach(column -> column.setLocalMetaDataDbId(existing.getId()));
             //todo:或者updateBatch，这样就不需要先删除了
             localMetaDataColumnMapper.batchInsert(localMetaData.getLocalMetaDataColumnList());
@@ -198,21 +203,24 @@ public class LocalDataServiceImpl implements LocalDataService {
         return count;
     }
 
-      @Override
+    @Override
     public void down(Integer id) {
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
-          if(localMetaData==null){
-              throw new ObjectNotFound();
-          }
+        if (localMetaData == null) {
+            throw new ObjectNotFound();
+        }
         //下架只能针对上架的数据
-        if(LocalDataFileStatusEnum.RELEASED.getStatus()!=localMetaData.getStatus()){
+        if (LocalDataFileStatusEnum.RELEASED.getStatus() != localMetaData.getStatus()) {
             log.error("cannot withdraw un-published metadata.");
             throw new CannotWithdrawData();
+        } else if (LocalDataFileStatusEnum.RELEASING.getStatus() == localMetaData.getStatus()
+                || LocalDataFileStatusEnum.REVOKING.getStatus() == localMetaData.getStatus()) {
+            throw new CannotOpsData();
         }
         metaDataClient.revokeMetaData(localMetaData.getMetaDataId());
 
         //修改文件发布信息
-        localMetaDataMapper.updateStatusById(localMetaData.getId(), LocalDataFileStatusEnum.REVOKED.getStatus());
+        localMetaDataMapper.updateStatusById(localMetaData.getId(), LocalDataFileStatusEnum.REVOKING.getStatus());
 
     }
 
@@ -220,13 +228,16 @@ public class LocalDataServiceImpl implements LocalDataService {
     public int up(Integer id) {
         //获取文件元数据详情
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
-        if(localMetaData==null){
+        if (localMetaData == null) {
             throw new ObjectNotFound();
         }
         //已发布状态的元数据不允许修改
-        if(LocalDataFileStatusEnum.RELEASED.getStatus()==localMetaData.getStatus()){
+        if (LocalDataFileStatusEnum.RELEASED.getStatus() == localMetaData.getStatus()) {
             log.error("cannot publish metadata again.");
             throw new CannotPublishData();
+        } else if (LocalDataFileStatusEnum.RELEASING.getStatus() == localMetaData.getStatus()
+                || LocalDataFileStatusEnum.REVOKING.getStatus() == localMetaData.getStatus()) {
+            throw new CannotOpsData();
         }
         List<LocalMetaDataColumn> columnList = localMetaDataColumnMapper.selectByLocalMetaDataDbIdToPublish(localMetaData.getId());
         localMetaData.setLocalMetaDataColumnList(columnList);
@@ -237,7 +248,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         //String publishMetaDataId = "metadata:0x3426733d8fbd4a27ed26f06b35caa6ac63bca1fc09b98e56e1b262da9a357ffd";
 
         localMetaData.setMetaDataId(publishMetaDataId);
-        localMetaData.setStatus(LocalDataFileStatusEnum.RELEASED.getStatus());
+        localMetaData.setStatus(LocalDataFileStatusEnum.RELEASING.getStatus());
         localMetaData.setPublishTime(LocalDateTime.now(ZoneOffset.UTC));
         return localMetaDataMapper.updateByPrimaryKey(localMetaData);
     }
@@ -250,24 +261,25 @@ public class LocalDataServiceImpl implements LocalDataService {
 
     /**
      * 解析列信息
+     *
      * @param file
      * @param hasTitle
      * @return
      */
-    private LocalDataFile resolveUploadFile(MultipartFile file, boolean hasTitle){
-        if(file.isEmpty()){
+    private LocalDataFile resolveUploadFile(MultipartFile file, boolean hasTitle) {
+        if (file.isEmpty()) {
             log.error("file is empty");
             throw new FileEmpty();
         }
 
         //校验文件名
-        try(InputStreamReader isr = new InputStreamReader(file.getInputStream())){
+        try (InputStreamReader isr = new InputStreamReader(file.getInputStream())) {
 
             CSVParser csvParser = CSVFormat.DEFAULT.parse(isr);
 
             //流式读取第一行
             Optional<CSVRecord> headerRecord = csvParser.stream().findFirst();
-            if(!headerRecord.isPresent()){
+            if (!headerRecord.isPresent()) {
                 log.error("file has 0 line");
                 throw new FileEmpty();
             }
@@ -290,7 +302,7 @@ public class LocalDataServiceImpl implements LocalDataService {
             localDataFile.setHasTitle(hasTitle);
 
             List<LocalMetaDataColumn> columnList = new ArrayList<>();
-            if (hasTitle){
+            if (hasTitle) {
                 //有表头，后续行数就是有效数据行数
                 localDataFile.setRows(new Long(rows).intValue());
 
@@ -306,7 +318,7 @@ public class LocalDataServiceImpl implements LocalDataService {
                 }
             } else {
                 //没有表头，后续行数+1，才是有效数据行数
-                localDataFile.setRows(new Long(rows).intValue()+1);
+                localDataFile.setRows(new Long(rows).intValue() + 1);
 
                 for (int i = 0; i < headerList.size(); i++) {
                     //common
@@ -328,27 +340,25 @@ public class LocalDataServiceImpl implements LocalDataService {
     }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
 
         File file = new File("C:\\Users\\mrlvx\\Downloads\\保险训练大数据集.csv");
 
-        try(InputStreamReader isr = new InputStreamReader(new FileInputStream(file),"UTF-8")){
+        try (InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8")) {
             CSVParser csvParser = CSVFormat.DEFAULT.parse(isr);
-            Optional<CSVRecord> headerRecord  = csvParser.stream().findFirst();
+            Optional<CSVRecord> headerRecord = csvParser.stream().findFirst();
             long rows = csvParser.stream().count();
-            if (!headerRecord.isPresent() || rows==0){
+            if (!headerRecord.isPresent() || rows == 0) {
                 log.error("file has 0 line");
                 throw new FileEmpty();
             }
             List<String> headerList = headerRecord.get().toList();
 
             System.out.println("rows:" + rows);
-            for (String header : headerList ) {
+            for (String header : headerList) {
                 System.out.println("header:" + header);
             }
-
-
 
 
         } catch (IOException e) {

@@ -52,6 +52,9 @@ public enum Errors {
 
     OrgConnectNetworkAlready(1036, "local org connect network already."),
     OrgNotConnectNetwork(1037, "local org not connect network."),
+
+    CannotOpsPowerNode(1038, "cannot manipulate power node in publishing and revoking,please try again later."),
+    CannotOpsData(1039, "cannot manipulate data in publishing and revoking,please try again later."),
     ;
     Errors(int code, String message) {
         this.code = code;
