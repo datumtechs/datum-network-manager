@@ -181,8 +181,8 @@ public class LocalDataServiceImpl implements LocalDataService {
         if (LocalDataFileStatusEnum.RELEASED.getStatus() == existing.getStatus()) {
             log.error("cannot edit the published data.");
             throw new CannotEditPublishedFile();
-        } else if (LocalDataFileStatusEnum.RELEASING.getStatus() == localMetaData.getStatus()
-                || LocalDataFileStatusEnum.REVOKING.getStatus() == localMetaData.getStatus()) {
+        } else if (LocalDataFileStatusEnum.RELEASING.getStatus() == existing.getStatus()
+                || LocalDataFileStatusEnum.REVOKING.getStatus() == existing.getStatus()) {
             throw new CannotOpsData();
         }
         //只允许修改这两个值
