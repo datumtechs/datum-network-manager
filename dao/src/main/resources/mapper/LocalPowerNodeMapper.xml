@@ -86,6 +86,15 @@
     order by (case when conn_status = -1 THEN 0 ELSE 1 END), create_time desc
   </select>
 
+  <!-- 根据状态查询计算节点列表-->
+  <select id="queryPowerNodeListByStatus" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from
+    local_power_node
+    where power_status = #{status}
+  </select>
+
   <!-- 根据节点id删除计算节点 -->
   <delete id="deletePowerNode" parameterType="java.lang.String">
     delete from local_power_node where node_id = #{nodeId, jdbcType=VARCHAR}
@@ -196,19 +205,21 @@
 
 
   <!-- 批量修改计算节点的资源信息-->
-  <update id="updateResourceInfoBatchByNodeId" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
+  <update id="updateResourceInfoBatchByNodeIdAndPowerId" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
     <foreach collection="list" item="item" separator=";">
       update local_power_node
       set
-        power_id = #{item.powerId, jdbcType=VARCHAR},
-        power_status = #{item.powerStatus, jdbcType=INTEGER},
-        memory = #{item.memory, jdbcType=BIGINT},
-        core = #{item.core, jdbcType=INTEGER},
-        bandwidth = #{item.bandwidth, jdbcType=BIGINT},
-        used_memory = #{item.usedMemory, jdbcType=BIGINT},
-        used_core = #{item.usedCore, jdbcType=INTEGER},
-        used_bandwidth = #{item.usedBandwidth, jdbcType=BIGINT}
+      power_id = #{item.powerId, jdbcType=VARCHAR},
+      power_status = #{item.powerStatus, jdbcType=INTEGER},
+      memory = #{item.memory, jdbcType=BIGINT},
+      core = #{item.core, jdbcType=INTEGER},
+      bandwidth = #{item.bandwidth, jdbcType=BIGINT},
+      used_memory = #{item.usedMemory, jdbcType=BIGINT},
+      used_core = #{item.usedCore, jdbcType=INTEGER},
+      used_bandwidth = #{item.usedBandwidth, jdbcType=BIGINT}
       where node_id = #{item.nodeId, jdbcType=VARCHAR}
+        and power_id = #{item.powerId, jdbcType=VARCHAR}
+        and power_status != 6
     </foreach>
   </update>
 

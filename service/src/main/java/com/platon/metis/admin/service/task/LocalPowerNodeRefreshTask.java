@@ -5,6 +5,7 @@ import com.platon.metis.admin.dao.LocalPowerNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 import com.platon.metis.admin.grpc.client.PowerClient;
+import com.platon.metis.admin.grpc.common.CommonBase;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -13,8 +14,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -70,9 +74,28 @@ public class LocalPowerNodeRefreshTask {
         // 修改计算节点信息
         List<LocalPowerNode> localPowerNodeList = data.getLeft();
 
+        Map<String,LocalPowerNode> powerIdMap = localPowerNodeList.stream().collect(Collectors.toMap(LocalPowerNode::getPowerId, power->power));
+
         if(CollectionUtils.isNotEmpty(localPowerNodeList)) {
-            localPowerNodeMapper.updateResourceInfoBatchByNodeId(localPowerNodeList);
+            //1.更新非撤销中的算力状态
+            localPowerNodeMapper.updateResourceInfoBatchByNodeIdAndPowerId(localPowerNodeList);
+
+            //2.更新撤销中的数据
+            List<LocalPowerNode> revokingPower = localPowerNodeMapper.queryPowerNodeListByStatus(6);
+            //撤销中的数据如果接口一直有返回，则表示还未处理完成
+            revokingPower.stream().filter(power -> !powerIdMap.keySet().contains(power.getPowerId())).forEach(power -> {
+                // 停用算力需把上次启动的算力id清空
+                power.setPowerId("");
+                power.setPowerStatus(CommonBase.PowerState.PowerState_Revoked_VALUE);
+                localPowerNodeMapper.updatePowerNodeByNodeId(power);
+            });
+
+            //3.处理存在太久的进行中的数据
+            processPublishingPowerAndRevokingPower(powerIdMap);
         }
+
+
+
         // 新增计算节点参与的任务列表
         // 先清空表数据，如有任务再添加
         List<LocalPowerJoinTask> localPowerJoinTaskList = data.getRight();
@@ -82,5 +105,38 @@ public class LocalPowerNodeRefreshTask {
             // 每次新增最新的数据
             localPowerJoinTaskMapper.insertBatch(localPowerJoinTaskList);
         }
+    }
+
+    //判断是否存在有存在太久的进行中的数据，将它作为操作失败处理 TODO 暂定10分钟的
+    private void processPublishingPowerAndRevokingPower(Map<String, LocalPowerNode> powerIdMap) {
+        //发布中的数据
+        List<LocalPowerNode> publishingPower = localPowerNodeMapper.queryPowerNodeListByStatus(5);
+        //撤销中的数据
+        List<LocalPowerNode> revokingPower = localPowerNodeMapper.queryPowerNodeListByStatus(6);
+
+        Map<String, LocalPowerNode> powerNodeMap = powerIdMap.values()
+                .stream()
+                .collect(Collectors.toMap(LocalPowerNode::getNodeId, power -> power));
+
+        //expire time 单位分钟
+        long expireTime = 10;
+        publishingPower.forEach(power -> {
+            //expireTime分钟前的数据，判定为发布失败，将powerId回滚至之前的powerId（即”“）,并将算力状态改为撤销状态
+            if(power.getUpdateTime().plusMinutes(expireTime).compareTo(LocalDateTime.now()) < 0){
+                power.setPowerId("");
+                power.setPowerStatus(CommonBase.PowerState.PowerState_Revoked_VALUE);
+                localPowerNodeMapper.updatePowerNodeByNodeId(power);
+            }
+        });
+
+        revokingPower.forEach(power -> {
+            //expireTime分钟前的数据，判定为撤销失败，将powerId回滚至之前的powerId,并将算力状态更新
+            if(power.getUpdateTime().plusMinutes(expireTime).compareTo(LocalDateTime.now()) < 0){
+                LocalPowerNode localPowerNode = powerNodeMap.get(power.getNodeId());
+                power.setPowerId(localPowerNode.getPowerId());
+                power.setPowerStatus(localPowerNode.getPowerStatus());
+                localPowerNodeMapper.updatePowerNodeByNodeId(power);
+            }
+        });
     }
 }

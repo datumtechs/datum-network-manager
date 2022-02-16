@@ -189,7 +189,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
             powerClient.revokePower(localPowerNode.getPowerId());
             localPowerNode.setNodeId(nodeId);
             // 停用算力需把上次启动的算力id清空
-            localPowerNode.setPowerId("");
+//            localPowerNode.setPowerId("");
             localPowerNode.setPowerStatus(6);
             localPowerNodeMapper.updatePowerNodeByNodeId(localPowerNode);
         } else {

@@ -41,7 +41,7 @@ public interface LocalPowerNodeMapper {
      * @param localPowerNodeList
      * @return
      */
-    int updateResourceInfoBatchByNodeId(List<LocalPowerNode> localPowerNodeList);
+    int updateResourceInfoBatchByNodeIdAndPowerId(List<LocalPowerNode> localPowerNodeList);
 
 
     /**
@@ -64,6 +64,13 @@ public interface LocalPowerNodeMapper {
      * @return
      */
     List<LocalPowerNode> queryPowerNodeList(@Param("keyword") String keyword);
+
+    /**
+     * 根据状态查询计算节点列表
+     * @param status
+     * @return
+     */
+    List<LocalPowerNode> queryPowerNodeListByStatus(@Param("status") Integer status);
 
 
     PowerLoad getCurrentLocalPowerLoadByNodeId(@Param("nodeId") String nodeId);
