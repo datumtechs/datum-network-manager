@@ -184,7 +184,9 @@
       internal_port,
       external_ip,
       external_port,
-      conn_status)
+      conn_status,
+      power_id,
+      power_status)
       VALUES (
       #{item.nodeId, jdbcType=VARCHAR},
       #{item.nodeName, jdbcType=VARCHAR},
@@ -192,7 +194,9 @@
       #{item.internalPort,jdbcType=INTEGER},
       #{item.externalIp,jdbcType=VARCHAR},
       #{item.externalPort,jdbcType=INTEGER},
-      #{item.connStatus,jdbcType=INTEGER}
+      #{item.connStatus,jdbcType=INTEGER},
+      '',
+      1
       )
       ON DUPLICATE KEY
       UPDATE internal_ip = #{item.internalIp,jdbcType=VARCHAR},
