@@ -50,7 +50,7 @@
   </select>-->
 
   <insert id="insertBatch">
-    <foreach collection ="localPowerJoinTaskList" item="item" separator =",">
+    <foreach collection ="localPowerJoinTaskList" item="item" separator =";">
     insert into local_power_join_task (
     node_id,
     task_id,
