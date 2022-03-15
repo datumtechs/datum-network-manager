@@ -34,7 +34,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             log.debug("this a production env....");
         }
         HttpSession session = servletRequest.getSession();
-        if(session != null && session.getAttribute(ControllerConstants.USER_ID) != null){//已登录
+        if(session != null && session.getAttribute(ControllerConstants.USER_ADDRESS) != null){//已登录
             return true;
         } else {//未登录，则返回错误信息
             throw new UserNotLogin();

@@ -1,5 +1,7 @@
 package com.platon.metis.admin.service;
 
+import com.platon.metis.admin.dao.entity.SysUser;
+
 /**
  * @Author liushuyu
  * @Date 2021/7/3 14:25
@@ -15,6 +17,22 @@ public interface UserService {
      */
     String applyOrgIdentity(String orgName);
 
-    String login(String userName, String passwd);
+    /**
+     * 根据地址查询用户
+     * @param address
+     * @return
+     */
+    SysUser getByAddress(String address);
 
+    /**
+     * 新增用户
+     * @param sysUser
+     */
+    void save(SysUser sysUser);
+
+    /**
+     * 根据用户地址更新用户信息
+     * @param sysUser
+     */
+    void updateByAddress(SysUser sysUser);
 }

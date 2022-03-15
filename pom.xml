@@ -127,6 +127,14 @@
             <artifactId>grpc-stub</artifactId>
             <version>1.42.1</version>
         </dependency>
+
+        <!-- hutool依赖-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.7.15</version>
+        </dependency>
+
     </dependencies>
 
     <build>

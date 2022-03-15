@@ -28,7 +28,7 @@ import java.util.List;
  */
 
 @Slf4j
-@Configuration
+//@Configuration
 public class LocalCarrierStatusRefreshTask {
 
     @Resource

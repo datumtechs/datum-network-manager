@@ -30,7 +30,7 @@ import java.util.Objects;
  * 2. 对已经同意的授权申请，也可以提前终止授权（todo:需要有前提吗？比如没有任务正在使用）
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class LocalDataAuthReqRefreshTask {
 
     @Resource

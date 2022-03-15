@@ -23,7 +23,7 @@ import java.util.Map;
  * 定时刷新本组织相关的任务
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class LocalTaskRefreshTask {
 
     @Resource

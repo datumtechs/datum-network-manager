@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author 
@@ -26,24 +26,29 @@ public class SysUser implements Serializable {
     private String userName;
 
     /**
-     * 密码 MD5加密
+     * 钱包地址
      */
-    private String password;
+    private String address;
 
     /**
-     * 用户状态 enabled：可用, disabled:不可用
+     * 用户状态 1：可用, 0:不可用
      */
-    private String status;
+    private Integer status;
 
     /**
      * 是否为管理员 1管理员，0非管理
      */
-    private String isMaster;
+    private Integer isAdmin;
 
     /**
      * 最后更新时间
      */
-    private Date recUpdateTime;
+    private LocalDateTime updateTime;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
 
     private static final long serialVersionUID = 1L;
 }

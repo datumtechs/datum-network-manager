@@ -1,17 +1,15 @@
 package com.platon.metis.admin.service.impl;
 
 import com.platon.metis.admin.common.exception.OrgInfoExists;
-import com.platon.metis.admin.common.exception.UserAccountInvalid;
-import com.platon.metis.admin.common.exception.UserAccountOrPwdError;
 import com.platon.metis.admin.common.util.IDUtil;
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.SysUserMapper;
 import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalOrg;
 import com.platon.metis.admin.dao.entity.SysUser;
-import com.platon.metis.admin.dao.enums.SysUserStatusEnum;
 import com.platon.metis.admin.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -52,15 +50,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(String userName, String passwd) {
-        SysUser sysUser = sysUserMapper.selectByUserNameAndPwd(userName, passwd);
-        if(sysUser == null){
-            throw new UserAccountOrPwdError();
-        }
-        if(SysUserStatusEnum.DISABLED.getStatus().equals(sysUser.getStatus())){
-            throw new UserAccountInvalid();
-        }
-        return sysUser.getId().toString();
+    public SysUser getByAddress(String address) {
+        return sysUserMapper.selectByAddress(address);
     }
+
+    @Transactional
+    @Override
+    public void save(SysUser sysUser) {
+        int insert = sysUserMapper.insert(sysUser);
+        if(insert == 0){
+            //TODO 插入失败
+        } else {
+            int update = sysUserMapper.updateSingleUserToAdmin();
+            if(update == 0){
+                //TODO 更新失败
+            }
+        }
+    }
+
+    @Override
+    public void updateByAddress(SysUser sysUser) {
+        int update = sysUserMapper.updateByAddress(sysUser);
+        if(update == 0){
+            //TODO 更新失败
+        }
+    }
+
 
 }

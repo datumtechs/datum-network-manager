@@ -18,8 +18,6 @@ public class UserControllerTest {
     @Test
     public void login(){
         UserLoginReq req = new UserLoginReq();
-        req.setUserName("admin");
-        req.setPasswd("admin");
         ResponseEntity<String> entity = restTemplate.postForEntity("/api/v1/system/user/login", req, String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());

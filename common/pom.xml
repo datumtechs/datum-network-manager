@@ -9,4 +9,28 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>admin-common</artifactId>
+
+    <dependencies>
+        <!-- platon sdk 依赖-->
+        <dependency>
+            <groupId>com.platon.sdk</groupId>
+            <artifactId>core</artifactId>
+            <version>1.1.0.0</version>
+        </dependency>
+
+        <!-- 以太坊sdk依赖-->
+        <dependency>
+            <groupId>org.web3j</groupId>
+            <artifactId>core</artifactId>
+            <version>4.8.7</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>platon-sdk</id>
+            <url>https://sdk.platon.network/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
 </project>
