@@ -1,10 +1,13 @@
 package com.platon.metis.admin.dto.resp;
 
 
+import com.platon.metis.admin.dao.entity.Resource;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.Getter;
+
+import java.util.List;
 
 
 @Data
@@ -18,6 +21,8 @@ public class LoginResp {
     private Integer status;
     @ApiModelProperty(value = "是否是管理员：0-否，1-是", example = "")
     private Integer isAdmin;
+    @ApiModelProperty(value = "资源列表")
+    private List<Resource> resourceList;
 
     @ApiModelProperty(value = "组织信息完成度(0:待申请组织身份ID; 1:待完善组织头像和描述信息; 2：已完成基本信息)", notes="")
     private Integer orgInfoCompletionLevel;

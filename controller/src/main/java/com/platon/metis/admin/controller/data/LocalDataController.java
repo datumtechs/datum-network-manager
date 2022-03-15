@@ -6,7 +6,6 @@ import com.platon.metis.admin.common.exception.MetadataResourceNameExists;
 import com.platon.metis.admin.common.exception.MetadataResourceNameIllegal;
 import com.platon.metis.admin.common.exception.ObjectNotFound;
 import com.platon.metis.admin.common.util.NameUtil;
-import com.platon.metis.admin.dao.LocalDataFileColumnMapper;
 import com.platon.metis.admin.dao.LocalDataFileMapper;
 import com.platon.metis.admin.dao.LocalMetaDataColumnMapper;
 import com.platon.metis.admin.dao.LocalMetaDataMapper;
@@ -62,8 +61,6 @@ public class LocalDataController {
 
     @Resource
     private LocalDataFileMapper localDataFileMapper;
-    @Resource
-    private LocalDataFileColumnMapper localDataFileColumnMapper;
 
     @Resource
     private LocalMetaDataMapper localMetaDataMapper;

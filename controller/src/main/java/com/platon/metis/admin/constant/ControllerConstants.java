@@ -8,7 +8,9 @@ package com.platon.metis.admin.constant;
  */
 public class ControllerConstants {
 
-    public static String USER_ADDRESS = "userAddress";
+    public static String USER_INFO = "userInfo";
+
+    public static String USER_RESOURCE = "userResource";
 
     public static String NONCE = "nonce";
 }

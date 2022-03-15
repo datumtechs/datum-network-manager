@@ -4,7 +4,9 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.metis.admin.common.exception.*;
 import com.platon.metis.admin.common.util.ExportFileUtil;
-import com.platon.metis.admin.dao.*;
+import com.platon.metis.admin.dao.LocalDataFileMapper;
+import com.platon.metis.admin.dao.LocalMetaDataColumnMapper;
+import com.platon.metis.admin.dao.LocalMetaDataMapper;
 import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
@@ -48,8 +50,6 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Resource
     private LocalDataFileMapper localDataFileMapper;
     @Resource
-    private LocalDataFileColumnMapper localDataFileColumnMapper;
-    @Resource
     private LocalMetaDataColumnMapper localMetaDataColumnMapper;
     @Resource
     private LocalMetaDataMapper localMetaDataMapper;
@@ -59,10 +59,6 @@ public class LocalDataServiceImpl implements LocalDataService {
     private DataProviderClient dataProviderClient;
     @Resource
     private MetaDataClient metaDataClient;
-    @Resource
-    private TaskDataProviderMapper taskDataProviderMapper;
-    @Resource
-    private TaskMapper taskMapper;
 
 
     @Override

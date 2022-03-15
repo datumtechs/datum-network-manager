@@ -56,16 +56,26 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void save(SysUser sysUser) {
-        int insert = sysUserMapper.insert(sysUser);
+    public SysUser createUser(String hexAddress) {
+        SysUser user = new SysUser();
+        user.setUserName(hexAddress);
+        user.setAddress(hexAddress);
+        user.setStatus(1);
+        user.setIsAdmin(0);
+        //1.新增用户
+        int insert = sysUserMapper.insert(user);
         if(insert == 0){
             //TODO 插入失败
         } else {
+            //2.尝试设置为管理员
             int update = sysUserMapper.updateSingleUserToAdmin();
             if(update == 0){
                 //TODO 更新失败
+            } else {
+                user.setIsAdmin(1);
             }
         }
+        return user;
     }
 
     @Override

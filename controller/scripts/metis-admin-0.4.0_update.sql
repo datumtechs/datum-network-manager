@@ -2,7 +2,7 @@
 
 -- CREATE DATABASE `metis_admin` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-use `metis_admin`;
+use `metis_admin_lsy`;
 
 -- 以下为0.4.0数据库变更
 
@@ -33,7 +33,7 @@ CREATE TABLE `resource` (
 
 DROP TABLE IF EXISTS `user_resource`;
 CREATE TABLE `user_resource` (
-                                 `user_id` int NOT NULL COMMENT '用户id',
+                                 `role_id` int NOT NULL COMMENT '角色id',
                                  `resource_id` int NOT NULL COMMENT '资源id',
-                                 UNIQUE KEY `用户资源唯一` (`user_id`,`resource_id`)
-) COMMENT='用户资源关联表';
+                                 UNIQUE KEY `角色资源唯一` (`role_id`,`resource_id`)
+) COMMENT='角色资源关联表';

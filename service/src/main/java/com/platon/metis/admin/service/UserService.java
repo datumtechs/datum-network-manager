@@ -26,9 +26,8 @@ public interface UserService {
 
     /**
      * 新增用户
-     * @param sysUser
      */
-    void save(SysUser sysUser);
+    SysUser createUser(String hexAddress);
 
     /**
      * 根据用户地址更新用户信息

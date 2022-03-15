@@ -18,6 +18,7 @@ import com.platon.metis.admin.dto.resp.LoginNonceResp;
 import com.platon.metis.admin.dto.resp.LoginResp;
 import com.platon.metis.admin.enums.ResponseCodeEnum;
 import com.platon.metis.admin.service.LocalOrgService;
+import com.platon.metis.admin.service.ResourceService;
 import com.platon.metis.admin.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,9 +28,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @Author liushuyu
@@ -54,6 +56,8 @@ public class UserController {
     @Resource
     private LocalOrgService localOrgService;
 
+    @Resource
+    private ResourceService resourceService;
 
     @GetMapping("getLoginNonce")
     @ApiOperation(value = "获取登录Nonce", notes = "获取登录Nonce")
@@ -73,31 +77,32 @@ public class UserController {
         String hexAddress = req.getAddress();
         String message = req.getSignMessage();
         String sign = req.getSign();
-        // 检查nonce
+        // 1.检查nonce
         checkNonceValidity(session,message);
-        // 登录签名校验
+        // 2.登录签名校验
         verifySign(hrpAddress, message, sign);
-        //如果用户存在，则返回旧的用户信息，如果不存在则保存为新用户
+        //3.如果用户存在，则返回旧的用户信息，如果不存在则保存为新用户
         SysUser user = userService.getByAddress(hexAddress);
         if (user == null) {
-            user = new SysUser();
-            user.setUserName(hrpAddress);
-            user.setAddress(hexAddress);
-            user.setStatus(1);
-            user.setIsAdmin(0);
-            //保存数据
-            userService.save(user);
-            //查询新数据
-            user = userService.getByAddress(hexAddress);
+            user = userService.createUser(hexAddress);
         }
-        // 设置用户会话
-        session.setAttribute(ControllerConstants.USER_ADDRESS, user.getAddress());//将登录信息存入session中
+        //4.设置用户会话
+        session.setAttribute(ControllerConstants.USER_INFO, user);//将登录信息存入session中
+        //5.获取用户权限,现在默认只有两个角色，一个是管理员，一个是非管理员，管理员默认有所有的权限
+        List<com.platon.metis.admin.dao.entity.Resource> resourceList = resourceService.getResourceListByUserId(user.getIsAdmin());
+        //6.将用户权限存入session中
+        List<String> urlList = resourceList.stream()
+                .filter(resource -> resource.getType() == 1)
+                .map(com.platon.metis.admin.dao.entity.Resource::getValue)
+                .collect(Collectors.toList());
+        session.setAttribute(ControllerConstants.USER_RESOURCE, urlList);//将登录信息存入session中
 
         LoginResp resp = new LoginResp();
         resp.setUserName(user.getUserName());
         resp.setAddress(user.getAddress());
         resp.setStatus(user.getStatus());
         resp.setIsAdmin(user.getIsAdmin());
+        resp.setResourceList(resourceList);
 
         //TODO 此部分是否是只有管理员才需要这些信息
         LocalOrg localOrg = localOrgService.getLocalOrg();
@@ -175,20 +180,23 @@ public class UserController {
     /**
      * 修改管理员钱包地址
      *
-     * @param request
      * @return
      */
     @ApiOperation(value = "替换管理员")
     @PostMapping("/updateAdmin")
-    public JsonResponse updateAdmin(HttpServletRequest request, @RequestBody @Validated UserUpdateAdminReq req) {
-        HttpSession session = request.getSession();
-        String address = (String)session.getAttribute(ControllerConstants.USER_ADDRESS);
-        SysUser user = userService.getByAddress(address);
+    public JsonResponse updateAdmin(HttpSession session, @RequestBody @Validated UserUpdateAdminReq req) {
+        SysUser user = (SysUser)session.getAttribute(ControllerConstants.USER_INFO);
+        //获取最新的用户信息
+        user = userService.getByAddress(user.getAddress());
         if(user.getIsAdmin() != 1){//不是管理员则提示错误
+            session.setAttribute(ControllerConstants.USER_INFO,user);
             return JsonResponse.fail(ResponseCodeEnum.FAIL, "当前用户不是管理员，替换失败");
         }
         user.setAddress(req.getNewAddress());
         userService.updateByAddress(user);
+        if (session != null) {//修改成功后，将session致为失效，让用户重新登录
+            session.invalidate();
+        }
         return JsonResponse.success();
     }
 
