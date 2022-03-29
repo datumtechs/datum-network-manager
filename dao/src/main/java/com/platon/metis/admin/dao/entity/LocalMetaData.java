@@ -54,6 +54,10 @@ public class LocalMetaData extends BaseDomain {
     //更新时间
     private LocalDateTime recUpdateTime;
 
+    //dataTokenId
+    @ApiModelProperty(name = "dataTokenId", value = "对应的dataTokenId")
+    private Integer dataTokenId;
+
     @ApiModelProperty(name = "localMetaDataColumnList", value = "元数据的字段定义")
     List<LocalMetaDataColumn> localMetaDataColumnList;
 

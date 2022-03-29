@@ -10,9 +10,6 @@ public interface LocalMetaDataMapper {
 
     int insert(LocalMetaData record);
 
-    int insertSelective(LocalMetaData record);
-
-
     List<LocalMetaData> listMetaData(@Param("keyword") String keyword);
 
     LocalMetaData selectByPrimaryKey(Integer id);
@@ -33,4 +30,6 @@ public interface LocalMetaDataMapper {
     void updateStatusByMetaDataIdBatch(@Param("localMetaDataList") List<LocalMetaData> localMetaDataList);
 
     int updateStatusById(@Param("id") Integer id, @Param("status")Integer status);
+
+    int updateDataTokenIdById(@Param("id") Integer id, @Param("dataTokenId")Integer dataTokenId);
 }

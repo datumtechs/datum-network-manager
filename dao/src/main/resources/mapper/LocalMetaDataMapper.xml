@@ -12,10 +12,11 @@
     <result column="industry" jdbcType="INTEGER" property="industry" />
     <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+    <result column="data_token_id" jdbcType="INTEGER" property="dataTokenId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, file_id, meta_data_id, meta_data_name, status, publish_time, remarks, industry, rec_create_time,
-    rec_update_time
+    rec_update_time,data_token_id
   </sql>
 
 
@@ -86,9 +87,9 @@
     set status = 4
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into local_meta_data (file_id, meta_data_id,
-      meta_data_name, status, publish_time,
+  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    meta_data_name, status, publish_time,
       remarks, industry
       )
     values (#{fileId,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR},
@@ -124,5 +125,11 @@
           rec_update_time =  #{item.recUpdateTime,jdbcType=TIMESTAMP}
       where meta_data_id = #{item.metaDataId,jdbcType=VARCHAR}
     </foreach>
+  </update>
+
+  <update id="updateDataTokenIdById">
+    update local_meta_data
+    set data_token_id = #{dataTokenId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

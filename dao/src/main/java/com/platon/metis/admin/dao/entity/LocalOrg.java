@@ -60,6 +60,9 @@ public class LocalOrg extends BaseDomain {
     @ApiModelProperty(value = "当前系统本地的 multiAddr", example = "/ip4/127.0.0.1/tcp/18001/p2p/16Uiu2HAmKMo4Ci5TYcXspnKnMWK4G4CRWSHBV4qCUAFYrtirhcuz")
     private String localMultiAddr;
 
+    @ApiModelProperty(value = "carrier钱包地址")
+    private String carrierWallet;
+
     @Getter
     public enum Status{
         NOT_CONNECT_NET(0, "待接入网络"),

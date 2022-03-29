@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.metis.admin.dao.DataTokenMapper">
+    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.DataToken">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+        <result column="total" jdbcType="VARCHAR" property="total" />
+        <result column="decimal" jdbcType="INTEGER" property="decimal" />
+        <result column="desc" jdbcType="VARCHAR" property="desc" />
+        <result column="owner" jdbcType="VARCHAR" property="owner" />
+        <result column="agent" jdbcType="VARCHAR" property="agent" />
+        <result column="meta_data_id" jdbcType="INTEGER" property="metaDataId" />
+        <result column="holder" jdbcType="INTEGER" property="holder" />
+        <result column="pricing_status" jdbcType="INTEGER" property="pricingStatus" />
+        <result column="publish_status" jdbcType="INTEGER" property="publishStatus" />
+        <result column="publish_hash" jdbcType="VARCHAR" property="publishHash" />
+        <result column="up_hash" jdbcType="VARCHAR" property="upHash" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,address,`name`,symbol,total,`decimal`,`desc`,`owner`,agent,meta_data_id,holder,pricing_status,publish_status,`publish_hash`,up_hash,create_time,update_time
+    </sql>
+
+    <select id="selectByPricingStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from data_token
+        where
+        <choose>
+            <when test="status == 1">
+                pricing_status = 3
+            </when>
+            <otherwise>
+                pricing_status in (0,1,2)
+            </otherwise>
+        </choose>
+        order by id desc
+    </select>
+
+    <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id">
+        insert into data_token (address,`name`,symbol,total,`desc`,`owner`,agent,meta_data_id,pricing_status,publish_status,`publish_hash`)
+        values(#{address},#{name},#{symbol},#{total},#{desc},#{owner},#{agent},#{metaDataId},#{pricingStatus},#{publishStatus},#{publishHash})
+    </insert>
+
+    <update id="updatePricingStatus">
+        update data_token
+        set up_hash = #{upHash},pricing_status = #{pricingStatus}
+        where id = #{id}
+    </update>
+
+</mapper>

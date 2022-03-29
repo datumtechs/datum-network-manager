@@ -36,6 +36,9 @@ public class UserServiceImpl implements UserService {
             //LocalOrgCache.setLocalOrgInfo(org);
             throw new OrgInfoExists();
         }
+
+        //### 1.2 TODO 这里需要先在后台生成一个系统级管理员钱包地址，传给调度服务用
+
         //### 2.新建local org并入库
         String orgId = IDUtil.generate(IDUtil.IDENTITY_ID_PREFIX);
         LocalOrg localOrg = new LocalOrg();
