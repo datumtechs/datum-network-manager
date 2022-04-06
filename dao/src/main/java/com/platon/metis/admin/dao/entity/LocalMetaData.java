@@ -28,8 +28,18 @@ public class LocalMetaData extends BaseDomain {
     //元数据名称
     @ApiModelProperty(name = "metaDataName", value = "元数据名称")
     private String metaDataName;
-    //
-    @ApiModelProperty(name = "status", value = "元数据的状态 (0: 未知; 1: 未发布; 2: 已发布; 3: 已撤销;4:已删除;5: 发布中; 6：撤回中)")
+
+    /**
+     * 元数据的状态 (0: 未知; 1: 未发布; 2: 已发布; 3: 已撤销;4:已删除;5: 发布中; 6:撤回中) v0.4.0新增7:凭证发布失败;8:凭证发布中; 9:已发布凭证
+     * 对应前端显示：
+     * 未发布数据：0，1，3
+     * 数据发布中：5
+     * 未发布凭证：2
+     * 凭证发布中：7
+     * 已发凭证：8
+     * {@link com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum}
+     */
+    @ApiModelProperty(name = "status", value = "元数据的状态 (0: 未知; 1: 未发布; 2: 已发布; 3: 已撤销;4:已删除;5: 发布中; 6:撤回中;7:凭证发布失败;8:凭证发布中; 9:已发布凭证)")
     private Integer status;
     //数据是否为另存数据(true:是另存，false:非另存)
     /**
@@ -57,6 +67,10 @@ public class LocalMetaData extends BaseDomain {
     //dataTokenId
     @ApiModelProperty(name = "dataTokenId", value = "对应的dataTokenId")
     private Integer dataTokenId;
+
+    //拥有者钱包地址
+    @ApiModelProperty(name = "owner", value = "拥有者钱包地址")
+    private String owner;
 
     @ApiModelProperty(name = "localMetaDataColumnList", value = "元数据的字段定义")
     List<LocalMetaDataColumn> localMetaDataColumnList;

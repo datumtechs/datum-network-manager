@@ -14,4 +14,5 @@ public interface SysUserMapper {
     //如果数据库只剩下一个用户，则将其设置为管理员用户
     int updateSingleUserToAdmin();
 
+    int insertOrUpdateToAdmin(SysUser user);
 }

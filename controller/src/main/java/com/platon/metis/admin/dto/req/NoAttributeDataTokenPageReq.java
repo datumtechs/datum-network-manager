@@ -21,6 +21,11 @@ import lombok.ToString;
 public class NoAttributeDataTokenPageReq extends CommonPageReq {
 
     @ApiModelProperty("定价状态：0-未定价，1-已定价")
-    //状态：0-未定价，1-已定价，如果要已定价的，则返回已成功定价的，如果要未定价的，则返回(0-未定价，1-定价中，2-定价失败)供前端展示
+    /**
+     * {@link com.platon.metis.admin.dao.entity.DataToken.StatusEnum}
+     * 状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功
+     * 前端传0-未定价：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，
+     * 前端传6-定价成功
+     */
     private int status;
 }

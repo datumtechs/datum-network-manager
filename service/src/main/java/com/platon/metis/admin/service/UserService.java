@@ -30,8 +30,9 @@ public interface UserService {
     SysUser createUser(String hexAddress);
 
     /**
-     * 根据用户地址更新用户信息
-     * @param sysUser
+     * 更新管理员钱包地址
+     * @param user 当前管理员
+     * @param newAddress 新管理员钱包地址
      */
-    void updateByAddress(SysUser sysUser);
+    void updateAdmin(SysUser user, String newAddress);
 }

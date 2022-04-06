@@ -3,7 +3,7 @@ package com.platon.metis.admin.dto;
 
 import com.github.pagehelper.Page;
 import com.platon.metis.admin.common.exception.BizException;
-import com.platon.metis.admin.enums.ResponseCodeEnum;
+import com.platon.metis.admin.common.exception.Errors;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -51,30 +51,23 @@ public class JsonResponse<T> {
     }
 
     public static JsonResponse success() {
-        return new JsonResponse(ResponseCodeEnum.SUCCESS.getCode(), ResponseCodeEnum.SUCCESS.getMessage(), null);
+        return new JsonResponse(Errors.SUCCESS.getCode(), Errors.SUCCESS.getMessage(), null);
     }
 
     public static <T> JsonResponse success(T data) {
-        return new JsonResponse(ResponseCodeEnum.SUCCESS.getCode(), ResponseCodeEnum.SUCCESS.getMessage(), data);
-    }
-
-    public static <T> JsonResponse success(ResponseCodeEnum responseCodeEnum, String message, T data) {
-        return new JsonResponse(responseCodeEnum.getCode(), message, data);
+        return new JsonResponse(Errors.SUCCESS.getCode(), Errors.SUCCESS.getMessage(), data);
     }
 
     public static JsonResponse fail() {
-        return new JsonResponse(ResponseCodeEnum.FAIL.getCode(), ResponseCodeEnum.FAIL.getMessage(), null);
+        return new JsonResponse(Errors.SysException.getCode(), Errors.SysException.getMessage(), null);
     }
 
     public static JsonResponse fail(BizException e) {
         return new JsonResponse(e.getErrorCode(), e.getMessage(), null);
     }
-    public static JsonResponse fail(ResponseCodeEnum code) {
-        return new JsonResponse(code.getCode(), code.getMessage(), null);
-    }
 
-    public static JsonResponse fail(ResponseCodeEnum code, String message) {
-        return new JsonResponse(code.getCode(), message, null);
+    public static JsonResponse fail(String message) {
+        return new JsonResponse(Errors.SysException.getCode(), message, null);
     }
 
 
@@ -85,8 +78,8 @@ public class JsonResponse<T> {
      */
     public static <T> JsonResponse page(Page<T> page) {
         JsonResponse jsonResponse = new JsonResponse();
-        jsonResponse.setMsg(ResponseCodeEnum.SUCCESS.getMessage());
-        jsonResponse.setStatus(ResponseCodeEnum.SUCCESS.getCode());
+        jsonResponse.setMsg(Errors.SUCCESS.getMessage());
+        jsonResponse.setStatus(Errors.SUCCESS.getCode());
         jsonResponse.setPageNumber(page.getPageNum());
         jsonResponse.setPageSize(page.getPageSize());
         jsonResponse.setTotal((int) page.getTotal());
@@ -103,8 +96,8 @@ public class JsonResponse<T> {
      */
     public static <T> JsonResponse page(Page pageInfo, List<T> list) {
         JsonResponse jsonResponse = new JsonResponse();
-        jsonResponse.setMsg(ResponseCodeEnum.SUCCESS.getMessage());
-        jsonResponse.setStatus(ResponseCodeEnum.SUCCESS.getCode());
+        jsonResponse.setMsg(Errors.SUCCESS.getMessage());
+        jsonResponse.setStatus(Errors.SUCCESS.getCode());
         jsonResponse.setPageNumber(pageInfo.getPageNum());
         jsonResponse.setPageSize(pageInfo.getPageSize());
         jsonResponse.setTotal((int) pageInfo.getTotal());

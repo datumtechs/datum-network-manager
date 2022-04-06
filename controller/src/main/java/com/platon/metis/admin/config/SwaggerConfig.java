@@ -9,6 +9,10 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 /**
  * @author houz
  * swagger配置类
@@ -24,6 +28,7 @@ public class SwaggerConfig {
         // Swagger 3 使用的是：DocumentationType.OAS_30
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+                .ignoredParameterTypes(HttpSession.class, HttpServletRequest.class, HttpServletResponse.class)
                 //是否开启 (true 开启  false隐藏。生产环境建议隐藏)
 //                .enable(false)
                 .select()

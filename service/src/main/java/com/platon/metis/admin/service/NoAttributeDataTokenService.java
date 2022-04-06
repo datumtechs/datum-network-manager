@@ -12,9 +12,11 @@ import com.platon.metis.admin.dao.entity.DataToken;
 public interface NoAttributeDataTokenService {
 
 
-    Page<DataToken> page(Integer pageNumber, Integer pageSize, int status);
+    Page<DataToken> page(Integer pageNumber, Integer pageSize, int status, String address);
 
     void publish(DataToken dataToken);
 
     void up(DataToken dataToken);
+
+    DataToken getDataTokenById(Integer dataTokenId);
 }

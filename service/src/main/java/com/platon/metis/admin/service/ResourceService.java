@@ -2,7 +2,7 @@ package com.platon.metis.admin.service;
 
 import com.platon.metis.admin.dao.entity.Resource;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @Author liushuyu
@@ -16,5 +16,5 @@ public interface ResourceService {
      * 获取资源列表
      * @return
      */
-    List<Resource> getResourceListByUserId(Integer userId);
+    Set<Resource> getResourceListByUserId(Integer roleId);
 }

@@ -62,9 +62,9 @@ public class LocalDataServiceImpl implements LocalDataService {
 
 
     @Override
-    public Page<LocalMetaData> listMetaData(int pageNo, int pageSize, String keyword) {
+    public Page<LocalMetaData> listMetaData(int pageNo, int pageSize, String keyword, String userAddress, int status) {
         Page<LocalMetaData> localDataMetaPage = PageHelper.startPage(pageNo, pageSize);
-        localMetaDataMapper.listMetaData(keyword);
+        localMetaDataMapper.listMetaData(keyword, userAddress,status);
         return localDataMetaPage;
     }
 
@@ -254,6 +254,21 @@ public class LocalDataServiceImpl implements LocalDataService {
         LocalMetaData localMetaData = localMetaDataMapper.checkResourceName(resourceName);
         return localMetaData != null ? true : false;
     }
+
+    @Override
+    public List<LocalMetaData> listUnBindMetaData(String keyword, String userAddress) {
+        List<LocalMetaData> list = localMetaDataMapper.listUnBindMetaData(keyword, userAddress);
+        return list;
+    }
+
+//    @Transactional
+//    @Override
+//    public void saveAndUp(LocalMetaData localMetaData) {
+//        //1.先保存之后返回数据id
+//        int id = this.addLocalMetaData(localMetaData);
+//        //2.上架元数据到数据中心
+//        this.up(id);
+//    }
 
     /**
      * 解析列信息

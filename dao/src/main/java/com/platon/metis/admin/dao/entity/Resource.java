@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Objects;
+
 /**
  * @Author liushuyu
  * @Date 2022/3/16 4:56
@@ -42,4 +44,17 @@ public class Resource {
     //父资源ID,如果没有父资源ID，则设置0
     @ApiModelProperty(value = "父资源ID,如果没有父资源ID，则设置0")
     private Integer parentId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resource resource = (Resource) o;
+        return Objects.equals(id, resource.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

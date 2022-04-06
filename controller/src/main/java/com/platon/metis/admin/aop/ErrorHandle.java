@@ -2,7 +2,6 @@ package com.platon.metis.admin.aop;
 
 import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.dto.JsonResponse;
-import com.platon.metis.admin.enums.ResponseCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -32,12 +31,13 @@ public class ErrorHandle {
 
             errorMessage.add(error.getField() + "_" + error.getDefaultMessage());
         }
-        return JsonResponse.fail(ResponseCodeEnum.FAIL, "method argument invalid");
+        return JsonResponse.fail("method argument invalid");
     }
 
     @ExceptionHandler(SQLException.class)
-    public JsonResponse handleException(SQLException exception){
-        return JsonResponse.fail(ResponseCodeEnum.FAIL, "SQL error");
+    public JsonResponse handleSQLException(SQLException exception){
+        log.error("handleSQLException",exception);
+        return JsonResponse.fail("SQL error");
     }
 
 
@@ -50,6 +50,6 @@ public class ErrorHandle {
     @ExceptionHandler(Exception.class)
     public JsonResponse handleException(Exception exception){
         log.error("handleException", exception);
-        return JsonResponse.fail(ResponseCodeEnum.FAIL, "System internal error:" + exception.getMessage());
+        return JsonResponse.fail("System internal error:" + exception.getMessage());
     }
 }

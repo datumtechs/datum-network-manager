@@ -6,6 +6,7 @@ import com.platon.metis.admin.common.exception.MetadataResourceNameExists;
 import com.platon.metis.admin.common.exception.MetadataResourceNameIllegal;
 import com.platon.metis.admin.common.exception.ObjectNotFound;
 import com.platon.metis.admin.common.util.NameUtil;
+import com.platon.metis.admin.controller.BaseController;
 import com.platon.metis.admin.dao.LocalDataFileMapper;
 import com.platon.metis.admin.dao.LocalMetaDataColumnMapper;
 import com.platon.metis.admin.dao.LocalMetaDataMapper;
@@ -16,7 +17,6 @@ import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.metis.admin.dao.entity.Task;
 import com.platon.metis.admin.dao.enums.DataAddTypeEnum;
 import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
-import com.platon.metis.admin.dto.CommonPageReq;
 import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.*;
 import com.platon.metis.admin.dto.resp.LocalDataDetailResp;
@@ -35,8 +35,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -51,7 +51,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/data/")
 @Slf4j
-public class LocalDataController {
+public class LocalDataController extends BaseController {
 
     @Resource
     private LocalDataService localDataService;
@@ -66,36 +66,49 @@ public class LocalDataController {
     private LocalMetaDataMapper localMetaDataMapper;
     @Resource
     private LocalMetaDataColumnMapper localMetaDataColumnMapper;
-    /**
-     * 展示数据列表，带分页
-     */
-    @ApiOperation(value = "数据列表分页查询")
-    @PostMapping("listLocalMetaData")
-    public JsonResponse<List<LocalMetaData>> listMetaData(@RequestBody @Validated CommonPageReq req){
-        Page<LocalMetaData> localMetaDataPage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(),null);
 
+//    /**
+//     * 展示数据列表，带分页
+//     */
+//    @ApiOperation(value = "数据列表分页查询")
+//    @PostMapping("/listLocalMetaData")
+//    public JsonResponse<List<LocalMetaData>> listMetaData(@RequestBody @Validated LocalDataListMetaDataReq req, HttpSession session) {
+//        String userAddress = getCurrentUserAddress(session);
+//        Page<LocalMetaData> localMetaDataPage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(), null, userAddress,req.getStatus());
+//        return JsonResponse.page(localMetaDataPage);
+//    }
+
+    /**
+     * 根据关键字查询钱包自身的元数据列表摘要信息
+     */
+    @ApiOperation(value = "数据列表关键字查询")
+    @PostMapping("/listLocalMetaDataByKeyword")
+    public JsonResponse<List<LocalMetaData>> listLocalMetaDataByKeyword(@RequestBody @Validated LocalDataMetaDataListByKeyWordReq req, HttpSession session) {
+        String userAddress = getCurrentUserAddress(session);
+        Page<LocalMetaData> localMetaDataPage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(), req.getKeyword(), userAddress,req.getStatus());
         return JsonResponse.page(localMetaDataPage);
     }
 
     /**
-     * 根据关键字查询机构自身的元数据列表摘要信息
+     * 根据关键字查询钱包自身的元数据列表摘要信息，状态为未绑定凭证Id的数据
      */
-    @ApiOperation(value = "数据列表关键字查询")
-    @PostMapping("listLocalMetaDataByKeyword")
-    public JsonResponse<List<LocalMetaData>> listLocalMetaDataByKeyword(@RequestBody @Validated LocalDataMetaDataListByKeyWordReq req){
-        Page<LocalMetaData> localMetaDataPage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(),req.getKeyword());
-        return JsonResponse.page(localMetaDataPage);
+    @ApiOperation(value = "未绑定凭证Id数据列表关键字查询")
+    @PostMapping("/listUnBindLocalMetaDataByKeyword")
+    public JsonResponse<List<LocalMetaData>> listUnBindLocalMetaDataByKeyword(@RequestBody @Validated LocalDataUnBindMetaDataListByKeyWordReq req, HttpSession session) {
+        String userAddress = getCurrentUserAddress(session);
+        List<LocalMetaData> localMetaDataPage = localDataService.listUnBindMetaData(req.getKeyword(), userAddress);
+        return JsonResponse.success(localMetaDataPage);
     }
 
 
     /**
      * 根据数据id查询数据参与的任务信息列表
      */
-    @ApiOperation(value = "数据参与的任务信息列表", notes="返回数据的每个task中，包含如下的动态字段：</br>taskSponsor, powerProvider, dataProvider, resultConsumer, algoProvider </br>当这些字段值等于1时表示本组织在任务中的相应角色")
-    @PostMapping("listTaskByMetaDataId")
-    public JsonResponse<List<Task>> listTaskByMetaDataId(@RequestBody @Validated LocalDataJoinTaskListReq req){
+    @ApiOperation(value = "数据参与的任务信息列表", notes = "返回数据的每个task中，包含如下的动态字段：</br>taskSponsor, powerProvider, dataProvider, resultConsumer, algoProvider </br>当这些字段值等于1时表示本组织在任务中的相应角色")
+    @PostMapping("/listTaskByMetaDataId")
+    public JsonResponse<List<Task>> listTaskByMetaDataId(@RequestBody @Validated LocalDataJoinTaskListReq req) {
         Page<Task> localDataJoinTaskPage = taskService.listTaskByIdentityIdAndMetaDataIdWithRole(LocalOrgCache.getLocalOrgIdentityId(), req.getMetaDataId(), req.getPageNumber(), req.getPageSize());
-        return JsonResponse.page(localDataJoinTaskPage,localDataJoinTaskPage);
+        return JsonResponse.page(localDataJoinTaskPage, localDataJoinTaskPage);
     }
 
 
@@ -107,11 +120,11 @@ public class LocalDataController {
      */
     @ApiOperation(value = "导入文件")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "hasTitle",value = "是否包含表头",required = true,paramType = "query",example = "true"),
+            @ApiImplicitParam(name = "hasTitle", value = "是否包含表头", required = true, paramType = "query", example = "true"),
     })
-    @PostMapping("uploadFile")
+    @PostMapping("/uploadFile")
     public JsonResponse<LocalDataImportFileResp> importFile(MultipartFile file,
-                                                        @Validated @NotNull(message = "hasTitle不为空")Boolean hasTitle) throws IOException {
+                                                            @Validated @NotNull(message = "hasTitle不为空") Boolean hasTitle) {
         //校验文件
         LocalDataFile localDataFile = localDataService.uploadFile(file, hasTitle);
         LocalDataImportFileResp resp = LocalDataImportFileResp.from(localDataFile);
@@ -119,28 +132,27 @@ public class LocalDataController {
     }
 
 
-
     /**
      * 元数据添加：
      * 在添加元数据时，需要把元数据信息存入local_meta_data表，并把全量的列信息存入local_meta_data_column表中（带visible）。
      */
     @ApiOperation(value = "添加数据/另存为新数据")
-    @PostMapping("addLocalMetaData")
-    public JsonResponse addLocalMetaData(@RequestBody @Validated AddLocalMetaDataReq req){
-        int count = 0;
+    @PostMapping("/addLocalMetaData")
+    public JsonResponse addLocalMetaData(@RequestBody @Validated AddLocalMetaDataReq req, HttpSession session) {
+        String userAddress = getCurrentUserAddress(session);
         //判断数据添加类型
-        if(req.getAddType() != DataAddTypeEnum.ADD.getType() && req.getAddType() != DataAddTypeEnum.ADD_AGAIN.getType()){
+        if (req.getAddType() != DataAddTypeEnum.ADD.getType() && req.getAddType() != DataAddTypeEnum.ADD_AGAIN.getType()) {
             log.error("AddLocalMetaDataReq.type error:{}", req.getAddType());
             throw new ArgumentException();
         }
         //判断格式是否对
-        if(!NameUtil.isValidName(req.getResourceName())){
+        if (!NameUtil.isValidName(req.getResourceName())) {
             log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
             throw new MetadataResourceNameIllegal();
         }
         //判断是否重复
         boolean exist = localDataService.isExistResourceName(req.getResourceName());
-        if(exist){
+        if (exist) {
             log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
             throw new MetadataResourceNameExists();
         }
@@ -154,6 +166,7 @@ public class LocalDataController {
         localMetaData.setIndustry(req.getIndustry());
         localMetaData.setMetaDataName(req.getResourceName());
         localMetaData.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());//添加数据状态为created
+        localMetaData.setOwner(userAddress);
 
         localMetaData.setLocalMetaDataColumnList(req.getLocalMetaDataColumnList());
 
@@ -161,6 +174,41 @@ public class LocalDataController {
 
         return JsonResponse.success();
     }
+
+//    @ApiOperation(value = "元数据保存并上架")
+//    @PostMapping("/localMetaDataSaveAndUp")
+//    public JsonResponse localMetaDataSaveAndUp(@RequestBody @Validated AddLocalMetaDataReq req, HttpSession session) {
+//        String userAddress = getCurrentUserAddress(session);
+//        //判断数据添加类型
+//        if (req.getAddType() != DataAddTypeEnum.ADD.getType() && req.getAddType() != DataAddTypeEnum.ADD_AGAIN.getType()) {
+//            log.error("AddLocalMetaDataReq.type error:{}", req.getAddType());
+//            throw new ArgumentException();
+//        }
+//        //判断格式是否对
+//        if (!NameUtil.isValidName(req.getResourceName())) {
+//            log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
+//            throw new MetadataResourceNameIllegal();
+//        }
+//        //判断是否重复
+//        boolean exist = localDataService.isExistResourceName(req.getResourceName());
+//        if (exist) {
+//            log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
+//            throw new MetadataResourceNameExists();
+//        }
+//
+//        LocalDataFile localDataFile = new LocalDataFile();
+//        BeanUtils.copyProperties(req, localDataFile);
+//        LocalMetaData localMetaData = new LocalMetaData();
+//        localMetaData.setFileId(req.getFileId());
+//        localMetaData.setRemarks(req.getRemarks());
+//        localMetaData.setIndustry(req.getIndustry());
+//        localMetaData.setMetaDataName(req.getResourceName());
+//        localMetaData.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());//添加数据状态为created
+//        localMetaData.setOwner(userAddress);
+//        localMetaData.setLocalMetaDataColumnList(req.getLocalMetaDataColumnList());
+//        localDataService.saveAndUp(localMetaData);
+//        return JsonResponse.success();
+//    }
 
     /*private List<LocalMetaDataColumn> visibleLocalDataColumns(List<LocalDataFileColumn> localDataFileColumnList){
         List<LocalMetaDataColumn> localMetaDataColumnList = new ArrayList<>();
@@ -179,19 +227,18 @@ public class LocalDataController {
     }*/
 
 
-
     /**
      * 查看元数据详情
      */
     @ApiOperation(value = "查看元数据详情")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "id",value = "元数据db key",required = true,paramType = "query",example = "1"),
+            @ApiImplicitParam(name = "id", value = "元数据db key", required = true, paramType = "query", example = "1"),
     })
-    @GetMapping("localMetaDataInfo")
-    public JsonResponse<LocalMetaData> detail(@Validated @NotNull(message = "id不为空") Integer id){
+    @GetMapping("/localMetaDataInfo")
+    public JsonResponse<LocalMetaData> detail(@Validated @NotNull(message = "id不为空") Integer id) {
         //查询localMetaData，并查询出taskCount放入动态字段
         LocalMetaData localMetaData = localMetaDataMapper.findWithTaskCount(id);
-        if(localMetaData==null){
+        if (localMetaData == null) {
             throw new ObjectNotFound();
         }
 
@@ -223,8 +270,8 @@ public class LocalDataController {
      * 修改数据信息
      */
     @ApiOperation(value = "修改元数据信息")
-    @PostMapping("updateLocalMetaData")
-    public JsonResponse update(@RequestBody @Validated LocalDataUpdateReq req){
+    @PostMapping("/updateLocalMetaData")
+    public JsonResponse update(@RequestBody @Validated LocalDataUpdateReq req) {
         LocalMetaData localMetaData = new LocalMetaData();
         localMetaData.setRemarks(req.getRemarks());
         localMetaData.setIndustry(req.getIndustry());
@@ -240,10 +287,10 @@ public class LocalDataController {
      * 删除源文件，当前版本直接真删除，包括元数据
      */
     @ApiOperation(value = "元数据操作：上架、下架和删除")
-    @PostMapping("localMetaDataOp")
-    public JsonResponse localMetaDataOp(@RequestBody @Validated LocalDataActionReq req){
+    @PostMapping("/localMetaDataOp")
+    public JsonResponse localMetaDataOp(@RequestBody @Validated LocalDataActionReq req) {
         String action = req.getAction();
-        switch (action){
+        switch (action) {
             case "-1"://删除，软删除，status=4
                 localDataService.delete(req.getId());
                 break;
@@ -265,11 +312,11 @@ public class LocalDataController {
      */
     @ApiOperation(value = "源文件下载")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "id",value = "文件id",required = true,paramType = "query",example = "1"),
+            @ApiImplicitParam(name = "id", value = "文件id", required = true, paramType = "query", example = "1"),
     })
-    @GetMapping("download")
-    public void downLoad(HttpServletResponse response, @Validated @NotNull(message = "id不为空") Integer id){
-        localDataService.downLoad(response,id);
+    @GetMapping("/download")
+    public void downLoad(HttpServletResponse response, @Validated @NotNull(message = "id不为空") Integer id) {
+        localDataService.downLoad(response, id);
     }
 
     /**
@@ -277,17 +324,17 @@ public class LocalDataController {
      */
     @ApiOperation(value = "校验元数据名称是否合法")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "resourceName",value = "元数据名称",required = true,paramType = "query",example = "filename"),
+            @ApiImplicitParam(name = "resourceName", value = "元数据名称", required = true, paramType = "query", example = "filename"),
     })
-    @PostMapping("checkResourceName")
-    public JsonResponse checkResourceName(String resourceName){
+    @PostMapping("/checkResourceName")
+    public JsonResponse checkResourceName(String resourceName) {
         //判断格式是否对
-        if(!NameUtil.isValidName(resourceName)){
+        if (!NameUtil.isValidName(resourceName)) {
             return JsonResponse.fail(new MetadataResourceNameIllegal());
         }
         //判断是否重复
         boolean exist = localDataService.isExistResourceName(resourceName);
-        if(exist){
+        if (exist) {
             return JsonResponse.fail(new MetadataResourceNameExists());
         }
         return JsonResponse.success();

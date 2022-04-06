@@ -6,12 +6,12 @@
         <result column="user_name" jdbcType="VARCHAR" property="userName"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime"/>
+        <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime"/>
         <result column="is_admin" jdbcType="INTEGER" property="isAdmin"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, user_name, `address`, `status`, create_time, update_time,is_admin
+        id, user_name, `address`, `status`, rec_create_time, rec_update_time,is_admin
     </sql>
     <select id="selectByAddress" resultMap="BaseResultMap">
         select
@@ -21,8 +21,8 @@
     </select>
 
     <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.SysUser">
-        insert into sys_user (user_name, address, status, create_time, update_time, is_admin)
-        values (#{user_name}, #{address}, #{status}, #{createTime}, #{updateTime}, #{isAdmin})
+        insert into sys_user (user_name, address, status, rec_create_time, rec_update_time, is_admin)
+        values (#{userName}, #{address}, #{status}, #{recCreateTime}, #{recUpdateTime}, #{isAdmin})
     </insert>
 
     <!-- 如果数据库只剩下一个用户，则将其设置为管理员用户-->
@@ -39,6 +39,13 @@
             status = #{status},
             is_admin = #{isAdmin}
         where address = #{address}
+    </update>
+
+    <update id="insertOrUpdateToAdmin">
+        insert into sys_user (user_name, address, status, rec_create_time, rec_update_time, is_admin)
+        values (#{userName}, #{address}, #{status}, #{recCreateTime}, #{recUpdateTime}, #{isAdmin})
+        on duplicate key
+        update is_admin = 1
     </update>
 
 </mapper>

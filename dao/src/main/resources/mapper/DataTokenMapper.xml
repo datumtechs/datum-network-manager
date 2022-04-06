@@ -6,49 +6,57 @@
         <result column="address" jdbcType="VARCHAR" property="address" />
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+        <result column="init" jdbcType="VARCHAR" property="init" />
         <result column="total" jdbcType="VARCHAR" property="total" />
         <result column="decimal" jdbcType="INTEGER" property="decimal" />
         <result column="desc" jdbcType="VARCHAR" property="desc" />
         <result column="owner" jdbcType="VARCHAR" property="owner" />
-        <result column="agent" jdbcType="VARCHAR" property="agent" />
         <result column="meta_data_id" jdbcType="INTEGER" property="metaDataId" />
         <result column="holder" jdbcType="INTEGER" property="holder" />
-        <result column="pricing_status" jdbcType="INTEGER" property="pricingStatus" />
-        <result column="publish_status" jdbcType="INTEGER" property="publishStatus" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="publish_nonce" jdbcType="VARCHAR" property="publishNonce" />
         <result column="publish_hash" jdbcType="VARCHAR" property="publishHash" />
+        <result column="up_nonce" jdbcType="VARCHAR" property="upNonce" />
         <result column="up_hash" jdbcType="VARCHAR" property="upHash" />
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
+        <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,address,`name`,symbol,total,`decimal`,`desc`,`owner`,agent,meta_data_id,holder,pricing_status,publish_status,`publish_hash`,up_hash,create_time,update_time
+        id,address,`name`,symbol,init,total,`decimal`,`desc`,`owner`,meta_data_id,holder,`status`,`publish_nonce`,`publish_hash`,up_nonce,up_hash,rec_create_time,rec_update_time
     </sql>
 
-    <select id="selectByPricingStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPricingStatus" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from data_token
         where
         <choose>
             <when test="status == 1">
-                pricing_status = 3
+                `status` = 6
             </when>
             <otherwise>
-                pricing_status in (0,1,2)
+                `status` in (0,1,2,3,4,5)
             </otherwise>
         </choose>
+        and `owner` = #{address}
         order by id desc
     </select>
 
     <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id">
-        insert into data_token (address,`name`,symbol,total,`desc`,`owner`,agent,meta_data_id,pricing_status,publish_status,`publish_hash`)
-        values(#{address},#{name},#{symbol},#{total},#{desc},#{owner},#{agent},#{metaDataId},#{pricingStatus},#{publishStatus},#{publishHash})
+        insert into data_token (address,`name`,symbol,init,total,`desc`,`owner`,meta_data_id,status,`publish_nonce`,``publish_hash`)
+        values(#{address},#{name},#{symbol},#{init},#{total},#{desc},#{owner},#{metaDataId},#{status},#{publishNonce},#{publishHash})
     </insert>
 
     <update id="updatePricingStatus">
         update data_token
-        set up_hash = #{upHash},pricing_status = #{pricingStatus}
+        set up_nonce = #{upNonce},up_hash = #{upHash},status = #{status}
         where id = #{id}
     </update>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from data_token
+        where id = #{dataTokenId}
+    </select>
 
 </mapper>

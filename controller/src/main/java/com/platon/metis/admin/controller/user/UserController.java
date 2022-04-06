@@ -3,6 +3,7 @@ package com.platon.metis.admin.controller.user;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.platon.metis.admin.common.exception.SysException;
 import com.platon.metis.admin.common.util.WalletSignUtil;
 import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.cache.LocalOrgCache;
@@ -16,7 +17,6 @@ import com.platon.metis.admin.dto.req.UserLoginReq;
 import com.platon.metis.admin.dto.req.UserUpdateAdminReq;
 import com.platon.metis.admin.dto.resp.LoginNonceResp;
 import com.platon.metis.admin.dto.resp.LoginResp;
-import com.platon.metis.admin.enums.ResponseCodeEnum;
 import com.platon.metis.admin.service.LocalOrgService;
 import com.platon.metis.admin.service.ResourceService;
 import com.platon.metis.admin.service.UserService;
@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,7 @@ public class UserController {
     @Resource
     private ResourceService resourceService;
 
-    @GetMapping("getLoginNonce")
+    @GetMapping("/getLoginNonce")
     @ApiOperation(value = "获取登录Nonce", notes = "获取登录Nonce")
     public JsonResponse<LoginNonceResp> getLoginNonce(HttpSession session) {
         String nonce = UUID.randomUUID().toString().replace("-", "").toLowerCase();
@@ -70,7 +71,7 @@ public class UserController {
         return JsonResponse.success(resp);
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     @ApiOperation(value = "用户登录", notes = "用户登录")
     public JsonResponse<LoginResp> login(HttpSession session, @RequestBody @Validated UserLoginReq req) {
         String hrpAddress = req.getHrpAddress();
@@ -78,7 +79,7 @@ public class UserController {
         String message = req.getSignMessage();
         String sign = req.getSign();
         // 1.检查nonce
-        checkNonceValidity(session,message);
+        checkNonceValidity(session, message);
         // 2.登录签名校验
         verifySign(hrpAddress, message, sign);
         //3.如果用户存在，则返回旧的用户信息，如果不存在则保存为新用户
@@ -89,22 +90,27 @@ public class UserController {
         //4.设置用户会话
         session.setAttribute(ControllerConstants.USER_INFO, user);//将登录信息存入session中
         //5.获取用户权限,现在默认只有两个角色，一个是管理员，一个是非管理员，管理员默认有所有的权限
-        List<com.platon.metis.admin.dao.entity.Resource> resourceList = resourceService.getResourceListByUserId(user.getIsAdmin());
+        Set<com.platon.metis.admin.dao.entity.Resource> resourceList = resourceService.getResourceListByUserId(user.getIsAdmin());
         //6.将用户权限存入session中
         List<String> urlList = resourceList.stream()
                 .filter(resource -> resource.getType() == 1)
                 .map(com.platon.metis.admin.dao.entity.Resource::getValue)
+                .distinct()
                 .collect(Collectors.toList());
-        session.setAttribute(ControllerConstants.USER_RESOURCE, urlList);//将登录信息存入session中
+        session.setAttribute(ControllerConstants.USER_URL_RESOURCE, urlList);//将登录信息存入session中
 
         LoginResp resp = new LoginResp();
         resp.setUserName(user.getUserName());
         resp.setAddress(user.getAddress());
         resp.setStatus(user.getStatus());
         resp.setIsAdmin(user.getIsAdmin());
-        resp.setResourceList(resourceList);
+        //7.将菜单和按钮的权限控制传递给前端
+        List<com.platon.metis.admin.dao.entity.Resource> uiResourceList = resourceList.stream()
+                .filter(resource -> resource.getType() == 2 || resource.getType() == 3)
+                .distinct()
+                .collect(Collectors.toList());
+        resp.setResourceList(uiResourceList);
 
-        //TODO 此部分是否是只有管理员才需要这些信息
         LocalOrg localOrg = localOrgService.getLocalOrg();
         if (localOrg == null) {
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
@@ -119,14 +125,15 @@ public class UserController {
                 resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_PROFILE.getLevel());
             }
         }
+        //登录成功，将nonce重置
+        session.setAttribute(ControllerConstants.NONCE, null);
         return JsonResponse.success(resp);
     }
 
     private void checkNonceValidity(HttpSession session, String signMessage) {
         String nonce = (String) session.getAttribute(ControllerConstants.NONCE);
         if (StrUtil.isBlank(nonce)) {
-            //TODO 请重新获取nonce，nonce已过期
-            throw new RuntimeException();
+            throw new SysException("Please get nonce again. Nonce has expired!");
         }
         SignMessageDto signMessageDto;
         try {
@@ -134,14 +141,11 @@ public class UserController {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             signMessageDto = objectMapper.readValue(signMessage, SignMessageDto.class);
         } catch (Exception e) {
-            throw new RuntimeException();
-//            log.error(ErrorMsg.PARAM_ERROR.getMsg(), e);
-//            throw new BusinessException(RespCodeEnum.PARAM_ERROR, ErrorMsg.PARAM_ERROR.getMsg());
+            throw new SysException(e.getMessage(),e);
         }
         String key = signMessageDto.getMessage().getKey();
         if (!StrUtil.equals(nonce, key)) {
-            //TODO 请重新获取nonce，nonce不正确
-            throw new RuntimeException();
+            throw new SysException("Please get nonce again. Nonce is incorrect!");
         }
     }
 
@@ -151,15 +155,10 @@ public class UserController {
             String signMessage = StrUtil.replace(message, "\\\"", "\"");
             flg = WalletSignUtil.verifyTypedDataV4(signMessage, sign, hrpAddress);
         } catch (Exception e) {
-            log.error("User login signature error,error msg:{}", e.getMessage(), e);
-            //TODO
-            throw new RuntimeException();
-//            throw new BusinessException(RespCodeEnum.BIZ_FAILED, ErrorMsg.USER_SIGN_ERROR.getMsg());
+            throw new SysException("User login signature error",e);
         }
         if (!flg) {
-            //TODO 校验签名错误，请重新签名
-            log.error("User login signature error");
-//            throw new BusinessException(RespCodeEnum.BIZ_FAILED, ErrorMsg.USER_SIGN_ERROR.getMsg());
+            throw new SysException("User login signature error!");
         }
     }
 
@@ -185,15 +184,13 @@ public class UserController {
     @ApiOperation(value = "替换管理员")
     @PostMapping("/updateAdmin")
     public JsonResponse updateAdmin(HttpSession session, @RequestBody @Validated UserUpdateAdminReq req) {
-        SysUser user = (SysUser)session.getAttribute(ControllerConstants.USER_INFO);
+        SysUser user = (SysUser) session.getAttribute(ControllerConstants.USER_INFO);
         //获取最新的用户信息
         user = userService.getByAddress(user.getAddress());
-        if(user.getIsAdmin() != 1){//不是管理员则提示错误
-            session.setAttribute(ControllerConstants.USER_INFO,user);
-            return JsonResponse.fail(ResponseCodeEnum.FAIL, "当前用户不是管理员，替换失败");
+        if (user.getIsAdmin() != 1) {//不是管理员则提示错误
+            return JsonResponse.fail("The current user is not an administrator, the replacement failed!");
         }
-        user.setAddress(req.getNewAddress());
-        userService.updateByAddress(user);
+        userService.updateAdmin(user,req.getNewAddress());
         if (session != null) {//修改成功后，将session致为失效，让用户重新登录
             session.invalidate();
         }
@@ -225,7 +222,7 @@ public class UserController {
         LocalOrg localOrg = LocalOrgCache.getLocalOrgInfo();
         //只有退网之后才能修改组织名称
         if (localOrg.getStatus() == LocalOrg.Status.CONNECTED.getCode()) {
-            return JsonResponse.fail(ResponseCodeEnum.FAIL, "组织未退网，不能修改组织信息");
+            return JsonResponse.fail("Organization information cannot be modified because the organization has not been removed from the network!");
         }
         if (StringUtils.equals(req.getName(), localOrg.getName())
                 && StringUtils.equals(req.getImageUrl(), localOrg.getImageUrl())

@@ -1,4 +1,4 @@
-package com.platon.metis.admin.dto.resp;
+package com.platon.metis.admin.dto.req;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,18 +8,20 @@ import lombok.ToString;
 
 /**
  * @Author liushuyu
- * @Date 2022/3/28 21:29
+ * @Date 2022/4/2 18:12
  * @Version
  * @Desc
  */
-
 
 @Getter
 @Setter
 @ToString
 @ApiModel
-public class NoAttributeDataTokenGetUpConfigResp {
+public class SystemUpdateConfigReq {
 
-    @ApiModelProperty("dex的路由合约地址")
-    private String routerToken;
+    @ApiModelProperty("配置的键")
+    private String key;
+
+    @ApiModelProperty("配置的值")
+    private String value;
 }

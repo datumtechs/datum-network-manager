@@ -43,12 +43,12 @@ public class SysUser implements Serializable {
     /**
      * 最后更新时间
      */
-    private LocalDateTime updateTime;
+    private LocalDateTime recUpdateTime;
 
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private LocalDateTime recCreateTime;
 
     private static final long serialVersionUID = 1L;
 }

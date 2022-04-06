@@ -10,7 +10,7 @@ public class ControllerConstants {
 
     public static String USER_INFO = "userInfo";
 
-    public static String USER_RESOURCE = "userResource";
+    public static String USER_URL_RESOURCE = "userUrlResource";
 
     public static String NONCE = "nonce";
 }

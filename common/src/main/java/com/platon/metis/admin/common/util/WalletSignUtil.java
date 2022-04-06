@@ -1,7 +1,6 @@
 package com.platon.metis.admin.common.util;
 
 import cn.hutool.core.util.StrUtil;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -95,31 +94,7 @@ public class WalletSignUtil {
     }
 
     public static void main(String[] args) {
-//        String uuid = "834733e3fc0f4c95a191aeb1ceed17eb";
-//        //登录签名
-//        String json = "{\"domain\":{\"name\":\"Metis\"},\"message\":{\"key\":\"{}\",\"desc\":\"Welcome to Metis!\"},\"primaryType\":\"Login\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"}],\"Login\":[{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"desc\",\"type\":\"string\"}]}}";
-//        //启动工作流签名
-////        String json = "{\"domain\":{\"name\":\"Metis\"},\"message\":{\"address\":\"d6a151c0703d47e6baa068700e8c5381\"},\"primaryType\":\"sign\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"}],\"sign\":[{\"name\":\"key\",\"type\":\"string\"}]}}";
-//
-//        try {
-//            json = StrUtil.format(json, uuid);
-//            System.out.println("加密的json字符串为>>>" + json);
-//            Credentials credentials = Credentials.create("c065dc203f33c3fbe003fed50d917898cc69b09c133bb109257d8cd21841672a");
-//            System.out.println("钱包hrp地址>>>" + credentials.getAddress());
-//            System.out.println("钱包0x地址>>>" + AddressChangeUtils.convert0xAddress(credentials.getAddress()));
-//
-//            System.out.println("签名结果>>>" + signTypedDataV4(json, credentials.getEcKeyPair()));
-//
-//            System.out.println("验证签名结果>>>" + verifyTypedDataV4(
-//                    json,
-//                    "0xfb71e85fb91026933d0057c263b549197e4d93e8a955728892f3ae9cd4cc6c4973c235ecc4dc2bf6927006b53f42bc3f56110649f040357489f41b3cd9c10af71c",
-//                    "lax1j0q78v8g9l94pkwyk3tgk0vfy5ukdz3q2e7wqa"));
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        createLoginSign("10e54fe98435425ea126e66d2266b734",Credentials.create("c065dc203f33c3fbe003fed50d917898cc69b09c133bb109257d8cd21841672a"));
+        createLoginSign("47fe1ea538214f889f7d19d5a9505b41",Credentials.create("c065dc203f33c3fbe003fed50d917898cc69b09c133bb109257d8cd21841672a"));
     }
 
     /**
@@ -136,31 +111,10 @@ public class WalletSignUtil {
             log.info("signMessage>>>" + json);
             String sign = signTypedDataV4(json, credentials.getEcKeyPair());
             log.info("sign>>>" + sign);
-
-            System.out.println("#################");
-            System.out.println("##############" + credentials.getAddress());
-            System.out.println("#############" + json);
-            System.out.println("############" + sign);
-            verifySign1(credentials.getAddress(),json,sign);
-
             return sign;
         } catch (Exception e) {
             log.error("创建登录签名失败！",e);
         }
         return null;
-    }
-
-
-    private static void verifySign1(String hrpAddress, String authenticateSignMessage, String authenticateSign) {
-        boolean flg = false;
-        try {
-            String signMessage = StrUtil.replace(authenticateSignMessage, "\\\"", "\"");
-            flg = WalletSignUtil.verifyTypedDataV4(signMessage, authenticateSign, hrpAddress);
-        } catch (Exception e) {
-            log.error("User login signature error,error msg:{}", e.getMessage(), e);
-        }
-        if (!flg) {
-            log.error("User login signature error");
-        }
     }
 }

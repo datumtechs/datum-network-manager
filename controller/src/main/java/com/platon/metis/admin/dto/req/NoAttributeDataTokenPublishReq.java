@@ -31,6 +31,10 @@ public class NoAttributeDataTokenPublishReq {
     //符号
     private String symbol;
 
+    @ApiModelProperty("初始发行量，1. 输入必须为大于0的整数，2. 最大支持18位")
+    //初始发行量
+    private String init;
+
     @ApiModelProperty("总发行量，1. 输入必须为大于0的整数，2. 最大支持18位")
     //总发行量
     private String total;
@@ -48,4 +52,8 @@ public class NoAttributeDataTokenPublishReq {
     @ApiModelProperty("交易hash")
     //交易hash
     private String hash;
+
+    @ApiModelProperty("交易nonce")
+    //交易nonce
+    private String nonce;
 }

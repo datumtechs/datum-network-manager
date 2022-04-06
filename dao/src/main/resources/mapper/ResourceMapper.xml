@@ -19,4 +19,13 @@
         where r.id in (rr.resource_id)
     </select>
 
+    <select id="selectByResourceIdList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from resource
+        where id in
+              <foreach collection="resourceIdList" item="id" separator="," open="(" close=")">
+                  #{id}
+              </foreach>
+    </select>
+
 </mapper>

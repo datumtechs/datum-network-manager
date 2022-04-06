@@ -1,6 +1,7 @@
 package com.platon.metis.admin.service.impl;
 
 import com.platon.metis.admin.common.exception.OrgInfoExists;
+import com.platon.metis.admin.common.exception.SysException;
 import com.platon.metis.admin.common.util.IDUtil;
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.SysUserMapper;
@@ -64,16 +65,17 @@ public class UserServiceImpl implements UserService {
         user.setUserName(hexAddress);
         user.setAddress(hexAddress);
         user.setStatus(1);
+        //设置角色，默认0是普通用户，默认1是管理员
         user.setIsAdmin(0);
         //1.新增用户
         int insert = sysUserMapper.insert(user);
         if(insert == 0){
-            //TODO 插入失败
+            throw new SysException("Insert new user failed!");
         } else {
             //2.尝试设置为管理员
             int update = sysUserMapper.updateSingleUserToAdmin();
             if(update == 0){
-                //TODO 更新失败
+                throw new SysException("update to system admin failed!");
             } else {
                 user.setIsAdmin(1);
             }
@@ -81,13 +83,19 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
     @Override
-    public void updateByAddress(SysUser sysUser) {
-        int update = sysUserMapper.updateByAddress(sysUser);
-        if(update == 0){
-            //TODO 更新失败
-        }
-    }
+    public void updateAdmin(SysUser oldAdmin, String newAddress) {
+        SysUser user = new SysUser();
+        user.setUserName(newAddress);
+        user.setAddress(newAddress);
+        user.setStatus(1);
+        user.setIsAdmin(1);
+        //1.新增用户
+        sysUserMapper.insertOrUpdateToAdmin(user);
 
+        oldAdmin.setIsAdmin(0);
+        sysUserMapper.updateByAddress(oldAdmin);
+    }
 
 }

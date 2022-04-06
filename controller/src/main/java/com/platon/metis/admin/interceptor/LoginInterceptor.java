@@ -52,7 +52,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(user.getIsAdmin() == 1){
             return true;
         }
-        List<String> resourceList = (List<String>)session.getAttribute(ControllerConstants.USER_RESOURCE);
+        List<String> resourceList = (List<String>)session.getAttribute(ControllerConstants.USER_URL_RESOURCE);
         if(resourceList.contains(urlPath)){
             return true;
         }

@@ -8,7 +8,7 @@ import lombok.ToString;
 
 /**
  * @Author liushuyu
- * @Date 2022/3/24 20:28
+ * @Date 2022/4/1 15:40
  * @Version
  * @Desc
  */
@@ -18,17 +18,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel
-public class NoAttributeDataTokenUpReq {
+public class NoAttributeDataTokenGetPublishConfigReq {
 
-    @ApiModelProperty("dataToken的id")
-    //dataToken的id
+    @ApiModelProperty("元数据对应的dataTokenId，可以为空，为空则返回空数据")
     private Integer dataTokenId;
-
-    @ApiModelProperty("交易hash")
-    //交易hash
-    private String hash;
-
-    @ApiModelProperty("交易nonce")
-    //交易nonce
-    private String nonce;
 }

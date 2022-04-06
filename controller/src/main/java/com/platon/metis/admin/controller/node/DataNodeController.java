@@ -42,7 +42,7 @@ public class DataNodeController {
      * @return
      */
     @ApiOperation(value = "数据节点分页查询", httpMethod = "POST")
-    @PostMapping("listNode")
+    @PostMapping("/listNode")
     public JsonResponse <List<LocalDataNodeQueryResp>>listNode(@Validated @RequestBody NodePageReq req) {
         Page<LocalDataNode> localDataNodes = dataNodeService.listNode(req.getPageNumber(), req.getPageSize(), req.getKeyword());
         List<LocalDataNode> dataList = localDataNodes.getResult();
@@ -102,7 +102,7 @@ public class DataNodeController {
      * @throws Exception
      */
     @ApiOperation(value = "修改数据节点名称", httpMethod = "POST")
-    @PostMapping("updateNodeName")
+    @PostMapping("/updateNodeName")
     public JsonResponse updateNodeName(@Validated @RequestBody DataNodeUpdateReq dataNodeUpdateReq) {
         if(dataNodeUpdateReq == null || StringUtils.isBlank(dataNodeUpdateReq.getNodeId()) || StringUtils.isBlank(dataNodeUpdateReq.getNodeName())){
             throw new ArgumentException();

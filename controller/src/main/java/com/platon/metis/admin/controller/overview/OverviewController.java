@@ -21,6 +21,7 @@ import java.util.Map;
 
 /**
  * 系统首页相关接口
+ *
  * @Author liushuyu
  * @Date 2021/7/2 15:13
  * @Version
@@ -31,7 +32,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/overview")
 @Slf4j
-public class    OverviewController {
+public class OverviewController {
 
     @Resource
     private IndexService indexService;
@@ -66,31 +67,31 @@ public class    OverviewController {
 
     @ApiOperation(value = "查询本地计算资源占用情况")
     @GetMapping("/localPowerUsage")
-    public JsonResponse<UsedResourceResp> localPowerUsage(){
+    public JsonResponse<UsedResourceResp> localPowerUsage() {
         UsedResourceDTO usedResourceDTO = indexService.queryUsedTotalResource();
         return JsonResponse.success(usedResourceDTO);
     }
 
     @ApiOperation(value = "查询我发布的数据")
     @GetMapping("/localDataFileStatsTrendMonthly")
-    public JsonResponse<List<StatsPowerTrendDTO>> localDataFileStatsTrendMonthly(){
+    public JsonResponse<List<StatsPowerTrendDTO>> localDataFileStatsTrendMonthly() {
         List<StatsPowerTrendDTO> dataPowerList = indexService.listLocalDataFileStatsTrendMonthly();
         return JsonResponse.success(dataPowerList);
     }
 
     @ApiOperation(value = "查询我发布的算力")
     @GetMapping("/localPowerStatsTrendMonthly")
-    public JsonResponse<List<StatsPowerTrendDTO>> localPowerStatsTrendMonthly(){
+    public JsonResponse<List<StatsPowerTrendDTO>> localPowerStatsTrendMonthly() {
         List<StatsPowerTrendDTO> dataPowerList = indexService.listLocalPowerStatsTrendMonthly();
         return JsonResponse.success(dataPowerList);
     }
 
     @ApiOperation(value = "查询我的计算任务概况")
     @GetMapping("/myTaskOverview")
-    public JsonResponse<MyTaskStatsResp> queryMyCalculateTaskStats(){
+    public JsonResponse<MyTaskStatsResp> queryMyCalculateTaskStats() {
         List<Map<String, Object>> list = indexService.queryMyCalculateTaskStats();
         List<MyTaskStatsResp> respList = new ArrayList<>();
-        for(Map<String, Object> map : list){
+        for (Map<String, Object> map : list) {
             MyTaskStatsResp resp = new MyTaskStatsResp();
             resp.setStatus(Integer.parseInt(map.get("status").toString()));
             resp.setStatusCount(Integer.parseInt(map.get("statusCount").toString()));
@@ -128,7 +129,7 @@ public class    OverviewController {
 
     @ApiOperation(value = "查询数据待授权列表")
     @GetMapping("/listDataAuthReqWaitingForApprove")
-    public JsonResponse<DataAuthReqDTO> listDataAuthReqWaitingForApprove(){
+    public JsonResponse<DataAuthReqDTO> listDataAuthReqWaitingForApprove() {
         List<DataAuthReqDTO> list = indexService.listDataAuthReqWaitingForApprove();
         return JsonResponse.success(list == null || list.size() == 0 ? new ArrayList<>() : list);
     }

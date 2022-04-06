@@ -38,6 +38,10 @@ public class DataToken {
     //符号
     private String symbol;
 
+    @ApiModelProperty("初始发行量")
+    //总发行量
+    private String init;
+
     @ApiModelProperty("总发行量")
     //总发行量
     private String total;
@@ -54,10 +58,6 @@ public class DataToken {
     //拥有者钱包地址
     private String owner;
 
-    @ApiModelProperty("代理钱包地址")
-    //代理钱包地址
-    private String agent;
-
     @ApiModelProperty("对应的metaDataId")
     //对应的metaDataId
     private Integer metaDataId;
@@ -66,60 +66,45 @@ public class DataToken {
     //持有人数量
     private long holder;
 
-    @ApiModelProperty("定价状态：0-未定价，1-定价中，2-定价失败，3-定价成功")
     /**
-     * 定价状态：0-未定价，1-定价中，2-定价失败，3-定价成功
-     * {@link PricingStatusEnum}
+     * 状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功
+     * {@link StatusEnum}
      */
-    private int pricingStatus;
+    @ApiModelProperty("状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功")
+    private int status;
 
-    /**
-     * 发布状态：0-发布中，1-发布失败，2-发布成功
-     * {@link PublishStatusEnum}
-     */
-    @ApiModelProperty("发布状态：0-发布中，1-发布失败，2-发布成功")
-    private int publishStatus;
+    @ApiModelProperty("发布合约的交易nonce")
+    private String publishNonce;
 
-    //发布发布中，发布失败，发布成功
     @ApiModelProperty("发布合约的交易hash")
     private String publishHash;
 
-    //上架中，上架失败，上架成功
+    @ApiModelProperty("上架dex的交易nonce")
+    private String upNonce;
+
     @ApiModelProperty("上架dex的交易hash")
     private String upHash;
 
     //创建时间
     @ApiModelProperty("创建时间")
-    private LocalDateTime createTime;
+    private LocalDateTime recCreateTime;
 
     //更新时间
     @ApiModelProperty("更新时间")
-    private LocalDateTime updateTime;
+    private LocalDateTime recUpdateTime;
 
     @Getter
-    public enum PricingStatusEnum {
-        UNPRICED(0,"未定价"),
-        PRICING(1,"定价中"),
-        PRICE_FAIL(2,"定价失败"),
-        PRICE_SUCCESS(3,"定价成功");
+    @ToString
+    public enum StatusEnum {
+        UNPUBLISH(0,"未发布"),
+        PUBLISHING(1,"发布中"),
+        PUBLISH_FAIL(2,"发布失败"),
+        PUBLISH_SUCCESS(3,"发布成功"),
+        PRICING(4,"定价中"),
+        PRICE_FAIL(5,"定价失败"),
+        PRICE_SUCCESS(6,"定价成功");
 
-        PricingStatusEnum(int status,String desc){
-            this.status = status;
-            this.desc = desc;
-        }
-
-        private int status;
-        private String desc;
-    }
-
-    @Getter
-    public enum PublishStatusEnum {
-        UNPUBLISH(0,"未定价"),
-        PUBLISHING(1,"定价中"),
-        PUBLISH_FAIL(2,"定价失败"),
-        PUBLISH_SUCCESS(3,"定价成功");
-
-        PublishStatusEnum(int status,String desc){
+        StatusEnum(int status,String desc){
             this.status = status;
             this.desc = desc;
         }

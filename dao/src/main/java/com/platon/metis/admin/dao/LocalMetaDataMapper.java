@@ -10,7 +10,7 @@ public interface LocalMetaDataMapper {
 
     int insert(LocalMetaData record);
 
-    List<LocalMetaData> listMetaData(@Param("keyword") String keyword);
+    List<LocalMetaData> listMetaData(@Param("keyword") String keyword, @Param("userAddress") String userAddress, @Param("status") int status);
 
     LocalMetaData selectByPrimaryKey(Integer id);
 
@@ -29,7 +29,10 @@ public interface LocalMetaDataMapper {
      */
     void updateStatusByMetaDataIdBatch(@Param("localMetaDataList") List<LocalMetaData> localMetaDataList);
 
-    int updateStatusById(@Param("id") Integer id, @Param("status")Integer status);
+    int updateStatusById(@Param("id") Integer id, @Param("status") Integer status);
 
-    int updateDataTokenIdById(@Param("id") Integer id, @Param("dataTokenId")Integer dataTokenId);
+    int updateDataTokenIdById(@Param("id") Integer id, @Param("dataTokenId") Integer dataTokenId);
+
+    List<LocalMetaData> listUnBindMetaData(@Param("keyword") String keyword, @Param("userAddress") String userAddress);
+
 }

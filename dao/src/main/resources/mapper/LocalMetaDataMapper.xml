@@ -13,10 +13,11 @@
     <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
     <result column="data_token_id" jdbcType="INTEGER" property="dataTokenId" />
+    <result column="owner" jdbcType="VARCHAR" property="owner" />
   </resultMap>
   <sql id="Base_Column_List">
     id, file_id, meta_data_id, meta_data_name, status, publish_time, remarks, industry, rec_create_time,
-    rec_update_time,data_token_id
+    rec_update_time,data_token_id,`owner`,data_token_id
   </sql>
 
 
@@ -62,16 +63,23 @@
     FROM local_meta_data lmd
     join local_data_file ldf on lmd.file_id = ldf.file_id
     left join (
-      select meta_data_id, count(task_id) task_count
-      from task_data_provider
-      GROUP BY meta_data_id) t on lmd.meta_data_id = t.meta_data_id
-    where lmd.status != 4
-    <if test="keyword != null and keyword != ''">
-        and lmd.meta_data_name like concat('%',#{keyword,jdbcType=VARCHAR},'%')
-    </if>
-    ORDER BY lmd.rec_update_time desc
+    select meta_data_id, count(task_id) task_count
+    from task_data_provider
+    GROUP BY meta_data_id) t on lmd.meta_data_id = t.meta_data_id
+    where
+          lmd.status != 4
+          and lmd.`owner` = #{userAddress}
+          <if test="status == 1">
+            and lmd.status == 9
+          </if>
+          <if test="status == 2">
+            and lmd.status in (0,1,3,5,2,7,8)
+          </if>
+          <if test="keyword != null and keyword != ''">
+            and lmd.meta_data_name like concat('%',#{keyword,jdbcType=VARCHAR},'%')
+          </if>
+    ORDER BY lmd.rec_create_time desc
   </select>
-
 
 
   <!-- 根据resourceName查询数据文件-->
@@ -87,14 +95,14 @@
     set status = 4
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    insert into local_meta_data (file_id, meta_data_id,
+
   <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-    meta_data_name, status, publish_time,
-      remarks, industry
+    insert into local_meta_data (file_id, meta_data_id,meta_data_name, status, publish_time,
+      remarks, industry,owner
       )
     values (#{fileId,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR},
       #{metaDataName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{publishTime,jdbcType=TIMESTAMP},
-      #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER}
+      #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER},#{owner}
       )
   </insert>
 
@@ -132,4 +140,14 @@
     set data_token_id = #{dataTokenId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="listUnBindMetaData" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from local_meta_data
+    where status != 4 and (data_token_id is null or data_token_id = '') and owner = #{userAddress}
+    <if test="keyword != null and keyword != ''">
+      and meta_data_name like concat('%',#{keyword,jdbcType=VARCHAR},'%')
+    </if>
+    ORDER BY rec_update_time desc
+  </select>
 </mapper>
