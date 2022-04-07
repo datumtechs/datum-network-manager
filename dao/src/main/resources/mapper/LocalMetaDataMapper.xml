@@ -70,7 +70,7 @@
           lmd.status != 4
           and lmd.`owner` = #{userAddress}
           <if test="status == 1">
-            and lmd.status == 9
+            and lmd.status = 9
           </if>
           <if test="status == 2">
             and lmd.status in (0,1,3,5,2,7,8)

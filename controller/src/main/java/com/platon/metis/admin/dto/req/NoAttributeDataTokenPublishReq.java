@@ -55,5 +55,5 @@ public class NoAttributeDataTokenPublishReq {
 
     @ApiModelProperty("交易nonce")
     //交易nonce
-    private String nonce;
+    private Integer nonce;
 }

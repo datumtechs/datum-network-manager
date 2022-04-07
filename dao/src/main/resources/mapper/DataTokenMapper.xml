@@ -14,9 +14,9 @@
         <result column="meta_data_id" jdbcType="INTEGER" property="metaDataId" />
         <result column="holder" jdbcType="INTEGER" property="holder" />
         <result column="status" jdbcType="INTEGER" property="status" />
-        <result column="publish_nonce" jdbcType="VARCHAR" property="publishNonce" />
+        <result column="publish_nonce" jdbcType="INTEGER" property="publishNonce" />
         <result column="publish_hash" jdbcType="VARCHAR" property="publishHash" />
-        <result column="up_nonce" jdbcType="VARCHAR" property="upNonce" />
+        <result column="up_nonce" jdbcType="INTEGER" property="upNonce" />
         <result column="up_hash" jdbcType="VARCHAR" property="upHash" />
         <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
         <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
@@ -53,10 +53,22 @@
         where id = #{id}
     </update>
 
+    <update id="updateStatus">
+        update data_token
+        set status = #{status}
+        where id = #{id}
+    </update>
+
     <select id="selectById" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from data_token
         where id = #{dataTokenId}
+    </select>
+
+    <select id="selectListByStatus" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from data_token
+        where status = #{status}
     </select>
 
 </mapper>

@@ -28,5 +28,9 @@ public interface DataTokenMapper {
      */
     void updatePricingStatus(DataToken dataToken);
 
+    void updateStatus(@Param("id") int id, @Param("status") int status);
+
     DataToken selectById(Integer dataTokenId);
+
+    List<DataToken> selectListByStatus(int status);
 }

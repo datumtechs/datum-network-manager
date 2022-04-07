@@ -74,13 +74,13 @@ public class DataToken {
     private int status;
 
     @ApiModelProperty("发布合约的交易nonce")
-    private String publishNonce;
+    private Integer publishNonce;
 
     @ApiModelProperty("发布合约的交易hash")
     private String publishHash;
 
     @ApiModelProperty("上架dex的交易nonce")
-    private String upNonce;
+    private Integer upNonce;
 
     @ApiModelProperty("上架dex的交易hash")
     private String upHash;

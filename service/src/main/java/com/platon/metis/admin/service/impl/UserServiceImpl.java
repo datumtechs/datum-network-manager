@@ -74,9 +74,7 @@ public class UserServiceImpl implements UserService {
         } else {
             //2.尝试设置为管理员
             int update = sysUserMapper.updateSingleUserToAdmin();
-            if(update == 0){
-                throw new SysException("update to system admin failed!");
-            } else {
+            if(update > 0){
                 user.setIsAdmin(1);
             }
         }

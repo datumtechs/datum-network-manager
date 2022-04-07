@@ -35,3 +35,15 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
 
+#web3j连接配置
+platon:
+  http:
+    connectTimeout: 10000
+    readTimeout: 60000
+  web3j:
+    protocol: WS
+    addresses: 192.168.120.151:7789,192.168.120.151:7790
+  #链id
+  chainId: 100
+  # 地址HRP前缀
+  addressPrefix: lat
