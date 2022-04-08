@@ -1,8 +1,8 @@
 package com.platon.metis.admin.grpc.client;
 
-import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.service.AuthRpcMessage;
 import com.platon.metis.admin.grpc.service.AuthServiceGrpc;
+import com.platon.metis.admin.grpc.types.Base;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -39,10 +39,10 @@ public class DemoClientTest {
      */
     @Test
     public void test() {
-        Channel channel =  ManagedChannelBuilder.forAddress("192.168.21.164", 4444).usePlaintext().build();
+        Channel channel = ManagedChannelBuilder.forAddress("192.168.21.164", 4444).usePlaintext().build();
 
         AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest.newBuilder().build();
-        CommonBase.SimpleResponse responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
+        Base.SimpleResponse responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
         System.out.println("###############" + responseCode.getMsg());
         System.out.println("111111111");
     }
@@ -54,9 +54,9 @@ public class DemoClientTest {
     static class AuthServiceImpl extends AuthServiceGrpc.AuthServiceImplBase {
 
         @Override
-        public void applyIdentityJoin(AuthRpcMessage.ApplyIdentityJoinRequest request, StreamObserver<CommonBase.SimpleResponse> responseObserver) {
+        public void applyIdentityJoin(AuthRpcMessage.ApplyIdentityJoinRequest request, StreamObserver<Base.SimpleResponse> responseObserver) {
             System.out.println(request);
-            CommonBase.SimpleResponse code = CommonBase.SimpleResponse.newBuilder().setMsg("goooooooooooo").setStatus(0).build();
+            Base.SimpleResponse code = Base.SimpleResponse.newBuilder().setMsg("goooooooooooo").setStatus(0).build();
             //responseObserver.onNext(code);
             responseObserver.onCompleted();
         }

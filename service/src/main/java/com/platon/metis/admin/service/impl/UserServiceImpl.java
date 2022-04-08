@@ -1,5 +1,9 @@
 package com.platon.metis.admin.service.impl;
 
+import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.QueryParams;
+import com.ecwid.consul.v1.health.HealthServicesRequest;
+import com.ecwid.consul.v1.health.model.HealthService;
 import com.platon.metis.admin.common.exception.OrgInfoExists;
 import com.platon.metis.admin.common.exception.SysException;
 import com.platon.metis.admin.common.util.IDUtil;
@@ -21,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author liushuyu

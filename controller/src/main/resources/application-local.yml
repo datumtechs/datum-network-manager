@@ -1,27 +1,4 @@
-# ==================================== server conf  ==========================================
-server:
-  tomcat:
-    uri-encoding: UTF-8
-    threads.max: 1000
-    threads.min-spare: 30
-  port: 9090
-  servlet:
-    context-path: /metis-admin
-
-# ==================================== tidb conf  ==========================================
 spring:
-  application:
-    name: metis-admin
-  profiles:
-    active: dev_10_151
-  servlet:
-    multipart:
-      file-size-threshold: 1099511627776
-      max-file-size: 1MB
-      max-request-size: 1099511627776
-  mvc:
-    pathmatch:
-      matching-strategy: ANT_PATH_MATCHER
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -55,7 +32,7 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-    # =============================== consul ===============================
+  # =============================== consul ===============================
   cloud:
     consul:
       host: 39.101.171.59
@@ -72,18 +49,15 @@ spring:
         health-check-url: http://${spring.cloud.client.ip-address}:${server.port}/${server.servlet.context-path}/health
         # health-check-path: ${management.endpoints.web.base-path}/health
       carrierServiceName: carrierService
-
-# ==================================== conf for mybatis =====================================
-mybatis:
-  mapper-locations: classpath:/mapper/**/*.xml
-  type-aliases-package: com.platon.metis.admin.dao.entity
-
-# ==================================== conf for pageHelper =====================================
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql
+# ==================================== server conf  ==========================================
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    threads.max: 1000
+    threads.min-spare: 30
+  port: 9090
+  servlet:
+    context-path: /metis-admin
 
 # ===== 自定义swagger配置 ===== #
 swagger:
@@ -117,11 +91,11 @@ logging:
 
 # =============================== conf for scheduled task ===================================
 LocalCarrierStatusRefreshTask.fixedDelay: 20000
-LocalDataAuthReqRefreshTask.fixedDelay: 5000
-LocalDataNodeRefreshTask.fixedDelay: 20000
-LocalMetaDataStatusRefreshTask.fixedDelay: 5000
+LocalDataAuthReqRefreshTask.fixedDelay: 20000
+LocalDataNodeRefreshTask.fixedDelay: 2000
+LocalMetaDataStatusRefreshTask.fixedDelay: 10000
 LocalPowerNodeRefreshTask.fixedDelay: 10000
-LocalTaskRefreshTask.fixedDelay: 5000
+LocalTaskRefreshTask.fixedDelay: 20000
 SeedNodeRefreshTask.fixedDelay: 30000
 DataTokenStatusRefreshTask.fixedDelay: 2000
 

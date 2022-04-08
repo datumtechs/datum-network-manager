@@ -54,7 +54,7 @@ public class MockDataFileTest {
             dataFile.setFileId(fileId);
             dataFile.setFilePath(fileId + "_path");
             dataFile.setFileName(fileId + "_fileName");
-            dataFile.setFileType(LocalDataFile.FileType.CSV.getCode());
+            dataFile.setFileType(LocalDataFile.FileTypeEnum.CSV.getCode());
             dataFile.setColumns(columns);
             dataFile.setHasTitle(true);
             dataFile.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
