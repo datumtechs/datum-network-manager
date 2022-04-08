@@ -2,7 +2,7 @@
 
 -- CREATE DATABASE `metis_admin` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-use `metis_admin_lsy`;
+use `metis_admin`;
 
 -- 以下为0.4.0数据库变更
 
