@@ -1,6 +1,8 @@
 package com.platon.metis.admin.service.web3j;
 
 import com.platon.metis.admin.common.exception.SysException;
+import com.platon.metis.admin.dao.SysConfigMapper;
+import com.platon.metis.admin.dao.entity.SysConfig;
 import com.platon.parameters.NetworkParameters;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.http.HttpService;
@@ -8,17 +10,14 @@ import com.platon.protocol.websocket.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.math.BigInteger;
 import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,26 +43,18 @@ public class Web3jManager {
     private Lock writeLock = readWriteLock.writeLock();
     private Map<Object, AtomicReference<Web3j>> subscriptionMap = new ConcurrentHashMap<>();
 
-    @Value("${platon.web3j.addresses}")
     private List<String> web3jAddresses;
-
-    @Value("${platon.web3j.protocol}")
-    private Web3jProtocolEnum protocol;
-
-    @Value("${platon.http.connectTimeout}")
-    private String connectTimeout;
-
-    @Value("${platon.http.readTimeout}")
-    private String readTimeout;
-
-    @Value("${platon.chainId}")
     private long chainId;
-
-    @Value("${platon.addressPrefix}")
     private String addressPrefix;
+
+    @Resource
+    private SysConfigMapper sysConfigMapper;
 
     @PostConstruct
     public void init() {
+        web3jAddresses = Arrays.asList(sysConfigMapper.selectByKey(SysConfig.KeyEnum.RPC_URL_LIST.getKey()).getValue().split(","));
+        chainId = Long.parseLong(sysConfigMapper.selectByKey(SysConfig.KeyEnum.CHAIN_ID.getKey()).getValue());
+        addressPrefix = sysConfigMapper.selectByKey(SysConfig.KeyEnum.HRP.getKey()).getValue();
         NetworkParameters.init(chainId,addressPrefix);
         // 初始化所有web3j实例
         web3jAddresses.forEach(address ->
@@ -156,10 +147,10 @@ public class Web3jManager {
         }
 
         if (bestIndex != web3Index) {
-            log.info("Nodes need switched! usedNode = {} curBn = {}", protocol.getHead() + web3jAddresses.get(bestIndex), bestBn);
+            log.info("Nodes need switched! usedNode = {} curBn = {}", web3jAddresses.get(bestIndex), bestBn);
             updateWeb3j(bestIndex);
         } else {
-            log.info("Nodes no need switched!usedNode = {} curBn = {}", protocol.getHead() + web3jAddresses.get(web3Index), bestBn);
+            log.info("Nodes no need switched!usedNode = {} curBn = {}", web3jAddresses.get(web3Index), bestBn);
         }
 
         if (maxBlockNumber.compareTo(bestBn) > 0) {
@@ -170,14 +161,13 @@ public class Web3jManager {
     }
 
     private Optional<Web3j> getWeb3j(String address) {
-        address = protocol.getHead() + address;
         if (address.startsWith("http")) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor(log::debug);
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(logging);
-            builder.connectTimeout(Long.parseLong(connectTimeout), TimeUnit.MILLISECONDS);
-            builder.readTimeout(Long.parseLong(readTimeout), TimeUnit.MILLISECONDS);
+            builder.connectTimeout(10000, TimeUnit.MILLISECONDS);
+            builder.readTimeout(60000, TimeUnit.MILLISECONDS);
             OkHttpClient okHttpClient = builder.build();
             return Optional.of(Web3j.build(new HttpService(address, okHttpClient, false)));
         }

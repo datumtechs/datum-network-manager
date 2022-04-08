@@ -6,7 +6,7 @@ option java_outer_classname = "PowerRpcMessage";
 
 package rpcapi;
 
-import "lib/common/base.proto";
+import "lib/types/base.proto";
 import "lib/types/resourcedata.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
@@ -14,27 +14,22 @@ import "google/protobuf/empty.proto";
 //  ------------------------  power  ------------------------
 
 // 单个组织的总算力信息
-message GetGlobalPowerSummaryResponse {
-  api.protobuf.Organization owner = 1;                  // 算力拥有者信息
-  types.PowerUsageDetail    power = 2;                  // 算力单个摘要
+message GetGlobalPowerSummary {
+  types.Organization        owner = 1;                  // 算力拥有者信息
+  types.PowerUsageDetail    information = 2;            // 算力单个摘要
 }
-
-message GetGlobalPowerSummaryListRequest {
-  uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
-}
-
 
 // 查看全网各个组织的总算力(累加)详情列表 resp
 message GetGlobalPowerSummaryListResponse {
   int32                                 status = 1;       // 响应码
   string                                msg = 2;          // 错误提示信息
-  repeated GetGlobalPowerSummaryResponse power_list = 3;  // 全网的各个组织的累加power详情列表
+  repeated GetGlobalPowerSummary        powers = 3;       // 全网的各个组织的累加power详情列表
 }
 
 // 单个组织的各个算力信息
-message GetGlobalPowerDetailResponse {
-  api.protobuf.Organization owner = 1;                  // 算力拥有者信息
-  types.PowerUsageDetail    power = 2;                  // 算力总详细
+message GetGlobalPowerDetail {
+  types.Organization        owner = 1;                  // 算力拥有者信息
+  types.PowerUsageDetail    information = 2;            // 算力总详细
   string                    power_id = 3;               // 算力id
 }
 
@@ -43,17 +38,16 @@ message GetGlobalPowerDetailListRequest {
   uint64 page_size = 2;     // 单次批量数据的返回条数
 }
 
-
 // 全网各个组织的各个算力列表 resp
 message GetGlobalPowerDetailListResponse {
   int32                                 status = 1;      // 响应码
   string                                msg = 2;         // 错误提示信息
-  repeated GetGlobalPowerDetailResponse power_list = 3;  // 全网的各个组织的各个power详情列表
+  repeated GetGlobalPowerDetail         powers = 3;      // 全网的各个组织的各个power详情列表
 }
 
 // 本组织的单个(宿主机)算力信息 (包含【未发布】和【已发布】的) resp
-message GetLocalPowerDetailResponse {
-  api.protobuf.Organization owner = 1;                  // 算力拥有者信息
+message GetLocalPowerDetail {
+  types.Organization        owner = 1;                  // 算力拥有者信息
   types.PowerUsageDetail    power = 2;                  // 算力单个摘要
   string                    job_node_id = 3;            // 计算服务id (单个宿主机的id)
   string                    power_id = 4;               // 算力id (对于未发布的算力, powerId为"")
@@ -64,12 +58,11 @@ message GetLocalPowerDetailListRequest {
   uint64 page_size = 2;     // 单次批量数据的返回条数
 }
 
-
 // 本组织的多个(宿主机)算力信息 (包含【未发布】和【已发布】的)
 message GetLocalPowerDetailListResponse {
   int32                                   status = 1;         // 响应码
   string                                  msg = 2;            // 错误提示信息
-  repeated GetLocalPowerDetailResponse    power_list = 3;     // 单个节点的算力总摘要列表
+  repeated GetLocalPowerDetail            powers = 3;         // 单个节点的算力总摘要列表
 }
 
 // 启用算力 req
@@ -95,20 +88,20 @@ message RevokePowerRequest {
 service PowerService {
 
   // 查看全网各个组织的总算力(累加)详情列表
-  rpc GetGlobalPowerSummaryList (GetGlobalPowerSummaryListRequest) returns (GetGlobalPowerSummaryListResponse) {
+  rpc GetGlobalPowerSummaryList (google.protobuf.Empty) returns (GetGlobalPowerSummaryListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/power/globalSummaryList"
     };
   }
 
   // 查看全网各个组织的各个算力详情列表
-  rpc GetGlobalPowerDetailList (google.protobuf.Empty) returns (GetGlobalPowerDetailListResponse) {
+  rpc GetGlobalPowerDetailList (GetGlobalPowerDetailListRequest) returns (GetGlobalPowerDetailListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/power/globalDetailList"
     };
   }
 
-  // 查询本组织的算力主机，在当前正在执行的任务中的资源使用情况
+  // 本组织的所有(宿主机)算力信息列表 (包含【未发布】和【已发布】的)
   rpc GetLocalPowerDetailList (google.protobuf.Empty) returns (GetLocalPowerDetailListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/power/localDetailList"
@@ -124,7 +117,7 @@ service PowerService {
   }
 
   // 停用算力 (撤销算力)
-  rpc RevokePower (RevokePowerRequest) returns (api.protobuf.SimpleResponse) {
+  rpc RevokePower (RevokePowerRequest) returns (types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/power/revoke"
       body: "*"

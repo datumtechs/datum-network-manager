@@ -14,10 +14,11 @@
     <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
     <result column="data_token_id" jdbcType="INTEGER" property="dataTokenId" />
     <result column="owner" jdbcType="VARCHAR" property="owner" />
+    <result column="meta_data_type" jdbcType="INTEGER" property="metaDataType" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, file_id, meta_data_id, meta_data_name, status, publish_time, remarks, industry, rec_create_time,
-    rec_update_time,data_token_id,`owner`,data_token_id
+    id, file_id, meta_data_id, meta_data_name, `status`, publish_time, remarks, industry, rec_create_time,
+    rec_update_time,data_token_id,`owner`,data_token_id,meta_data_type
   </sql>
 
 
@@ -35,6 +36,13 @@
     <include refid="Base_Column_List" />
     from local_meta_data
     where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByStatus" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from local_meta_data
+    where `status` = #{status,jdbcType=VARCHAR}
   </select>
 
 
@@ -98,11 +106,11 @@
 
   <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalMetaData" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into local_meta_data (file_id, meta_data_id,meta_data_name, status, publish_time,
-      remarks, industry,owner
+      remarks, industry,owner,meta_data_type
       )
     values (#{fileId,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR},
       #{metaDataName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{publishTime,jdbcType=TIMESTAMP},
-      #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER},#{owner}
+      #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER},#{owner},#{metaDataType}
       )
   </insert>
 

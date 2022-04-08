@@ -4,9 +4,9 @@ import com.google.protobuf.Empty;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
-import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.grpc.service.YarnServiceGrpc;
+import com.platon.metis.admin.grpc.types.Base;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -69,7 +69,7 @@ public class SeedClient {
                 .setAddr(address)
                 .build();
         //3.调用rpc,获取response
-        CommonBase.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);
+        Base.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();

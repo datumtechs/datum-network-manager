@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -62,5 +63,17 @@ public class SysConfigServiceImpl implements SysConfigService {
     @Override
     public SysConfig getConfig(String key) {
         return sysConfigMapper.selectByKeyAndStatus(key,SysConfig.StatusEnum.VALID.getStatus());
+    }
+
+    @Override
+    public List<SysConfig> getMetaMaskConfig(){
+        List<String> keys = new ArrayList<>();
+        keys.add(SysConfig.KeyEnum.CHAIN_NAME.getKey());
+        keys.add(SysConfig.KeyEnum.CHAIN_ID.getKey());
+        keys.add(SysConfig.KeyEnum.RPC_URL.getKey());
+        keys.add(SysConfig.KeyEnum.SYMBOL.getKey());
+        keys.add(SysConfig.KeyEnum.BLOCK_EXPLORER_URL.getKey());
+        keys.add(SysConfig.KeyEnum.HRP.getKey());
+        return sysConfigMapper.getMultiConfig(keys);
     }
 }

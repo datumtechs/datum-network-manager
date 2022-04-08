@@ -71,6 +71,9 @@ public class LocalMetaData extends BaseDomain {
     //拥有者钱包地址
     @ApiModelProperty(name = "owner", value = "拥有者钱包地址")
     private String owner;
+    //表示该元数据是 普通数据 还是 模型数据的元数据 (0: 未定义; 1: 普通数据元数据; 2: 模型数据元数据)
+    @ApiModelProperty(name = "metaDataType", value = "表示该元数据是 普通数据 还是 模型数据的元数据 (0: 未定义; 1: 普通数据元数据; 2: 模型数据元数据)")
+    private Integer metaDataType;
 
     @ApiModelProperty(name = "localMetaDataColumnList", value = "元数据的字段定义")
     List<LocalMetaDataColumn> localMetaDataColumnList;

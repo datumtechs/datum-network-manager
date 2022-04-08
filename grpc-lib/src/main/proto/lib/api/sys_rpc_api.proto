@@ -6,7 +6,7 @@ option java_outer_classname = "YarnRpcMessage";
 
 package rpcapi;
 
-import "lib/common/base.proto";
+import "lib/types/base.proto";
 import "lib/types/taskdata.proto";
 import "lib/types/resourcedata.proto";
 import "google/api/annotations.proto";
@@ -55,6 +55,7 @@ message YarnNodeInfo {
   uint32                      relate_peers = 13;                         // 本调度服务被外部组织(调度服务/种子节点)的连接数目
   string                      local_bootstrap_node = 14;                 // 当前系统的本地节点，可以作为引导节点提供给三方节点
   string                      local_multi_addr = 15;                     // 当前系统本地的 multiAddr, eg: /ip4/127.0.0.1/tcp/18001/p2p/16Uiu2HAmKMo4Ci5TYcXspnKnMWK4G4CRWSHBV4qCUAFYrtirhcuz
+  string                      observer_proxy_wallet_address = 16;        // 当前组织内置系统钱包地址 (见证人代理钱包) v 0.4.0
 }
 
 
@@ -187,17 +188,10 @@ message ReportTaskResourceUsageRequest {
   types.ResourceUsageOverview usage = 6;                            // 计算or数据的资源实况
 }
 
-//message ReportTaskResourceExpenseRequest {
-//  NodeType                    node_type = 1;                        // 计算or数据服务node的类型
-//  string                      ip = 2;                               // Fighter 的 grpc server IP
-//  string                      port = 3;                             // Fighter 的 grpc server PORT
-//  types.ResourceUsageOverview usage = 4;                            // 计算or数据的资源实况
-//}
-
 // 上报 成功上传的原始文件Id req
 message ReportUpFileSummaryRequest {
   string origin_id = 1;    // 被成功上传的原始文件的 Id
-  string file_path = 2;    // 被成功上传的原始文件的相对 path
+  string data_path = 2;    // 被成功上传的原始文件的相对 path
   string ip = 3;           // Fighter 的 grpc server IP
   string port = 4;         // Fighter 的 grpc server PORT
 }
@@ -206,30 +200,41 @@ message ReportUpFileSummaryRequest {
 message ReportTaskResultFileSummaryRequest {
   string task_id = 1;      // 任务Id
   string origin_id = 2;    // 任务结果的原始文件的 Id
-  string file_path = 3;    // 任务结果的原始文件的相对 path
+  string data_path = 3;    // 任务结果的原始文件的相对 path
   string ip = 4;           // Fighter 的 grpc server IP
   string port = 5;         // Fighter 的 grpc server PORT
+  string extra = 6;        // 任务结果文件的额外字段 (如: 训练任务的模型评估结果json 等)
 }
 
 // 查询可用数据服务资源目标 ip:port 信息 req
 message QueryAvailableDataNodeRequest {
   uint64                              file_size = 1;       // 要被上传的目标文件 大小 (单位: byte)
-  api.protobuf.OriginFileType         file_type = 2;       // 要被上传的目标文件  类型 (默认: 1 "csv")
+  types.OrigindataType                file_type = 2;       // 要被上传的目标文件  类型 (默认: 1 "csv")
 }
 // 查询可用数据服务资源目标 ip:port 信息 resp
-message QueryAvailableDataNodeResponse {
+message QueryAvailableDataNode {
   string ip = 1;                 // 可以被用来上传文件的 数据服务内网 ip
   string port = 2;               // 可以被用来上传文件的 数据服务内网 port
+}
+message QueryAvailableDataNodeResponse {
+  int32  status = 1;                          // 响应码
+  string msg = 2;                             // 错误信息
+  QueryAvailableDataNode   information = 3;   // 数据节点 ip 和 端口
 }
 // 查询需要下载的目标原始文件所在的 数据服务信息和文件的完整相对路径 req
 message QueryFilePositionRequest {
   string origin_id = 1;              // 需要被下载的目标原始文件的 id
 }
 // 查询需要下载的目标原始文件所在的 数据服务信息和文件的完整相对路径 resp
-message QueryFilePositionResponse {
+message QueryFilePosition {
   string ip = 1;                     // 需要被下载的目标原始文件所在的 数据服务内网ip
   string port = 2;                   // 需要被下载的目标原始文件所在的 数据服务内网port
-  string file_path = 3;              // 需要被下载的目标原始文件的完整相对路径名
+  string data_path = 3;              // 需要被下载的目标原始文件的完整相对路径名
+}
+message QueryFilePositionResponse {
+  int32  status = 1;                          // 响应码
+  string msg = 2;                             // 错误信息
+  QueryFilePosition information = 3;          // 需要被下载的目标原始文件信息
 }
 
 // 查询 任务结果文件摘要 req
@@ -238,21 +243,34 @@ message GetTaskResultFileSummaryRequest {
 }
 
 // 查询 任务结果文件摘要 resp
-message GetTaskResultFileSummaryResponse {
+message GetTaskResultFileSummary {
   string task_id = 1;                 // 任务结果文件对应的任务Id
-  string table_name  = 2;             // 任务结果文件的(系统生成的、内部的)元数据名称
+  string metadata_name = 2;           // 任务结果文件的(系统生成的、内部的)元数据名称
   string metadata_id = 3;             // 任务结果文件的元数据Id <系统默认生成的元数据>
   string origin_id = 4;               // 任务结果文件的原始文件Id
-  string file_path = 5;               // 任务结果文件的完整相对路径名
+  string data_path = 5;               // 任务结果文件的完整相对路径名(目录名，不是文件名，因为文件名称是算法里面定的)
   string ip = 6;                      // 任务结果文件所在的 数据服务内网ip
   string port = 7;                    // 任务结果文件所在的 数据服务内网port
+  string extra = 8;                   // 任务结果文件的额外字段 (如: 训练任务的模型评估结果json 等)
+}
+
+message GetTaskResultFileSummaryResponse {
+  int32  status = 1;                          // 响应码
+  string msg = 2;                             // 错误信息
+  GetTaskResultFileSummary information = 3;   // 任务结果文件信息
 }
 
 // 查询当前组织参与的所有任务结果文件摘要 resp
 message GetTaskResultFileSummaryListResponse {
   int32                              status = 1;                      // 响应码
   string                             msg = 2;                         // 错误信息
-  repeated GetTaskResultFileSummaryResponse metadata_list = 3;               // 元数据列表
+  repeated GetTaskResultFileSummary  task_result_files = 3;           // 当前组织参与的所有任务结果文件摘要列表
+}
+
+message GenerateObServerProxyWalletAddressResponse {
+  int32   status = 1;    // 响应码
+  string  msg = 2;       // 错误信息
+  string  address = 3;   // 当前组织内置系统钱包地址 (见证人代理钱包)
 }
 
 // ## 调度服务 - 系统状态 接口
@@ -266,6 +284,7 @@ service YarnService {
     };
   }
 
+
   // about seed
   // 新增种子节点信息
   rpc SetSeedNode (SetSeedNodeRequest) returns (SetSeedNodeResponse) {
@@ -276,7 +295,7 @@ service YarnService {
   }
 
   // 删除种子节点信息
-  rpc DeleteSeedNode (DeleteSeedNodeRequest) returns (api.protobuf.SimpleResponse) {
+  rpc DeleteSeedNode (DeleteSeedNodeRequest) returns (types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/deleteSeed"
       body: "*"
@@ -308,7 +327,7 @@ service YarnService {
   }
 
   // 删除数据服务信息
-  rpc DeleteDataNode (DeleteRegisteredNodeRequest) returns (api.protobuf.SimpleResponse) {
+  rpc DeleteDataNode (DeleteRegisteredNodeRequest) returns (types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/deleteDataNode"
       body: "*"
@@ -340,13 +359,12 @@ service YarnService {
   }
 
   // 删除计算服务信息
-  rpc DeleteJobNode (DeleteRegisteredNodeRequest) returns (api.protobuf.SimpleResponse) {
+  rpc DeleteJobNode (DeleteRegisteredNodeRequest) returns (types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/deleteJobNode"
       body: "*"
     };
   }
-
 
   // 查询计算服务列表 (宿主机的物理信息和网络连接信息)
   rpc GetJobNodeList (google.protobuf.Empty) returns (GetRegisteredNodeListResponse) {
@@ -357,7 +375,7 @@ service YarnService {
 
   // about report
   // 数据/计算服务 上报任务事件
-  rpc ReportTaskEvent (ReportTaskEventRequest) returns (api.protobuf.SimpleResponse) {
+  rpc ReportTaskEvent (ReportTaskEventRequest) returns (types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/reportTaskEvent"
       body: "*"
@@ -365,7 +383,7 @@ service YarnService {
   }
 
   // 数据/计算服务 上报资源使用实况
-  rpc ReportTaskResourceUsage (ReportTaskResourceUsageRequest) returns (api.protobuf.SimpleResponse) {
+  rpc ReportTaskResourceUsage (ReportTaskResourceUsageRequest) returns (types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/reportTaskResourceUsage"
       body: "*"
@@ -373,7 +391,7 @@ service YarnService {
   }
 
   // 上报 成功上传的原始文件Id
-  rpc  ReportUpFileSummary (ReportUpFileSummaryRequest) returns (api.protobuf.SimpleResponse) {
+  rpc  ReportUpFileSummary (ReportUpFileSummaryRequest) returns (types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/reportUpFileSummary"
       body: "*"
@@ -381,7 +399,7 @@ service YarnService {
   }
 
   // 上报 任务结果文件摘要
-  rpc ReportTaskResultFileSummary (ReportTaskResultFileSummaryRequest) returns (api.protobuf.SimpleResponse) {
+  rpc ReportTaskResultFileSummary (ReportTaskResultFileSummaryRequest) returns (types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/reportTaskResultFileSummary"
       body: "*"
@@ -418,5 +436,19 @@ service YarnService {
       get: "/carrier/v1/yarn/taskResultFileSummaryList"
     };
   }
+
+  // v 0.4.0 生成当前组织内置系统钱包地址 (见证人代理钱包, 全局只有一个)
+  rpc GenerateObServerProxyWalletAddress (google.protobuf.Empty) returns (GenerateObServerProxyWalletAddressResponse) {
+    option (google.api.http) = {
+      get: "/carrier/v1/yarn/generateObserverProxyWallet"
+    };
+  }
+
+  //  // v 0.4.0 查询当前组织内置系统钱包地址 (见证人代理钱包)
+  //  rpc GetObServerProxyWalletAddress (google.protobuf.Empty) returns (GetObServerProxyWalletAddressResponse) {
+  //    option (google.api.http) = {
+  //      get: "/carrier/v1/yarn/observerProxyWalletAddress"
+  //    };
+  //  }
 
 }

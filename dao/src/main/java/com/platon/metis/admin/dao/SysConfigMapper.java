@@ -24,4 +24,6 @@ public interface SysConfigMapper {
     int updateValueByKey(@Param("key") String key, @Param("value") String value);
 
     int deleteByKey(String key);
+
+    List<SysConfig> getMultiConfig(@Param("keys") List<String> keys);
 }

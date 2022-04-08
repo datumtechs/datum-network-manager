@@ -6,7 +6,7 @@ option java_outer_classname = "MetaDataRpcMessage";
 
 package rpcapi;
 
-import "lib/common/base.proto";
+import "lib/types/base.proto";
 import "lib/types/metadata.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
@@ -14,8 +14,8 @@ import "google/protobuf/empty.proto";
 //  ------------------------  metadata  ------------------------
 
 // (全网) 单个元数据详情 resp
-message GetGlobalMetadataDetailResponse {
-  api.protobuf.Organization owner = 1;              // 元数据的拥有者
+message GetGlobalMetadataDetail {
+  types.Organization        owner = 1;              // 元数据的拥有者
   types.MetadataDetail      information = 2;        // 元文件详情主体
 }
 
@@ -28,12 +28,12 @@ message GetGlobalMetadataDetailListRequest {
 message GetGlobalMetadataDetailListResponse {
   int32                                     status = 1;                      // 响应码
   string                                    msg = 2;                         // 错误信息
-  repeated GetGlobalMetadataDetailResponse  metadata_list = 3;               // 元数据列表
+  repeated GetGlobalMetadataDetail          metadatas = 3;                   // 元数据列表
 }
 
 // (本组织) 单个元数据详情 resp
-message GetLocalMetadataDetailResponse {
-  api.protobuf.Organization owner = 1;                  // 元数据的拥有者
+message GetLocalMetadataDetail {
+  types.Organization        owner = 1;                  // 元数据的拥有者
   types.MetadataDetail      information = 2;            // 元文件详情主体
   bool                      is_internal = 3;            // 是否为本组织内部元数据 (不对外的元数据, true: 是内部元数据; false: 不是)
 }
@@ -47,13 +47,12 @@ message GetLocalMetadataDetailListRequest {
 message GetLocalMetadataDetailListResponse {
   int32                                     status = 1;                      // 响应码
   string                                    msg = 2;                         // 错误信息
-  repeated GetLocalMetadataDetailResponse   metadata_list = 3;               // 元数据列表
+  repeated GetLocalMetadataDetail           metadatas = 3;                   // 元数据列表
 }
-
 
 // 数据上架 req
 message PublishMetadataRequest {
-  types.MetadataDetail information = 1;             // 元数据详情
+  types.MetadataSummary information = 1;             // 元数据详情
 }
 // 数据上架 resp
 message PublishMetadataResponse {
@@ -80,6 +79,23 @@ message GetMetadataUsedTaskIdListResponse {
   repeated string             task_ids = 3;         // 任务Id
 }
 
+// v 0.4.0 datatoken合约地址和metadata一对一绑定
+message BindDataTokenAddressRequest {
+  string    metadata_id = 1;        // 内部元数据Id
+  string    token_address = 2;      // 元数据对应的 dataToken 合约的地址
+}
+
+// v 0.4.0 将内部元数据重新发布成 对外的元数据 req
+message PublishMetadataByInteranlMetadataRequest {
+  types.MetadataSummary information = 1;             // 元数据详情
+}
+
+// v 0.4.0 将任务的结果数据重新发布成 对外的元数据 req
+message PublishMetadataByTaskResultFileRequest {
+  string                      task_id = 1;                  //任务id
+  types.MetadataSummary       information = 2;              // 元数据详情
+}
+
 // ## 元数据 相关接口
 service MetadataService {
 
@@ -90,10 +106,17 @@ service MetadataService {
     };
   }
 
-  // 查看 本组织元数据列表
+  // 查看 本组织(已发布的)元数据列表
   rpc GetLocalMetadataDetailList (GetLocalMetadataDetailListRequest) returns (GetLocalMetadataDetailListResponse) {
     option (google.api.http) = {
       get: "/carrier/v1/metadata/localList"
+    };
+  }
+
+  // 查看 本组织(内部的/未发布的/系统生成的)元数据列表
+  rpc GetLocalInternalMetadataDetailList (google.protobuf.Empty) returns (GetLocalMetadataDetailListResponse) {
+    option (google.api.http) = {
+      get: "/carrier/v1/metadata/localInternalList"
     };
   }
 
@@ -104,15 +127,16 @@ service MetadataService {
       body: "*"
     };
   }
+
   // 撤销元数据 (从底层网络撤销)
-  rpc RevokeMetadata (RevokeMetadataRequest) returns (api.protobuf.SimpleResponse) {
+  rpc RevokeMetadata (RevokeMetadataRequest) returns (types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/metadata/revoke"
       body: "*"
     };
   }
 
-  // V 2.0 新增
+  // V 0.2.0 新增
   // 查询某 metadata 参与过的任务的taskId列表
   rpc GetMetadataUsedTaskIdList (GetMetadataUsedTaskIdListRequest) returns (GetMetadataUsedTaskIdListResponse) {
     option (google.api.http) = {
@@ -120,4 +144,29 @@ service MetadataService {
       body: "*"
     };
   }
+
+  // v 0.4.0 将元数据发布的 datatoken 合约地址绑定 元数据信息中 (metadata : datatoken == 1 : 1)
+  rpc BindDataTokenAddress (BindDataTokenAddressRequest) returns (types.SimpleResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/metadata/bindDataTokenAddress"
+      body: "*"
+    };
+  }
+
+  // v 0.4.0 将内部元数据重新发布成 对外的元数据
+  rpc PublishMetadataByInteranlMetadata (PublishMetadataByInteranlMetadataRequest) returns (PublishMetadataResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/metadata/publishByInteranlMetadata"
+      body: "*"
+    };
+  }
+
+  // v 0.4.0 将任务的结果数据重新发布成 对外的元数据
+  rpc PublishMetadataByTaskResultFile (PublishMetadataByTaskResultFileRequest) returns (PublishMetadataResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/metadata/publishByTaskResultFile"
+      body: "*"
+    };
+  }
+
 }

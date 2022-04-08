@@ -27,6 +27,7 @@ public enum LocalDataFileStatusEnum {
     TOKEN_FAILED(7,"凭证发布失败"),
     TOKEN_RELEASING(8,"凭证发布中"),
     TOKEN_RELEASED(9,"凭证已发布"),
+    TOKEN_BOUND(10,"已绑定凭证"),
     ;
 
     LocalDataFileStatusEnum(int status,String desc){

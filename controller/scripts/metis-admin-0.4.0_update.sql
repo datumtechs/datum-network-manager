@@ -75,7 +75,7 @@ ALTER table local_meta_data ADD COLUMN `data_token_id` int(11) DEFAULT NULL COMM
 ALTER table local_meta_data ADD COLUMN `owner` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '拥有者钱包地址';
 
 -- 元数据表状态字段新增状态码
-ALTER table local_meta_data MODIFY COLUMN `status` int(11) NOT NULL DEFAULT '0' COMMENT '元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表; 4：已删除;5: 发布中; 6：撤回中;7:凭证发布失败;8: 凭证发布中; 9：已发布凭证)';
+ALTER table local_meta_data MODIFY COLUMN `status` int(11) NOT NULL DEFAULT '0' COMMENT '元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表; 4：已删除;5: 发布中; 6：撤回中;7:凭证发布失败;8: 凭证发布中; 9：已发布凭证;10:已绑定凭证)';
 
 -- 修改系统配置表结构
 DROP TABLE IF EXISTS `sys_config`;
@@ -90,3 +90,10 @@ CREATE TABLE `sys_config` (
                               PRIMARY KEY (`id`),
                               UNIQUE KEY `idx_config_key` (`key`)
 ) COMMENT='系统配置表，使用k-v形式';
+
+
+ALTER TABLE local_data_file ADD COLUMN `data_hash` VARCHAR (255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '原始数据内容hash';
+
+ALTER TABLE local_data_file ADD COLUMN `location_type` TINYINT (2) DEFAULT '1' COMMENT '源数据的存储位置类型 (组织本地服务器、远端服务器、云等)：0-未知，1-本地，2-远端服务器';
+
+ALTER TABLE local_meta_data ADD COLUMN `meta_data_type` TINYINT (2) DEFAULT '1' COMMENT '表示该元数据是 普通数据 还是 模型数据的元数据 (0: 未定义; 1: 普通数据元数据; 2: 模型数据元数据)';

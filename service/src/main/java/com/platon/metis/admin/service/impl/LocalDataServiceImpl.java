@@ -11,7 +11,6 @@ import com.platon.metis.admin.dao.cache.LocalOrgCache;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
 import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
-import com.platon.metis.admin.dao.enums.FileTypeEnum;
 import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.metis.admin.grpc.client.DataProviderClient;
 import com.platon.metis.admin.grpc.client.MetaDataClient;
@@ -19,6 +18,7 @@ import com.platon.metis.admin.grpc.client.YarnClient;
 import com.platon.metis.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.metis.admin.grpc.entity.YarnQueryFilePositionResp;
 import com.platon.metis.admin.grpc.service.DataProviderRpcMessage;
+import com.platon.metis.admin.grpc.types.Base;
 import com.platon.metis.admin.service.LocalDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
@@ -77,33 +77,20 @@ public class LocalDataServiceImpl implements LocalDataService {
         //### 2.获取可用数据节点
         YarnAvailableDataNodeResp availableDataNode = yarnClient.getAvailableDataNode(
                 localDataFile.getSize(),
-                localDataFile.getFileType() == FileTypeEnum.FILETYPE_UNKONW.getValue() ? FileTypeEnum.FILETYPE_UNKONW : FileTypeEnum.FILETYPE_CSV);
+                LocalDataFile.FileTypeEnum.CSV);
         //### 3.上传源文件到数据节点
         DataProviderRpcMessage.UploadReply response = dataProviderClient.uploadData(
                 availableDataNode.getIp(),
                 availableDataNode.getPort(),
                 localDataFile.getFileName(),
                 file);
-
         //### 4.补充源文件信息
         localDataFile.setFileId(response.getDataId());
         localDataFile.setFilePath(response.getFilePath());
-        //localDataFile.getLocalDataFileColumnList().parallelStream().forEach(column -> column.setFileId(localDataFile.getFileId()));
-
-
+        localDataFile.setDataHash(response.getDataHash());
+        localDataFile.setLocationType(Base.DataLocationType.DataLocationType_Local_VALUE);
         //### 5.解析完成之后，存数据库
         localDataFileMapper.insert(localDataFile);
-        //localDataFileColumnMapper.insertBatch(localDataFile.getLocalDataFileColumnList());
-
-       /* LocalMetaData localMetaData = convertLocalMetaData(detail);
-        int id = localMetaDataMapper.insert(localMetaData);
-        detail.getLocalMetaDataColumnList().stream().forEach(localMetaDataColumn -> {
-            //关联ID
-            localMetaDataColumn.setMetaId(localMetaData.getId());
-        });
-        count += localMetaDataColumnMapper.batchInsert(detail.getLocalMetaDataColumnList());
-        //### 6.返回数据补充metaData主Id
-        detail.getDynamicFields().put(ServiceConstant.LOCAL_DATA_METADATA_PK_ID, localMetaData.getId());*/
         return localDataFile;
     }
 
@@ -193,7 +180,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         //重新添加meta_data_column信息
         if (!CollectionUtils.isEmpty(localMetaData.getLocalMetaDataColumnList())) {
             localMetaData.getLocalMetaDataColumnList().parallelStream().forEach(column -> column.setLocalMetaDataDbId(existing.getId()));
-            //todo:或者updateBatch，这样就不需要先删除了
+            //TODO:或者updateBatch，这样就不需要先删除了
             localMetaDataColumnMapper.batchInsert(localMetaData.getLocalMetaDataColumnList());
         }
         return count;
@@ -308,7 +295,7 @@ public class LocalDataServiceImpl implements LocalDataService {
 
             localDataFile.setFileName(file.getOriginalFilename());
             localDataFile.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
-            localDataFile.setFileType(FileTypeEnum.FILETYPE_CSV.getValue());//todo 目前只有csv类型
+            localDataFile.setFileType(LocalDataFile.FileTypeEnum.CSV.getCode());//todo 目前只有csv类型
             localDataFile.setSize(file.getSize());
             localDataFile.setHasTitle(hasTitle);
 

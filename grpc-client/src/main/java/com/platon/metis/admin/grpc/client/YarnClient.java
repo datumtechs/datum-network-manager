@@ -2,16 +2,16 @@ package com.platon.metis.admin.grpc.client;
 
 import com.google.protobuf.Empty;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
+import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalDataNode;
-import com.platon.metis.admin.dao.enums.FileTypeEnum;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
-import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.entity.RegisteredNodeResp;
 import com.platon.metis.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
 import com.platon.metis.admin.grpc.entity.YarnQueryFilePositionResp;
 import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.grpc.service.YarnServiceGrpc;
+import com.platon.metis.admin.grpc.types.Base;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import lombok.extern.slf4j.Slf4j;
@@ -121,7 +121,7 @@ public class YarnClient {
         YarnRpcMessage.DeleteRegisteredNodeRequest request = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
         log.debug("调用删除数据节点调度服务,参数:{}",request);
         //3.调用rpc,获取response
-        CommonBase.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
+        Base.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
         log.debug("调用删除数据节点调度服务,响应结果:{}",response);
         //4.处理response
         if (response == null) {
@@ -174,7 +174,7 @@ public class YarnClient {
     /**
      * 根据需要上传的文件大小和类型，获取可用的数据节点信息
      */
-    public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize, FileTypeEnum fileType){
+    public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize, LocalDataFile.FileTypeEnum fileType){
 
         log.debug("从carrier查询可用的数据节点");
 
@@ -184,14 +184,14 @@ public class YarnClient {
         YarnRpcMessage.QueryAvailableDataNodeRequest request = YarnRpcMessage.QueryAvailableDataNodeRequest
                 .newBuilder()
                 .setFileSize(fileSize)
-                .setFileTypeValue(fileType.getValue())
+                .setFileTypeValue(fileType.getCode())
                 .build();
         //3.调用rpc,获取response
         YarnRpcMessage.QueryAvailableDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).queryAvailableDataNode(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if (StringUtils.isBlank(response.getIp()) || StringUtils.isBlank(response.getPort())) {
+        }else if (StringUtils.isBlank(response.getInformation().getIp()) || StringUtils.isBlank(response.getInformation().getPort())) {
             log.error("cannot find a available data node.");
             throw new CallGrpcServiceFailed();
         }
@@ -200,8 +200,8 @@ public class YarnClient {
          * 故将response转换后再放给service类使用
          */
         YarnAvailableDataNodeResp node = new YarnAvailableDataNodeResp();
-        node.setIp(response.getIp());
-        node.setPort(Integer.parseInt(response.getPort()));
+        node.setIp(response.getInformation().getIp());
+        node.setPort(Integer.parseInt(response.getInformation().getPort()));
 
         log.debug("从carrier查询可用的数据节点， node:{}", node);
         return node;
@@ -226,7 +226,7 @@ public class YarnClient {
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if (StringUtils.isBlank(response.getIp()) || StringUtils.isBlank(response.getPort()) || StringUtils.isBlank(response.getFilePath())) {
+        }else if (StringUtils.isBlank(response.getInformation().getIp()) || StringUtils.isBlank(response.getInformation().getPort()) || StringUtils.isBlank(response.getInformation().getDataPath())) {
             log.error("cannot find the data node that file located.");
             throw new CallGrpcServiceFailed();
         }
@@ -236,9 +236,9 @@ public class YarnClient {
          * 故将response转换后再放给service类使用
          */
         YarnQueryFilePositionResp resp = new YarnQueryFilePositionResp();
-        resp.setIp(response.getIp());
-        resp.setPort(Integer.parseInt(response.getPort()));
-        resp.setFilePath(response.getFilePath());
+        resp.setIp(response.getInformation().getIp());
+        resp.setPort(Integer.parseInt(response.getInformation().getPort()));
+        resp.setFilePath(response.getInformation().getDataPath());
 
         log.debug("从carrier查询文件路径， fileInfo:{}", resp);
         return resp;
@@ -289,7 +289,6 @@ public class YarnClient {
             //2.拼装request
             Empty request = Empty.newBuilder().build();
             //3.调用rpc,获取response
-            //3.调用rpc,获取response
             YarnRpcMessage.GetNodeInfoResponse response = YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
 
             //4.处理response
@@ -319,6 +318,38 @@ public class YarnClient {
             resp.setConnCount(information.getRelatePeers());
             resp.setMsg("成功");
             return resp;
+        } finally {
+            channelManager.closeChannel(channel);
+        }
+    }
+
+    /**
+     * v 0.4.0 生成当前组织内置系统钱包地址 (见证人代理钱包, 全局只有一个)
+     * @return 返回生成的钱包地址
+     */
+    public String generateObServerProxyWalletAddress(String scheduleIP,int schedulePort){
+        //1.获取rpc连接
+        ManagedChannel channel = null;
+        try{
+            channel = channelManager.buildChannel(scheduleIP, schedulePort);
+            //2.拼装request
+            Empty request = Empty.newBuilder().build();
+            //3.调用rpc,获取response
+            YarnRpcMessage.GenerateObServerProxyWalletAddressResponse response =
+                    YarnServiceGrpc.newBlockingStub(channel).generateObServerProxyWalletAddress(request);
+
+            //4.处理response
+            if (response == null) {
+                throw new CallGrpcServiceFailed();
+            }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+                throw new CallGrpcServiceFailed(response.getMsg());
+            }
+            /**
+             * 由于调度服务rpc接口也在开发阶段，如果直接返回调度服务的response，一旦response发生变化，则调用该方法的地方都需要修改
+             * 故将response转换后再放给service类使用
+             */
+            String address = response.getAddress();
+            return address;
         } finally {
             channelManager.closeChannel(channel);
         }

@@ -2,77 +2,59 @@ syntax = "proto3";
 
 package types;
 
-import "lib/common/base.proto";
-import "lib/common/data.proto";
+import "lib/types/base.proto";
+//import "repos/protobuf/gogoproto/gogo.proto";
 
 option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
 option java_package = "com.platon.metis.admin.grpc.types";
 
 // 单个组织的总算力信息
 message ResourcePB {
-  string identity_id = 1;                         // 算力所属的组织的 身份标识
-  string node_id = 2;                             // 算力所属的组织的 p2p公钥
-  string node_name = 3;                           // 算力所属的组织的 组织名称
-  string data_id = 4;                             // powerId
-  // the status of data, N means normal, D means deleted.
-  api.protobuf.DataStatus  data_status = 5;       // the status of data, N means normal, D means deleted.
-  // resource status, eg: create/release/revoke
-  api.protobuf.PowerState state = 6;              // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力; 3: 已撤销的算力)
-  // unit: byte
-  uint64 total_mem = 7;                           // 算力总内存 (单位: byte)
-  // unit: byte
-  uint64 used_mem = 8;                            // 算力已使用内存 (单位: byte)
-  // number of cpu cores.
-  uint32 total_processor = 9;                     // 算力总内核数 (单位: 个)
-  uint32 used_processor = 10;                     // 算力已使用内核数 (单位: 个)
-  // unit: byte
-  uint64 total_bandwidth = 11;                    // 算力总带宽数 (单位: bps)
-  uint64 used_bandwidth = 12;                     // 算力已使用带宽数 (单位: bps)
-  uint64 total_disk = 13;                         // 算力总磁盘容量 (单位: byte)
-  uint64 used_disk = 14;                          // 算力已使用磁盘容量 (单位: byte)
-  uint64 publish_at = 15;                         // 数据发布时间
-  uint64 update_at = 16;                          // 数据更新时间
+  Organization                      owner = 1;                               // 算力所属的组织信息
+  string                            data_id = 2;                             // 算力的powerId
+  DataStatus                        data_status = 3;                         // the status of data for local storage, 1 means valid, 2 means invalid.
+  PowerState                        state = 4;                               // 算力的状态 (0: 未知; 1: create 还未发布的算力; 2: release 已发布的算力; 3: revoke 已撤销的算力)
+  uint64                            total_mem = 5;                           // 算力总内存 (单位: byte)
+  uint64                            used_mem = 6;                            // 算力已使用内存 (单位: byte)
+  uint32                            total_processor = 7;                     // 算力总内核数 (单位: 个)
+  uint32                            used_processor = 8;                      // 算力已使用内核数 (单位: 个)
+  uint64                            total_bandwidth = 9;                     // 算力总带宽数 (单位: bps)
+  uint64                            used_bandwidth = 10;                     // 算力已使用带宽数 (单位: bps)
+  uint64                            total_disk = 11;                         // 算力总磁盘容量 (单位: byte)
+  uint64                            used_disk = 12;                          // 算力已使用磁盘容量 (单位: byte)
+  uint64                            publish_at = 13;                         // 数据发布时间
+  uint64                            update_at = 14;                          // 数据更新时间
+  uint64                            nonce = 15;                              // 算力的 nonce (用来标识该算力在所属组织中的算力的序号, 从 0 开始递增)
 }
 
 // 单个组织中的单台服务的算力信息 (比 resource 多了 jobNodeId)
 message LocalResourcePB {
-  string identity_id = 1;                         // 算力所属的组织的 身份标识
-  string node_id = 2;                             // 算力所属的组织的 p2p公钥
-  string node_name = 3;                           // 算力所属的组织的 组织名称
-  string data_id = 4;                             // 算力的powerId
-  // the status of data, N means normal, D means deleted.
-  api.protobuf.DataStatus  data_status = 5;       // the status of data, N means normal, D means deleted.
-  // resource status, eg: create/release/revoke
-  api.protobuf.PowerState state = 6;              // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力; 3: 已撤销的算力)
-  // unit: byte
-  uint64 total_mem = 7;                           // 算力总内存 (单位: byte)
-  // unit: byte
-  uint64 used_mem = 8;                            // 算力已使用内存 (单位: byte)
-  // number of cpu cores.
-  uint32 total_processor = 9;                     // 算力总内核数 (单位: 个)
-  uint32 used_processor = 10;                     // 算力已使用内核数 (单位: 个)
-  // unit: byte
-  uint64 total_bandwidth = 11;                    // 算力总带宽数 (单位: bps)
-  uint64 used_bandwidth = 12;                     // 算力已使用带宽数 (单位: bps)
-  uint64 total_disk = 13;                         // 算力总磁盘容量 (单位: byte)
-  uint64 used_disk = 14;                          // 算力已使用磁盘容量 (单位: byte)
-  uint64 publish_at = 15;                         // 数据发布时间
-  uint64 update_at = 16;                          // 数据更新时间
-  string job_node_id = 17;                        // 算力对应的内部计算服务的jobNodeId
+  Organization                      owner = 1;                                // 算力所属的组织信息
+  string                            data_id = 2;                              // 算力的powerId
+  DataStatus                        data_status = 3;                          // the status of data for local storage, 1 means valid, 2 means invalid.
+  PowerState                        state = 4;                                // 算力的状态 (0: 未知; 1: create 还未发布的算力; 2: release 已发布的算力; 3: revoke 已撤销的算力)
+  uint64                            total_mem = 5;                            // 算力总内存 (单位: byte)
+  uint64                            used_mem = 6;                             // 算力已使用内存 (单位: byte)
+  uint32                            total_processor = 7;                      // 算力总内核数 (单位: 个)
+  uint32                            used_processor = 8;                       // 算力已使用内核数 (单位: 个)
+  uint64                            total_bandwidth = 9;                      // 算力总带宽数 (单位: bps)
+  uint64                            used_bandwidth = 10;                      // 算力已使用带宽数 (单位: bps)
+  uint64                            total_disk = 11;                          // 算力总磁盘容量 (单位: byte)
+  uint64                            used_disk = 12;                           // 算力已使用磁盘容量 (单位: byte)
+  uint64                            publish_at = 13;                          // 数据发布时间
+  uint64                            update_at = 14;                           // 数据更新时间
+  string                            job_node_id = 15;                         // 算力对应的内部计算服务的jobNodeId
 }
 
 // =============================== For API =============================
 
 // 定义：代表一个服务器纯粹的算力数据
 message Power {
-  // 计算服务id (节点内部的)
-  string job_node_id = 1;
-  // 算力id
-  string power_id = 2;
-  // 算力实况
-  ResourceUsageOverview usage_overview = 3;
-  // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力; 3: 已撤销的算力)
-  api.protobuf.PowerState state = 4;
+  string                      job_node_id = 1;          // 计算服务id (节点内部的)
+  string                      power_id = 2;             // 算力id
+  ResourceUsageOverview       usage_overview = 3;       // 算力实况
+  PowerState                  state = 4;                // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力; 3: 已撤销的算力)
+  uint64                      nonce = 5;                // 算力的 nonce (用来标识该算力在所属组织中的算力的序号, 从 0 开始递增)
 }
 
 // 算力及算力上的task信息的公共抽象
@@ -81,42 +63,35 @@ message PowerUsageDetail {
   uint32                            total_task_count = 2;             // 算力(宿主机)上执行过的任务总数 (已完成的和正在执行的)
   uint32                            current_task_count = 3;           // 算力(宿主机)上当前正在执行的任务数
   repeated PowerTask                tasks = 4;                        // 算力(宿主机)上当前正在执行的任务详情信息
-  api.protobuf.PowerState           state = 5;                        // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)
-  // v 2.0
+  PowerState                        state = 5;                        // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)
   uint64                            publish_at = 6;                   // 数据发布时间 (表示单条算力时才有值)
   uint64                            update_at = 7;                    // 数据更新时间 (表示单条算力时才有值)
+  uint64                            nonce = 8;                        // 算力的 nonce (用来标识该算力在所属组织中的算力的序号, 从 0 开始递增)
 }
 
 // 算力上的任务信息
 message PowerTask {
   string                               task_id = 1;              // 任务Id
   string                               task_name = 2;            // 任务名称
-  api.protobuf.Organization            owner = 3;                // 任务发起方身份信息
-  repeated api.protobuf.Organization   partners = 4;             // 任务协作方信息
-  repeated api.protobuf.Organization   receivers = 5;            // 任务结果接收方信息
-  api.protobuf.TaskResourceCostDeclare operation_cost = 6;       // 任务所需的资源大小信息
-  api.protobuf.TaskResourceCostDeclare operation_spend = 7;      // 任务已经花费的资源大小信息
+  Organization                         owner = 3;                // 任务发起方身份信息
+  repeated Organization                partners = 4;             // 任务协作方信息
+  repeated Organization                receivers = 5;            // 任务结果接收方信息
+  TaskResourceCostDeclare              operation_cost = 6;       // 任务所需的资源大小信息
+  TaskResourceCostDeclare              operation_spend = 7;      // 任务已经花费的资源大小信息
   uint64                               createAt = 8;             // 任务的发起时间戳 (单位: ms)
 }
 
 // 系统资源消耗概览
 message ResourceUsageOverview {
-  // 服务系统的总内存 (单位: byte)
-  uint64 total_mem = 1;
-  // 服务系统的已用内存  (单位: byte)
-  uint64 used_mem = 2;
-  // 服务的总内核数 (单位: 个)
-  uint32 total_processor = 3;
-  // 服务的已用内核数 (单位: 个)
-  uint32 used_processor = 4;
-  // 服务的总带宽数 (单位: bps)
-  uint64 total_bandwidth = 5;
-  // 服务的已用带宽数 (单位: bps)
-  uint64 used_bandwidth = 6;
-  // 服务的总磁盘空间 (单位: byte)
-  uint64 total_disk = 7;
-  // 服务的已用磁盘空间 (单位: byte)
-  uint64 used_disk = 8;
+  uint64 total_mem = 1;         // 服务系统的总内存 (单位: byte)
+  uint64 used_mem = 2;          // 服务系统的已用内存  (单位: byte)
+  uint32 total_processor = 3;   // 服务的总内核数 (单位: 个)
+  uint32 used_processor = 4;    // 服务的已用内核数 (单位: 个)
+  uint64 total_bandwidth = 5;   // 服务的总带宽数 (单位: bps)
+  uint64 used_bandwidth = 6;    // 服务的已用带宽数 (单位: bps)
+  uint64 total_disk = 7;        // 服务的总磁盘空间 (单位: byte)
+  uint64 used_disk = 8;         // 服务的已用磁盘空间 (单位: byte)
 }
+
 
 

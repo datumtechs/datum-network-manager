@@ -33,6 +33,10 @@ public class LocalDataFile extends BaseDomain {
     private Date recCreateTime;
     //最后更新时间
     private Date recUpdateTime;
+    //v0.4.0文件内容hash
+    private String dataHash;
+    //v0.4.0源数据的存储位置类型 (组织本地服务器、远端服务器、云等)
+    private Integer locationType;
 
     //源文件列信息
     private List<LocalMetaDataColumn> localMetaDataColumnList;
@@ -44,12 +48,12 @@ public class LocalDataFile extends BaseDomain {
         localMetaDataColumnList.add(localMetaDataColumn);
     }
 
-    public static enum FileType {
+    public static enum FileTypeEnum {
         UNKNOWN(0, "unknown"),CSV(1, "csv");
         private int code;
         private String value;
 
-        FileType(int code, String value) {
+        FileTypeEnum(int code, String value) {
             this.code = code;
             this.value = value;
         }
@@ -61,15 +65,5 @@ public class LocalDataFile extends BaseDomain {
         public String getValue() {
             return value;
         }
-
-        public static LocalPowerNode.ConnStatus codeOf(int code) {
-            for (LocalPowerNode.ConnStatus status : LocalPowerNode.ConnStatus.values()) {
-                if (status.ordinal()== code) {
-                    return status;
-                }
-            }
-            return null;
-        }
-
     }
 }

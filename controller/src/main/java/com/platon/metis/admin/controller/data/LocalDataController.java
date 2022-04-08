@@ -21,6 +21,7 @@ import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.*;
 import com.platon.metis.admin.dto.resp.LocalDataDetailResp;
 import com.platon.metis.admin.dto.resp.LocalDataImportFileResp;
+import com.platon.metis.admin.grpc.types.Base;
 import com.platon.metis.admin.service.LocalDataService;
 import com.platon.metis.admin.service.TaskService;
 import io.swagger.annotations.Api;
@@ -85,7 +86,7 @@ public class LocalDataController extends BaseController {
     @PostMapping("/listLocalMetaDataByKeyword")
     public JsonResponse<List<LocalMetaData>> listLocalMetaDataByKeyword(@RequestBody @Validated LocalDataMetaDataListByKeyWordReq req, HttpSession session) {
         String userAddress = getCurrentUserAddress(session);
-        Page<LocalMetaData> localMetaDataPage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(), req.getKeyword(), userAddress,req.getStatus());
+        Page<LocalMetaData> localMetaDataPage = localDataService.listMetaData(req.getPageNumber(), req.getPageSize(), req.getKeyword(), userAddress, req.getStatus());
         return JsonResponse.page(localMetaDataPage);
     }
 
@@ -167,6 +168,7 @@ public class LocalDataController extends BaseController {
         localMetaData.setMetaDataName(req.getResourceName());
         localMetaData.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());//添加数据状态为created
         localMetaData.setOwner(userAddress);
+        localMetaData.setMetaDataType(Base.MetadataType.MetadataType_DataFile_VALUE);
 
         localMetaData.setLocalMetaDataColumnList(req.getLocalMetaDataColumnList());
 
@@ -174,58 +176,6 @@ public class LocalDataController extends BaseController {
 
         return JsonResponse.success();
     }
-
-//    @ApiOperation(value = "元数据保存并上架")
-//    @PostMapping("/localMetaDataSaveAndUp")
-//    public JsonResponse localMetaDataSaveAndUp(@RequestBody @Validated AddLocalMetaDataReq req, HttpSession session) {
-//        String userAddress = getCurrentUserAddress(session);
-//        //判断数据添加类型
-//        if (req.getAddType() != DataAddTypeEnum.ADD.getType() && req.getAddType() != DataAddTypeEnum.ADD_AGAIN.getType()) {
-//            log.error("AddLocalMetaDataReq.type error:{}", req.getAddType());
-//            throw new ArgumentException();
-//        }
-//        //判断格式是否对
-//        if (!NameUtil.isValidName(req.getResourceName())) {
-//            log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
-//            throw new MetadataResourceNameIllegal();
-//        }
-//        //判断是否重复
-//        boolean exist = localDataService.isExistResourceName(req.getResourceName());
-//        if (exist) {
-//            log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
-//            throw new MetadataResourceNameExists();
-//        }
-//
-//        LocalDataFile localDataFile = new LocalDataFile();
-//        BeanUtils.copyProperties(req, localDataFile);
-//        LocalMetaData localMetaData = new LocalMetaData();
-//        localMetaData.setFileId(req.getFileId());
-//        localMetaData.setRemarks(req.getRemarks());
-//        localMetaData.setIndustry(req.getIndustry());
-//        localMetaData.setMetaDataName(req.getResourceName());
-//        localMetaData.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());//添加数据状态为created
-//        localMetaData.setOwner(userAddress);
-//        localMetaData.setLocalMetaDataColumnList(req.getLocalMetaDataColumnList());
-//        localDataService.saveAndUp(localMetaData);
-//        return JsonResponse.success();
-//    }
-
-    /*private List<LocalMetaDataColumn> visibleLocalDataColumns(List<LocalDataFileColumn> localDataFileColumnList){
-        List<LocalMetaDataColumn> localMetaDataColumnList = new ArrayList<>();
-        for(LocalDataFileColumn localDataFileColumn : localDataFileColumnList){
-            if(localDataFileColumn.isVisible()){
-                LocalMetaDataColumn localMetaDataColumn = new LocalMetaDataColumn();
-                localMetaDataColumn.setColumnIdx(localDataFileColumn.getColumnIdx());
-                localMetaDataColumn.setColumnName(localDataFileColumn.getColumnName());
-                localMetaDataColumn.setColumnType(localDataFileColumn.getColumnType());
-                localMetaDataColumn.setSize(localDataFileColumn.getSize());
-                localMetaDataColumn.setRemarks(localDataFileColumn.getRemarks());
-                localMetaDataColumnList.add(localMetaDataColumn);
-            }
-        }
-        return localMetaDataColumnList;
-    }*/
-
 
     /**
      * 查看元数据详情

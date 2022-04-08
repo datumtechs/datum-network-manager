@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
-public class SimpleChannelManager{
+public class SimpleChannelManager {
     @Resource
     private TimeoutInterceptor timeoutInterceptor;
 
@@ -35,7 +35,7 @@ public class SimpleChannelManager{
 
     private ManagedChannel carrierChannel;
 
-    public ManagedChannel buildChannel(String ip,int port) throws CannotConnectGrpcServer {
+    public ManagedChannel buildChannel(String ip, int port) throws CannotConnectGrpcServer {
         try {
             ManagedChannel channel = ManagedChannelBuilder
                     .forAddress(ip, port)
@@ -46,13 +46,13 @@ public class SimpleChannelManager{
                     .build();
 
             return channel;
-        }catch (Throwable e){
+        } catch (Throwable e) {
             log.error("failed to connect to gRPC server {}:{}", ip, port);
             throw new CannotConnectGrpcServer();
         }
     }
 
-    public ManagedChannel buildUploadFileChannel(String ip,int port) throws CannotConnectGrpcServer {
+    public ManagedChannel buildUploadFileChannel(String ip, int port) throws CannotConnectGrpcServer {
         try {
             ManagedChannel channel = ManagedChannelBuilder
                     .forAddress(ip, port)
@@ -63,7 +63,7 @@ public class SimpleChannelManager{
                     .build();
 
             return channel;
-        }catch (Throwable e){
+        } catch (Throwable e) {
             log.error("failed to connect to gRPC server {}:{}", ip, port);
             throw new CannotConnectGrpcServer();
         }
@@ -71,7 +71,7 @@ public class SimpleChannelManager{
 
 
     public void closeChannel(ManagedChannel managedChannel) {
-        if(managedChannel == null){
+        if (managedChannel == null) {
             return;
         }
         if (!managedChannel.isShutdown()) {
@@ -101,21 +101,22 @@ public class SimpleChannelManager{
     /**
      * 获取调度服务连接
      * carrier_conn_Status = 'enabled' and carrier_status = 'enabled'
+     *
      * @return
      */
     public ManagedChannel getCarrierChannel() throws CarrierNotConfigured, CannotConnectGrpcServer {
         //获取调度服务的信息
-        LocalOrg localOrg = (LocalOrg) LocalOrgCache.getLocalOrgInfo();
+        LocalOrg localOrg = LocalOrgCache.getLocalOrgInfo();
 
-        if(StringUtils.isBlank(localOrg.getIdentityId())){
+        if (StringUtils.isBlank(localOrg.getIdentityId())) {
             throw new IdentityIdMissing();
         }
 
-        if(!CarrierConnStatusEnum.ENABLED.getStatus().equals(localOrg.getCarrierConnStatus())){
+        if (!CarrierConnStatusEnum.ENABLED.getStatus().equals(localOrg.getCarrierConnStatus())) {
             throw new CarrierNotConfigured();
         }
 
-        if (carrierChannel==null){
+        if (carrierChannel == null) {
             carrierChannel = buildChannel(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         }
 

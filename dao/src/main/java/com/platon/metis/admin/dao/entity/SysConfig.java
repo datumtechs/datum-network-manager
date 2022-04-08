@@ -63,6 +63,13 @@ public class SysConfig {
         DATA_TOKEN_FACTORY_ADDRESS("data_token_factory_address", "凭证工厂合约地址"),
         DEX_ROUTER_ADDRESS("data_token_factory_address", "router合约地址"),
         DEX_WEB_URL("dex_web_url","dex链接地址"),
+        CHAIN_NAME("chain_name","链名称"),
+        CHAIN_ID("chain_id","链ID"),
+        RPC_URL("rpc_url","链rpcUrl，给用户使用，必须是外部ip"),
+        SYMBOL("symbol","主币symbol"),
+        BLOCK_EXPLORER_URL("block_explorer_url","区块链浏览器地址"),
+        HRP("hrp","链hrp"),
+        RPC_URL_LIST("rpc_url_list","链rpcUrl，主要是给后台系统用，可以是内部IP，例子：http://localhost:6789,多个url用逗号分割"),
         ;
 
         KeyEnum(String key, String desc) {

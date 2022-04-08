@@ -4,10 +4,10 @@ import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.LocalDataAuth;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
-import com.platon.metis.admin.grpc.common.CommonBase;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.AuthRpcMessage;
 import com.platon.metis.admin.grpc.service.AuthServiceGrpc;
+import com.platon.metis.admin.grpc.types.Base;
 import com.platon.metis.admin.grpc.types.Metadata;
 import io.grpc.ManagedChannel;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +53,7 @@ public class AuthClient {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        CommonBase.Organization orgInfo = CommonBase.Organization
+        Base.Organization orgInfo = Base.Organization
                 .newBuilder()
                 .setNodeName(name)
                 .setIdentityId(identityId)
@@ -62,11 +62,11 @@ public class AuthClient {
                 .build();
         AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest
                 .newBuilder()
-                .setMember(orgInfo)
+                .setInformation(orgInfo)
                 .build();
 
         //3.调用rpc,获取response
-        CommonBase.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
+        Base.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
         //4.处理response
 
         if (response == null) {
@@ -88,7 +88,7 @@ public class AuthClient {
                 .newBuilder()
                 .build();
         //3.调用rpc,获取response
-        CommonBase.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
+        Base.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -121,7 +121,7 @@ public class AuthClient {
         }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        log.debug("从carrier查询数据授权申请列表，数量：{}", response.getListList().size());
+        log.debug("从carrier查询数据授权申请列表，数量：{}", response.getMetadataAuthsList().size());
         return dataConvertToAuthList(response);
     }
 
@@ -163,7 +163,7 @@ public class AuthClient {
         ManagedChannel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
-        CommonBase.AuditMetadataOption auditDataStatus =  CommonBase.AuditMetadataOption.forNumber(auditOption);
+        Base.AuditMetadataOption auditDataStatus =  Base.AuditMetadataOption.forNumber(auditOption);
         AuthRpcMessage.AuditMetadataAuthorityRequest request =  AuthRpcMessage
                 .AuditMetadataAuthorityRequest
                 .newBuilder()
@@ -185,12 +185,12 @@ public class AuthClient {
 
     private List<LocalDataAuth> dataConvertToAuthList(AuthRpcMessage.GetMetadataAuthorityListResponse response){
         List<LocalDataAuth> localDataAuthList = new ArrayList<>();
-        List <AuthRpcMessage.GetMetadataAuthority> metaDataAuthorityList = response.getListList();
+        List<Metadata.MetadataAuthorityDetail> metaDataAuthorityList = response.getMetadataAuthsList();
         if(!CollectionUtils.isEmpty(metaDataAuthorityList)){
-            for (AuthRpcMessage.GetMetadataAuthority dataAuth : metaDataAuthorityList) {
+            for (Metadata.MetadataAuthorityDetail dataAuth : metaDataAuthorityList) {
                 //元数据使用授权
                 Metadata.MetadataAuthority metaDataAuthority =  dataAuth.getAuth();
-                CommonBase.Organization identityInfo = metaDataAuthority.getOwner();
+                Base.Organization identityInfo = metaDataAuthority.getOwner();
                 String metaDataId = metaDataAuthority.getMetadataId();
                 Metadata.MetadataUsageRule metadataUsageRule = metaDataAuthority.getUsageRule();
                 long startAt = metadataUsageRule.getStartAt();
@@ -205,11 +205,11 @@ public class AuthClient {
                 localDataAuth.setCreateAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getApplyAt()), ZoneOffset.UTC));
                 localDataAuth.setAuthAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getAuditAt()), ZoneOffset.UTC));
                 /**
-                 * {@link CommonBase.AuditMetadataOption}
+                 * {@link Base.AuditMetadataOption}
                  */
                 if(dataAuth.getAuditOptionValue() == 0){ //等待审核
                     /**
-                     * * {@link CommonBase.MetadataAuthorityState}
+                     * * {@link Base.MetadataAuthorityState}
                     * 数据授权信息的状态 (
                     * 0: 未知;
                     * 1: 还未发布的数据授权;
@@ -219,19 +219,19 @@ public class AuthClient {
                     * **/
                     int stateValue = dataAuth.getStateValue();
                     switch (stateValue) {
-                        case CommonBase.MetadataAuthorityState.MAState_Unknown_VALUE:
+                        case Base.MetadataAuthorityState.MAState_Unknown_VALUE:
                             localDataAuth.setStatus(0);
                             break;
-                        case CommonBase.MetadataAuthorityState.MAState_Created_VALUE:
+                        case Base.MetadataAuthorityState.MAState_Created_VALUE:
                             localDataAuth.setStatus(0);
                             break;
-                        case CommonBase.MetadataAuthorityState.MAState_Released_VALUE:
+                        case Base.MetadataAuthorityState.MAState_Released_VALUE:
                             localDataAuth.setStatus(0);
                             break;
-                        case CommonBase.MetadataAuthorityState.MAState_Revoked_VALUE:
+                        case Base.MetadataAuthorityState.MAState_Revoked_VALUE:
                             localDataAuth.setStatus(2);
                             break;
-                        case CommonBase.MetadataAuthorityState.MAState_Invalid_VALUE:
+                        case Base.MetadataAuthorityState.MAState_Invalid_VALUE:
                             localDataAuth.setStatus(3);
                             break;
                     }

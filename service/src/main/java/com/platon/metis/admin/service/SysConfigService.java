@@ -29,4 +29,6 @@ public interface SysConfigService {
     Map<String,String> getSystemConfigKey();
 
     SysConfig getConfig(String key);
+
+    List<SysConfig> getMetaMaskConfig();
 }

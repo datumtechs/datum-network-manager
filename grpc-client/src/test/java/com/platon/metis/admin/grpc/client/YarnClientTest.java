@@ -1,7 +1,7 @@
 package com.platon.metis.admin.grpc.client;
 
 import com.alibaba.fastjson.JSON;
-import com.platon.metis.admin.dao.enums.FileTypeEnum;
+import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class YarnClientTest extends BaseClientTest{
 //        log.info(JSON.toJSONString(resp));
 
         long size = 10*1024*1024*1024*1024*1024;
-        YarnAvailableDataNodeResp resp = yarnClient.getAvailableDataNode(size, FileTypeEnum.FILETYPE_CSV);
+        YarnAvailableDataNodeResp resp = yarnClient.getAvailableDataNode(size, LocalDataFile.FileTypeEnum.CSV);
         log.info(JSON.toJSONString(resp));
     }
 

@@ -35,4 +35,6 @@ public interface LocalMetaDataMapper {
 
     List<LocalMetaData> listUnBindMetaData(@Param("keyword") String keyword, @Param("userAddress") String userAddress);
 
+    List<LocalMetaData>selectByStatus(Integer status);
+
 }

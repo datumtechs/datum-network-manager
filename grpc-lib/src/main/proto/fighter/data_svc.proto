@@ -102,6 +102,7 @@ message UploadReply {
   bool ok = 1;
   string data_id = 2;
   string file_path = 3;
+  string data_hash = 4;
 }
 
 message ListDataReply {

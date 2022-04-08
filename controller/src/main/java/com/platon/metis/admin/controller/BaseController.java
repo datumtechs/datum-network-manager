@@ -24,4 +24,14 @@ public abstract class BaseController {
         String address = userInfo.getAddress();
         return address;
     }
+
+    /**
+     * 判断当前用户是否是管理员
+     * @param session
+     * @return
+     */
+    protected boolean currentUserIsAdmin(HttpSession session) {
+        SysUser userInfo = (SysUser) session.getAttribute(ControllerConstants.USER_INFO);
+        return userInfo.getIsAdmin() == 1;
+    }
 }

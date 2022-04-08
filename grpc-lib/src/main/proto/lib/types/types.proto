@@ -13,11 +13,11 @@ option java_package = "com.platon.metis.admin.grpc.types";
 //option java_multiple_files = true;
 // Metadata body data struct.
 message BlockData {
-  types.HeaderPb              header = 1;
-  repeated types.MetadataPB     metadata = 2;
-  repeated types.ResourcePB resourcedata = 3;
-  repeated types.IdentityPB identitydata = 4;
-  repeated types.TaskPB     taskdata = 5;
+  HeaderPb              header = 1;
+  repeated MetadataPB     metadata = 2;
+  repeated ResourcePB resourcedata = 3;
+  repeated IdentityPB identitydata = 4;
+  repeated TaskPB     taskdata = 5;
 
   //
   uint64 receivedAt = 6;
@@ -25,10 +25,10 @@ message BlockData {
 }
 
 message BodyData {
-  repeated types.MetadataPB     metadata = 1;
-  repeated types.ResourcePB resourcedata = 2;
-  repeated types.IdentityPB identitydata = 3;
-  repeated types.TaskPB     taskdata = 4;
+  repeated MetadataPB     metadata = 1;
+  repeated ResourcePB resourcedata = 2;
+  repeated IdentityPB identitydata = 3;
+  repeated TaskPB     taskdata = 4;
   bytes                       extraData = 5;
 }
 

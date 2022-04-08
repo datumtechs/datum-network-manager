@@ -33,6 +33,16 @@
         where `key` = #{key}
     </select>
 
+    <select id="getMultiConfig" resultMap="BaseResultMap">
+        <if test="keys.size() > 0">
+            select <include refid="Base_Column_List"/>
+            from sys_config
+            <foreach collection="keys" open="where `key` in (" close=")" separator="," item="key">
+                #{key}
+            </foreach>
+        </if>
+    </select>
+
     <update id="insertConfig">
         insert into
         sys_config(`key`,`value`,`status`,`desc`)

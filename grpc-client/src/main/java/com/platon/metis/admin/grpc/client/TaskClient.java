@@ -3,11 +3,10 @@ package com.platon.metis.admin.grpc.client;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
-import com.platon.metis.admin.grpc.common.CommonBase;
-import com.platon.metis.admin.grpc.common.CommonData;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.service.TaskRpcMessage;
 import com.platon.metis.admin.grpc.service.TaskServiceGrpc;
+import com.platon.metis.admin.grpc.types.Base;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -47,6 +46,7 @@ public class TaskClient {
 
     /**
      * 查询本组织参与的任务
+     *
      * @return
      */
     public Pair<List<Task>, Map<String, TaskOrg>> getLocalTaskList(LocalDateTime latestSynced) {
@@ -63,21 +63,22 @@ public class TaskClient {
                 .build();
 
         //3.调用rpc服务接口
-        TaskRpcMessage.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskDetailList(request);
+        TaskRpcMessage.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        log.debug("从carrier查询本组织参与的任务, 数量:{}", response.getTaskListList().size());
+        log.debug("从carrier查询本组织参与的任务, 数量:{}", response.getTasksList().size());
 
-        return dataConvertToTaskList(response.getTaskListList());
+        return dataConvertToTaskList(response.getTasksList());
     }
 
 
     /**
      * 批量获取多个任务的全部事件列表
+     *
      * @param taskIds
      * @return
      */
@@ -95,17 +96,17 @@ public class TaskClient {
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        log.debug("从carrier批量获取多个任务的全部事件列表, 数量:{}", response.getTaskEventListList().size());
+        log.debug("从carrier批量获取多个任务的全部事件列表, 数量:{}", response.getTaskEventsList().size());
 
         List<TaskEvent> taskEventList = new ArrayList<>();
         //构造taskEvent集合
-        for (TaskRpcMessage.TaskEventShow taskEvenShow : response.getTaskEventListList()) {
+        for (TaskRpcMessage.TaskEventShow taskEvenShow : response.getTaskEventsList()) {
             TaskEvent taskEvent = new TaskEvent();
             taskEvent.setTaskId(taskEvenShow.getTaskId());
-            taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt()/1000,0, ZoneOffset.UTC));
+            taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt() / 1000, 0, ZoneOffset.UTC));
             taskEvent.setEventContent(taskEvenShow.getContent());
             taskEvent.setEventType(taskEvenShow.getType());
             taskEvent.setIdentityId(taskEvenShow.getOwner().getIdentityId());
@@ -121,26 +122,27 @@ public class TaskClient {
     /**
      * 任务集合数据转换
      * 并搜集所涉及的参与方信息，放入task_org中。因此，管理台只看到自己相关任务所涉及的其它组织的信息。
+     *
      * @param taskDetailList
      * @return
      */
-    private Pair<List<Task>, Map<String, TaskOrg>> dataConvertToTaskList(List<TaskRpcMessage.GetTaskDetailResponse> taskDetailList){
+    private Pair<List<Task>, Map<String, TaskOrg>> dataConvertToTaskList(List<TaskRpcMessage.GetTaskDetail> taskDetailList) {
 
         //key:identityId
         Map<String, TaskOrg> taskOrgMap = new HashMap<>();
 
         List<Task> taskList = new ArrayList<>();
         for (int i = 0; i < taskDetailList.size(); i++) {
-            TaskRpcMessage.TaskDetailShow  taskDetail = taskDetailList.get(i).getInformation();
-            //CommonBase.TaskRole role = taskDetailList.get(i).getRole();
-            String taskId =  taskDetail.getTaskId();
-            String taskName =  taskDetail.getTaskName();
+            TaskRpcMessage.TaskDetailShow taskDetail = taskDetailList.get(i).getInformation();
+            //Base.TaskRole role = taskDetailList.get(i).getRole();
+            String taskId = taskDetail.getTaskId();
+            String taskName = taskDetail.getTaskName();
 
             Long createAt = taskDetail.getCreateAt();
             Long startAt = taskDetail.getStartAt();
             Long endAt = taskDetail.getEndAt();
-            CommonBase.TaskState state = taskDetail.getState();
-            CommonData.TaskResourceCostDeclare operationCost = taskDetail.getOperationCost();
+            Base.TaskState state = taskDetail.getState();
+            Base.TaskResourceCostDeclare operationCost = taskDetail.getOperationCost();
             String desc = taskDetail.getDesc();
 
             //构造Task
@@ -166,15 +168,18 @@ public class TaskClient {
             taskOrgMap.put(taskDetail.getSender().getIdentityId(), new TaskOrg(taskDetail.getSender().getIdentityId(), taskDetail.getSender().getNodeName(), taskDetail.getSender().getNodeId()));
 
             // 算法提供方algoSupplier
-            CommonBase.TaskOrganization algoSupplier = taskDetail.getAlgoSupplier();
+            TaskRpcMessage.TaskAlgoSupplier algoSupplier = taskDetail.getAlgoSupplier();
             TaskAlgoProvider algoProvider = new TaskAlgoProvider();
             algoProvider.setTaskId(taskId);
-            algoProvider.setIdentityId(algoSupplier.getIdentityId());
-            algoProvider.setPartyId(algoSupplier.getPartyId());
+            algoProvider.setIdentityId(algoSupplier.getOrganization().getIdentityId());
+            algoProvider.setPartyId(algoSupplier.getOrganization().getPartyId());
             task.setAlgoSupplier(algoProvider);
 
             //搜集taskOrg， 算法提供方
-            taskOrgMap.put(taskDetail.getAlgoSupplier().getIdentityId(), new TaskOrg(taskDetail.getAlgoSupplier().getIdentityId(), taskDetail.getAlgoSupplier().getNodeName(), taskDetail.getAlgoSupplier().getNodeId()));
+            taskOrgMap.put(taskDetail.getAlgoSupplier().getOrganization().getIdentityId(),
+                    new TaskOrg(taskDetail.getAlgoSupplier().getOrganization().getIdentityId(),
+                            taskDetail.getAlgoSupplier().getOrganization().getNodeName(),
+                            taskDetail.getAlgoSupplier().getOrganization().getNodeId()));
 
             //数据提供方dataSupplierList
             List<TaskDataProvider> taskDataProviderList = new ArrayList<>();
@@ -218,7 +223,7 @@ public class TaskClient {
             //任务结果方receiverList
             List<TaskResultConsumer> resultConsumerList = new ArrayList<>();
 
-            for (CommonBase.TaskOrganization receiver : taskDetail.getReceiversList()) {
+            for (Base.TaskOrganization receiver : taskDetail.getReceiversList()) {
                 TaskResultConsumer resultConsumer = new TaskResultConsumer();
                 resultConsumer.setTaskId(taskId);
                 resultConsumer.setConsumerIdentityId(receiver.getIdentityId());
@@ -242,23 +247,17 @@ public class TaskClient {
 
     /**
      * 动态数据
+     *
      * @param nodeName
      * @param nodeId
      * @return
      */
-    private Map getDynamicFields(String nodeName, String nodeId){
+    private Map getDynamicFields(String nodeName, String nodeId) {
         Map dynamicFields = new HashMap();
         dynamicFields.put(NODE_NAME, nodeName);
         dynamicFields.put(NODE_ID, nodeId);
         return dynamicFields;
     }
-
-
-
-
-
-
-
 
 
 }
