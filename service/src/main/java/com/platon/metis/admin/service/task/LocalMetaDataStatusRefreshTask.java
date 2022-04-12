@@ -11,6 +11,7 @@ import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.service.DataSyncService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,7 @@ import java.util.List;
  */
 
 @Slf4j
-//@Configuration
+@Configuration
 public class LocalMetaDataStatusRefreshTask {
 
     @Resource

@@ -1,63 +1,20 @@
 spring:
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.cj.jdbc.Driver
     druid:
-      url: jdbc:mysql://192.168.9.192:3306/metis_admin_lsy?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
-      username: root
-      password: 6qY7CBQo7p!
-      initial-size: 10
-      max-active: 20
-      min-idle: 10
-      max-wait: 60000
-      connection-init-sqls: set names utf8mb4
-      pool-prepared-statements: true
-      max-pool-prepared-statement-per-connection-size: 20
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      stat-view-servlet:
-        enabled: true
-        url-pattern: /druid/*
-        #login-username: admin
-        #login-password: admin
-      filter:
-        stat:
-          log-slow-sql: true
-          slow-sql-millis: 10000
-          merge-sql: false
-        wall:
-          config:
-            multi-statement-allow: true
+      url: jdbc:mysql://{{inventory_hostname}}/metis_admin?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+      username: {{amin_user}}
+      password: {{admin_password}}
   # =============================== consul ===============================
   cloud:
     consul:
-      host: 39.101.171.59
-      port: 8500
+      host: {{consul_leader_ip}}
+      port: {{consul_leader_port}}
       discovery:  # 服务发现配置
-        enabled: true
-        register: true
-        deregister: true
-        prefer-ip-address: true
-        service-name: adminService
-        instance-id: adminService_39.101.171.59_9090
-        tags: admin
-        health-check-interval: 10s
-        health-check-url: http://${spring.cloud.client.ip-address}:${server.port}/${server.servlet.context-path}/health
-        # health-check-path: ${management.endpoints.web.base-path}/health
-      carrierServiceName: carrierService
+        instance-id: adminService_{{inventory_hostname}}_{{admin_web_port}}
+
 # ==================================== server conf  ==========================================
 server:
-  tomcat:
-    uri-encoding: UTF-8
-    threads.max: 1000
-    threads.min-spare: 30
-  port: 9090
-  servlet:
-    context-path: /metis-admin
+  port: {{admin_web_port}}
 
 # ===== 自定义swagger配置 ===== #
 swagger:
@@ -66,41 +23,10 @@ swagger:
 # =============================== conf for logger ===================================
 # 日志配置
 logging:
-  # 日志级别
-  level:
-    root: INFO
-    org.springframework.web: INFO
-    com.platon: DEBUG
   file:
     # 日志文件名格式
-    name: /home/matrixy/admin/logs/${spring.application.name}.log
-  pattern:
-    # 日志记录格式[组件名称] [时间戳] [日志级别] [类名.方法名] [消息文本]
-    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %C / %line - %msg%n'
-    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %C / %line - %msg%n'
+    name: {{admin_log_dir}}/${spring.application.name}.log
   logback:
     rollingpolicy:
       # 根据文件大小归档，超过2KB自动归档，次日启动服务时也会自动归档
-      file-name-pattern: /home/matrixy/admin/logs/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz
-      # 最大日志文件大小(默认为10MB)
-      max-file-size: 200MB
-      # 要保留的日志备份的总大小(默认为0B)
-      # total-size-cap: 1GB
-      # 保存存档日志文件的最大天数(默认为7天)
-      # max-history: 20
-
-# =============================== conf for scheduled task ===================================
-LocalCarrierStatusRefreshTask.fixedDelay: 20000
-LocalDataAuthReqRefreshTask.fixedDelay: 20000
-LocalDataNodeRefreshTask.fixedDelay: 2000
-LocalMetaDataStatusRefreshTask.fixedDelay: 10000
-LocalPowerNodeRefreshTask.fixedDelay: 10000
-LocalTaskRefreshTask.fixedDelay: 20000
-SeedNodeRefreshTask.fixedDelay: 30000
-DataTokenStatusRefreshTask.fixedDelay: 2000
-
-# gprc客户端缺省超时时间，单位：秒
-grpc-client-timeout: 5
-
-# gprc客户端上传文件超时时间，单位：秒
-grpc-client-upload-file-timeout: 60
+      file-name-pattern: {{admin_log_dir}}/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz

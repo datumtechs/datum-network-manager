@@ -19,7 +19,7 @@ import java.util.List;
  * 注意：存储节点启动时，向注册中心注册；调度服务从注册中心定时获取注册的存储节点，并视图连接这些存储节点。
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class LocalDataNodeRefreshTask {
     @Resource
     private LocalDataNodeMapper localDataNodeMapper;

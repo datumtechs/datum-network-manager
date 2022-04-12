@@ -12,6 +12,7 @@ import com.platon.protocol.core.methods.response.PlatonTransaction;
 import com.platon.protocol.core.methods.response.Transaction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Description 刷新数据凭证状态定时任务
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class DataTokenStatusRefreshTask {
 
     @Resource

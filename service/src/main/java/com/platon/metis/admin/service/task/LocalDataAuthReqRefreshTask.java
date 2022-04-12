@@ -27,8 +27,12 @@ import java.util.Objects;
  * <p>
  * 数据授权，涉及FLow(提出、撤回授权申请），调度服务，Admin（审批授权申请），Flow在撤回授权申请，Admin在同意授权申请时，都要以调度服务返回的结果为准。
  * 1. 管理台只能对处于pending状态的申请进行审批；
- * 2. 对已经同意的授权申请，也可以提前终止授权（todo:需要有前提吗？比如没有任务正在使用）
+ * 2. 对已经同意的授权申请，也可以提前终止授权
+ *
+ * @deprecated 0.4.0版本已废弃掉授权，取而代之的是数据凭证
  */
+
+@Deprecated
 @Slf4j
 //@Configuration
 public class LocalDataAuthReqRefreshTask {

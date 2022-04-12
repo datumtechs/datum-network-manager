@@ -615,6 +615,10 @@ SET Global event_scheduler=1;
 -- --------------------------------------------------------------------------------------------------------------------------------------------
 -- 0.4.0新增内容
 -- --------------------------------------------------------------------------------------------------------------------------------------------
+-- drop database if exists `metis_admin`;
+
+-- CREATE DATABASE `metis_admin` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 use `metis_admin`;
 
 -- 以下为0.4.0数据库变更
@@ -645,6 +649,25 @@ CREATE TABLE `resource` (
                             PRIMARY KEY (`id`)
 ) COMMENT='资源表';
 
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1', '1', '登录接口', 'login', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('2', '1', '登出接口', 'logout', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('3', '2', '系统概况', 'overview', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('4', '2', '个人主页', 'userCenter/Profile', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5', '2', '个人信息', 'userCenter/userInfo', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('6', '2', '修改管理员', 'userCenter/updateAdmin', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('7', '2', '节点管理', 'nodeMgt', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('8', '2', '引导节点管理', 'nodeMgt/SeedNodeMgt', NULL, '7');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('9', '2', '存储资源管理', 'nodeMgt/dataNodeMgt', NULL, '7');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('10', '2', '计算资源管理', 'nodeMgt/computeNodeMgt', NULL, '7');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('11', '2', '我的数据', 'myData', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('12', '2', '数据管理', 'myData/dataMgt', NULL, '11');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('13', '2', '数据添加', 'myData/dataAddition', NULL, '11');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('15', '2', '计算任务', 'tasks', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('16', '2', '我的凭证', 'voucher', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('17', '2', '无属性凭证', 'voucher/NoAttribute', NULL, '16');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('18', '1', '我的数据-数据列表关键字查询', '/api/v1/data/listLocalMetaDataByKeyword', NULL, '0');
+
+
 -- 新增角色资源关联表
 DROP TABLE IF EXISTS `role_resource`;
 CREATE TABLE `role_resource` (
@@ -652,6 +675,34 @@ CREATE TABLE `role_resource` (
                                  `resource_id` int NOT NULL COMMENT '资源id',
                                  UNIQUE KEY `角色资源唯一` (`role_id`,`resource_id`)
 ) COMMENT='角色资源关联表';
+
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '2');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '3');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '11');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '12');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '13');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '16');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '17');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '18');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '1');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '2');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '3');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '4');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '5');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '6');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '7');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '8');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '9');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '10');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '11');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '12');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '13');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '15');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '16');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '17');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '18');
+
 
 -- 新增数据凭证表
 DROP TABLE IF EXISTS `data_token`;
@@ -710,3 +761,15 @@ ALTER TABLE local_data_file ADD COLUMN `data_hash` VARCHAR (255) COLLATE utf8mb4
 ALTER TABLE local_data_file ADD COLUMN `location_type` TINYINT (2) DEFAULT '1' COMMENT '源数据的存储位置类型 (组织本地服务器、远端服务器、云等)：0-未知，1-本地，2-远端服务器';
 
 ALTER TABLE local_meta_data ADD COLUMN `meta_data_type` TINYINT (2) DEFAULT '1' COMMENT '表示该元数据是 普通数据 还是 模型数据的元数据 (0: 未定义; 1: 普通数据元数据; 2: 模型数据元数据)';
+
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('1', 'data_token_factory_address', '0x', '1', '凭证工厂合约地址', '2022-04-06 02:42:51', '2022-04-06 02:05:53');
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('2', 'dex_router_address', '0x26D637E206Cc39942628421e7B0D6Fb41dB0bC06', '1', 'router合约地址', '2022-04-06 07:00:01', '2022-04-06 02:14:42');
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('3', 'dex_web_url', 'http://10.10.8.181:8080/swap', '1', 'dex链接地址', '2022-04-06 02:43:03', '2022-04-06 02:18:56');
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('4', 'chain_name', 'PlatON开发网', '1', '网络名称', '2022-04-07 12:03:53', '2022-04-07 12:01:35');
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('5', 'chain_id', '2203181', '1', '链 ID', '2022-04-07 12:05:22', '2022-04-07 12:01:38');
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('6', 'rpc_url', 'https://devnetopenapi.platon.network/rpc', '1', '链rpcUrl，给用户使用，必须是外部ip', '2022-04-08 03:01:41', '2022-04-07 12:01:43');
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('7', 'symbol', 'LAT', '1', '货币符号', '2022-04-07 12:04:27', '2022-04-07 12:01:47');
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('8', 'block_explorer_url', 'https://devnetscan.platon.network/', '1', '区块浏览器', '2022-04-07 12:05:31', '2022-04-07 12:01:55');
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('9', 'hrp', 'lat', '1', 'hrp', '2022-04-07 12:04:35', '2022-04-07 12:01:58');
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('10', 'rpc_url_list', 'https://devnetopenapi.platon.network/rpc', '1', '链rpcUrl，主要是给后台系统用，可以是内部IP', '2022-04-08 03:02:48', '2022-04-08 03:01:36');
+
