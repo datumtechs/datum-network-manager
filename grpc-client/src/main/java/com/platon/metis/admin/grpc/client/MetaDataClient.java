@@ -61,7 +61,7 @@ public class MetaDataClient {
         metaDataOption1.setDataPath(localDateFile.getFilePath());
         metaDataOption1.setColumns(localDateFile.getColumns());
         metaDataOption1.setRows(localDateFile.getRows());
-        metaDataOption1.setSize(localDateFile.getSize().toString());
+        metaDataOption1.setSize(localDateFile.getSize());
         metaDataOption1.setHasTitle(localDateFile.getHasTitle());
         List<MetaDataOption1.MetadataColumn> metadataColumns = new ArrayList<>();
         ;

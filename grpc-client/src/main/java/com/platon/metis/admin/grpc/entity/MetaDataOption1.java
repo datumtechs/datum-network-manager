@@ -45,7 +45,7 @@ public class MetaDataOption1 {
     //原始文件列数
     private long columns;
     //原始文件大小
-    private String size;
+    private long size;
     //是否有标题
     private boolean hasTitle;
     //原始文件列信息

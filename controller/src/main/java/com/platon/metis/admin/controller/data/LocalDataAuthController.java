@@ -25,12 +25,14 @@ import java.util.stream.Collectors;
 
 /**
  * @Desc 数据授权
+ * @deprecated v0.4.0废弃，取而代之的是数据凭证
  */
 
 
+@Deprecated
 @Api(tags = "数据授权")
 @Slf4j
-@RestController
+//@RestController
 @RequestMapping("/api/v1/data/")
 public class LocalDataAuthController {
 
