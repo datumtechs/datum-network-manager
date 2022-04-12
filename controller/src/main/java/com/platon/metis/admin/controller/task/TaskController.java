@@ -19,7 +19,7 @@ import java.util.List;
 
 @Api(value="计算任务controller",tags={"计算任务相关接口"})
 @RestController
-@RequestMapping("/api/v1/task")
+@RequestMapping("/api/v1/task/")
 public class TaskController {
 
     @Autowired

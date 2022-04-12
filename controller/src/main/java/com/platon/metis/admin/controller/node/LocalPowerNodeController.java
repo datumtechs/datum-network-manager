@@ -29,7 +29,7 @@ import java.util.List;
  * @author houzhuang
  * 计算节点控制类 */
 @RestController
-@RequestMapping("/api/v1/powernode")
+@RequestMapping("/api/v1/powernode/")
 @Api(tags = "计算节点控制类")
 @Slf4j
 public class LocalPowerNodeController {

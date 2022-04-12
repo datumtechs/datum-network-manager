@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
  */
 
 @Api(tags = "调度服务配置")
-@RequestMapping("/api/v1/carrier")
+@RequestMapping("/api/v1/carrier/")
 @RestController
 public class CarrierController {
 

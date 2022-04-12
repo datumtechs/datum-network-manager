@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 
 @Api(tags = "用户相关接口")
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/user/")
 @Slf4j
 public class UserController {
 

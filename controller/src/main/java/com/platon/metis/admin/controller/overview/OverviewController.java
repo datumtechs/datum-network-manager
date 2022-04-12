@@ -30,7 +30,7 @@ import java.util.Map;
 
 @Api(tags = "系统概况")
 @RestController
-@RequestMapping("/api/v1/overview")
+@RequestMapping("/api/v1/overview/")
 @Slf4j
 public class OverviewController {
 

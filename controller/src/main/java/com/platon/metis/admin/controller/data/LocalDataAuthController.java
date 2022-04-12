@@ -41,7 +41,7 @@ public class LocalDataAuthController {
      * 授权数据列表，带分页
      */
     @ApiOperation(value = "授权数据列表分页查询")
-    @PostMapping("listLocalDataAuth")
+    @PostMapping("/listLocalDataAuth")
     public JsonResponse<List<LocalDataAuthPageResp>> listLocalDataAuth(@RequestBody @Validated AuthPageReq req){
         Integer status = req.getStatus();
         if(status == null){
@@ -67,7 +67,7 @@ public class LocalDataAuthController {
      * 授权数据数量统计
      */
     @ApiOperation(value = "授权数据数量统计")
-    @GetMapping("dataAuthStatistics")
+    @GetMapping("/dataAuthStatistics")
     public JsonResponse<LocalDataAuthStatisticsResp> dataAuthStatistics(){
 
         int finishAuthCount = localDataAuthService.selectFinishAuthCount();
@@ -83,7 +83,7 @@ public class LocalDataAuthController {
      * 数据授权动作 (1: 同意; 2: 拒绝)
      */
     @ApiOperation(value = "数据授权同意、拒绝")
-    @PostMapping("replyDataAuth")
+    @PostMapping("/replyDataAuth")
     public JsonResponse replyDataAuth(@RequestBody @Validated AuthDataActionReq req){
         int action = req.getAction();
         switch (action){
@@ -105,7 +105,7 @@ public class LocalDataAuthController {
      * 授权申请查看
      */
     @ApiOperation(value = "授权申请查看")
-    @GetMapping("dataAuthDetail")
+    @GetMapping("/dataAuthDetail")
     public JsonResponse<LocalDataAuthDetailResp> getDataAuthDetail(@ApiParam(name = "authId",value = "授权申请数据id", type = "string", required = true) @RequestParam String authId){
 
         LocalDataAuthDetail localDataAuthDetail = localDataAuthService.detail(authId);

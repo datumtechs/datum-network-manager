@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * @author houzhuang
  * 种子节点控制类 */
 @RestController
-@RequestMapping("/api/v1/seednode")
+@RequestMapping("/api/v1/seednode/")
 @Api(tags = "种子节点控制类")
 @Slf4j
 public class LocalSeedNodeController {
