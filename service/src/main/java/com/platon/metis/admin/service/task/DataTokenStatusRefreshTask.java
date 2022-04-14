@@ -1,5 +1,6 @@
 package com.platon.metis.admin.service.task;
 
+import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
 import com.platon.bech32.Bech32;
 import com.platon.metis.admin.dao.DataTokenMapper;
@@ -97,7 +98,7 @@ public class DataTokenStatusRefreshTask {
                 //发布成功，获取token地址
                 String data = transactionReceipt.getLogs().get(0).getData();
                 String dataTokenAddress = StrUtil.sub(data, data.length() - 40, data.length() + 1);
-                dataTokenMapper.updateTokenAddress(dataToken.getId(), dataTokenAddress);
+                dataTokenMapper.updateTokenAddress(dataToken.getId(), "0x" + dataTokenAddress);
             } else {
                 status = DataToken.StatusEnum.PUBLISH_FAIL.getStatus();
                 metaDataStatus = LocalDataFileStatusEnum.TOKEN_FAILED.getStatus();
@@ -126,8 +127,8 @@ public class DataTokenStatusRefreshTask {
                 dataTokenMapper.updateStatus(dataToken.getId(), DataToken.StatusEnum.PRICE_FAIL.getStatus());
                 return;
             }
-            int nonce = dataToken.getPublishNonce();
-            String hash = dataToken.getPublishHash();
+            int nonce = dataToken.getUpNonce();
+            String hash = dataToken.getUpHash();
             String address = dataToken.getOwner();
             Web3j web3j = web3jContainer.get();
             int status = DataToken.StatusEnum.PRICING.getStatus();
