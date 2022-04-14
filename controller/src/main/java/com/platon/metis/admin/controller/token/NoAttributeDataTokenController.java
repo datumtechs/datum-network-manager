@@ -67,7 +67,7 @@ public class NoAttributeDataTokenController extends BaseController {
      * 获取发布凭证需要的配置
      */
     @ApiOperation(value = "获取发布凭证需要的配置")
-    @GetMapping("/getPublishConfig")
+    @PostMapping("/getPublishConfig")
     public JsonResponse<NoAttributeDataTokenGetPublishConfigResp> getPublishConfig(@RequestBody NoAttributeDataTokenGetPublishConfigReq req) {
         Integer dataTokenId = req.getDataTokenId();
         DataToken dataToken = null;
@@ -93,6 +93,7 @@ public class NoAttributeDataTokenController extends BaseController {
         DataToken dataToken = new DataToken();
         dataToken.setName(req.getName());
         dataToken.setSymbol(req.getSymbol());
+        dataToken.setInit(req.getInit());
         dataToken.setTotal(req.getTotal());
         dataToken.setDesc(req.getDesc());
         dataToken.setMetaDataId(req.getMetaDataId());

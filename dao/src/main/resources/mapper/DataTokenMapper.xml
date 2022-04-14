@@ -42,8 +42,8 @@
         order by id desc
     </select>
 
-    <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id">
-        insert into data_token (address,`name`,symbol,init,total,`desc`,`owner`,meta_data_id,status,`publish_nonce`,``publish_hash`)
+    <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into data_token (address,`name`,symbol,init,total,`desc`,`owner`,meta_data_id,status,`publish_nonce`,`publish_hash`)
         values(#{address},#{name},#{symbol},#{init},#{total},#{desc},#{owner},#{metaDataId},#{status},#{publishNonce},#{publishHash})
     </insert>
 
@@ -70,5 +70,11 @@
         from data_token
         where status = #{status}
     </select>
+
+    <update id="updateTokenAddress">
+        update data_token
+        set address = #{tokenAddress}
+        where id = #{id}
+    </update>
 
 </mapper>

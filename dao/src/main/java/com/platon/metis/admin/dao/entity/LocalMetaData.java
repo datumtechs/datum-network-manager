@@ -39,7 +39,7 @@ public class LocalMetaData extends BaseDomain {
      * 已发凭证：8
      * {@link com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum}
      */
-    @ApiModelProperty(name = "status", value = "元数据的状态 (0: 未知; 1: 未发布; 2: 已发布; 3: 已撤销;4:已删除;5: 发布中; 6:撤回中;7:凭证发布失败;8:凭证发布中; 9:已发布凭证)")
+    @ApiModelProperty(name = "status", value = "元数据的状态 (0: 未知; 1: 未发布; 2: 已发布; 3: 已撤销;4:已删除;5: 发布中; 6:撤回中;7:凭证发布失败;8:凭证发布中; 9:已发布凭证;10 已绑定凭证)")
     private Integer status;
     //数据是否为另存数据(true:是另存，false:非另存)
     /**

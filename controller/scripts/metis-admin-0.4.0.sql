@@ -737,6 +737,7 @@ INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '9');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '10');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '11');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '13');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '14');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '15');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '16');
@@ -864,7 +865,7 @@ CREATE TABLE `data_token` (
                               `publish_hash` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发布上链的交易hash，供查询发布状态',
                               `up_nonce` int(11) DEFAULT 0 COMMENT '上架交易nonce',
                               `up_hash` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '上架dex的交易hash',
-                              `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态：0-发布中，1-发布失败，2-发布成功，3-定价中，4-定价失败，5-定价成功',
+                              `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功',
                               `rec_create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                               `rec_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                               PRIMARY KEY (`id`),

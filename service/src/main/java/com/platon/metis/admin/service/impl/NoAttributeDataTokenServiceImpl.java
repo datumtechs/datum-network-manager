@@ -42,9 +42,10 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
     public void publish(DataToken dataToken) {
         //1.先插入dataToken数据,获取到dataToken id
         dataToken.setStatus(DataToken.StatusEnum.PUBLISHING.getStatus());
-        int dataTokenId = dataTokenMapper.insertAndReturnId(dataToken);
+        dataTokenMapper.insertAndReturnId(dataToken);
+        log.debug("插入dataToken数据,获取到dataToken id:{}", dataToken.getId());
         //2.将token id 绑定到meta data中
-        localMetaDataMapper.updateDataTokenIdById(dataToken.getMetaDataId(), dataTokenId);
+        localMetaDataMapper.updateDataTokenIdById(dataToken.getMetaDataId(), dataToken.getId());
         localMetaDataMapper.updateStatusById(dataToken.getMetaDataId(), LocalDataFileStatusEnum.TOKEN_RELEASING.getStatus());
     }
 

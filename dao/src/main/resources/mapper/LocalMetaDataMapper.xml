@@ -18,7 +18,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, file_id, meta_data_id, meta_data_name, `status`, publish_time, remarks, industry, rec_create_time,
-    rec_update_time,data_token_id,`owner`,data_token_id,meta_data_type
+    rec_update_time,data_token_id,`owner`,meta_data_type
   </sql>
 
 
@@ -64,16 +64,19 @@
   <resultMap id="BaseResultMap_for_list" type="com.platon.metis.admin.dao.entity.LocalMetaData" extends="BaseResultMap">
     <result column="size" property="dynamicFields.size" javaType="long" jdbcType="BIGINT"/>
     <result column="task_count" property="dynamicFields.taskCount" javaType="int" jdbcType="INTEGER"/>
+    <result column="data_token_name" property="dynamicFields.dataTokenName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    <result column="data_token_symbol" property="dynamicFields.dataTokenSymbol" javaType="java.lang.String" jdbcType="VARCHAR"/>
   </resultMap>
 
   <select id="listMetaData" parameterType="java.lang.String" resultMap="BaseResultMap_for_list">
-    SELECT lmd.*, ldf.size, ifnull(t.task_count,0) as task_count
+    SELECT lmd.*, ldf.size, ifnull(t.task_count,0) as task_count, dt.name as data_token_name,dt.symbol as data_token_symbol
     FROM local_meta_data lmd
     join local_data_file ldf on lmd.file_id = ldf.file_id
     left join (
     select meta_data_id, count(task_id) task_count
     from task_data_provider
     GROUP BY meta_data_id) t on lmd.meta_data_id = t.meta_data_id
+    left join data_token dt on lmd.data_token_id = dt.id
     where
           lmd.status != 4
           and lmd.`owner` = #{userAddress}

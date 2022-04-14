@@ -69,7 +69,7 @@ public class SystemController extends BaseController {
      * 根据key查询配置
      */
     @ApiOperation(value = "根据key查询配置")
-    @GetMapping("/getConfigByKey")
+    @PostMapping("/getConfigByKey")
     public JsonResponse<SysConfig> getConfigByKey(@RequestBody SystemGetConfigByKeyReq req) {
         SysConfig config = sysConfigService.getConfig(req.getKey());
         return JsonResponse.success(config);

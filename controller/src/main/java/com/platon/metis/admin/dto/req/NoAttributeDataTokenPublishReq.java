@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 
 /**
@@ -25,18 +27,22 @@ public class NoAttributeDataTokenPublishReq {
 
     @ApiModelProperty("名称，2-64个大小写英文及数字")
     //名称
+    @NotBlank
     private String name;
 
     @ApiModelProperty("符号，2-64个大小写英文及数字")
     //符号
+    @NotBlank
     private String symbol;
 
     @ApiModelProperty("初始发行量，1. 输入必须为大于0的整数，2. 最大支持18位")
     //初始发行量
+    @NotBlank
     private String init;
 
     @ApiModelProperty("总发行量，1. 输入必须为大于0的整数，2. 最大支持18位")
     //总发行量
+    @NotBlank
     private String total;
 
     @ApiModelProperty("价值证明描述")
@@ -45,15 +51,18 @@ public class NoAttributeDataTokenPublishReq {
 
     @ApiModelProperty("对应的metaDataId")
     //对应的metaDataId
+    @NotNull
     private Integer metaDataId;
 
     /****************************交易hash*******************************/
 
     @ApiModelProperty("交易hash")
     //交易hash
+    @NotBlank
     private String hash;
 
     @ApiModelProperty("交易nonce")
     //交易nonce
+    @NotNull
     private Integer nonce;
 }

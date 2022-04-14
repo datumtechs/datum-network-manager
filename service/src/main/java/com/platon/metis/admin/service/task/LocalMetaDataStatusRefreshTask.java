@@ -16,8 +16,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -49,16 +51,34 @@ public class LocalMetaDataStatusRefreshTask {
             if (CollectionUtils.isEmpty(localMetaDataList)) {
                 break;
             }
-
             log.debug("本次更新元数据状态数量：{}", localMetaDataList.size());
+            /**
+             * 元数据的状态 (0: 未知; 1: 未发布; 2: 已发布; 3: 已撤销;4:已删除;5: 发布中; 6:撤回中;7:凭证发布失败;8:凭证发布中; 9:已发布凭证;10 已绑定凭证)
+             * 过滤掉本地状态已变成：7:凭证发布失败;8:凭证发布中; 9:已发布凭证;10 已绑定凭证
+             */
+            List<LocalMetaData> filterLocalMetaDataList = localMetaDataList.stream().filter(metaData -> {
+                Integer status = metaData.getStatus();
+                if (status == LocalDataFileStatusEnum.TOKEN_FAILED.getStatus()
+                        || status == LocalDataFileStatusEnum.TOKEN_RELEASED.getStatus()
+                        || status == LocalDataFileStatusEnum.TOKEN_RELEASING.getStatus()
+                        || status == LocalDataFileStatusEnum.TOKEN_BOUND.getStatus()) {
+                    return false;
+                }
+                return true;
+            }).collect(Collectors.toList());
 
-            localMetaDataMapper.updateStatusByMetaDataIdBatch(localMetaDataList);
+            log.debug("过滤后的数量：{}", filterLocalMetaDataList.size());
 
-            LocalMetaData localMetaData = localMetaDataList.stream()
+            if (!CollectionUtils.isEmpty(filterLocalMetaDataList)) {
+                localMetaDataMapper.updateStatusByMetaDataIdBatch(filterLocalMetaDataList);
+            }
+
+            LocalDateTime updateTime = localMetaDataList.stream()
                     .sorted(Comparator.comparing(LocalMetaData::getRecUpdateTime).reversed())
                     .findFirst()
-                    .get();
-            dataSync.setLatestSynced(localMetaData.getRecUpdateTime());
+                    .get().getRecUpdateTime();
+
+            dataSync.setLatestSynced(updateTime);
 
             //把最近更新时间update到数据库
             dataSyncService.updateDataSync(dataSync);
@@ -84,9 +104,9 @@ public class LocalMetaDataStatusRefreshTask {
             try {
                 DataToken dataToken = dataTokenMapper.selectById(localMetaData.getDataTokenId());
                 metaDataClient.bindDataTokenAddress(localMetaData.getMetaDataId(), dataToken.getAddress());
-                localMetaDataMapper.updateStatusById(localMetaData.getId(),LocalDataFileStatusEnum.TOKEN_BOUND.getStatus());
+                localMetaDataMapper.updateStatusById(localMetaData.getId(), LocalDataFileStatusEnum.TOKEN_BOUND.getStatus());
             } catch (Exception exception) {
-                log.error(exception.getMessage(),exception);
+                log.error(exception.getMessage(), exception);
             }
         });
         log.debug("合约地址绑定定时任务结束|||");

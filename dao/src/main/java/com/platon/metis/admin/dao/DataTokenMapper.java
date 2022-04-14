@@ -9,7 +9,9 @@ public interface DataTokenMapper {
 
     /**
      * 查询已定价和未定价的dataToken
-     * 状态：0-未定价，1-已定价，如果要已定价的，则返回已成功定价的，如果要未定价的，则返回(0-未定价，1-定价中，2-定价失败)
+     * 所有状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功
+     * 前端传0-未定价则返回：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，
+     * 前端传1-已定价则返回6-定价成功
      */
     List<DataToken> selectByPricingStatus(@Param("status") int status, @Param("address") String address);
 
@@ -26,11 +28,13 @@ public interface DataTokenMapper {
      *
      * @param dataToken
      */
-    void updatePricingStatus(DataToken dataToken);
+    int updatePricingStatus(DataToken dataToken);
 
-    void updateStatus(@Param("id") int id, @Param("status") int status);
+    int updateStatus(@Param("id") int id, @Param("status") int status);
 
     DataToken selectById(Integer dataTokenId);
 
     List<DataToken> selectListByStatus(int status);
+
+    int updateTokenAddress(@Param("id") int id, @Param("tokenAddress") String tokenAddress);
 }
