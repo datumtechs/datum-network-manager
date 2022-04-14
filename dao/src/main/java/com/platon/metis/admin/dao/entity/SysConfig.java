@@ -61,7 +61,7 @@ public class SysConfig {
     @ToString
     public enum KeyEnum {
         DATA_TOKEN_FACTORY_ADDRESS("data_token_factory_address", "凭证工厂合约地址"),
-        DEX_ROUTER_ADDRESS("data_token_factory_address", "router合约地址"),
+        DEX_ROUTER_ADDRESS("dex_router_address", "router合约地址"),
         DEX_WEB_URL("dex_web_url","dex链接地址"),
         CHAIN_NAME("chain_name","链名称"),
         CHAIN_ID("chain_id","链ID"),
