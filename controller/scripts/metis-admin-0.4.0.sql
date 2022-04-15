@@ -722,6 +722,9 @@ INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `paren
 INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('70', '1', '系统相关-新增自定义配置', '/api/v1/system/addCustomConfig', NULL, '0');
 INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('71', '1', '系统相关-删除系统配置', '/api/v1/system/deleteCustomConfig', NULL, '0');
 INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('72', '1', '系统相关-更新系统配置', '/api/v1/system/updateValueByKey', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('73', '1', '无属性数据凭证-根据id获取dataToken状态', '/api/v1/dataToken/getDataTokenStatus', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('74', '1', '我的数据-未绑定凭证Id数据列表关键字查询', '/api/v1/data/listUnBindLocalMetaDataByKeyword', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('75', '2', '凭证发布', 'myData/dataVoucherPublishing', NULL, '9');
 
 
 -- 新增角色资源关联表
@@ -732,6 +735,7 @@ CREATE TABLE `role_resource` (
                                  UNIQUE KEY `角色资源唯一` (`role_id`,`resource_id`)
 ) COMMENT='角色资源关联表';
 
+-- role_resource表初始化数据
 -- role_resource表初始化数据
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '9');
@@ -773,6 +777,9 @@ INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '66');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '67');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '68');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '69');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '73');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '74');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '75');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '1');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '2');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '3');
@@ -845,6 +852,9 @@ INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '69');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '70');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '71');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '72');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '73');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '74');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('1', '75');
 
 
 -- 新增数据凭证表
