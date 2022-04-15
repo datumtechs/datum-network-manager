@@ -90,16 +90,16 @@ public class LocalDataController extends BaseController {
         return JsonResponse.page(localMetaDataPage);
     }
 
-//    /**
-//     * 根据关键字查询钱包自身的元数据列表摘要信息，状态为未绑定凭证Id的数据
-//     */
-//    @ApiOperation(value = "未绑定凭证Id数据列表关键字查询")
-//    @PostMapping("/listUnBindLocalMetaDataByKeyword")
-//    public JsonResponse<List<LocalMetaData>> listUnBindLocalMetaDataByKeyword(@RequestBody @Validated LocalDataUnBindMetaDataListByKeyWordReq req, HttpSession session) {
-//        String userAddress = getCurrentUserAddress(session);
-//        List<LocalMetaData> localMetaDataPage = localDataService.listUnBindMetaData(req.getKeyword(), userAddress);
-//        return JsonResponse.success(localMetaDataPage);
-//    }
+    /**
+     * 根据关键字查询钱包自身的元数据列表摘要信息，状态为未绑定凭证Id的数据
+     */
+    @ApiOperation(value = "未绑定凭证Id数据列表关键字查询")
+    @PostMapping("/listUnBindLocalMetaDataByKeyword")
+    public JsonResponse<List<LocalMetaData>> listUnBindLocalMetaDataByKeyword(@RequestBody @Validated LocalDataUnBindMetaDataListByKeyWordReq req, HttpSession session) {
+        String userAddress = getCurrentUserAddress(session);
+        List<LocalMetaData> localMetaDataPage = localDataService.listUnBindMetaData(req.getKeyword(), userAddress);
+        return JsonResponse.success(localMetaDataPage);
+    }
 
 
     /**

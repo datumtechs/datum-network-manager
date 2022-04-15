@@ -32,10 +32,10 @@
         where
         <choose>
             <when test="status == 1">
-                `status` = 6
+                `status` in (4,6)
             </when>
             <otherwise>
-                `status` in (0,1,2,3,4,5)
+                `status` in (0,1,2,3,5)
             </otherwise>
         </choose>
         and `owner` = #{address}

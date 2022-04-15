@@ -10,8 +10,8 @@ public interface DataTokenMapper {
     /**
      * 查询已定价和未定价的dataToken
      * 所有状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功
-     * 前端传0-未定价则返回：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，
-     * 前端传1-已定价则返回6-定价成功
+     * 前端传0-未定价则返回：0-未发布，1-发布中，2-发布失败，3-发布成功，5-定价失败，
+     * 前端传1-已定价则返回4-定价中，6-定价成功
      */
     List<DataToken> selectByPricingStatus(@Param("status") int status, @Param("address") String address);
 

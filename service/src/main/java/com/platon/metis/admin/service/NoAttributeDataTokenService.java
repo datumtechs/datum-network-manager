@@ -14,7 +14,7 @@ public interface NoAttributeDataTokenService {
 
     Page<DataToken> page(Integer pageNumber, Integer pageSize, int status, String address);
 
-    void publish(DataToken dataToken);
+    Integer publish(DataToken dataToken);
 
     void up(DataToken dataToken);
 

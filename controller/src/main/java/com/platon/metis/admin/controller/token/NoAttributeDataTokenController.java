@@ -5,10 +5,7 @@ import com.platon.metis.admin.controller.BaseController;
 import com.platon.metis.admin.dao.entity.DataToken;
 import com.platon.metis.admin.dao.entity.SysConfig;
 import com.platon.metis.admin.dto.JsonResponse;
-import com.platon.metis.admin.dto.req.NoAttributeDataTokenGetPublishConfigReq;
-import com.platon.metis.admin.dto.req.NoAttributeDataTokenPageReq;
-import com.platon.metis.admin.dto.req.NoAttributeDataTokenPublishReq;
-import com.platon.metis.admin.dto.req.NoAttributeDataTokenUpReq;
+import com.platon.metis.admin.dto.req.*;
 import com.platon.metis.admin.dto.resp.NoAttributeDataTokenGetPublishConfigResp;
 import com.platon.metis.admin.dto.resp.NoAttributeDataTokenGetUpConfigResp;
 import com.platon.metis.admin.service.NoAttributeDataTokenService;
@@ -54,6 +51,16 @@ public class NoAttributeDataTokenController extends BaseController {
     }
 
     /**
+     * 根据id获取dataToken状态
+     */
+    @ApiOperation(value = "根据id获取dataToken状态")
+    @PostMapping("/getDataTokenStatus")
+    public JsonResponse<DataToken> getDataTokenStatus(@RequestBody @Validated NoAttributeDataTokenGetDataTokenStatusReq req) {
+        DataToken dataToken = noAttributeDataTokenService.getDataTokenById(req.getId());
+        return JsonResponse.success(dataToken);
+    }
+
+    /**
      * 查询dex链接地址
      */
     @ApiOperation(value = "查询dex链接地址")
@@ -87,7 +94,7 @@ public class NoAttributeDataTokenController extends BaseController {
      */
     @ApiOperation(value = "发布凭证")
     @PostMapping("/publish")
-    public JsonResponse publish(@RequestBody @Validated NoAttributeDataTokenPublishReq req, HttpSession session) {
+    public JsonResponse<Integer> publish(@RequestBody @Validated NoAttributeDataTokenPublishReq req, HttpSession session) {
         String address = getCurrentUserAddress(session);
 
         DataToken dataToken = new DataToken();
@@ -101,8 +108,8 @@ public class NoAttributeDataTokenController extends BaseController {
         dataToken.setOwner(address);
         dataToken.setPublishHash(req.getHash());
         dataToken.setPublishNonce(req.getNonce());
-        noAttributeDataTokenService.publish(dataToken);
-        return JsonResponse.success();
+        Integer id = noAttributeDataTokenService.publish(dataToken);
+        return JsonResponse.success(id);
     }
 
     /**

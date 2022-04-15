@@ -39,7 +39,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
 
     @Transactional
     @Override
-    public void publish(DataToken dataToken) {
+    public Integer publish(DataToken dataToken) {
         //1.先插入dataToken数据,获取到dataToken id
         dataToken.setStatus(DataToken.StatusEnum.PUBLISHING.getStatus());
         dataTokenMapper.insertAndReturnId(dataToken);
@@ -47,6 +47,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
         //2.将token id 绑定到meta data中
         localMetaDataMapper.updateDataTokenIdById(dataToken.getMetaDataId(), dataToken.getId());
         localMetaDataMapper.updateStatusById(dataToken.getMetaDataId(), LocalDataFileStatusEnum.TOKEN_RELEASING.getStatus());
+        return dataToken.getId();
     }
 
     @Override
