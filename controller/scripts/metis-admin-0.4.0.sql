@@ -732,7 +732,7 @@ DROP TABLE IF EXISTS `role_resource`;
 CREATE TABLE `role_resource` (
                                  `role_id` int NOT NULL COMMENT '角色id，默认只有两个角色，0是普通角色，1是管理员角色',
                                  `resource_id` int NOT NULL COMMENT '资源id',
-                                 UNIQUE KEY `角色资源唯一` (`role_id`,`resource_id`)
+                                 UNIQUE KEY `role_resource_uk` (`role_id`,`resource_id`)
 ) COMMENT='角色资源关联表';
 
 -- role_resource表初始化数据
@@ -916,7 +916,7 @@ ALTER TABLE local_data_file ADD COLUMN `location_type` TINYINT (2) DEFAULT '1' C
 ALTER TABLE local_meta_data ADD COLUMN `meta_data_type` TINYINT (2) DEFAULT '1' COMMENT '表示该元数据是 普通数据 还是 模型数据的元数据 (0: 未定义; 1: 普通数据元数据; 2: 模型数据元数据)';
 
 INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('1', 'data_token_factory_address', '0x0d932d4f60fa52fbb7192e32ffaf7ff558983839', '1', '凭证工厂合约地址', '2022-04-14 04:32:28', '2022-04-06 02:05:53');
-INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('2', 'dex_router_address', '0x26D637E206Cc39942628421e7B0D6Fb41dB0bC06', '1', 'router合约地址', '2022-04-06 07:00:01', '2022-04-06 02:14:42');
+INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('2', 'dex_router_address', '0x4378dAF745E9053f6048c4f78c803f3bC8829703', '1', 'router合约地址', '2022-04-06 07:00:01', '2022-04-06 02:14:42');
 INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('3', 'dex_web_url', 'http://10.10.8.181:8080/swap', '1', 'dex链接地址', '2022-04-06 02:43:03', '2022-04-06 02:18:56');
 INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('4', 'chain_name', 'PlatON开发网', '1', '网络名称', '2022-04-07 12:03:53', '2022-04-07 12:01:35');
 INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('5', 'chain_id', '210309', '1', '链 ID', '2022-04-14 04:32:49', '2022-04-07 12:01:38');
