@@ -2,6 +2,8 @@ package com.platon.metis.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.platon.metis.admin.common.exception.BizException;
+import com.platon.metis.admin.common.exception.Errors;
 import com.platon.metis.admin.dao.DataTokenMapper;
 import com.platon.metis.admin.dao.LocalMetaDataMapper;
 import com.platon.metis.admin.dao.entity.DataToken;
@@ -40,10 +42,22 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
     @Transactional
     @Override
     public Integer publish(DataToken dataToken) {
+        //校验dataToken是否已存在并处于发布中状态
+        DataToken oldDataToken = dataTokenMapper.selectByMetaDataId(dataToken.getMetaDataId());
+        if (oldDataToken != null) {
+            if (oldDataToken.getStatus() == DataToken.StatusEnum.PUBLISHING.getStatus()) {
+                throw new BizException(Errors.DataTokenInPublishing);
+            }
+            if (oldDataToken.getStatus() == DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus()) {
+                throw new BizException(Errors.DataTokenExists);
+            }
+        }
         //1.先插入dataToken数据,获取到dataToken id
         dataToken.setStatus(DataToken.StatusEnum.PUBLISHING.getStatus());
         dataTokenMapper.insertAndReturnId(dataToken);
         log.debug("插入dataToken数据,获取到dataToken id:{}", dataToken.getId());
+
+
         //2.将token id 绑定到meta data中
         localMetaDataMapper.updateDataTokenIdById(dataToken.getMetaDataId(), dataToken.getId());
         localMetaDataMapper.updateStatusById(dataToken.getMetaDataId(), LocalDataFileStatusEnum.TOKEN_RELEASING.getStatus());

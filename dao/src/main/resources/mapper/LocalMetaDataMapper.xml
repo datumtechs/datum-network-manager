@@ -155,7 +155,7 @@
   <select id="listUnBindMetaData" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from local_meta_data
-    where status != 4 and (data_token_id is null or data_token_id = '') and owner = #{userAddress}
+    where status in (2,7) and owner = #{userAddress}
     <if test="keyword != null and keyword != ''">
       and meta_data_name like concat('%',#{keyword,jdbcType=VARCHAR},'%')
     </if>

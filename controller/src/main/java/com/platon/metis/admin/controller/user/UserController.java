@@ -3,7 +3,8 @@ package com.platon.metis.admin.controller.user;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.platon.metis.admin.common.exception.SysException;
+import com.platon.metis.admin.common.exception.BizException;
+import com.platon.metis.admin.common.exception.Errors;
 import com.platon.metis.admin.common.util.WalletSignUtil;
 import com.platon.metis.admin.constant.ControllerConstants;
 import com.platon.metis.admin.dao.cache.LocalOrgCache;
@@ -133,7 +134,7 @@ public class UserController {
     private void checkNonceValidity(HttpSession session, String signMessage) {
         String nonce = (String) session.getAttribute(ControllerConstants.NONCE);
         if (StrUtil.isBlank(nonce)) {
-            throw new SysException("Please get nonce again. Nonce has expired!");
+            throw new BizException(Errors.NonceExpired);
         }
         SignMessageDto signMessageDto;
         try {
@@ -141,11 +142,11 @@ public class UserController {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             signMessageDto = objectMapper.readValue(signMessage, SignMessageDto.class);
         } catch (Exception e) {
-            throw new SysException(e.getMessage(),e);
+            throw new BizException(Errors.SysException, e);
         }
         String key = signMessageDto.getMessage().getKey();
         if (!StrUtil.equals(nonce, key)) {
-            throw new SysException("Please get nonce again. Nonce is incorrect!");
+            throw new BizException(Errors.NonceIncorrect);
         }
     }
 
@@ -155,10 +156,10 @@ public class UserController {
             String signMessage = StrUtil.replace(message, "\\\"", "\"");
             flg = WalletSignUtil.verifyTypedDataV4(signMessage, sign, hrpAddress);
         } catch (Exception e) {
-            throw new SysException("User login signature error",e);
+            throw new BizException(Errors.UserLoginSignError, e);
         }
         if (!flg) {
-            throw new SysException("User login signature error!");
+            throw new BizException(Errors.UserLoginSignError);
         }
     }
 
@@ -190,7 +191,7 @@ public class UserController {
         if (user.getIsAdmin() != 1) {//不是管理员则提示错误
             return JsonResponse.fail("The current user is not an administrator, the replacement failed!");
         }
-        userService.updateAdmin(user,req.getNewAddress());
+        userService.updateAdmin(user, req.getNewAddress());
         if (session != null) {//修改成功后，将session致为失效，让用户重新登录
             session.invalidate();
         }

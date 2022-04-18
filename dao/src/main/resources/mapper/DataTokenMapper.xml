@@ -35,7 +35,7 @@
                 `status` in (4,6)
             </when>
             <otherwise>
-                `status` in (0,1,2,3,5)
+                `status` in (1,3)
             </otherwise>
         </choose>
         and `owner` = #{address}
@@ -43,8 +43,11 @@
     </select>
 
     <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into data_token (address,`name`,symbol,init,total,`desc`,`owner`,meta_data_id,status,`publish_nonce`,`publish_hash`)
-        values(#{address},#{name},#{symbol},#{init},#{total},#{desc},#{owner},#{metaDataId},#{status},#{publishNonce},#{publishHash})
+        INSERT INTO data_token (`name`,symbol,init,total,`desc`,`owner`,meta_data_id,status,`publish_nonce`,`publish_hash`)
+        VALUES (#{name},#{symbol},#{init},#{total},#{desc},#{owner},#{metaDataId},#{status},#{publishNonce},#{publishHash})
+        ON DUPLICATE KEY
+            UPDATE `name`=#{name},symbol=#{symbol},init=#{init},total=#{total},`desc`=#{desc},owner=#{owner},status=#{status},
+                `publish_nonce`=#{publishNonce},`publish_hash`=#{publishHash}
     </insert>
 
     <update id="updatePricingStatus">
@@ -76,5 +79,11 @@
         set address = #{tokenAddress}
         where id = #{id}
     </update>
+
+    <select id="selectByMetaDataId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from data_token
+        where meta_data_id = #{metaDataId}
+    </select>
 
 </mapper>

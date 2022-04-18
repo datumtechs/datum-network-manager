@@ -4,8 +4,9 @@ import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.health.HealthServicesRequest;
 import com.ecwid.consul.v1.health.model.HealthService;
+import com.platon.metis.admin.common.exception.BizException;
+import com.platon.metis.admin.common.exception.Errors;
 import com.platon.metis.admin.common.exception.OrgInfoExists;
-import com.platon.metis.admin.common.exception.SysException;
 import com.platon.metis.admin.common.util.IDUtil;
 import com.platon.metis.admin.dao.LocalOrgMapper;
 import com.platon.metis.admin.dao.SysUserMapper;
@@ -94,12 +95,12 @@ public class UserServiceImpl implements UserService {
 
         List<HealthService> serviceList = consulClient.getHealthServices(carrierServiceName, request).getValue();
         if (CollectionUtils.isEmpty(serviceList)) {
-            throw new SysException("No dispatching service information was queried");
+            throw new BizException(Errors.SysException, "No dispatching service information was queried");
         }
         String ip = serviceList.get(0).getService().getAddress();
         Integer port = serviceList.get(0).getService().getPort();
         if (StringUtils.isEmpty(ip) || port == null) {
-            throw new SysException("No dispatching service information was queried");
+            throw new BizException(Errors.SysException, "No dispatching service information was queried");
         }
         //记录查询到的carrier地址
         localOrg.setCarrierIp(ip);
@@ -133,7 +134,7 @@ public class UserServiceImpl implements UserService {
         //1.新增用户
         int insert = sysUserMapper.insert(user);
         if (insert == 0) {
-            throw new SysException("Insert new user failed!");
+            throw new BizException(Errors.CreateNewUserFailed);
         } else {
             //2.尝试设置为管理员
             int update = sysUserMapper.updateSingleUserToAdmin();

@@ -64,7 +64,7 @@ public class LocalDataServiceImpl implements LocalDataService {
     @Override
     public Page<LocalMetaData> listMetaData(int pageNo, int pageSize, String keyword, String userAddress, int status) {
         Page<LocalMetaData> localDataMetaPage = PageHelper.startPage(pageNo, pageSize);
-        localMetaDataMapper.listMetaData(keyword, userAddress,status);
+        localMetaDataMapper.listMetaData(keyword, userAddress, status);
         return localDataMetaPage;
     }
 
@@ -112,11 +112,9 @@ public class LocalDataServiceImpl implements LocalDataService {
     public int delete(Integer id) {
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
         if (Objects.isNull(localMetaData)) {
-            log.error("metadata ID is missing.");
             throw new ArgumentException();
         }
         if (LocalDataFileStatusEnum.RELEASED.getStatus() == localMetaData.getStatus()) {
-            log.error("cannot delete the published data.");
             throw new CannotDeletePublishedFile();
         } else if (LocalDataFileStatusEnum.RELEASING.getStatus() == localMetaData.getStatus()
                 || LocalDataFileStatusEnum.REVOKING.getStatus() == localMetaData.getStatus()) {
@@ -129,13 +127,11 @@ public class LocalDataServiceImpl implements LocalDataService {
     public void downLoad(HttpServletResponse response, Integer id) {
         LocalMetaData localMetaData = localMetaDataMapper.selectByPrimaryKey(id);
         if (localMetaData == null) {
-            log.error("cannot find local metadata.");
             throw new ObjectNotFound();
         }
         //### 1.获取文件路径
         LocalDataFile localDataFile = localDataFileMapper.selectByFileId(localMetaData.getFileId());
         if (localDataFile == null) {
-            log.error("cannot find local data file.");
             throw new ObjectNotFound();
         }
         //### 2.获取可用的数据节点
@@ -147,8 +143,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         try {
             ExportFileUtil.exportCsv(localMetaData.getMetaDataName(), bytes, response);
         } catch (IOException e) {
-            log.error("export csv file error", e);
-            throw new SysException();
+            throw new BizException(Errors.ExportCSVFileError, e);
         }
     }
 
@@ -157,12 +152,10 @@ public class LocalDataServiceImpl implements LocalDataService {
     public int update(LocalMetaData localMetaData) {
         LocalMetaData existing = localMetaDataMapper.selectByPrimaryKey(localMetaData.getId());
         if (existing == null) {
-            log.error("cannot find local metadata.");
             throw new ObjectNotFound();
         }
         //已发布状态的元数据不允许修改
         if (LocalDataFileStatusEnum.RELEASED.getStatus() == existing.getStatus()) {
-            log.error("cannot edit the published data.");
             throw new CannotEditPublishedFile();
         } else if (LocalDataFileStatusEnum.RELEASING.getStatus() == existing.getStatus()
                 || LocalDataFileStatusEnum.REVOKING.getStatus() == existing.getStatus()) {
@@ -194,7 +187,6 @@ public class LocalDataServiceImpl implements LocalDataService {
         }
         //下架只能针对上架的数据
         if (LocalDataFileStatusEnum.RELEASED.getStatus() != localMetaData.getStatus()) {
-            log.error("cannot withdraw un-published metadata.");
             throw new CannotWithdrawData();
         } else if (LocalDataFileStatusEnum.RELEASING.getStatus() == localMetaData.getStatus()
                 || LocalDataFileStatusEnum.REVOKING.getStatus() == localMetaData.getStatus()) {
@@ -216,7 +208,6 @@ public class LocalDataServiceImpl implements LocalDataService {
         }
         //已发布状态的元数据不允许修改
         if (LocalDataFileStatusEnum.RELEASED.getStatus() == localMetaData.getStatus()) {
-            log.error("cannot publish metadata again.");
             throw new CannotPublishData();
         } else if (LocalDataFileStatusEnum.RELEASING.getStatus() == localMetaData.getStatus()
                 || LocalDataFileStatusEnum.REVOKING.getStatus() == localMetaData.getStatus()) {
@@ -332,8 +323,7 @@ public class LocalDataServiceImpl implements LocalDataService {
             localDataFile.setLocalMetaDataColumnList(columnList);
             return localDataFile;
         } catch (IOException e) {
-            log.error("read file content error", e);
-            throw new SysException();
+            throw new BizException(Errors.ReadFileContentError, e);
         }
     }
 
@@ -361,7 +351,7 @@ public class LocalDataServiceImpl implements LocalDataService {
 
         } catch (IOException e) {
             log.error("read file content error", e);
-            throw new SysException();
+            throw new BizException(Errors.SysException);
         }
     }
 

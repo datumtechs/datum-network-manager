@@ -2,9 +2,9 @@ package com.platon.metis.admin.common.exception;
 
 public class CallGrpcServiceFailed extends BizException {
     public CallGrpcServiceFailed() {
-        super(Errors.CallGrpcServiceFailed.getCode(), Errors.CallGrpcServiceFailed.getMessage());
+        super(Errors.CallGrpcServiceFailed);
     }
     public CallGrpcServiceFailed(String msg) {
-        super(msg);
+        super(Errors.CallGrpcServiceFailed, msg);
     }
 }

@@ -2,6 +2,6 @@ package com.platon.metis.admin.common.exception;
 
 public class CannotOpsData extends BizException {
     public CannotOpsData() {
-        super(Errors.CannotOpsData.getCode(), Errors.CannotOpsData.getMessage());
+        super(Errors.CannotOpsData);
     }
 }

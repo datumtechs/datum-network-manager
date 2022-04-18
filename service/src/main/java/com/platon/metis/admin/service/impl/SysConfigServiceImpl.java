@@ -1,6 +1,7 @@
 package com.platon.metis.admin.service.impl;
 
-import com.platon.metis.admin.common.exception.SysException;
+import com.platon.metis.admin.common.exception.BizException;
+import com.platon.metis.admin.common.exception.Errors;
 import com.platon.metis.admin.dao.SysConfigMapper;
 import com.platon.metis.admin.dao.entity.SysConfig;
 import com.platon.metis.admin.service.SysConfigService;
@@ -38,15 +39,15 @@ public class SysConfigServiceImpl implements SysConfigService {
     @Override
     public void deleteConfig(String key) {
         boolean isSystemConfigKey = Arrays.stream(SysConfig.KeyEnum.values()).anyMatch(keyEnum -> keyEnum.getKey().equals(key));
-        if(isSystemConfigKey){
-            throw new SysException("The system configuration is not allowed to be changed!");
+        if (isSystemConfigKey) {
+            throw new BizException(Errors.CannotChangeSystemConfig);
         }
         sysConfigMapper.deleteByKey(key);
     }
 
     @Override
     public SysConfig updateValueByKey(String key, String value) {
-        sysConfigMapper.updateValueByKey(key,value);
+        sysConfigMapper.updateValueByKey(key, value);
         return sysConfigMapper.selectByKey(key);
     }
 
@@ -56,17 +57,17 @@ public class SysConfigServiceImpl implements SysConfigService {
     }
 
     @Override
-    public Map<String,String> getSystemConfigKey() {
-        return Arrays.stream(SysConfig.KeyEnum.values()).collect(Collectors.toMap(SysConfig.KeyEnum::getKey,SysConfig.KeyEnum::getDesc));
+    public Map<String, String> getSystemConfigKey() {
+        return Arrays.stream(SysConfig.KeyEnum.values()).collect(Collectors.toMap(SysConfig.KeyEnum::getKey, SysConfig.KeyEnum::getDesc));
     }
 
     @Override
     public SysConfig getConfig(String key) {
-        return sysConfigMapper.selectByKeyAndStatus(key,SysConfig.StatusEnum.VALID.getStatus());
+        return sysConfigMapper.selectByKeyAndStatus(key, SysConfig.StatusEnum.VALID.getStatus());
     }
 
     @Override
-    public List<SysConfig> getMetaMaskConfig(){
+    public List<SysConfig> getMetaMaskConfig() {
         List<String> keys = new ArrayList<>();
         keys.add(SysConfig.KeyEnum.CHAIN_NAME.getKey());
         keys.add(SysConfig.KeyEnum.CHAIN_ID.getKey());

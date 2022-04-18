@@ -104,7 +104,6 @@ public class NoAttributeDataTokenController extends BaseController {
         dataToken.setTotal(req.getTotal());
         dataToken.setDesc(req.getDesc());
         dataToken.setMetaDataId(req.getMetaDataId());
-        dataToken.setPublishHash(req.getHash());
         dataToken.setOwner(address);
         dataToken.setPublishHash(req.getHash());
         dataToken.setPublishNonce(req.getNonce());

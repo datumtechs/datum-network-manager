@@ -1,44 +1,33 @@
 package com.platon.metis.admin.common.exception;
 
-public abstract class BizException extends RuntimeException {
-    private int errorCode = -1;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class BizException extends RuntimeException {
+    private int errorCode;
     private String message;
 
-    public int getErrorCode() {
-        return errorCode;
+    public BizException(Errors errors) {
+        super(errors.getMessage());
+        this.errorCode = errors.getCode();
+        this.message = errors.getMessage();
     }
 
-
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-
-    public BizException(String msg) {
+    public BizException(Errors errors, String msg) {
         super(msg);
-        this.message = msg;
+        this.errorCode = errors.getCode();
+        this.message = errors.getMessage();
     }
 
-    public BizException(Integer errorCode, String msg) {
-        super(msg);
-        this.errorCode = errorCode;
-        this.message = msg;
-    }
-
-    public BizException(Integer errorCode, String msg, Throwable t) {
-        super(msg, t);
-        this.setStackTrace(t.getStackTrace());
-
-        this.errorCode = errorCode;
-        this.message = msg;
+    public BizException(Errors errors, Throwable t) {
+        super(errors.getMessage(), t);
+        this.errorCode = errors.getCode();
+        this.message = errors.getMessage();
     }
 
 }

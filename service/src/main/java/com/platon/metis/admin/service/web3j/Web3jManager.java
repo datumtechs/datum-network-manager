@@ -1,6 +1,7 @@
 package com.platon.metis.admin.service.web3j;
 
-import com.platon.metis.admin.common.exception.SysException;
+import com.platon.metis.admin.common.exception.BizException;
+import com.platon.metis.admin.common.exception.Errors;
 import com.platon.metis.admin.dao.SysConfigMapper;
 import com.platon.metis.admin.dao.entity.SysConfig;
 import com.platon.parameters.NetworkParameters;
@@ -55,7 +56,7 @@ public class Web3jManager {
         web3jAddresses = Arrays.asList(sysConfigMapper.selectByKey(SysConfig.KeyEnum.RPC_URL_LIST.getKey()).getValue().split(","));
         chainId = Long.parseLong(sysConfigMapper.selectByKey(SysConfig.KeyEnum.CHAIN_ID.getKey()).getValue());
         addressPrefix = sysConfigMapper.selectByKey(SysConfig.KeyEnum.HRP.getKey()).getValue();
-        NetworkParameters.init(chainId,addressPrefix);
+        NetworkParameters.init(chainId, addressPrefix);
         // 初始化所有web3j实例
         web3jAddresses.forEach(address ->
                 getWeb3j(address).ifPresent(item -> web3List.add(item))
@@ -80,6 +81,7 @@ public class Web3jManager {
 
     /**
      * 主动获取weg3j连接
+     *
      * @return
      */
     public Web3j getWeb3j() {
@@ -87,13 +89,13 @@ public class Web3jManager {
             //十秒钟未拿到锁则抛异常
             boolean success = readLock.tryLock(10, TimeUnit.SECONDS);
             if (!success) {
-                throw new SysException("获取读锁失败");
+                throw new BizException(Errors.SysException, "获取读锁失败");
             }
             //拿锁成功则直接进入返回web3j连接
             return web3List.get(web3Index);
         } catch (InterruptedException e) {
-            throw new SysException(e.getMessage(), e);
-        } catch (SysException e) {
+            throw new BizException(Errors.SysException, e);
+        } catch (BizException e) {
             throw e;
         } finally {
             readLock.unlock();
@@ -102,6 +104,7 @@ public class Web3jManager {
 
     /**
      * 主动获取weg3j连接容器，性能会比 {@link #getWeb3j()}好，因为{@link #getWeb3j()}每次需要获取锁
+     *
      * @return
      */
     public AtomicReference<Web3j> getWeb3jContainer(Object observer) {
@@ -109,7 +112,7 @@ public class Web3jManager {
         if (web3jContainer == null) {
             web3jContainer = new AtomicReference<>();
             web3jContainer.set(this.getWeb3j());
-            subscriptionMap.put(observer,web3jContainer);
+            subscriptionMap.put(observer, web3jContainer);
         }
         return web3jContainer;
     }
@@ -143,7 +146,7 @@ public class Web3jManager {
         }
 
         if (bestIndex == -1) {
-            throw new SysException("无可用节点：bestIndex == -1");
+            throw new BizException(Errors.SysException, "无可用节点：bestIndex == -1");
         }
 
         if (bestIndex != web3Index) {
@@ -193,12 +196,12 @@ public class Web3jManager {
         try {
             boolean success = writeLock.tryLock(15, TimeUnit.SECONDS);
             if (!success) {
-                throw new SysException("获取写锁失败");
+                throw new BizException(Errors.SysException, "获取写锁失败");
             }
             web3Index = index;
         } catch (InterruptedException e) {
-            throw new SysException(e.getMessage(), e);
-        } catch (SysException e) {
+            throw new BizException(Errors.SysException, e);
+        } catch (BizException e) {
             throw e;
         } finally {
             writeLock.unlock();

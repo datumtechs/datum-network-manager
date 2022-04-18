@@ -55,6 +55,22 @@ public enum Errors {
 
     CannotOpsPowerNode(1038, "cannot manipulate power node in publishing and revoking,please try again later."),
     CannotOpsData(1039, "cannot manipulate data in publishing and revoking,please try again later."),
+
+    NonceExpired(1,"Please get nonce again. Nonce has expired!"),
+    NonceIncorrect(1,"Please get nonce again. Nonce is incorrect!"),
+
+    UserLoginSignError(1,"User login signature error!"),
+
+    ExportCSVFileError(1,"Export csv file error!"),
+    ReadFileContentError(1,"Read file content error!"),
+
+    DataTokenInPublishing(1,"Metadata already exists token in publishing!"),
+    DataTokenExists(1,"Metadata already exists token!"),
+
+    CannotChangeSystemConfig(1,"The system configuration is not allowed to be changed!"),
+
+    CreateNewUserFailed(1,"Insert new user failed!"),
+
     ;
     Errors(int code, String message) {
         this.code = code;
