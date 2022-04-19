@@ -16,10 +16,6 @@ spring:
 server:
   port: {{admin_web_port}}
 
-# ===== 自定义swagger配置 ===== #
-swagger:
-  enable: true
-
 # =============================== conf for logger ===================================
 # 日志配置
 logging:
