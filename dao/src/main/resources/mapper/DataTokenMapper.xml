@@ -39,7 +39,7 @@
             </otherwise>
         </choose>
         and `owner` = #{address}
-        order by id desc
+        order by rec_update_time desc
     </select>
 
     <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
