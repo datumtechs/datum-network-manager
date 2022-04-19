@@ -12,8 +12,6 @@ server:
 spring:
   application:
     name: metis-admin
-  profiles:
-    active: dev_10_151
   servlet:
     multipart:
       file-size-threshold: 1099511627776
@@ -84,6 +82,10 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+
+# =============================== conf for swagger ===================================
+swagger:
+  enabled: false
 
 # =============================== conf for logger ===================================
 # 日志配置

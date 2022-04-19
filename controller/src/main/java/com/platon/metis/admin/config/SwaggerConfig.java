@@ -1,8 +1,8 @@
 package com.platon.metis.admin.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 //@EnableSwagger2	   //开启 Swagger2
 //@EnableOpenApi     //开启 Swagger3 ，可不写
 //@EnableKnife4j     //开启 knife4j ，可不写
-@Profile({"local","dev","test"})
+@ConditionalOnProperty(name = "swagger.enabled", havingValue = "true")
 public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
