@@ -76,6 +76,7 @@ public enum Errors {
     NewUserAlreadyAdmin(1050,"The new user already administrator, the replacement failed!"),
 
     OrgInNetwork(1051,"Organization information cannot be modified because the organization has not been removed from the network!"),
+    UserNoPermission(1052,"The current user does not have permission!"),
 
     ;
     Errors(int code, String message) {

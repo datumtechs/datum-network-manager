@@ -94,7 +94,7 @@ public class WalletSignUtil {
     }
 
     public static void main(String[] args) {
-        createLoginSign("f87e4c30d9504b9c920c8a09642deaf3",Credentials.create("0x03a4130e4abb887a296eb38c15bbd83253ab09492a505b10a54b008b7dcc1668"));
+        createLoginSign("8f94ec8c250844fea57f319769b498d0",Credentials.create("0x03a4130e4abb887a296eb38c15bbd83253ab09492a505b10a54b008b7dcc1668"));
     }
 
     /**
