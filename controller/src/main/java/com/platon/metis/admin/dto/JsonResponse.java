@@ -66,8 +66,8 @@ public class JsonResponse<T> {
         return new JsonResponse(e.getErrorCode(), e.getMessage(), null);
     }
 
-    public static JsonResponse fail(String message) {
-        return new JsonResponse(Errors.SysException.getCode(), message, null);
+    public static JsonResponse fail(Errors errors) {
+        return new JsonResponse(errors.getCode(), errors.getMessage(), null);
     }
 
 

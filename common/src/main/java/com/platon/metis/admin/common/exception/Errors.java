@@ -6,6 +6,8 @@ public enum Errors {
     ArgumentException(2, "illegal argument."),
     CannotConnectGrpcServer(3, "connect gRPC server failed."),
     CallGrpcServiceFailed(4, "call gRPC service error"),
+    MethodParamInvalid(5,"method argument invalid!"),
+    SQLERROR(6,"SQL error!"),
 
     UserNotLogin(1000, "user not login"),
     IdentityIdMissing(1001,"user identity not applied"),
@@ -56,20 +58,24 @@ public enum Errors {
     CannotOpsPowerNode(1038, "cannot manipulate power node in publishing and revoking,please try again later."),
     CannotOpsData(1039, "cannot manipulate data in publishing and revoking,please try again later."),
 
-    NonceExpired(1,"Please get nonce again. Nonce has expired!"),
-    NonceIncorrect(1,"Please get nonce again. Nonce is incorrect!"),
+    NonceExpired(1040,"Please get nonce again. Nonce has expired!"),
+    NonceIncorrect(1041,"Please get nonce again. Nonce is incorrect!"),
 
-    UserLoginSignError(1,"User login signature error!"),
+    UserLoginSignError(1042,"User login signature error!"),
 
-    ExportCSVFileError(1,"Export csv file error!"),
-    ReadFileContentError(1,"Read file content error!"),
+    ExportCSVFileError(1043,"Export csv file error!"),
+    ReadFileContentError(1044,"Read file content error!"),
 
-    DataTokenInPublishing(1,"Metadata already exists token in publishing!"),
-    DataTokenExists(1,"Metadata already exists token!"),
+    DataTokenInPublishing(1045,"Metadata already exists token in publishing!"),
+    DataTokenExists(1046,"Metadata already exists token!"),
 
-    CannotChangeSystemConfig(1,"The system configuration is not allowed to be changed!"),
+    CannotChangeSystemConfig(1047,"The system configuration is not allowed to be changed!"),
 
-    CreateNewUserFailed(1,"Insert new user failed!"),
+    CreateNewUserFailed(1048,"Insert new user failed!"),
+    CurrentUserNotAdmin(1049,"The current user is not an administrator, the replacement failed!"),
+    NewUserAlreadyAdmin(1050,"The new user already administrator, the replacement failed!"),
+
+    OrgInNetwork(1051,"Organization information cannot be modified because the organization has not been removed from the network!"),
 
     ;
     Errors(int code, String message) {

@@ -189,7 +189,10 @@ public class UserController {
         //获取最新的用户信息
         user = userService.getByAddress(user.getAddress());
         if (user.getIsAdmin() != 1) {//不是管理员则提示错误
-            return JsonResponse.fail("The current user is not an administrator, the replacement failed!");
+            return JsonResponse.fail(Errors.CurrentUserNotAdmin);
+        }
+        if (user.getAddress().toLowerCase().equals(req.getNewAddress().toLowerCase())) {//地址一样，则不修改
+            return JsonResponse.fail(Errors.NewUserAlreadyAdmin);
         }
         userService.updateAdmin(user, req.getNewAddress());
         if (session != null) {//修改成功后，将session致为失效，让用户重新登录
@@ -223,7 +226,7 @@ public class UserController {
         LocalOrg localOrg = LocalOrgCache.getLocalOrgInfo();
         //只有退网之后才能修改组织名称
         if (localOrg.getStatus() == LocalOrg.Status.CONNECTED.getCode()) {
-            return JsonResponse.fail("Organization information cannot be modified because the organization has not been removed from the network!");
+            return JsonResponse.fail(Errors.OrgInNetwork);
         }
         if (StringUtils.equals(req.getName(), localOrg.getName())
                 && StringUtils.equals(req.getImageUrl(), localOrg.getImageUrl())
