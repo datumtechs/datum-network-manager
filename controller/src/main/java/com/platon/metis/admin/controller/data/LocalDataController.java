@@ -152,7 +152,7 @@ public class LocalDataController extends BaseController {
             throw new MetadataResourceNameIllegal();
         }
         //判断是否重复
-        boolean exist = localDataService.isExistResourceName(req.getResourceName());
+        boolean exist = localDataService.isExistResourceName(req.getResourceName(), userAddress);
         if (exist) {
             log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
             throw new MetadataResourceNameExists();
@@ -277,13 +277,14 @@ public class LocalDataController extends BaseController {
             @ApiImplicitParam(name = "resourceName", value = "元数据名称", required = true, paramType = "query", example = "filename"),
     })
     @PostMapping("/checkResourceName")
-    public JsonResponse checkResourceName(String resourceName) {
+    public JsonResponse checkResourceName(HttpSession session, String resourceName) {
+        String currentUserAddress = getCurrentUserAddress(session);
         //判断格式是否对
         if (!NameUtil.isValidName(resourceName)) {
             return JsonResponse.fail(new MetadataResourceNameIllegal());
         }
         //判断是否重复
-        boolean exist = localDataService.isExistResourceName(resourceName);
+        boolean exist = localDataService.isExistResourceName(resourceName, currentUserAddress);
         if (exist) {
             return JsonResponse.fail(new MetadataResourceNameExists());
         }

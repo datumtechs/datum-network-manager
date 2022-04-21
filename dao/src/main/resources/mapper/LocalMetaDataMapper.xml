@@ -97,7 +97,7 @@
   <select id="checkResourceName" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"/>
     from local_meta_data
-    where meta_data_name = #{resourceName} and status != 4
+    where meta_data_name = #{resourceName} and status != 4 and owner = #{address}
   </select>
 
 

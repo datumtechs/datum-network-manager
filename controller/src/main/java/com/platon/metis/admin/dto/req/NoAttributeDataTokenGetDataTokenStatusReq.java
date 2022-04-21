@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class NoAttributeDataTokenGetDataTokenStatusReq {
 
-    @ApiModelProperty("dataToken的id")
+    @ApiModelProperty("dataToken的数据库主键id")
     @NotNull
     private Integer id;
 }

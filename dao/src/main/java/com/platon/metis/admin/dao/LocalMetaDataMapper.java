@@ -18,7 +18,7 @@ public interface LocalMetaDataMapper {
 
     LocalMetaData selectByMetaDataId(String metaDataId);
 
-    LocalMetaData checkResourceName(@Param("resourceName") String resourceName);
+    LocalMetaData checkResourceName(@Param("resourceName") String resourceName, @Param("address") String address);
 
     int updateByPrimaryKey(LocalMetaData record);
 

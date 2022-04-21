@@ -17,7 +17,7 @@ public interface LocalDataService {
      * @param pageSize
      * @return
      */
-    Page<LocalMetaData> listMetaData(int pageNo, int pageSize, String keyword, String userAddress,int status);
+    Page<LocalMetaData> listMetaData(int pageNo, int pageSize, String keyword, String userAddress, int status);
 
     /**
      * 上传源文件到数据节点
@@ -80,13 +80,15 @@ public interface LocalDataService {
     /**
      * 查询指定的Id的resourceName是否在数据库中存在重复
      *
-     * @param resourceName
+     * @param resourceName 资源名称
+     * @param address      当前用户钱包地址
      * @return
      */
-    boolean isExistResourceName(String resourceName);
+    boolean isExistResourceName(String resourceName, String address);
 
     /**
      * 根据关键字查询钱包自身的元数据列表摘要信息，状态为未绑定凭证Id的数据
+     *
      * @param keyword
      * @param userAddress
      * @return
