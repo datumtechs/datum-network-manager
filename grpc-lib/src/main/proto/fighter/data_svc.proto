@@ -10,6 +10,7 @@ option java_outer_classname = "DataProviderRpcMessage";
 import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 import "fighter/common.proto";
+import "lib/types/base.proto";
 
 
 service DataProvider {
@@ -61,8 +62,8 @@ service DataProvider {
 }
 
 message DownloadRequest {
-  string file_path = 1;
-  map<string, string> options = 2;  // e.g.: compress: zip|tar.gz, file_root_dir: data|result
+  string data_path = 1;
+  map<string, string> options = 2;  // e.g.: compress: zip|tar.gz, data_root_dir: data|result
 }
 
 enum TaskStatus {
@@ -79,19 +80,10 @@ message DownloadReply {
   }
 }
 
-message FileInfo {
-  string file_name = 1;
-  string file_type = 2;
-  string description = 3;
-  repeated string columns = 4;
-  repeated string col_dtypes = 5;
-  repeated string keywords = 6;
-}
-
 message UploadRequest {
-  string file_name = 1;
+  string data_name = 1;
   bytes content = 2;
-  string file_type = 3;
+  types.OrigindataType data_type = 3;
   string description = 4;
   repeated string columns = 5;
   repeated string col_dtypes = 6;
@@ -99,20 +91,23 @@ message UploadRequest {
 }
 
 message UploadReply {
-  bool ok = 1;
-  string data_id = 2;
-  string file_path = 3;
-  string data_hash = 4;
+  int32  status = 1;    // 响应码
+  string msg = 2;       // 错误信息
+  string data_id = 3;
+  string data_path = 4;
+  string data_hash = 5;
 }
 
 message ListDataReply {
   message Row {
     string data_id = 1;
     string info = 2;
-    string file_name = 3;
+    string data_name = 3;
     int32 size = 4;
   }
-  repeated Row data = 1;
+  int32  status = 1;    // 响应码
+  string msg = 2;       // 错误信息
+  repeated Row data = 3;
 }
 
 message GetDataDetailReply {
@@ -120,23 +115,27 @@ message GetDataDetailReply {
     string column = 1;
     string dtype = 2;
   }
-  int32 n_rows = 1;
-  repeated Item items = 2;
+  int32  status = 1;    // 响应码
+  string msg = 2;       // 错误信息
+  int32  n_rows = 3;
+  repeated Item items = 4;
 }
 
 message GetStatusReply {
-  uint32 total_cpu = 1;
-  uint32 used_cpu = 2;
-  uint32 idle_cpu = 3;
-  uint64 total_memory = 4;
-  uint64 used_memory = 5;
-  uint64 idle_memory = 6;
-  uint64 total_disk = 7;
-  uint64 used_disk = 8;
-  uint64 idle_disk = 9;
-  uint64 total_bandwidth = 10;
-  uint64 used_bandwidth = 11;
-  uint64 idle_bandwidth = 12;
+  int32  status = 1;    // 响应码
+  string msg = 2;       // 错误信息
+  uint32 total_cpu = 3;
+  uint32 used_cpu = 4;
+  uint32 idle_cpu = 5;
+  uint64 total_memory = 6;
+  uint64 used_memory = 7;
+  uint64 idle_memory = 8;
+  uint64 total_disk = 9;
+  uint64 used_disk = 10;
+  uint64 idle_disk = 11;
+  uint64 total_bandwidth = 12;
+  uint64 used_bandwidth = 13;
+  uint64 idle_bandwidth = 14;
 }
 
 message SendSharesDataRequest {
@@ -147,4 +146,5 @@ message SendSharesDataRequest {
 message SendSharesDataReply {
   TaskStatus status = 1;
 }
+
 

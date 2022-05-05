@@ -41,7 +41,8 @@ public class YarnClient {
 
     /**
      * 调度新增数据节点
-     * @param dataNode           数据节点实体类
+     *
+     * @param dataNode 数据节点实体类
      * @return
      */
     public RegisteredNodeResp setDataNode(LocalDataNode dataNode) {
@@ -53,13 +54,13 @@ public class YarnClient {
                 setInternalPort(String.valueOf(dataNode.getInternalPort())).
                 setExternalIp(dataNode.getExternalIp()).
                 setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
-        log.debug("调用新增数据节点调度服务,参数:{}",setDataNodeRequest);
+        log.debug("调用新增数据节点调度服务,参数:{}", setDataNodeRequest);
         //3.调用rpc,获取response
         YarnRpcMessage.SetDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setDataNode(setDataNodeRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
 
@@ -76,7 +77,8 @@ public class YarnClient {
 
     /**
      * 调度修改数据节点
-     * @param dataNode           数据节点实体类
+     *
+     * @param dataNode 数据节点实体类
      * @return
      */
     public RegisteredNodeResp updateDataNode(LocalDataNode dataNode) {
@@ -89,13 +91,13 @@ public class YarnClient {
                         setInternalPort(String.valueOf(dataNode.getInternalPort())).
                         setExternalIp(dataNode.getExternalIp()).
                         setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
-        log.debug("调用修改数据节点调度服务,参数:{}",request);
+        log.debug("调用修改数据节点调度服务,参数:{}", request);
         //3.调用rpc,获取response
         YarnRpcMessage.SetDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).updateDataNode(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
 
@@ -112,6 +114,7 @@ public class YarnClient {
 
     /**
      * 调度删除数据节点
+     *
      * @return
      */
     public void deleteDataNode(String id) {
@@ -119,20 +122,21 @@ public class YarnClient {
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
         YarnRpcMessage.DeleteRegisteredNodeRequest request = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
-        log.debug("调用删除数据节点调度服务,参数:{}",request);
+        log.debug("调用删除数据节点调度服务,参数:{}", request);
         //3.调用rpc,获取response
         Base.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
-        log.debug("调用删除数据节点调度服务,响应结果:{}",response);
+        log.debug("调用删除数据节点调度服务,响应结果:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
     }
 
     /**
      * 调度获取数据节点列表
+     *
      * @return
      */
     public List<LocalDataNode> getLocalDataNodeList() {
@@ -149,7 +153,7 @@ public class YarnClient {
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
         log.debug("从carrier查询数据节点列表，数量：{}", response.getNodesList().size());
@@ -161,7 +165,7 @@ public class YarnClient {
         return nodeList.parallelStream().map(node -> {
             LocalDataNode localDataNode = new LocalDataNode();
             localDataNode.setNodeId(node.getNodeDetail().getId());
-            localDataNode.setNodeName("DataStorageNode_"+ node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
+            localDataNode.setNodeName("DataStorageNode_" + node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
             localDataNode.setInternalIp(node.getNodeDetail().getInternalIp());
             localDataNode.setInternalPort(StringUtils.isEmpty(node.getNodeDetail().getInternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getInternalPort()));
             localDataNode.setExternalIp(node.getNodeDetail().getExternalIp());
@@ -174,7 +178,7 @@ public class YarnClient {
     /**
      * 根据需要上传的文件大小和类型，获取可用的数据节点信息
      */
-    public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize, LocalDataFile.FileTypeEnum fileType){
+    public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize, LocalDataFile.FileTypeEnum fileType) {
 
         log.debug("从carrier查询可用的数据节点");
 
@@ -183,15 +187,15 @@ public class YarnClient {
         //2.拼装request
         YarnRpcMessage.QueryAvailableDataNodeRequest request = YarnRpcMessage.QueryAvailableDataNodeRequest
                 .newBuilder()
-                .setFileSize(fileSize)
-                .setFileTypeValue(fileType.getCode())
+                .setDataSize(fileSize)
+                .setDataType(Base.OrigindataType.forNumber(fileType.getCode()))
                 .build();
         //3.调用rpc,获取response
         YarnRpcMessage.QueryAvailableDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).queryAvailableDataNode(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if (StringUtils.isBlank(response.getInformation().getIp()) || StringUtils.isBlank(response.getInformation().getPort())) {
+        } else if (StringUtils.isBlank(response.getInformation().getIp()) || StringUtils.isBlank(response.getInformation().getPort())) {
             log.error("cannot find a available data node.");
             throw new CallGrpcServiceFailed();
         }
@@ -211,7 +215,7 @@ public class YarnClient {
     /**
      * 查询需要下载的目标原始文件所在的 数据服务信息和文件的完整相对路径
      */
-    public YarnQueryFilePositionResp queryFilePosition(String fileId){
+    public YarnQueryFilePositionResp queryFilePosition(String fileId) {
         log.debug("从carrier查询文件路径， fileId:{}", fileId);
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
@@ -226,7 +230,7 @@ public class YarnClient {
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if (StringUtils.isBlank(response.getInformation().getIp()) || StringUtils.isBlank(response.getInformation().getPort()) || StringUtils.isBlank(response.getInformation().getDataPath())) {
+        } else if (StringUtils.isBlank(response.getInformation().getIp()) || StringUtils.isBlank(response.getInformation().getPort()) || StringUtils.isBlank(response.getInformation().getDataPath())) {
             log.error("cannot find the data node that file located.");
             throw new CallGrpcServiceFailed();
         }
@@ -249,10 +253,10 @@ public class YarnClient {
     /**
      * 尝试连接调度服务,连通则返回true，否则返回false
      */
-    public boolean connectScheduleServer(String scheduleIP,int schedulePort){
+    public boolean connectScheduleServer(String scheduleIP, int schedulePort) {
         //1.获取rpc连接
         ManagedChannel channel = null;
-        try{
+        try {
             channel = channelManager.buildChannel(scheduleIP, schedulePort);
             //2.拼装request
             Empty request = Empty.newBuilder().build();
@@ -262,7 +266,7 @@ public class YarnClient {
             //4.处理response
             if (response == null) {
                 throw new CallGrpcServiceFailed();
-            }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+            } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
                 throw new CallGrpcServiceFailed(response.getMsg());
             }
 
@@ -277,14 +281,15 @@ public class YarnClient {
 
     /**
      * 查看自身调度服务信息
-     * @param scheduleIP 调度服务ip
+     *
+     * @param scheduleIP   调度服务ip
      * @param schedulePort 调度服务端口
      */
-    public YarnGetNodeInfoResp getNodeInfo(String scheduleIP,int schedulePort){
-        log.debug("从carrier查询调度服务本身状态， ip{}:port{}", scheduleIP,schedulePort);
+    public YarnGetNodeInfoResp getNodeInfo(String scheduleIP, int schedulePort) {
+        log.debug("从carrier查询调度服务本身状态， ip{}:port{}", scheduleIP, schedulePort);
         //1.获取rpc连接
         ManagedChannel channel = null;
-        try{
+        try {
             channel = channelManager.buildChannel(scheduleIP, schedulePort);
             //2.拼装request
             Empty request = Empty.newBuilder().build();
@@ -294,7 +299,7 @@ public class YarnClient {
             //4.处理response
             if (response == null) {
                 throw new CallGrpcServiceFailed();
-            }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+            } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
                 throw new CallGrpcServiceFailed(response.getMsg());
             }
             /**
@@ -325,12 +330,13 @@ public class YarnClient {
 
     /**
      * v 0.4.0 生成当前组织内置系统钱包地址 (见证人代理钱包, 全局只有一个)
+     *
      * @return 返回生成的钱包地址
      */
-    public String generateObServerProxyWalletAddress(String scheduleIP,int schedulePort){
+    public String generateObServerProxyWalletAddress(String scheduleIP, int schedulePort) {
         //1.获取rpc连接
         ManagedChannel channel = null;
-        try{
+        try {
             channel = channelManager.buildChannel(scheduleIP, schedulePort);
             //2.拼装request
             Empty request = Empty.newBuilder().build();
@@ -341,7 +347,7 @@ public class YarnClient {
             //4.处理response
             if (response == null) {
                 throw new CallGrpcServiceFailed();
-            }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+            } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
                 throw new CallGrpcServiceFailed(response.getMsg());
             }
             /**

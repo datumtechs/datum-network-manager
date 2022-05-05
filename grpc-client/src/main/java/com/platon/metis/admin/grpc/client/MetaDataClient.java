@@ -2,12 +2,13 @@ package com.platon.metis.admin.grpc.client;
 
 import cn.hutool.json.JSONUtil;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
+import com.platon.metis.admin.common.util.LocalDateTimeUtil;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
 import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
-import com.platon.metis.admin.grpc.entity.MetaDataOption1;
+import com.platon.metis.admin.grpc.entity.template.MetaDataOption1;
 import com.platon.metis.admin.grpc.service.MetaDataRpcMessage;
 import com.platon.metis.admin.grpc.service.MetadataServiceGrpc;
 import com.platon.metis.admin.grpc.types.Base;
@@ -18,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -64,7 +64,6 @@ public class MetaDataClient {
         metaDataOption1.setSize(localDateFile.getSize());
         metaDataOption1.setHasTitle(localDateFile.getHasTitle());
         List<MetaDataOption1.MetadataColumn> metadataColumns = new ArrayList<>();
-        ;
         List<LocalMetaDataColumn> columnList = localMetaData.getLocalMetaDataColumnList();
         for (int i = 0; i < columnList.size(); i++) {
             LocalMetaDataColumn metaDataColumn = columnList.get(i);
@@ -247,8 +246,8 @@ public class MetaDataClient {
             LocalMetaData localMetaData = new LocalMetaData();
             localMetaData.setMetaDataId(summary.getMetadataId());
             localMetaData.setStatus(summary.getState().getNumber());
-            localMetaData.setPublishTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(summary.getPublishAt()), ZoneOffset.UTC));
-            localMetaData.setRecUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(summary.getUpdateAt()), ZoneOffset.UTC));
+            localMetaData.setPublishTime(LocalDateTimeUtil.getLocalDateTime(summary.getPublishAt()));
+            localMetaData.setRecUpdateTime(LocalDateTimeUtil.getLocalDateTime(summary.getUpdateAt()));
             return localMetaData;
         }).collect(Collectors.toList());
     }

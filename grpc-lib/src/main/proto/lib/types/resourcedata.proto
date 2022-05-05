@@ -43,7 +43,8 @@ message LocalResourcePB {
   uint64                            used_disk = 12;                           // 算力已使用磁盘容量 (单位: byte)
   uint64                            publish_at = 13;                          // 数据发布时间
   uint64                            update_at = 14;                           // 数据更新时间
-  string                            job_node_id = 15;                         // 算力对应的内部计算服务的jobNodeId
+  uint64                            nonce = 15;                               // 算力的 nonce (用来标识该算力在所属组织中的算力的序号, 从 0 开始递增)
+  string                            job_node_id = 16;                         // 算力对应的内部计算服务的jobNodeId
 }
 
 // =============================== For API =============================

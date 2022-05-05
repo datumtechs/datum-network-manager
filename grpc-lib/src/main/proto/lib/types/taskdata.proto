@@ -21,26 +21,28 @@ message TaskPB {
   repeated TaskOrganization                   data_suppliers = 9;                         // 任务的数据提供方组信息 (可包含发起方和参与方)
   repeated TaskOrganization                   power_suppliers = 10;                       // 任务的算力提供方组织信息 (可包含发起方和参与方)
   repeated TaskOrganization                   receivers = 11;                             // 任务的结果接收方组织信息 (可包含发起方和参与方)
-  uint32                                      data_policy_type = 12;                      // 任务的数据提供方选择数据策略的类型
-  string                                      data_policy_option = 13;                    // 任务的数据提供方选择数据策略的内容 (json字符串, 和 data_policy_type 配套使用)
-  uint32                                      power_policy_type = 14;                     // 任务的算力提供方选择算力策略的类型
-  string                                      power_policy_option = 15;                   // 任务的算力提供方选择算力策略的内容 (json字符串, 和 power_policy_type 配套使用)
-  uint32                                      data_flow_policy_type = 16;                 // 任务的数据流向策略的类型
-  string                                      data_flow_policy_option = 17;               // 任务的数据流向策略的内容 (json字符串, 和 data_flow_policy_type 配套使用)
-  TaskResourceCostDeclare                     operation_cost = 18;                        // 任务的初始资源声明
-  string                                      algorithm_code = 19;                        // 内置算法代码 (使用内置算法, 在不使用算法市场前提下用)
-  string                                      meta_algorithm_id = 20;                     // 算法元数据Id (为了后续支持 算法市场而用, 使用内置算法时则该值为 "" 空字符串)
-  string                                      algorithm_code_extra_params = 21;           // 内置算法的额外超参 (使用内置算法, 内置算法的额外超参数 json 字符串, 内容可为""空字符串, 根据算法来)
-  repeated TaskPowerResourceOption            power_resource_options = 22;                // 算力的资源消耗明细
-  TaskState                                   state = 23;                                 // 任务的状态 (0: 未知; 1: 等在中; 2: 计算中; 3: 失败; 4: 成功)
-  string                                      reason = 24;                                // 任务失败原因
-  string                                      desc = 25;                                  // 任务描述(非必须)
-  uint64                                      create_at = 26;                             // 任务的发起时间戳 (单位: ms)
-  uint64                                      end_at = 27;                                // 任务的终止<成功or失败>时间戳 (单位: ms)
-  uint64                                      start_at = 28;                              // 任务的开始执行时间戳 (单位: ms)
-  repeated TaskEvent                          task_events = 29;                           // 任务的所有产生事件列表
-  bytes                                       sign = 30;                                  // 消息签名 (userType 和 user决定算法)
-  uint64                                      nonce = 31;                                 // 任务的 nonce (用来标识该任务在任务发起方组织中的任务的序号, 从 0 开始递增)
+  repeated uint32                             data_policy_types = 12;                     // 任务的数据提供方选择数据策略的类型 (严格意义上, 数据的选择策略需要基于 数据的原始数据格式来决定，所以 该值直接沿用  OrigindataType)
+  repeated string                             data_policy_options = 13;                   // 任务的数据提供方选择数据策略的内容 (json字符串数组, 和 data_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  repeated uint32                             power_policy_types = 14;                    // 任务的算力提供方选择算力策略的类型 (算力也是使用了数组, 同样是方便)
+  repeated string                             power_policy_options = 15;                  // 任务的算力提供方选择算力策略的内容 (json字符串数组, 和 power_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  repeated uint32                             receiver_policy_types = 16;                 // 任务的接收方选择策略的类型 (数据的流转方向也是使用了数组, 同样是方便)
+  repeated string                             receiver_policy_options = 17;               // 任务的接收方选择策略的内容 (json字符串数组, 和 receiver_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  repeated uint32                             data_flow_policy_types = 18;                // 任务的数据流向策略的类型 (数据的流转方向也是使用了数组, 同样是方便)
+  repeated string                             data_flow_policy_options = 19;              // 任务的数据流向策略的内容 (json字符串数组, 和 data_flow_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  TaskResourceCostDeclare                     operation_cost = 20;                        // 任务的初始资源声明
+  string                                      algorithm_code = 21;                        // 内置算法代码 (使用内置算法, 在不使用算法市场前提下用)
+  string                                      meta_algorithm_id = 22;                     // 算法元数据Id (为了后续支持 算法市场而用, 使用内置算法时则该值为 "" 空字符串)
+  string                                      algorithm_code_extra_params = 23;           // 内置算法的额外超参 (使用内置算法, 内置算法的额外超参数 json 字符串, 内容可为""空字符串, 根据算法来)
+  repeated TaskPowerResourceOption            power_resource_options = 24;                // 算力的资源消耗明细
+  TaskState                                   state = 25;                                 // 任务的状态 (0: 未知; 1: 等在中; 2: 计算中; 3: 失败; 4: 成功)
+  string                                      reason = 26;                                // 任务失败原因
+  string                                      desc = 27;                                  // 任务描述(非必须)
+  uint64                                      create_at = 28;                             // 任务的发起时间戳 (单位: ms)
+  uint64                                      start_at = 29;                              // 任务的开始执行时间戳 (单位: ms)
+  uint64                                      end_at = 30;                                // 任务的终止<成功or失败>时间戳 (单位: ms)
+  repeated TaskEvent                          task_events = 31;                           // 任务的所有产生事件列表
+  bytes                                       sign = 32;                                  // 消息签名 (userType 和 user决定算法)
+  uint64                                      nonce = 33;                                 // 任务的 nonce (用来标识该任务在任务发起方组织中的任务的序号, 从 0 开始递增)
 }
 
 
@@ -58,5 +60,49 @@ message TaskEvent {
   string party_id = 4;                    // 产生事件的partyId (单个组织可以担任任务的多个party, 区分是哪一方产生的event)
   string content = 5;                     // 事件内容
   uint64 create_at = 6;                   // 事件产生时间戳 (单位: ms)
+}
+
+
+// ================================================== For API ==================================================
+
+// 定义：任务详情（仅用户与前端交互展示使用）
+message TaskDetailSummary {
+
+  string                                    task_id = 1;                          // 任务Id
+  string                                    task_name = 2;                        // 任务名称
+  string                                    user = 3;                             // 发起任务的用户的信息 (task是属于用户的)
+  UserType                                  user_type = 4;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  TaskOrganization                          sender = 5;                           // 任务的发起方的组织信息
+  TaskOrganization                          algo_supplier = 6;                    // 任务的算法提供者信息
+  repeated TaskOrganization                 data_suppliers = 7;                   // 任务的数据提供方组信息 (可包含发起方和参与方)
+  repeated TaskOrganization                 power_suppliers = 8;                  // 任务的算力提供方组织信息 (可包含发起方和参与方)
+  repeated TaskOrganization                 receivers = 9;                        // 任务的结果接收方组织信息 (可包含发起方和参与方)
+  repeated uint32                           data_policy_types = 10;               // 任务的数据提供方选择数据策略的类型 (严格意义上, 数据的选择策略需要基于 数据的原始数据格式来决定，所以 该值直接沿用  OrigindataType)
+  repeated string                           data_policy_options = 11;             // 任务的数据提供方选择数据策略的内容 (json字符串数组, 和 data_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  repeated uint32                           power_policy_types = 12;              // 任务的算力提供方选择算力策略的类型 (算力也是使用了数组, 同样是方便)
+  repeated string                           power_policy_options = 13;            // 任务的算力提供方选择算力策略的内容 (json字符串数组, 和 power_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  repeated uint32                           receiver_policy_types = 14;           // 任务的接收方选择策略的类型 (数据的流转方向也是使用了数组, 同样是方便)
+  repeated string                           receiver_policy_options = 15;         // 任务的接收方选择策略的内容 (json字符串数组, 和 receiver_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  repeated uint32                           data_flow_policy_types = 16;          // 任务的数据流向策略的类型 (数据的流转方向也是使用了数组, 同样是方便)
+  repeated string                           data_flow_policy_options = 17;        // 任务的数据流向策略的内容 (json字符串数组, 和 data_flow_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  TaskResourceCostDeclare                   operation_cost = 18;                  // 任务所需资源声明
+  string                                    algorithm_code = 19;                  // 内置算法代码 (使用内置算法, 在不使用算法市场前提下用)
+  string                                    meta_algorithm_id = 20;               // 算法元数据Id (为了后续支持 算法市场而用, 使用内置算法时则该值为 "" 空字符串)
+  string                                    algorithm_code_extra_params = 21;     // 内置算法的额外超参 (使用内置算法, 内置算法的额外超参数 json 字符串, 内容可为""空字符串, 根据算法来)
+  repeated TaskPowerResourceOption          power_resource_options = 22;          // 算力的资源消耗明细
+  TaskState                                 state = 23;                           // 任务的状态 (0: 未知; 1: 等在中; 2: 计算中; 3: 失败; 4: 成功)
+  string                                    reason = 24;                          // 任务失败原因
+  string                                    desc = 25;                            // 任务描述(非必须)
+  uint64                                    create_at = 26;                       // 任务的发起时间戳 (单位: ms)
+  uint64                                    start_at = 27;                        // 任务的开始执行时间戳 (单位: ms)
+  uint64                                    end_at = 28;                          // 任务的终止<成功or失败>时间戳 (单位: ms)
+  bytes                                     sign = 29;                            // 发起任务的账户的签名
+  uint64                                    nonce = 30;                           // 任务的 nonce (用来标识该任务在任务发起方组织中的任务的序号, 从 0 开始递增)
+  uint64                                    update_at = 31;                       // 数据库中的最后更新时间，UTC毫秒数
+}
+
+// 查看本组织参与过的全部任务详情列表
+message TaskDetail {
+  TaskDetailSummary                     information = 1;                  // 任务(展示)详情
 }
 

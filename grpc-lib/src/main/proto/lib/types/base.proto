@@ -13,15 +13,17 @@ message Organization  {
   string node_id = 2;
   // the identity for org
   string identity_id = 3;
-  // the status for organization(1 means valid, 2 means invalid)
-  DataStatus status = 4;
+  // the status of data for local storage, 1 means valid, 2 means invalid
+  DataStatus data_status = 4;
+  // the status of data for datacenter, 1 means valid, 2 means invalid
+  CommonStatus status = 5;
   //v 3.0
   // the last_update time of corresponding datacenter (unit: UTC ms)
-  uint64 update_at = 5;
+  uint64 update_at = 6;
   // the link of face image (with a length limit)
-  string image_url = 6;
+  string image_url = 7;
   // description of the node (with a length limit)
-  string details = 7;
+  string details = 8;
 }
 
 // 任务下的组织信息
@@ -44,9 +46,9 @@ message SimpleResponse {
 
 enum UserType {
   User_Unknown = 0;
-  User_1 = 1;
-  User_2 = 2;
-  User_3 = 3;
+  User_1 = 1;    // PlatON
+  User_2 = 2;    // Alaya
+  User_3 = 3;    // Ethereum
 }
 
 // the status of data for local storage, 1 means valid, 2 means invalid
@@ -82,13 +84,19 @@ enum MetadataType {
 enum DataLocationType {
   DataLocationType_Unknown = 0;             // 未知
   DataLocationType_Local = 1;               // (存储在组织本地服务器上, 直接可以拿到该文件)
-  DataLocationType_Remote = 2;              // (存储在远端服务器上, 通过 url 等方式拿到该文件)
+  DataLocationType_URL = 2;                 // (存储在远端服务器上, 通过 url 等方式拿到该文件)
 }
 
 // 原始数据类型 (文件类型)
 enum OrigindataType {
   OrigindataType_Unknown = 0;             // 未知
   OrigindataType_CSV = 1;                 // csv
+  OrigindataType_DIR = 2;                 // dir     (目录)
+  OrigindataType_BINARY = 3;              // binary  (普通的二进制数据, 没有明确说明后缀的二进制文件)
+  OrigindataType_XLS = 4;                 // xls
+  OrigindataType_XLSX = 5;                // xlsx
+  OrigindataType_TXT = 6;                 // txt
+  OrigindataType_JSON = 7;                // json
   //  OrigindataType_Python = 20001;      // python
 }
 

@@ -86,7 +86,7 @@ public class LocalDataServiceImpl implements LocalDataService {
                 file);
         //### 4.补充源文件信息
         localDataFile.setFileId(response.getDataId());
-        localDataFile.setFilePath(response.getFilePath());
+        localDataFile.setFilePath(response.getDataPath());
         localDataFile.setDataHash(response.getDataHash());
         localDataFile.setLocationType(Base.DataLocationType.DataLocationType_Local_VALUE);
         //### 5.解析完成之后，存数据库

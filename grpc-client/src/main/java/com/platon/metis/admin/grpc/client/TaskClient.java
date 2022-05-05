@@ -1,12 +1,23 @@
 package com.platon.metis.admin.grpc.client;
 
+import cn.hutool.json.JSONUtil;
+import com.google.protobuf.ProtocolStringList;
+import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
+import com.platon.metis.admin.common.exception.Errors;
+import com.platon.metis.admin.common.util.LocalDateTimeUtil;
 import com.platon.metis.admin.dao.entity.*;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
+import com.platon.metis.admin.grpc.entity.template.DataPolicyOption0;
+import com.platon.metis.admin.grpc.entity.template.DataPolicyOption1;
+import com.platon.metis.admin.grpc.entity.template.DataPolicyOption2;
+import com.platon.metis.admin.grpc.entity.template.DataPolicyOption3;
 import com.platon.metis.admin.grpc.service.TaskRpcMessage;
 import com.platon.metis.admin.grpc.service.TaskServiceGrpc;
 import com.platon.metis.admin.grpc.types.Base;
+import com.platon.metis.admin.grpc.types.Resourcedata;
+import com.platon.metis.admin.grpc.types.Taskdata;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -14,13 +25,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
 
@@ -72,7 +83,8 @@ public class TaskClient {
         }
         log.debug("从carrier查询本组织参与的任务, 数量:{}", response.getTasksList().size());
 
-        return dataConvertToTaskList(response.getTasksList());
+        List<Taskdata.TaskDetail> tasksList = response.getTasksList();
+        return dataConvertToTaskList(tasksList);
     }
 
 
@@ -103,13 +115,13 @@ public class TaskClient {
 
         List<TaskEvent> taskEventList = new ArrayList<>();
         //构造taskEvent集合
-        for (TaskRpcMessage.TaskEventShow taskEvenShow : response.getTaskEventsList()) {
+        for (Taskdata.TaskEvent taskEvenShow : response.getTaskEventsList()) {
             TaskEvent taskEvent = new TaskEvent();
             taskEvent.setTaskId(taskEvenShow.getTaskId());
-            taskEvent.setEventAt(LocalDateTime.ofEpochSecond(taskEvenShow.getCreateAt() / 1000, 0, ZoneOffset.UTC));
+            taskEvent.setEventAt(LocalDateTimeUtil.getLocalDateTime(taskEvenShow.getCreateAt()));
             taskEvent.setEventContent(taskEvenShow.getContent());
             taskEvent.setEventType(taskEvenShow.getType());
-            taskEvent.setIdentityId(taskEvenShow.getOwner().getIdentityId());
+            taskEvent.setIdentityId(taskEvenShow.getIdentityId());
             taskEvent.setPartyId(taskEvenShow.getPartyId());
             //添加
             taskEventList.add(taskEvent);
@@ -126,118 +138,32 @@ public class TaskClient {
      * @param taskDetailList
      * @return
      */
-    private Pair<List<Task>, Map<String, TaskOrg>> dataConvertToTaskList(List<TaskRpcMessage.GetTaskDetail> taskDetailList) {
+    private Pair<List<Task>, Map<String, TaskOrg>> dataConvertToTaskList(List<Taskdata.TaskDetail> taskDetailList) {
 
         //key:identityId
         Map<String, TaskOrg> taskOrgMap = new HashMap<>();
 
         List<Task> taskList = new ArrayList<>();
         for (int i = 0; i < taskDetailList.size(); i++) {
-            TaskRpcMessage.TaskDetailShow taskDetail = taskDetailList.get(i).getInformation();
-            //Base.TaskRole role = taskDetailList.get(i).getRole();
-            String taskId = taskDetail.getTaskId();
-            String taskName = taskDetail.getTaskName();
-
-            Long createAt = taskDetail.getCreateAt();
-            Long startAt = taskDetail.getStartAt();
-            Long endAt = taskDetail.getEndAt();
-            Base.TaskState state = taskDetail.getState();
-            Base.TaskResourceCostDeclare operationCost = taskDetail.getOperationCost();
-            String desc = taskDetail.getDesc();
+            Taskdata.TaskDetailSummary taskDetail = taskDetailList.get(i).getInformation();
 
             //构造Task
-            Task task = new Task();
-            task.setTaskId(taskId);
-            task.setTaskName(taskName);
-            task.setCreateAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(createAt), ZoneOffset.UTC));
-            task.setStartAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(startAt), ZoneOffset.UTC));
-            task.setEndAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(endAt), ZoneOffset.UTC));
-            task.setStatus(state.getNumber());
-            task.setAuthAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(endAt), ZoneOffset.UTC));
-            task.setOwnerIdentityId(taskDetail.getSender().getIdentityId());
-            task.setOwnerPartyId(taskDetail.getSender().getPartyId());
-            task.setCostCore(operationCost.getProcessor());
-            task.setCostMemory(operationCost.getMemory());
-            task.setCostBandwidth(operationCost.getBandwidth());
-            task.setDuration(operationCost.getDuration());
-            task.setApplyUser(taskDetail.getUser()); //发起任务的用户的信息 (task是属于用户的)
-            task.setUserType(taskDetail.getUserType().getNumber()); //发起任务的用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
-            task.setUpdateAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(taskDetail.getUpdateAt()), ZoneOffset.UTC));
+            Task task = toTask(taskDetail);
 
-            //搜集taskOrg，任务发起者
-            taskOrgMap.put(taskDetail.getSender().getIdentityId(), new TaskOrg(taskDetail.getSender().getIdentityId(), taskDetail.getSender().getNodeName(), taskDetail.getSender().getNodeId()));
+            //任务发起方
+            processSender(taskDetail, taskOrgMap, task);
 
-            // 算法提供方algoSupplier
-            TaskRpcMessage.TaskAlgoSupplier algoSupplier = taskDetail.getAlgoSupplier();
-            TaskAlgoProvider algoProvider = new TaskAlgoProvider();
-            algoProvider.setTaskId(taskId);
-            algoProvider.setIdentityId(algoSupplier.getOrganization().getIdentityId());
-            algoProvider.setPartyId(algoSupplier.getOrganization().getPartyId());
-            task.setAlgoSupplier(algoProvider);
-
-            //搜集taskOrg， 算法提供方
-            taskOrgMap.put(taskDetail.getAlgoSupplier().getOrganization().getIdentityId(),
-                    new TaskOrg(taskDetail.getAlgoSupplier().getOrganization().getIdentityId(),
-                            taskDetail.getAlgoSupplier().getOrganization().getNodeName(),
-                            taskDetail.getAlgoSupplier().getOrganization().getNodeId()));
+            //算法提供方
+            processAlgoSupplier(taskDetail, taskOrgMap, task);
 
             //数据提供方dataSupplierList
-            List<TaskDataProvider> taskDataProviderList = new ArrayList<>();
-            for (TaskRpcMessage.TaskDataSupplierShow dataSupplier : taskDetail.getDataSuppliersList()) {
-                TaskDataProvider dataProvider = new TaskDataProvider();
-                dataProvider.setTaskId(taskId);
-                dataProvider.setMetaDataId(dataSupplier.getMetadataId());
-                dataProvider.setMetaDataName(dataSupplier.getMetadataName());
-                dataProvider.setIdentityId(dataSupplier.getOrganization().getIdentityId());
-                dataProvider.setPartyId(dataSupplier.getOrganization().getPartyId());
-                //dataProvider.setMetaDataName(dataSupplier.getMetadataName());
-                //dataProvider.setDynamicFields(getDynamicFields(dataSupplier.getOrganization().getNodeName(), dataSupplier.getOrganization().getNodeId()));
-                taskDataProviderList.add(dataProvider);
-                //搜集taskOrg， 数据提供方
-                taskOrgMap.put(dataSupplier.getOrganization().getIdentityId(), new TaskOrg(dataSupplier.getOrganization().getIdentityId(), dataSupplier.getOrganization().getNodeName(), dataSupplier.getOrganization().getNodeId()));
-            }
-            task.setDataSupplier(taskDataProviderList);
+            processDataSupplierList(taskDetail, taskOrgMap, task);
 
             //算力提供方powerSupplierList
-            List<TaskPowerProvider> taskPowerProviderList = new ArrayList<>();
-            for (TaskRpcMessage.TaskPowerSupplierShow powerSupplier : taskDetail.getPowerSuppliersList()) {
-                TaskPowerProvider powerProvider = new TaskPowerProvider();
-                powerProvider.setTaskId(taskId);
-                powerProvider.setIdentityId(powerSupplier.getOrganization().getIdentityId());
-                powerProvider.setPartyId(powerSupplier.getOrganization().getPartyId());
-                powerProvider.setUsedCore(powerSupplier.getPowerInfo().getUsedProcessor());
-                powerProvider.setTotalCore(powerSupplier.getPowerInfo().getTotalProcessor());
-                powerProvider.setUsedMemory(powerSupplier.getPowerInfo().getUsedMem());
-                powerProvider.setTotalMemory(powerSupplier.getPowerInfo().getTotalMem());
-                powerProvider.setUsedBandwidth(powerSupplier.getPowerInfo().getUsedBandwidth());
-                powerProvider.setTotalBandwidth(powerSupplier.getPowerInfo().getTotalBandwidth());
-                //powerProvider.setDynamicFields(getDynamicFields(powerSupplier.getOrganization().getNodeName(), taskPowerSupplierShow.getOrganization().getNodeId()));
-                taskPowerProviderList.add(powerProvider);
-
-                //搜集taskOrg， 算力提供方
-                taskOrgMap.put(powerSupplier.getOrganization().getIdentityId(), new TaskOrg(powerSupplier.getOrganization().getIdentityId(), powerSupplier.getOrganization().getNodeName(), powerSupplier.getOrganization().getNodeId()));
-
-            }
-            task.setPowerSupplier(taskPowerProviderList);
+            processPowerSupplierList(taskDetail, taskOrgMap, task);
 
             //任务结果方receiverList
-            List<TaskResultConsumer> resultConsumerList = new ArrayList<>();
-
-            for (Base.TaskOrganization receiver : taskDetail.getReceiversList()) {
-                TaskResultConsumer resultConsumer = new TaskResultConsumer();
-                resultConsumer.setTaskId(taskId);
-                resultConsumer.setConsumerIdentityId(receiver.getIdentityId());
-                resultConsumer.setConsumerPartyId(receiver.getPartyId());
-                //待商榷？？
-                //resultConsumer.setProducerIdentityId(receiver.getIdentityId());
-                //resultConsumer.setDynamicFields(getDynamicFields(receiver.getNodeName(), receiver.getNodeId()));
-                resultConsumerList.add(resultConsumer);
-
-                //搜集taskOrg， 算力提供方
-                taskOrgMap.put(receiver.getIdentityId(), new TaskOrg(receiver.getIdentityId(), receiver.getNodeName(), receiver.getNodeId()));
-
-            }
-            task.setReceivers(resultConsumerList);
+            processReceiverList(taskDetail, taskOrgMap, task);
 
             //构造完毕添加数据
             taskList.add(task);
@@ -245,19 +171,155 @@ public class TaskClient {
         return new ImmutablePair<>(taskList, taskOrgMap);
     }
 
-    /**
-     * 动态数据
-     *
-     * @param nodeName
-     * @param nodeId
-     * @return
-     */
-    private Map getDynamicFields(String nodeName, String nodeId) {
-        Map dynamicFields = new HashMap();
-        dynamicFields.put(NODE_NAME, nodeName);
-        dynamicFields.put(NODE_ID, nodeId);
-        return dynamicFields;
+    private Task toTask(Taskdata.TaskDetailSummary taskDetail){
+        Task task = new Task();
+        task.setTaskId(taskDetail.getTaskId());
+        task.setTaskName(taskDetail.getTaskName());
+        task.setCreateAt(LocalDateTimeUtil.getLocalDateTime(taskDetail.getCreateAt()));
+        task.setStartAt(LocalDateTimeUtil.getLocalDateTime(taskDetail.getStartAt()));
+        task.setEndAt(LocalDateTimeUtil.getLocalDateTime(taskDetail.getEndAt()));
+        task.setStatus(taskDetail.getStateValue());
+
+        Base.TaskResourceCostDeclare operationCost = taskDetail.getOperationCost();
+        task.setCostCore(operationCost.getProcessor());
+        task.setCostMemory(operationCost.getMemory());
+        task.setCostBandwidth(operationCost.getBandwidth());
+        task.setDuration(operationCost.getDuration());
+        task.setApplyUser(taskDetail.getUser()); //发起任务的用户的信息 (task是属于用户的)
+        task.setUserType(taskDetail.getUserTypeValue()); //发起任务的用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+        task.setUpdateAt(LocalDateTimeUtil.getLocalDateTime(taskDetail.getUpdateAt()));
+        return task;
     }
 
+    private void processSender(Taskdata.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task){
+        Base.TaskOrganization sender = taskDetail.getSender();
+        //搜集taskOrg，任务发起方
+        taskOrgMap.put(sender.getIdentityId(), new TaskOrg(sender.getIdentityId(), sender.getNodeName(), sender.getNodeId()));
+        task.setOwnerIdentityId(sender.getIdentityId());
+        task.setOwnerPartyId(sender.getPartyId());
+    }
+
+    private void processAlgoSupplier(Taskdata.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task){
+        Base.TaskOrganization algoSupplier = taskDetail.getAlgoSupplier();
+        //算法提供方algoSupplier
+        TaskAlgoProvider algoProvider = new TaskAlgoProvider();
+        algoProvider.setTaskId(taskDetail.getTaskId());
+        algoProvider.setIdentityId(algoSupplier.getIdentityId());
+        algoProvider.setPartyId(algoSupplier.getPartyId());
+        task.setAlgoSupplier(algoProvider);
+        //搜集taskOrg， 算法提供方
+        taskOrgMap.put(algoSupplier.getIdentityId(),
+                new TaskOrg(algoSupplier.getIdentityId(),
+                        algoSupplier.getNodeName(),
+                        algoSupplier.getNodeId()));
+    }
+
+    private void processReceiverList(Taskdata.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
+        List<TaskResultConsumer> resultConsumerList = new ArrayList<>();
+
+        for (Base.TaskOrganization receiver : taskDetail.getReceiversList()) {
+            TaskResultConsumer resultConsumer = new TaskResultConsumer();
+            resultConsumer.setTaskId(taskDetail.getTaskId());
+            resultConsumer.setConsumerIdentityId(receiver.getIdentityId());
+            resultConsumer.setConsumerPartyId(receiver.getPartyId());
+            resultConsumerList.add(resultConsumer);
+
+            //搜集taskOrg， 算力提供方
+            taskOrgMap.put(receiver.getIdentityId(), new TaskOrg(receiver.getIdentityId(), receiver.getNodeName(), receiver.getNodeId()));
+
+        }
+        task.setReceivers(resultConsumerList);
+    }
+
+    private void processPowerSupplierList(Taskdata.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
+        List<TaskPowerProvider> taskPowerProviderList = new ArrayList<>();
+        Map<String, Resourcedata.ResourceUsageOverview> resourceUsageOverviewMap = taskDetail.getPowerResourceOptionsList().stream()
+                .collect(Collectors.toMap(
+                        Taskdata.TaskPowerResourceOption::getPartyId,
+                        Taskdata.TaskPowerResourceOption::getResourceUsedOverview));
+        for (Base.TaskOrganization powerSupplier : taskDetail.getPowerSuppliersList()) {
+            TaskPowerProvider powerProvider = new TaskPowerProvider();
+            powerProvider.setTaskId(taskDetail.getTaskId());
+            powerProvider.setIdentityId(powerSupplier.getIdentityId());
+
+            String partyId = powerSupplier.getPartyId();
+            powerProvider.setPartyId(partyId);
+            Resourcedata.ResourceUsageOverview resourceUsageOverview = resourceUsageOverviewMap.get(partyId);
+
+            powerProvider.setUsedCore(resourceUsageOverview.getUsedProcessor());
+            powerProvider.setTotalCore(resourceUsageOverview.getTotalProcessor());
+            powerProvider.setUsedMemory(resourceUsageOverview.getUsedMem());
+            powerProvider.setTotalMemory(resourceUsageOverview.getTotalMem());
+            powerProvider.setUsedBandwidth(resourceUsageOverview.getUsedBandwidth());
+            powerProvider.setTotalBandwidth(resourceUsageOverview.getTotalBandwidth());
+            taskPowerProviderList.add(powerProvider);
+
+            //搜集taskOrg， 算力提供方
+            taskOrgMap.put(powerSupplier.getIdentityId(),
+                    new TaskOrg(powerSupplier.getIdentityId(),
+                            powerSupplier.getNodeName(),
+                            powerSupplier.getNodeId()));
+
+        }
+        task.setPowerSupplier(taskPowerProviderList);
+    }
+
+    private void processDataSupplierList(Taskdata.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
+        List<TaskDataProvider> taskDataProviderList = new ArrayList<>();
+
+        List<Integer> dataPolicyTypesList = taskDetail.getDataPolicyTypesList();
+        ProtocolStringList dataPolicyOptionsList = taskDetail.getDataPolicyOptionsList();
+        List<Base.TaskOrganization> dataSuppliersList = taskDetail.getDataSuppliersList();
+        for (int i = 0; i < dataPolicyOptionsList.size(); i++) {
+            Integer type = dataPolicyTypesList.get(i);
+            String option = dataPolicyOptionsList.get(i);
+            String metaDataId = null;
+            String metaDataName = null;
+            switch (type) {
+                case 0:
+                    DataPolicyOption0 dataPolicyOption0 = JSONUtil.toBean(option, DataPolicyOption0.class);
+                    metaDataId = dataPolicyOption0.getMetadataId();
+                    metaDataName = dataPolicyOption0.getMetadataName();
+                    break;
+                case 1:
+                    DataPolicyOption1 dataPolicyOption1 = JSONUtil.toBean(option, DataPolicyOption1.class);
+                    metaDataId = dataPolicyOption1.getMetadataId();
+                    metaDataName = dataPolicyOption1.getMetadataName();
+                    break;
+                case 2:
+                    DataPolicyOption2 dataPolicyOption2 = JSONUtil.toBean(option, DataPolicyOption2.class);
+                    metaDataId = dataPolicyOption2.getMetadataId();
+                    metaDataName = dataPolicyOption2.getMetadataName();
+                    break;
+                case 3:
+                    DataPolicyOption3 dataPolicyOption3 = JSONUtil.toBean(option, DataPolicyOption3.class);
+                    metaDataId = dataPolicyOption3.getMetadataId();
+                    metaDataName = dataPolicyOption3.getMetadataName();
+                    break;
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                    break;
+                default:
+                    throw new BizException(Errors.SysException, "unknown data policy type : " + type);
+            }
+
+            Base.TaskOrganization dataSupplier = dataSuppliersList.get(i);
+            TaskDataProvider dataProvider = new TaskDataProvider();
+            dataProvider.setTaskId(taskDetail.getTaskId());
+            dataProvider.setMetaDataId(metaDataId);
+            dataProvider.setMetaDataName(metaDataName);
+            dataProvider.setIdentityId(dataSupplier.getIdentityId());
+            dataProvider.setPartyId(dataSupplier.getPartyId());
+            taskDataProviderList.add(dataProvider);
+            //搜集taskOrg， 数据提供方
+            taskOrgMap.put(dataSupplier.getIdentityId(),
+                    new TaskOrg(dataSupplier.getIdentityId(),
+                            dataSupplier.getNodeName(),
+                            dataSupplier.getNodeId()));
+        }
+        task.setDataSupplier(taskDataProviderList);
+    }
 
 }

@@ -48,7 +48,22 @@ public class LocalDataFile extends BaseDomain {
         localMetaDataColumnList.add(localMetaDataColumn);
     }
 
-    public static enum FileTypeEnum {
+
+    /**
+     * // 原始数据类型 (文件类型)
+     * enum OrigindataType {
+     *   OrigindataType_Unknown = 0;             // 未知
+     *   OrigindataType_CSV = 1;                 // csv
+     *   OrigindataType_DIR = 2;                 // dir     (目录)
+     *   OrigindataType_BINARY = 3;              // binary  (普通的二进制数据, 没有明确说明后缀的二进制文件)
+     *   OrigindataType_XLS = 4;                 // xls
+     *   OrigindataType_XLSX = 5;                // xlsx
+     *   OrigindataType_TXT = 6;                 // txt
+     *   OrigindataType_JSON = 7;                // json
+     *   //  OrigindataType_Python = 20001;      // python
+     * }
+     */
+    public enum FileTypeEnum {
         UNKNOWN(0, "unknown"),CSV(1, "csv");
         private int code;
         private String value;

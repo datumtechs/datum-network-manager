@@ -5,6 +5,7 @@ import com.platon.metis.admin.dao.entity.Task;
 import com.platon.metis.admin.dao.entity.TaskOrg;
 import com.platon.metis.admin.grpc.service.TaskRpcMessage;
 import com.platon.metis.admin.grpc.service.TaskServiceGrpc;
+import com.platon.metis.admin.grpc.types.Taskdata;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -77,7 +78,7 @@ public class TaskClientTest {
         TaskRpcMessage.GetTaskDetailListResponse taskDetailListResponse = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
         int status = taskDetailListResponse.getStatus();
         String msg = taskDetailListResponse.getMsg();
-        List<TaskRpcMessage.GetTaskDetail> taskDetailResponseList = taskDetailListResponse.getTasksList();
+        List<Taskdata.TaskDetail> taskDetailResponseList = taskDetailListResponse.getTasksList();
         System.out.println("############### status:" + status);
         System.out.println("############### msg:" + msg);
         System.out.println("############### data:" + taskDetailResponseList.toString());
@@ -97,11 +98,11 @@ public class TaskClientTest {
             System.out.println("########### request:" + request);
 
 
-            TaskRpcMessage.TaskDetailShow taskDetailShow = TaskRpcMessage.TaskDetailShow.newBuilder()
+            Taskdata.TaskDetailSummary taskDetailShow = Taskdata.TaskDetailSummary.newBuilder()
                     .setTaskId("001")
                     .setTaskName("taskName")
                     .build();
-            TaskRpcMessage.GetTaskDetail taskDetailResponse = TaskRpcMessage.GetTaskDetail.newBuilder()
+            Taskdata.TaskDetail taskDetailResponse = Taskdata.TaskDetail.newBuilder()
                     .setInformation(taskDetailShow)
                     .build();
 

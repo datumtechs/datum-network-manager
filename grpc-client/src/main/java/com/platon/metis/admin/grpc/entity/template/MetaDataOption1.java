@@ -1,4 +1,4 @@
-package com.platon.metis.admin.grpc.entity;
+package com.platon.metis.admin.grpc.entity.template;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,26 +8,26 @@ import java.util.List;
 
 /**
  * type: Base.MetadataType.MetadataType_DataFile
- *
- *
+ * <p>
+ * <p>
  * option:
- *
+ * <p>
  * {
- *     "originId": "d9b41e7138544c63f9fe25f6aa4983819793e5b46f14652a1ff1b51f99f71783",
- *     "dataPath": "/home/user1/data/data_root/bank_predict_partyA_20220218-090241.csv",
- *     "rows": 100,
- *     "columns": 27,
- *     "size": "7711",
- *     "hasTitle": true,
- *     "metadataColumns": [
- *         {
- *             "index": 1,
- *             "name": "CLIENT_ID",
- *             "type": "string",
- *             "size": 0,
- *             "comment": ""
- *         }
- *     ],
+ * "originId": "d9b41e7138544c63f9fe25f6aa4983819793e5b46f14652a1ff1b51f99f71783",
+ * "dataPath": "/home/user1/data/data_root/bank_predict_partyA_20220218-090241.csv",
+ * "rows": 100,
+ * "columns": 27,
+ * "size": "7711",
+ * "hasTitle": true,
+ * "metadataColumns": [
+ * {
+ * "index": 1,
+ * "name": "CLIENT_ID",
+ * "type": "string",
+ * "size": 0,
+ * "comment": ""
+ * }
+ * ],
  * }
  */
 

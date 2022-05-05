@@ -190,26 +190,30 @@ message ReportTaskResourceUsageRequest {
 
 // 上报 成功上传的原始文件Id req
 message ReportUpFileSummaryRequest {
-  string origin_id = 1;    // 被成功上传的原始文件的 Id
-  string data_path = 2;    // 被成功上传的原始文件的相对 path
-  string ip = 3;           // Fighter 的 grpc server IP
-  string port = 4;         // Fighter 的 grpc server PORT
+  string                  origin_id = 1;          // 被成功上传的原始文件的 Id
+  string                  ip = 2;                 // Fighter 的 grpc server IP
+  string                  port = 3;               // Fighter 的 grpc server PORT
+  string                  data_hash = 4;          // 对数据内容的hash，不包含文件名
+  types.OrigindataType    data_type = 5;          // 原始数据的类型
+  string                  metadata_option = 6;    // 元数据的选项，和 data_type 配套使用
 }
 
 // 上报 任务结果文件摘要 req
 message ReportTaskResultFileSummaryRequest {
-  string task_id = 1;      // 任务Id
-  string origin_id = 2;    // 任务结果的原始文件的 Id
-  string data_path = 3;    // 任务结果的原始文件的相对 path
-  string ip = 4;           // Fighter 的 grpc server IP
-  string port = 5;         // Fighter 的 grpc server PORT
-  string extra = 6;        // 任务结果文件的额外字段 (如: 训练任务的模型评估结果json 等)
+  string                 task_id = 1;           // 任务Id
+  string                 origin_id = 2;         // 任务结果的原始文件的 Id
+  string                 ip = 3;                // Fighter 的 grpc server IP
+  string                 port = 4;              // Fighter 的 grpc server PORT
+  string                 extra = 5;             // 任务结果文件的额外字段 (如: 训练任务的模型评估结果json 等)
+  string                 data_hash = 6;         // 对数据内容的hash，不包含文件名
+  types.OrigindataType   data_type = 7;         // 原始数据的类型
+  string                 metadata_option = 8;   // 元数据的选项，和 data_type 配套使用
 }
 
 // 查询可用数据服务资源目标 ip:port 信息 req
 message QueryAvailableDataNodeRequest {
-  uint64                              file_size = 1;       // 要被上传的目标文件 大小 (单位: byte)
-  types.OrigindataType                file_type = 2;       // 要被上传的目标文件  类型 (默认: 1 "csv")
+  uint64                              data_size = 1;       // 要被上传的目标(数据)文件 大小 (单位: byte)
+  types.OrigindataType                data_type = 2;       // 要被上传的目标(数据)文件  类型 (默认: 1 "csv")
 }
 // 查询可用数据服务资源目标 ip:port 信息 resp
 message QueryAvailableDataNode {
@@ -244,14 +248,16 @@ message GetTaskResultFileSummaryRequest {
 
 // 查询 任务结果文件摘要 resp
 message GetTaskResultFileSummary {
-  string task_id = 1;                 // 任务结果文件对应的任务Id
-  string metadata_name = 2;           // 任务结果文件的(系统生成的、内部的)元数据名称
-  string metadata_id = 3;             // 任务结果文件的元数据Id <系统默认生成的元数据>
-  string origin_id = 4;               // 任务结果文件的原始文件Id
-  string data_path = 5;               // 任务结果文件的完整相对路径名(目录名，不是文件名，因为文件名称是算法里面定的)
-  string ip = 6;                      // 任务结果文件所在的 数据服务内网ip
-  string port = 7;                    // 任务结果文件所在的 数据服务内网port
-  string extra = 8;                   // 任务结果文件的额外字段 (如: 训练任务的模型评估结果json 等)
+  string                  task_id = 1;                  // 任务结果文件对应的任务Id
+  string                  metadata_name = 2;            // 任务结果文件的(系统生成的、内部的)元数据名称
+  string                  metadata_id = 3;              // 任务结果文件的元数据Id <系统默认生成的元数据>
+  string                  origin_id = 4;                // 任务结果文件的原始文件Id
+  string                  ip = 5;                       // 任务结果文件所在的 数据服务内网ip
+  string                  port = 6;                     // 任务结果文件所在的 数据服务内网port
+  string                  extra = 7;                    // 任务结果文件的额外字段 (如: 训练任务的模型评估结果json 等)
+  string                  data_hash = 8;                // 对数据内容的hash，不包含文件名
+  types.OrigindataType    data_type = 9;                // 原始数据的类型
+  string                  metadata_option = 10;         // 元数据的选项，和 data_type 配套使用
 }
 
 message GetTaskResultFileSummaryResponse {

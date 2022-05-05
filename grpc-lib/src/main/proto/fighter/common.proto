@@ -6,31 +6,40 @@ option java_outer_classname = "Common";
 package common;
 
 
+message Party {                // 各参与方信息
+    string ip = 1;
+    int32 port = 2;
+    string party_id = 3;      // 达成共识后为每个参与方分配的唯一标识
+    string name = 4;          // 为了可读性
+}
+
+enum ConnectPolicyFormat {
+    ConnectPolicyFormat_Unknown = 0;       // 未知
+    ConnectPolicyFormat_Str = 1;           // 字符串
+    ConnectPolicyFormat_Json = 2;          // json
+}
+
 message TaskReadyGoReq {
     string task_id = 1;
-    string contract_id = 2;       // 目前即算法本身
-    string data_id = 3;
-    string party_id = 4;          // 当前参与方id
-    string env_id = 5;
-    message Peer {                // 各参与方信息
-        string ip = 1;
-        int32 port = 2;
-        string party_id = 3;      // 达成共识后为每个参与方分配的唯一标识
-        string name = 4;          // 为了可读性
-    }
-    repeated Peer peers = 6;
-    string contract_cfg = 7;      // 算法配置json
-    repeated string data_party = 8;         // 各数据方的party_id
-    repeated string computation_party = 9;  // 各计算方的party_id
-    repeated string result_party = 10;      // 各结果方的party_id
+    string party_id = 2;          // 当前参与方id
+    string env_id = 3;            // 环境
+    repeated Party parties = 4;   // 各个参与方的信息
+    string algorithm_code = 5;           // 算法代码
+    string self_cfg_params = 6;          // 本方的配置参数，里面有input_data
+    string algorithm_dynamic_params = 7; // 算法动态参数
+    repeated string data_party_ids = 8;         // 各数据方的party_id
+    repeated string computation_party_ids = 9;  // 各计算方的party_id
+    repeated string result_party_ids = 10;      // 各结果方的party_id
     uint64 duration = 11;       // 任务预算计算时长(单位: ms)
-    uint64 memory = 12;
-    uint32 processor = 13;
-    uint64 bandwidth = 14;
+    uint64 memory = 12;         // 内存限制(单位: byte)
+    uint32 processor = 13;      // 处理器限制(单位：个)
+    uint64 bandwidth = 14;      // 带宽限制(单位：bps)
+    ConnectPolicyFormat connect_policy_format = 15; // 策略的格式，str或者json
+    string connect_policy = 16;      // channel的连接策略
 }
 
 message TaskReadyGoReply {
-    bool ok = 1;
+    int32 status = 1;
     string msg = 2;
 }
 
@@ -40,6 +49,6 @@ message TaskCancelReq {
 }
 
 message TaskCancelReply {
-    bool ok = 1;
+    int32 status = 1;
     string msg = 2;
 }

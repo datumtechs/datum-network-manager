@@ -6,6 +6,7 @@ import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.interceptor.UploadFileTimeoutInterceptor;
 import com.platon.metis.admin.grpc.service.DataProviderGrpc;
 import com.platon.metis.admin.grpc.service.DataProviderRpcMessage;
+import com.platon.metis.admin.grpc.types.Base;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import static com.platon.metis.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
 
 /**
  * @Author liushuyu
@@ -68,7 +71,7 @@ public class DataProviderClient {
                     //5.处理response
                     response = uploadReply;
 
-                    if (!response.getOk()) {
+                    if (response.getStatus() != GRPC_SUCCESS_CODE) {
                         countDownLatch.countDown();
                     }
                 }
@@ -77,7 +80,7 @@ public class DataProviderClient {
                 public void onError(Throwable t) {
                     log.error("failed to upload file", t);
                     if (response == null) {
-                        response = DataProviderRpcMessage.UploadReply.newBuilder().setOk(false).build();
+                        response = DataProviderRpcMessage.UploadReply.newBuilder().setStatus(1).build();
                     }
                     countDownLatch.countDown();
                 }
@@ -105,8 +108,9 @@ public class DataProviderClient {
                 // 每次发送不大于4M数据
                 DataProviderRpcMessage.UploadRequest fileChunk = DataProviderRpcMessage.UploadRequest
                         .newBuilder()
-                        .setFileName(fileName)
+                        .setDataName(fileName)
                         .setContent(ByteString.copyFrom(bytes, 0, bytesRead))
+                        .setDataType(Base.OrigindataType.OrigindataType_CSV)//v0.4.0默认csv
                         .build();
                 requestObserver.onNext(fileChunk);
             }
@@ -127,9 +131,9 @@ public class DataProviderClient {
             }
 
             if (responseObserver.getResponse() == null
-                    || responseObserver.getResponse().getOk() == false
+                    || responseObserver.getResponse().getStatus() != GRPC_SUCCESS_CODE
                     || StringUtils.isBlank(responseObserver.getResponse().getDataId())
-                    || StringUtils.isBlank(responseObserver.getResponse().getFilePath())) {
+                    || StringUtils.isBlank(responseObserver.getResponse().getDataPath())) {
                 throw new CallGrpcServiceFailed();
             }
             return responseObserver.getResponse();
@@ -158,7 +162,7 @@ public class DataProviderClient {
             //2.构建请求
             DataProviderRpcMessage.DownloadRequest request = DataProviderRpcMessage.DownloadRequest
                     .newBuilder()
-                    .setFilePath(filePath)
+                    .setDataPath(filePath)
                     .build();
 
             CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -217,6 +221,7 @@ public class DataProviderClient {
                 @Override
                 public void onError(Throwable throwable) {
                     //因为oneof,必须设置，设置后，会重置response.content
+                    log.error("下载失败：onError", throwable);
                     response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Failed).build();
                     countDownLatch.countDown();
                 }
@@ -243,10 +248,10 @@ public class DataProviderClient {
                 throw new CallGrpcServiceFailed();
             }
 
-            log.error("下载####################filePath:" + filePath + ","+ responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatus().toString());
+            log.error("下载####################filePath:" + filePath + "," + responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue());
             //只有出错时，才设置了status
             if (responseObserver.getResponse() == null || responseObserver.getResponse().getStatus() != DataProviderRpcMessage.TaskStatus.Finished) {
-                throw new CallGrpcServiceFailed(responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().hasStatus());
+                throw new CallGrpcServiceFailed(responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue());
             }
             return responseObserver.getResponse().getContent().toByteArray();
 

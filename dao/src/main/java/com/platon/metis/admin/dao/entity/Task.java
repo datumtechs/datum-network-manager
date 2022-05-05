@@ -31,10 +31,10 @@ public class Task extends BaseDomain {
     @ApiModelProperty(name = "createAt", value = "任务创建时间")
     private LocalDateTime createAt;
 
-    @ApiModelProperty(name = "createAt", value = "任务开始时间")
+    @ApiModelProperty(name = "startAt", value = "任务开始时间")
     private LocalDateTime startAt;
 
-    @ApiModelProperty(name = "createAt", value = "任务授权时间")
+    @ApiModelProperty(name = "authAt", value = "任务授权时间")
     private LocalDateTime authAt;
 
     @ApiModelProperty(name = "authStatus", value = "任务授权状态(pending:等待授权、denied:授权未通过)")
@@ -44,7 +44,7 @@ public class Task extends BaseDomain {
     private LocalDateTime endAt;
     //任务状态(0:unknown未知、1:pending等在中、2:running计算中、3:failed失败、4:success成功)
 
-    @ApiModelProperty(name = "endAt", value = "任务状态(0:unknown未知、1:pending等在中、2:running计算中、3:failed失败、4:success成功)")
+    @ApiModelProperty(name = "status", value = "任务状态(0:unknown未知、1:pending等在中、2:running计算中、3:failed失败、4:success成功)")
     private Integer status;
 
     @ApiModelProperty(name = "duration", value = "任务声明计算时间")

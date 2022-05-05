@@ -2,6 +2,7 @@ package com.platon.metis.admin.grpc.client;
 
 import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
+import com.platon.metis.admin.common.util.LocalDateTimeUtil;
 import com.platon.metis.admin.dao.entity.LocalDataAuth;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -45,10 +45,11 @@ public class AuthClient {
 
     /**
      * 申请准入网络
+     *
      * @param identityId // 组织的身份标识Id
-     * @param name               // 组织名称
+     * @param name       // 组织名称
      */
-    public void applyIdentityJoin(String identityId,String name, String imageUrl, String profile) {
+    public void applyIdentityJoin(String identityId, String name, String imageUrl, String profile) {
         log.debug("从carrier申请入网，identityId:{}", identityId);
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
@@ -71,7 +72,7 @@ public class AuthClient {
 
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
     }
@@ -92,7 +93,7 @@ public class AuthClient {
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
     }
@@ -100,6 +101,7 @@ public class AuthClient {
 
     /**
      * 获取数据授权申请列表
+     *
      * @return
      */
     public List<LocalDataAuth> getMetaDataAuthorityList(LocalDateTime latestSynced) throws BizException {
@@ -118,7 +120,7 @@ public class AuthClient {
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
         log.debug("从carrier查询数据授权申请列表，数量：{}", response.getMetadataAuthsList().size());
@@ -143,7 +145,7 @@ public class AuthClient {
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
         return dataConvertToAuthList(response);
@@ -152,9 +154,10 @@ public class AuthClient {
 
     /**
      * 数据授权审核
+     *
      * @param metaDataAuthId ：元数据授权申请Id
-     * @param auditOption ：授权数据状态：0：等待授权审核，1:同意， 2:拒绝
-     * param auditDesc
+     * @param auditOption    ：授权数据状态：0：等待授权审核，1:同意， 2:拒绝
+     *                       param auditDesc
      * @return
      */
     public void auditMetaData(String metaDataAuthId, int auditOption, String auditDesc) throws BizException {
@@ -163,8 +166,8 @@ public class AuthClient {
         ManagedChannel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
-        Base.AuditMetadataOption auditDataStatus =  Base.AuditMetadataOption.forNumber(auditOption);
-        AuthRpcMessage.AuditMetadataAuthorityRequest request =  AuthRpcMessage
+        Base.AuditMetadataOption auditDataStatus = Base.AuditMetadataOption.forNumber(auditOption);
+        AuthRpcMessage.AuditMetadataAuthorityRequest request = AuthRpcMessage
                 .AuditMetadataAuthorityRequest
                 .newBuilder()
                 .setMetadataAuthId(metaDataAuthId)
@@ -176,20 +179,20 @@ public class AuthClient {
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
 
     }
 
 
-    private List<LocalDataAuth> dataConvertToAuthList(AuthRpcMessage.GetMetadataAuthorityListResponse response){
+    private List<LocalDataAuth> dataConvertToAuthList(AuthRpcMessage.GetMetadataAuthorityListResponse response) {
         List<LocalDataAuth> localDataAuthList = new ArrayList<>();
         List<Metadata.MetadataAuthorityDetail> metaDataAuthorityList = response.getMetadataAuthsList();
-        if(!CollectionUtils.isEmpty(metaDataAuthorityList)){
+        if (!CollectionUtils.isEmpty(metaDataAuthorityList)) {
             for (Metadata.MetadataAuthorityDetail dataAuth : metaDataAuthorityList) {
                 //元数据使用授权
-                Metadata.MetadataAuthority metaDataAuthority =  dataAuth.getAuth();
+                Metadata.MetadataAuthority metaDataAuthority = dataAuth.getAuth();
                 Base.Organization identityInfo = metaDataAuthority.getOwner();
                 String metaDataId = metaDataAuthority.getMetadataId();
                 Metadata.MetadataUsageRule metadataUsageRule = metaDataAuthority.getUsageRule();
@@ -202,21 +205,21 @@ public class AuthClient {
                 localDataAuth.setAuthId(dataAuth.getMetadataAuthId());
                 localDataAuth.setApplyUser(dataAuth.getUser());
                 localDataAuth.setUserType(dataAuth.getUserTypeValue());
-                localDataAuth.setCreateAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getApplyAt()), ZoneOffset.UTC));
-                localDataAuth.setAuthAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getAuditAt()), ZoneOffset.UTC));
+                localDataAuth.setCreateAt(LocalDateTimeUtil.getLocalDateTime(dataAuth.getApplyAt()));
+                localDataAuth.setAuthAt(LocalDateTimeUtil.getLocalDateTime(dataAuth.getAuditAt()));
                 /**
                  * {@link Base.AuditMetadataOption}
                  */
-                if(dataAuth.getAuditOptionValue() == 0){ //等待审核
+                if (dataAuth.getAuditOptionValue() == 0) { //等待审核
                     /**
                      * * {@link Base.MetadataAuthorityState}
-                    * 数据授权信息的状态 (
-                    * 0: 未知;
-                    * 1: 还未发布的数据授权;
-                    * 2: 已发布的数据授权;
-                    * 3: 已撤销的数据授权 <失效前主动撤回的>;
-                    * 4: 已经失效的数据授权 <过期or达到使用上限的or被拒绝的>;)
-                    * **/
+                     * 数据授权信息的状态 (
+                     * 0: 未知;
+                     * 1: 还未发布的数据授权;
+                     * 2: 已发布的数据授权;
+                     * 3: 已撤销的数据授权 <失效前主动撤回的>;
+                     * 4: 已经失效的数据授权 <过期or达到使用上限的or被拒绝的>;)
+                     * **/
                     int stateValue = dataAuth.getStateValue();
                     switch (stateValue) {
                         case Base.MetadataAuthorityState.MAState_Unknown_VALUE:
@@ -235,17 +238,17 @@ public class AuthClient {
                             localDataAuth.setStatus(3);
                             break;
                     }
-                } else if(dataAuth.getAuditOptionValue() == 1 || dataAuth.getAuditOptionValue() == 2){
+                } else if (dataAuth.getAuditOptionValue() == 1 || dataAuth.getAuditOptionValue() == 2) {
                     //'授权数据状态：0：等待授权审核，1:同意， 2:拒绝，3:失效(auth_type=1且auth_value_end_at超时) ',
                     localDataAuth.setStatus(dataAuth.getAuditOptionValue());
                 }
 
-                localDataAuth.setRecUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getUpdateAt()), ZoneOffset.UTC));
-                localDataAuth.setRecCreateTime(LocalDateTime.ofInstant(Instant.ofEpochMilli(dataAuth.getApplyAt()), ZoneOffset.UTC));
+                localDataAuth.setRecUpdateTime(LocalDateTimeUtil.getLocalDateTime(dataAuth.getUpdateAt()));
+                localDataAuth.setRecCreateTime(LocalDateTimeUtil.getLocalDateTime(dataAuth.getApplyAt()));
 
                 localDataAuth.setAuthType(useAuthType);
-                localDataAuth.setAuthValueStartAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(startAt), ZoneOffset.UTC));
-                localDataAuth.setAuthValueEndAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(endAt), ZoneOffset.UTC));
+                localDataAuth.setAuthValueStartAt(LocalDateTimeUtil.getLocalDateTime(startAt));
+                localDataAuth.setAuthValueEndAt(LocalDateTimeUtil.getLocalDateTime(endAt));
                 localDataAuth.setAuthValueAmount(useAuthNumber);
                 localDataAuth.setMetaDataId(metaDataId);
                 localDataAuth.setIdentityId(identityInfo.getIdentityId());

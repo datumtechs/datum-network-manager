@@ -17,7 +17,7 @@ message MetadataPB {
   string                      data_hash = 7;                  // 原始数据的Hash (如果是 远端数据源, 则为 资源Id 的Hash, 如: url的Hash)
   string                      desc = 8;                       // 元数据的摘要(描述)
   DataLocationType            location_type = 9;              // 源数据的存储位置类型 (组织本地服务器、远端服务器、云等)
-  OrigindataType              data_type = 10;                 // 源数据的类型 (目前只有 csv)
+  OrigindataType              data_type = 10;                 // 源数据的类型
   string                      industry = 11;                  // 元数据所属的行业 (有用户自定义, 仅做展示用)
   MetadataState               state = 12;                     // 元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)
   uint64                      publish_at = 13;                // 元数据发布时间
