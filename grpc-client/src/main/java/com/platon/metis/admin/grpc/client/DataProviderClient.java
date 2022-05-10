@@ -134,6 +134,10 @@ public class DataProviderClient {
                     || responseObserver.getResponse().getStatus() != GRPC_SUCCESS_CODE
                     || StringUtils.isBlank(responseObserver.getResponse().getDataId())
                     || StringUtils.isBlank(responseObserver.getResponse().getDataPath())) {
+                log.error("上传失败: " + responseObserver.getResponse() == null ? "response=null" :
+                        "status=" + responseObserver.getResponse().getStatus()
+                                + ",dataId=" + responseObserver.getResponse().getDataId()
+                                + ",dataPath=" + responseObserver.getResponse().getDataPath());
                 throw new CallGrpcServiceFailed();
             }
             return responseObserver.getResponse();
