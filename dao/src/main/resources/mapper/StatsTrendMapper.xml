@@ -1,147 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.metis.admin.dao.StatsTrendMapper">
-
-
-
-
-    <!--<select id="listGlobalDataFileStatsTrendMonthly" resultMap="BaseResultMap">
-        SELECT t.stats_time, IFNULL(d.month_size,0) as increment_value, IFNULL(d.accu_size,0) as total_value
-        FROM (
-             SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 11 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 10 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 9 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 8 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 7 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 5 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 4 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 3 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 2 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%Y-%m') AS stats_time
-             UNION SELECT DATE_FORMAT(CURRENT_DATE(), '%Y-%m') AS stats_time
-        ) t
-        LEFT JOIN (SELECT stats_time, month_size, accu_size FROM v_global_data_file_stats_monthly) d ON t.stats_time = d.stats_time
-        ORDER BY t.stats_time
-    </select>
-
-
-    <select id="listGlobalDataFileStatsTrendDaily" resultMap="BaseResultMap">
-        SELECT t.stats_time, IFNULL(d.day_size,0) as increment_value, IFNULL(d.accu_size,0) as total_value
-        FROM (
-             SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 29 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 28 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 27 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 26 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 25 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 24 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 23 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 22 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 21 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 20 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 19 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 18 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 17 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 16 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 15 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 13 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 12 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 11 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 10 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 9 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 8 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 6 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 5 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 4 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 3 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 2 DAY) AS stats_time
-             UNION SELECT DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) AS stats_time
-             UNION SELECT CURRENT_DATE() AS stats_time
-        ) t
-        LEFT JOIN (SELECT stats_time, day_size, accu_size FROM v_global_data_file_stats_daily) d ON t.stats_time = d.stats_time
-        ORDER BY t.stats_time
-    </select>-->
-
     <resultMap id="BaseDataResultMap" type="com.platon.metis.admin.dao.dto.StatsDataTrendDTO">
-        <id column="stats_time" jdbcType="VARCHAR" property="statsTime" />
-        <result column="total_value" jdbcType="BIGINT" property="totalValue" />
-        <result column="increment_value" jdbcType="BIGINT" property="incrementValue" />
+        <id column="stats_time" jdbcType="VARCHAR" property="statsTime"/>
+        <result column="total_value" jdbcType="BIGINT" property="totalValue"/>
+        <result column="increment_value" jdbcType="BIGINT" property="incrementValue"/>
     </resultMap>
     <select id="listLocalDataFileStatsTrendMonthly" resultMap="BaseDataResultMap">
-        SELECT t.stats_time, IFNULL(d.month_size,0) as increment_value, IFNULL(d.accu_size,0) as total_value
+        SELECT t.stats_time, IFNULL(d.month_size, 0) as increment_value, IFNULL(d.accu_size, 0) as total_value
         FROM (
-            SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 11 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 10 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 9 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 8 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 7 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 5 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 4 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 3 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 2 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(CURRENT_DATE(), '%Y-%m') AS stats_time
-        ) t
-        LEFT JOIN (SELECT stats_time, month_size, accu_size FROM v_local_data_file_stats_monthly) d ON t.stats_time = d.stats_time
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 11 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 10 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 9 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 8 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 7 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 5 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 4 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 3 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 2 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(CURRENT_DATE(), '%Y-%m') AS stats_time
+             ) t
+                 LEFT JOIN (SELECT stats_time, month_size, accu_size FROM v_local_data_file_stats_monthly) d
+                           ON t.stats_time = d.stats_time
         ORDER BY t.stats_time
     </select>
-
-    <!--<select id="listGlobalPowerStatsTrendMonthly" resultMap="BaseResultMap">
-        SELECT t.stats_time, IFNULL(d.month_memory,0) as increment_value, IFNULL(d.accu_memory,0) as total_value
-        FROM (
-            SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 11 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 10 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 9 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 8 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 7 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 5 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 4 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 3 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 2 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(CURRENT_DATE(), '%Y-%m') AS stats_time
-        ) t
-        LEFT JOIN (SELECT stats_time, month_memory, accu_memory FROM v_global_power_stats_monthly) d ON t.stats_time = d.stats_time
-        ORDER BY t.stats_time
-    </select>
--->
 
     <resultMap id="BasePowerResultMap" type="com.platon.metis.admin.dao.dto.StatsPowerTrendDTO">
-        <result column="stats_time" jdbcType="VARCHAR" property="statsTime" />
-        <result column="increment_memory_value" jdbcType="BIGINT" property="incrementMemoryValue" />
-        <result column="total_memory_value" jdbcType="BIGINT" property="totalMemoryValue" />
+        <result column="stats_time" jdbcType="VARCHAR" property="statsTime"/>
+        <result column="increment_memory_value" jdbcType="BIGINT" property="incrementMemoryValue"/>
+        <result column="total_memory_value" jdbcType="BIGINT" property="totalMemoryValue"/>
 
-        <result column="increment_core_value" jdbcType="BIGINT" property="incrementCoreValue" />
-        <result column="total_core_value" jdbcType="BIGINT" property="totalCoreValue" />
+        <result column="increment_core_value" jdbcType="BIGINT" property="incrementCoreValue"/>
+        <result column="total_core_value" jdbcType="BIGINT" property="totalCoreValue"/>
 
-        <result column="increment_bandwidth_value" jdbcType="BIGINT" property="incrementBandwidthValue" />
-        <result column="total_bandwidth_value" jdbcType="BIGINT" property="totalBandwidthValue" />
+        <result column="increment_bandwidth_value" jdbcType="BIGINT" property="incrementBandwidthValue"/>
+        <result column="total_bandwidth_value" jdbcType="BIGINT" property="totalBandwidthValue"/>
     </resultMap>
 
     <select id="listLocalPowerStatsTrendMonthly" resultMap="BasePowerResultMap">
         SELECT t.stats_time,
-               IFNULL(d.month_memory,0) as increment_memory_value, IFNULL(d.accu_memory,0) as total_memory_value,
-               IFNULL(d.month_core,0) as increment_core_value, IFNULL(d.accu_core,0) as total_core_value,
-               IFNULL(d.month_bandwidth,0) as increment_bandwidth_value, IFNULL(d.accu_bandwidth,0) as total_bandwidth_value
+               IFNULL(d.month_memory, 0)    as increment_memory_value,
+               IFNULL(d.accu_memory, 0)     as total_memory_value,
+               IFNULL(d.month_core, 0)      as increment_core_value,
+               IFNULL(d.accu_core, 0)       as total_core_value,
+               IFNULL(d.month_bandwidth, 0) as increment_bandwidth_value,
+               IFNULL(d.accu_bandwidth, 0)  as total_bandwidth_value
         FROM (
-            SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 11 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 10 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 9 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 8 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 7 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 5 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 4 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 3 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 2 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%Y-%m') AS stats_time
-            UNION SELECT DATE_FORMAT(CURRENT_DATE(), '%Y-%m') AS stats_time
-        ) t
-        LEFT JOIN (SELECT stats_time, month_memory, accu_memory, month_core, accu_core, month_bandwidth, accu_bandwidth FROM v_local_power_stats_monthly) d ON t.stats_time = d.stats_time
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 11 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 10 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 9 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 8 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 7 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 5 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 4 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 3 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 2 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%Y-%m') AS stats_time
+                 UNION
+                 SELECT DATE_FORMAT(CURRENT_DATE(), '%Y-%m') AS stats_time
+             ) t
+                 LEFT JOIN (SELECT stats_time,
+                                   month_memory,
+                                   accu_memory,
+                                   month_core,
+                                   accu_core,
+                                   month_bandwidth,
+                                   accu_bandwidth
+                            FROM v_local_power_stats_monthly) d ON t.stats_time = d.stats_time
         ORDER BY t.stats_time
     </select>
 </mapper>

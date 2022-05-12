@@ -1,366 +1,504 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.metis.admin.dao.TaskMapper">
-  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.Task">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="task_Id" jdbcType="VARCHAR" property="taskId" />
-    <result column="task_Name" jdbcType="VARCHAR" property="taskName" />
-    <result column="owner_Identity_id" jdbcType="VARCHAR" property="ownerIdentityId" />
-    <result column="owner_party_id" jdbcType="VARCHAR" property="ownerPartyId" />
-    <result column="apply_user" jdbcType="VARCHAR" property="applyUser" />
-    <result column="user_type" jdbcType="INTEGER" property="userType" />
-    <result column="create_At" jdbcType="TIMESTAMP" property="createAt" />
-    <result column="start_At" jdbcType="TIMESTAMP" property="startAt" />
-    <result column="auth_At" jdbcType="TIMESTAMP" property="authAt" />
-    <result column="auth_Status" jdbcType="VARCHAR" property="authStatus" />
-    <result column="end_At" jdbcType="TIMESTAMP" property="endAt" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="duration" jdbcType="BIGINT" property="duration" />
-    <result column="cost_core" jdbcType="INTEGER" property="costCore" />
-    <result column="cost_Memory" jdbcType="BIGINT" property="costMemory" />
-    <result column="cost_Bandwidth" jdbcType="BIGINT" property="costBandwidth" />
-    <result column="reviewed" jdbcType="BIT" property="reviewed" />
-    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, task_Id, task_Name, owner_Identity_id, owner_party_id, apply_user, user_type, create_At, start_At, auth_At, auth_Status, end_At,
-    `status`, duration, cost_core, cost_Memory, cost_Bandwidth, reviewed,
-    update_at
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from task
-    where id = #{id,jdbcType=BIGINT}
-  </select>
+    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.Task">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="task_Id" jdbcType="VARCHAR" property="taskId"/>
+        <result column="task_Name" jdbcType="VARCHAR" property="taskName"/>
+        <result column="owner_Identity_id" jdbcType="VARCHAR" property="ownerIdentityId"/>
+        <result column="owner_party_id" jdbcType="VARCHAR" property="ownerPartyId"/>
+        <result column="apply_user" jdbcType="VARCHAR" property="applyUser"/>
+        <result column="user_type" jdbcType="INTEGER" property="userType"/>
+        <result column="create_At" jdbcType="TIMESTAMP" property="createAt"/>
+        <result column="start_At" jdbcType="TIMESTAMP" property="startAt"/>
+        <result column="auth_At" jdbcType="TIMESTAMP" property="authAt"/>
+        <result column="auth_Status" jdbcType="VARCHAR" property="authStatus"/>
+        <result column="end_At" jdbcType="TIMESTAMP" property="endAt"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="duration" jdbcType="BIGINT" property="duration"/>
+        <result column="cost_core" jdbcType="INTEGER" property="costCore"/>
+        <result column="cost_Memory" jdbcType="BIGINT" property="costMemory"/>
+        <result column="cost_Bandwidth" jdbcType="BIGINT" property="costBandwidth"/>
+        <result column="reviewed" jdbcType="BIT" property="reviewed"/>
+        <result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        task_Id,
+        task_Name,
+        owner_Identity_id,
+        owner_party_id,
+        apply_user,
+        user_type,
+        create_At,
+        start_At,
+        auth_At,
+        auth_Status,
+        end_At,
+        `status`,
+        duration,
+        cost_core,
+        cost_Memory,
+        cost_Bandwidth,
+        reviewed,
+        update_at
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from task
+        where id = #{id,jdbcType=BIGINT}
+    </select>
 
 
+    <select id="selectTaskByTaskId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from task
+        <where>
+            <if test="taskId != null and taskId != ''">
+                and task_Id = #{taskId,jdbcType=VARCHAR}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and (task_Name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
+                    or task_Id like concat('%', #{keyword, jdbcType=VARCHAR}, '%'))
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="BaseResultMap_With_OwnerName" type="com.platon.metis.admin.dao.entity.Task" extends="BaseResultMap">
+        <result column="owner_name" property="dynamicFields.ownerName" jdbcType="BOOLEAN"/>
+        <result column="used_core" property="dynamicFields.usedCore" jdbcType="INTEGER"/>
+        <result column="used_memory" property="dynamicFields.usedMemory" jdbcType="BIGINT"/>
+        <result column="used_bandwidth" property="dynamicFields.usedBandwidth" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="listRunningTaskByPowerNodeId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OwnerName">
+        select t.*, o.org_name as owner_name, lpjt.used_core, lpjt.used_memory, lpjt.used_bandwidth
+        from task t
+                 join task_org o on t.owner_identity_id = o.identity_id
+                 join local_power_join_task lpjt
+                      on t.task_id = lpjt.task_id and lpjt.node_id = #{nodeId,jdbcType=VARCHAR}
+        order by task_start_time desc
+    </select>
+
+    <select id="selectListTaskByStatusWithSuccessAndFailed" resultType="java.lang.String">
+        SELECT t.task_Id
+        FROM task AS t
+        WHERE t.`status` IN (3, 4)
+    </select>
 
 
-  <select id="selectTaskByTaskId" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from task
-    <where>
-      <if test="taskId != null and taskId !=''">
-        and task_Id = #{taskId,jdbcType=VARCHAR}
-      </if>
-      <if test="keyword != null and keyword != ''">
-        and (task_Name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
-        or task_Id like concat('%', #{keyword, jdbcType=VARCHAR}, '%'))
-      </if>
+    <select id="selectAllTaskCount" resultType="java.lang.Integer">
+        SELECT COUNT(t.id)
+        FROM task AS t
+    </select>
 
-    </where>
-
-  </select>
-
-  <resultMap id="BaseResultMap_With_OwnerName" type="com.platon.metis.admin.dao.entity.Task" extends="BaseResultMap">
-    <result column="owner_name" property="dynamicFields.ownerName" jdbcType="BOOLEAN"/>
-    <result column="used_core" property="dynamicFields.usedCore" jdbcType="INTEGER"/>
-    <result column="used_memory" property="dynamicFields.usedMemory" jdbcType="BIGINT"/>
-    <result column="used_bandwidth" property="dynamicFields.usedBandwidth" jdbcType="BIGINT"/>
-  </resultMap>
-
-  <select id="listRunningTaskByPowerNodeId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OwnerName">
-    select t.*, o.org_name as owner_name, lpjt.used_core, lpjt.used_memory, lpjt.used_bandwidth
-    from task t
-    join task_org o on t.owner_identity_id = o.identity_id
-    join local_power_join_task lpjt on t.task_id = lpjt.task_id and lpjt.node_id = #{nodeId,jdbcType=VARCHAR}
-    order by task_start_time desc
-  </select>
-
-  <select id="selectListTaskByStatusWithSuccessAndFailed"  resultType="java.lang.String">
-    SELECT t.task_Id FROM task AS t
-    WHERE t.`status` IN (3, 4)
-  </select>
+    <select id="selectTaskRunningCount" resultType="java.lang.Integer">
+        SELECT COUNT(t.id)
+        FROM task AS t
+        WHERE t.status = 1
+           OR t.status = 2
+    </select>
 
 
+    <select id="taskStatistics" parameterType="java.lang.String"
+            resultType="com.platon.metis.admin.dao.entity.TaskStatistics">
+        SELECT `owner`.count as ownerCount,
+               algo.count    as algoProviderCount,
+               power.count   as powerProviderCount,
+               data.count    as dataProviderCount,
+               result.count  as resultReceiverCount,
+               success.count as successCount,
+               failed.count  as failedCount,
+               running.count as runningCount,
+               pending.count as pendingCount
+        from (select count(id) as count from task WHERE owner_identity_id = #{identityId,jdbcType=VARCHAR}) `owner`,
+             (select count(DISTINCT task_id) as count
+              from task_algo_provider
+              WHERE identity_id = #{identityId,jdbcType=VARCHAR}) algo,
+             (select count(DISTINCT task_id) as count
+              from task_power_provider
+              WHERE identity_id = #{identityId,jdbcType=VARCHAR}) power,
+             (select count(DISTINCT task_id) as count
+              from task_data_provider
+              WHERE identity_id = #{identityId,jdbcType=VARCHAR}) data,
+             (select count(DISTINCT task_id) as count
+              from task_result_consumer
+              WHERE consumer_identity_id = #{identityId,jdbcType=VARCHAR}) result,
+             (SELECT COUNT(id) as count FROM task WHERE `status` = 4) success,
+             (SELECT COUNT(id) as count FROM task WHERE `status` = 3) failed,
+             (SELECT COUNT(id) as count FROM task WHERE `status` = 2) running,
+             (SELECT COUNT(id) as count FROM task WHERE `status` = 1) pending
+    </select>
 
-  <select id="selectAllTaskCount" resultType="java.lang.Integer">
-     SELECT COUNT(t.id) FROM task AS t
-  </select>
 
-  <select id="selectTaskRunningCount" resultType="java.lang.Integer">
-     SELECT COUNT(t.id) FROM task AS t WHERE t.status = 1 OR t.status = 2
-  </select>
+    <resultMap id="BaseResultMap_With_Role" type="com.platon.metis.admin.dao.entity.Task" extends="BaseResultMap">
+        <result column="taskSponsor" property="dynamicFields.taskSponsor" jdbcType="BOOLEAN"/>
+        <result column="powerProvider" property="dynamicFields.powerProvider" jdbcType="BOOLEAN"/>
+        <result column="dataProvider" property="dynamicFields.dataProvider" jdbcType="BOOLEAN"/>
+        <result column="resultConsumer" property="dynamicFields.resultConsumer" jdbcType="BOOLEAN"/>
+        <result column="algoProvider" property="dynamicFields.algoProvider" jdbcType="BOOLEAN"/>
+    </resultMap>
 
-
-
-  <select id="taskStatistics"  parameterType="java.lang.String" resultType="com.platon.metis.admin.dao.entity.TaskStatistics">
-    SELECT `owner`.count as ownerCount, algo.count as algoProviderCount, power.count as powerProviderCount, data.count as dataProviderCount, result.count as resultReceiverCount, success.count as successCount, failed.count as failedCount, running.count as runningCount, pending.count as  pendingCount
-    from
-      (select count(id) as count from task WHERE owner_identity_id = #{identityId,jdbcType=VARCHAR}) `owner`,
-      (select count(DISTINCT task_id) as count from task_algo_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) algo,
-      (select count(DISTINCT task_id) as count from task_power_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) power,
-      (select count(DISTINCT task_id) as count from task_data_provider WHERE identity_id = #{identityId,jdbcType=VARCHAR}) data,
-      (select count(DISTINCT task_id) as count from task_result_consumer WHERE consumer_identity_id = #{identityId,jdbcType=VARCHAR}) result,
-      (SELECT COUNT(id) as count FROM task WHERE `status` = 4) success,
-      (SELECT COUNT(id) as count FROM task WHERE `status` = 3) failed,
-      (SELECT COUNT(id) as count FROM task WHERE `status` = 2) running,
-      (SELECT COUNT(id) as count FROM task WHERE `status` = 1) pending
-  </select>
-
-
-  <resultMap id="BaseResultMap_With_Role" type="com.platon.metis.admin.dao.entity.Task" extends="BaseResultMap">
-    <result column="taskSponsor" property="dynamicFields.taskSponsor" jdbcType="BOOLEAN"/>
-    <result column="powerProvider" property="dynamicFields.powerProvider" jdbcType="BOOLEAN"/>
-    <result column="dataProvider" property="dynamicFields.dataProvider" jdbcType="BOOLEAN"/>
-    <result column="resultConsumer" property="dynamicFields.resultConsumer" jdbcType="BOOLEAN"/>
-    <result column="algoProvider" property="dynamicFields.algoProvider" jdbcType="BOOLEAN"/>
-  </resultMap>
-
-  <select id="listTaskByIdentityIdWithRole" resultMap="BaseResultMap_With_Role">
-    SELECT t.*, temp.taskSponsor, temp.powerProvider, temp.dataProvider, temp.resultConsumer, temp.algoProvider
-    from task t
-    join (
-      select tmp.task_id, sum(tmp.taskSponsor) as taskSponsor, sum(tmp.powerProvider) as powerProvider , sum(tmp.dataProvider) as dataProvider, sum(tmp.resultConsumer) as resultConsumer, sum(tmp.algoProvider) as algoProvider
-      from (
+    <select id="listTaskByIdentityIdWithRole" resultMap="BaseResultMap_With_Role">
+        SELECT t.*, temp.taskSponsor, temp.powerProvider, temp.dataProvider, temp.resultConsumer, temp.algoProvider
+        from task t
+            join (
+        select tmp.task_id,
+               sum(tmp.taskSponsor)    as taskSponsor,
+               sum(tmp.powerProvider)  as powerProvider,
+               sum(tmp.dataProvider)   as dataProvider,
+               sum(tmp.resultConsumer) as resultConsumer,
+               sum(tmp.algoProvider)   as algoProvider
+        from (
         <if test="roleFilter == null">
-          select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
-          from task tk
-          WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
+            select tk.owner_identity_id as identity_id,
+                   tk.task_id           as task_id,
+                   true                    taskSponsor,
+                   false                as powerProvider,
+                   false                as dataProvider,
+                   false                as resultConsumer,
+                   false                   algoProvider
+            from task tk
+            WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
 
-          union
+            union
 
-          select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
-          from task_algo_provider tap
-          WHERE tap.identity_id = #{identityId,jdbcType=VARCHAR}
+            select tap.identity_id,
+                   tap.task_id,
+                   false    taskSponsor,
+                   false as powerProvider,
+                   false as dataProvider,
+                   false as resultConsumer,
+                   true     algoProvider
+            from task_algo_provider tap
+            WHERE tap.identity_id = #{identityId,jdbcType=VARCHAR}
 
-          union
+            union
 
-          select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
-          from task_power_provider tpp
-          WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
+            select tpp.identity_id,
+                   tpp.task_id,
+                   false    taskSponsor,
+                   true  as powerProvider,
+                   false as dataProvider,
+                   false as resultConsumer,
+                   false    algoProvider
+            from task_power_provider tpp
+            WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
 
-          union
+            union
 
-          select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
-          from task_data_provider tdp
-          WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
+            select tdp.identity_id,
+                   tdp.task_id,
+                   false    taskSponsor,
+                   false as powerProvider,
+                   true  as dataProvider,
+                   false as resultConsumer,
+                   false    algoProvider
+            from task_data_provider tdp
+            WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
 
-          union
+            union
 
-          select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
-          from task_result_consumer trc
-          WHERE trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
+            select DISTINCT trc.consumer_identity_id as identity_id,
+                            trc.task_id,
+                            false                       taskSponsor,
+                            false                    as powerProvider,
+                            false                    as dataProvider,
+                            true                     as resultConsumer,
+                            false                       algoProvider
+            from task_result_consumer trc
+            WHERE trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
         </if>
         <if test="roleFilter != null and roleFilter == 1">
-          select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
-          from task tk
-          WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
+            select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+            from task tk
+            WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
         </if>
         <if test="roleFilter != null and roleFilter == 5">
-          select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
-          from task_algo_provider tap
-          WHERE tap.identity_id = #{identityId,jdbcType=VARCHAR}
+            select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
+            from task_algo_provider tap
+            WHERE tap.identity_id = #{identityId,jdbcType=VARCHAR}
         </if>
         <if test="roleFilter != null and roleFilter == 2">
-          select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
-          from task_power_provider tpp
-          WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
+            select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
+            from task_power_provider tpp
+            WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
         </if>
         <if test="roleFilter != null and roleFilter == 3">
-          select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
-          from task_data_provider tdp
-          WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
+            select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
+            from task_data_provider tdp
+            WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
         </if>
         <if test="roleFilter != null and roleFilter == 4">
-          select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
-          from task_result_consumer trc
-          WHERE trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
+            select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
+            from task_result_consumer trc
+            WHERE trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
         </if>
 
-      ) tmp
-      group by tmp.task_id
-    ) temp on t.task_id = temp.task_id
-    <where>
-      <if test="statusFilter != null">
-        and t.status = #{statusFilter,jdbcType=INTEGER}
-      </if>
-      <if test="startTimestamp != null">
-         and t.create_At <![CDATA[>= ]]> #{startTimestamp,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTimestamp != null">
-        and t.end_At <![CDATA[<= ]]> #{endTimestamp,jdbcType=TIMESTAMP}
-      </if>
-    </where>
-    order by t.create_At DESC
-  </select>
-
-
-  <select id="listTaskByIdentityIdAndMetaDataIdWithRole" resultMap="BaseResultMap_With_Role">
-
-    SELECT t.*, temp.taskSponsor, temp.powerProvider, temp.dataProvider, temp.resultConsumer, temp.algoProvider
-    FROM task t
-    JOIN task_data_provider tdp ON t.task_id = tdp.task_id AND tdp.meta_data_id = #{metaDataId,jdbcType=VARCHAR}
-    JOIN (
-        select tmp.task_id, sum(tmp.taskSponsor) as taskSponsor, sum(tmp.powerProvider) as powerProvider , sum(tmp.dataProvider) as dataProvider, sum(tmp.resultConsumer) as resultConsumer, sum(tmp.algoProvider) as algoProvider
-        from (
-           select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
-           from task tk
-           WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
-
-           union
-
-           select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
-           from task_algo_provider tap
-           WHERE tap.identity_id = #{identityId,jdbcType=VARCHAR}
-
-           union
-
-           select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
-           from task_power_provider tpp
-           WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
-
-           union
-
-           select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
-           from task_data_provider tdp
-           WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
-
-           union
-
-           select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
-           from task_result_consumer trc
-           WHERE trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
         ) tmp
         group by tmp.task_id
-    ) temp on t.task_id = temp.task_id
-    order by t.create_At DESC
-  </select>
+        ) temp on t.task_id = temp.task_id
+        <where>
+            <if test="statusFilter != null">
+                and t.status = #{statusFilter,jdbcType=INTEGER}
+            </if>
+            <if test="startTimestamp != null">
+                and t.create_At <![CDATA[>= ]]> #{startTimestamp,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTimestamp != null">
+                and t.end_At <![CDATA[<= ]]> #{endTimestamp,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by t.create_At DESC
+    </select>
 
 
-  <select id="listRoleByTaskIdAndIdentityId"  resultType="java.util.HashMap">
-    select sum(tmp.taskSponsor) as taskSponsor, sum(tmp.powerProvider) as powerProvider , sum(tmp.dataProvider) as dataProvider, sum(tmp.resultConsumer) as resultConsumer, sum(tmp.algoProvider) as algoProvider
-    from (
-      select tk.owner_identity_id as identity_id, tk.task_id as task_id, true taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
-      from task tk
-      WHERE tk.task_id = #{taskId,jdbcType=VARCHAR} and tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
+    <select id="listTaskByIdentityIdAndMetaDataIdWithRole" resultMap="BaseResultMap_With_Role">
+        SELECT t.*, temp.taskSponsor, temp.powerProvider, temp.dataProvider, temp.resultConsumer, temp.algoProvider
+        FROM task t
+                 JOIN task_data_provider tdp
+                      ON t.task_id = tdp.task_id AND tdp.meta_data_id = #{metaDataId,jdbcType=VARCHAR}
+                 JOIN (
+            select tmp.task_id,
+                   sum(tmp.taskSponsor)    as taskSponsor,
+                   sum(tmp.powerProvider)  as powerProvider,
+                   sum(tmp.dataProvider)   as dataProvider,
+                   sum(tmp.resultConsumer) as resultConsumer,
+                   sum(tmp.algoProvider)   as algoProvider
+            from (
+                     select tk.owner_identity_id as identity_id,
+                            tk.task_id           as task_id,
+                            true                    taskSponsor,
+                            false                as powerProvider,
+                            false                as dataProvider,
+                            false                as resultConsumer,
+                            false                   algoProvider
+                     from task tk
+                     WHERE tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
 
-      union
+                     union
 
-      select tap.identity_id, tap.task_id, false taskSponsor, false as powerProvider, false as dataProvider, false as resultConsumer, true algoProvider
-      from task_algo_provider tap
-      WHERE tap.task_id = #{taskId,jdbcType=VARCHAR} and tap.identity_id = #{identityId,jdbcType=VARCHAR}
+                     select tap.identity_id,
+                            tap.task_id,
+                            false    taskSponsor,
+                            false as powerProvider,
+                            false as dataProvider,
+                            false as resultConsumer,
+                            true     algoProvider
+                     from task_algo_provider tap
+                     WHERE tap.identity_id = #{identityId,jdbcType=VARCHAR}
 
-      union
+                     union
 
-      select tpp.identity_id, tpp.task_id, false taskSponsor, true as powerProvider, false as dataProvider, false as resultConsumer, false algoProvider
-      from task_power_provider tpp
-      WHERE tpp.task_id = #{taskId,jdbcType=VARCHAR} and tpp.identity_id = #{identityId,jdbcType=VARCHAR}
+                     select tpp.identity_id,
+                            tpp.task_id,
+                            false    taskSponsor,
+                            true  as powerProvider,
+                            false as dataProvider,
+                            false as resultConsumer,
+                            false    algoProvider
+                     from task_power_provider tpp
+                     WHERE tpp.identity_id = #{identityId,jdbcType=VARCHAR}
 
-      union
+                     union
 
-      select tdp.identity_id, tdp.task_id, false taskSponsor, false as powerProvider, true as dataProvider, false as resultConsumer, false algoProvider
-      from task_data_provider tdp
-      WHERE tdp.task_id = #{taskId,jdbcType=VARCHAR} and tdp.identity_id = #{identityId,jdbcType=VARCHAR}
+                     select tdp.identity_id,
+                            tdp.task_id,
+                            false    taskSponsor,
+                            false as powerProvider,
+                            true  as dataProvider,
+                            false as resultConsumer,
+                            false    algoProvider
+                     from task_data_provider tdp
+                     WHERE tdp.identity_id = #{identityId,jdbcType=VARCHAR}
 
-      union
+                     union
 
-      select DISTINCT trc.consumer_identity_id as identity_id, trc.task_id, false taskSponsor, false as powerProvider, false as dataProvider, true as resultConsumer, false algoProvider
-      from task_result_consumer trc
-      WHERE trc.task_id = #{taskId,jdbcType=VARCHAR} and trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
-    ) tmp
-  </select>
-
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from task
-    where id = #{id,jdbcType=VARCHAR}
-  </delete>
-
-  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.Task">
-    insert into task (task_Id, task_name, owner_identity_id, owner_party_id,
-      apply_user, user_type,
-      create_At, start_At, auth_At, 
-      auth_Status, end_At, status,
-      duration, cost_core, cost_Memory, 
-      cost_Bandwidth, reviewed,
-      update_at)
-    values (#{taskId,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR}, #{ownerPartyId,jdbcType=VARCHAR},
-      #{applyUser,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER},
-      #{createAt,jdbcType=TIMESTAMP}, #{startAt,jdbcType=TIMESTAMP}, #{authAt,jdbcType=TIMESTAMP}, 
-      #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
-      #{duration,jdbcType=BIGINT}, #{costCore,jdbcType=INTEGER}, #{costMemory,jdbcType=BIGINT},
-      #{costBandwidth,jdbcType=BIGINT}, #{reviewed,jdbcType=BIT},
-      #{updateAt,jdbcType=TIMESTAMP})
-  </insert>
-
-
-  <insert id="replaceBatch" parameterType="java.util.List">
-    replace into task (task_Id, task_name, owner_identity_id, owner_party_id,
-    apply_user, user_type,
-    create_At, start_At, auth_At,
-    auth_Status, end_At, status,
-    duration, cost_core, cost_Memory,
-    cost_Bandwidth, update_at)
-    values
-    <foreach collection ="list" item="item" index="index" separator=",">
-      (#{item.taskId,jdbcType=VARCHAR}, #{item.taskName,jdbcType=VARCHAR}, #{item.ownerIdentityId,jdbcType=VARCHAR}, #{item.ownerPartyId,jdbcType=VARCHAR},
-      #{item.applyUser,jdbcType=VARCHAR}, #{item.userType,jdbcType=INTEGER},
-      #{item.createAt,jdbcType=TIMESTAMP}, #{item.startAt,jdbcType=TIMESTAMP}, #{item.authAt,jdbcType=TIMESTAMP},
-      #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER},
-      #{item.duration,jdbcType=BIGINT}, #{item.costCore,jdbcType=INTEGER}, #{item.costMemory,jdbcType=BIGINT},
-      #{item.costBandwidth,jdbcType=BIGINT}, #{item.updateAt,jdbcType=TIMESTAMP})
-    </foreach>
-  </insert>
-
-
-
-
-  <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.Task">
-    update task
-    set task_Name = #{taskName,jdbcType=VARCHAR},
-      owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
-      owner_party_id = #{ownerPartyId,jdbcType=VARCHAR},
-      apply_user =  #{applyUser,jdbcType=VARCHAR},
-      user_type = #{userType,jdbcType=INTEGER},
-      create_At = #{createAt,jdbcType=TIMESTAMP},
-      start_At = #{startAt,jdbcType=TIMESTAMP},
-      auth_At = #{authAt,jdbcType=TIMESTAMP},
-      auth_Status = #{authStatus,jdbcType=VARCHAR},
-      end_At = #{endAt,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER},
-      duration = #{duration,jdbcType=BIGINT},
-      cost_core = #{costCore,jdbcType=INTEGER},
-      cost_Memory = #{costMemory,jdbcType=BIGINT},
-      cost_Bandwidth = #{costBandwidth,jdbcType=BIGINT},
-      reviewed = #{reviewed,jdbcType=BIT}
-    where task_Id = #{taskId,jdbcType=VARCHAR}
-  </update>
+                     select DISTINCT trc.consumer_identity_id as identity_id,
+                                     trc.task_id,
+                                     false                       taskSponsor,
+                                     false                    as powerProvider,
+                                     false                    as dataProvider,
+                                     true                     as resultConsumer,
+                                     false                       algoProvider
+                     from task_result_consumer trc
+                     WHERE trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
+                 ) tmp
+            group by tmp.task_id
+        ) temp on t.task_id = temp.task_id
+        order by t.create_At DESC
+    </select>
 
 
+    <select id="listRoleByTaskIdAndIdentityId" resultType="java.util.HashMap">
+        select sum(tmp.taskSponsor)    as taskSponsor,
+               sum(tmp.powerProvider)  as powerProvider,
+               sum(tmp.dataProvider)   as dataProvider,
+               sum(tmp.resultConsumer) as resultConsumer,
+               sum(tmp.algoProvider)   as algoProvider
+        from (
+                 select tk.owner_identity_id as identity_id,
+                        tk.task_id           as task_id,
+                        true                    taskSponsor,
+                        false                as powerProvider,
+                        false                as dataProvider,
+                        false                as resultConsumer,
+                        false                   algoProvider
+                 from task tk
+                 WHERE tk.task_id = #{taskId,jdbcType=VARCHAR}
+                   and tk.owner_identity_id = #{identityId,jdbcType=VARCHAR}
+
+                 union
+
+                 select tap.identity_id,
+                        tap.task_id,
+                        false    taskSponsor,
+                        false as powerProvider,
+                        false as dataProvider,
+                        false as resultConsumer,
+                        true     algoProvider
+                 from task_algo_provider tap
+                 WHERE tap.task_id = #{taskId,jdbcType=VARCHAR}
+                   and tap.identity_id = #{identityId,jdbcType=VARCHAR}
+
+                 union
+
+                 select tpp.identity_id,
+                        tpp.task_id,
+                        false    taskSponsor,
+                        true  as powerProvider,
+                        false as dataProvider,
+                        false as resultConsumer,
+                        false    algoProvider
+                 from task_power_provider tpp
+                 WHERE tpp.task_id = #{taskId,jdbcType=VARCHAR}
+                   and tpp.identity_id = #{identityId,jdbcType=VARCHAR}
+
+                 union
+
+                 select tdp.identity_id,
+                        tdp.task_id,
+                        false    taskSponsor,
+                        false as powerProvider,
+                        true  as dataProvider,
+                        false as resultConsumer,
+                        false    algoProvider
+                 from task_data_provider tdp
+                 WHERE tdp.task_id = #{taskId,jdbcType=VARCHAR}
+                   and tdp.identity_id = #{identityId,jdbcType=VARCHAR}
+
+                 union
+
+                 select DISTINCT trc.consumer_identity_id as identity_id,
+                                 trc.task_id,
+                                 false                       taskSponsor,
+                                 false                    as powerProvider,
+                                 false                    as dataProvider,
+                                 true                     as resultConsumer,
+                                 false                       algoProvider
+                 from task_result_consumer trc
+                 WHERE trc.task_id = #{taskId,jdbcType=VARCHAR}
+                   and trc.consumer_identity_id = #{identityId,jdbcType=VARCHAR}
+             ) tmp
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from task
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.Task">
+        insert into task (task_Id, task_name, owner_identity_id, owner_party_id,
+                          apply_user, user_type,
+                          create_At, start_At, auth_At,
+                          auth_Status, end_At, status,
+                          duration, cost_core, cost_Memory,
+                          cost_Bandwidth, reviewed,
+                          update_at)
+        values (#{taskId,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR}, #{ownerIdentityId,jdbcType=VARCHAR},
+                #{ownerPartyId,jdbcType=VARCHAR},
+                #{applyUser,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER},
+                #{createAt,jdbcType=TIMESTAMP}, #{startAt,jdbcType=TIMESTAMP}, #{authAt,jdbcType=TIMESTAMP},
+                #{authStatus,jdbcType=VARCHAR}, #{endAt,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
+                #{duration,jdbcType=BIGINT}, #{costCore,jdbcType=INTEGER}, #{costMemory,jdbcType=BIGINT},
+                #{costBandwidth,jdbcType=BIGINT}, #{reviewed,jdbcType=BIT},
+                #{updateAt,jdbcType=TIMESTAMP})
+    </insert>
 
 
-  <update id="updateTaskReviewedById" parameterType="java.util.Map">
-    update task
-    set reviewed = #{reviewed,jdbcType=BIT}
-    where task_Id = #{taskId,jdbcType=VARCHAR}
-  </update>
+    <insert id="replaceBatch" parameterType="java.util.List">
+        replace into task (task_Id, task_name, owner_identity_id, owner_party_id,
+                           apply_user, user_type,
+                           create_At, start_At, auth_At,
+                           auth_Status, end_At, status,
+                           duration, cost_core, cost_Memory,
+                           cost_Bandwidth, update_at)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.taskId,jdbcType=VARCHAR}, #{item.taskName,jdbcType=VARCHAR},
+             #{item.ownerIdentityId,jdbcType=VARCHAR}, #{item.ownerPartyId,jdbcType=VARCHAR},
+             #{item.applyUser,jdbcType=VARCHAR}, #{item.userType,jdbcType=INTEGER},
+             #{item.createAt,jdbcType=TIMESTAMP}, #{item.startAt,jdbcType=TIMESTAMP}, #{item.authAt,jdbcType=TIMESTAMP},
+             #{item.authStatus,jdbcType=VARCHAR}, #{item.endAt,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER},
+             #{item.duration,jdbcType=BIGINT}, #{item.costCore,jdbcType=INTEGER}, #{item.costMemory,jdbcType=BIGINT},
+             #{item.costBandwidth,jdbcType=BIGINT}, #{item.updateAt,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
 
 
+    <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.Task">
+        update task
+        set task_Name         = #{taskName,jdbcType=VARCHAR},
+            owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},
+            owner_party_id    = #{ownerPartyId,jdbcType=VARCHAR},
+            apply_user        = #{applyUser,jdbcType=VARCHAR},
+            user_type         = #{userType,jdbcType=INTEGER},
+            create_At         = #{createAt,jdbcType=TIMESTAMP},
+            start_At          = #{startAt,jdbcType=TIMESTAMP},
+            auth_At           = #{authAt,jdbcType=TIMESTAMP},
+            auth_Status       = #{authStatus,jdbcType=VARCHAR},
+            end_At            = #{endAt,jdbcType=TIMESTAMP},
+            status            = #{status,jdbcType=INTEGER},
+            duration          = #{duration,jdbcType=BIGINT},
+            cost_core         = #{costCore,jdbcType=INTEGER},
+            cost_Memory       = #{costMemory,jdbcType=BIGINT},
+            cost_Bandwidth    = #{costBandwidth,jdbcType=BIGINT},
+            reviewed          = #{reviewed,jdbcType=BIT}
+        where task_Id = #{taskId,jdbcType=VARCHAR}
+    </update>
 
-  <update id="batchUpdate" parameterType="java.util.List" >
-    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
-      update task
-      set task_Name = #{item.taskName,jdbcType=VARCHAR},
-      owner_Identity_id = #{item.ownerIdentityId,jdbcType=VARCHAR},
-      owner_party_id = #{item.ownerPartyId,jdbcType=VARCHAR},
-      apply_user =  #{item.applyUser,jdbcType=VARCHAR},
-      user_type = #{item.userType,jdbcType=INTEGER},
-      create_At = #{item.createAt,jdbcType=TIMESTAMP},
-      start_At = #{item.startAt,jdbcType=TIMESTAMP},
-      auth_At = #{item.authAt,jdbcType=TIMESTAMP},
-      auth_Status = #{item.authStatus,jdbcType=VARCHAR},
-      end_At = #{item.endAt,jdbcType=TIMESTAMP},
-      status = #{item.status,jdbcType=INTEGER},
-      duration = #{item.duration,jdbcType=BIGINT},
-      cost_core = #{item.costCore,jdbcType=INTEGER},
-      cost_Memory = #{item.costMemory,jdbcType=BIGINT},
-      cost_Bandwidth = #{item.costBandwidth,jdbcType=BIGINT},
-      reviewed = #{item.reviewed,jdbcType=BIT},
-      update_at =  #{item.updateAt,jdbcType=TIMESTAMP}
-      where task_Id = #{taskId,jdbcType=VARCHAR}
-    </foreach>
-  </update>
 
+    <update id="updateTaskReviewedById" parameterType="java.util.Map">
+        update task
+        set reviewed = #{reviewed,jdbcType=BIT}
+        where task_Id = #{taskId,jdbcType=VARCHAR}
+    </update>
+
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update task
+            set task_Name         = #{item.taskName,jdbcType=VARCHAR},
+                owner_Identity_id = #{item.ownerIdentityId,jdbcType=VARCHAR},
+                owner_party_id    = #{item.ownerPartyId,jdbcType=VARCHAR},
+                apply_user        = #{item.applyUser,jdbcType=VARCHAR},
+                user_type         = #{item.userType,jdbcType=INTEGER},
+                create_At         = #{item.createAt,jdbcType=TIMESTAMP},
+                start_At          = #{item.startAt,jdbcType=TIMESTAMP},
+                auth_At           = #{item.authAt,jdbcType=TIMESTAMP},
+                auth_Status       = #{item.authStatus,jdbcType=VARCHAR},
+                end_At            = #{item.endAt,jdbcType=TIMESTAMP},
+                status            = #{item.status,jdbcType=INTEGER},
+                duration          = #{item.duration,jdbcType=BIGINT},
+                cost_core         = #{item.costCore,jdbcType=INTEGER},
+                cost_Memory       = #{item.costMemory,jdbcType=BIGINT},
+                cost_Bandwidth    = #{item.costBandwidth,jdbcType=BIGINT},
+                reviewed          = #{item.reviewed,jdbcType=BIT},
+                update_at         = #{item.updateAt,jdbcType=TIMESTAMP}
+            where task_Id = #{taskId,jdbcType=VARCHAR}
+        </foreach>
+    </update>
 </mapper>

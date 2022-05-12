@@ -2,37 +2,55 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.metis.admin.dao.DataTokenMapper">
     <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.DataToken">
-        <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="address" jdbcType="VARCHAR" property="address" />
-        <result column="name" jdbcType="VARCHAR" property="name" />
-        <result column="symbol" jdbcType="VARCHAR" property="symbol" />
-        <result column="init" jdbcType="VARCHAR" property="init" />
-        <result column="total" jdbcType="VARCHAR" property="total" />
-        <result column="decimal" jdbcType="INTEGER" property="decimal" />
-        <result column="desc" jdbcType="VARCHAR" property="desc" />
-        <result column="owner" jdbcType="VARCHAR" property="owner" />
-        <result column="meta_data_id" jdbcType="INTEGER" property="metaDataId" />
-        <result column="holder" jdbcType="INTEGER" property="holder" />
-        <result column="status" jdbcType="INTEGER" property="status" />
-        <result column="publish_nonce" jdbcType="INTEGER" property="publishNonce" />
-        <result column="publish_hash" jdbcType="VARCHAR" property="publishHash" />
-        <result column="up_nonce" jdbcType="INTEGER" property="upNonce" />
-        <result column="up_hash" jdbcType="VARCHAR" property="upHash" />
-        <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
-        <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="symbol" jdbcType="VARCHAR" property="symbol"/>
+        <result column="init" jdbcType="VARCHAR" property="init"/>
+        <result column="total" jdbcType="VARCHAR" property="total"/>
+        <result column="decimal" jdbcType="INTEGER" property="decimal"/>
+        <result column="desc" jdbcType="VARCHAR" property="desc"/>
+        <result column="owner" jdbcType="VARCHAR" property="owner"/>
+        <result column="meta_data_id" jdbcType="INTEGER" property="metaDataId"/>
+        <result column="holder" jdbcType="INTEGER" property="holder"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="publish_nonce" jdbcType="INTEGER" property="publishNonce"/>
+        <result column="publish_hash" jdbcType="VARCHAR" property="publishHash"/>
+        <result column="up_nonce" jdbcType="INTEGER" property="upNonce"/>
+        <result column="up_hash" jdbcType="VARCHAR" property="upHash"/>
+        <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime"/>
+        <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,address,`name`,symbol,init,total,`decimal`,`desc`,`owner`,meta_data_id,holder,`status`,`publish_nonce`,`publish_hash`,up_nonce,up_hash,rec_create_time,rec_update_time
+        id,
+        address,
+        `name`,
+        symbol,
+        init,
+        total,
+        `decimal`,
+        `desc`,
+        `owner`,
+        meta_data_id,
+        holder,
+        `status`,
+        `publish_nonce`,
+        `publish_hash`,
+        up_nonce,
+        up_hash,
+        rec_create_time,
+        rec_update_time
     </sql>
 
     <select id="selectByPricingStatus" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from data_token
         where
         <choose>
             <when test="status == 1">
-                `status` in (4,6)
+                `status` in (4, 6)
             </when>
             <otherwise>
                 `status` in (1,3,5)
@@ -43,16 +61,27 @@
     </select>
 
     <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO data_token (`name`,symbol,init,total,`desc`,`owner`,meta_data_id,status,`publish_nonce`,`publish_hash`)
-        VALUES (#{name},#{symbol},#{init},#{total},#{desc},#{owner},#{metaDataId},#{status},#{publishNonce},#{publishHash})
+        INSERT INTO data_token (`name`, symbol, init, total, `desc`, `owner`, meta_data_id, status, `publish_nonce`,
+                                `publish_hash`)
+        VALUES (#{name}, #{symbol}, #{init}, #{total}, #{desc}, #{owner}, #{metaDataId}, #{status}, #{publishNonce},
+                #{publishHash})
         ON DUPLICATE KEY
-            UPDATE `name`=#{name},symbol=#{symbol},init=#{init},total=#{total},`desc`=#{desc},owner=#{owner},status=#{status},
-                `publish_nonce`=#{publishNonce},`publish_hash`=#{publishHash}
+            UPDATE `name`=#{name},
+                   symbol=#{symbol},
+                   init=#{init},
+                   total=#{total},
+                   `desc`=#{desc},
+                   owner=#{owner},
+                   status=#{status},
+                   `publish_nonce`=#{publishNonce},
+                   `publish_hash`=#{publishHash}
     </insert>
 
     <update id="updatePricingStatus">
         update data_token
-        set up_nonce = #{upNonce},up_hash = #{upHash},status = #{status}
+        set up_nonce = #{upNonce},
+            up_hash  = #{upHash},
+            status   = #{status}
         where id = #{id}
     </update>
 
@@ -63,13 +92,15 @@
     </update>
 
     <select id="selectById" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from data_token
         where id = #{dataTokenId}
     </select>
 
     <select id="selectListByStatus" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from data_token
         where status = #{status}
     </select>
@@ -81,9 +112,9 @@
     </update>
 
     <select id="selectByMetaDataId" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from data_token
         where meta_data_id = #{metaDataId}
     </select>
-
 </mapper>

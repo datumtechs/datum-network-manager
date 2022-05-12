@@ -11,7 +11,13 @@
         <result column="is_admin" jdbcType="INTEGER" property="isAdmin"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, user_name, `address`, `status`, rec_create_time, rec_update_time,is_admin
+        id,
+        user_name,
+        `address`,
+        `status`,
+        rec_create_time,
+        rec_update_time,
+        is_admin
     </sql>
     <select id="selectByAddress" resultMap="BaseResultMap">
         select
@@ -35,9 +41,9 @@
     <update id="updateByAddress" parameterType="com.platon.metis.admin.dao.entity.SysUser">
         update sys_user
         set user_name = #{userName},
-            address = #{address},
-            status = #{status},
-            is_admin = #{isAdmin}
+            address   = #{address},
+            status    = #{status},
+            is_admin  = #{isAdmin}
         where address = #{address}
     </update>
 
@@ -45,7 +51,6 @@
         insert into sys_user (user_name, address, status, rec_create_time, rec_update_time, is_admin)
         values (#{userName}, #{address}, #{status}, #{recCreateTime}, #{recUpdateTime}, #{isAdmin})
         on duplicate key
-        update is_admin = 1
+            update is_admin = 1
     </update>
-
 </mapper>

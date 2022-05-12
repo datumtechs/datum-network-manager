@@ -2,40 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.metis.admin.dao.SysConfigMapper">
     <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.SysConfig">
-        <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="key" jdbcType="VARCHAR" property="key" />
-        <result column="value" jdbcType="VARCHAR" property="value" />
-        <result column="status" jdbcType="VARCHAR" property="status" />
-        <result column="desc" jdbcType="VARCHAR" property="desc" />
-        <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime" />
-        <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime" />
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="key" jdbcType="VARCHAR" property="key"/>
+        <result column="value" jdbcType="VARCHAR" property="value"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="desc" jdbcType="VARCHAR" property="desc"/>
+        <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime"/>
+        <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, `key`, `value`, `status`, `desc`, rec_create_time,rec_update_time
+        id,
+        `key`,
+        `value`,
+        `status`,
+        `desc`,
+        rec_create_time,
+        rec_update_time
     </sql>
 
     <select id="selectAllByStatus" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from sys_config
         where `status` = #{status}
     </select>
 
     <select id="selectByKeyAndStatus" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from sys_config
-        where `status` = #{status} and `key` = #{key}
+        where `status` = #{status}
+          and `key` = #{key}
     </select>
 
     <select id="selectByKey" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from sys_config
         where `key` = #{key}
     </select>
 
     <select id="getMultiConfig" resultMap="BaseResultMap">
         <if test="keys.size() > 0">
-            select <include refid="Base_Column_List"/>
+            select
+            <include refid="Base_Column_List"/>
             from sys_config
             <foreach collection="keys" open="where `key` in (" close=")" separator="," item="key">
                 #{key}
@@ -44,9 +55,8 @@
     </select>
 
     <update id="insertConfig">
-        insert into
-        sys_config(`key`,`value`,`status`,`desc`)
-        values(#{key},#{value},#{status},#{desc})
+        insert into sys_config(`key`, `value`, `status`, `desc`)
+        values (#{key}, #{value}, #{status}, #{desc})
     </update>
 
     <update id="updateValueByKey">
@@ -56,6 +66,8 @@
     </update>
 
     <delete id="deleteByKey">
-        delete from sys_config where `key` = #{key}
+        delete
+        from sys_config
+        where `key` = #{key}
     </delete>
 </mapper>

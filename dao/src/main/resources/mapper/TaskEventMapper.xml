@@ -1,111 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.metis.admin.dao.TaskEventMapper">
-  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskEvent">
-    <id column="ID" jdbcType="BIGINT" property="id" />
-    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
-    <result column="event_type" jdbcType="VARCHAR" property="eventType" />
-    <result column="identity_id" jdbcType="VARCHAR" property="identityId" />
-    <result column="party_id" jdbcType="VARCHAR" property="partyId" />
-    <result column="event_at" jdbcType="TIMESTAMP" property="eventAt" />
-    <result column="event_content" jdbcType="VARCHAR" property="eventContent" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    ID, task_id, event_type, identity_id, party_id, event_at, event_content
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from task_event
-    where ID = #{id,jdbcType=BIGINT}
-  </select>
+    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskEvent">
+        <id column="ID" jdbcType="BIGINT" property="id"/>
+        <result column="task_id" jdbcType="VARCHAR" property="taskId"/>
+        <result column="event_type" jdbcType="VARCHAR" property="eventType"/>
+        <result column="identity_id" jdbcType="VARCHAR" property="identityId"/>
+        <result column="party_id" jdbcType="VARCHAR" property="partyId"/>
+        <result column="event_at" jdbcType="TIMESTAMP" property="eventAt"/>
+        <result column="event_content" jdbcType="VARCHAR" property="eventContent"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID,
+        task_id,
+        event_type,
+        identity_id,
+        party_id,
+        event_at,
+        event_content
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from task_event
+        where ID = #{id,jdbcType=BIGINT}
+    </select>
 
+    <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskEvent"
+               extends="BaseResultMap">
+        <result column="org_name" property="dynamicFields.orgName" jdbcType="VARCHAR"/>
+        <result column="node_id" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>
+    </resultMap>
 
+    <select id="listTaskEventWithOrgNameByTaskId" parameterType="java.lang.String"
+            resultMap="BaseResultMap_With_OrgName">
+        SELECT te.*,
+               o.`org_name`      AS org_name,
+               o.carrier_node_id AS node_id
+        FROM task_event AS te
+                 LEFT JOIN task_org AS o ON te.identity_id = o.identity_id
+        WHERE te.task_id = #{taskId,jdbcType=VARCHAR}
+        ORDER BY te.event_at DESC
+    </select>
 
-  <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskEvent" extends="BaseResultMap">
-    <result column="org_name" property="dynamicFields.orgName" jdbcType="VARCHAR"/>
-    <result column="node_id" property="dynamicFields.nodeId" jdbcType="VARCHAR"/>
-  </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from task_event
+        where ID = #{id,jdbcType=BIGINT}
+    </delete>
 
-  <select id="listTaskEventWithOrgNameByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OrgName">
-    SELECT
-	te.*, o.`org_name` AS org_name, o.carrier_node_id AS node_id
-    FROM task_event AS te
-    LEFT JOIN task_org AS o ON te.identity_id = o.identity_id
-    WHERE te.task_id = #{taskId,jdbcType=VARCHAR}
-    ORDER BY te.event_at DESC
-  </select>
-
-
-
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from task_event
-    where ID = #{id,jdbcType=BIGINT}
-  </delete>
-
-
-  <delete id="deleteBatch" parameterType="java.lang.String">
-    delete from task_event
-    where task_id in (
-      <foreach collection ="list" item="taskId" separator =",">
-          #{taskId,jdbcType=VARCHAR}
-       </foreach>
-   )
-  </delete>
-
-
-  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.TaskEvent">
-    insert into task_event (ID, task_id, event_type, 
-      identity_id, party_id, event_at, event_content)
-    values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=VARCHAR}, #{eventType,jdbcType=VARCHAR}, 
-      #{identityId,jdbcType=VARCHAR}, #{partyId,jdbcType=VARCHAR}, #{eventAt,jdbcType=TIMESTAMP}, #{eventContent,jdbcType=VARCHAR})
-  </insert>
-
-
-
-  <update id="insertUpdateBatch" parameterType="map">
-    begin
-        delete from task_event
+    <delete id="deleteBatch" parameterType="java.lang.String">
+        delete
+        from task_event
         where task_id in (
-            <foreach collection ="taskIdList" item="taskId" separator =",">
-              #{taskId,jdbcType=VARCHAR}
-            </foreach>
-        );
-    end;
-
-    begin
-        insert into task_event (task_id, event_type,
-        identity_id, party_id, event_at, event_content)
-        values
-        <foreach collection ="taskEventList" item="item" separator =",">
-          (#{item.taskId,jdbcType=VARCHAR}, #{item.eventType,jdbcType=VARCHAR},
-          #{item.identityId,jdbcType=VARCHAR}, #{item.partyId,jdbcType=VARCHAR}, #{item.eventAt,jdbcType=TIMESTAMP}, #{item.eventContent,jdbcType=VARCHAR})
+        <foreach collection="list" item="taskId" separator=",">
+            #{taskId,jdbcType=VARCHAR}
         </foreach>
-    ;end
-  </update>
+        )
+    </delete>
 
+    <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.TaskEvent">
+        insert into task_event (ID, task_id, event_type,
+                                identity_id, party_id, event_at, event_content)
+        values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=VARCHAR}, #{eventType,jdbcType=VARCHAR},
+                #{identityId,jdbcType=VARCHAR}, #{partyId,jdbcType=VARCHAR}, #{eventAt,jdbcType=TIMESTAMP},
+                #{eventContent,jdbcType=VARCHAR})
+    </insert>
 
+    <update id="insertUpdateBatch" parameterType="map">
+        begin
+        delete
+        from task_event
+        where task_id in (
+        <foreach collection="taskIdList" item="taskId" separator=",">
+            #{taskId,jdbcType=VARCHAR}
+        </foreach>
+        );
+        end;
+        begin
+        insert into task_event (task_id, event_type,
+                                identity_id, party_id, event_at, event_content)
+        values
+        <foreach collection="taskEventList" item="item" separator=",">
+            (#{item.taskId,jdbcType=VARCHAR}, #{item.eventType,jdbcType=VARCHAR},
+             #{item.identityId,jdbcType=VARCHAR}, #{item.partyId,jdbcType=VARCHAR}, #{item.eventAt,jdbcType=TIMESTAMP},
+             #{item.eventContent,jdbcType=VARCHAR})
+        </foreach>
+        ;
+        end
+    </update>
 
+    <insert id="insertBatch" parameterType="list">
+        insert into task_event (task_id, event_type,
+                                identity_id, party_id, event_at, event_content)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.taskId,jdbcType=VARCHAR}, #{item.eventType,jdbcType=VARCHAR},
+             #{item.identityId,jdbcType=VARCHAR}, #{item.partyId,jdbcType=VARCHAR}, #{item.eventAt,jdbcType=TIMESTAMP},
+             #{item.eventContent,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
 
-
-  <insert id="insertBatch" parameterType="list">
-    insert into task_event (task_id, event_type,
-        identity_id, party_id, event_at, event_content)
-    values
-    <foreach collection ="list" item="item" separator =",">
-      (#{item.taskId,jdbcType=VARCHAR}, #{item.eventType,jdbcType=VARCHAR},
-      #{item.identityId,jdbcType=VARCHAR}, #{item.partyId,jdbcType=VARCHAR}, #{item.eventAt,jdbcType=TIMESTAMP}, #{item.eventContent,jdbcType=VARCHAR})
-    </foreach>
-  </insert>
-
-  <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.TaskEvent">
-    update task_event
-    set task_id = #{taskId,jdbcType=VARCHAR},
-      event_type = #{eventType,jdbcType=VARCHAR},
-      identity_id = #{identityId,jdbcType=VARCHAR},
-      party_id = #{partyId,jdbcType=VARCHAR},
-      event_at = #{eventAt,jdbcType=TIMESTAMP},
-      event_content = #{eventContent,jdbcType=VARCHAR}
-    where ID = #{id,jdbcType=BIGINT}
-  </update>
+    <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.TaskEvent">
+        update task_event
+        set task_id       = #{taskId,jdbcType=VARCHAR},
+            event_type    = #{eventType,jdbcType=VARCHAR},
+            identity_id   = #{identityId,jdbcType=VARCHAR},
+            party_id      = #{partyId,jdbcType=VARCHAR},
+            event_at      = #{eventAt,jdbcType=TIMESTAMP},
+            event_content = #{eventContent,jdbcType=VARCHAR}
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
 </mapper>

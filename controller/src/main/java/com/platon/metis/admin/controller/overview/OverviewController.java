@@ -1,6 +1,7 @@
 package com.platon.metis.admin.controller.overview;
 
 import com.platon.metis.admin.dao.dto.DataAuthReqDTO;
+import com.platon.metis.admin.dao.dto.StatsDataTrendDTO;
 import com.platon.metis.admin.dao.dto.StatsPowerTrendDTO;
 import com.platon.metis.admin.dao.dto.UsedResourceDTO;
 import com.platon.metis.admin.dto.JsonResponse;
@@ -74,8 +75,8 @@ public class OverviewController {
 
     @ApiOperation(value = "查询我发布的数据")
     @GetMapping("/localDataFileStatsTrendMonthly")
-    public JsonResponse<List<StatsPowerTrendDTO>> localDataFileStatsTrendMonthly() {
-        List<StatsPowerTrendDTO> dataPowerList = indexService.listLocalDataFileStatsTrendMonthly();
+    public JsonResponse<List<StatsDataTrendDTO>> localDataFileStatsTrendMonthly() {
+        List<StatsDataTrendDTO> dataPowerList = indexService.listLocalDataFileStatsTrendMonthly();
         return JsonResponse.success(dataPowerList);
     }
 

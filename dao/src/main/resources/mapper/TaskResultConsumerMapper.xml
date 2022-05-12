@@ -1,92 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.metis.admin.dao.TaskResultConsumerMapper">
-  <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskResultConsumer">
-    <id column="task_id" jdbcType="VARCHAR" property="taskId" />
-    <id column="consumer_identity_id" jdbcType="VARCHAR" property="consumerIdentityId" />
-    <result column="consumer_party_id" jdbcType="VARCHAR" property="consumerPartyId" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    task_id, consumer_identity_id, consumer_party_id\
-  </sql>
-
-
-  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from task_result_consumer
-    where task_id = #{taskId,jdbcType=VARCHAR}
-      and consumer_identity_id = #{consumerIdentityId,jdbcType=VARCHAR}
-  </select>
-
-
-
-  <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskResultConsumer" extends="BaseResultMap">
-    <result column="org_name" property="dynamicFields.orgName" jdbcType="VARCHAR"/>
-    <result column="carrier_node_id" property="dynamicFields.carrierNodeId" jdbcType="VARCHAR"/>
-  </resultMap>
-
-  <select id="selectTaskResultWithOrgByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap_With_OrgName">
-    SELECT trc.*, o.`org_name` AS org_name, o.carrier_node_id AS carrier_node_id
-    FROM task_result_consumer AS trc
-    LEFT JOIN task_org AS o ON trc.consumer_identity_id = o.identity_id
-    WHERE trc.task_id = #{taskId,jdbcType=VARCHAR}
-  </select>
-
-
-
-
-
-
-  <delete id="deleteByPrimaryKey" parameterType="map">
-    delete from task_result_consumer
-    where task_id = #{taskId,jdbcType=VARCHAR}
-      and consumer_identity_id = #{consumerIdentityId,jdbcType=VARCHAR}
-  </delete>
-
-
-  <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.TaskResultConsumer">
-    insert into task_result_consumer (task_id, consumer_identity_id, consumer_party_id)
-    values (#{taskId,jdbcType=VARCHAR}, #{consumerIdentityId,jdbcType=VARCHAR}, #{consumerPartyId,jdbcType=VARCHAR})
-  </insert>
-
-
-
-  <insert id="replaceBatch" parameterType="list">
-    replace into task_result_consumer (task_id, consumer_identity_id, consumer_party_id)
-    values
-    <foreach collection ="list" item="item" separator =",">
-      (#{item.taskId,jdbcType=VARCHAR}, #{item.consumerIdentityId,jdbcType=VARCHAR}, #{item.consumerPartyId,jdbcType=VARCHAR})
-    </foreach>
-  </insert>
-
-
-
-
-  <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.TaskResultConsumer">
-    insert into task_result_consumer
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="taskId != null">
+    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskResultConsumer">
+        <id column="task_id" jdbcType="VARCHAR" property="taskId"/>
+        <id column="consumer_identity_id" jdbcType="VARCHAR" property="consumerIdentityId"/>
+        <result column="consumer_party_id" jdbcType="VARCHAR" property="consumerPartyId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
         task_id,
-      </if>
-      <if test="consumerIdentityId != null">
         consumer_identity_id,
-      </if>
-      <if test="consumerPartyId != null">
-        consumer_party_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="taskId != null">
-        #{taskId,jdbcType=VARCHAR},
-      </if>
-      <if test="consumerIdentityId != null">
-        #{consumerIdentityId,jdbcType=VARCHAR},
-      </if>
-      <if test="consumerPartyId != null">
-        #{consumerPartyId,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
+        consumer_party_id
+    </sql>
 
+
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from task_result_consumer
+        where task_id = #{taskId,jdbcType=VARCHAR}
+          and consumer_identity_id = #{consumerIdentityId,jdbcType=VARCHAR}
+    </select>
+
+
+    <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskResultConsumer"
+               extends="BaseResultMap">
+        <result column="org_name" property="dynamicFields.orgName" jdbcType="VARCHAR"/>
+        <result column="carrier_node_id" property="dynamicFields.carrierNodeId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectTaskResultWithOrgByTaskId" parameterType="java.lang.String"
+            resultMap="BaseResultMap_With_OrgName">
+        SELECT trc.*, o.`org_name` AS org_name, o.carrier_node_id AS carrier_node_id
+        FROM task_result_consumer AS trc
+                 LEFT JOIN task_org AS o ON trc.consumer_identity_id = o.identity_id
+        WHERE trc.task_id = #{taskId,jdbcType=VARCHAR}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete
+        from task_result_consumer
+        where task_id = #{taskId,jdbcType=VARCHAR}
+          and consumer_identity_id = #{consumerIdentityId,jdbcType=VARCHAR}
+    </delete>
+
+
+    <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.TaskResultConsumer">
+        insert into task_result_consumer (task_id, consumer_identity_id, consumer_party_id)
+        values (#{taskId,jdbcType=VARCHAR}, #{consumerIdentityId,jdbcType=VARCHAR}, #{consumerPartyId,jdbcType=VARCHAR})
+    </insert>
+
+
+    <insert id="replaceBatch" parameterType="list">
+        replace into task_result_consumer (task_id, consumer_identity_id, consumer_party_id)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.taskId,jdbcType=VARCHAR}, #{item.consumerIdentityId,jdbcType=VARCHAR},
+             #{item.consumerPartyId,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+
+    <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.TaskResultConsumer">
+        insert into task_result_consumer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">
+                task_id,
+            </if>
+            <if test="consumerIdentityId != null">
+                consumer_identity_id,
+            </if>
+            <if test="consumerPartyId != null">
+                consumer_party_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">
+                #{taskId,jdbcType=VARCHAR},
+            </if>
+            <if test="consumerIdentityId != null">
+                #{consumerIdentityId,jdbcType=VARCHAR},
+            </if>
+            <if test="consumerPartyId != null">
+                #{consumerPartyId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 </mapper>

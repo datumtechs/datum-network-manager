@@ -25,8 +25,6 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-
-
     @ApiOperation(value="我参与的任务情况统计")
     @GetMapping("/myTaskStatistics")
     public JsonResponse<TaskStatistics> myTaskStatistics(){
@@ -76,7 +74,6 @@ public class TaskController {
     //单个任务事件日志列表
     @GetMapping("/listTaskEvent")
     @ApiOperation(value="单个任务事件日志列表")
-
     public JsonResponse<List<TaskEvent>> listTaskEvent(@ApiParam(name = "taskId",value = "任务id", type = "String", required = true) @RequestParam(required = true) String taskId){
         List<TaskEvent> taskEventList = taskService.listTaskEventWithOrgName(taskId);
         return JsonResponse.success(taskEventList);

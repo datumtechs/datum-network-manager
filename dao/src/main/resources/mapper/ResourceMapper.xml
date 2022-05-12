@@ -10,22 +10,29 @@
         <result column="parent_id" jdbcType="TIMESTAMP" property="parentId"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, type, `name`, `value`, url_resource_id, parent_id
+        id,
+        type,
+        `name`,
+        `value`,
+        url_resource_id,
+        parent_id
     </sql>
+
     <select id="selectByRoleId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from resource r,(select * from role_resource where role_id = #{roleId}) rr
+        from resource r,
+             (select * from role_resource where role_id = #{roleId}) rr
         where r.id in (rr.resource_id)
     </select>
 
     <select id="selectByResourceIdList" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from resource
         where id in
-              <foreach collection="resourceIdList" item="id" separator="," open="(" close=")">
-                  #{id}
-              </foreach>
+        <foreach collection="resourceIdList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
     </select>
-
 </mapper>

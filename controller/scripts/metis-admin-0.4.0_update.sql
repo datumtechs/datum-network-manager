@@ -306,3 +306,35 @@ INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_ti
 INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('8', 'block_explorer_url', 'https://devnetscan.platon.network/', '1', '区块浏览器', '2022-04-07 12:05:31', '2022-04-07 12:01:55');
 INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('9', 'hrp', 'lat', '1', 'hrp', '2022-04-07 12:04:35', '2022-04-07 12:01:58');
 INSERT INTO `sys_config` (`id`, `key`, `value`, `status`, `desc`, `rec_update_time`, `rec_create_time`) VALUES ('10', 'rpc_url_list', 'https://devnetopenapi.platon.network/rpc', '1', '链rpcUrl，主要是给后台系统用，可以是内部IP', '2022-04-08 03:02:48', '2022-04-08 03:01:36');
+
+-- 创建本地算力月统计视图
+CREATE OR REPLACE VIEW v_local_data_file_stats_monthly as
+SELECT a.stats_time, a.month_size, SUM(a.month_size) AS accu_size
+FROM (
+         SELECT DATE_FORMAT(lmd.publish_time, '%Y-%m')  as stats_time, sum(ldf.size) as month_size
+         FROM local_data_file ldf, local_meta_data lmd
+         WHERE ldf.file_id = lmd.file_id AND lmd.status in (2,7,8,9,10)
+         GROUP BY DATE_FORMAT(lmd.publish_time, '%Y-%m')
+         ORDER BY DATE_FORMAT(lmd.publish_time, '%Y-%m')
+     ) a
+GROUP BY a.stats_time
+ORDER BY a.stats_time;
+
+-- 创建本地算力月统计视图
+CREATE OR REPLACE VIEW v_local_power_stats_monthly as
+SELECT a.stats_time, a.month_core, a.month_memory, a.month_bandwidth, SUM(a.month_core) AS accu_core, SUM(a.month_memory) AS accu_memory, SUM(a.month_bandwidth) AS accu_bandwidth
+FROM (
+         SELECT DATE_FORMAT(lpn.start_time, '%Y-%m')  as stats_time, sum(lpn.core) as month_core, sum(lpn.memory) as month_memory, sum(lpn.bandwidth) as month_bandwidth
+         FROM local_power_node lpn
+         WHERE lpn.power_status=2 or lpn.power_status=3
+         GROUP BY DATE_FORMAT(lpn.start_time, '%Y-%m')
+         ORDER BY DATE_FORMAT(lpn.start_time, '%Y-%m')
+     ) a
+GROUP BY a.stats_time
+ORDER BY a.stats_time;
+
+DROP TABLE IF EXISTS `bootstrap_node`;
+DROP TABLE IF EXISTS `global_data_file`;
+DROP TABLE IF EXISTS `global_meta_data_column`;
+DROP TABLE IF EXISTS `global_power`;
+DROP TABLE IF EXISTS `local_data_file_column`;

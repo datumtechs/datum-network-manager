@@ -51,31 +51,6 @@
     group by status
   </select>
 
-  <!-- 查询全网数据总量走势 -->
-  <select id="queryWholeNetDateTrend" resultType="java.lang.Long">
-    select
-        IFNULL(sum(b.size), 0) as totalSize
-        <!-- IFNULL(sum(b.size), 0) / (1024 * 1024 * 1024) as totalSize -->
-    from
-        v_past_12_month a left join global_data_file b
-        on a.month =  DATE_FORMAT(b.publish_time,'%Y-%m')
-        and b.status = 2
-    group by a.month
-    order by a.month desc
-  </select>
-
-  <!-- 查询全网算力总量走势 -->
-  <select id="queryWholeNetPowerTrend" resultType="java.lang.Long">
-    select
-        IFNULL(sum(b.total_Memory), 0) as total_Memory
-        <!-- IFNULL(sum(b.total_Memory), 0) / (1024 * 1024 * 1024) as total_Memory -->
-    from
-        v_past_12_month a left join global_power b
-        on a.month =  DATE_FORMAT(b.rec_update_time,'%Y-%m')
-    group by a.month
-    order by a.month desc
-  </select>
-
   <!-- 查询全网数据总量月环比（上月/上上月）-->
   <select id="queryWholeNetDateRingRatio" resultType="java.lang.Double">
     select
