@@ -574,7 +574,7 @@ DROP TABLE IF EXISTS `task_data_provider`;
 CREATE TABLE `task_data_provider` (
                                       `task_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID,hash',
                                       `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参与任务的元数据ID',
-                                      `meta_data_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '参与任务的元数据名称',
+                                      `meta_data_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '参与任务的元数据名称',
                                       `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数据提供者组织身份ID',
                                       `party_id` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参与方在计算任务中的partyId',
                                       PRIMARY KEY (`task_id`,`meta_data_id`)

@@ -338,3 +338,5 @@ DROP TABLE IF EXISTS `global_data_file`;
 DROP TABLE IF EXISTS `global_meta_data_column`;
 DROP TABLE IF EXISTS `global_power`;
 DROP TABLE IF EXISTS `local_data_file_column`;
+
+Alter TABLE local_meta_data modify `meta_data_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '元数据名称';
