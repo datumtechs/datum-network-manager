@@ -135,7 +135,7 @@ CREATE TABLE `local_meta_data` (
                                    `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '序号',
                                    `file_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件ID',
                                    `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据ID,hash',
-                                   `meta_data_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '元数据名称',
+                                   `meta_data_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '元数据名称',
                                    `status` int(11) NOT NULL DEFAULT '0' COMMENT '元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表; 4：已删除;5: 发布中; 6：撤回中;7:凭证发布失败;8: 凭证发布中; 9：已发布凭证;10:已绑定凭证)',
                                    `publish_time` datetime DEFAULT NULL COMMENT '元数据发布时间',
                                    `remarks` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '元数据描述',
