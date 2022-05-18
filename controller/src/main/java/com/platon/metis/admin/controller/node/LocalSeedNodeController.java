@@ -63,7 +63,7 @@ public class LocalSeedNodeController {
     }
 
     @PostMapping("/checkSeedNodeId")
-    @ApiOperation(value="校验计算节点名称是否可用", response = JsonResponse.class)
+    @ApiOperation(value="校验种子节点是否可用", response = JsonResponse.class)
     public JsonResponse checkSeedNodeId(@Validated @RequestBody CheckSeedNodeIdReq checkSeedNodeIdReq) {
         localSeedNodeService.checkSeedNodeId(checkSeedNodeIdReq.getSeedNodeId());
         return JsonResponse.success();
