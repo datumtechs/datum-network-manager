@@ -5,7 +5,7 @@ package types;
 import "lib/types/base.proto";
 
 option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
-option java_package = "com.platon.metis.admin.grpc.types";
+option java_package = "com.platon.datum.admin.grpc.types";
 // Metadata body data struct.
 message MetadataPB {
   string                      metadata_id = 1;                // 元数据Id

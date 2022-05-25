@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--suppress ALL -->
-<mapper namespace="com.platon.metis.admin.dao.LocalOrgMapper">
-    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalOrg">
+<mapper namespace="com.platon.datum.admin.dao.LocalOrgMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.LocalOrg">
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="identity_id" jdbcType="VARCHAR" property="identityId"/>
         <result column="carrier_node_id" jdbcType="VARCHAR" property="carrierNodeId"/>
@@ -46,7 +46,7 @@
           and carrier_status = 'enabled'
     </select>
 
-    <resultMap id="BaseResultMap_runningTask" type="com.platon.metis.admin.dao.entity.LocalOrg" extends="BaseResultMap">
+    <resultMap id="BaseResultMap_runningTask" type="com.platon.datum.admin.dao.entity.LocalOrg" extends="BaseResultMap">
         <result column="running_task" property="dynamicFields.runningTask" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -62,7 +62,7 @@
     </select>
 
     <!-- 选择性插入字段-->
-    <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalOrg">
+    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.LocalOrg">
         insert into local_org (`name`,
                                identity_id,
                                carrier_node_id,
@@ -95,7 +95,7 @@
                 #{carrierWallet,jdbcType=VARCHAR})
     </insert>
 
-    <update id="update" parameterType="com.platon.metis.admin.dao.entity.LocalOrg">
+    <update id="update" parameterType="com.platon.datum.admin.dao.entity.LocalOrg">
         update local_org
         set `name`               = #{name},
             identity_id          = #{identityId},

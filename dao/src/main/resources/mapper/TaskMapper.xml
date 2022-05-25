@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.metis.admin.dao.TaskMapper">
-    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.Task">
+<mapper namespace="com.platon.datum.admin.dao.TaskMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.Task">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="task_Id" jdbcType="VARCHAR" property="taskId"/>
         <result column="task_Name" jdbcType="VARCHAR" property="taskName"/>
@@ -66,7 +66,7 @@
         </where>
     </select>
 
-    <resultMap id="BaseResultMap_With_OwnerName" type="com.platon.metis.admin.dao.entity.Task" extends="BaseResultMap">
+    <resultMap id="BaseResultMap_With_OwnerName" type="com.platon.datum.admin.dao.entity.Task" extends="BaseResultMap">
         <result column="owner_name" property="dynamicFields.ownerName" jdbcType="BOOLEAN"/>
         <result column="used_core" property="dynamicFields.usedCore" jdbcType="INTEGER"/>
         <result column="used_memory" property="dynamicFields.usedMemory" jdbcType="BIGINT"/>
@@ -103,7 +103,7 @@
 
 
     <select id="taskStatistics" parameterType="java.lang.String"
-            resultType="com.platon.metis.admin.dao.entity.TaskStatistics">
+            resultType="com.platon.datum.admin.dao.entity.TaskStatistics">
         SELECT `owner`.count as ownerCount,
                algo.count    as algoProviderCount,
                power.count   as powerProviderCount,
@@ -133,7 +133,7 @@
     </select>
 
 
-    <resultMap id="BaseResultMap_With_Role" type="com.platon.metis.admin.dao.entity.Task" extends="BaseResultMap">
+    <resultMap id="BaseResultMap_With_Role" type="com.platon.datum.admin.dao.entity.Task" extends="BaseResultMap">
         <result column="taskSponsor" property="dynamicFields.taskSponsor" jdbcType="BOOLEAN"/>
         <result column="powerProvider" property="dynamicFields.powerProvider" jdbcType="BOOLEAN"/>
         <result column="dataProvider" property="dynamicFields.dataProvider" jdbcType="BOOLEAN"/>
@@ -410,7 +410,7 @@
         where id = #{id,jdbcType=VARCHAR}
     </delete>
 
-    <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.Task">
+    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.Task">
         insert into task (task_Id, task_name, owner_identity_id, owner_party_id,
                           apply_user, user_type,
                           create_At, start_At, auth_At,
@@ -449,7 +449,7 @@
     </insert>
 
 
-    <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.Task">
+    <update id="updateByPrimaryKey" parameterType="com.platon.datum.admin.dao.entity.Task">
         update task
         set task_Name         = #{taskName,jdbcType=VARCHAR},
             owner_Identity_id = #{ownerIdentityId,jdbcType=VARCHAR},

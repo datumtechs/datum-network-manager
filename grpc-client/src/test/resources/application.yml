@@ -22,7 +22,7 @@ server:
 # ==================================== conf for mybatis =====================================
 mybatis:
   mapper-locations: classpath:/mapper/**/*.xml
-  type-aliases-package: com.platon.metis.admin.dao.entity
+  type-aliases-package: com.platon.datum.admin.dao.entity
 
 # ==================================== conf for pageHelper =====================================
 pagehelper:

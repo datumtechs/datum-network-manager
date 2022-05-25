@@ -6,7 +6,7 @@ import "lib/types/base.proto";
 import "lib/types/resourcedata.proto";
 
 option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
-option java_package = "com.platon.metis.admin.grpc.types";
+option java_package = "com.platon.datum.admin.grpc.types";
 //option java_multiple_files = true;
 
 message TaskPB {

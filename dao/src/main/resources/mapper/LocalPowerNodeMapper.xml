@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.metis.admin.dao.LocalPowerNodeMapper">
-    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerNode">
+<mapper namespace="com.platon.datum.admin.dao.LocalPowerNodeMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.LocalPowerNode">
         <id column="node_id" jdbcType="VARCHAR" property="nodeId"/>
         <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
         <result column="internal_ip" jdbcType="VARCHAR" property="internalIp"/>
@@ -100,7 +100,7 @@
     </delete>
 
     <!-- 插入计算节点数据 -->
-    <insert id="insertPowerNode" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
+    <insert id="insertPowerNode" parameterType="com.platon.datum.admin.dao.entity.LocalPowerNode">
         insert into local_power_node
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="nodeId != null">
@@ -223,7 +223,7 @@
     </insert>
 
     <!-- 根据节点id修改计算节点数据 -->
-    <update id="updatePowerNodeByNodeId" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
+    <update id="updatePowerNodeByNodeId" parameterType="com.platon.datum.admin.dao.entity.LocalPowerNode">
         update local_power_node
         <set>
             <if test="nodeName != null">
@@ -285,7 +285,7 @@
     </update>
 
     <!-- 初始化新计算节点的基本信息，如果相同的key则更新基本信息（不包括节点名称）-->
-    <insert id="initNewPowerNodeBatch" parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
+    <insert id="initNewPowerNodeBatch" parameterType="com.platon.datum.admin.dao.entity.LocalPowerNode">
         <foreach collection="list" item="item" separator=";">
             INSERT INTO local_power_node (node_id,
                                           node_name,
@@ -316,7 +316,7 @@
 
     <!-- 批量修改计算节点的资源信息-->
     <update id="updateResourceInfoBatchByNodeIdAndPowerId"
-            parameterType="com.platon.metis.admin.dao.entity.LocalPowerNode">
+            parameterType="com.platon.datum.admin.dao.entity.LocalPowerNode">
         <foreach collection="list" item="item" separator=";">
             update local_power_node
             set power_id       = #{item.powerId, jdbcType=VARCHAR},
@@ -339,7 +339,7 @@
         where node_Id = #{nodeId,jdbcType=VARCHAR}
     </update>
 
-    <resultMap id="PowerLoadResultMap" type="com.platon.metis.admin.dao.entity.PowerLoad">
+    <resultMap id="PowerLoadResultMap" type="com.platon.datum.admin.dao.entity.PowerLoad">
         <result column="core_pct" jdbcType="INTEGER" property="corePct"/>
         <result column="memory_pct" jdbcType="INTEGER" property="memoryPct"/>
         <result column="bandwidth_pct" jdbcType="INTEGER" property="bandwidthPct"/>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.metis.admin.dao.VLocalStatsMapper">
+<mapper namespace="com.platon.datum.admin.dao.VLocalStatsMapper">
 
   <!-- 查询总占用资源 -->
-  <select id="queryUsedTotalResource" resultType="com.platon.metis.admin.dao.dto.UsedResourceDTO">
+  <select id="queryUsedTotalResource" resultType="com.platon.datum.admin.dao.dto.UsedResourceDTO">
     select
         sum(used_core) as usedCore,
         sum(used_memory) as usedMemory,
@@ -82,7 +82,7 @@
   </select>
 
   <!-- 查询待授权数据列表-->
-  <select id="listDataAuthReqWaitingForApprove" resultType="com.platon.metis.admin.dao.dto.DataAuthReqDTO">
+  <select id="listDataAuthReqWaitingForApprove" resultType="com.platon.datum.admin.dao.dto.DataAuthReqDTO">
     select
         a.create_at as applyTime,
         a.apply_user as applyUser,
