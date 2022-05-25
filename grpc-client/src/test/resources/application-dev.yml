@@ -3,8 +3,8 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
     druid:
-      url: jdbc:mysql://192.168.10.150/dev_metis_admin_0.3.0?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
-      username: metis_admin
+      url: jdbc:mysql://192.168.10.150/dev_datum_admin_0.3.0?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+      username: datum_admin
       password: admin_123456
       initial-size: 10
       max-active: 20
@@ -41,7 +41,7 @@ server:
     threads.min-spare: 30
   port: 8080
   servlet:
-    context-path: /metis-admin
+    context-path: /datum-admin
 
 # 单位：秒
 timeout: 5

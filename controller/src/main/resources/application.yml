@@ -6,12 +6,12 @@ server:
     threads.min-spare: 30
   port: 9090
   servlet:
-    context-path: /metis-admin
+    context-path: /datum-admin
 
 # ==================================== tidb conf  ==========================================
 spring:
   application:
-    name: metis-admin
+    name: datum-admin
   servlet:
     multipart:
       file-size-threshold: 1099511627776
@@ -24,7 +24,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
     druid:
-      url: jdbc:mysql://192.168.9.192:3306/metis_admin_lsy?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+      url: jdbc:mysql://192.168.9.192:3306/datum_admin_lsy?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
       username: root
       password: 6qY7CBQo7p!
       initial-size: 10

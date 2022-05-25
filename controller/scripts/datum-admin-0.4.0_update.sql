@@ -1,8 +1,8 @@
--- drop database if exists `metis_admin`;
+-- drop database if exists `datum_admin`;
 
--- CREATE DATABASE `metis_admin` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- CREATE DATABASE `datum_admin` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-use `metis_admin`;
+use `datum_admin`;
 
 -- 以下为0.4.0数据库变更
 

@@ -1,15 +1,15 @@
-drop database if exists `metis_admin`;
+drop database if exists `datum_admin`;
 
-CREATE DATABASE `metis_admin` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE `datum_admin` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-use `metis_admin`;
+use `datum_admin`;
 /*
 Navicat MySQL Data Transfer
 
 Source Server         : 192.168.9.191
 Source Server Version : 50724a
 Source Host           : 192.168.9.191:3306
-Source Database       : metis_admin
+Source Database       : datum_admin
 
 Target Server Type    : MYSQL
 Target Server Version : 50724
