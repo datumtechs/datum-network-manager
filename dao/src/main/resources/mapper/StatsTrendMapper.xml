@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.metis.admin.dao.StatsTrendMapper">
-    <resultMap id="BaseDataResultMap" type="com.platon.metis.admin.dao.dto.StatsDataTrendDTO">
+<mapper namespace="com.platon.datum.admin.dao.StatsTrendMapper">
+    <resultMap id="BaseDataResultMap" type="com.platon.datum.admin.dao.dto.StatsDataTrendDTO">
         <id column="stats_time" jdbcType="VARCHAR" property="statsTime"/>
         <result column="total_value" jdbcType="BIGINT" property="totalValue"/>
         <result column="increment_value" jdbcType="BIGINT" property="incrementValue"/>
@@ -38,7 +38,7 @@
         ORDER BY t.stats_time
     </select>
 
-    <resultMap id="BasePowerResultMap" type="com.platon.metis.admin.dao.dto.StatsPowerTrendDTO">
+    <resultMap id="BasePowerResultMap" type="com.platon.datum.admin.dao.dto.StatsPowerTrendDTO">
         <result column="stats_time" jdbcType="VARCHAR" property="statsTime"/>
         <result column="increment_memory_value" jdbcType="BIGINT" property="incrementMemoryValue"/>
         <result column="total_memory_value" jdbcType="BIGINT" property="totalMemoryValue"/>

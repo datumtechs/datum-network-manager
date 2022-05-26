@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.metis.admin.dao.TaskResultConsumerMapper">
-    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskResultConsumer">
+<mapper namespace="com.platon.datum.admin.dao.TaskResultConsumerMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.TaskResultConsumer">
         <id column="task_id" jdbcType="VARCHAR" property="taskId"/>
         <id column="consumer_identity_id" jdbcType="VARCHAR" property="consumerIdentityId"/>
         <result column="consumer_party_id" jdbcType="VARCHAR" property="consumerPartyId"/>
@@ -22,7 +22,7 @@
     </select>
 
 
-    <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskResultConsumer"
+    <resultMap id="BaseResultMap_With_OrgName" type="com.platon.datum.admin.dao.entity.TaskResultConsumer"
                extends="BaseResultMap">
         <result column="org_name" property="dynamicFields.orgName" jdbcType="VARCHAR"/>
         <result column="carrier_node_id" property="dynamicFields.carrierNodeId" jdbcType="VARCHAR"/>
@@ -45,7 +45,7 @@
     </delete>
 
 
-    <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.TaskResultConsumer">
+    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.TaskResultConsumer">
         insert into task_result_consumer (task_id, consumer_identity_id, consumer_party_id)
         values (#{taskId,jdbcType=VARCHAR}, #{consumerIdentityId,jdbcType=VARCHAR}, #{consumerPartyId,jdbcType=VARCHAR})
     </insert>
@@ -61,7 +61,7 @@
     </insert>
 
 
-    <insert id="insertSelective" parameterType="com.platon.metis.admin.dao.entity.TaskResultConsumer">
+    <insert id="insertSelective" parameterType="com.platon.datum.admin.dao.entity.TaskResultConsumer">
         insert into task_result_consumer
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="taskId != null">
