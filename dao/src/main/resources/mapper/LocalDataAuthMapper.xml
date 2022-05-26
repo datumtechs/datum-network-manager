@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.metis.admin.dao.LocalDataAuthMapper">
-    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalDataAuth">
+<mapper namespace="com.platon.datum.admin.dao.LocalDataAuthMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.LocalDataAuth">
         <id column="auth_id" jdbcType="VARCHAR" property="authId"/>
         <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId"/>
         <result column="apply_user" jdbcType="VARCHAR" property="applyUser"/>
@@ -45,7 +45,7 @@
         where auth_id = #{authId,jdbcType=VARCHAR}
     </select>
 
-    <resultMap id="BaseResultMap_With_FileName" type="com.platon.metis.admin.dao.entity.LocalDataAuth"
+    <resultMap id="BaseResultMap_With_FileName" type="com.platon.datum.admin.dao.entity.LocalDataAuth"
                extends="BaseResultMap">
         <result column="resource_name" property="dynamicFields.resourceName" jdbcType="VARCHAR"/>
     </resultMap>
@@ -95,7 +95,7 @@
         where auth_id = #{autId,jdbcType=VARCHAR}
     </delete>
 
-    <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
+    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.LocalDataAuth">
         insert into local_data_auth (auth_id, meta_data_id, apply_user,
                                      user_type, auth_type, auth_value_amount,
                                      auth_value_start_at, auth_value_end_at, create_at,
@@ -148,7 +148,7 @@
         </foreach>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
+    <update id="updateByPrimaryKeySelective" parameterType="com.platon.datum.admin.dao.entity.LocalDataAuth">
         update local_data_auth
         <set>
             <if test="metaDataId != null">
@@ -194,7 +194,7 @@
         where auth_id = #{authId,jdbcType=VARCHAR}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="com.platon.metis.admin.dao.entity.LocalDataAuth">
+    <update id="updateByPrimaryKey" parameterType="com.platon.datum.admin.dao.entity.LocalDataAuth">
         update local_data_auth
         set meta_data_id        = #{metaDataId,jdbcType=VARCHAR},
             apply_user          = #{applyUser,jdbcType=VARCHAR},

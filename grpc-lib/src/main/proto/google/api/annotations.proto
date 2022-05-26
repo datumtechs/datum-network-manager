@@ -16,7 +16,7 @@ syntax = "proto3";
 option java_multiple_files = true;
 option java_outer_classname = "AnnotationsProto";
 // 生成类的包名
-option java_package = "com.platon.metis.admin.grpc.service";
+option java_package = "com.platon.datum.admin.grpc.service";
 
 package google.api;
 

@@ -15,13 +15,13 @@ Datum管理台
 mvn clean install
 
 ### 启动
-java -jar metis-admin-*.jar --spring.profiles.active=dev
+java -jar datum-admin-*.jar --spring.profiles.active=dev
 
 ### 接口文档
 启动后在浏览器上输入：http://localhost:9090/datum-admin/doc.html
 
 ### 数据库脚本
-路径：[metis-admin/controller/scripts/metis-admin-0.3.0.sql](./controller/scripts/metis-admin-0.3.0.sql)
+路径：[datum-admin/controller/scripts/datum-admin-0.3.0.sql](./controller/scripts/datum-admin-0.3.0.sql)
 
 ### grpc相关文档
 [grpc文档](./grpc-lib/README.MD)

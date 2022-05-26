@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.metis.admin.dao.LocalDataNodeMapper">
-    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalDataNode">
+<mapper namespace="com.platon.datum.admin.dao.LocalDataNodeMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.LocalDataNode">
         <id column="node_id" jdbcType="VARCHAR" property="nodeId"/>
         <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
         <result column="internal_IP" jdbcType="VARCHAR" property="internalIp"/>
@@ -58,7 +58,7 @@
         where node_name = #{nodeName,jdbcType=VARCHAR}
     </select>
 
-    <select id="selectByProperties" parameterType="com.platon.metis.admin.dao.entity.LocalDataNode"
+    <select id="selectByProperties" parameterType="com.platon.datum.admin.dao.entity.LocalDataNode"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -76,7 +76,7 @@
         where node_id = #{nodeId,jdbcType=VARCHAR}
     </delete>
 
-    <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.LocalDataNode">
+    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.LocalDataNode">
         insert into local_data_node (node_id,
                                      node_name, internal_IP, internal_Port,
                                      external_IP, external_Port, conn_Status,
@@ -89,7 +89,7 @@
                 #{remarks,jdbcType=VARCHAR})
     </insert>
 
-    <update id="update" parameterType="com.platon.metis.admin.dao.entity.LocalDataNode">
+    <update id="update" parameterType="com.platon.datum.admin.dao.entity.LocalDataNode">
         update local_data_node
         set internal_IP   = #{internalIp,jdbcType=VARCHAR},
             internal_Port = #{internalPort,jdbcType=INTEGER},

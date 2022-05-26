@@ -4,7 +4,7 @@ package api.protobuf;
 
 option go_package = "github.com/RosettaFlow/Carrier-Go/lib/common";
 
-option java_package = "com.platon.metis.admin.grpc.common";
+option java_package = "com.platon.datum.admin.grpc.common";
 //生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
 option java_outer_classname = "CommonData";
 
