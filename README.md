@@ -1,9 +1,9 @@
-# Metis-Admin
+# Datum-Admin
 
-Metis管理台
+Datum管理台
 
 ###项目模块介绍
-+ 1.metis-admin --父模块
++ 1.datum-admin --父模块
 + 2.common --公共模块，主要包含工具类和一些公共类
 + 3.controller --controller模块，主要包含对外接口相关内容
 + 4.service --service模块，负责业务的主要逻辑代码
@@ -18,7 +18,7 @@ mvn clean install
 java -jar metis-admin-*.jar --spring.profiles.active=dev
 
 ### 接口文档
-启动后在浏览器上输入：http://localhost:9090/metis-admin/doc.html
+启动后在浏览器上输入：http://localhost:9090/datum-admin/doc.html
 
 ### 数据库脚本
 路径：[metis-admin/controller/scripts/metis-admin-0.3.0.sql](./controller/scripts/metis-admin-0.3.0.sql)
