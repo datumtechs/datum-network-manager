@@ -81,7 +81,7 @@ public class TaskClient {
         } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        log.debug("从carrier查询本组织参与的任务, 数量:{}", response.getTasksList().size());
+        log.debug("从carrier查询本组织参与的任务, 数量:{},任务详情:{}", response.getTasksList().size(),response.getTasksList());
 
         List<Taskdata.TaskDetail> tasksList = response.getTasksList();
         return dataConvertToTaskList(tasksList);
