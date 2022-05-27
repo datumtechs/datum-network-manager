@@ -29,7 +29,7 @@ public class UserLoginReq {
     @CheckAddress(message = "{user.address.format}")
     private String address;
 
-    @ApiModelProperty(value = "签名明文(json格式字符串)", required = true, example = "{\"domain\":{\"name\":\"Metis\"},\"message\":{\"key\":\"26e65a54b17e44b896a7f9a0353856d6\",\"desc\":\"Welcome to Metis!\"},\"primaryType\":\"Login\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"}],\"Login\":[{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"desc\",\"type\":\"string\"}]}}")
+    @ApiModelProperty(value = "签名明文(json格式字符串)", required = true, example = "{\"domain\":{\"name\":\"Datum\"},\"message\":{\"key\":\"26e65a54b17e44b896a7f9a0353856d6\",\"desc\":\"Welcome to Datum!\"},\"primaryType\":\"Login\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"}],\"Login\":[{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"desc\",\"type\":\"string\"}]}}")
     @NotNull(message = "{user.sign.plaintext.notBlank}")
     private String signMessage;
 

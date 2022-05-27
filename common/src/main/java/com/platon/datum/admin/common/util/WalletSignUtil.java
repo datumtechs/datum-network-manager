@@ -105,7 +105,7 @@ public class WalletSignUtil {
     public static String createLoginSign(String nonce,Credentials credentials){
         log.info("address>>>" + credentials.getAddress());
         //登录签名
-        String json = "{\"domain\":{\"name\":\"Metis\"},\"message\":{\"key\":\"{}\",\"desc\":\"Welcome to Metis!\"},\"primaryType\":\"Login\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"}],\"Login\":[{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"desc\",\"type\":\"string\"}]}}";
+        String json = "{\"domain\":{\"name\":\"Datum\"},\"message\":{\"key\":\"{}\",\"desc\":\"Welcome to Datum!\"},\"primaryType\":\"Login\",\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"}],\"Login\":[{\"name\":\"key\",\"type\":\"string\"},{\"name\":\"desc\",\"type\":\"string\"}]}}";
         try {
             json = StrUtil.format(json, nonce);
             log.info("signMessage>>>" + json);

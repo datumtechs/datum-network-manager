@@ -27,19 +27,19 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/")
-public class MetisAdminApplication {
+public class DatumAdminApplication {
 
     @Resource
     private LocalOrgService localOrgService;
 
 
     public static void main(String[] args) {
-        SpringApplication.run(MetisAdminApplication.class, args);
+        SpringApplication.run(DatumAdminApplication.class, args);
     }
 
     @GetMapping("/health")
     public String health() {
-        return "Hello, Metis-Admin";
+        return "Hello, Datum-Admin";
     }
 
     /**
