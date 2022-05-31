@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/common/constant";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.metis.admin.grpc.common.constant";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "FighterEnum";
+
+package common.constant;
+
+enum ConnectPolicyFormat {
+  ConnectPolicyFormat_Unknown = 0;       // 未知
+  ConnectPolicyFormat_Str = 1;           // 字符串
+  ConnectPolicyFormat_Json = 2;          // json
+}
+
+enum ServiceType {
+  DATA_SVC = 0;
+  COMPUTE_SVC = 1;
+  SCHEDULE_SVC = 2;
+  NET_COMM_SVC = 3;
+}
+
+
+enum TaskStatus {
+  Start = 0;
+  Finished = 1;
+  Cancelled = 2;
+  Failed = 3;
+}

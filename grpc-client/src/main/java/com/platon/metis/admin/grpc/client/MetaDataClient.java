@@ -6,13 +6,14 @@ import com.platon.metis.admin.common.util.LocalDateTimeUtil;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalMetaData;
 import com.platon.metis.admin.dao.entity.LocalMetaDataColumn;
+import com.platon.metis.admin.grpc.carrier.api.MetaDataRpcApi;
+import com.platon.metis.admin.grpc.carrier.api.MetadataServiceGrpc;
+import com.platon.metis.admin.grpc.carrier.types.Common;
+import com.platon.metis.admin.grpc.carrier.types.Metadata;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
+import com.platon.metis.admin.grpc.common.constant.CarrierEnum;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.entity.template.MetaDataOption1;
-import com.platon.metis.admin.grpc.service.MetaDataRpcMessage;
-import com.platon.metis.admin.grpc.service.MetadataServiceGrpc;
-import com.platon.metis.admin.grpc.types.Base;
-import com.platon.metis.admin.grpc.types.Metadata;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -86,20 +87,20 @@ public class MetaDataClient {
         Metadata.MetadataSummary metadataSummary = Metadata.MetadataSummary.newBuilder()
                 .setMetadataId("") //必须有个值
                 .setMetadataName(localMetaData.getMetaDataName())
-                .setMetadataType(Base.MetadataType.forNumber(localMetaData.getMetaDataType()))
+                .setMetadataType(CarrierEnum.MetadataType.forNumber(localMetaData.getMetaDataType()))
                 .setDataHash(localDateFile.getDataHash())//原始数据内容的 sha256 的Hash
                 .setDesc(localMetaData.getRemarks())
-                .setLocationType(Base.DataLocationType.forNumber(localDateFile.getLocationType()))
-                .setDataType(Base.OrigindataType.forNumber(localDateFile.getFileType()))
+                .setLocationType(CarrierEnum.DataLocationType.forNumber(localDateFile.getLocationType()))
+                .setDataType(CarrierEnum.OrigindataType.forNumber(localDateFile.getFileType()))
                 .setIndustry(String.valueOf(localMetaData.getIndustry()))
-                .setState(Base.MetadataState.forNumber(localMetaData.getStatus()))
+                .setState(CarrierEnum.MetadataState.forNumber(localMetaData.getStatus()))
                 .setMetadataOption(JSONUtil.toJsonStr(metaDataOption1))//元数据选项 (json字符串, 根据 data_type 的值来配对对应的模板)
                 .setAllowExpose(false)
                 .build();
         //2.4构建完整的请求信息
-        MetaDataRpcMessage.PublishMetadataRequest request = MetaDataRpcMessage.PublishMetadataRequest.newBuilder().setInformation(metadataSummary).build();
+        MetaDataRpcApi.PublishMetadataRequest request = MetaDataRpcApi.PublishMetadataRequest.newBuilder().setInformation(metadataSummary).build();
         //3.调用rpc,获取response
-        MetaDataRpcMessage.PublishMetadataResponse response = MetadataServiceGrpc.newBlockingStub(channel).publishMetadata(request);
+        MetaDataRpcApi.PublishMetadataResponse response = MetadataServiceGrpc.newBlockingStub(channel).publishMetadata(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -127,12 +128,12 @@ public class MetaDataClient {
 
         //2.拼装request
         //2.1文件metaDataId
-        MetaDataRpcMessage.RevokeMetadataRequest revokeMetadataRequest = MetaDataRpcMessage.RevokeMetadataRequest
+        MetaDataRpcApi.RevokeMetadataRequest revokeMetadataRequest = MetaDataRpcApi.RevokeMetadataRequest
                 .newBuilder()
                 .setMetadataId(metaDataId)
                 .build();
         //3.调用rpc,获取response
-        Base.SimpleResponse response = MetadataServiceGrpc.newBlockingStub(channel).revokeMetadata(revokeMetadataRequest);
+        Common.SimpleResponse response = MetadataServiceGrpc.newBlockingStub(channel).revokeMetadata(revokeMetadataRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -151,12 +152,12 @@ public class MetaDataClient {
 //        Channel channel = channelManager.getCarrierChannel();
 //
 //        //2.拼装request
-//        MetaDataRpcMessage.GetGlobalMetadataDetailListRequest request = MetaDataRpcMessage.GetGlobalMetadataDetailListRequest
+//        MetaDataRpcApi.GetGlobalMetadataDetailListRequest request = MetaDataRpcApi.GetGlobalMetadataDetailListRequest
 //                .newBuilder()
 //                .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
 //                .build();
 //        //3.调用rpc,获取response
-//        MetaDataRpcMessage.GetGlobalMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getGlobalMetadataDetailList(request);
+//        MetaDataRpcApi.GetGlobalMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getGlobalMetadataDetailList(request);
 //        //4.处理response
 //        //4.处理response
 //        if (response == null) {
@@ -165,7 +166,7 @@ public class MetaDataClient {
 //            throw new CallGrpcServiceFailed(response.getMsg());
 //        }
 //
-//        List<MetaDataRpcMessage.GetGlobalMetadataDetail> metaDataList = response.getMetadatasList();
+//        List<MetaDataRpcApi.GetGlobalMetadataDetail> metaDataList = response.getMetadatasList();
 //        List<GlobalDataFile> globalDataFileList = metaDataList.stream()
 //                .map(globalMetadataDetailResponse -> {
 //                    GlobalDataFile globalDataFile = new GlobalDataFile();
@@ -223,13 +224,13 @@ public class MetaDataClient {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
-        MetaDataRpcMessage.GetLocalMetadataDetailListRequest request = MetaDataRpcMessage.GetLocalMetadataDetailListRequest
+        MetaDataRpcApi.GetLocalMetadataDetailListRequest request = MetaDataRpcApi.GetLocalMetadataDetailListRequest
                 .newBuilder()
                 .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
         //3.调用rpc,获取response
-        MetaDataRpcMessage.GetLocalMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getLocalMetadataDetailList(request);
+        MetaDataRpcApi.GetLocalMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getLocalMetadataDetailList(request);
 
         //4.处理response
         if (response == null) {
@@ -240,7 +241,7 @@ public class MetaDataClient {
 
         log.debug("从carrier查询元数据列表，数量:{}", response.getMetadatasList().size());
 
-        List<MetaDataRpcMessage.GetLocalMetadataDetail> metaDataList = response.getMetadatasList();
+        List<MetaDataRpcApi.GetLocalMetadataDetail> metaDataList = response.getMetadatasList();
         return metaDataList.stream().map(localMetaDataDetail -> {
             Metadata.MetadataSummary summary = localMetaDataDetail.getInformation().getMetadataSummary();
             LocalMetaData localMetaData = new LocalMetaData();
@@ -263,13 +264,13 @@ public class MetaDataClient {
 
         //2.拼装request
         //2.1文件metaDataId
-        MetaDataRpcMessage.BindDataTokenAddressRequest request = MetaDataRpcMessage.BindDataTokenAddressRequest
+        MetaDataRpcApi.BindDataTokenAddressRequest request = MetaDataRpcApi.BindDataTokenAddressRequest
                 .newBuilder()
                 .setMetadataId(metaDataId)
                 .setTokenAddress(tokenAddress)
                 .build();
         //3.调用rpc,获取response
-        Base.SimpleResponse response = MetadataServiceGrpc.newBlockingStub(channel).bindDataTokenAddress(request);
+        Common.SimpleResponse response = MetadataServiceGrpc.newBlockingStub(channel).bindDataTokenAddress(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();

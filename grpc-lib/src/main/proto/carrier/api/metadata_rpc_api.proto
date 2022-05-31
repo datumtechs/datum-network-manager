@@ -1,13 +1,16 @@
 syntax = "proto3";
-// 生成类的包名
-option java_package = "com.platon.metis.admin.grpc.service";
-//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
-option java_outer_classname = "MetaDataRpcMessage";
 
-package rpcapi;
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/carrier/api";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.metis.admin.grpc.carrier.api";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "MetaDataRpcApi";
 
-import "lib/types/base.proto";
-import "lib/types/metadata.proto";
+package carrier.api;
+
+import "carrier/types/common.proto";
+import "carrier/types/identitydata.proto";
+import "carrier/types/metadata.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
@@ -15,8 +18,8 @@ import "google/protobuf/empty.proto";
 
 // (全网) 单个元数据详情 resp
 message GetGlobalMetadataDetail {
-  types.Organization        owner = 1;              // 元数据的拥有者
-  types.MetadataDetail      information = 2;        // 元文件详情主体
+  carrier.types.Organization          owner = 1;              // 元数据的拥有者
+  carrier.types.MetadataDetail        information = 2;        // 元文件详情主体
 }
 
 message GetGlobalMetadataDetailListRequest {
@@ -33,9 +36,9 @@ message GetGlobalMetadataDetailListResponse {
 
 // (本组织) 单个元数据详情 resp
 message GetLocalMetadataDetail {
-  types.Organization        owner = 1;                  // 元数据的拥有者
-  types.MetadataDetail      information = 2;            // 元文件详情主体
-  bool                      is_internal = 3;            // 是否为本组织内部元数据 (不对外的元数据, true: 是内部元数据; false: 不是)
+  carrier.types.Organization          owner = 1;                  // 元数据的拥有者
+  carrier.types.MetadataDetail        information = 2;            // 元文件详情主体
+  bool                                is_internal = 3;            // 是否为本组织内部元数据 (不对外的元数据, true: 是内部元数据; false: 不是)
 }
 
 message GetLocalMetadataDetailListRequest {
@@ -52,7 +55,7 @@ message GetLocalMetadataDetailListResponse {
 
 // 数据上架 req
 message PublishMetadataRequest {
-  types.MetadataSummary information = 1;             // 元数据详情
+  carrier.types.MetadataSummary   information = 1;             // 元数据详情
 }
 // 数据上架 resp
 message PublishMetadataResponse {
@@ -87,13 +90,13 @@ message BindDataTokenAddressRequest {
 
 // v 0.4.0 将内部元数据重新发布成 对外的元数据 req
 message PublishMetadataByInteranlMetadataRequest {
-  types.MetadataSummary information = 1;             // 元数据详情
+  carrier.types.MetadataSummary   information = 1;             // 元数据详情
 }
 
 // v 0.4.0 将任务的结果数据重新发布成 对外的元数据 req
 message PublishMetadataByTaskResultFileRequest {
-  string                      task_id = 1;                  //任务id
-  types.MetadataSummary       information = 2;              // 元数据详情
+  string                                task_id = 1;                  //任务id
+  carrier.types.MetadataSummary         information = 2;              // 元数据详情
 }
 
 // ## 元数据 相关接口
@@ -129,7 +132,7 @@ service MetadataService {
   }
 
   // 撤销元数据 (从底层网络撤销)
-  rpc RevokeMetadata (RevokeMetadataRequest) returns (types.SimpleResponse) {
+  rpc RevokeMetadata (RevokeMetadataRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/metadata/revoke"
       body: "*"
@@ -146,7 +149,7 @@ service MetadataService {
   }
 
   // v 0.4.0 将元数据发布的 datatoken 合约地址绑定 元数据信息中 (metadata : datatoken == 1 : 1)
-  rpc BindDataTokenAddress (BindDataTokenAddressRequest) returns (types.SimpleResponse) {
+  rpc BindDataTokenAddress (BindDataTokenAddressRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/metadata/bindDataTokenAddress"
       body: "*"

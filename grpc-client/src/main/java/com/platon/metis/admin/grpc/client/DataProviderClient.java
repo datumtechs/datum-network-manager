@@ -3,10 +3,11 @@ package com.platon.metis.admin.grpc.client;
 import com.google.protobuf.ByteString;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
+import com.platon.metis.admin.grpc.common.constant.CarrierEnum;
+import com.platon.metis.admin.grpc.common.constant.FighterEnum;
+import com.platon.metis.admin.grpc.fighter.api.data.DataProviderGrpc;
+import com.platon.metis.admin.grpc.fighter.api.data.DataSvc;
 import com.platon.metis.admin.grpc.interceptor.UploadFileTimeoutInterceptor;
-import com.platon.metis.admin.grpc.service.DataProviderGrpc;
-import com.platon.metis.admin.grpc.service.DataProviderRpcMessage;
-import com.platon.metis.admin.grpc.types.Base;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,7 @@ public class DataProviderClient {
      * @param dataNodeHost 数据节点IP
      * @param dataNodePort 数据节点端口
      */
-    public DataProviderRpcMessage.UploadReply uploadData(String dataNodeHost, int dataNodePort, String fileName, MultipartFile file) {
+    public DataSvc.UploadReply uploadData(String dataNodeHost, int dataNodePort, String fileName, MultipartFile file) {
         log.debug("从carrier上传文件，fileName:{}", fileName);
         //1.获取rpc连接
         CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -56,18 +57,18 @@ public class DataProviderClient {
             channel = channelManager.buildUploadFileChannel(dataNodeHost, dataNodePort);
 
             //2.构建response流观察者，将会异步处理响应
-            ExtendResponseObserver<DataProviderRpcMessage.UploadReply> responseObserver = new ExtendResponseObserver<DataProviderRpcMessage.UploadReply>() {
+            ExtendResponseObserver<DataSvc.UploadReply> responseObserver = new ExtendResponseObserver<DataSvc.UploadReply>() {
 
                 //响应
-                private DataProviderRpcMessage.UploadReply response;
+                private DataSvc.UploadReply response;
 
                 @Override
-                public DataProviderRpcMessage.UploadReply getResponse() {
+                public DataSvc.UploadReply getResponse() {
                     return response;
                 }
 
                 @Override
-                public void onNext(DataProviderRpcMessage.UploadReply uploadReply) {
+                public void onNext(DataSvc.UploadReply uploadReply) {
                     //5.处理response
                     response = uploadReply;
 
@@ -80,7 +81,7 @@ public class DataProviderClient {
                 public void onError(Throwable t) {
                     log.error("failed to upload file", t);
                     if (response == null) {
-                        response = DataProviderRpcMessage.UploadReply.newBuilder().setStatus(1).build();
+                        response = DataSvc.UploadReply.newBuilder().setStatus(1).build();
                     }
                     countDownLatch.countDown();
                 }
@@ -94,7 +95,7 @@ public class DataProviderClient {
 
 
             //3.调用rpc,获取request流观察者
-            StreamObserver<DataProviderRpcMessage.UploadRequest> requestObserver = DataProviderGrpc.newStub(channel).uploadData(responseObserver);
+            StreamObserver<DataSvc.UploadRequest> requestObserver = DataProviderGrpc.newStub(channel).uploadData(responseObserver);
 
             //上传的时候FileInfo中填file_name就行，这里有个要求是先传content，再传meta，服务端以收到meta判断是否结束
             /** 第一次流式传输文件内容 */
@@ -106,11 +107,11 @@ public class DataProviderClient {
             int bytesRead;
             while ((bytesRead = bufferInputStream.read(bytes)) != -1) {
                 // 每次发送不大于4M数据
-                DataProviderRpcMessage.UploadRequest fileChunk = DataProviderRpcMessage.UploadRequest
+                DataSvc.UploadRequest fileChunk = DataSvc.UploadRequest
                         .newBuilder()
                         .setDataName(fileName)
                         .setContent(ByteString.copyFrom(bytes, 0, bytesRead))
-                        .setDataType(Base.OrigindataType.OrigindataType_CSV)//v0.4.0默认csv
+                        .setDataType(CarrierEnum.OrigindataType.OrigindataType_CSV)//v0.4.0默认csv
                         .build();
                 requestObserver.onNext(fileChunk);
             }
@@ -164,7 +165,7 @@ public class DataProviderClient {
         try {
             channel = channelManager.buildChannel(dataNodeHost, dataNodePort);
             //2.构建请求
-            DataProviderRpcMessage.DownloadRequest request = DataProviderRpcMessage.DownloadRequest
+            DataSvc.DownloadRequest request = DataSvc.DownloadRequest
                     .newBuilder()
                     .setDataPath(filePath)
                     .build();
@@ -175,16 +176,16 @@ public class DataProviderClient {
             //AtomicReference<ByteString> content = new AtomicReference<>(ByteString.EMPTY);
 
             //3.构建response流观察者
-            ExtendResponseObserver<DataProviderRpcMessage.DownloadReply> responseObserver = new ExtendResponseObserver<DataProviderRpcMessage.DownloadReply>() {
-                public DataProviderRpcMessage.DownloadReply response = DataProviderRpcMessage.DownloadReply.newBuilder().build();
+            ExtendResponseObserver<DataSvc.DownloadReply> responseObserver = new ExtendResponseObserver<DataSvc.DownloadReply>() {
+                public DataSvc.DownloadReply response = DataSvc.DownloadReply.newBuilder().build();
 
                 @Override
-                public DataProviderRpcMessage.DownloadReply getResponse() {
+                public DataSvc.DownloadReply getResponse() {
                     return response;
                 }
 
                 @Override
-                public void onNext(DataProviderRpcMessage.DownloadReply downloadReply) {
+                public void onNext(DataSvc.DownloadReply downloadReply) {
                     //5.处理response
                     if (downloadReply.hasContent()) {
                         response = response.toBuilder().setContent(response.getContent().concat(downloadReply.getContent())).build();
@@ -209,11 +210,11 @@ public class DataProviderClient {
                                 break;
                             case 2:
                                 //因为oneof,必须设置，设置后，会重置response.content
-                                response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Cancelled).build();
+                                response = response.toBuilder().setStatus(FighterEnum.TaskStatus.Cancelled).build();
                                 break;
                             case 3:
                                 //因为oneof,必须设置，设置后，会重置response.content
-                                response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Failed).build();
+                                response = response.toBuilder().setStatus(FighterEnum.TaskStatus.Failed).build();
                                 break;
                             default:
                                 break;
@@ -226,7 +227,7 @@ public class DataProviderClient {
                 public void onError(Throwable throwable) {
                     //因为oneof,必须设置，设置后，会重置response.content
                     log.error("下载失败：onError", throwable);
-                    response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Failed).build();
+                    response = response.toBuilder().setStatus(FighterEnum.TaskStatus.Failed).build();
                     countDownLatch.countDown();
                 }
 
@@ -254,7 +255,7 @@ public class DataProviderClient {
 
             log.error("下载####################filePath:" + filePath + "," + responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue());
             //只有出错时，才设置了status
-            if (responseObserver.getResponse() == null || responseObserver.getResponse().getStatus() != DataProviderRpcMessage.TaskStatus.Finished) {
+            if (responseObserver.getResponse() == null || responseObserver.getResponse().getStatus() != FighterEnum.TaskStatus.Finished) {
                 throw new CallGrpcServiceFailed(responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue());
             }
             return responseObserver.getResponse().getContent().toByteArray();

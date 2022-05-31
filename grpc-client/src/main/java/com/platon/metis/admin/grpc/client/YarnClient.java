@@ -4,14 +4,15 @@ import com.google.protobuf.Empty;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.LocalDataFile;
 import com.platon.metis.admin.dao.entity.LocalDataNode;
+import com.platon.metis.admin.grpc.carrier.api.SysRpcApi;
+import com.platon.metis.admin.grpc.carrier.api.YarnServiceGrpc;
+import com.platon.metis.admin.grpc.carrier.types.Common;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
+import com.platon.metis.admin.grpc.common.constant.CarrierEnum;
 import com.platon.metis.admin.grpc.entity.RegisteredNodeResp;
 import com.platon.metis.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.metis.admin.grpc.entity.YarnGetNodeInfoResp;
 import com.platon.metis.admin.grpc.entity.YarnQueryFilePositionResp;
-import com.platon.metis.admin.grpc.service.YarnRpcMessage;
-import com.platon.metis.admin.grpc.service.YarnServiceGrpc;
-import com.platon.metis.admin.grpc.types.Base;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import lombok.extern.slf4j.Slf4j;
@@ -49,14 +50,14 @@ public class YarnClient {
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        YarnRpcMessage.SetDataNodeRequest setDataNodeRequest = YarnRpcMessage.SetDataNodeRequest.newBuilder().
+        SysRpcApi.SetDataNodeRequest setDataNodeRequest = SysRpcApi.SetDataNodeRequest.newBuilder().
                 setInternalIp(dataNode.getInternalIp()).
                 setInternalPort(String.valueOf(dataNode.getInternalPort())).
                 setExternalIp(dataNode.getExternalIp()).
                 setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
         log.debug("调用新增数据节点调度服务,参数:{}", setDataNodeRequest);
         //3.调用rpc,获取response
-        YarnRpcMessage.SetDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setDataNode(setDataNodeRequest);
+        SysRpcApi.SetDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setDataNode(setDataNodeRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -64,7 +65,7 @@ public class YarnClient {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
 
-        YarnRpcMessage.YarnRegisteredPeerDetail resDataNode = response.getNode();
+        SysRpcApi.YarnRegisteredPeerDetail resDataNode = response.getNode();
         if (resDataNode != null) {
             RegisteredNodeResp nodeResp = new RegisteredNodeResp();
             nodeResp.setNodeId(resDataNode.getId());
@@ -85,7 +86,7 @@ public class YarnClient {
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        YarnRpcMessage.UpdateDataNodeRequest request = YarnRpcMessage.UpdateDataNodeRequest
+        SysRpcApi.UpdateDataNodeRequest request = SysRpcApi.UpdateDataNodeRequest
                 .newBuilder().setId(dataNode.getNodeId()).
                         setInternalIp(dataNode.getInternalIp()).
                         setInternalPort(String.valueOf(dataNode.getInternalPort())).
@@ -93,7 +94,7 @@ public class YarnClient {
                         setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
         log.debug("调用修改数据节点调度服务,参数:{}", request);
         //3.调用rpc,获取response
-        YarnRpcMessage.SetDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).updateDataNode(request);
+        SysRpcApi.SetDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).updateDataNode(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -101,7 +102,7 @@ public class YarnClient {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
 
-        YarnRpcMessage.YarnRegisteredPeerDetail resDataNode = response.getNode();
+        SysRpcApi.YarnRegisteredPeerDetail resDataNode = response.getNode();
         if (resDataNode != null) {
             RegisteredNodeResp nodeResp = new RegisteredNodeResp();
             nodeResp.setNodeId(resDataNode.getId());
@@ -121,10 +122,10 @@ public class YarnClient {
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        YarnRpcMessage.DeleteRegisteredNodeRequest request = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
+        SysRpcApi.DeleteRegisteredNodeRequest request = SysRpcApi.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
         log.debug("调用删除数据节点调度服务,参数:{}", request);
         //3.调用rpc,获取response
-        Base.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
+        Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
         log.debug("调用删除数据节点调度服务,响应结果:{}", response);
         //4.处理response
         if (response == null) {
@@ -148,7 +149,7 @@ public class YarnClient {
         Empty emptyGetParams = Empty.newBuilder().build();
 
         //3.调用rpc,获取response
-        YarnRpcMessage.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
+        SysRpcApi.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
 
         //4.处理response
         if (response == null) {
@@ -161,7 +162,7 @@ public class YarnClient {
 
     }
 
-    private List<LocalDataNode> convertToLocalDataNodeList(List<YarnRpcMessage.YarnRegisteredPeer> nodeList) {
+    private List<LocalDataNode> convertToLocalDataNodeList(List<SysRpcApi.YarnRegisteredPeer> nodeList) {
         return nodeList.parallelStream().map(node -> {
             LocalDataNode localDataNode = new LocalDataNode();
             localDataNode.setNodeId(node.getNodeDetail().getId());
@@ -185,13 +186,13 @@ public class YarnClient {
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        YarnRpcMessage.QueryAvailableDataNodeRequest request = YarnRpcMessage.QueryAvailableDataNodeRequest
+        SysRpcApi.QueryAvailableDataNodeRequest request = SysRpcApi.QueryAvailableDataNodeRequest
                 .newBuilder()
                 .setDataSize(fileSize)
-                .setDataType(Base.OrigindataType.forNumber(fileType.getCode()))
+                .setDataType(CarrierEnum.OrigindataType.forNumber(fileType.getCode()))
                 .build();
         //3.调用rpc,获取response
-        YarnRpcMessage.QueryAvailableDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).queryAvailableDataNode(request);
+        SysRpcApi.QueryAvailableDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).queryAvailableDataNode(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -220,12 +221,12 @@ public class YarnClient {
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        YarnRpcMessage.QueryFilePositionRequest request = YarnRpcMessage.QueryFilePositionRequest
+        SysRpcApi.QueryFilePositionRequest request = SysRpcApi.QueryFilePositionRequest
                 .newBuilder()
                 .setOriginId(fileId)
                 .build();
         //3.调用rpc,获取response
-        YarnRpcMessage.QueryFilePositionResponse response = YarnServiceGrpc.newBlockingStub(channel).queryFilePosition(request);
+        SysRpcApi.QueryFilePositionResponse response = YarnServiceGrpc.newBlockingStub(channel).queryFilePosition(request);
         //4.处理response
         //4.处理response
         if (response == null) {
@@ -261,7 +262,7 @@ public class YarnClient {
             //2.拼装request
             Empty request = Empty.newBuilder().build();
             //3.调用rpc,获取response
-            YarnRpcMessage.GetNodeInfoResponse response = YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
+            SysRpcApi.GetNodeInfoResponse response = YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
 
             //4.处理response
             if (response == null) {
@@ -294,7 +295,7 @@ public class YarnClient {
             //2.拼装request
             Empty request = Empty.newBuilder().build();
             //3.调用rpc,获取response
-            YarnRpcMessage.GetNodeInfoResponse response = YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
+            SysRpcApi.GetNodeInfoResponse response = YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
 
             //4.处理response
             if (response == null) {
@@ -307,7 +308,7 @@ public class YarnClient {
              * 故将response转换后再放给service类使用
              */
             YarnGetNodeInfoResp resp = new YarnGetNodeInfoResp();
-            YarnRpcMessage.YarnNodeInfo information = response.getInformation();
+            SysRpcApi.YarnNodeInfo information = response.getInformation();
             resp.setNodeId(information.getNodeId());
             resp.setInternalIp(information.getInternalIp());
             resp.setInternalPort(information.getInternalPort());
@@ -341,7 +342,7 @@ public class YarnClient {
             //2.拼装request
             Empty request = Empty.newBuilder().build();
             //3.调用rpc,获取response
-            YarnRpcMessage.GenerateObServerProxyWalletAddressResponse response =
+            SysRpcApi.GenerateObServerProxyWalletAddressResponse response =
                     YarnServiceGrpc.newBlockingStub(channel).generateObServerProxyWalletAddress(request);
 
             //4.处理response

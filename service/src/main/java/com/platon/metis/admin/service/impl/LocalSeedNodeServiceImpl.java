@@ -8,8 +8,8 @@ import com.platon.metis.admin.common.exception.ObjectNotFound;
 import com.platon.metis.admin.common.exception.SeedNodeExists;
 import com.platon.metis.admin.dao.LocalSeedNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
+import com.platon.metis.admin.grpc.carrier.api.SysRpcApi;
 import com.platon.metis.admin.grpc.client.SeedClient;
-import com.platon.metis.admin.grpc.service.YarnRpcMessage;
 import com.platon.metis.admin.service.LocalSeedNodeService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +26,9 @@ import javax.annotation.Resource;
 public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
 
 
-    /** 计算节点 */
+    /**
+     * 计算节点
+     */
     @Resource
     LocalSeedNodeMapper localSeedNodeMapper;
 
@@ -41,10 +43,10 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
             throw new ArgumentException();
         }
         if (localSeedNodeMapper.querySeedNodeDetails(seedNode.getSeedNodeId()) != null) {
-            throw new SeedNodeExists ();
+            throw new SeedNodeExists();
         }
 
-        YarnRpcMessage.SeedPeer seedResp = seedClient.addSeedNode(seedNode.getSeedNodeId());
+        SysRpcApi.SeedPeer seedResp = seedClient.addSeedNode(seedNode.getSeedNodeId());
         seedNode.setInitFlag(seedResp.getIsDefault());
         seedNode.setConnStatus(seedResp.getConnState().getNumber());
         localSeedNodeMapper.insertSeedNode(seedNode);
@@ -59,11 +61,11 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
     public void deleteSeedNode(String seedNodeId) {
 
         LocalSeedNode localSeedNode = localSeedNodeMapper.querySeedNodeDetails(seedNodeId);
-        if(localSeedNode==null){
+        if (localSeedNode == null) {
             throw new ObjectNotFound();
         }
-        if(localSeedNode.getInitFlag()){//内置
-            throw new CannotDeleteInitSeedNode ();
+        if (localSeedNode.getInitFlag()) {//内置
+            throw new CannotDeleteInitSeedNode();
         }
 
         // 删除底层资源
@@ -98,7 +100,7 @@ public class LocalSeedNodeServiceImpl implements LocalSeedNodeService {
     ///ip4/192.168.9.155/tcp/18001/p2p/16Uiu2HAm291kstk4F64bEEuEQqNhLwnDhR4dCnYB4nQawqhixY9f
     private static boolean verifySeedNodeId(String seedNodeId) {
         //长度校验
-        if(StringUtils.length(seedNodeId) > 256){
+        if (StringUtils.length(seedNodeId) > 256) {
             return false;
         }
         return true;

@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/fighter/types";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.metis.admin.grpc.fighter.types";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "Types";
+
+package fighter.types;
+
+import "common/constant/fighter_enum.proto";
+
+message Party {                // 各参与方信息
+  string ip = 1;
+  int32 port = 2;
+  string party_id = 3;      // 达成共识后为每个参与方分配的唯一标识
+  string name = 4;          // 为了可读性
+}
+
+message TaskReadyGoReq {
+  string task_id = 1;
+  string party_id = 2;          // 当前参与方id
+  string env_id = 3;            // 环境
+  repeated Party parties = 4;   // 各个参与方的信息
+  string algorithm_code = 5;           // 算法代码
+  string self_cfg_params = 6;          // 本方的配置参数，里面有input_data
+  string algorithm_dynamic_params = 7; // 算法动态参数
+  repeated string data_party_ids = 8;         // 各数据方的party_id
+  repeated string computation_party_ids = 9;  // 各计算方的party_id
+  repeated string result_party_ids = 10;      // 各结果方的party_id
+  uint64 duration = 11;       // 任务预算计算时长(单位: ms)
+  uint64 memory = 12;         // 内存限制(单位: byte)
+  uint32 processor = 13;      // 处理器限制(单位：个)
+  uint64 bandwidth = 14;      // 带宽限制(单位：bps)
+  common.constant.ConnectPolicyFormat connect_policy_format = 15; // 策略的格式，str或者json
+  string connect_policy = 16;      // channel的连接策略
+}
+
+message TaskReadyGoReply {
+  int32 status = 1;
+  string msg = 2;
+}
+
+message TaskCancelReq {
+  string task_id = 1;
+  string party_id = 2;
+}
+
+message TaskCancelReply {
+  int32 status = 1;
+  string msg = 2;
+}

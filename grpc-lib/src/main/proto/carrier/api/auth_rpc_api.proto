@@ -1,15 +1,17 @@
 syntax = "proto3";
 
-// 生成类的包名
-option java_package = "com.platon.metis.admin.grpc.service";
-//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
-option java_outer_classname = "AuthRpcMessage";
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/carrier/api";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.metis.admin.grpc.carrier.api";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "AuthRpcApi";
 
-package rpcapi;
+package carrier.api;
 
-import "lib/types/base.proto";
-//import "lib/types/identitydata.proto";
-import "lib/types/metadata.proto";
+import "common/constant/carrier_enum.proto";
+import "carrier/types/common.proto";
+import "carrier/types/identitydata.proto";
+import "carrier/types/metadata.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
@@ -17,13 +19,13 @@ import "google/protobuf/empty.proto";
 
 // 组织身份入网申请 req
 message ApplyIdentityJoinRequest {
-  types.Organization information = 1;           // 申请准入身份
+  carrier.types.Organization information = 1;           // 申请准入身份
 }
 // 查询自己组织的identity信息 resp
 message GetNodeIdentityResponse {
-  int32                     status = 1;                       // 响应码
-  string                    msg = 2;                          // 错误信息
-  types.Organization        information = 3;                  // 自己身份信息
+  int32                             status = 1;                       // 响应码
+  string                            msg = 2;                          // 错误信息
+  carrier.types.Organization        information = 3;                  // 自己身份信息
 }
 
 message GetIdentityListRequest {
@@ -33,17 +35,17 @@ message GetIdentityListRequest {
 
 // 查询全网组织的身份信息列表(已入网的) resp
 message GetIdentityListResponse {
-  int32                              status = 1;                       // 响应码
-  string                             msg = 2;                          // 错误信息
-  repeated types.Organization        identitys = 3;                    // 全网身份信息列表
+  int32                                       status = 1;                       // 响应码
+  string                                      msg = 2;                          // 错误信息
+  repeated carrier.types.Organization         identitys = 3;                    // 全网身份信息列表
 }
 
 // 发起用户对元数据使用授权申请 req
 message ApplyMetadataAuthorityRequest {
-  string                  user = 1;                            // 发起任务的用户的信息 (授权申请, 是属于用户的)
-  types.UserType          user_type = 2;                       // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
-  types.MetadataAuthority auth = 3;                            // 元数据使用授权信息
-  bytes                   sign = 4;                            // 发起数据授权申请的账户的签名
+  string                            user = 1;                            // 发起任务的用户的信息 (授权申请, 是属于用户的)
+  common.constant.UserType          user_type = 2;                       // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  carrier.types.MetadataAuthority   auth = 3;                            // 元数据使用授权信息
+  bytes                             sign = 4;                            // 发起数据授权申请的账户的签名
 }
 // 发起用户对元数据使用授权申请 resp
 message ApplyMetadataAuthorityResponse {
@@ -54,23 +56,23 @@ message ApplyMetadataAuthorityResponse {
 
 // 撤销用户对元数据使用授权申请 req
 message RevokeMetadataAuthorityRequest {
-  string                  user = 1;                             // 发起任务的用户的信息 (授权申请, 是属于用户的)
-  types.UserType          user_type = 2;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
-  string                  metadata_auth_id = 3;                 // 元数据授权申请Id
-  bytes                   sign = 4;                             //  撤销数据授权申请的账户的签名
+  string                    user = 1;                             // 发起任务的用户的信息 (授权申请, 是属于用户的)
+  common.constant.UserType  user_type = 2;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  string                    metadata_auth_id = 3;                 // 元数据授权申请Id
+  bytes                     sign = 4;                             //  撤销数据授权申请的账户的签名
 }
 
 // 组织对用户的数据授权申请做审核 req
 message AuditMetadataAuthorityRequest {
-  string                            metadata_auth_id = 1;                   // 元数据授权申请Id
-  types.AuditMetadataOption         audit = 2;                              // 审核结果
-  string                            suggestion = 3;                         // 审核意见 (允许""字符)
+  string                                        metadata_auth_id = 1;                   // 元数据授权申请Id
+  common.constant.AuditMetadataOption           audit = 2;                              // 审核结果
+  string                                        suggestion = 3;                         // 审核意见 (允许""字符)
 }
 // 组织对用户的数据授权申请做审核 resp
 message AuditMetadataAuthorityResponse {
-  int32                            status = 1;                       // 响应码
-  string                           msg = 2;                          // 错误信息
-  types.AuditMetadataOption        audit = 3;                        // 审核结果 (回显)
+  int32                                         status = 1;                       // 响应码
+  string                                        msg = 2;                          // 错误信息
+  common.constant.AuditMetadataOption           audit = 3;                        // 审核结果 (回显)
 }
 
 //// 查看某个组织的所有元数据的授权申请及审核结果详情列表 req
@@ -85,16 +87,16 @@ message GetMetadataAuthorityListRequest {
 
 // 当前(组织or用户)的所有元数据的授权申请及审核结果详情列表 resp
 message GetMetadataAuthorityListResponse {
-  int32                                       status = 1;                       // 响应码
-  string                                      msg = 2;                          // 错误信息
-  repeated types.MetadataAuthorityDetail      metadata_auths = 3;               // 数据授权信息列表
+  int32                                                 status = 1;                       // 响应码
+  string                                                msg = 2;                          // 错误信息
+  repeated carrier.types.MetadataAuthorityDetail        metadata_auths = 3;               // 数据授权信息列表
 }
 
 
 service AuthService {
 
   // 组织身份入网申请
-  rpc ApplyIdentityJoin (ApplyIdentityJoinRequest) returns (types.SimpleResponse) {
+  rpc ApplyIdentityJoin (ApplyIdentityJoinRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/auth/applyIdentity"
       body: "*"
@@ -102,7 +104,7 @@ service AuthService {
   }
 
   // 注销准入网络
-  rpc RevokeIdentityJoin (google.protobuf.Empty) returns (types.SimpleResponse) {
+  rpc RevokeIdentityJoin (google.protobuf.Empty) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/auth/revokeIdentity"
       body: "*"
@@ -132,7 +134,7 @@ service AuthService {
   }
 
   // 撤销数据授权申请
-  rpc RevokeMetadataAuthority(RevokeMetadataAuthorityRequest) returns (types.SimpleResponse) {
+  rpc RevokeMetadataAuthority(RevokeMetadataAuthorityRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/auth/revokeMetadataAuth"
       body: "*"

@@ -3,9 +3,9 @@ package com.platon.metis.admin.grpc.client;
 import com.alibaba.fastjson.JSON;
 import com.platon.metis.admin.dao.entity.Task;
 import com.platon.metis.admin.dao.entity.TaskOrg;
-import com.platon.metis.admin.grpc.service.TaskRpcMessage;
-import com.platon.metis.admin.grpc.service.TaskServiceGrpc;
-import com.platon.metis.admin.grpc.types.Taskdata;
+import com.platon.metis.admin.grpc.carrier.api.TaskRpcApi;
+import com.platon.metis.admin.grpc.carrier.api.TaskServiceGrpc;
+import com.platon.metis.admin.grpc.carrier.types.TaskData;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -70,15 +70,15 @@ public class TaskClientTest {
     public void test() {
         Channel channel = ManagedChannelBuilder.forAddress("localhost", 50051).usePlaintext().build();
         LocalDateTime lastUpdated = LocalDateTime.parse("1970-01-01 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        TaskRpcMessage.GetTaskDetailListRequest request = TaskRpcMessage.GetTaskDetailListRequest
+        TaskRpcApi.GetTaskDetailListRequest request = TaskRpcApi.GetTaskDetailListRequest
                 .newBuilder()
                 .setLastUpdated(lastUpdated.toInstant(ZoneOffset.UTC).toEpochMilli())
                 .build();
 
-        TaskRpcMessage.GetTaskDetailListResponse taskDetailListResponse = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
+        TaskRpcApi.GetTaskDetailListResponse taskDetailListResponse = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
         int status = taskDetailListResponse.getStatus();
         String msg = taskDetailListResponse.getMsg();
-        List<Taskdata.TaskDetail> taskDetailResponseList = taskDetailListResponse.getTasksList();
+        List<TaskData.TaskDetail> taskDetailResponseList = taskDetailListResponse.getTasksList();
         System.out.println("############### status:" + status);
         System.out.println("############### msg:" + msg);
         System.out.println("############### data:" + taskDetailResponseList.toString());
@@ -93,26 +93,26 @@ public class TaskClientTest {
     static class TaskServiceImpl extends TaskServiceGrpc.TaskServiceImplBase {
 
         @Override
-        public void getLocalTaskDetailList(com.platon.metis.admin.grpc.service.TaskRpcMessage.GetTaskDetailListRequest request,
-                                           io.grpc.stub.StreamObserver<com.platon.metis.admin.grpc.service.TaskRpcMessage.GetTaskDetailListResponse> responseObserver) {
+        public void getLocalTaskDetailList(TaskRpcApi.GetTaskDetailListRequest request,
+                                           io.grpc.stub.StreamObserver<TaskRpcApi.GetTaskDetailListResponse> responseObserver) {
             System.out.println("########### request:" + request);
 
 
-            Taskdata.TaskDetailSummary taskDetailShow = Taskdata.TaskDetailSummary.newBuilder()
+            TaskData.TaskDetailSummary taskDetailShow = TaskData.TaskDetailSummary.newBuilder()
                     .setTaskId("001")
                     .setTaskName("taskName")
                     .build();
-            Taskdata.TaskDetail taskDetailResponse = Taskdata.TaskDetail.newBuilder()
+            TaskData.TaskDetail taskDetailResponse = TaskData.TaskDetail.newBuilder()
                     .setInformation(taskDetailShow)
                     .build();
 
-            TaskRpcMessage.GetTaskDetailListResponse response = TaskRpcMessage
-                    .GetTaskDetailListResponse
-                    .newBuilder()
-                    .setStatus(0)
-                    .setMsg("seccess")
-                    .addTasks(taskDetailResponse)
-                    .build();
+            TaskRpcApi.GetTaskDetailListResponse response =
+                    TaskRpcApi.GetTaskDetailListResponse
+                            .newBuilder()
+                            .setStatus(0)
+                            .setMsg("seccess")
+                            .addTasks(taskDetailResponse)
+                            .build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
 

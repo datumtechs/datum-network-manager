@@ -1,56 +1,18 @@
 syntax = "proto3";
 
-package api.protobuf;
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/common/constant";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.metis.admin.grpc.common.constant";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "CarrierEnum";
 
-option go_package = "github.com/RosettaFlow/Carrier-Go/lib/common";
-
-option java_package = "com.platon.metis.admin.grpc.common";
-//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
-option java_outer_classname = "CommonBase";
-
-
-// A represents the basic information of the organization.
-message Organization  {
-  // org name
-  string node_name = 1;
-  // the node_id for org
-  string node_id = 2;
-  // the identity for org
-  string identity_id = 3;
-  // the status for organization(1 means valid, 2 means invalid)
-  DataStatus status = 4;
-  //v 3.0
-  // the last_update time of corresponding datacenter (unit: UTC ms)
-  uint64 update_at = 5;
-  // the link of face image (with a length limit)
-  string image_url = 6;
-  // description of the node (with a length limit)
-  string details = 7;
-}
-
-// 任务下的组织信息
-message TaskOrganization  {
-  string party_id = 1;
-  // org name
-  string node_name = 2;
-  // the node_id for org
-  string node_id = 3;
-  // the identity for org
-  string identity_id = 4;
-}
-
-message SimpleResponse {
-  // the code for response
-  int32 status = 1;
-  // the message for response
-  string msg = 2;
-}
+package common.constant;
 
 enum UserType {
   User_Unknown = 0;
-  User_1 = 1;
-  User_2 = 2;
-  User_3 = 3;
+  User_1 = 1;    // PlatON
+  User_2 = 2;    // Alaya
+  User_3 = 3;    // Ethereum
 }
 
 // the status of data for local storage, 1 means valid, 2 means invalid
@@ -73,10 +35,33 @@ enum AuditMetadataOption {
   Audit_Refused = 2;          // 审核拒绝
 }
 
-//原始文件类型
-enum OriginFileType {
-  FileType_Unknown = 0;   // 未知
-  FileType_CSV = 1;       // csv, 目前只支持这个.
+// 元数据类型
+enum MetadataType {
+  MetadataType_Unknown = 0;         // 未知
+  MetadataType_DataFile = 1;        // 普通数据
+  MetadataType_ModuleFile = 2;      // 模型数据
+  //  MetadataType_AlgorithmFile = 3;   // 算法数据
+
+}
+
+// 数据的位置 (本地、远端、云等)
+enum DataLocationType {
+  DataLocationType_Unknown = 0;             // 未知
+  DataLocationType_Local = 1;               // (存储在组织本地服务器上, 直接可以拿到该文件)
+  DataLocationType_URL = 2;                 // (存储在远端服务器上, 通过 url 等方式拿到该文件)
+}
+
+// 原始数据类型 (文件类型)
+enum OrigindataType {
+  OrigindataType_Unknown = 0;             // 未知
+  OrigindataType_CSV = 1;                 // csv
+  OrigindataType_DIR = 2;                 // dir     (目录)
+  OrigindataType_BINARY = 3;              // binary  (普通的二进制数据, 没有明确说明后缀的二进制文件)
+  OrigindataType_XLS = 4;                 // xls
+  OrigindataType_XLSX = 5;                // xlsx
+  OrigindataType_TXT = 6;                 // txt
+  OrigindataType_JSON = 7;                // json
+  //  OrigindataType_Python = 20001;      // python
 }
 
 // 元数据的状态 (0: 未知; 1: 还未发布的新表; 2: 已发布的表; 3: 已撤销的表)
@@ -130,3 +115,4 @@ enum MetadataAuthorityState {
   MAState_Revoked = 3;
   MAState_Invalid = 4;
 }
+

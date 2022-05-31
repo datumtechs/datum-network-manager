@@ -9,9 +9,9 @@ import com.platon.metis.admin.dao.LocalPowerNodeMapper;
 import com.platon.metis.admin.dao.entity.LocalPowerLoadSnapshot;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
 import com.platon.metis.admin.dao.entity.PowerLoad;
+import com.platon.metis.admin.grpc.carrier.api.SysRpcApi;
 import com.platon.metis.admin.grpc.client.PowerClient;
-import com.platon.metis.admin.grpc.common.CommonBase;
-import com.platon.metis.admin.grpc.service.YarnRpcMessage;
+import com.platon.metis.admin.grpc.common.constant.CarrierEnum;
 import com.platon.metis.admin.service.LocalPowerNodeService;
 import com.platon.metis.admin.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +60,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
             throw new ArgumentException();
         }
         // 调用grpc接口增加算力，此时调度服务会连算力节点，如果正常返回，说明连接成功
-        YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
+        SysRpcApi.YarnRegisteredPeerDetail jobNode = powerClient.addPowerNode(powerNode.getInternalIp(), powerNode.getExternalIp(),
                 powerNode.getInternalPort(), powerNode.getExternalPort());
 
         log.info("新增计算节点数据:{}", jobNode);
@@ -69,7 +69,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
         // 设置连接状态
         powerNode.setConnStatus(jobNode.getConnState().getNumber());
         // 设置算力状态（未发布）
-        powerNode.setPowerStatus(CommonBase.PowerState.PowerState_Created_VALUE);
+        powerNode.setPowerStatus(CarrierEnum.PowerState.PowerState_Created_VALUE);
         // 内存
         powerNode.setMemory(0L);
         // 核数
@@ -89,10 +89,10 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
             throw new CannotConnectPowerNode();
         }
         //启用的不能修改
-        if (localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Released_VALUE
-                || localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE) {
+        if (localPowerNode.getPowerStatus() == CarrierEnum.PowerState.PowerState_Released_VALUE
+                || localPowerNode.getPowerStatus() == CarrierEnum.PowerState.PowerState_Occupation_VALUE) {
             throw new CannotEditPowerNode();
-        } else if(localPowerNode.getPowerStatus() == 5 || localPowerNode.getPowerStatus() == 6){
+        } else if (localPowerNode.getPowerStatus() == 5 || localPowerNode.getPowerStatus() == 6) {
             throw new CannotOpsPowerNode();
         }
 
@@ -103,7 +103,7 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
             throw new ServiceException("有任务进行中，无法修改此节点！");
         }*/
         // 调用grpc接口修改计算节点信息
-        YarnRpcMessage.YarnRegisteredPeerDetail jobNode = powerClient.updatePowerNode(powerNode.getNodeId(), powerNode.getInternalIp(), powerNode.getExternalIp(),
+        SysRpcApi.YarnRegisteredPeerDetail jobNode = powerClient.updatePowerNode(powerNode.getNodeId(), powerNode.getInternalIp(), powerNode.getExternalIp(),
                 powerNode.getInternalPort(), powerNode.getExternalPort());
         // 计算节点id
         powerNode.setNodeId(jobNode.getId());
@@ -127,10 +127,10 @@ public class LocalPowerNodeServiceImpl implements LocalPowerNodeService {
             throw new CannotConnectPowerNode();
         }
         //启用的不能删除
-        if (localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Released_VALUE
-                || localPowerNode.getPowerStatus() == CommonBase.PowerState.PowerState_Occupation_VALUE) {
+        if (localPowerNode.getPowerStatus() == CarrierEnum.PowerState.PowerState_Released_VALUE
+                || localPowerNode.getPowerStatus() == CarrierEnum.PowerState.PowerState_Occupation_VALUE) {
             throw new CannotEditPowerNode();
-        } else if(localPowerNode.getPowerStatus() == 5 || localPowerNode.getPowerStatus() == 6){
+        } else if (localPowerNode.getPowerStatus() == 5 || localPowerNode.getPowerStatus() == 6) {
             throw new CannotOpsPowerNode();
         }
 

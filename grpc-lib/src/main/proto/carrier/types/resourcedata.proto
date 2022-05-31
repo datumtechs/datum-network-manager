@@ -1,19 +1,23 @@
 syntax = "proto3";
 
-package types;
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/carrier/types";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.metis.admin.grpc.carrier.types";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "ResourceData";
 
-import "lib/types/base.proto";
-//import "repos/protobuf/gogoproto/gogo.proto";
+package carrier.types;
 
-option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
-option java_package = "com.platon.metis.admin.grpc.types";
+import "common/constant/carrier_enum.proto";
+import "carrier/types/identitydata.proto";
+
 
 // 单个组织的总算力信息
 message ResourcePB {
   Organization                      owner = 1;                               // 算力所属的组织信息
   string                            data_id = 2;                             // 算力的powerId
-  DataStatus                        data_status = 3;                         // the status of data for local storage, 1 means valid, 2 means invalid.
-  PowerState                        state = 4;                               // 算力的状态 (0: 未知; 1: create 还未发布的算力; 2: release 已发布的算力; 3: revoke 已撤销的算力)
+  common.constant.DataStatus        data_status = 3;                         // the status of data for local storage, 1 means valid, 2 means invalid.
+  common.constant.PowerState        state = 4;                               // 算力的状态 (0: 未知; 1: create 还未发布的算力; 2: release 已发布的算力; 3: revoke 已撤销的算力)
   uint64                            total_mem = 5;                           // 算力总内存 (单位: byte)
   uint64                            used_mem = 6;                            // 算力已使用内存 (单位: byte)
   uint32                            total_processor = 7;                     // 算力总内核数 (单位: 个)
@@ -31,8 +35,8 @@ message ResourcePB {
 message LocalResourcePB {
   Organization                      owner = 1;                                // 算力所属的组织信息
   string                            data_id = 2;                              // 算力的powerId
-  DataStatus                        data_status = 3;                          // the status of data for local storage, 1 means valid, 2 means invalid.
-  PowerState                        state = 4;                                // 算力的状态 (0: 未知; 1: create 还未发布的算力; 2: release 已发布的算力; 3: revoke 已撤销的算力)
+  common.constant.DataStatus        data_status = 3;                          // the status of data for local storage, 1 means valid, 2 means invalid.
+  common.constant.PowerState        state = 4;                                // 算力的状态 (0: 未知; 1: create 还未发布的算力; 2: release 已发布的算力; 3: revoke 已撤销的算力)
   uint64                            total_mem = 5;                            // 算力总内存 (单位: byte)
   uint64                            used_mem = 6;                             // 算力已使用内存 (单位: byte)
   uint32                            total_processor = 7;                      // 算力总内核数 (单位: 个)
@@ -54,7 +58,7 @@ message Power {
   string                      job_node_id = 1;          // 计算服务id (节点内部的)
   string                      power_id = 2;             // 算力id
   ResourceUsageOverview       usage_overview = 3;       // 算力实况
-  PowerState                  state = 4;                // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力; 3: 已撤销的算力)
+  common.constant.PowerState  state = 4;                // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力; 3: 已撤销的算力)
   uint64                      nonce = 5;                // 算力的 nonce (用来标识该算力在所属组织中的算力的序号, 从 0 开始递增)
 }
 
@@ -64,7 +68,7 @@ message PowerUsageDetail {
   uint32                            total_task_count = 2;             // 算力(宿主机)上执行过的任务总数 (已完成的和正在执行的)
   uint32                            current_task_count = 3;           // 算力(宿主机)上当前正在执行的任务数
   repeated PowerTask                tasks = 4;                        // 算力(宿主机)上当前正在执行的任务详情信息
-  PowerState                        state = 5;                        // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)
+  common.constant.PowerState        state = 5;                        // 算力的状态 (0: 未知; 1: 还未发布的算力; 2: 已发布的算力(算力未被占用); 3: 已发布的算力(算力正在被占用); 4: 已撤销的算力)
   uint64                            publish_at = 6;                   // 数据发布时间 (表示单条算力时才有值)
   uint64                            update_at = 7;                    // 数据更新时间 (表示单条算力时才有值)
   uint64                            nonce = 8;                        // 算力的 nonce (用来标识该算力在所属组织中的算力的序号, 从 0 开始递增)
@@ -94,5 +98,15 @@ message ResourceUsageOverview {
   uint64 used_disk = 8;         // 服务的已用磁盘空间 (单位: byte)
 }
 
-
+// 任务需要花费的资源声明
+message TaskResourceCostDeclare {
+  // 任务所需的内存 (单位: byte)
+  uint64 memory = 1;
+  // 任务所需的核数 (单位: 个)
+  uint32 processor = 2;
+  // 任务所需的带宽 (单位: bps)
+  uint64 bandwidth = 3;
+  // 任务所需的运行时长 (单位: ms)
+  uint64 duration = 4;
+}
 

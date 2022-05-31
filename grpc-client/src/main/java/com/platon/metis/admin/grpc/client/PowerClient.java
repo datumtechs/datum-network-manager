@@ -5,13 +5,13 @@ import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.common.util.LocalDateTimeUtil;
 import com.platon.metis.admin.dao.entity.LocalPowerJoinTask;
 import com.platon.metis.admin.dao.entity.LocalPowerNode;
+import com.platon.metis.admin.grpc.carrier.api.PowerRpcApi;
+import com.platon.metis.admin.grpc.carrier.api.PowerServiceGrpc;
+import com.platon.metis.admin.grpc.carrier.api.SysRpcApi;
+import com.platon.metis.admin.grpc.carrier.api.YarnServiceGrpc;
+import com.platon.metis.admin.grpc.carrier.types.Common;
+import com.platon.metis.admin.grpc.carrier.types.ResourceData;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
-import com.platon.metis.admin.grpc.service.PowerRpcMessage;
-import com.platon.metis.admin.grpc.service.PowerServiceGrpc;
-import com.platon.metis.admin.grpc.service.YarnRpcMessage;
-import com.platon.metis.admin.grpc.service.YarnServiceGrpc;
-import com.platon.metis.admin.grpc.types.Base;
-import com.platon.metis.admin.grpc.types.Resourcedata;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -45,18 +45,18 @@ public class PowerClient {
     /**
      * 新增计算节点返回nodeId
      */
-    public YarnRpcMessage.YarnRegisteredPeerDetail addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort) {
+    public SysRpcApi.YarnRegisteredPeerDetail addPowerNode(String internalIp, String externalIp, Integer internalPort, Integer externalPort) {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
-        YarnRpcMessage.SetJobNodeRequest joinRequest = YarnRpcMessage.SetJobNodeRequest.newBuilder()
+        SysRpcApi.SetJobNodeRequest joinRequest = SysRpcApi.SetJobNodeRequest.newBuilder()
                 .setInternalIp(internalIp)
                 .setInternalPort(String.valueOf(internalPort))
                 .setExternalIp(externalIp)
                 .setExternalPort(String.valueOf(externalPort))
                 .build();
         //3.调用rpc,获取response
-        YarnRpcMessage.SetJobNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
+        SysRpcApi.SetJobNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -69,11 +69,11 @@ public class PowerClient {
     /**
      * 修改计算节点返回powerNodeId
      */
-    public YarnRpcMessage.YarnRegisteredPeerDetail updatePowerNode(String powerNodeId, String internalIp, String externalIp, Integer internalPort, Integer externalPort) {
+    public SysRpcApi.YarnRegisteredPeerDetail updatePowerNode(String powerNodeId, String internalIp, String externalIp, Integer internalPort, Integer externalPort) {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
-        YarnRpcMessage.UpdateJobNodeRequest joinRequest = YarnRpcMessage.UpdateJobNodeRequest.newBuilder()
+        SysRpcApi.UpdateJobNodeRequest joinRequest = SysRpcApi.UpdateJobNodeRequest.newBuilder()
                 .setInternalIp(internalIp)
                 .setInternalPort(String.valueOf(internalPort))
                 .setExternalIp(externalIp)
@@ -81,7 +81,7 @@ public class PowerClient {
                 .setId(powerNodeId)
                 .build();
         //3.调用rpc,获取response
-        YarnRpcMessage.SetJobNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).updateJobNode(joinRequest);
+        SysRpcApi.SetJobNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).updateJobNode(joinRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -98,10 +98,10 @@ public class PowerClient {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
-        YarnRpcMessage.DeleteRegisteredNodeRequest joinRequest = YarnRpcMessage.DeleteRegisteredNodeRequest.newBuilder()
+        SysRpcApi.DeleteRegisteredNodeRequest joinRequest = SysRpcApi.DeleteRegisteredNodeRequest.newBuilder()
                 .setId(powerNodeId).build();
         //3.调用rpc,获取response
-        Base.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
+        Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -124,7 +124,7 @@ public class PowerClient {
         //2.拼装request
         Empty jobNodeListRequest = Empty.newBuilder().build();
         //3.调用rpc,获取response
-        YarnRpcMessage.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getJobNodeList(jobNodeListRequest);
+        SysRpcApi.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getJobNodeList(jobNodeListRequest);
 
         //4.处理response
         if (response == null) {
@@ -136,7 +136,7 @@ public class PowerClient {
         return convertToLocalPowerNodeList(response.getNodesList());
     }
 
-    private List<LocalPowerNode> convertToLocalPowerNodeList(List<YarnRpcMessage.YarnRegisteredPeer> nodeList) {
+    private List<LocalPowerNode> convertToLocalPowerNodeList(List<SysRpcApi.YarnRegisteredPeer> nodeList) {
         return nodeList.parallelStream().map(node -> {
             LocalPowerNode localPowerNode = new LocalPowerNode();
             localPowerNode.setNodeId(node.getNodeDetail().getId());
@@ -157,10 +157,10 @@ public class PowerClient {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
-        PowerRpcMessage.PublishPowerRequest joinRequest = PowerRpcMessage.PublishPowerRequest.newBuilder()
+        PowerRpcApi.PublishPowerRequest joinRequest = PowerRpcApi.PublishPowerRequest.newBuilder()
                 .setJobNodeId(jobNodeId).build();
         //3.调用rpc,获取response
-        PowerRpcMessage.PublishPowerResponse response = PowerServiceGrpc.newBlockingStub(channel).publishPower(joinRequest);
+        PowerRpcApi.PublishPowerResponse response = PowerServiceGrpc.newBlockingStub(channel).publishPower(joinRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -176,11 +176,11 @@ public class PowerClient {
     public void revokePower(String powerId) {
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        PowerRpcMessage.RevokePowerRequest joinRequest = PowerRpcMessage.RevokePowerRequest.newBuilder()
+        PowerRpcApi.RevokePowerRequest joinRequest = PowerRpcApi.RevokePowerRequest.newBuilder()
                 .setPowerId(powerId)
                 .build();
         //3.调用rpc,获取response
-        Base.SimpleResponse response = PowerServiceGrpc.newBlockingStub(channel).revokePower(joinRequest);
+        Common.SimpleResponse response = PowerServiceGrpc.newBlockingStub(channel).revokePower(joinRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -199,7 +199,7 @@ public class PowerClient {
                 .newBuilder()
                 .build();
         //3.调用rpc,获取response
-        PowerRpcMessage.GetLocalPowerDetailListResponse response = PowerServiceGrpc.newBlockingStub(channel).getLocalPowerDetailList(request);
+        PowerRpcApi.GetLocalPowerDetailListResponse response = PowerServiceGrpc.newBlockingStub(channel).getLocalPowerDetailList(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -210,20 +210,20 @@ public class PowerClient {
         return convertToLocalPowerNodeAndTaskJoinedList(response.getPowersList());
     }
 
-    private Pair<List<LocalPowerNode>, List<LocalPowerJoinTask>> convertToLocalPowerNodeAndTaskJoinedList(List<PowerRpcMessage.GetLocalPowerDetail> localPowerDetailList) {
+    private Pair<List<LocalPowerNode>, List<LocalPowerJoinTask>> convertToLocalPowerNodeAndTaskJoinedList(List<PowerRpcApi.GetLocalPowerDetail> localPowerDetailList) {
         List<LocalPowerNode> localPowerNodeList = new ArrayList<>();
         List<LocalPowerJoinTask> localPowerJoinTaskList = new ArrayList<>();
         localPowerDetailList.forEach(item -> {
             // 算力实况
-            Resourcedata.PowerUsageDetail powerUsageDetail = item.getPower();
+            ResourceData.PowerUsageDetail powerUsageDetail = item.getPower();
 
-            Resourcedata.ResourceUsageOverview usageOverview = powerUsageDetail.getInformation();
+            ResourceData.ResourceUsageOverview usageOverview = powerUsageDetail.getInformation();
 
             // 保存计算节点算力信息开始
             LocalPowerNode localPowerNode = toLocalPowerNode(item, powerUsageDetail, usageOverview);
             localPowerNodeList.add(localPowerNode);
 
-            List<Resourcedata.PowerTask> powerTaskList = powerUsageDetail.getTasksList();
+            List<ResourceData.PowerTask> powerTaskList = powerUsageDetail.getTasksList();
             localPowerJoinTaskList.addAll(
                     powerTaskList.stream()
                             .map(powerTask -> toLocalPowerJoinTask(item, powerTask))
@@ -232,9 +232,9 @@ public class PowerClient {
         return new ImmutablePair<>(localPowerNodeList, localPowerJoinTaskList);
     }
 
-    private LocalPowerNode toLocalPowerNode(PowerRpcMessage.GetLocalPowerDetail item,
-                                            Resourcedata.PowerUsageDetail powerUsageDetail,
-                                            Resourcedata.ResourceUsageOverview usageOverview) {
+    private LocalPowerNode toLocalPowerNode(PowerRpcApi.GetLocalPowerDetail item,
+                                            ResourceData.PowerUsageDetail powerUsageDetail,
+                                            ResourceData.ResourceUsageOverview usageOverview) {
         LocalPowerNode localPowerNode = new LocalPowerNode();
         localPowerNode.setNodeId(item.getJobNodeId());
         localPowerNode.setPowerId(item.getPowerId());
@@ -250,7 +250,7 @@ public class PowerClient {
         return localPowerNode;
     }
 
-    private LocalPowerJoinTask toLocalPowerJoinTask(PowerRpcMessage.GetLocalPowerDetail item, Resourcedata.PowerTask powerTask) {
+    private LocalPowerJoinTask toLocalPowerJoinTask(PowerRpcApi.GetLocalPowerDetail item, ResourceData.PowerTask powerTask) {
         LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
         localPowerJoinTask.setNodeId(item.getJobNodeId());
         localPowerJoinTask.setTaskId(powerTask.getTaskId());

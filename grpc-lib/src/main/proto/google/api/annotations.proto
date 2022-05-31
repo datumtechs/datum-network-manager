@@ -13,16 +13,19 @@
 // limitations under the License.
 
 syntax = "proto3";
-option java_multiple_files = true;
-option java_outer_classname = "AnnotationsProto";
-// 生成类的包名
-option java_package = "com.platon.metis.admin.grpc.service";
 
 package google.api;
 
 import "google/api/http.proto";
 import "google/protobuf/descriptor.proto";
 
+option go_package = "google.golang.org/genproto/googleapis/api/annotations;annotations";
+option java_multiple_files = true;
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.metis.admin.grpc.google.api";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "AnnotationsProto";
+option objc_class_prefix = "GAPI";
 
 extend google.protobuf.MethodOptions {
   // See `HttpRule`.

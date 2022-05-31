@@ -1,14 +1,18 @@
 syntax = "proto3";
-// 生成类的包名
-option java_package = "com.platon.metis.admin.grpc.service";
-//生成的数据访问类的类名，如果没有指定此值，则生成的类名为proto文件名的驼峰命名方法
-option java_outer_classname = "YarnRpcMessage";
 
-package rpcapi;
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/carrier/api";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.metis.admin.grpc.carrier.api";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "SysRpcApi";
 
-import "lib/types/base.proto";
-import "lib/types/taskdata.proto";
-import "lib/types/resourcedata.proto";
+package carrier.api;
+
+import "common/constant/carrier_enum.proto";
+import "carrier/types/common.proto";
+import "carrier/types/identitydata.proto";
+import "carrier/types/taskdata.proto";
+import "carrier/types/resourcedata.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
@@ -41,21 +45,21 @@ enum ConnState {
 
 // 调度服务的信息
 message YarnNodeInfo {
-  NodeType                    node_type = 1;                             // 服务node的类型
-  string                      node_id = 2;                               // 调度服务的 nodeId, 代表整个机构的 nodeId
-  string                      internal_ip = 3;                           // 调度服务的内网 ip, 给 管理台用
-  string                      external_ip = 4;                           // 调度服务的外网 ip, 给 外部做p2p用
-  string                      internal_port = 5;                         // 调度服务的内网 port, 给 管理台用
-  string                      external_port = 6;                         // 调度服务的外网 port, 给 外部做p2p用
-  string                      identity_type = 7;                         // 身份认证标识的类型 (ca 或者 did)
-  string                      identity_id = 8;                           // 身份认证标识的id
-  types.ResourceUsageOverview resource_used = 9;                         // 调度服务系统本身资源信息
-  YarnNodeState               state = 10;                                // 调度服务自身的状态信息 (0: 未知; 1: 活跃; 2: 离开网络; 3: 加入网络; 4: 不可用)
-  string                      name = 12;                                 // 组织的Name
-  uint32                      relate_peers = 13;                         // 本调度服务被外部组织(调度服务/种子节点)的连接数目
-  string                      local_bootstrap_node = 14;                 // 当前系统的本地节点，可以作为引导节点提供给三方节点
-  string                      local_multi_addr = 15;                     // 当前系统本地的 multiAddr, eg: /ip4/127.0.0.1/tcp/18001/p2p/16Uiu2HAmKMo4Ci5TYcXspnKnMWK4G4CRWSHBV4qCUAFYrtirhcuz
-  string                      observer_proxy_wallet_address = 16;        // 当前组织内置系统钱包地址 (见证人代理钱包) v 0.4.0
+  NodeType                              node_type = 1;                             // 服务node的类型
+  string                                node_id = 2;                               // 调度服务的 nodeId, 代表整个机构的 nodeId
+  string                                internal_ip = 3;                           // 调度服务的内网 ip, 给 管理台用
+  string                                external_ip = 4;                           // 调度服务的外网 ip, 给 外部做p2p用
+  string                                internal_port = 5;                         // 调度服务的内网 port, 给 管理台用
+  string                                external_port = 6;                         // 调度服务的外网 port, 给 外部做p2p用
+  string                                identity_type = 7;                         // 身份认证标识的类型 (ca 或者 did)
+  string                                identity_id = 8;                           // 身份认证标识的id
+  carrier.types.ResourceUsageOverview   resource_used = 9;                         // 调度服务系统本身资源信息
+  YarnNodeState                         state = 10;                                // 调度服务自身的状态信息 (0: 未知; 1: 活跃; 2: 离开网络; 3: 加入网络; 4: 不可用)
+  string                                name = 12;                                 // 组织的Name
+  uint32                                relate_peers = 13;                         // 本调度服务被外部组织(调度服务/种子节点)的连接数目
+  string                                local_bootstrap_node = 14;                 // 当前系统的本地节点，可以作为引导节点提供给三方节点
+  string                                local_multi_addr = 15;                     // 当前系统本地的 multiAddr, eg: /ip4/127.0.0.1/tcp/18001/p2p/16Uiu2HAmKMo4Ci5TYcXspnKnMWK4G4CRWSHBV4qCUAFYrtirhcuz
+  string                                observer_proxy_wallet_address = 16;        // 当前组织内置系统钱包地址 (见证人代理钱包) v 0.4.0
 }
 
 
@@ -175,45 +179,45 @@ message UpdateJobNodeRequest {
 
 // 数据/计算服务 上报任务事件 req
 message ReportTaskEventRequest {
-  types.TaskEvent task_event = 1;     // 事件信息
+  carrier.types.TaskEvent task_event = 1;     // 事件信息
 }
 
 // 数据/计算服务 上报任务资源使用实况 req
 message ReportTaskResourceUsageRequest {
-  string                      task_id = 1;                          // 任务Id
-  string                      party_id = 2;                         // 本资源在该 task 中的 partyId
-  NodeType                    node_type = 3;                        // 计算or数据服务node的类型
-  string                      ip = 4;                               // Fighter 的 grpc server IP
-  string                      port = 5;                             // Fighter 的 grpc server PORT
-  types.ResourceUsageOverview usage = 6;                            // 计算or数据的资源实况
+  string                                task_id = 1;                          // 任务Id
+  string                                party_id = 2;                         // 本资源在该 task 中的 partyId
+  NodeType                              node_type = 3;                        // 计算or数据服务node的类型
+  string                                ip = 4;                               // Fighter 的 grpc server IP
+  string                                port = 5;                             // Fighter 的 grpc server PORT
+  carrier.types.ResourceUsageOverview   usage = 6;                            // 计算or数据的资源实况
 }
 
 // 上报 成功上传的原始文件Id req
 message ReportUpFileSummaryRequest {
-  string                  origin_id = 1;          // 被成功上传的原始文件的 Id
-  string                  ip = 2;                 // Fighter 的 grpc server IP
-  string                  port = 3;               // Fighter 的 grpc server PORT
-  string                  data_hash = 4;          // 对数据内容的hash，不包含文件名
-  types.OrigindataType    data_type = 5;          // 原始数据的类型
-  string                  metadata_option = 6;    // 元数据的选项，和 data_type 配套使用
+  string                              origin_id = 1;          // 被成功上传的原始文件的 Id
+  string                              ip = 2;                 // Fighter 的 grpc server IP
+  string                              port = 3;               // Fighter 的 grpc server PORT
+  string                              data_hash = 4;          // 对数据内容的hash，不包含文件名
+  common.constant.OrigindataType      data_type = 5;          // 原始数据的类型
+  string                              metadata_option = 6;    // 元数据的选项，和 data_type 配套使用
 }
 
 // 上报 任务结果文件摘要 req
 message ReportTaskResultFileSummaryRequest {
-  string                 task_id = 1;           // 任务Id
-  string                 origin_id = 2;         // 任务结果的原始文件的 Id
-  string                 ip = 3;                // Fighter 的 grpc server IP
-  string                 port = 4;              // Fighter 的 grpc server PORT
-  string                 extra = 5;             // 任务结果文件的额外字段 (如: 训练任务的模型评估结果json 等)
-  string                 data_hash = 6;         // 对数据内容的hash，不包含文件名
-  types.OrigindataType   data_type = 7;         // 原始数据的类型
-  string                 metadata_option = 8;   // 元数据的选项，和 data_type 配套使用
+  string                              task_id = 1;           // 任务Id
+  string                              origin_id = 2;         // 任务结果的原始文件的 Id
+  string                              ip = 3;                // Fighter 的 grpc server IP
+  string                              port = 4;              // Fighter 的 grpc server PORT
+  string                              extra = 5;             // 任务结果文件的额外字段 (如: 训练任务的模型评估结果json 等)
+  string                              data_hash = 6;         // 对数据内容的hash，不包含文件名
+  common.constant.OrigindataType      data_type = 7;         // 原始数据的类型
+  string                              metadata_option = 8;   // 元数据的选项，和 data_type 配套使用
 }
 
 // 查询可用数据服务资源目标 ip:port 信息 req
 message QueryAvailableDataNodeRequest {
-  uint64                              data_size = 1;       // 要被上传的目标(数据)文件 大小 (单位: byte)
-  types.OrigindataType                data_type = 2;       // 要被上传的目标(数据)文件  类型 (默认: 1 "csv")
+  uint64                                          data_size = 1;       // 要被上传的目标(数据)文件 大小 (单位: byte)
+  common.constant.OrigindataType                  data_type = 2;       // 要被上传的目标(数据)文件  类型 (默认: 1 "csv")
 }
 // 查询可用数据服务资源目标 ip:port 信息 resp
 message QueryAvailableDataNode {
@@ -248,16 +252,16 @@ message GetTaskResultFileSummaryRequest {
 
 // 查询 任务结果文件摘要 resp
 message GetTaskResultFileSummary {
-  string                  task_id = 1;                  // 任务结果文件对应的任务Id
-  string                  metadata_name = 2;            // 任务结果文件的(系统生成的、内部的)元数据名称
-  string                  metadata_id = 3;              // 任务结果文件的元数据Id <系统默认生成的元数据>
-  string                  origin_id = 4;                // 任务结果文件的原始文件Id
-  string                  ip = 5;                       // 任务结果文件所在的 数据服务内网ip
-  string                  port = 6;                     // 任务结果文件所在的 数据服务内网port
-  string                  extra = 7;                    // 任务结果文件的额外字段 (如: 训练任务的模型评估结果json 等)
-  string                  data_hash = 8;                // 对数据内容的hash，不包含文件名
-  types.OrigindataType    data_type = 9;                // 原始数据的类型
-  string                  metadata_option = 10;         // 元数据的选项，和 data_type 配套使用
+  string                              task_id = 1;                  // 任务结果文件对应的任务Id
+  string                              metadata_name = 2;            // 任务结果文件的(系统生成的、内部的)元数据名称
+  string                              metadata_id = 3;              // 任务结果文件的元数据Id <系统默认生成的元数据>
+  string                              origin_id = 4;                // 任务结果文件的原始文件Id
+  string                              ip = 5;                       // 任务结果文件所在的 数据服务内网ip
+  string                              port = 6;                     // 任务结果文件所在的 数据服务内网port
+  string                              extra = 7;                    // 任务结果文件的额外字段 (如: 训练任务的模型评估结果json 等)
+  string                              data_hash = 8;                // 对数据内容的hash，不包含文件名
+  common.constant.OrigindataType      data_type = 9;                // 原始数据的类型
+  string                              metadata_option = 10;         // 元数据的选项，和 data_type 配套使用
 }
 
 message GetTaskResultFileSummaryResponse {
@@ -301,7 +305,7 @@ service YarnService {
   }
 
   // 删除种子节点信息
-  rpc DeleteSeedNode (DeleteSeedNodeRequest) returns (types.SimpleResponse) {
+  rpc DeleteSeedNode (DeleteSeedNodeRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/deleteSeed"
       body: "*"
@@ -333,7 +337,7 @@ service YarnService {
   }
 
   // 删除数据服务信息
-  rpc DeleteDataNode (DeleteRegisteredNodeRequest) returns (types.SimpleResponse) {
+  rpc DeleteDataNode (DeleteRegisteredNodeRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/deleteDataNode"
       body: "*"
@@ -365,7 +369,7 @@ service YarnService {
   }
 
   // 删除计算服务信息
-  rpc DeleteJobNode (DeleteRegisteredNodeRequest) returns (types.SimpleResponse) {
+  rpc DeleteJobNode (DeleteRegisteredNodeRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/deleteJobNode"
       body: "*"
@@ -381,7 +385,7 @@ service YarnService {
 
   // about report
   // 数据/计算服务 上报任务事件
-  rpc ReportTaskEvent (ReportTaskEventRequest) returns (types.SimpleResponse) {
+  rpc ReportTaskEvent (ReportTaskEventRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/reportTaskEvent"
       body: "*"
@@ -389,7 +393,7 @@ service YarnService {
   }
 
   // 数据/计算服务 上报资源使用实况
-  rpc ReportTaskResourceUsage (ReportTaskResourceUsageRequest) returns (types.SimpleResponse) {
+  rpc ReportTaskResourceUsage (ReportTaskResourceUsageRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/reportTaskResourceUsage"
       body: "*"
@@ -397,7 +401,7 @@ service YarnService {
   }
 
   // 上报 成功上传的原始文件Id
-  rpc  ReportUpFileSummary (ReportUpFileSummaryRequest) returns (types.SimpleResponse) {
+  rpc  ReportUpFileSummary (ReportUpFileSummaryRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/reportUpFileSummary"
       body: "*"
@@ -405,7 +409,7 @@ service YarnService {
   }
 
   // 上报 任务结果文件摘要
-  rpc ReportTaskResultFileSummary (ReportTaskResultFileSummaryRequest) returns (types.SimpleResponse) {
+  rpc ReportTaskResultFileSummary (ReportTaskResultFileSummaryRequest) returns (carrier.types.SimpleResponse) {
     option (google.api.http) = {
       post: "/carrier/v1/yarn/reportTaskResultFileSummary"
       body: "*"

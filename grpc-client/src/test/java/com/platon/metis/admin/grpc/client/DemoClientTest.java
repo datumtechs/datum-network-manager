@@ -1,8 +1,8 @@
 package com.platon.metis.admin.grpc.client;
 
-import com.platon.metis.admin.grpc.service.AuthRpcMessage;
-import com.platon.metis.admin.grpc.service.AuthServiceGrpc;
-import com.platon.metis.admin.grpc.types.Base;
+import com.platon.metis.admin.grpc.carrier.api.AuthRpcApi;
+import com.platon.metis.admin.grpc.carrier.api.AuthServiceGrpc;
+import com.platon.metis.admin.grpc.carrier.types.Common;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -41,8 +41,8 @@ public class DemoClientTest {
     public void test() {
         Channel channel = ManagedChannelBuilder.forAddress("192.168.21.164", 4444).usePlaintext().build();
 
-        AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest.newBuilder().build();
-        Base.SimpleResponse responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
+        AuthRpcApi.ApplyIdentityJoinRequest joinRequest = AuthRpcApi.ApplyIdentityJoinRequest.newBuilder().build();
+        Common.SimpleResponse responseCode = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
         System.out.println("###############" + responseCode.getMsg());
         System.out.println("111111111");
     }
@@ -54,9 +54,9 @@ public class DemoClientTest {
     static class AuthServiceImpl extends AuthServiceGrpc.AuthServiceImplBase {
 
         @Override
-        public void applyIdentityJoin(AuthRpcMessage.ApplyIdentityJoinRequest request, StreamObserver<Base.SimpleResponse> responseObserver) {
+        public void applyIdentityJoin(AuthRpcApi.ApplyIdentityJoinRequest request, StreamObserver<Common.SimpleResponse> responseObserver) {
             System.out.println(request);
-            Base.SimpleResponse code = Base.SimpleResponse.newBuilder().setMsg("goooooooooooo").setStatus(0).build();
+            Common.SimpleResponse code = Common.SimpleResponse.newBuilder().setMsg("goooooooooooo").setStatus(0).build();
             //responseObserver.onNext(code);
             responseObserver.onCompleted();
         }

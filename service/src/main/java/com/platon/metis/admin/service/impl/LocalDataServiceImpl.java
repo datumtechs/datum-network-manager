@@ -15,10 +15,10 @@ import com.platon.metis.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.metis.admin.grpc.client.DataProviderClient;
 import com.platon.metis.admin.grpc.client.MetaDataClient;
 import com.platon.metis.admin.grpc.client.YarnClient;
+import com.platon.metis.admin.grpc.common.constant.CarrierEnum;
 import com.platon.metis.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.metis.admin.grpc.entity.YarnQueryFilePositionResp;
-import com.platon.metis.admin.grpc.service.DataProviderRpcMessage;
-import com.platon.metis.admin.grpc.types.Base;
+import com.platon.metis.admin.grpc.fighter.api.data.DataSvc;
 import com.platon.metis.admin.service.LocalDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
@@ -79,7 +79,7 @@ public class LocalDataServiceImpl implements LocalDataService {
                 localDataFile.getSize(),
                 LocalDataFile.FileTypeEnum.CSV);
         //### 3.上传源文件到数据节点
-        DataProviderRpcMessage.UploadReply response = dataProviderClient.uploadData(
+        DataSvc.UploadReply response = dataProviderClient.uploadData(
                 availableDataNode.getIp(),
                 availableDataNode.getPort(),
                 localDataFile.getFileName(),
@@ -88,7 +88,7 @@ public class LocalDataServiceImpl implements LocalDataService {
         localDataFile.setFileId(response.getDataId());
         localDataFile.setFilePath(response.getDataPath());
         localDataFile.setDataHash(response.getDataHash());
-        localDataFile.setLocationType(Base.DataLocationType.DataLocationType_Local_VALUE);
+        localDataFile.setLocationType(CarrierEnum.DataLocationType.DataLocationType_Local_VALUE);
         //### 5.解析完成之后，存数据库
         localDataFileMapper.insert(localDataFile);
         return localDataFile;

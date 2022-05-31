@@ -7,17 +7,16 @@ import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.common.exception.Errors;
 import com.platon.metis.admin.common.util.LocalDateTimeUtil;
 import com.platon.metis.admin.dao.entity.*;
+import com.platon.metis.admin.grpc.carrier.api.TaskRpcApi;
+import com.platon.metis.admin.grpc.carrier.api.TaskServiceGrpc;
+import com.platon.metis.admin.grpc.carrier.types.ResourceData;
+import com.platon.metis.admin.grpc.carrier.types.TaskData;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
 import com.platon.metis.admin.grpc.entity.template.DataPolicyOption0;
 import com.platon.metis.admin.grpc.entity.template.DataPolicyOption1;
 import com.platon.metis.admin.grpc.entity.template.DataPolicyOption2;
 import com.platon.metis.admin.grpc.entity.template.DataPolicyOption3;
-import com.platon.metis.admin.grpc.service.TaskRpcMessage;
-import com.platon.metis.admin.grpc.service.TaskServiceGrpc;
-import com.platon.metis.admin.grpc.types.Base;
-import com.platon.metis.admin.grpc.types.Resourcedata;
-import com.platon.metis.admin.grpc.types.Taskdata;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -67,23 +66,23 @@ public class TaskClient {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.构造 request
-        TaskRpcMessage.GetTaskDetailListRequest request = TaskRpcMessage.GetTaskDetailListRequest
+        TaskRpcApi.GetTaskDetailListRequest request = TaskRpcApi.GetTaskDetailListRequest
                 .newBuilder()
                 .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
 
         //3.调用rpc服务接口
-        TaskRpcMessage.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
+        TaskRpcApi.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
         } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        log.debug("从carrier查询本组织参与的任务, 数量:{},任务详情:{}", response.getTasksList().size(),response.getTasksList());
+        log.debug("从carrier查询本组织参与的任务, 数量:{},任务详情:{}", response.getTasksList().size(), response.getTasksList());
 
-        List<Taskdata.TaskDetail> tasksList = response.getTasksList();
+        List<TaskData.TaskDetail> tasksList = response.getTasksList();
         return dataConvertToTaskList(tasksList);
     }
 
@@ -101,9 +100,9 @@ public class TaskClient {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.构造 request
-        TaskRpcMessage.GetTaskEventListByTaskIdsRequest request = TaskRpcMessage.GetTaskEventListByTaskIdsRequest.newBuilder().addAllTaskIds(taskIds).build();
+        TaskRpcApi.GetTaskEventListByTaskIdsRequest request = TaskRpcApi.GetTaskEventListByTaskIdsRequest.newBuilder().addAllTaskIds(taskIds).build();
         //3.调用rpc服务接口
-        TaskRpcMessage.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskEventListByTaskIds(request);
+        TaskRpcApi.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskEventListByTaskIds(request);
 
         //4.处理response
         if (response == null) {
@@ -115,7 +114,7 @@ public class TaskClient {
 
         List<TaskEvent> taskEventList = new ArrayList<>();
         //构造taskEvent集合
-        for (Taskdata.TaskEvent taskEvenShow : response.getTaskEventsList()) {
+        for (TaskData.TaskEvent taskEvenShow : response.getTaskEventsList()) {
             TaskEvent taskEvent = new TaskEvent();
             taskEvent.setTaskId(taskEvenShow.getTaskId());
             taskEvent.setEventAt(LocalDateTimeUtil.getLocalDateTime(taskEvenShow.getCreateAt()));
@@ -138,14 +137,14 @@ public class TaskClient {
      * @param taskDetailList
      * @return
      */
-    private Pair<List<Task>, Map<String, TaskOrg>> dataConvertToTaskList(List<Taskdata.TaskDetail> taskDetailList) {
+    private Pair<List<Task>, Map<String, TaskOrg>> dataConvertToTaskList(List<TaskData.TaskDetail> taskDetailList) {
 
         //key:identityId
         Map<String, TaskOrg> taskOrgMap = new HashMap<>();
 
         List<Task> taskList = new ArrayList<>();
         for (int i = 0; i < taskDetailList.size(); i++) {
-            Taskdata.TaskDetailSummary taskDetail = taskDetailList.get(i).getInformation();
+            TaskData.TaskDetailSummary taskDetail = taskDetailList.get(i).getInformation();
 
             //构造Task
             Task task = toTask(taskDetail);
@@ -171,7 +170,7 @@ public class TaskClient {
         return new ImmutablePair<>(taskList, taskOrgMap);
     }
 
-    private Task toTask(Taskdata.TaskDetailSummary taskDetail){
+    private Task toTask(TaskData.TaskDetailSummary taskDetail) {
         Task task = new Task();
         task.setTaskId(taskDetail.getTaskId());
         task.setTaskName(taskDetail.getTaskName());
@@ -180,7 +179,7 @@ public class TaskClient {
         task.setEndAt(LocalDateTimeUtil.getLocalDateTime(taskDetail.getEndAt()));
         task.setStatus(taskDetail.getStateValue());
 
-        Base.TaskResourceCostDeclare operationCost = taskDetail.getOperationCost();
+        ResourceData.TaskResourceCostDeclare operationCost = taskDetail.getOperationCost();
         task.setCostCore(operationCost.getProcessor());
         task.setCostMemory(operationCost.getMemory());
         task.setCostBandwidth(operationCost.getBandwidth());
@@ -191,16 +190,16 @@ public class TaskClient {
         return task;
     }
 
-    private void processSender(Taskdata.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task){
-        Base.TaskOrganization sender = taskDetail.getSender();
+    private void processSender(TaskData.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
+        TaskData.TaskOrganization sender = taskDetail.getSender();
         //搜集taskOrg，任务发起方
         taskOrgMap.put(sender.getIdentityId(), new TaskOrg(sender.getIdentityId(), sender.getNodeName(), sender.getNodeId()));
         task.setOwnerIdentityId(sender.getIdentityId());
         task.setOwnerPartyId(sender.getPartyId());
     }
 
-    private void processAlgoSupplier(Taskdata.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task){
-        Base.TaskOrganization algoSupplier = taskDetail.getAlgoSupplier();
+    private void processAlgoSupplier(TaskData.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
+        TaskData.TaskOrganization algoSupplier = taskDetail.getAlgoSupplier();
         //算法提供方algoSupplier
         TaskAlgoProvider algoProvider = new TaskAlgoProvider();
         algoProvider.setTaskId(taskDetail.getTaskId());
@@ -214,10 +213,10 @@ public class TaskClient {
                         algoSupplier.getNodeId()));
     }
 
-    private void processReceiverList(Taskdata.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
+    private void processReceiverList(TaskData.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
         List<TaskResultConsumer> resultConsumerList = new ArrayList<>();
 
-        for (Base.TaskOrganization receiver : taskDetail.getReceiversList()) {
+        for (TaskData.TaskOrganization receiver : taskDetail.getReceiversList()) {
             TaskResultConsumer resultConsumer = new TaskResultConsumer();
             resultConsumer.setTaskId(taskDetail.getTaskId());
             resultConsumer.setConsumerIdentityId(receiver.getIdentityId());
@@ -231,20 +230,20 @@ public class TaskClient {
         task.setReceivers(resultConsumerList);
     }
 
-    private void processPowerSupplierList(Taskdata.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
+    private void processPowerSupplierList(TaskData.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
         List<TaskPowerProvider> taskPowerProviderList = new ArrayList<>();
-        Map<String, Resourcedata.ResourceUsageOverview> resourceUsageOverviewMap = taskDetail.getPowerResourceOptionsList().stream()
+        Map<String, ResourceData.ResourceUsageOverview> resourceUsageOverviewMap = taskDetail.getPowerResourceOptionsList().stream()
                 .collect(Collectors.toMap(
-                        Taskdata.TaskPowerResourceOption::getPartyId,
-                        Taskdata.TaskPowerResourceOption::getResourceUsedOverview));
-        for (Base.TaskOrganization powerSupplier : taskDetail.getPowerSuppliersList()) {
+                        TaskData.TaskPowerResourceOption::getPartyId,
+                        TaskData.TaskPowerResourceOption::getResourceUsedOverview));
+        for (TaskData.TaskOrganization powerSupplier : taskDetail.getPowerSuppliersList()) {
             TaskPowerProvider powerProvider = new TaskPowerProvider();
             powerProvider.setTaskId(taskDetail.getTaskId());
             powerProvider.setIdentityId(powerSupplier.getIdentityId());
 
             String partyId = powerSupplier.getPartyId();
             powerProvider.setPartyId(partyId);
-            Resourcedata.ResourceUsageOverview resourceUsageOverview = resourceUsageOverviewMap.get(partyId);
+            ResourceData.ResourceUsageOverview resourceUsageOverview = resourceUsageOverviewMap.get(partyId);
 
             powerProvider.setUsedCore(resourceUsageOverview.getUsedProcessor());
             powerProvider.setTotalCore(resourceUsageOverview.getTotalProcessor());
@@ -264,12 +263,12 @@ public class TaskClient {
         task.setPowerSupplier(taskPowerProviderList);
     }
 
-    private void processDataSupplierList(Taskdata.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
+    private void processDataSupplierList(TaskData.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
         List<TaskDataProvider> taskDataProviderList = new ArrayList<>();
 
         List<Integer> dataPolicyTypesList = taskDetail.getDataPolicyTypesList();
         ProtocolStringList dataPolicyOptionsList = taskDetail.getDataPolicyOptionsList();
-        List<Base.TaskOrganization> dataSuppliersList = taskDetail.getDataSuppliersList();
+        List<TaskData.TaskOrganization> dataSuppliersList = taskDetail.getDataSuppliersList();
         for (int i = 0; i < dataPolicyOptionsList.size(); i++) {
             Integer type = dataPolicyTypesList.get(i);
             String option = dataPolicyOptionsList.get(i);
@@ -305,7 +304,7 @@ public class TaskClient {
                     throw new BizException(Errors.SysException, "unknown data policy type : " + type);
             }
 
-            Base.TaskOrganization dataSupplier = dataSuppliersList.get(i);
+            TaskData.TaskOrganization dataSupplier = dataSuppliersList.get(i);
             TaskDataProvider dataProvider = new TaskDataProvider();
             dataProvider.setTaskId(taskDetail.getTaskId());
             dataProvider.setMetaDataId(metaDataId);

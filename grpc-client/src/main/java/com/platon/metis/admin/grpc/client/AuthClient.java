@@ -4,12 +4,14 @@ import com.platon.metis.admin.common.exception.BizException;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.common.util.LocalDateTimeUtil;
 import com.platon.metis.admin.dao.entity.LocalDataAuth;
+import com.platon.metis.admin.grpc.carrier.api.AuthRpcApi;
+import com.platon.metis.admin.grpc.carrier.api.AuthServiceGrpc;
+import com.platon.metis.admin.grpc.carrier.types.Common;
+import com.platon.metis.admin.grpc.carrier.types.IdentityData;
+import com.platon.metis.admin.grpc.carrier.types.Metadata;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
+import com.platon.metis.admin.grpc.common.constant.CarrierEnum;
 import com.platon.metis.admin.grpc.constant.GrpcConstant;
-import com.platon.metis.admin.grpc.service.AuthRpcMessage;
-import com.platon.metis.admin.grpc.service.AuthServiceGrpc;
-import com.platon.metis.admin.grpc.types.Base;
-import com.platon.metis.admin.grpc.types.Metadata;
 import io.grpc.ManagedChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -54,20 +56,20 @@ public class AuthClient {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        Base.Organization orgInfo = Base.Organization
+        IdentityData.Organization orgInfo = IdentityData.Organization
                 .newBuilder()
                 .setNodeName(name)
                 .setIdentityId(identityId)
                 .setImageUrl(StringUtils.trimToEmpty(imageUrl))
                 .setDetails(StringUtils.trimToEmpty(profile))
                 .build();
-        AuthRpcMessage.ApplyIdentityJoinRequest joinRequest = AuthRpcMessage.ApplyIdentityJoinRequest
+        AuthRpcApi.ApplyIdentityJoinRequest joinRequest = AuthRpcApi.ApplyIdentityJoinRequest
                 .newBuilder()
                 .setInformation(orgInfo)
                 .build();
 
         //3.调用rpc,获取response
-        Base.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
+        Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
         //4.处理response
 
         if (response == null) {
@@ -89,7 +91,7 @@ public class AuthClient {
                 .newBuilder()
                 .build();
         //3.调用rpc,获取response
-        Base.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
+        Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -109,13 +111,13 @@ public class AuthClient {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        AuthRpcMessage.GetMetadataAuthorityListRequest request = AuthRpcMessage.GetMetadataAuthorityListRequest
+        AuthRpcApi.GetMetadataAuthorityListRequest request = AuthRpcApi.GetMetadataAuthorityListRequest
                 .newBuilder()
                 .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
         //3.调用rpc,获取response
-        AuthRpcMessage.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getLocalMetadataAuthorityList(request);
+        AuthRpcApi.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getLocalMetadataAuthorityList(request);
 
         //4.处理response
         if (response == null) {
@@ -132,12 +134,12 @@ public class AuthClient {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        AuthRpcMessage.GetMetadataAuthorityListRequest request = AuthRpcMessage.GetMetadataAuthorityListRequest
+        AuthRpcApi.GetMetadataAuthorityListRequest request = AuthRpcApi.GetMetadataAuthorityListRequest
                 .newBuilder()
                 .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
                 .build();
         //3.调用rpc,获取response
-        AuthRpcMessage.GetMetadataAuthorityListResponse response = AuthServiceGrpc
+        AuthRpcApi.GetMetadataAuthorityListResponse response = AuthServiceGrpc
                 .newBlockingStub(channel)
                 .withDeadlineAfter(timeout, TimeUnit.SECONDS)
                 .getLocalMetadataAuthorityList(request);
@@ -166,8 +168,8 @@ public class AuthClient {
         ManagedChannel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
-        Base.AuditMetadataOption auditDataStatus = Base.AuditMetadataOption.forNumber(auditOption);
-        AuthRpcMessage.AuditMetadataAuthorityRequest request = AuthRpcMessage
+        CarrierEnum.AuditMetadataOption auditDataStatus = CarrierEnum.AuditMetadataOption.forNumber(auditOption);
+        AuthRpcApi.AuditMetadataAuthorityRequest request = AuthRpcApi
                 .AuditMetadataAuthorityRequest
                 .newBuilder()
                 .setMetadataAuthId(metaDataAuthId)
@@ -175,7 +177,7 @@ public class AuthClient {
                 .setSuggestion(auditDesc)
                 .build();
         //3.调用rpc,获取response
-        AuthRpcMessage.AuditMetadataAuthorityResponse response = AuthServiceGrpc.newBlockingStub(channel).auditMetadataAuthority(request);
+        AuthRpcApi.AuditMetadataAuthorityResponse response = AuthServiceGrpc.newBlockingStub(channel).auditMetadataAuthority(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -186,14 +188,14 @@ public class AuthClient {
     }
 
 
-    private List<LocalDataAuth> dataConvertToAuthList(AuthRpcMessage.GetMetadataAuthorityListResponse response) {
+    private List<LocalDataAuth> dataConvertToAuthList(AuthRpcApi.GetMetadataAuthorityListResponse response) {
         List<LocalDataAuth> localDataAuthList = new ArrayList<>();
         List<Metadata.MetadataAuthorityDetail> metaDataAuthorityList = response.getMetadataAuthsList();
         if (!CollectionUtils.isEmpty(metaDataAuthorityList)) {
             for (Metadata.MetadataAuthorityDetail dataAuth : metaDataAuthorityList) {
                 //元数据使用授权
                 Metadata.MetadataAuthority metaDataAuthority = dataAuth.getAuth();
-                Base.Organization identityInfo = metaDataAuthority.getOwner();
+                IdentityData.Organization identityInfo = metaDataAuthority.getOwner();
                 String metaDataId = metaDataAuthority.getMetadataId();
                 Metadata.MetadataUsageRule metadataUsageRule = metaDataAuthority.getUsageRule();
                 long startAt = metadataUsageRule.getStartAt();
@@ -222,19 +224,19 @@ public class AuthClient {
                      * **/
                     int stateValue = dataAuth.getStateValue();
                     switch (stateValue) {
-                        case Base.MetadataAuthorityState.MAState_Unknown_VALUE:
+                        case CarrierEnum.MetadataAuthorityState.MAState_Unknown_VALUE:
                             localDataAuth.setStatus(0);
                             break;
-                        case Base.MetadataAuthorityState.MAState_Created_VALUE:
+                        case CarrierEnum.MetadataAuthorityState.MAState_Created_VALUE:
                             localDataAuth.setStatus(0);
                             break;
-                        case Base.MetadataAuthorityState.MAState_Released_VALUE:
+                        case CarrierEnum.MetadataAuthorityState.MAState_Released_VALUE:
                             localDataAuth.setStatus(0);
                             break;
-                        case Base.MetadataAuthorityState.MAState_Revoked_VALUE:
+                        case CarrierEnum.MetadataAuthorityState.MAState_Revoked_VALUE:
                             localDataAuth.setStatus(2);
                             break;
-                        case Base.MetadataAuthorityState.MAState_Invalid_VALUE:
+                        case CarrierEnum.MetadataAuthorityState.MAState_Invalid_VALUE:
                             localDataAuth.setStatus(3);
                             break;
                     }

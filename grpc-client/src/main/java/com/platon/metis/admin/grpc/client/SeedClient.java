@@ -3,10 +3,10 @@ package com.platon.metis.admin.grpc.client;
 import com.google.protobuf.Empty;
 import com.platon.metis.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.metis.admin.dao.entity.LocalSeedNode;
+import com.platon.metis.admin.grpc.carrier.api.SysRpcApi;
+import com.platon.metis.admin.grpc.carrier.api.YarnServiceGrpc;
+import com.platon.metis.admin.grpc.carrier.types.Common;
 import com.platon.metis.admin.grpc.channel.SimpleChannelManager;
-import com.platon.metis.admin.grpc.service.YarnRpcMessage;
-import com.platon.metis.admin.grpc.service.YarnServiceGrpc;
-import com.platon.metis.admin.grpc.types.Base;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -36,19 +36,19 @@ public class SeedClient {
     /**
      * 新增种子节点返回nodeId
      */
-    public YarnRpcMessage.SeedPeer addSeedNode(String address){
+    public SysRpcApi.SeedPeer addSeedNode(String address) {
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
-        YarnRpcMessage.SetSeedNodeRequest seedRequest = YarnRpcMessage.SetSeedNodeRequest.newBuilder()
+        SysRpcApi.SetSeedNodeRequest seedRequest = SysRpcApi.SetSeedNodeRequest.newBuilder()
                 .setAddr(address)
                 .build();
         //3.调用rpc,获取response
-        YarnRpcMessage.SetSeedNodeResponse response  = YarnServiceGrpc.newBlockingStub(channel).setSeedNode(seedRequest);
+        SysRpcApi.SetSeedNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setSeedNode(seedRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
 
@@ -59,21 +59,21 @@ public class SeedClient {
     /**
      * 删除种子节点
      */
-    public void deleteSeedNode(String address){
+    public void deleteSeedNode(String address) {
 
         log.debug("从carrier删除种子节点，address:{}", address);
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
-        YarnRpcMessage.DeleteSeedNodeRequest seedRequest = YarnRpcMessage.DeleteSeedNodeRequest.newBuilder()
+        SysRpcApi.DeleteSeedNodeRequest seedRequest = SysRpcApi.DeleteSeedNodeRequest.newBuilder()
                 .setAddr(address)
                 .build();
         //3.调用rpc,获取response
-        Base.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);
+        Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
     }
@@ -81,7 +81,7 @@ public class SeedClient {
     /**
      * 查询种子服务列表
      */
-    public List<LocalSeedNode> getSeedNodeList(){
+    public List<LocalSeedNode> getSeedNodeList() {
         log.debug("从carrier查询种子节点列表");
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
@@ -89,18 +89,18 @@ public class SeedClient {
         //2.拼装request
         Empty seedNodeListRequest = Empty.newBuilder().build();
         //3.调用rpc,获取response
-        YarnRpcMessage.GetSeedNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(seedNodeListRequest);
+        SysRpcApi.GetSeedNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(seedNodeListRequest);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        }else if(response.getStatus() != GRPC_SUCCESS_CODE) {
+        } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
         log.debug("从carrier查询种子节点列表，数量：{}", response.getNodesList().size());
         return convertToLocalSeedNodeList(response.getNodesList());
     }
 
-    private List<LocalSeedNode> convertToLocalSeedNodeList(List<YarnRpcMessage.SeedPeer> seedNodeList) {
+    private List<LocalSeedNode> convertToLocalSeedNodeList(List<SysRpcApi.SeedPeer> seedNodeList) {
         return seedNodeList.parallelStream().map(seedNode -> {
             LocalSeedNode localSeedNode = new LocalSeedNode();
             localSeedNode.setSeedNodeId(seedNode.getAddr());

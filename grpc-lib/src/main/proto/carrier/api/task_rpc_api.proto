@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/carrier/api";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.metis.admin.grpc.carrier.api";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "TaskRpcApi";
+
+package carrier.api;
+
+import "common/constant/carrier_enum.proto";
+import "carrier/types/common.proto";
+import "carrier/types/identitydata.proto";
+import "carrier/types/taskdata.proto";
+import "carrier/types/resourcedata.proto";
+import "google/api/annotations.proto";
+
+message GetTaskDetailListRequest {
+  uint64 last_updated = 1;  // 毫秒级时间戳，上一次最后一条数据的时间戳
+  uint64 page_size = 2;     // 单次批量数据的返回条数
+}
+
+message GetTaskDetailListByTaskIdsRequest {
+  repeated string task_ids = 1;      // 任务Id 列表
+}
+
+// 查看本组织参与过的全部任务详情列表 resp
+message GetTaskDetailListResponse {
+  int32                                     status = 1;                 // 响应码
+  string                                    msg = 2;                    // 错误信息
+  repeated carrier.types.TaskDetail         tasks = 3;                  // 任务详情列表
+}
+
+// 查看某个任务的全部事件列表 req
+message GetTaskEventListRequest {
+  string task_id = 1;                 // 任务Id
+}
+// 查看多个任务的全部事件列表 req
+message GetTaskEventListByTaskIdsRequest {
+  repeated string task_ids = 1;      // 任务Id 列表
+}
+// 查看某个or多个任务的全部事件列表 resp
+message GetTaskEventListResponse {
+  int32                                   status = 1;                      // 响应码
+  string                                  msg = 2;                         // 错误信息
+  repeated carrier.types.TaskEvent        task_events = 3;                 // 任务事件列表
+}
+
+// 发布任务 req
+message PublishTaskDeclareRequest {
+  string                                            task_name = 1;                        // 任务名称
+  string                                            user = 2;                             // 发起任务的用户的信息 (task是属于用户的)
+  common.constant.UserType                          user_type = 3;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  carrier.types.TaskOrganization                    sender = 4;                           // 任务发起者 组织信息
+  carrier.types.TaskOrganization                    algo_supplier = 5;                    // 任务算法提供方 组织信息
+  repeated carrier.types.TaskOrganization           data_suppliers = 6;                   // 任务的数据提供方 (包含发起者和参与方)
+  repeated carrier.types.TaskOrganization           receivers = 7;                        // 任务结果接受者 (包含发起者和参与方)
+  repeated uint32                                   data_policy_types = 8;                // 任务的数据提供方选择数据策略的类型 (严格意义上, 数据的选择策略需要基于 数据的原始数据格式来决定，所以 该值直接沿用  OrigindataType 的值)
+  repeated string                                   data_policy_options = 9;              // 任务的数据提供方选择数据策略的内容 (json字符串数组, 和 data_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  repeated uint32                                   power_policy_types = 10;              // 任务的算力提供方选择算力策略的类型 (算力也是使用了数组, 同样是方便)
+  repeated string                                   power_policy_options = 11;            // 任务的算力提供方选择算力策略的内容 (json字符串数组, 和 power_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  repeated uint32                                   receiver_policy_types = 12;           // 任务的接收方选择策略的类型 (数据的流转方向也是使用了数组, 同样是方便)
+  repeated string                                   receiver_policy_options = 13;         // 任务的接收方选择策略的内容 (json字符串数组, 和 receiver_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  repeated uint32                                   data_flow_policy_types = 14;          // 任务的数据流向策略的类型 (数据的流转方向也是使用了数组, 同样是方便)
+  repeated string                                   data_flow_policy_options = 15;        // 任务的数据流向策略的内容 (json字符串数组, 和 data_flow_policy_types 配套使用, 使用数组的原因是 可以支持单个或者多个数目的策略)
+  carrier.types.TaskResourceCostDeclare             operation_cost = 16;                  // 任务所需资源声明
+  string                                            algorithm_code = 17;                  // 内置算法代码 (使用内置算法, 在不使用算法市场前提下用)
+  string                                            meta_algorithm_id = 18;               // 算法元数据Id (为了后续支持 算法市场而用, 使用内置算法时则该值为 "" 空字符串)
+  string                                            algorithm_code_extra_params = 19;     // 内置算法的额外超参 (使用内置算法, 内置算法的额外超参数 json 字符串, 内容可为""空字符串, 根据算法来)
+  bytes                                             sign = 20;                            // 发起任务的账户的签名
+  string                                            desc = 21;                            // 任务描述 (非必须)
+}
+
+// 发布任务 resp
+message PublishTaskDeclareResponse {
+  int32  status = 1;
+  string msg = 2;
+  string task_id = 3;
+}
+
+// 终止任务 req
+message TerminateTaskRequest {
+  string                          user = 1;                             //  发起任务的用户的信息 (task是属于用户的)
+  common.constant.UserType        user_type = 2;                        //  用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  string                          task_id = 3;                          //  任务id
+  bytes                           sign = 12;                            //  发起任务的账户的签名
+}
+
+// 预估gas request
+message EstimateTaskGasRequest {
+  string               task_sponsor_address = 1;       //当前任务发起用户的钱包地址
+  repeated string      data_token_addresses = 2;       // 当前任务用到的data token 合约地址0x开头//缺省转账金额是1
+}
+
+// 预估gas response
+message EstimateTaskGasResponse {
+  int32  status = 1;
+  string msg = 2;
+  uint64 gas_limit = 3;       // 需要消耗的gas数量
+  uint64 gas_price = 4;       // 建议的gas price
+}
+
+// ## 任务 相关接口
+service TaskService {
+
+  // 查看本组织参与过的全部任务详情列表 (支持分页)
+  rpc GetLocalTaskDetailList (GetTaskDetailListRequest) returns (GetTaskDetailListResponse) {
+    option (google.api.http) = {
+      get: "/carrier/v1/task/localList"
+    };
+  }
+
+  // 查看全网全部任务详情列表 (支持分页)
+  rpc GetGlobalTaskDetailList (GetTaskDetailListRequest) returns (GetTaskDetailListResponse) {
+    option (google.api.http) = {
+      get: "/carrier/v1/task/globalList"
+    };
+  }
+
+  // 查看本组织参与过的全部任务详情列表 (v3.0)
+  rpc GetTaskDetailListByTaskIds (GetTaskDetailListByTaskIdsRequest) returns (GetTaskDetailListResponse) {
+    option (google.api.http) = {
+      get: "/carrier/v1/task/listByTaskIds"
+    };
+  }
+
+  // 查看某个任务的全部事件列表
+  rpc GetTaskEventList (GetTaskEventListRequest) returns (GetTaskEventListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/task/eventList"
+      body: "*"
+    };
+  }
+
+  // 查看多个任务的全部事件列表
+  rpc GetTaskEventListByTaskIds (GetTaskEventListByTaskIdsRequest) returns (GetTaskEventListResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/task/eventListByTaskIds"
+      body: "*"
+    };
+  }
+
+  // 发布任务
+  rpc PublishTaskDeclare (PublishTaskDeclareRequest) returns (PublishTaskDeclareResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/task/publish"
+      body: "*"
+    };
+  }
+
+  // 终止任务
+  rpc TerminateTask (TerminateTaskRequest) returns (carrier.types.SimpleResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/task/terminate"
+      body: "*"
+    };
+  }
+
+  // v 0.4.0 预估gas
+  rpc EstimateTaskGas (EstimateTaskGasRequest) returns (EstimateTaskGasResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/task/estimateTaskGas"
+      body: "*"
+    };
+  }
+}
+
+

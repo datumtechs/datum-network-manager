@@ -21,7 +21,7 @@ import com.platon.metis.admin.dto.JsonResponse;
 import com.platon.metis.admin.dto.req.*;
 import com.platon.metis.admin.dto.resp.LocalDataDetailResp;
 import com.platon.metis.admin.dto.resp.LocalDataImportFileResp;
-import com.platon.metis.admin.grpc.types.Base;
+import com.platon.metis.admin.grpc.common.constant.CarrierEnum;
 import com.platon.metis.admin.service.LocalDataService;
 import com.platon.metis.admin.service.TaskService;
 import io.swagger.annotations.Api;
@@ -168,7 +168,7 @@ public class LocalDataController extends BaseController {
         localMetaData.setMetaDataName(req.getResourceName());
         localMetaData.setStatus(LocalDataFileStatusEnum.CREATED.getStatus());//添加数据状态为created
         localMetaData.setOwner(userAddress);
-        localMetaData.setMetaDataType(Base.MetadataType.MetadataType_DataFile_VALUE);
+        localMetaData.setMetaDataType(CarrierEnum.MetadataType.MetadataType_DataFile_VALUE);
 
         localMetaData.setLocalMetaDataColumnList(req.getLocalMetaDataColumnList());
 

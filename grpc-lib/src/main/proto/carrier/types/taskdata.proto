@@ -1,20 +1,22 @@
 syntax = "proto3";
 
-package types;
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/carrier/types";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.metis.admin.grpc.carrier.types";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "TaskData";
 
-import "lib/types/base.proto";
-import "lib/types/resourcedata.proto";
+package carrier.types;
 
-option go_package = "github.com/RosettaFlow/Carrier-Go/lib/types";
-option java_package = "com.platon.metis.admin.grpc.types";
-//option java_multiple_files = true;
+import "common/constant/carrier_enum.proto";
+import "carrier/types/resourcedata.proto";
 
 message TaskPB {
   string                                      task_id = 1;                                // 任务Id
   string                                      data_id = 2;                                // 预留
-  DataStatus                                  data_status = 3;                            // the status of data for local storage, 1 means valid, 2 means invalid.
+  common.constant.DataStatus                  data_status = 3;                            // the status of data for local storage, 1 means valid, 2 means invalid.
   string                                      user = 4;                                   // 发起任务的用户的信息 (task是属于用户的)
-  UserType                                    user_type = 5;                              // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  common.constant.UserType                    user_type = 5;                              // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
   string                                      task_name = 6;                              // 任务名称
   TaskOrganization                            sender = 7;                                 // 任务的发起方的组织信息
   TaskOrganization                            algo_supplier = 8;                          // 任务的算法提供者信息
@@ -34,7 +36,7 @@ message TaskPB {
   string                                      meta_algorithm_id = 22;                     // 算法元数据Id (为了后续支持 算法市场而用, 使用内置算法时则该值为 "" 空字符串)
   string                                      algorithm_code_extra_params = 23;           // 内置算法的额外超参 (使用内置算法, 内置算法的额外超参数 json 字符串, 内容可为""空字符串, 根据算法来)
   repeated TaskPowerResourceOption            power_resource_options = 24;                // 算力的资源消耗明细
-  TaskState                                   state = 25;                                 // 任务的状态 (0: 未知; 1: 等在中; 2: 计算中; 3: 失败; 4: 成功)
+  common.constant.TaskState                   state = 25;                                 // 任务的状态 (0: 未知; 1: 等在中; 2: 计算中; 3: 失败; 4: 成功)
   string                                      reason = 26;                                // 任务失败原因
   string                                      desc = 27;                                  // 任务描述(非必须)
   uint64                                      create_at = 28;                             // 任务的发起时间戳 (单位: ms)
@@ -71,7 +73,7 @@ message TaskDetailSummary {
   string                                    task_id = 1;                          // 任务Id
   string                                    task_name = 2;                        // 任务名称
   string                                    user = 3;                             // 发起任务的用户的信息 (task是属于用户的)
-  UserType                                  user_type = 4;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  common.constant.UserType                  user_type = 4;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
   TaskOrganization                          sender = 5;                           // 任务的发起方的组织信息
   TaskOrganization                          algo_supplier = 6;                    // 任务的算法提供者信息
   repeated TaskOrganization                 data_suppliers = 7;                   // 任务的数据提供方组信息 (可包含发起方和参与方)
@@ -90,7 +92,7 @@ message TaskDetailSummary {
   string                                    meta_algorithm_id = 20;               // 算法元数据Id (为了后续支持 算法市场而用, 使用内置算法时则该值为 "" 空字符串)
   string                                    algorithm_code_extra_params = 21;     // 内置算法的额外超参 (使用内置算法, 内置算法的额外超参数 json 字符串, 内容可为""空字符串, 根据算法来)
   repeated TaskPowerResourceOption          power_resource_options = 22;          // 算力的资源消耗明细
-  TaskState                                 state = 23;                           // 任务的状态 (0: 未知; 1: 等在中; 2: 计算中; 3: 失败; 4: 成功)
+  common.constant.TaskState                 state = 23;                           // 任务的状态 (0: 未知; 1: 等在中; 2: 计算中; 3: 失败; 4: 成功)
   string                                    reason = 24;                          // 任务失败原因
   string                                    desc = 25;                            // 任务描述(非必须)
   uint64                                    create_at = 26;                       // 任务的发起时间戳 (单位: ms)
@@ -104,5 +106,18 @@ message TaskDetailSummary {
 // 查看本组织参与过的全部任务详情列表
 message TaskDetail {
   TaskDetailSummary                     information = 1;                  // 任务(展示)详情
+}
+
+
+
+// 任务下的组织信息
+message TaskOrganization  {
+  string party_id = 1;
+  // org name
+  string node_name = 2;
+  // the node_id for org
+  string node_id = 3;
+  // the identity for org
+  string identity_id = 4;
 }
 
