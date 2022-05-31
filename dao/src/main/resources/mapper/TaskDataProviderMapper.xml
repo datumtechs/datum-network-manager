@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.metis.admin.dao.TaskDataProviderMapper">
-    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.TaskDataProvider">
+<mapper namespace="com.platon.datum.admin.dao.TaskDataProviderMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.TaskDataProvider">
         <id column="task_id" jdbcType="VARCHAR" property="taskId"/>
         <id column="meta_data_id" jdbcType="VARCHAR" property="metaDataId"/>
         <result column="meta_data_name" jdbcType="VARCHAR" property="metaDataName"/>
@@ -23,7 +23,7 @@
           and meta_data_id = #{metaDataId,jdbcType=VARCHAR}
     </select>
 
-    <resultMap id="BaseResultMap_With_OrgName" type="com.platon.metis.admin.dao.entity.TaskDataProvider"
+    <resultMap id="BaseResultMap_With_OrgName" type="com.platon.datum.admin.dao.entity.TaskDataProvider"
                extends="BaseResultMap">
         <result column="org_name" property="dynamicFields.orgName" jdbcType="VARCHAR"/>
         <result column="carrier_node_id" property="dynamicFields.carrierNodeId" jdbcType="VARCHAR"/>
@@ -43,7 +43,7 @@
           and meta_data_id = #{metaDataId,jdbcType=VARCHAR}
     </delete>
 
-    <insert id="insert" parameterType="com.platon.metis.admin.dao.entity.TaskDataProvider">
+    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.TaskDataProvider">
         insert into task_data_provider (task_id, meta_data_id, meta_data_name, identity_id, party_id)
         values (#{taskId,jdbcType=VARCHAR}, #{metaDataId,jdbcType=VARCHAR}, #{metaDataName,jdbcType=VARCHAR},
                 #{identityId,jdbcType=VARCHAR}, #{partyId,jdbcType=VARCHAR}})

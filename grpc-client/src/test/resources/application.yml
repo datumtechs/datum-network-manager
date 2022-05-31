@@ -1,7 +1,7 @@
 # ==================================== tidb conf  ==========================================
 spring:
   application:
-    name: metis-admin
+    name: datum-admin
   profiles:
     active: dev
   servlet:
@@ -17,12 +17,12 @@ server:
     threads.min-spare: 30
   port: 8080
   servlet:
-    context-path: /metis-admin
+    context-path: /datum-admin
 
 # ==================================== conf for mybatis =====================================
 mybatis:
   mapper-locations: classpath:/mapper/**/*.xml
-  type-aliases-package: com.platon.metis.admin.dao.entity
+  type-aliases-package: com.platon.datum.admin.dao.entity
 
 # ==================================== conf for pageHelper =====================================
 pagehelper:

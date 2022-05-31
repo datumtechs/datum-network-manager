@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.platon.metis.admin.dao.LocalPowerJoinTaskMapper">
-    <resultMap id="BaseResultMap" type="com.platon.metis.admin.dao.entity.LocalPowerJoinTask">
+<mapper namespace="com.platon.datum.admin.dao.LocalPowerJoinTaskMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.LocalPowerJoinTask">
         <id column="node_id" jdbcType="VARCHAR" property="nodeId"/>
         <id column="task_id" jdbcType="VARCHAR" property="taskId"/>
         <result column="task_name" jdbcType="VARCHAR" property="taskName"/>
