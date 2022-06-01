@@ -46,8 +46,6 @@ service DataProvider {
   }
   rpc DeleteData(DownloadRequest) returns (UploadReply) {}
 
-  rpc SendSharesData(SendSharesDataRequest) returns (SendSharesDataReply) {}
-
   rpc HandleTaskReadyGo(fighter.types.TaskReadyGoReq) returns (fighter.types.TaskReadyGoReply) {
         option(google.api.http) = {
         post: "/data/handleTaskReadyGo"
@@ -133,13 +131,4 @@ message GetStatusReply {
   uint64 total_bandwidth = 12;
   uint64 used_bandwidth = 13;
   uint64 idle_bandwidth = 14;
-}
-
-message SendSharesDataRequest {
-  string data_id = 1;
-  repeated string receivers = 2;
-}
-
-message SendSharesDataReply {
-  common.constant.TaskStatus status = 1;
 }
