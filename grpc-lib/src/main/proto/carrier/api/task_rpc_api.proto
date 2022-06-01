@@ -10,7 +10,6 @@ package carrier.api;
 
 import "common/constant/carrier_enum.proto";
 import "carrier/types/common.proto";
-import "carrier/types/identitydata.proto";
 import "carrier/types/taskdata.proto";
 import "carrier/types/resourcedata.proto";
 import "google/api/annotations.proto";
