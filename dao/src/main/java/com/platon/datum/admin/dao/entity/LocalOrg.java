@@ -64,7 +64,7 @@ public class LocalOrg extends BaseDomain {
     private String carrierWallet;
 
     @Getter
-    public enum Status{
+    public enum Status {
         NOT_CONNECT_NET(0, "待接入网络"),
         CONNECTED(1, "已入网"),
         LEFT_NET(99, "已退网，待重新接入网络");

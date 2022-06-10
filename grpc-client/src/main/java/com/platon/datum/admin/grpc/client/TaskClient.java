@@ -13,10 +13,7 @@ import com.platon.datum.admin.grpc.carrier.types.ResourceData;
 import com.platon.datum.admin.grpc.carrier.types.TaskData;
 import com.platon.datum.admin.grpc.channel.SimpleChannelManager;
 import com.platon.datum.admin.grpc.constant.GrpcConstant;
-import com.platon.datum.admin.grpc.entity.template.DataPolicyOption0;
-import com.platon.datum.admin.grpc.entity.template.DataPolicyOption1;
-import com.platon.datum.admin.grpc.entity.template.DataPolicyOption2;
-import com.platon.datum.admin.grpc.entity.template.DataPolicyOption3;
+import com.platon.datum.admin.grpc.entity.template.*;
 import io.grpc.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -298,8 +295,18 @@ public class TaskClient {
                 case 6:
                 case 7:
                     break;
+                case 30001:
+//                    DataPolicyOption30001 dataPolicyOption30001 = JSONUtil.toBean(option, DataPolicyOption30001.class);
+                    break;
+                case 30002:
+                case 30003:
+                case 30004:
+                case 30005:
+                case 30006:
+                case 30007:
+                    break;
                 default:
-                    throw new BizException(Errors.SysException, "unknown data policy type : " + type);
+                    log.error("taskId : {},unknown data policy type : {}", taskDetail.getTaskId(), type);
             }
 
             TaskData.TaskOrganization dataSupplier = dataSuppliersList.get(i);
