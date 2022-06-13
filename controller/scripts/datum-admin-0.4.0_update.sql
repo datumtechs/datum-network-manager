@@ -341,3 +341,14 @@ DROP TABLE IF EXISTS `local_data_file_column`;
 
 Alter TABLE local_meta_data modify `meta_data_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '元数据名称';
 Alter TABLE task_data_provider modify `meta_data_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '参与任务的元数据名称';
+
+DROP TABLE IF EXISTS `task_data_provider`;
+CREATE TABLE `task_data_provider` (
+                                      `hash` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '唯一hash',
+                                      `task_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务ID,hash',
+                                      `meta_data_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参与任务的元数据ID',
+                                      `meta_data_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '参与任务的元数据名称',
+                                      `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数据提供者组织身份ID',
+                                      `party_id` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参与方在计算任务中的partyId',
+                                      PRIMARY KEY (`hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务数据提供方表 存储某个任务数据提供方的信息';

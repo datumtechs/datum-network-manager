@@ -7,6 +7,10 @@ import lombok.Data;
 @Data
 @ApiModel(value = "任务的数据提供者")
 public class TaskDataProvider extends BaseDomain {
+
+    @ApiModelProperty(name = "hash", value = "hash")
+    private String hash;
+
     @ApiModelProperty(name = "taskId", value = "任务ID")
     private String taskId;
 

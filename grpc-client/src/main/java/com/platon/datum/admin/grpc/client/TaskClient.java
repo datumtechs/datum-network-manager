@@ -2,9 +2,7 @@ package com.platon.datum.admin.grpc.client;
 
 import cn.hutool.json.JSONUtil;
 import com.google.protobuf.ProtocolStringList;
-import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
-import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.entity.*;
 import com.platon.datum.admin.grpc.carrier.api.TaskRpcApi;
@@ -259,6 +257,7 @@ public class TaskClient {
     }
 
     private void processDataSupplierList(TaskData.TaskDetailSummary taskDetail, Map<String, TaskOrg> taskOrgMap, Task task) {
+        String taskId = taskDetail.getTaskId();
         List<TaskDataProvider> taskDataProviderList = new ArrayList<>();
 
         List<Integer> dataPolicyTypesList = taskDetail.getDataPolicyTypesList();
@@ -267,28 +266,33 @@ public class TaskClient {
         for (int i = 0; i < dataPolicyOptionsList.size(); i++) {
             Integer type = dataPolicyTypesList.get(i);
             String option = dataPolicyOptionsList.get(i);
-            String metaDataId = null;
-            String metaDataName = null;
+            String metaDataId = "";
+            String metaDataName = "";
+            String hash = taskId + i;
             switch (type) {
                 case 0:
                     DataPolicyOption0 dataPolicyOption0 = JSONUtil.toBean(option, DataPolicyOption0.class);
                     metaDataId = dataPolicyOption0.getMetadataId();
                     metaDataName = dataPolicyOption0.getMetadataName();
+                    hash = taskId + dataPolicyOption0.getHash(i);
                     break;
                 case 1:
                     DataPolicyOption1 dataPolicyOption1 = JSONUtil.toBean(option, DataPolicyOption1.class);
                     metaDataId = dataPolicyOption1.getMetadataId();
                     metaDataName = dataPolicyOption1.getMetadataName();
+                    hash = taskId + dataPolicyOption1.getHash(i);
                     break;
                 case 2:
                     DataPolicyOption2 dataPolicyOption2 = JSONUtil.toBean(option, DataPolicyOption2.class);
                     metaDataId = dataPolicyOption2.getMetadataId();
                     metaDataName = dataPolicyOption2.getMetadataName();
+                    hash = taskId + dataPolicyOption2.getHash(i);
                     break;
                 case 3:
                     DataPolicyOption3 dataPolicyOption3 = JSONUtil.toBean(option, DataPolicyOption3.class);
                     metaDataId = dataPolicyOption3.getMetadataId();
                     metaDataName = dataPolicyOption3.getMetadataName();
+                    hash = taskId + dataPolicyOption3.getHash(i);
                     break;
                 case 4:
                 case 5:
@@ -296,7 +300,8 @@ public class TaskClient {
                 case 7:
                     break;
                 case 30001:
-//                    DataPolicyOption30001 dataPolicyOption30001 = JSONUtil.toBean(option, DataPolicyOption30001.class);
+                    DataPolicyOption30001 dataPolicyOption30001 = JSONUtil.toBean(option, DataPolicyOption30001.class);
+                    hash = taskId + dataPolicyOption30001.getHash(i);
                     break;
                 case 30002:
                 case 30003:
@@ -311,7 +316,8 @@ public class TaskClient {
 
             TaskData.TaskOrganization dataSupplier = dataSuppliersList.get(i);
             TaskDataProvider dataProvider = new TaskDataProvider();
-            dataProvider.setTaskId(taskDetail.getTaskId());
+            dataProvider.setHash(hash);
+            dataProvider.setTaskId(taskId);
             dataProvider.setMetaDataId(metaDataId);
             dataProvider.setMetaDataName(metaDataName);
             dataProvider.setIdentityId(dataSupplier.getIdentityId());

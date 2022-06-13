@@ -22,10 +22,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class DataPolicyOption3 {
+public class DataPolicyOption3 extends BaseDataPolicyOption{
 
     private String partyId;
     private String metadataId;
     private String metadataName;
     private Integer inputType;
+
+    @Override
+    public Object[] getParameterNameArray() {
+        Object[] parameterNameArray = {"partyId", "metadataId", "metadataName", "inputType"};
+        return parameterNameArray;
+    }
 }

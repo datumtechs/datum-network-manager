@@ -23,11 +23,19 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class DataPolicyOption30001 {
+public class DataPolicyOption30001 extends BaseDataPolicyOption {
 
     private String partyId;
     private String taskId;
     private Integer inputType;
     private String keyColumnName;
     private List<String> selectedColumnNames = new ArrayList<>();
+
+
+    @Override
+    public Object[] getParameterNameArray() {
+        Object[] parameterNameArray = {"partyId", "taskId", "inputType", "keyColumnName", "selectedColumnNames"};
+        return parameterNameArray;
+    }
+
 }
