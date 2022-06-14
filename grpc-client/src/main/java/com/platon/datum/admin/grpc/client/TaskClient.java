@@ -21,10 +21,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -73,12 +70,12 @@ public class TaskClient {
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        log.debug("从carrier查询本组织参与的任务, 数量:{}", response.getTasksList().size(), response.getTasksList());
+        log.debug("从carrier查询本组织参与的任务, 数量:{},任务内容:{}", response.getTasksList().size(), response.getTasksList());
 
-        List<TaskData.TaskDetail> tasksList = response.getTasksList();
-        return dataConvertToTaskList(tasksList);
+        //过滤掉重复的任务
+        List<TaskData.TaskDetail> filteredTaskList = filterTaskList(response);
+        return dataConvertToTaskList(filteredTaskList);
     }
-
 
     /**
      * 批量获取多个任务的全部事件列表
@@ -122,6 +119,34 @@ public class TaskClient {
 
     }
 
+    private List<TaskData.TaskDetail> filterTaskList(TaskRpcApi.GetTaskDetailListResponse response) {
+        List<TaskData.TaskDetail> tasksList = response.getTasksList();
+        //过滤掉重复的任务
+        Set<String> taskIdList = tasksList.stream()
+                .map(taskDetail -> {
+                    TaskData.TaskDetailSummary information = taskDetail.getInformation();
+                    return information.getTaskId();
+                })
+                .collect(Collectors.toSet());
+        Map<String, TaskData.TaskDetail> taskMap = new HashMap<>();
+        tasksList.forEach(taskDetail -> {
+            TaskData.TaskDetailSummary information = taskDetail.getInformation();
+            String taskId = information.getTaskId();
+            TaskData.TaskDetail taskDetail1 = taskMap.get(taskId);
+            if (taskDetail1 == null) {
+                taskMap.put(taskId, taskDetail);
+            } else {
+                //筛选掉时间更旧的数据
+                long endAt = information.getEndAt();
+                long endAt1 = taskDetail1.getInformation().getEndAt();
+                if (endAt1 > endAt) {
+                    taskMap.put(taskId, taskDetail1);
+                }
+            }
+        });
+        List<TaskData.TaskDetail> filteredTaskList = taskMap.values().stream().collect(Collectors.toList());
+        return filteredTaskList;
+    }
 
     /**
      * 任务集合数据转换
