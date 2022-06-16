@@ -1,10 +1,8 @@
 package com.platon.datum.admin.controller.data;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
-import com.platon.datum.admin.common.exception.ArgumentException;
-import com.platon.datum.admin.common.exception.MetadataResourceNameExists;
-import com.platon.datum.admin.common.exception.MetadataResourceNameIllegal;
-import com.platon.datum.admin.common.exception.ObjectNotFound;
+import com.platon.datum.admin.common.exception.*;
 import com.platon.datum.admin.common.util.NameUtil;
 import com.platon.datum.admin.controller.BaseController;
 import com.platon.datum.admin.dao.LocalDataFileMapper;
@@ -226,6 +224,18 @@ public class LocalDataController extends BaseController {
         localMetaData.setRemarks(req.getRemarks());
         localMetaData.setIndustry(req.getIndustry());
         localMetaData.setId(req.getId());
+
+        //校验列名和类型不可为空
+        List<LocalMetaDataColumn> localMetaDataColumnList = req.getLocalMetaDataColumnList();
+        localMetaDataColumnList.forEach(localMetaDataColumn -> {
+            String columnName = localMetaDataColumn.getColumnName();
+            String columnType = localMetaDataColumn.getColumnType();
+            if (StrUtil.isBlank(columnName)
+                    || StrUtil.isBlank(columnType)) {
+                throw new BizException(Errors.SysException, "columnName or columnType is null!");
+            }
+        });
+
         localMetaData.setLocalMetaDataColumnList(req.getLocalMetaDataColumnList());
         localDataService.update(localMetaData);
 
