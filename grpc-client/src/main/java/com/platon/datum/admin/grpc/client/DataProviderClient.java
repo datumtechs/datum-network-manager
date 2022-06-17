@@ -21,6 +21,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @Author liushuyu
@@ -170,9 +171,7 @@ public class DataProviderClient {
                     .build();
 
             CountDownLatch countDownLatch = new CountDownLatch(1);
-
-
-            //AtomicReference<ByteString> content = new AtomicReference<>(ByteString.EMPTY);
+            AtomicReference<ByteString> content = new AtomicReference<>(ByteString.EMPTY);
 
             //3.构建response流观察者
             ExtendResponseObserver<DataSvc.DownloadReply> responseObserver = new ExtendResponseObserver<DataSvc.DownloadReply>() {
@@ -187,7 +186,7 @@ public class DataProviderClient {
                 public void onNext(DataSvc.DownloadReply downloadReply) {
                     //5.处理response
                     if (downloadReply.hasContent()) {
-                        response = response.toBuilder().setContent(response.getContent().concat(downloadReply.getContent())).build();
+                        content.set(content.get().concat(downloadReply.getContent()));
                     }
                     if (downloadReply.hasStatus()) {
                         /**
@@ -200,6 +199,7 @@ public class DataProviderClient {
                             case 0:
                                 log.debug("开始下载文件filePath:{}，状态:{}.......", filePath, "Start");
                                 //因为oneof,所以此处可以不设置(即使设置也无妨，因为此次response.content还没数据）
+                                content.set(ByteString.EMPTY);
                                 response = response.toBuilder().setStatus(FighterEnum.TaskStatus.Start).build();
                                 break;
                             case 1:
@@ -208,11 +208,15 @@ public class DataProviderClient {
                                 response = response.toBuilder().setStatus(FighterEnum.TaskStatus.Finished).build();
                                 break;
                             case 2:
+                                log.debug("下载文件filePath:{}，状态:{}.......", filePath, "Cancelled");
                                 //因为oneof,必须设置，设置后，会重置response.content
+                                content.set(ByteString.EMPTY);
                                 response = response.toBuilder().setStatus(FighterEnum.TaskStatus.Cancelled).build();
                                 break;
                             case 3:
+                                log.debug("下载文件filePath:{}，状态:{}.......", filePath, "Failed");
                                 //因为oneof,必须设置，设置后，会重置response.content
+                                content.set(ByteString.EMPTY);
                                 response = response.toBuilder().setStatus(FighterEnum.TaskStatus.Failed).build();
                                 break;
                             default:
@@ -226,6 +230,7 @@ public class DataProviderClient {
                 public void onError(Throwable throwable) {
                     //因为oneof,必须设置，设置后，会重置response.content
                     log.error("下载失败：onError", throwable);
+                    content.set(ByteString.EMPTY);
                     response = response.toBuilder().setStatus(FighterEnum.TaskStatus.Failed).build();
                     countDownLatch.countDown();
                 }
@@ -252,17 +257,20 @@ public class DataProviderClient {
                 throw new CallGrpcServiceFailed();
             }
 
-            log.error("下载####################filePath:" + filePath + "," +
+            log.debug("下载####################filePath:" + filePath + "," +
                     (responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue()));
             //只有出错时，才设置了status
             if (responseObserver.getResponse() == null
                     || responseObserver.getResponse().getStatus() != FighterEnum.TaskStatus.Finished) {
                 throw new CallGrpcServiceFailed(responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue());
             }
-            return responseObserver.getResponse().getContent().toByteArray();
+
+            log.debug("下载文件大小:{}",content.get().size());
+            return content.get().toByteArray();
 
         } finally {
             channelManager.closeChannel(channel);
         }
     }
+
 }
