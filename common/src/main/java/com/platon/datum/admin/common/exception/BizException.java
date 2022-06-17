@@ -4,13 +4,15 @@ package com.platon.datum.admin.common.exception;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
 @ToString
+@Slf4j
 public class BizException extends RuntimeException {
     private int errorCode;
-    private String message;
+    private String errorMessage;
 
 
     /**
@@ -19,7 +21,7 @@ public class BizException extends RuntimeException {
     public BizException(Errors errors) {
         super(errors.getMessage());
         this.errorCode = errors.getCode();
-        this.message = errors.getMessage();
+        this.errorMessage = errors.getMessage();
     }
 
     /**
@@ -29,7 +31,7 @@ public class BizException extends RuntimeException {
     public BizException(Errors errors, String msg) {
         super(msg);
         this.errorCode = errors.getCode();
-        this.message = errors.getMessage();
+        this.errorMessage = errors.getMessage();
     }
 
     /**
@@ -39,7 +41,6 @@ public class BizException extends RuntimeException {
     public BizException(Errors errors, Throwable t) {
         super(t);
         this.errorCode = errors.getCode();
-        this.message = errors.getMessage();
+        this.errorMessage = errors.getMessage();
     }
-
 }

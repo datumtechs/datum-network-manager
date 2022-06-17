@@ -63,7 +63,7 @@ public class JsonResponse<T> {
     }
 
     public static JsonResponse fail(BizException e) {
-        return new JsonResponse(e.getErrorCode(), e.getMessage(), null);
+        return new JsonResponse(e.getErrorCode(), e.getErrorMessage(), null);
     }
 
     public static JsonResponse fail(Errors errors) {

@@ -200,12 +200,12 @@ public class DataProviderClient {
                             case 0:
                                 log.debug("开始下载文件filePath:{}，状态:{}.......", filePath, "Start");
                                 //因为oneof,所以此处可以不设置(即使设置也无妨，因为此次response.content还没数据）
-                                //response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Start).build();
+                                response = response.toBuilder().setStatus(FighterEnum.TaskStatus.Start).build();
                                 break;
                             case 1:
                                 //因为oneof,此处不能设置（因为设置后，会重置response.content)
                                 log.debug("下载完成文件filePath:{}，状态:{}.......", filePath, "Finished");
-                                //response = response.toBuilder().setStatus(DataProviderRpcMessage.TaskStatus.Finished).build();
+                                response = response.toBuilder().setStatus(FighterEnum.TaskStatus.Finished).build();
                                 break;
                             case 2:
                                 //因为oneof,必须设置，设置后，会重置response.content
@@ -252,9 +252,11 @@ public class DataProviderClient {
                 throw new CallGrpcServiceFailed();
             }
 
-            log.error("下载####################filePath:" + filePath + "," + responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue());
+            log.error("下载####################filePath:" + filePath + "," +
+                    (responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue()));
             //只有出错时，才设置了status
-            if (responseObserver.getResponse() == null || responseObserver.getResponse().getStatus() != FighterEnum.TaskStatus.Finished) {
+            if (responseObserver.getResponse() == null
+                    || responseObserver.getResponse().getStatus() != FighterEnum.TaskStatus.Finished) {
                 throw new CallGrpcServiceFailed(responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue());
             }
             return responseObserver.getResponse().getContent().toByteArray();
