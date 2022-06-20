@@ -78,7 +78,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
     }
 
     @Override
-    public void updateStatus(Integer dataTokenId, int status) {
-        dataTokenMapper.updateStatus(dataTokenId,status);
+    public void updateStatus(Integer dataTokenId, int status, String currentUserAddress) {
+        dataTokenMapper.updateStatusByCurrentUser(dataTokenId, status, currentUserAddress);
     }
 }

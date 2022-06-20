@@ -32,6 +32,8 @@ public interface DataTokenMapper {
 
     int updateStatus(@Param("id") int id, @Param("status") int status);
 
+    int updateStatusByCurrentUser(@Param("id") int id, @Param("status") int status, @Param("currentUserAddress") String currentUserAddress);
+
     DataToken selectById(Integer dataTokenId);
 
     List<DataToken> selectListByStatus(int status);

@@ -142,8 +142,9 @@ public class NoAttributeDataTokenController extends BaseController {
      */
     @ApiOperation(value = "修改凭证状态")
     @PostMapping("/updateStatus")
-    public JsonResponse updateStatus(@RequestBody @Validated NoAttributeDataTokenUpdateStatusReq req) {
-        noAttributeDataTokenService.updateStatus(req.getDataTokenId(), req.getStatus());
+    public JsonResponse updateStatus(HttpSession session, @RequestBody @Validated NoAttributeDataTokenUpdateStatusReq req) {
+        String currentUserAddress = getCurrentUserAddress(session);
+        noAttributeDataTokenService.updateStatus(req.getDataTokenId(), req.getStatus(), currentUserAddress);
         return JsonResponse.success();
     }
 }

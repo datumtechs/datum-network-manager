@@ -91,6 +91,12 @@
         where id = #{id}
     </update>
 
+    <update id="updateStatusByCurrentUser">
+        update data_token
+        set status = #{status}
+        where id = #{id} and owner = #{currentUserAddress}
+    </update>
+
     <select id="selectById" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
