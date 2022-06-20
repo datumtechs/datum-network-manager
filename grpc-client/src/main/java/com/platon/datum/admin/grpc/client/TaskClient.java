@@ -21,7 +21,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -121,26 +124,19 @@ public class TaskClient {
 
     private List<TaskData.TaskDetail> filterTaskList(TaskRpcApi.GetTaskDetailListResponse response) {
         List<TaskData.TaskDetail> tasksList = response.getTasksList();
-        //过滤掉重复的任务
-        Set<String> taskIdList = tasksList.stream()
-                .map(taskDetail -> {
-                    TaskData.TaskDetailSummary information = taskDetail.getInformation();
-                    return information.getTaskId();
-                })
-                .collect(Collectors.toSet());
         Map<String, TaskData.TaskDetail> taskMap = new HashMap<>();
         tasksList.forEach(taskDetail -> {
             TaskData.TaskDetailSummary information = taskDetail.getInformation();
             String taskId = information.getTaskId();
-            TaskData.TaskDetail taskDetail1 = taskMap.get(taskId);
-            if (taskDetail1 == null) {
+            TaskData.TaskDetail oldTaskDetail = taskMap.get(taskId);
+            if (oldTaskDetail == null) {
                 taskMap.put(taskId, taskDetail);
             } else {
                 //筛选掉时间更旧的数据
                 long endAt = information.getEndAt();
-                long endAt1 = taskDetail1.getInformation().getEndAt();
-                if (endAt1 > endAt) {
-                    taskMap.put(taskId, taskDetail1);
+                long oldEndAt = oldTaskDetail.getInformation().getEndAt();
+                if (oldEndAt < endAt) {
+                    taskMap.put(taskId, taskDetail);
                 }
             }
         });

@@ -19,4 +19,6 @@ public interface NoAttributeDataTokenService {
     void up(DataToken dataToken);
 
     DataToken getDataTokenById(Integer dataTokenId);
+
+    void updateStatus(Integer dataTokenId,int status);
 }

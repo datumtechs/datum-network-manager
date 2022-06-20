@@ -10,7 +10,6 @@ import com.platon.datum.admin.dto.resp.NoAttributeDataTokenGetPublishConfigResp;
 import com.platon.datum.admin.dto.resp.NoAttributeDataTokenGetUpConfigResp;
 import com.platon.datum.admin.service.NoAttributeDataTokenService;
 import com.platon.datum.admin.service.SysConfigService;
-import com.platon.datum.admin.dto.req.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -138,4 +137,13 @@ public class NoAttributeDataTokenController extends BaseController {
         return JsonResponse.success();
     }
 
+    /**
+     * 修改凭证状态
+     */
+    @ApiOperation(value = "修改凭证状态")
+    @PostMapping("/updateStatus")
+    public JsonResponse updateStatus(@RequestBody @Validated NoAttributeDataTokenUpdateStatusReq req) {
+        noAttributeDataTokenService.updateStatus(req.getDataTokenId(), req.getStatus());
+        return JsonResponse.success();
+    }
 }

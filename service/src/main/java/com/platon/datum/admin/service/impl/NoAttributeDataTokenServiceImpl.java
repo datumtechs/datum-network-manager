@@ -76,4 +76,9 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
         DataToken dataToken = dataTokenMapper.selectById(dataTokenId);
         return dataToken;
     }
+
+    @Override
+    public void updateStatus(Integer dataTokenId, int status) {
+        dataTokenMapper.updateStatus(dataTokenId,status);
+    }
 }
