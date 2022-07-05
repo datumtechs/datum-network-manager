@@ -1,5 +1,6 @@
 package com.platon.datum.admin.service.task;
 
+import cn.hutool.core.util.StrUtil;
 import com.platon.datum.admin.dao.LocalPowerJoinTaskMapper;
 import com.platon.datum.admin.dao.LocalPowerNodeMapper;
 import com.platon.datum.admin.dao.entity.LocalPowerJoinTask;
@@ -77,12 +78,15 @@ public class LocalPowerNodeRefreshTask {
 
         if (CollectionUtils.isNotEmpty(localPowerNodeList)) {
             //1.更新非撤销中的算力状态
-            localPowerNodeMapper.updateResourceInfoBatchByNodeId(localPowerNodeList);
+            localPowerNodeMapper.updateResourceInfoBatchByNodeIdAndPowerId(localPowerNodeList);
 
             //2.更新撤销中的数据
             List<LocalPowerNode> revokingPower = localPowerNodeMapper.queryPowerNodeListByStatus(6);
-            //撤销中的数据如果接口一直有返回，则表示还未处理完成
-            revokingPower.stream().filter(power -> !nodeIdMap.keySet().contains(power.getNodeId())).forEach(power -> {
+            //撤销中的powerId如果接口一直有返回，则表示该powerId还未处理完成
+            revokingPower.stream().filter(power -> {
+                LocalPowerNode localPowerNode = nodeIdMap.get(power.getNodeId());
+                return localPowerNode == null ? false : !StrUtil.equals(localPowerNode.getPowerId(),power.getPowerId());
+            }).forEach(power -> {
                 // 停用算力需把上次启动的算力id清空
                 power.setPowerId("");
                 power.setPowerStatus(CarrierEnum.PowerState.PowerState_Revoked_VALUE);

@@ -41,7 +41,7 @@ public interface LocalPowerNodeMapper {
      * @param localPowerNodeList
      * @return
      */
-    int updateResourceInfoBatchByNodeId(List<LocalPowerNode> localPowerNodeList);
+    int updateResourceInfoBatchByNodeIdAndPowerId(List<LocalPowerNode> localPowerNodeList);
 
 
     /**

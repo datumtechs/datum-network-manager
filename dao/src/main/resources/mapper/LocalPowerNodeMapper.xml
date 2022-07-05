@@ -315,7 +315,7 @@
     </insert>
 
     <!-- 批量修改计算节点的资源信息-->
-    <update id="updateResourceInfoBatchByNodeId"
+    <update id="updateResourceInfoBatchByNodeIdAndPowerId"
             parameterType="com.platon.datum.admin.dao.entity.LocalPowerNode">
         <foreach collection="list" item="item" separator=";">
             update local_power_node
@@ -328,6 +328,7 @@
                 used_core      = #{item.usedCore, jdbcType=INTEGER},
                 used_bandwidth = #{item.usedBandwidth, jdbcType=BIGINT}
             where node_id = #{item.nodeId, jdbcType=VARCHAR}
+              and power_id = #{item.powerId, jdbcType=VARCHAR}
               and power_status != 6
         </foreach>
     </update>
