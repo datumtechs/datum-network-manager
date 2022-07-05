@@ -73,16 +73,16 @@ public class LocalPowerNodeRefreshTask {
         // 修改计算节点信息
         List<LocalPowerNode> localPowerNodeList = data.getLeft();
 
-        Map<String, LocalPowerNode> powerIdMap = localPowerNodeList.stream().collect(Collectors.toMap(LocalPowerNode::getPowerId, power -> power));
+        Map<String, LocalPowerNode> nodeIdMap = localPowerNodeList.stream().collect(Collectors.toMap(LocalPowerNode::getNodeId, power -> power));
 
         if (CollectionUtils.isNotEmpty(localPowerNodeList)) {
             //1.更新非撤销中的算力状态
-            localPowerNodeMapper.updateResourceInfoBatchByNodeIdAndPowerId(localPowerNodeList);
+            localPowerNodeMapper.updateResourceInfoBatchByNodeId(localPowerNodeList);
 
             //2.更新撤销中的数据
             List<LocalPowerNode> revokingPower = localPowerNodeMapper.queryPowerNodeListByStatus(6);
             //撤销中的数据如果接口一直有返回，则表示还未处理完成
-            revokingPower.stream().filter(power -> !powerIdMap.keySet().contains(power.getPowerId())).forEach(power -> {
+            revokingPower.stream().filter(power -> !nodeIdMap.keySet().contains(power.getNodeId())).forEach(power -> {
                 // 停用算力需把上次启动的算力id清空
                 power.setPowerId("");
                 power.setPowerStatus(CarrierEnum.PowerState.PowerState_Revoked_VALUE);
@@ -90,7 +90,7 @@ public class LocalPowerNodeRefreshTask {
             });
 
             //3.处理存在太久的进行中的数据
-            processPublishingPowerAndRevokingPower(powerIdMap);
+            processPublishingPowerAndRevokingPower(nodeIdMap);
         }
 
 
@@ -106,15 +106,11 @@ public class LocalPowerNodeRefreshTask {
     }
 
     //判断是否存在有存在太久的进行中的数据，将它作为操作失败处理 TODO 暂定10分钟的
-    private void processPublishingPowerAndRevokingPower(Map<String, LocalPowerNode> powerIdMap) {
+    private void processPublishingPowerAndRevokingPower(Map<String, LocalPowerNode> powerNodeMap) {
         //发布中的数据
         List<LocalPowerNode> publishingPower = localPowerNodeMapper.queryPowerNodeListByStatus(5);
         //撤销中的数据
         List<LocalPowerNode> revokingPower = localPowerNodeMapper.queryPowerNodeListByStatus(6);
-
-        Map<String, LocalPowerNode> powerNodeMap = powerIdMap.values()
-                .stream()
-                .collect(Collectors.toMap(LocalPowerNode::getNodeId, power -> power));
 
         //expire time 单位分钟
         long expireTime = 10;
