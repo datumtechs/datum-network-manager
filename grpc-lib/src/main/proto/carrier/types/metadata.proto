@@ -32,18 +32,19 @@ message MetadataPB {
   uint64                                publish_at = 13;                // 元数据发布时间
   uint64                                update_at = 14;                 // 元数据更新时间
   uint64                                nonce = 15;                     // 元数据的 nonce (用来标识该元数据在所属组织中的元数据的序号, 从 0 开始递增)
-  string                                metadata_option = 16;           // 元数据的选项，和 data_type 配套使用
-  bool                                  allow_expose = 17;              // 是否可以被曝光 (true: 可以; false: 不可以; 如 数据原始内容可以被下载或者支持外域查看时则为 true, 默认为 false)
-  string                                token_address = 18;             // 元数据对应的 dataToken 合约的地址
+  string                                metadata_option = 16;           // 元数据的选项，和 data_type 配套使用 （allow_expose/tokenAddress 等字段将被转移到 option里面）
+  // add by v0.5.0
+  string                                user = 17;                      // 发布元数据的账户 (元数据发布是属于用户的)
+  common.constant.UserType              user_type = 18;                 // 账户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
 }
 
 // 元数据申请记录实体
 message MetadataAuthorityPB {
   string                                                metadata_auth_id = 1;     // 元数据授权申请Id
-  string                                                user = 2;                 // 申请人地址
-  string                                                data_id = 3;              // 预留
-  common.constant.DataStatus                            data_status = 4;          // the status of data for local storage, 1 means valid, 2 means invalid.
-  common.constant.UserType                              user_type = 5;            // 申请人类型
+  string                                                user = 2;                 // 申请人账户
+  common.constant.UserType                              user_type = 3;            // 申请人账户类型
+  string                                                data_id = 4;              // 预留
+  common.constant.DataStatus                            data_status = 5;          // the status of data for local storage, 1 means valid, 2 means invalid.
   MetadataAuthority                                     auth = 6;                 // 元数据使用授权信息
   common.constant.AuditMetadataOption                   audit_option  = 7;        // 审核结果
   string                                                audit_suggestion = 8;     // 审核意见 (允许""字符)
@@ -72,9 +73,10 @@ message MetadataSummary {
   uint64                                  publish_at = 10;            // 数据发布时间
   uint64                                  update_at = 11;             // 数据更新时间
   uint64                                  nonce = 12;                 // 元数据的 nonce (用来标识该元数据在所属组织中的元数据的序号, 从 0 开始递增)
-  string                                  metadata_option = 13;       // 元数据选项 (json字符串, 根据 data_type 的值来配对对应的模板)
-  bool                                    allow_expose = 14;          // 是否可以被曝光 (true: 可以; false: 不可以; 如 数据原始内容可以被外部组织下载或者支持外部组织查看时则为 true, 默认为 false)
-  string                                  token_address = 15;         // 元数据对应的 dataToken 合约的地址 (元数据发布时该字段是空的, 当绑定时才赋值)
+  string                                  metadata_option = 13;       // 元数据的选项，和 data_type 配套使用 （allow_expose/tokenAddress 等字段将被转移到 option里面）
+  // add by v0.5.0
+  string                                  user = 14;                  // 发布元数据的账户 (元数据发布是属于用户的)
+  common.constant.UserType                user_type = 15;             // 账户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
 }
 
 // 元数据的详情信息
@@ -83,7 +85,7 @@ message MetadataDetail {
   uint32                  total_task_count = 3;            // 该元数据参与过得任务数 (已完成的和正在执行的)
 }
 
-// 元数据的使用方式定义
+// 元数据的使用方式定义 (数据授权)
 message MetadataUsageRule {
   common.constant.MetadataUsageType         usage_type = 1;              // 元数据的使用方式 (0: 未定义; 1: 按照时间段来使用; 2: 按照次数来使用)
   uint64                                    start_at = 2;                // 可使用的开始时间 (当 usage_type 为 1 时才需要的字段)
@@ -108,8 +110,8 @@ message MetadataUsedQuo {
 // 当前组织的某个用户对单个元数据的授权申请及审核结果详情
 message MetadataAuthorityDetail {
   string                                                metadata_auth_id = 1;                 // 元数据授权申请Id
-  string                                                user = 2;                             // 发起任务的用户的信息 (数据授权 是属于用户的)
-  common.constant.UserType                              user_type = 3;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  string                                                user = 2;                             // 发起任务的账户 (数据授权 是属于用户的)
+  common.constant.UserType                              user_type = 3;                        // 账户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
   MetadataAuthority                                     auth = 4;                             // 元数据使用授权信息
   common.constant.AuditMetadataOption                   audit_option = 5;                     // 审核结果
   string                                                audit_suggestion = 6;                 // 审核意见 (允许""字符)
@@ -120,5 +122,4 @@ message MetadataAuthorityDetail {
   uint64                                                publish_at = 11;                      // 数据发布时间 (单位: ms)
   uint64                                                update_at = 12;                       // 数据更新时间 (单位: ms)
   uint64                                                nonce = 13;                           // 元数据授权的 nonce (用来标识该元数据授权在所属组织中的元数据授权的序号, 从 0 开始递增)
-
 }

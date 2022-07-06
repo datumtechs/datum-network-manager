@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/common/constant";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.datum.admin.grpc.common.constant";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "TokenEnum";
+
+package common.constant;
+
+enum TokenType {
+  ERC20 = 0;
+  ERC721 = 1;
+  ERC1155 = 2;
+}

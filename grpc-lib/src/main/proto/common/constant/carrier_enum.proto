@@ -8,6 +8,11 @@ option java_outer_classname = "CarrierEnum";
 
 package common.constant;
 
+enum IdentityType {
+  Identity_Unknown = 0;
+  Identity_DID = 1;    // DID
+}
+
 enum UserType {
   User_Unknown = 0;
   User_1 = 1;    // PlatON

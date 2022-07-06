@@ -93,7 +93,6 @@ public class MetaDataClient {
                 .setIndustry(String.valueOf(localMetaData.getIndustry()))
                 .setState(CarrierEnum.MetadataState.forNumber(localMetaData.getStatus()))
                 .setMetadataOption(JSONUtil.toJsonStr(metaDataOption1))//元数据选项 (json字符串, 根据 data_type 的值来配对对应的模板)
-                .setAllowExpose(false)
                 .build();
         //2.4构建完整的请求信息
         MetaDataRpcApi.PublishMetadataRequest request = MetaDataRpcApi.PublishMetadataRequest.newBuilder().setInformation(metadataSummary).build();

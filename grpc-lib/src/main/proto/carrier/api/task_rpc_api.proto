@@ -9,6 +9,7 @@ option java_outer_classname = "TaskRpcApi";
 package carrier.api;
 
 import "common/constant/carrier_enum.proto";
+import "common/constant/token_enum.proto";
 import "carrier/types/common.proto";
 import "carrier/types/taskdata.proto";
 import "carrier/types/resourcedata.proto";
@@ -87,8 +88,15 @@ message TerminateTaskRequest {
 
 // 预估gas request
 message EstimateTaskGasRequest {
-  string               task_sponsor_address = 1;       //当前任务发起用户的钱包地址
-  repeated string      data_token_addresses = 2;       // 当前任务用到的data token 合约地址0x开头//缺省转账金额是1
+  string               task_sponsor_address = 1;        // 当前任务发起用户的钱包地址
+  repeated string      token_items = 2;                 // 当前任务用到的token item列表
+}
+
+message TokenItem {
+  common.constant.TokenType       token_type = 1;       // token类型
+  string                          token_address = 2;    // token合约地址
+  uint64                          id  = 3;              // available if token_type=erc1155 or erc721
+  uint64                          value = 4;            // token value
 }
 
 // 预估gas response

@@ -12,37 +12,31 @@ import "common/constant/carrier_enum.proto";
 
 // IdentityData represents the stored data structure.
 message IdentityPB {
-  string                        identity_id = 1;      // 身份标识Id
-  string                        node_id = 2;          // 组织的 p2p用的 nodeId
-  string                        node_name = 3;        // 组织的名称
-  string                        data_id = 4;          // 预留
-  common.constant.DataStatus    data_status = 5;      // the status of data for local storage, 1 means valid, 2 means invalid
-  common.constant.CommonStatus  status = 6;           // the status of data for datacenter, 1 means valid, 2 means invalid
-  string                        credential = 7;       // json format for credential
-  uint64                        update_at = 8;        // UTC毫秒数
-  string                        image_url = 9;        // the link of face image (with a length limit)
-  string                        details = 10;         // description of the node (with a length limit)
-  uint64                        nonce = 11;           // 身份信息的 nonce (用来标识该身份在所属组织中发布的序号, 从 0 开始递增; 注: 身份可以来回发布注销，所以nonce表示第几次发布)
+  string                        identity_id = 1;        // 组织的身份标识Id
+  common.constant.IdentityType  ideneity_type = 2;      // 组织的身份标识类型 (0: 未定义; 1: DID)
+  string                        node_id = 3;            // 组织的 p2p用的 nodeId
+  string                        node_name = 4;          // 组织的名称
+  string                        data_id = 5;            // 预留
+  common.constant.DataStatus    data_status = 6;        // the status of data for local storage, 1 means valid, 2 means invalid
+  common.constant.CommonStatus  status = 7;             // the status of data for datacenter, 1 means valid, 2 means invalid
+  string                        credential = 8;         // json format for credential
+  uint64                        update_at = 9;          // UTC毫秒数
+  string                        image_url = 10;         // the link of face image (with a length limit)
+  string                        details = 11;           // description of the node (with a length limit)
+  uint64                        nonce = 12;             // 身份信息的 nonce (用来标识该身份在所属组织中发布的序号, 从 0 开始递增; 注: 身份可以来回发布注销，所以nonce表示第几次发布)
 }
 
 
 // A represents the basic information of the organization.
 message Organization  {
-  // org name
-  string node_name = 1;
-  // the node_id for org
-  string node_id = 2;
-  // the identity for org
-  string identity_id = 3;
-  // the status of data for local storage, 1 means valid, 2 means invalid
-  common.constant.DataStatus data_status = 4;
-  // the status of data for datacenter, 1 means valid, 2 means invalid
-  common.constant.CommonStatus status = 5;
-  //v 3.0
-  // the last_update time of corresponding datacenter (unit: UTC ms)
-  uint64 update_at = 6;
-  // the link of face image (with a length limit)
-  string image_url = 7;
-  // description of the node (with a length limit)
-  string details = 8;
+  string                        node_name = 1;          // 组织的名称
+  string                        node_id = 2;            // 组织的 p2p用的 nodeId
+  string                        identity_id = 3;        // 组织的身份标识Id
+  common.constant.IdentityType  ideneity_type = 4;      // 组织的身份标识类型 (0: 未定义; 1: DID)
+  common.constant.DataStatus    data_status = 5;        // the status of data for local storage, 1 means valid, 2 means invalid
+  common.constant.CommonStatus  status = 6;             // the status of data for datacenter, 1 means valid, 2 means invalid
+  // add by v 0.3.0
+  uint64                        update_at = 7;          // the last_update time of corresponding datacenter (unit: UTC ms)
+  string                        image_url = 8;          // the link of face image (with a length limit)
+  string                        details = 9;            // description of the node (with a length limit)
 }

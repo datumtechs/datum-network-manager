@@ -82,12 +82,6 @@ message GetMetadataUsedTaskIdListResponse {
   repeated string             task_ids = 3;         // 任务Id
 }
 
-// v 0.4.0 datatoken合约地址和metadata一对一绑定
-message BindDataTokenAddressRequest {
-  string    metadata_id = 1;        // 内部元数据Id
-  string    token_address = 2;      // 元数据对应的 dataToken 合约的地址
-}
-
 // v 0.4.0 将内部元数据重新发布成 对外的元数据 req
 message PublishMetadataByInteranlMetadataRequest {
   carrier.types.MetadataSummary   information = 1;             // 元数据详情
@@ -97,6 +91,11 @@ message PublishMetadataByInteranlMetadataRequest {
 message PublishMetadataByTaskResultFileRequest {
   string                                task_id = 1;                  //任务id
   carrier.types.MetadataSummary         information = 2;              // 元数据详情
+}
+
+// v 0.5.0 更新已发布的元数据 req
+message UpdateMetadataRequest {
+  carrier.types.MetadataSummary   information = 1;             // 元数据详情
 }
 
 // ## 元数据 相关接口
@@ -148,14 +147,6 @@ service MetadataService {
     };
   }
 
-  // v 0.4.0 将元数据发布的 datatoken 合约地址绑定 元数据信息中 (metadata : datatoken == 1 : 1)
-  rpc BindDataTokenAddress (BindDataTokenAddressRequest) returns (carrier.types.SimpleResponse) {
-    option (google.api.http) = {
-      post: "/carrier/v1/metadata/bindDataTokenAddress"
-      body: "*"
-    };
-  }
-
   // v 0.4.0 将内部元数据重新发布成 对外的元数据
   rpc PublishMetadataByInteranlMetadata (PublishMetadataByInteranlMetadataRequest) returns (PublishMetadataResponse) {
     option (google.api.http) = {
@@ -172,4 +163,11 @@ service MetadataService {
     };
   }
 
+  // v 0.5.0 更新已经发布元数据相关信息
+  rpc UpdateMetadata(UpdateMetadataRequest) returns (carrier.types.SimpleResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/metadata/updateMetadata"
+      body: "*"
+    };
+  }
 }
