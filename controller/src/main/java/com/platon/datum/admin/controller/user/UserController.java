@@ -7,8 +7,8 @@ import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.WalletSignUtil;
 import com.platon.datum.admin.constant.ControllerConstants;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
-import com.platon.datum.admin.dao.entity.LocalOrg;
+import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.entity.SysUser;
 import com.platon.datum.admin.dto.JsonResponse;
 import com.platon.datum.admin.dto.SignMessageDto;
@@ -18,7 +18,7 @@ import com.platon.datum.admin.dto.req.UserLoginReq;
 import com.platon.datum.admin.dto.req.UserUpdateAdminReq;
 import com.platon.datum.admin.dto.resp.LoginNonceResp;
 import com.platon.datum.admin.dto.resp.LoginResp;
-import com.platon.datum.admin.service.LocalOrgService;
+import com.platon.datum.admin.service.OrgService;
 import com.platon.datum.admin.service.ResourceService;
 import com.platon.datum.admin.service.UserService;
 import io.swagger.annotations.Api;
@@ -56,7 +56,7 @@ public class UserController {
     private UserService userService;
 
     @Resource
-    private LocalOrgService localOrgService;
+    private OrgService orgService;
 
     @Resource
     private ResourceService resourceService;
@@ -112,17 +112,17 @@ public class UserController {
                 .collect(Collectors.toList());
         resp.setResourceList(uiResourceList);
 
-        LocalOrg localOrg = localOrgService.getLocalOrg();
-        if (localOrg == null) {
+        Org org = orgService.getLocalOrg();
+        if (org == null) {
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
-            resp.setConnectNetworkStatus(LocalOrg.Status.NOT_CONNECT_NET.getCode());
+            resp.setConnectNetworkStatus(Org.Status.NOT_CONNECT_NET.getCode());
         } else {
-            resp.setConnectNetworkStatus(localOrg.getStatus());
+            resp.setConnectNetworkStatus(org.getStatus());
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.DONE.getLevel());
-            if (StringUtils.isBlank(localOrg.getIdentityId())) {
+            if (StringUtils.isBlank(org.getIdentityId())) {
                 resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
-                //resp.setConnectNetworkStatus(LocalOrg.Status.NOT_CONNECT_NET.getCode());
-            } else if (StringUtils.isBlank(localOrg.getImageUrl()) || StringUtils.isBlank(localOrg.getProfile())) {
+                //resp.setConnectNetworkStatus(Org.Status.NOT_CONNECT_NET.getCode());
+            } else if (StringUtils.isBlank(org.getImageUrl()) || StringUtils.isBlank(org.getProfile())) {
                 resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_PROFILE.getLevel());
             }
         }
@@ -223,21 +223,21 @@ public class UserController {
     @ApiOperation(value = "更新组织信息（机构信息识别名称，头像链接，或者描述")
     @PostMapping("/updateLocalOrg")
     public JsonResponse<String> updateLocalOrg(@RequestBody UpdateLocalOrgReq req) {
-        LocalOrg localOrg = LocalOrgCache.getLocalOrgInfo();
+        Org org = OrgCache.getLocalOrgInfo();
         //只有退网之后才能修改组织名称
-        if (localOrg.getStatus() == LocalOrg.Status.CONNECTED.getCode()) {
+        if (org.getStatus() == Org.Status.CONNECTED.getCode()) {
             return JsonResponse.fail(Errors.OrgInNetwork);
         }
-        if (StringUtils.equals(req.getName(), localOrg.getName())
-                && StringUtils.equals(req.getImageUrl(), localOrg.getImageUrl())
-                && StringUtils.equals(req.getProfile(), localOrg.getProfile())) {
+        if (StringUtils.equals(req.getName(), org.getName())
+                && StringUtils.equals(req.getImageUrl(), org.getImageUrl())
+                && StringUtils.equals(req.getProfile(), org.getProfile())) {
             return JsonResponse.success();
         }
-        localOrg.setName(req.getName());
-        localOrg.setImageUrl(req.getImageUrl());
-        localOrg.setProfile(req.getProfile());
+        org.setName(req.getName());
+        org.setImageUrl(req.getImageUrl());
+        org.setProfile(req.getProfile());
 
-        localOrgService.updateLocalOrg(localOrg);
+        orgService.updateLocalOrg(org);
         return JsonResponse.success();
     }
 
@@ -249,8 +249,8 @@ public class UserController {
      */
     @ApiOperation(value = "查询出当前组织信息")
     @GetMapping("/findLocalOrgInfo")
-    public JsonResponse<LocalOrg> findLocalOrgInfo() {
-        LocalOrg localOrg = localOrgService.getLocalOrg();
-        return JsonResponse.success(localOrg);
+    public JsonResponse<Org> findLocalOrgInfo() {
+        Org org = orgService.getLocalOrg();
+        return JsonResponse.success(org);
     }
 }

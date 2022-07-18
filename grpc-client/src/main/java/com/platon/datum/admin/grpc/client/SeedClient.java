@@ -2,7 +2,7 @@ package com.platon.datum.admin.grpc.client;
 
 import com.google.protobuf.Empty;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
-import com.platon.datum.admin.dao.entity.LocalSeedNode;
+import com.platon.datum.admin.dao.entity.SeedNode;
 import com.platon.datum.admin.grpc.carrier.api.SysRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.YarnServiceGrpc;
 import com.platon.datum.admin.grpc.carrier.types.Common;
@@ -81,7 +81,7 @@ public class SeedClient {
     /**
      * 查询种子服务列表
      */
-    public List<LocalSeedNode> getSeedNodeList() {
+    public List<SeedNode> getSeedNodeList() {
         log.debug("从carrier查询种子节点列表");
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
@@ -100,9 +100,9 @@ public class SeedClient {
         return convertToLocalSeedNodeList(response.getNodesList());
     }
 
-    private List<LocalSeedNode> convertToLocalSeedNodeList(List<SysRpcApi.SeedPeer> seedNodeList) {
+    private List<SeedNode> convertToLocalSeedNodeList(List<SysRpcApi.SeedPeer> seedNodeList) {
         return seedNodeList.parallelStream().map(seedNode -> {
-            LocalSeedNode localSeedNode = new LocalSeedNode();
+            SeedNode localSeedNode = new SeedNode();
             localSeedNode.setSeedNodeId(seedNode.getAddr());
             localSeedNode.setInitFlag(seedNode.getIsDefault());
             localSeedNode.setConnStatus(seedNode.getConnState().getNumber());

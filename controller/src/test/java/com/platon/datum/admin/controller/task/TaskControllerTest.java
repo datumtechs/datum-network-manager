@@ -1,8 +1,8 @@
 package com.platon.datum.admin.controller.task;
 
-import com.platon.datum.admin.dao.LocalOrgMapper;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
-import com.platon.datum.admin.dao.entity.LocalOrg;
+import com.platon.datum.admin.dao.OrgMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.entity.TaskOrg;
 import com.platon.datum.admin.dto.req.TaskPageReq;
 import com.platon.datum.admin.grpc.common.constant.CarrierEnum;
@@ -23,15 +23,15 @@ import java.util.Set;
 public class TaskControllerTest {
 
     @Autowired
-    LocalOrgMapper localOrgMapper;
+    OrgMapper orgMapper;
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @BeforeAll
     public void init(){
-        LocalOrg localOrg = localOrgMapper.select();
-        LocalOrgCache.setLocalOrgInfo(localOrg);;
+        Org org = orgMapper.select();
+        OrgCache.setLocalOrgInfo(org);;
     }
 
     @Test

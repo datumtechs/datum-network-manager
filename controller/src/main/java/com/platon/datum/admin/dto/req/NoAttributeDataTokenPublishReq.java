@@ -49,10 +49,10 @@ public class NoAttributeDataTokenPublishReq {
     //价值证明描述
     private String desc;
 
-    @ApiModelProperty("对应的metaDataId")
-    //对应的metaDataId
+    @ApiModelProperty("对应的metaDataDbId")
+    //对应的metaDataDbId
     @NotNull
-    private Integer metaDataId;
+    private Integer metaDataDbId;
 
     /****************************交易hash*******************************/
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.datum.admin.dao.MetaDataColumnMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.MetaDataColumn">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="meta_data_db_id" jdbcType="INTEGER" property="metaDataDbId"/>
+        <result column="column_idx" jdbcType="INTEGER" property="columnIdx"/>
+        <result column="column_name" jdbcType="VARCHAR" property="columnName"/>
+        <result column="column_type" jdbcType="VARCHAR" property="columnType"/>
+        <result column="size" jdbcType="INTEGER" property="size"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="visible" jdbcType="BOOLEAN" property="visible"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        meta_data_db_id,
+        column_idx,
+        `column_name`,
+        column_type,
+        `size`,
+        remarks,
+        visible
+    </sql>
+
+    <!-- 根据metaId查询数据-->
+    <select id="selectByLocalMetaDataDbId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from meta_data_column
+        where meta_data_db_id = #{metaDataDbId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByLocalMetaDataDbIdToPublish" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from meta_data_column
+        where meta_data_db_id = #{metaDataDbId,jdbcType=INTEGER}
+          AND visible = TRUE
+    </select>
+
+    <!-- 批量插入数据-->
+    <insert id="batchInsert" parameterType="com.platon.datum.admin.dao.entity.MetaDataColumn"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into meta_data_column (meta_data_db_id, column_idx,
+                                            `column_name`, column_type, `size`,
+                                            remarks, visible)
+        values
+        <foreach collection="columnList" item="metaDataColumn" separator=",">
+            (#{metaDataColumn.metaDataDbId,jdbcType=INTEGER}, #{metaDataColumn.columnIdx,jdbcType=INTEGER},
+             #{metaDataColumn.columnName,jdbcType=VARCHAR}, #{metaDataColumn.columnType,jdbcType=VARCHAR},
+             #{metaDataColumn.size,jdbcType=INTEGER},
+             #{metaDataColumn.remarks,jdbcType=VARCHAR}, #{metaDataColumn.visible,jdbcType=BOOLEAN})
+        </foreach>
+    </insert>
+
+    <!-- 根据ID修改数据-->
+    <update id="update" parameterType="com.platon.datum.admin.dao.entity.MetaDataColumn">
+        update meta_data_column
+        set remarks = #{remarks,jdbcType=VARCHAR}
+        where id = #{id}
+    </update>
+
+    <!--根据metaDataId删除指定的数据,released(2)的数据不可删除 -->
+    <delete id="deleteByLocalMetaDataDbId">
+        delete
+        from meta_data_column
+        where meta_data_db_id = #{metaDataDbId,jdbcType=INTEGER}
+          and EXISTS(select 1
+                     from meta_data lmd
+                     where lmd.id = #{metaDataDbId,jdbcType=INTEGER} and lmd.`status` != 2)
+    </delete>
+</mapper>

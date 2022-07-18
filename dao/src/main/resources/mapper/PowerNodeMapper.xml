@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.datum.admin.dao.PowerNodeMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.PowerNode">
+        <id column="node_id" jdbcType="VARCHAR" property="nodeId"/>
+        <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
+        <result column="internal_ip" jdbcType="VARCHAR" property="internalIp"/>
+        <result column="internal_port" jdbcType="INTEGER" property="internalPort"/>
+        <result column="external_ip" jdbcType="VARCHAR" property="externalIp"/>
+        <result column="external_port" jdbcType="INTEGER" property="externalPort"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="conn_message" jdbcType="VARCHAR" property="connMessage"/>
+        <result column="power_id" jdbcType="VARCHAR" property="powerId"/>
+        <result column="power_status" jdbcType="INTEGER" property="powerStatus"/>
+        <result column="conn_time" jdbcType="TIMESTAMP" property="connTime"/>
+        <result column="conn_status" jdbcType="INTEGER" property="connStatus"/>
+        <result column="memory" jdbcType="BIGINT" property="memory"/>
+        <result column="core" jdbcType="INTEGER" property="core"/>
+        <result column="bandwidth" jdbcType="BIGINT" property="bandwidth"/>
+        <result column="used_memory" jdbcType="BIGINT" property="usedMemory"/>
+        <result column="used_core" jdbcType="INTEGER" property="usedCore"/>
+        <result column="used_bandwidth" jdbcType="BIGINT" property="usedBandwidth"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        node_id,
+        node_name,
+        internal_ip,
+        internal_port,
+        external_ip,
+        external_port,
+        start_time,
+        remarks,
+        conn_message,
+        power_id,
+        power_status,
+        conn_time,
+        conn_status,
+        memory,
+        core,
+        bandwidth,
+        used_memory,
+        used_core,
+        used_bandwidth,
+        create_time,
+        update_time
+    </sql>
+
+    <!-- 查询计算节点详情 -->
+    <select id="queryPowerNodeDetails" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from local_power_node
+        where node_id = #{nodeId, jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="findLocalPowerNodeByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from local_power_node
+        where node_name = #{nodeName,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 校验计算节点名称 -->
+    <select id="checknodeName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1)
+        from local_power_node
+        where node_name = #{nodeName, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 询计算节点列表-->
+    <select id="queryPowerNodeList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from local_power_node
+        where 1 = 1
+        <if test="keyword != null and keyword != ''">
+            and node_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
+        </if>
+        order by (case when conn_status = -1 THEN 0 ELSE 1 END), create_time desc
+    </select>
+
+    <!-- 根据状态查询计算节点列表-->
+    <select id="queryPowerNodeListByStatus" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from local_power_node
+        where power_status = #{status}
+    </select>
+
+    <!-- 根据节点id删除计算节点 -->
+    <delete id="deletePowerNode" parameterType="java.lang.String">
+        delete
+        from local_power_node
+        where node_id = #{nodeId, jdbcType=VARCHAR}
+    </delete>
+
+    <!-- 插入计算节点数据 -->
+    <insert id="insertPowerNode" parameterType="com.platon.datum.admin.dao.entity.PowerNode">
+        insert into local_power_node
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nodeId != null">
+                node_id,
+            </if>
+            <if test="nodeName != null">
+                node_name,
+            </if>
+            <if test="internalIp != null">
+                internal_ip,
+            </if>
+            <if test="internalPort != null">
+                internal_port,
+            </if>
+            <if test="externalIp != null">
+                external_ip,
+            </if>
+            <if test="externalPort != null">
+                external_port,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="connMessage != null">
+                conn_message,
+            </if>
+            <if test="powerId != null">
+                power_id,
+            </if>
+            <if test="powerStatus != null">
+                power_status,
+            </if>
+            <if test="connTime != null">
+                conn_time,
+            </if>
+            <if test="connStatus != null">
+                conn_status,
+            </if>
+            <if test="memory != null">
+                memory,
+            </if>
+            <if test="core != null">
+                core,
+            </if>
+            <if test="bandwidth != null">
+                bandwidth,
+            </if>
+            <if test="usedMemory != null">
+                used_memory,
+            </if>
+            <if test="usedCore != null">
+                used_core,
+            </if>
+            <if test="usedBandwidth != null">
+                used_bandwidth,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nodeId != null">
+                #{nodeId, jdbcType=VARCHAR},
+            </if>
+            <if test="nodeName != null">
+                #{nodeName, jdbcType=VARCHAR},
+            </if>
+            <if test="internalIp != null">
+                #{internalIp, jdbcType=VARCHAR},
+            </if>
+            <if test="internalPort != null">
+                #{internalPort, jdbcType=INTEGER},
+            </if>
+            <if test="externalIp != null">
+                #{externalIp, jdbcType=VARCHAR},
+            </if>
+            <if test="externalPort != null">
+                #{externalPort, jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                #{startTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="remarks != null">
+                #{remarks, jdbcType=VARCHAR},
+            </if>
+            <if test="connMessage != null">
+                #{connMessage, jdbcType=VARCHAR},
+            </if>
+            <if test="powerId != null">
+                #{powerId, jdbcType=VARCHAR},
+            </if>
+            <if test="powerStatus != null">
+                #{powerStatus, jdbcType=INTEGER},
+            </if>
+            <if test="connTime != null">
+                #{connTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="connStatus != null">
+                #{connStatus, jdbcType=INTEGER},
+            </if>
+            <if test="memory != null">
+                #{memory, jdbcType=BIGINT},
+            </if>
+            <if test="core != null">
+                #{core, jdbcType=INTEGER},
+            </if>
+            <if test="bandwidth != null">
+                #{bandwidth, jdbcType=BIGINT},
+            </if>
+            <if test="usedMemory != null">
+                #{usedMemory, jdbcType=BIGINT},
+            </if>
+            <if test="usedCore != null">
+                #{usedCore, jdbcType=INTEGER},
+            </if>
+            <if test="usedBandwidth != null">
+                #{usedBandwidth, jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 根据节点id修改计算节点数据 -->
+    <update id="updatePowerNodeByNodeId" parameterType="com.platon.datum.admin.dao.entity.PowerNode">
+        update local_power_node
+        <set>
+            <if test="nodeName != null">
+                node_name = #{nodeName, jdbcType=VARCHAR},
+            </if>
+            <if test="internalIp != null">
+                internal_ip = #{internalIp, jdbcType=VARCHAR},
+            </if>
+            <if test="internalPort != null">
+                internal_port = #{internalPort, jdbcType=INTEGER},
+            </if>
+            <if test="externalIp != null">
+                external_ip = #{externalIp, jdbcType=VARCHAR},
+            </if>
+            <if test="externalPort != null">
+                external_port = #{externalPort, jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks, jdbcType=VARCHAR},
+            </if>
+            <if test="connMessage != null">
+                conn_message = #{connMessage, jdbcType=VARCHAR},
+            </if>
+            <if test="powerId != null">
+                power_id = #{powerId, jdbcType=VARCHAR},
+            </if>
+            <if test="powerStatus != null">
+                power_status = #{powerStatus, jdbcType=INTEGER},
+            </if>
+            <if test="connTime != null">
+                conn_time = #{connTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="connStatus != null">
+                conn_status = #{connStatus, jdbcType=INTEGER},
+            </if>
+            <if test="memory != null">
+                memory = #{memory, jdbcType=BIGINT},
+            </if>
+            <if test="core != null">
+                core = #{core, jdbcType=INTEGER},
+            </if>
+            <if test="bandwidth != null">
+                bandwidth = #{bandwidth, jdbcType=BIGINT},
+            </if>
+            <if test="usedMemory != null">
+                used_memory = #{usedMemory, jdbcType=BIGINT},
+            </if>
+            <if test="usedCore != null">
+                used_core = #{usedCore, jdbcType=INTEGER},
+            </if>
+            <if test="usedBandwidth != null">
+                used_bandwidth = #{usedBandwidth, jdbcType=BIGINT},
+            </if>
+        </set>
+        where node_id = #{nodeId, jdbcType=VARCHAR}
+    </update>
+
+    <!-- 初始化新计算节点的基本信息，如果相同的key则更新基本信息（不包括节点名称）-->
+    <insert id="initNewPowerNodeBatch" parameterType="com.platon.datum.admin.dao.entity.PowerNode">
+        <foreach collection="list" item="item" separator=";">
+            INSERT INTO local_power_node (node_id,
+                                          node_name,
+                                          internal_ip,
+                                          internal_port,
+                                          external_ip,
+                                          external_port,
+                                          conn_status,
+                                          power_id,
+                                          power_status)
+            VALUES (#{item.nodeId, jdbcType=VARCHAR},
+                    #{item.nodeName, jdbcType=VARCHAR},
+                    #{item.internalIp,jdbcType=VARCHAR},
+                    #{item.internalPort,jdbcType=INTEGER},
+                    #{item.externalIp,jdbcType=VARCHAR},
+                    #{item.externalPort,jdbcType=INTEGER},
+                    #{item.connStatus,jdbcType=INTEGER},
+                    '',
+                    1)
+            ON DUPLICATE KEY
+                UPDATE internal_ip   = #{item.internalIp,jdbcType=VARCHAR},
+                       internal_port = #{item.internalPort,jdbcType=INTEGER},
+                       external_ip   = #{item.externalIp,jdbcType=VARCHAR},
+                       external_port = #{item.externalPort,jdbcType=INTEGER},
+                       conn_status   = #{item.connStatus,jdbcType=INTEGER}
+        </foreach>
+    </insert>
+
+    <!-- 批量修改计算节点的资源信息-->
+    <update id="updateResourceInfoBatchByNodeIdAndPowerId"
+            parameterType="com.platon.datum.admin.dao.entity.PowerNode">
+        <foreach collection="list" item="item" separator=";">
+            update local_power_node
+            set power_id       = #{item.powerId, jdbcType=VARCHAR},
+                power_status   = #{item.powerStatus, jdbcType=INTEGER},
+                memory         = #{item.memory, jdbcType=BIGINT},
+                core           = #{item.core, jdbcType=INTEGER},
+                bandwidth      = #{item.bandwidth, jdbcType=BIGINT},
+                used_memory    = #{item.usedMemory, jdbcType=BIGINT},
+                used_core      = #{item.usedCore, jdbcType=INTEGER},
+                used_bandwidth = #{item.usedBandwidth, jdbcType=BIGINT}
+            where node_id = #{item.nodeId, jdbcType=VARCHAR}
+              and power_id = #{item.powerId, jdbcType=VARCHAR}
+              and power_status != 6
+        </foreach>
+    </update>
+
+    <update id="updateLocalPowerNodeName">
+        update local_power_node
+        set node_name = #{nodeName,jdbcType=VARCHAR}
+        where node_Id = #{nodeId,jdbcType=VARCHAR}
+    </update>
+
+    <resultMap id="PowerLoadResultMap" type="com.platon.datum.admin.dao.entity.PowerLoad">
+        <result column="core_pct" jdbcType="INTEGER" property="corePct"/>
+        <result column="memory_pct" jdbcType="INTEGER" property="memoryPct"/>
+        <result column="bandwidth_pct" jdbcType="INTEGER" property="bandwidthPct"/>
+    </resultMap>
+
+    <select id="getCurrentLocalPowerLoadByNodeId" resultMap="PowerLoadResultMap">
+        SELECT t1.node_id,
+               CAST(t1.used_core / t2.core * 100 as UNSIGNED)           as core_pct,
+               CAST(t1.used_memory / t2.memory * 100 as UNSIGNED)       as memory_pct,
+               CAST(t1.used_bandwidth / t2.bandwidth * 100 as UNSIGNED) as bandwidth_pct
+        FROM (
+                 SELECT lpjk.node_id,
+                        sum(lpjk.used_core)      as used_core,
+                        sum(lpjk.used_memory)    as used_memory,
+                        sum(lpjk.used_bandwidth) as used_bandwidth
+                 FROM local_power_join_task lpjk
+                 WHERE lpjk.node_id = #{nodeId, jdbcType=VARCHAR}
+             ) t1,
+             (
+                 SELECT lpd.core, lpd.memory, lpd.bandwidth
+                 FROM local_power_node lpd
+                 WHERE lpd.node_id = #{nodeId, jdbcType=VARCHAR}
+             ) t2
+    </select>
+</mapper>

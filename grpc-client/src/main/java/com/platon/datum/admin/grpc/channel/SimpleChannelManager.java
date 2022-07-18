@@ -3,10 +3,10 @@ package com.platon.datum.admin.grpc.channel;
 import com.platon.datum.admin.common.exception.CannotConnectGrpcServer;
 import com.platon.datum.admin.common.exception.CarrierNotConfigured;
 import com.platon.datum.admin.common.exception.IdentityIdMissing;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.grpc.interceptor.TimeoutInterceptor;
 import com.platon.datum.admin.grpc.interceptor.UploadFileTimeoutInterceptor;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
-import com.platon.datum.admin.dao.entity.LocalOrg;
+import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -106,18 +106,18 @@ public class SimpleChannelManager {
      */
     public ManagedChannel getCarrierChannel() throws CarrierNotConfigured, CannotConnectGrpcServer {
         //获取调度服务的信息
-        LocalOrg localOrg = LocalOrgCache.getLocalOrgInfo();
+        Org org = OrgCache.getLocalOrgInfo();
 
-        if (StringUtils.isBlank(localOrg.getIdentityId())) {
+        if (StringUtils.isBlank(org.getIdentityId())) {
             throw new IdentityIdMissing();
         }
 
-        if (!CarrierConnStatusEnum.ENABLED.getStatus().equals(localOrg.getCarrierConnStatus())) {
+        if (!CarrierConnStatusEnum.ENABLED.getStatus().equals(org.getCarrierConnStatus())) {
             throw new CarrierNotConfigured();
         }
 
         if (carrierChannel == null) {
-            carrierChannel = buildChannel(localOrg.getCarrierIp(), localOrg.getCarrierPort());
+            carrierChannel = buildChannel(org.getCarrierIp(), org.getCarrierPort());
         }
 
         return carrierChannel;

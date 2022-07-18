@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.datum.admin.dao.SeedNodeMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.SeedNode">
+        <id column="seed_node_id" jdbcType="INTEGER" property="seedNodeId"/>
+        <result column="conn_status" jdbcType="INTEGER" property="connStatus"/>
+        <result column="init_flag" jdbcType="BOOLEAN" property="initFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        seed_node_id,
+        conn_status,
+        init_flag
+    </sql>
+
+    <!-- 查询种子节点详情 -->
+    <select id="querySeedNodeDetails" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from local_seed_node
+        where seed_node_id = #{seedNodeId, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 查询种子节点列表-->
+    <select id="listSeedNode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from local_seed_node
+        order by conn_status asc, init_flag desc
+    </select>
+
+    <!-- 删除种子节点 -->
+    <delete id="deleteSeedNode" parameterType="java.lang.String">
+        delete
+        from local_seed_node
+        where seed_node_id = #{seedNodeid, jdbcType=VARCHAR}
+    </delete>
+
+    <!-- 插入种子节点数据 -->
+    <insert id="insertSeedNode" parameterType="com.platon.datum.admin.dao.entity.SeedNode">
+        insert into local_seed_node (seed_node_id, conn_status, init_flag)
+        values (#{seedNodeId, jdbcType=VARCHAR}, #{connStatus, jdbcType=INTEGER}, #{initFlag, jdbcType=BOOLEAN})
+    </insert>
+
+    <delete id="deleteNotInitialized">
+        delete
+        from local_seed_node
+        where init_flag = 0;
+    </delete>
+
+    <!-- 批量修改种子节点-->
+    <insert id="insertBatch" parameterType="list">
+        truncate TABLE local_seed_node;
+        replace into local_seed_node (seed_node_id, conn_status, init_flag)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.seedNodeId, jdbcType=VARCHAR}, #{item.connStatus, jdbcType=INTEGER},
+             #{item.initFlag, jdbcType=BOOLEAN})
+        </foreach>
+    </insert>
+</mapper>

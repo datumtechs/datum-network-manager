@@ -1,13 +1,13 @@
 package com.platon.datum.admin;
 
-import com.platon.datum.admin.dao.LocalDataFileMapper;
-import com.platon.datum.admin.dao.LocalOrgMapper;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
-import com.platon.datum.admin.dao.entity.LocalDataFile;
-import com.platon.datum.admin.dao.entity.LocalMetaData;
-import com.platon.datum.admin.dao.entity.LocalMetaDataColumn;
-import com.platon.datum.admin.dao.entity.LocalOrg;
-import com.platon.datum.admin.service.LocalDataService;
+import com.platon.datum.admin.dao.DataFileMapper;
+import com.platon.datum.admin.dao.OrgMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.DataFile;
+import com.platon.datum.admin.dao.entity.MetaData;
+import com.platon.datum.admin.dao.entity.MetaDataColumn;
+import com.platon.datum.admin.dao.entity.Org;
+import com.platon.datum.admin.service.MetaDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,58 +31,58 @@ import java.time.ZoneOffset;
 @Slf4j
 public class MockDataFileTest {
     @Resource
-    private LocalDataService localDataService;
+    private MetaDataService metaDataService;
 
     @Resource
-    private LocalDataFileMapper localDataFileMapper;
+    private DataFileMapper dataFileMapper;
 
     @Resource
-    LocalOrgMapper localOrgMapper;
+    OrgMapper orgMapper;
 
     @BeforeAll
     public void init(){
-        LocalOrg localOrg = localOrgMapper.select();
-        LocalOrgCache.setLocalOrgInfo(localOrg);;
+        Org org = orgMapper.select();
+        OrgCache.setLocalOrgInfo(org);;
     }
 
     @Test
     public void addDataAuth(){
         int columns = 10;
         for(int i=0; i<1000; i++){
-            LocalDataFile dataFile = new LocalDataFile();
+            DataFile dataFile = new DataFile();
             String fileId = StringUtils.leftPad(String.valueOf(i) , 6, "0" );
             dataFile.setFileId(fileId);
             dataFile.setFilePath(fileId + "_path");
             dataFile.setFileName(fileId + "_fileName");
-            dataFile.setFileType(LocalDataFile.FileTypeEnum.CSV.getCode());
+            dataFile.setFileType(DataFile.FileTypeEnum.CSV.getCode());
             dataFile.setColumns(columns);
             dataFile.setHasTitle(true);
-            dataFile.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
+            dataFile.setIdentityId(OrgCache.getLocalOrgIdentityId());
             dataFile.setRows(1000);
             dataFile.setSize(1024*1024*32L);
-            localDataFileMapper.insert(dataFile);
+            dataFileMapper.insert(dataFile);
 
 
-            LocalMetaData localMetaData = new LocalMetaData();
-              localMetaData.setMetaDataId("metadataId_" + i);
-            localMetaData.setMetaDataName("metadata_" + i);
-            localMetaData.setIndustry(1);
-            localMetaData.setStatus(2);
-            localMetaData.setFileId(fileId);
-            localMetaData.setPublishTime(randomDay());
-            localMetaData.setRemarks("metadataId_" + i + "_remarks");
+            MetaData metaData = new MetaData();
+              metaData.setMetaDataId("metadataId_" + i);
+            metaData.setMetaDataName("metadata_" + i);
+            metaData.setIndustry(1);
+            metaData.setStatus(2);
+            metaData.setFileId(fileId);
+            metaData.setPublishTime(randomDay());
+            metaData.setRemarks("metadataId_" + i + "_remarks");
             for(int j=0; j<columns; j++){
-                LocalMetaDataColumn column = new LocalMetaDataColumn();
+                MetaDataColumn column = new MetaDataColumn();
                 column.setColumnIdx(j);
                 column.setColumnName("column_" + j);
                 column.setSize(10);
                 column.setVisible(true);
                 column.setColumnType("string");
                 column.setRemarks("column_" + j + "_desc");
-                localMetaData.addLocalMetaDataColumn(column);
+                metaData.addLocalMetaDataColumn(column);
 
             }
-            localDataService.addLocalMetaData(localMetaData);
+            metaDataService.addLocalMetaData(metaData);
         }
     }
 

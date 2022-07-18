@@ -1,6 +1,6 @@
 package com.platon.datum.admin.interceptor;
 
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class ApplyOrgIdentityInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest servletRequest, HttpServletResponse servletResponse, Object handler) {
 
-        Object localOrgInfo = LocalOrgCache.getLocalOrgIdentityId();
+        Object localOrgInfo = OrgCache.getLocalOrgIdentityId();
 
         return true;
 

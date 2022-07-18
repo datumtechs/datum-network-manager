@@ -5,9 +5,8 @@ import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.dao.DataTokenMapper;
-import com.platon.datum.admin.dao.LocalMetaDataMapper;
+import com.platon.datum.admin.dao.MetaDataMapper;
 import com.platon.datum.admin.dao.entity.DataToken;
-import com.platon.datum.admin.dao.enums.LocalDataFileStatusEnum;
 import com.platon.datum.admin.service.NoAttributeDataTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
     @Resource
     private DataTokenMapper dataTokenMapper;
     @Resource
-    private LocalMetaDataMapper localMetaDataMapper;
+    private MetaDataMapper metaDataMapper;
 
     @Override
     public Page<DataToken> page(Integer pageNumber, Integer pageSize, int status, String address) {
@@ -43,7 +42,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
     @Override
     public Integer publish(DataToken dataToken) {
         //校验dataToken是否已存在并处于发布中状态
-        DataToken oldDataToken = dataTokenMapper.selectByMetaDataId(dataToken.getMetaDataId());
+        DataToken oldDataToken = dataTokenMapper.selectByMetaDataId(dataToken.getMetaDataDbId());
         if (oldDataToken != null) {
             if (oldDataToken.getStatus() == DataToken.StatusEnum.PUBLISHING.getStatus()) {
                 throw new BizException(Errors.DataTokenInPublishing);
@@ -56,11 +55,6 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
         dataToken.setStatus(DataToken.StatusEnum.PUBLISHING.getStatus());
         dataTokenMapper.insertAndReturnId(dataToken);
         log.debug("插入dataToken数据,获取到dataToken id:{}", dataToken.getId());
-
-
-        //2.将token id 绑定到meta data中
-        localMetaDataMapper.updateDataTokenIdById(dataToken.getMetaDataId(), dataToken.getId());
-        localMetaDataMapper.updateStatusById(dataToken.getMetaDataId(), LocalDataFileStatusEnum.TOKEN_RELEASING.getStatus());
         return dataToken.getId();
     }
 
@@ -72,8 +66,8 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
     }
 
     @Override
-    public DataToken getDataTokenById(Integer dataTokenId) {
-        DataToken dataToken = dataTokenMapper.selectById(dataTokenId);
+    public DataToken getDataTokenById(Integer id) {
+        DataToken dataToken = dataTokenMapper.selectById(id);
         return dataToken;
     }
 

@@ -18,7 +18,7 @@ public interface NoAttributeDataTokenService {
 
     void up(DataToken dataToken);
 
-    DataToken getDataTokenById(Integer dataTokenId);
+    DataToken getDataTokenById(Integer id);
 
     void updateStatus(Integer dataTokenId, int status, String currentUserAddress);
 }

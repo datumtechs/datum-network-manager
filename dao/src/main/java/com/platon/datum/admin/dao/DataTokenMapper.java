@@ -34,11 +34,11 @@ public interface DataTokenMapper {
 
     int updateStatusByCurrentUser(@Param("id") int id, @Param("status") int status, @Param("currentUserAddress") String currentUserAddress);
 
-    DataToken selectById(Integer dataTokenId);
+    DataToken selectById(Integer id);
 
     List<DataToken> selectListByStatus(int status);
 
     int updateTokenAddress(@Param("id") int id, @Param("tokenAddress") String tokenAddress);
 
-    DataToken selectByMetaDataId(int metaDataId);
+    DataToken selectByMetaDataId(int metaDataDbId);
 }

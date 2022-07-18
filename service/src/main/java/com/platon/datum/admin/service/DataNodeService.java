@@ -1,7 +1,7 @@
 package com.platon.datum.admin.service;
 
 import com.github.pagehelper.Page;
-import com.platon.datum.admin.dao.entity.LocalDataNode;
+import com.platon.datum.admin.dao.entity.DataNode;
 
 /**
  * @author lyf
@@ -16,25 +16,25 @@ public interface DataNodeService {
      * @param keyword    搜索关键字
      * @return DataNode
      */
-    Page<LocalDataNode> listNode(Integer pageNumber, Integer pageSize, String keyword);
+    Page<DataNode> listNode(Integer pageNumber, Integer pageSize, String keyword);
 
     /**
      * 新增数据节点
      *
-     * @param localDataNode
+     * @param dataNode
      * @return
      * @throws Exception
      */
-    int addDataNode(LocalDataNode localDataNode) throws Exception;
+    int addDataNode(DataNode dataNode) throws Exception;
 
     /**
      * 修改数据节点
      *
-     * @param localDataNode
+     * @param dataNode
      * @return
      * @throws Exception
      */
-    int updateDataNode(LocalDataNode localDataNode) throws Exception;
+    int updateDataNode(DataNode dataNode) throws Exception;
 
     /**
      * 删除数据节点
@@ -46,7 +46,7 @@ public interface DataNodeService {
     int deleteDataNode(String nodeId) throws Exception;
 
 
-    LocalDataNode findLocalDataNodeByName(String nodeName);
+    DataNode findLocalDataNodeByName(String nodeName);
 
     void updateLocalDataNodeName(String nodeId, String nodeName);
 

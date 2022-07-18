@@ -2,8 +2,8 @@ package com.platon.datum.admin.grpc.client;
 
 import com.google.protobuf.Empty;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
-import com.platon.datum.admin.dao.entity.LocalDataFile;
-import com.platon.datum.admin.dao.entity.LocalDataNode;
+import com.platon.datum.admin.dao.entity.DataFile;
+import com.platon.datum.admin.dao.entity.DataNode;
 import com.platon.datum.admin.grpc.carrier.api.SysRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.YarnServiceGrpc;
 import com.platon.datum.admin.grpc.carrier.types.Common;
@@ -45,7 +45,7 @@ public class YarnClient {
      * @param dataNode 数据节点实体类
      * @return
      */
-    public RegisteredNodeResp setDataNode(LocalDataNode dataNode) {
+    public RegisteredNodeResp setDataNode(DataNode dataNode) {
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -81,7 +81,7 @@ public class YarnClient {
      * @param dataNode 数据节点实体类
      * @return
      */
-    public RegisteredNodeResp updateDataNode(LocalDataNode dataNode) {
+    public RegisteredNodeResp updateDataNode(DataNode dataNode) {
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -139,7 +139,7 @@ public class YarnClient {
      *
      * @return
      */
-    public List<LocalDataNode> getLocalDataNodeList() {
+    public List<DataNode> getLocalDataNodeList() {
         log.debug("从carrier查询数据节点列表");
 
         //1.获取rpc连接
@@ -161,24 +161,24 @@ public class YarnClient {
 
     }
 
-    private List<LocalDataNode> convertToLocalDataNodeList(List<SysRpcApi.YarnRegisteredPeer> nodeList) {
+    private List<DataNode> convertToLocalDataNodeList(List<SysRpcApi.YarnRegisteredPeer> nodeList) {
         return nodeList.parallelStream().map(node -> {
-            LocalDataNode localDataNode = new LocalDataNode();
-            localDataNode.setNodeId(node.getNodeDetail().getId());
-            localDataNode.setNodeName("DataStorageNode_" + node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
-            localDataNode.setInternalIp(node.getNodeDetail().getInternalIp());
-            localDataNode.setInternalPort(StringUtils.isEmpty(node.getNodeDetail().getInternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getInternalPort()));
-            localDataNode.setExternalIp(node.getNodeDetail().getExternalIp());
-            localDataNode.setExternalPort(StringUtils.isEmpty(node.getNodeDetail().getExternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getExternalPort()));
-            localDataNode.setConnStatus(node.getNodeDetail().getConnState().getNumber());
-            return localDataNode;
+            DataNode dataNode = new DataNode();
+            dataNode.setNodeId(node.getNodeDetail().getId());
+            dataNode.setNodeName("DataStorageNode_" + node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
+            dataNode.setInternalIp(node.getNodeDetail().getInternalIp());
+            dataNode.setInternalPort(StringUtils.isEmpty(node.getNodeDetail().getInternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getInternalPort()));
+            dataNode.setExternalIp(node.getNodeDetail().getExternalIp());
+            dataNode.setExternalPort(StringUtils.isEmpty(node.getNodeDetail().getExternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getExternalPort()));
+            dataNode.setConnStatus(node.getNodeDetail().getConnState().getNumber());
+            return dataNode;
         }).collect(Collectors.toList());
     }
 
     /**
      * 根据需要上传的文件大小和类型，获取可用的数据节点信息
      */
-    public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize, LocalDataFile.FileTypeEnum fileType) {
+    public YarnAvailableDataNodeResp getAvailableDataNode(long fileSize, DataFile.FileTypeEnum fileType) {
 
         log.debug("从carrier查询可用的数据节点");
 

@@ -1,8 +1,8 @@
 package com.platon.datum.admin;
 
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
-import com.platon.datum.admin.dao.entity.LocalOrg;
-import com.platon.datum.admin.service.LocalOrgService;
+import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.Org;
+import com.platon.datum.admin.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +30,7 @@ import javax.annotation.Resource;
 public class DatumAdminApplication {
 
     @Resource
-    private LocalOrgService localOrgService;
+    private OrgService orgService;
 
 
     public static void main(String[] args) {
@@ -50,8 +50,8 @@ public class DatumAdminApplication {
     public void init() {
         log.info("应用已启动，执行初始化操作.............");
 
-        LocalOrg localOrg = localOrgService.getLocalOrg();
-        LocalOrgCache.setLocalOrgInfo(localOrg);
+        Org org = orgService.getLocalOrg();
+        OrgCache.setLocalOrgInfo(org);
 
         log.info("执行初始化操作执行完成............");
     }

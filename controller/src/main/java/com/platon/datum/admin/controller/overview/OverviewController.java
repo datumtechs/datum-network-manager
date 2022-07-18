@@ -5,8 +5,8 @@ import com.platon.datum.admin.dao.dto.StatsDataTrendDTO;
 import com.platon.datum.admin.dao.dto.StatsPowerTrendDTO;
 import com.platon.datum.admin.dao.dto.UsedResourceDTO;
 import com.platon.datum.admin.dto.JsonResponse;
-import com.platon.datum.admin.dto.resp.index.MyTaskStatsResp;
-import com.platon.datum.admin.dto.resp.index.UsedResourceResp;
+import com.platon.datum.admin.dto.resp.MyTaskStatsResp;
+import com.platon.datum.admin.dto.resp.UsedResourceResp;
 import com.platon.datum.admin.service.IndexService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -59,7 +59,7 @@ public class OverviewController {
 //    @ApiOperation(value = "首页计算节点列表")
 //    @GetMapping("/nodeList")
 //    public JsonResponse<List<IndexNodeListResp>> nodeList(){
-//        List<LocalPowerNode> powerNodeList = indexService.getPowerNodeList();
+//        List<PowerNode> powerNodeList = indexService.getPowerNodeList();
 //        List<IndexNodeListResp> respList= powerNodeList.stream()
 //                .map(IndexNodeListResp::from)
 //                .collect(Collectors.toList());

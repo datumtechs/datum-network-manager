@@ -8,10 +8,10 @@ import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.exception.OrgInfoExists;
 import com.platon.datum.admin.common.util.IDUtil;
-import com.platon.datum.admin.dao.LocalOrgMapper;
+import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.SysUserMapper;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
-import com.platon.datum.admin.dao.entity.LocalOrg;
+import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.entity.SysUser;
 import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.datum.admin.grpc.client.YarnClient;
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Resource
     private SysUserMapper sysUserMapper;
     @Resource
-    private LocalOrgMapper localOrgMapper;
+    private OrgMapper orgMapper;
 
     @Resource
     private YarnClient yarnClient;
@@ -60,13 +60,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public String applyOrgIdentity(String orgName) {
         //### 1.校验是否已存在组织信息
-        LocalOrg org = localOrgMapper.select();
+        Org org = orgMapper.select();
         if (org != null) {
             throw new OrgInfoExists();
         }
 
         //1.1从注册中心获取调度服务的信息
-        LocalOrg localOrg = getCarrierInfo();
+        Org localOrg = getCarrierInfo();
         //### 1.2 调用调度服务接口生成见证人钱包
         String walletAddress = yarnClient.generateObServerProxyWalletAddress(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         localOrg.setCarrierWallet(walletAddress);
@@ -74,17 +74,17 @@ public class UserServiceImpl implements UserService {
         String orgId = IDUtil.generate(IDUtil.IDENTITY_ID_PREFIX);
         localOrg.setIdentityId(orgId);
         localOrg.setName(orgName);
-        localOrg.setStatus(LocalOrg.Status.NOT_CONNECT_NET.getCode());
-        localOrgMapper.insert(localOrg);
+        localOrg.setStatus(Org.Status.NOT_CONNECT_NET.getCode());
+        orgMapper.insert(localOrg);
 
         //### 2.新建成功后，设置缓存
-        LocalOrgCache.setLocalOrgInfo(localOrg);
+        OrgCache.setLocalOrgInfo(localOrg);
         return orgId;
     }
 
     //获取调度服务信息
-    private LocalOrg getCarrierInfo() {
-        LocalOrg localOrg = new LocalOrg();
+    private Org getCarrierInfo() {
+        Org org = new Org();
         ConsulClient consulClient = new ConsulClient(consulHost, consulPort);
         // 从 consul 查询注册的carrier服务
         HealthServicesRequest request = HealthServicesRequest.newBuilder()
@@ -103,18 +103,18 @@ public class UserServiceImpl implements UserService {
             throw new BizException(Errors.SysException, "No dispatching service information was queried");
         }
         //记录查询到的carrier地址
-        localOrg.setCarrierIp(ip);
-        localOrg.setCarrierPort(port);
+        org.setCarrierIp(ip);
+        org.setCarrierPort(port);
         //### 刷新调度服务状态和入网状态
-        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
-        localOrg.setCarrierStatus(nodeInfo.getState());
-        localOrg.setCarrierNodeId(nodeInfo.getNodeId());
-        localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
-        localOrg.setCarrierConnTime(new Date());
-        localOrg.setConnNodeCount(nodeInfo.getConnCount());
-        localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
-        localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
-        return localOrg;
+        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(org.getCarrierIp(), org.getCarrierPort());
+        org.setCarrierStatus(nodeInfo.getState());
+        org.setCarrierNodeId(nodeInfo.getNodeId());
+        org.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
+        org.setCarrierConnTime(new Date());
+        org.setConnNodeCount(nodeInfo.getConnCount());
+        org.setBootstrapNode(nodeInfo.getLocalBootstrapNode());
+        org.setMultiAddr(nodeInfo.getLocalMultiAddr());
+        return org;
     }
 
     @Override

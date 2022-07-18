@@ -1,7 +1,7 @@
 package com.platon.datum.admin.service.task;
 
-import com.platon.datum.admin.dao.LocalSeedNodeMapper;
-import com.platon.datum.admin.dao.entity.LocalSeedNode;
+import com.platon.datum.admin.dao.SeedNodeMapper;
+import com.platon.datum.admin.dao.entity.SeedNode;
 import com.platon.datum.admin.grpc.client.SeedClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -21,7 +21,7 @@ import java.util.List;
 public class SeedNodeRefreshTask {
 
     @Resource
-    private LocalSeedNodeMapper localSeedNodeMapper;
+    private SeedNodeMapper seedNodeMapper;
 
     @Resource
     private SeedClient seedClient;
@@ -34,12 +34,12 @@ public class SeedNodeRefreshTask {
     public void refreshSeedNode(){
         log.debug("刷新种子节点定时任务开始>>>");
 
-        List<LocalSeedNode> localSeedNodeList = seedClient.getSeedNodeList();
+        List<SeedNode> seedNodeList = seedClient.getSeedNodeList();
         //localSeedNodeMapper.deleteNotInitialized();
 
-        if(CollectionUtils.isNotEmpty(localSeedNodeList)){
-            log.debug("本次更新种子节点数量：{}", localSeedNodeList.size());
-            localSeedNodeMapper.insertBatch(localSeedNodeList);
+        if(CollectionUtils.isNotEmpty(seedNodeList)){
+            log.debug("本次更新种子节点数量：{}", seedNodeList.size());
+            seedNodeMapper.insertBatch(seedNodeList);
         }
         log.info("刷新种子节点定时任务结束|||");
     }

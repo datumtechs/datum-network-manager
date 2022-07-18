@@ -3,7 +3,7 @@ package com.platon.datum.admin.grpc.client;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
-import com.platon.datum.admin.dao.entity.LocalDataAuth;
+import com.platon.datum.admin.dao.entity.DataAuth;
 import com.platon.datum.admin.grpc.carrier.api.AuthRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.AuthServiceGrpc;
 import com.platon.datum.admin.grpc.carrier.types.Common;
@@ -104,7 +104,7 @@ public class AuthClient {
      *
      * @return
      */
-    public List<LocalDataAuth> getMetaDataAuthorityList(LocalDateTime latestSynced) throws BizException {
+    public List<DataAuth> getMetaDataAuthorityList(LocalDateTime latestSynced) throws BizException {
         log.debug("从carrier查询数据授权申请列表，latestSynced：{}", latestSynced);
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
@@ -128,7 +128,7 @@ public class AuthClient {
     }
 
     //可以单独设置每个grpc请求的超时
-    public List<LocalDataAuth> getMetaDataAuthorityList(LocalDateTime latestSynced, long timeout) throws BizException {
+    public List<DataAuth> getMetaDataAuthorityList(LocalDateTime latestSynced, long timeout) throws BizException {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -186,8 +186,8 @@ public class AuthClient {
     }
 
 
-    private List<LocalDataAuth> dataConvertToAuthList(AuthRpcApi.GetMetadataAuthorityListResponse response) {
-        List<LocalDataAuth> localDataAuthList = new ArrayList<>();
+    private List<DataAuth> dataConvertToAuthList(AuthRpcApi.GetMetadataAuthorityListResponse response) {
+        List<DataAuth> dataAuthList = new ArrayList<>();
         List<Metadata.MetadataAuthorityDetail> metaDataAuthorityList = response.getMetadataAuthsList();
         if (!CollectionUtils.isEmpty(metaDataAuthorityList)) {
             for (Metadata.MetadataAuthorityDetail dataAuth : metaDataAuthorityList) {
@@ -201,7 +201,7 @@ public class AuthClient {
                 int useAuthNumber = metadataUsageRule.getTimes();
                 int useAuthType = metadataUsageRule.getUsageTypeValue();
 
-                LocalDataAuth localDataAuth = new LocalDataAuth();
+                DataAuth localDataAuth = new DataAuth();
                 localDataAuth.setAuthId(dataAuth.getMetadataAuthId());
                 localDataAuth.setApplyUser(dataAuth.getUser());
                 localDataAuth.setUserType(dataAuth.getUserTypeValue());
@@ -255,9 +255,9 @@ public class AuthClient {
                 localDataAuth.setIdentityName(identityInfo.getNodeName());
                 localDataAuth.setIdentityNodeId(identityInfo.getNodeId());
 
-                localDataAuthList.add(localDataAuth);
+                dataAuthList.add(localDataAuth);
             }
         }
-        return localDataAuthList;
+        return dataAuthList;
     }
 }

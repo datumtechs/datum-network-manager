@@ -21,5 +21,5 @@ import lombok.ToString;
 public class NoAttributeDataTokenGetPublishConfigReq {
 
     @ApiModelProperty("元数据对应的dataTokenId，可以为空，为空则返回空数据")
-    private Integer dataTokenId;
+    private Integer id;
 }

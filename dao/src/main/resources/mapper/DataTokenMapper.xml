@@ -11,7 +11,7 @@
         <result column="decimal" jdbcType="INTEGER" property="decimal"/>
         <result column="desc" jdbcType="VARCHAR" property="desc"/>
         <result column="owner" jdbcType="VARCHAR" property="owner"/>
-        <result column="meta_data_id" jdbcType="INTEGER" property="metaDataId"/>
+        <result column="meta_data_db_id" jdbcType="INTEGER" property="metaDataDbId"/>
         <result column="holder" jdbcType="INTEGER" property="holder"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="publish_nonce" jdbcType="INTEGER" property="publishNonce"/>
@@ -32,7 +32,7 @@
         `decimal`,
         `desc`,
         `owner`,
-        meta_data_id,
+        meta_data_db_id,
         holder,
         `status`,
         `publish_nonce`,
@@ -61,9 +61,9 @@
     </select>
 
     <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO data_token (`name`, symbol, init, total, `desc`, `owner`, meta_data_id, status, `publish_nonce`,
+        INSERT INTO data_token (`name`, symbol, init, total, `desc`, `owner`, meta_data_db_id, status, `publish_nonce`,
                                 `publish_hash`)
-        VALUES (#{name}, #{symbol}, #{init}, #{total}, #{desc}, #{owner}, #{metaDataId}, #{status}, #{publishNonce},
+        VALUES (#{name}, #{symbol}, #{init}, #{total}, #{desc}, #{owner}, #{metaDataDbId}, #{status}, #{publishNonce},
                 #{publishHash})
         ON DUPLICATE KEY
             UPDATE `name`=#{name},
@@ -101,7 +101,7 @@
         select
         <include refid="Base_Column_List"/>
         from data_token
-        where id = #{dataTokenId}
+        where id = #{id}
     </select>
 
     <select id="selectListByStatus" resultMap="BaseResultMap">
@@ -121,6 +121,6 @@
         select
         <include refid="Base_Column_List"/>
         from data_token
-        where meta_data_id = #{metaDataId}
+        where meta_data_db_id = #{metaDataDbId}
     </select>
 </mapper>

@@ -5,12 +5,12 @@ import com.platon.datum.admin.common.exception.ArgumentException;
 import com.platon.datum.admin.common.exception.NodeNameExists;
 import com.platon.datum.admin.common.exception.NodeNameIllegal;
 import com.platon.datum.admin.common.util.NameUtil;
-import com.platon.datum.admin.dao.entity.LocalDataNode;
+import com.platon.datum.admin.dao.entity.DataNode;
 import com.platon.datum.admin.service.DataNodeService;
 import com.platon.datum.admin.dto.JsonResponse;
 import com.platon.datum.admin.dto.req.DataNodeUpdateReq;
 import com.platon.datum.admin.dto.req.NodePageReq;
-import com.platon.datum.admin.dto.resp.LocalDataNodeQueryResp;
+import com.platon.datum.admin.dto.resp.DataNodeQueryResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -43,11 +43,11 @@ public class DataNodeController {
      */
     @ApiOperation(value = "数据节点分页查询", httpMethod = "POST")
     @PostMapping("/listNode")
-    public JsonResponse <List<LocalDataNodeQueryResp>>listNode(@Validated @RequestBody NodePageReq req) {
-        Page<LocalDataNode> localDataNodes = dataNodeService.listNode(req.getPageNumber(), req.getPageSize(), req.getKeyword());
-        List<LocalDataNode> dataList = localDataNodes.getResult();
-        List<LocalDataNodeQueryResp> respList = dataList.stream().map(LocalDataNodeQueryResp::convert).collect(Collectors.toList());
-        return JsonResponse.page(localDataNodes, respList);
+    public JsonResponse <List<DataNodeQueryResp>>listNode(@Validated @RequestBody NodePageReq req) {
+        Page<DataNode> dataNodes = dataNodeService.listNode(req.getPageNumber(), req.getPageSize(), req.getKeyword());
+        List<DataNode> dataList = dataNodes.getResult();
+        List<DataNodeQueryResp> respList = dataList.stream().map(DataNodeQueryResp::convert).collect(Collectors.toList());
+        return JsonResponse.page(dataNodes, respList);
     }
 
     /**
@@ -64,7 +64,7 @@ public class DataNodeController {
         if(!NameUtil.isValidName(dataNodeAddReq.getNodeName())){
             throw new NodeNameIllegal();
         }
-        LocalDataNode localDataNode = new LocalDataNode();
+        DataNode localDataNode = new DataNode();
         BeanUtils.copyProperties(dataNodeAddReq, localDataNode);
         localDataNode.setNodeName(dataNodeAddReq.getNodeName());
         if (!dataNodeService.checkDataNodeName(localDataNode)) {
@@ -83,7 +83,7 @@ public class DataNodeController {
     /*@ApiOperation(value = "校验数据节点名称是否可用", httpMethod = "POST")
     @PostMapping("checkDataNodeName")
     public JsonResponse <AvailableStatusResp> checkDataNodeName(@Validated @RequestBody CheckDataNodeNameReq checkDataNodeNameReq) {
-        LocalDataNode localDataNode = new LocalDataNode();
+        DataNode localDataNode = new DataNode();
         localDataNode.setNodeName(checkDataNodeNameReq.getNodeName());
         AvailableStatusResp resp = new AvailableStatusResp();
         if (dataNodeService.checkDataNodeName(localDataNode)) {
@@ -111,9 +111,9 @@ public class DataNodeController {
             throw new NodeNameIllegal();
         }
 
-        LocalDataNode localDataNode = dataNodeService.findLocalDataNodeByName(dataNodeUpdateReq.getNodeName());
-        if (localDataNode!=null){
-            if (StringUtils.equals(localDataNode.getNodeId(), dataNodeUpdateReq.getNodeId())) {
+        DataNode dataNode = dataNodeService.findLocalDataNodeByName(dataNodeUpdateReq.getNodeName());
+        if (dataNode !=null){
+            if (StringUtils.equals(dataNode.getNodeId(), dataNodeUpdateReq.getNodeId())) {
                 return JsonResponse.success();
             }else{
                 throw new NodeNameExists();

@@ -1,7 +1,7 @@
 package com.platon.datum.admin.controller.metadata;
 
-import com.platon.datum.admin.dto.req.auth.AuthDataActionReq;
-import com.platon.datum.admin.dto.req.auth.AuthPageReq;
+import com.platon.datum.admin.dto.req.AuthDataActionReq;
+import com.platon.datum.admin.dto.req.AuthPageReq;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

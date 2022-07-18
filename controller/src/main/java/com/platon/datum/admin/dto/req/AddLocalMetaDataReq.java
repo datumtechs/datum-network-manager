@@ -1,6 +1,6 @@
 package com.platon.datum.admin.dto.req;
 
-import com.platon.datum.admin.dao.entity.LocalMetaDataColumn;
+import com.platon.datum.admin.dao.entity.MetaDataColumn;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,5 +40,5 @@ public class AddLocalMetaDataReq {
     private Integer industry;
     //源文件列信息
     @ApiModelProperty(value = "源文件列信息",required = true)
-    private List<LocalMetaDataColumn> localMetaDataColumnList = new ArrayList<>();
+    private List<MetaDataColumn> metaDataColumnList = new ArrayList<>();
 }

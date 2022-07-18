@@ -1,8 +1,8 @@
 package com.platon.datum.admin.controller.system;
 
-import com.platon.datum.admin.dao.LocalOrgMapper;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
-import com.platon.datum.admin.dao.entity.LocalOrg;
+import com.platon.datum.admin.dao.OrgMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.Org;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +20,12 @@ public class SystemBaseInfoControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    LocalOrgMapper localOrgMapper;
+    OrgMapper orgMapper;
 
     @Before
     public void init(){
-        LocalOrg localOrg = localOrgMapper.select();
-        LocalOrgCache.setLocalOrgInfo(localOrg);;
+        Org org = orgMapper.select();
+        OrgCache.setLocalOrgInfo(org);;
     }
 
     @Test

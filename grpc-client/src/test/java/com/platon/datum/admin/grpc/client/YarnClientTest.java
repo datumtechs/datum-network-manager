@@ -1,7 +1,7 @@
 package com.platon.datum.admin.grpc.client;
 
 import com.alibaba.fastjson.JSON;
-import com.platon.datum.admin.dao.entity.LocalDataFile;
+import com.platon.datum.admin.dao.entity.DataFile;
 import com.platon.datum.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.datum.admin.grpc.entity.YarnGetNodeInfoResp;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class YarnClientTest extends BaseClientTest{
 //        log.info(JSON.toJSONString(resp));
 
         long size = 10*1024*1024*1024*1024*1024;
-        YarnAvailableDataNodeResp resp = yarnClient.getAvailableDataNode(size, LocalDataFile.FileTypeEnum.CSV);
+        YarnAvailableDataNodeResp resp = yarnClient.getAvailableDataNode(size, DataFile.FileTypeEnum.CSV);
         log.info(JSON.toJSONString(resp));
     }
 

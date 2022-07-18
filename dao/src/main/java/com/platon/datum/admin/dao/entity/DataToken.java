@@ -26,6 +26,10 @@ public class DataToken {
     @ApiModelProperty("id")
     private int id;
 
+    //type
+    @ApiModelProperty("凭证类型：1-无属性凭证，2-有属性凭证，3-都支持")
+    private int type;
+
     //地址
     @ApiModelProperty("地址")
     private String address;
@@ -58,9 +62,9 @@ public class DataToken {
     //拥有者钱包地址
     private String owner;
 
-    @ApiModelProperty("对应的metaDataId")
-    //对应的metaDataId
-    private Integer metaDataId;
+    @ApiModelProperty("对应的metaData表Id")
+    //对应的metaData表Id
+    private Integer metaDataDbId;
 
     @ApiModelProperty("持有人数量")
     //持有人数量
@@ -96,15 +100,15 @@ public class DataToken {
     @Getter
     @ToString
     public enum StatusEnum {
-        UNPUBLISH(0,"未发布"),
-        PUBLISHING(1,"发布中"),
-        PUBLISH_FAIL(2,"发布失败"),
-        PUBLISH_SUCCESS(3,"发布成功"),
-        PRICING(4,"定价中"),
-        PRICE_FAIL(5,"定价失败"),
-        PRICE_SUCCESS(6,"定价成功");
+        UNPUBLISH(0, "未发布"),
+        PUBLISHING(1, "发布中"),
+        PUBLISH_FAIL(2, "发布失败"),
+        PUBLISH_SUCCESS(3, "发布成功"),
+        PRICING(4, "定价中"),
+        PRICE_FAIL(5, "定价失败"),
+        PRICE_SUCCESS(6, "定价成功");
 
-        StatusEnum(int status,String desc){
+        StatusEnum(int status, String desc) {
             this.status = status;
             this.desc = desc;
         }

@@ -4,8 +4,8 @@ package com.platon.datum.admin.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.DataHostExists;
-import com.platon.datum.admin.dao.LocalDataNodeMapper;
-import com.platon.datum.admin.dao.entity.LocalDataNode;
+import com.platon.datum.admin.dao.DataNodeMapper;
+import com.platon.datum.admin.dao.entity.DataNode;
 import com.platon.datum.admin.grpc.client.YarnClient;
 import com.platon.datum.admin.grpc.entity.RegisteredNodeResp;
 import com.platon.datum.admin.service.DataNodeService;
@@ -26,7 +26,7 @@ import java.util.List;
 public class DataNodeServiceImpl implements DataNodeService {
 
     @Resource
-    private LocalDataNodeMapper localDataNodeMapper;
+    private DataNodeMapper dataNodeMapper;
     @Resource
     private YarnClient yarnClient;
 
@@ -40,9 +40,9 @@ public class DataNodeServiceImpl implements DataNodeService {
      * @return
      */
     @Override
-    public Page<LocalDataNode> listNode(Integer pageNumber, Integer pageSize, String keyword) {
-        Page<LocalDataNode> taskPage = PageHelper.startPage(pageNumber, pageSize);
-        List<LocalDataNode> dataNodes = localDataNodeMapper.listNode(keyword);
+    public Page<DataNode> listNode(Integer pageNumber, Integer pageSize, String keyword) {
+        Page<DataNode> taskPage = PageHelper.startPage(pageNumber, pageSize);
+        List<DataNode> dataNodes = dataNodeMapper.listNode(keyword);
         return taskPage;
     }
 
@@ -53,7 +53,7 @@ public class DataNodeServiceImpl implements DataNodeService {
      * @return
      */
     @Override
-    public int addDataNode(LocalDataNode dataNode) {
+    public int addDataNode(DataNode dataNode) {
         if (!checkDataNodeId(dataNode)) {
             throw new DataHostExists();
         }
@@ -62,9 +62,9 @@ public class DataNodeServiceImpl implements DataNodeService {
 
         dataNode.setNodeId(response.getNodeId());
         dataNode.setConnStatus(response.getConnStatus());
-        //dataNode.setIdentityId(LocalOrgCache.getLocalOrgIdentityId());
+        //dataNode.setIdentityId(OrgCache.getLocalOrgIdentityId());
         dataNode.setRecCreateTime(LocalDateTime.now());
-        return localDataNodeMapper.insert(dataNode);
+        return dataNodeMapper.insert(dataNode);
     }
 
     /**
@@ -74,8 +74,8 @@ public class DataNodeServiceImpl implements DataNodeService {
      * @return true可用，false不可用
      */
     /*@Override
-    public boolean checkDataNodeName(LocalDataNode dataNode) {
-        String dbNodeId = localDataNodeMapper.getDataNodeIdByName(dataNode.getNodeName());
+    public boolean checkDataNodeName(DataNode dataNode) {
+        String dbNodeId = dataNodeMapper.getDataNodeIdByName(dataNode.getNodeName());
         if (!StringUtils.isBlank(dbNodeId) && !dbNodeId.equals(dataNode.getNodeId())) {
             return false;
         }
@@ -89,14 +89,14 @@ public class DataNodeServiceImpl implements DataNodeService {
      * @return
      */
     @Override
-    public int updateDataNode(LocalDataNode dataNode) {
+    public int updateDataNode(DataNode dataNode) {
         if (!checkDataNodeId(dataNode)) {
             throw new DataHostExists();
         }
         RegisteredNodeResp response = yarnClient.updateDataNode(dataNode);
         dataNode.setConnStatus(response.getConnStatus());
         dataNode.setRecUpdateTime(LocalDateTime.now());
-        return localDataNodeMapper.update(dataNode);
+        return dataNodeMapper.update(dataNode);
     }
 
     /**
@@ -108,17 +108,17 @@ public class DataNodeServiceImpl implements DataNodeService {
     @Override
     public int deleteDataNode(String nodeId) {
         yarnClient.deleteDataNode(nodeId);
-        return localDataNodeMapper.deleteByPrimaryKey(nodeId);
+        return dataNodeMapper.deleteByPrimaryKey(nodeId);
     }
 
     @Override
-    public LocalDataNode findLocalDataNodeByName(String nodeName) {
-        return localDataNodeMapper.findLocalDataNodeByName(nodeName);
+    public DataNode findLocalDataNodeByName(String nodeName) {
+        return dataNodeMapper.findLocalDataNodeByName(nodeName);
     }
 
     @Override
     public void updateLocalDataNodeName(String nodeId, String nodeName) {
-        localDataNodeMapper.updateLocalDataNodeName(nodeId, nodeName);
+        dataNodeMapper.updateLocalDataNodeName(nodeId, nodeName);
     }
 
     /**
@@ -127,8 +127,8 @@ public class DataNodeServiceImpl implements DataNodeService {
      * @param queryDataNode 条件参数
      * @return true校验通过，不存在，false校验不通过，已存在
      */
-    public boolean checkDataNodeId(LocalDataNode queryDataNode) {
-        LocalDataNode dataNode = localDataNodeMapper.selectByProperties(queryDataNode);
+    public boolean checkDataNodeId(DataNode queryDataNode) {
+        DataNode dataNode = dataNodeMapper.selectByProperties(queryDataNode);
         //数据库存在符合条件的数据，且nodeId与当前数据不一致
         if (dataNode!=null && !dataNode.getNodeId().equals(queryDataNode.getNodeId())) {
             return false;

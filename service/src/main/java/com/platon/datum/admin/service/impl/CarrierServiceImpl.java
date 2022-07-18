@@ -4,9 +4,9 @@ import com.platon.datum.admin.common.exception.ApplyIdentityIDFailed;
 import com.platon.datum.admin.common.exception.IdentityIDApplied;
 import com.platon.datum.admin.common.exception.OrgConnectNetworkAlready;
 import com.platon.datum.admin.common.exception.OrgNotConnectNetwork;
-import com.platon.datum.admin.dao.LocalOrgMapper;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
-import com.platon.datum.admin.dao.entity.LocalOrg;
+import com.platon.datum.admin.dao.OrgMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.datum.admin.grpc.client.AuthClient;
 import com.platon.datum.admin.grpc.client.YarnClient;
@@ -32,7 +32,7 @@ import static com.platon.datum.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_COD
 public class CarrierServiceImpl implements CarrierService {
 
     @Resource
-    private LocalOrgMapper localOrgMapper;
+    private OrgMapper orgMapper;
     @Resource
     private AuthClient authClient;
     @Resource
@@ -45,29 +45,29 @@ public class CarrierServiceImpl implements CarrierService {
         if(!success){
             return CarrierConnStatusEnum.DISABLED;
         }
-        LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-        localOrg.setRecUpdateTime(new Date());
-        localOrg.setCarrierIp(ip);
-        localOrg.setCarrierPort(port);
-        localOrg.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
-        localOrg.setCarrierConnTime(new Date());
+        Org org = (Org) OrgCache.getLocalOrgInfo();
+        org.setRecUpdateTime(new Date());
+        org.setCarrierIp(ip);
+        org.setCarrierPort(port);
+        org.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
+        org.setCarrierConnTime(new Date());
         //入库
-        int count = localOrgMapper.update(localOrg);
+        int count = orgMapper.update(org);
         //更新缓存
-        LocalOrgCache.setLocalOrgInfo(localOrg);
+        OrgCache.setLocalOrgInfo(org);
         return CarrierConnStatusEnum.ENABLED;
     }
 
     @Override
     public Integer applyJoinNetwork() {
-        LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
+        Org org = (Org) OrgCache.getLocalOrgInfo();
 
-        if(localOrg.getStatus()==LocalOrg.Status.CONNECTED.getCode()){
+        if(org.getStatus()== Org.Status.CONNECTED.getCode()){
             throw new OrgConnectNetworkAlready ();
         }
 
         try {
-            authClient.applyIdentityJoin(localOrg.getIdentityId(), localOrg.getName(), localOrg.getImageUrl(), localOrg.getProfile());
+            authClient.applyIdentityJoin(org.getIdentityId(), org.getName(), org.getImageUrl(), org.getProfile());
         }catch (Exception e){
             log.error("入网失败:" , e);
             throw new ApplyIdentityIDFailed();
@@ -75,53 +75,53 @@ public class CarrierServiceImpl implements CarrierService {
 
         YarnGetNodeInfoResp nodeInfo;
         try {
-            nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
+            nodeInfo = yarnClient.getNodeInfo(org.getCarrierIp(), org.getCarrierPort());
         }catch (Exception e){
             log.error("入网失败:" , e);
             throw new ApplyIdentityIDFailed();
         }
 
-        if(!localOrg.getIdentityId().equals(nodeInfo.getIdentityId())){
+        if(!org.getIdentityId().equals(nodeInfo.getIdentityId())){
             throw new IdentityIDApplied();
         }
 
         //入网成功，刷新数据库
-        localOrg.setCarrierNodeId(nodeInfo.getNodeId());
-        localOrg.setCarrierStatus(nodeInfo.getState());
-        localOrg.setConnNodeCount(nodeInfo.getConnCount());
-        localOrg.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
-        localOrg.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
+        org.setCarrierNodeId(nodeInfo.getNodeId());
+        org.setCarrierStatus(nodeInfo.getState());
+        org.setConnNodeCount(nodeInfo.getConnCount());
+        org.setBootstrapNode(nodeInfo.getLocalBootstrapNode());
+        org.setMultiAddr(nodeInfo.getLocalMultiAddr());
 
-        localOrg.setStatus(LocalOrg.Status.CONNECTED.getCode());
-        localOrgMapper.update(localOrg);
+        org.setStatus(Org.Status.CONNECTED.getCode());
+        orgMapper.update(org);
         //刷新缓存
-        LocalOrgCache.setLocalOrgInfo(localOrg);
-        return localOrg.getStatus();
+        OrgCache.setLocalOrgInfo(org);
+        return org.getStatus();
 
 
     }
 
     @Override
     public Integer cancelJoinNetwork() {
-        LocalOrg localOrg = (LocalOrg)LocalOrgCache.getLocalOrgInfo();
-        if(localOrg.getStatus()!=LocalOrg.Status.CONNECTED.getCode()){
+        Org org = (Org) OrgCache.getLocalOrgInfo();
+        if(org.getStatus()!= Org.Status.CONNECTED.getCode()){
            throw new OrgNotConnectNetwork();
         }
         authClient.revokeIdentityJoin();
 
         //退网成功，刷新数据库
-        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(localOrg.getCarrierIp(), localOrg.getCarrierPort());
+        YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(org.getCarrierIp(), org.getCarrierPort());
         if(nodeInfo.getStatus() != GRPC_SUCCESS_CODE){
             log.info("获取调度服务节点信息失败：" + nodeInfo.getMsg());
         } else {
-            localOrg.setCarrierStatus(nodeInfo.getState());
+            org.setCarrierStatus(nodeInfo.getState());
         }
-        localOrg.setStatus(LocalOrg.Status.LEFT_NET.getCode());
-        localOrg.setCarrierNodeId("");
-        localOrg.setConnNodeCount(0);
-        localOrgMapper.update(localOrg);
+        org.setStatus(Org.Status.LEFT_NET.getCode());
+        org.setCarrierNodeId("");
+        org.setConnNodeCount(0);
+        orgMapper.update(org);
         //刷新缓存
-        LocalOrgCache.setLocalOrgInfo(localOrg);
-        return localOrg.getStatus();
+        OrgCache.setLocalOrgInfo(org);
+        return org.getStatus();
     }
 }

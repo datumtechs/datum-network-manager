@@ -1,7 +1,7 @@
 package com.platon.datum.admin.controller.task;
 
 import com.github.pagehelper.Page;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Task;
 import com.platon.datum.admin.dao.entity.TaskEvent;
 import com.platon.datum.admin.dao.entity.TaskStatistics;
@@ -48,7 +48,7 @@ public class TaskController {
             roleFilter = null;
         }
 
-        Page<Task> taskPage =  taskService.listTaskByIdentityIdWithRole(LocalOrgCache.getLocalOrgIdentityId(), statusFilter, roleFilter, taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
+        Page<Task> taskPage =  taskService.listTaskByIdentityIdWithRole(OrgCache.getLocalOrgIdentityId(), statusFilter, roleFilter, taskPageReq.getStartTime(),taskPageReq.getEndTime(), taskPageReq.getPageNumber(),taskPageReq.getPageSize());
 
         //封装响应数据
         //TaskDataResp taskDataResp = TaskDataResp.from(taskDataPageList);

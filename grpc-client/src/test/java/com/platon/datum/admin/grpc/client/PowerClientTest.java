@@ -1,10 +1,10 @@
 package com.platon.datum.admin.grpc.client;
 
 import com.alibaba.fastjson.JSON;
-import com.platon.datum.admin.dao.LocalOrgMapper;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
-import com.platon.datum.admin.dao.entity.LocalOrg;
-import com.platon.datum.admin.dao.entity.LocalPowerNode;
+import com.platon.datum.admin.dao.OrgMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.Org;
+import com.platon.datum.admin.dao.entity.PowerNode;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,21 +21,21 @@ import java.util.List;
 public class PowerClientTest {
 
     @Autowired
-    LocalOrgMapper localOrgMapper;
+    OrgMapper orgMapper;
 
     @Autowired
     PowerClient powerClient;
 
     @BeforeAll
     public void init(){
-        LocalOrg localOrg = localOrgMapper.select();
-        LocalOrgCache.setLocalOrgInfo(localOrg);;
+        Org org = orgMapper.select();
+        OrgCache.setLocalOrgInfo(org);;
     }
     @Test
     public void getLocalPowerDetailList(){
-        LocalOrg localOrg = localOrgMapper.select();
-        LocalOrgCache.setLocalOrgInfo(localOrg);
-        List<LocalPowerNode> localPowerNodeList = powerClient.getLocalPowerNodeList();
-        log.info("localPowerNodeList：" + JSON.toJSON(localPowerNodeList));
+        Org org = orgMapper.select();
+        OrgCache.setLocalOrgInfo(org);
+        List<PowerNode> powerNodeList = powerClient.getLocalPowerNodeList();
+        log.info("powerNodeList：" + JSON.toJSON(powerNodeList));
     }
 }

@@ -24,7 +24,6 @@ import java.util.List;
  * @Author liushuyu
  * @Date 2022/3/3 0:13
  * @Version
- * @Desc
  */
 
 @Api(tags = "无属性数据凭证")
@@ -76,10 +75,10 @@ public class NoAttributeDataTokenController extends BaseController {
     @ApiOperation(value = "获取发布凭证需要的配置")
     @PostMapping("/getPublishConfig")
     public JsonResponse<NoAttributeDataTokenGetPublishConfigResp> getPublishConfig(@RequestBody NoAttributeDataTokenGetPublishConfigReq req) {
-        Integer dataTokenId = req.getDataTokenId();
+        Integer id = req.getId();
         DataToken dataToken = null;
-        if (dataTokenId != null) {
-            dataToken = noAttributeDataTokenService.getDataTokenById(dataTokenId);
+        if (id != null) {
+            dataToken = noAttributeDataTokenService.getDataTokenById(id);
         }
         NoAttributeDataTokenGetPublishConfigResp resp = new NoAttributeDataTokenGetPublishConfigResp();
         SysConfig config = sysConfigService.getConfig(SysConfig.KeyEnum.DATA_TOKEN_FACTORY_ADDRESS.getKey());
@@ -103,7 +102,7 @@ public class NoAttributeDataTokenController extends BaseController {
         dataToken.setInit(req.getInit());
         dataToken.setTotal(req.getTotal());
         dataToken.setDesc(req.getDesc());
-        dataToken.setMetaDataId(req.getMetaDataId());
+        dataToken.setMetaDataDbId(req.getMetaDataDbId());
         dataToken.setOwner(address);
         dataToken.setPublishHash(req.getHash());
         dataToken.setPublishNonce(req.getNonce());

@@ -3,8 +3,8 @@ package com.platon.datum.admin.grpc.client;
 import com.google.protobuf.Empty;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
-import com.platon.datum.admin.dao.entity.LocalPowerJoinTask;
-import com.platon.datum.admin.dao.entity.LocalPowerNode;
+import com.platon.datum.admin.dao.entity.PowerJoinTask;
+import com.platon.datum.admin.dao.entity.PowerNode;
 import com.platon.datum.admin.grpc.carrier.api.PowerRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.PowerServiceGrpc;
 import com.platon.datum.admin.grpc.carrier.api.SysRpcApi;
@@ -115,7 +115,7 @@ public class PowerClient {
     /**
      * 查询计算服务列表
      */
-    public List<LocalPowerNode> getLocalPowerNodeList() {
+    public List<PowerNode> getLocalPowerNodeList() {
 
         log.debug("从carrier查询本组织的计算节点列表");
 
@@ -135,17 +135,17 @@ public class PowerClient {
         return convertToLocalPowerNodeList(response.getNodesList());
     }
 
-    private List<LocalPowerNode> convertToLocalPowerNodeList(List<SysRpcApi.YarnRegisteredPeer> nodeList) {
+    private List<PowerNode> convertToLocalPowerNodeList(List<SysRpcApi.YarnRegisteredPeer> nodeList) {
         return nodeList.parallelStream().map(node -> {
-            LocalPowerNode localPowerNode = new LocalPowerNode();
-            localPowerNode.setNodeId(node.getNodeDetail().getId());
-            localPowerNode.setNodeName("PowerNode_" + node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
-            localPowerNode.setInternalIp(node.getNodeDetail().getInternalIp());
-            localPowerNode.setInternalPort(StringUtils.isEmpty(node.getNodeDetail().getInternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getInternalPort()));
-            localPowerNode.setExternalIp(node.getNodeDetail().getExternalIp());
-            localPowerNode.setExternalPort(StringUtils.isEmpty(node.getNodeDetail().getExternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getExternalPort()));
-            localPowerNode.setConnStatus(node.getNodeDetail().getConnState().getNumber());
-            return localPowerNode;
+            PowerNode powerNode = new PowerNode();
+            powerNode.setNodeId(node.getNodeDetail().getId());
+            powerNode.setNodeName("PowerNode_" + node.getNodeDetail().getInternalIp() + "_" + StringUtils.trimToEmpty(node.getNodeDetail().getInternalPort()));
+            powerNode.setInternalIp(node.getNodeDetail().getInternalIp());
+            powerNode.setInternalPort(StringUtils.isEmpty(node.getNodeDetail().getInternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getInternalPort()));
+            powerNode.setExternalIp(node.getNodeDetail().getExternalIp());
+            powerNode.setExternalPort(StringUtils.isEmpty(node.getNodeDetail().getExternalPort()) ? null : Integer.valueOf(node.getNodeDetail().getExternalPort()));
+            powerNode.setConnStatus(node.getNodeDetail().getConnState().getNumber());
+            return powerNode;
         }).collect(Collectors.toList());
     }
 
@@ -191,7 +191,7 @@ public class PowerClient {
     /**
      * 查看当前组织各个算力的详情 (如果有任务，则包含正在执行的任务信息)
      */
-    public Pair<List<LocalPowerNode>, List<LocalPowerJoinTask>> getLocalPowerNodeListAndJoinTaskList() {
+    public Pair<List<PowerNode>, List<PowerJoinTask>> getLocalPowerNodeListAndJoinTaskList() {
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
         Empty request = Empty
@@ -209,9 +209,9 @@ public class PowerClient {
         return convertToLocalPowerNodeAndTaskJoinedList(response.getPowersList());
     }
 
-    private Pair<List<LocalPowerNode>, List<LocalPowerJoinTask>> convertToLocalPowerNodeAndTaskJoinedList(List<PowerRpcApi.GetLocalPowerDetail> localPowerDetailList) {
-        List<LocalPowerNode> localPowerNodeList = new ArrayList<>();
-        List<LocalPowerJoinTask> localPowerJoinTaskList = new ArrayList<>();
+    private Pair<List<PowerNode>, List<PowerJoinTask>> convertToLocalPowerNodeAndTaskJoinedList(List<PowerRpcApi.GetLocalPowerDetail> localPowerDetailList) {
+        List<PowerNode> powerNodeList = new ArrayList<>();
+        List<PowerJoinTask> powerJoinTaskList = new ArrayList<>();
         localPowerDetailList.forEach(item -> {
             // 算力实况
             ResourceData.PowerUsageDetail powerUsageDetail = item.getPower();
@@ -219,47 +219,47 @@ public class PowerClient {
             ResourceData.ResourceUsageOverview usageOverview = powerUsageDetail.getInformation();
 
             // 保存计算节点算力信息开始
-            LocalPowerNode localPowerNode = toLocalPowerNode(item, powerUsageDetail, usageOverview);
-            localPowerNodeList.add(localPowerNode);
+            PowerNode powerNode = toLocalPowerNode(item, powerUsageDetail, usageOverview);
+            powerNodeList.add(powerNode);
 
             List<ResourceData.PowerTask> powerTaskList = powerUsageDetail.getTasksList();
-            localPowerJoinTaskList.addAll(
+            powerJoinTaskList.addAll(
                     powerTaskList.stream()
                             .map(powerTask -> toLocalPowerJoinTask(item, powerTask))
                             .collect(Collectors.toList()));
         });
-        return new ImmutablePair<>(localPowerNodeList, localPowerJoinTaskList);
+        return new ImmutablePair<>(powerNodeList, powerJoinTaskList);
     }
 
-    private LocalPowerNode toLocalPowerNode(PowerRpcApi.GetLocalPowerDetail item,
-                                            ResourceData.PowerUsageDetail powerUsageDetail,
-                                            ResourceData.ResourceUsageOverview usageOverview) {
-        LocalPowerNode localPowerNode = new LocalPowerNode();
-        localPowerNode.setNodeId(item.getJobNodeId());
-        localPowerNode.setPowerId(item.getPowerId());
-        //localPowerNode.setStartTime(LocalDateTimeUtil.getLocalDateTime(powerUsageDetail.getPublishAt()), ZoneOffset.UTC));
-        localPowerNode.setPowerStatus(powerUsageDetail.getStateValue()); //更新算力状态
-        localPowerNode.setMemory(usageOverview.getTotalMem());
-        localPowerNode.setCore(usageOverview.getTotalProcessor());
-        localPowerNode.setBandwidth(usageOverview.getTotalBandwidth());
-        localPowerNode.setUsedMemory(usageOverview.getUsedMem());
-        localPowerNode.setUsedCore(usageOverview.getUsedProcessor());
-        localPowerNode.setUsedBandwidth(usageOverview.getUsedBandwidth());
-        //localPowerNode.setUpdateTime(LocalDateTimeUtil.getLocalDateTime(powerUsageDetail.getUpdateAt()), ZoneOffset.UTC));
-        return localPowerNode;
+    private PowerNode toLocalPowerNode(PowerRpcApi.GetLocalPowerDetail item,
+                                       ResourceData.PowerUsageDetail powerUsageDetail,
+                                       ResourceData.ResourceUsageOverview usageOverview) {
+        PowerNode powerNode = new PowerNode();
+        powerNode.setNodeId(item.getJobNodeId());
+        powerNode.setPowerId(item.getPowerId());
+        //powerNode.setStartTime(LocalDateTimeUtil.getLocalDateTime(powerUsageDetail.getPublishAt()), ZoneOffset.UTC));
+        powerNode.setPowerStatus(powerUsageDetail.getStateValue()); //更新算力状态
+        powerNode.setMemory(usageOverview.getTotalMem());
+        powerNode.setCore(usageOverview.getTotalProcessor());
+        powerNode.setBandwidth(usageOverview.getTotalBandwidth());
+        powerNode.setUsedMemory(usageOverview.getUsedMem());
+        powerNode.setUsedCore(usageOverview.getUsedProcessor());
+        powerNode.setUsedBandwidth(usageOverview.getUsedBandwidth());
+        //powerNode.setUpdateTime(LocalDateTimeUtil.getLocalDateTime(powerUsageDetail.getUpdateAt()), ZoneOffset.UTC));
+        return powerNode;
     }
 
-    private LocalPowerJoinTask toLocalPowerJoinTask(PowerRpcApi.GetLocalPowerDetail item, ResourceData.PowerTask powerTask) {
-        LocalPowerJoinTask localPowerJoinTask = new LocalPowerJoinTask();
-        localPowerJoinTask.setNodeId(item.getJobNodeId());
-        localPowerJoinTask.setTaskId(powerTask.getTaskId());
-        localPowerJoinTask.setTaskName(powerTask.getTaskName());
-        localPowerJoinTask.setOwnerIdentityId(powerTask.getOwner().getIdentityId());
-        localPowerJoinTask.setOwnerIdentityName(powerTask.getOwner().getNodeName());
-        localPowerJoinTask.setTaskStartTime(LocalDateTimeUtil.getLocalDateTime(powerTask.getCreateAt()));  // 发起时间
-        localPowerJoinTask.setUsedMemory(powerTask.getOperationSpend().getMemory());// 已使用内存
-        localPowerJoinTask.setUsedCore(powerTask.getOperationSpend().getProcessor()); // 已使用核数
-        localPowerJoinTask.setUsedBandwidth(powerTask.getOperationSpend().getBandwidth());// 已使用带宽
-        return localPowerJoinTask;
+    private PowerJoinTask toLocalPowerJoinTask(PowerRpcApi.GetLocalPowerDetail item, ResourceData.PowerTask powerTask) {
+        PowerJoinTask powerJoinTask = new PowerJoinTask();
+        powerJoinTask.setNodeId(item.getJobNodeId());
+        powerJoinTask.setTaskId(powerTask.getTaskId());
+        powerJoinTask.setTaskName(powerTask.getTaskName());
+        powerJoinTask.setOwnerIdentityId(powerTask.getOwner().getIdentityId());
+        powerJoinTask.setOwnerIdentityName(powerTask.getOwner().getNodeName());
+        powerJoinTask.setTaskStartTime(LocalDateTimeUtil.getLocalDateTime(powerTask.getCreateAt()));  // 发起时间
+        powerJoinTask.setUsedMemory(powerTask.getOperationSpend().getMemory());// 已使用内存
+        powerJoinTask.setUsedCore(powerTask.getOperationSpend().getProcessor()); // 已使用核数
+        powerJoinTask.setUsedBandwidth(powerTask.getOperationSpend().getBandwidth());// 已使用带宽
+        return powerJoinTask;
     }
 }

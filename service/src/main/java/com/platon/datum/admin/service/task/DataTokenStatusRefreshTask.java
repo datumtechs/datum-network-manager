@@ -2,11 +2,9 @@ package com.platon.datum.admin.service.task;
 
 import cn.hutool.core.util.StrUtil;
 import com.platon.bech32.Bech32;
-import com.platon.datum.admin.service.web3j.Web3jManager;
 import com.platon.datum.admin.dao.DataTokenMapper;
-import com.platon.datum.admin.dao.LocalMetaDataMapper;
 import com.platon.datum.admin.dao.entity.DataToken;
-import com.platon.datum.admin.dao.enums.LocalDataFileStatusEnum;
+import com.platon.datum.admin.service.web3j.Web3jManager;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.methods.response.PlatonGetTransactionReceipt;
 import com.platon.protocol.core.methods.response.TransactionReceipt;
@@ -21,7 +19,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -34,9 +31,6 @@ public class DataTokenStatusRefreshTask {
 
     @Resource
     private DataTokenMapper dataTokenMapper;
-
-    @Resource
-    private LocalMetaDataMapper localMetaDataMapper;
 
     @Resource
     private Web3jManager web3jManager;
@@ -70,7 +64,6 @@ public class DataTokenStatusRefreshTask {
     public void processPublishingDataToken(DataToken dataToken) throws IOException {
         if (isExpiredData(dataToken)) {//1.数据已过期，直接判断为失败
             dataTokenMapper.updateStatus(dataToken.getId(), DataToken.StatusEnum.PUBLISH_FAIL.getStatus());
-            localMetaDataMapper.updateStatusById(dataToken.getMetaDataId(), LocalDataFileStatusEnum.TOKEN_FAILED.getStatus());
             return;
         }
         int nonce = dataToken.getPublishNonce();
@@ -78,7 +71,6 @@ public class DataTokenStatusRefreshTask {
         String address = dataToken.getOwner();
         Web3j web3j = web3jContainer.get();
         int status = DataToken.StatusEnum.PUBLISHING.getStatus();
-        int metaDataStatus = LocalDataFileStatusEnum.TOKEN_RELEASING.getStatus();
 
         //2.判断交易上链结果
         PlatonGetTransactionReceipt transactionReceiptResp = web3j.platonGetTransactionReceipt(hash).send();
@@ -93,14 +85,12 @@ public class DataTokenStatusRefreshTask {
             log.debug("isOK:{},hexFrom:{},transactionNonce:{}", isOK, hexFrom, transactionNonce);
             if (isOK && address.equals(hexFrom) && transactionNonce == nonce) {//凭证发布成功
                 status = DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus();
-                metaDataStatus = LocalDataFileStatusEnum.TOKEN_RELEASED.getStatus();
                 //发布成功，获取token地址
                 String data = transactionReceipt.getLogs().get(0).getData();
                 String dataTokenAddress = StrUtil.sub(data, data.length() - 40, data.length() + 1);
                 dataTokenMapper.updateTokenAddress(dataToken.getId(), "0x" + dataTokenAddress);
             } else {
                 status = DataToken.StatusEnum.PUBLISH_FAIL.getStatus();
-                metaDataStatus = LocalDataFileStatusEnum.TOKEN_FAILED.getStatus();
             }
         }
 
@@ -108,7 +98,6 @@ public class DataTokenStatusRefreshTask {
         if (status == DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus()
                 || status == DataToken.StatusEnum.PUBLISH_FAIL.getStatus()) {
             dataTokenMapper.updateStatus(dataToken.getId(), status);
-            localMetaDataMapper.updateStatusById(dataToken.getMetaDataId(), metaDataStatus);
         }
     }
 
@@ -164,7 +153,7 @@ public class DataTokenStatusRefreshTask {
     private boolean isExpiredData(DataToken dataToken) {
         LocalDateTime updateTime = dataToken.getRecUpdateTime();
         long timeStamp = updateTime.plusHours(12).toInstant(ZoneOffset.UTC).toEpochMilli();
-        if (timeStamp < new Date().getTime()) {
+        if (timeStamp < System.currentTimeMillis()) {
             return true;
         }
         return false;

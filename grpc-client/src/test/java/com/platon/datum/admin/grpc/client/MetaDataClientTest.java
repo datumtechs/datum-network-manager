@@ -2,11 +2,11 @@ package com.platon.datum.admin.grpc.client;
 
 import com.alibaba.fastjson.JSON;
 import com.platon.datum.admin.dao.DataSyncMapper;
-import com.platon.datum.admin.dao.LocalOrgMapper;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
+import com.platon.datum.admin.dao.OrgMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.DataSync;
-import com.platon.datum.admin.dao.entity.LocalMetaData;
-import com.platon.datum.admin.dao.entity.LocalOrg;
+import com.platon.datum.admin.dao.entity.MetaData;
+import com.platon.datum.admin.dao.entity.Org;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ import java.util.List;
 public class MetaDataClientTest {
 
     @Autowired
-    LocalOrgMapper localOrgMapper;
+    OrgMapper orgMapper;
     @Autowired
     DataSyncMapper dataSyncMapper;
     @Autowired
@@ -30,13 +30,13 @@ public class MetaDataClientTest {
 
     @Test
     public void getLocalMetaDataList(){
-        LocalOrg localOrg = localOrgMapper.select();
-        LocalOrgCache.setLocalOrgInfo(localOrg);
+        Org org = orgMapper.select();
+        OrgCache.setLocalOrgInfo(org);
 
         DataSync dataSync = dataSyncMapper.findByPK(DataSync.DataType.LocalMetaData);
 
-        List<LocalMetaData> localMetaDataList = metaDataClient.getLocalMetaDataList(dataSync.getLatestSynced());
-        log.info("localMetaDataList：" + JSON.toJSON(localMetaDataList));
+        List<MetaData> metaDataList = metaDataClient.getLocalMetaDataList(dataSync.getLatestSynced());
+        log.info("metaDataList：" + JSON.toJSON(metaDataList));
     }
 
 }

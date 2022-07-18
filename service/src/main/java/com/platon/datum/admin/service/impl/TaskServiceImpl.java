@@ -5,9 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.dao.*;
 import com.platon.datum.admin.dao.entity.*;
 import com.platon.datum.admin.service.constant.ServiceConstant;
-import com.platon.datum.admin.dao.*;
-import com.platon.datum.admin.dao.cache.LocalOrgCache;
-import com.platon.datum.admin.dao.entity.*;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.enums.TaskStatusEnum;
 import com.platon.datum.admin.service.TaskService;
 import org.springframework.stereotype.Service;
@@ -91,7 +89,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskStatistics taskStatistics() {
-        String identityId = LocalOrgCache.getLocalOrgIdentityId();
+        String identityId = OrgCache.getLocalOrgIdentityId();
         return taskMapper.taskStatistics(identityId);
     }
 
@@ -103,7 +101,7 @@ public class TaskServiceImpl implements TaskService {
         task.setOwner(owner);
 
         //本组织在此任务中的身份
-        Map<String, Boolean> roleMap = taskMapper.listRoleByTaskIdAndIdentityId(taskId, ((LocalOrg) LocalOrgCache.getLocalOrgInfo()).getIdentityId());
+        Map<String, Boolean> roleMap = taskMapper.listRoleByTaskIdAndIdentityId(taskId, ((Org) OrgCache.getLocalOrgInfo()).getIdentityId());
         task.setDynamicFields(roleMap);
 
         //算法提供方

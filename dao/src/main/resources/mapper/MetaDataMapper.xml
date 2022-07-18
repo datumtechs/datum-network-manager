@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.datum.admin.dao.MetaDataMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.MetaData">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="file_id" jdbcType="VARCHAR" property="fileId"/>
+        <result column="meta_data_id" jdbcType="VARCHAR" property="metaDataId"/>
+        <result column="meta_data_name" jdbcType="VARCHAR" property="metaDataName"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="industry" jdbcType="INTEGER" property="industry"/>
+        <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime"/>
+        <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime"/>
+        <result column="owner" jdbcType="VARCHAR" property="owner"/>
+        <result column="meta_data_type" jdbcType="INTEGER" property="metaDataType"/>
+        <result column="usage" jdbcType="INTEGER" property="usage"/>
+        <result column="data_token_address" jdbcType="VARCHAR" property="dataTokenAddress"/>
+        <result column="attribute_data_token_address" jdbcType="VARCHAR" property="attributeDataTokenAddress"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        file_id,
+        meta_data_id,
+        meta_data_name,
+        `status`,
+        publish_time,
+        remarks,
+        industry,
+        rec_create_time,
+        rec_update_time,
+        `owner`,
+        meta_data_type,
+        `usage`,
+        data_token_address,
+        attribute_data_token_address
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from meta_data
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="selectByMetaDataId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from meta_data
+        where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByStatus" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from meta_data
+        where `status` = #{status,jdbcType=VARCHAR}
+    </select>
+
+
+    <resultMap id="BaseResultMap_for_detail" type="com.platon.datum.admin.dao.entity.MetaData"
+               extends="BaseResultMap">
+        <result column="task_count" property="dynamicFields.taskCount" javaType="int" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="findWithTaskCount" parameterType="java.lang.Integer" resultMap="BaseResultMap_for_detail">
+        select md.*, ifnull(t.task_count, 0) as task_count
+        from meta_data md
+                 left join (select meta_data_id, count(task_id) task_count
+                            from task_data_provider
+                            GROUP BY meta_data_id) t on md.meta_data_id = t.meta_data_id
+        where md.id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <resultMap id="BaseResultMap_for_list" type="com.platon.datum.admin.dao.entity.MetaData"
+               extends="BaseResultMap">
+        <result column="size" property="dynamicFields.size" javaType="long" jdbcType="BIGINT"/>
+        <result column="task_count" property="dynamicFields.taskCount" javaType="int" jdbcType="INTEGER"/>
+        <result column="data_token_name" property="dynamicFields.dataTokenName" javaType="java.lang.String"
+                jdbcType="VARCHAR"/>
+        <result column="data_token_symbol" property="dynamicFields.dataTokenSymbol" javaType="java.lang.String"
+                jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="listMetaData" parameterType="java.lang.String" resultMap="BaseResultMap_for_list">
+        SELECT md.*,
+               df.size,
+               ifnull(t.task_count, 0) as task_count,
+               dt.name                 as data_token_name,
+               dt.symbol               as data_token_symbol
+        FROM meta_data md
+                 join data_file df on md.file_id = df.file_id
+                 left join (select meta_data_id, count(task_id) task_count
+                            from task_data_provider
+                            GROUP BY meta_data_id) t on md.meta_data_id = t.meta_data_id
+                 left join data_token dt on md.id = dt.meta_data_db_id
+                 left join attribute_data_token adt on md.id = adt.meta_data_db_id
+        where md.status != 101
+          and md.`owner` = #{userAddress}
+        <if test="status == 1">
+            AND IF(
+                dt.STATUS IS NULL
+             OR dt.STATUS = 2
+             OR adt.STATUS IS NULL
+             OR adt.STATUS = 2
+              , FALSE
+              , TRUE)
+        </if>
+        <if test="status == 2">
+            AND IF(
+                dt.STATUS IS NULL
+             OR dt.STATUS = 2
+             OR adt.STATUS IS NULL
+             OR adt.STATUS = 2
+              , TRUE
+              , FALSE)
+        </if>
+        <if test="keyword != null and keyword != ''">
+            and md.meta_data_name like concat('%'
+              , #{keyword,jdbcType=VARCHAR}
+              , '%')
+        </if>
+        ORDER BY md.rec_create_time desc
+    </select>
+
+    <!-- 根据resourceName查询数据文件-->
+    <select id="checkResourceName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from meta_data
+        where meta_data_name = #{resourceName}
+          and status != 101
+          and owner = #{address}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        update meta_data
+        set status = 101
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.MetaData" useGeneratedKeys="true"
+            keyProperty="id" keyColumn="id">
+        insert into meta_data (file_id, meta_data_id, meta_data_name, status, publish_time,
+                               remarks, industry, owner, meta_data_type, `usage`)
+        values (#{fileId,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR},
+                #{metaDataName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{publishTime,jdbcType=TIMESTAMP},
+                #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER}, #{owner}, #{metaDataType}, #{usage})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.platon.datum.admin.dao.entity.MetaData">
+        update meta_data
+        set file_id        = #{fileId,jdbcType=VARCHAR},
+            meta_data_id   = #{metaDataId,jdbcType=VARCHAR},
+            meta_data_name = #{metaDataName,jdbcType=VARCHAR},
+            status         = #{status,jdbcType=INTEGER},
+            publish_time   = #{publishTime,jdbcType=TIMESTAMP},
+            remarks        = #{remarks,jdbcType=VARCHAR},
+            industry       = #{industry,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateStatusById">
+        update meta_data
+        set status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByMetaDataIdBatch">
+        <foreach collection="metaDataList" item="item" separator=";">
+            update meta_data
+            set status                       = #{item.status,jdbcType=INTEGER},
+                publish_time                 = #{item.publishTime,jdbcType=TIMESTAMP},
+                rec_update_time              = #{item.recUpdateTime,jdbcType=TIMESTAMP},
+                data_token_address           = #{item.dataTokenAddress},
+                attribute_data_token_address = #{item.attributeDataTokenAddress}
+            where meta_data_id = #{item.metaDataId,jdbcType=VARCHAR}
+              and status in (0, 1, 2, 3, 101, 102, 103)
+        </foreach>
+    </update>
+
+    <select id="listMetaDataUnPublishDataToken" resultMap="BaseResultMap">
+        select md.*
+        from meta_data md
+                 left join data_token dt on md.id = dt.meta_data_db_id
+        where (md.status = 2 or dt.status = 2)
+          and md.owner = #{userAddress}
+        <if test="keyword != null and keyword != ''">
+            and md.meta_data_name like concat('%'
+                , #{keyword,jdbcType=VARCHAR}
+                , '%')
+        </if>
+        ORDER BY md.rec_update_time desc
+    </select>
+
+    <select id="listMetaDataUnPublishAttributeDataToken" resultMap="BaseResultMap">
+        select md.*
+        from meta_data md
+                 left join attribute_data_token adt on md.id = adt.meta_data_db_id
+        where (md.status = 2 or adt.status = 2)
+          and md.owner = #{userAddress}
+        <if test="keyword != null and keyword != ''">
+            and md.meta_data_name like concat('%'
+                , #{keyword,jdbcType=VARCHAR}
+                , '%')
+        </if>
+        ORDER BY md.rec_update_time desc
+    </select>
+
+    <select id="selectUnBindDataToken" resultMap="BaseResultMap">
+        select md.id, dt.id as data_token_id
+        from meta_data md
+                 left join data_token dt on md.id = dt.meta_data_db_id
+        where md.status = 2
+          and dt.status = 3
+          and md.data_token_id is null
+    </select>
+
+    <select id="selectUnBindAttributeDataToken" resultMap="BaseResultMap">
+        select md.id, adt.id as attribute_data_token_id
+        from meta_data md
+                 left join attribute_data_token adt on md.id = adt.meta_data_db_id
+        where md.status = 2
+          and adt.status = 3
+          and md.attribute_data_token_id is null
+    </select>
+</mapper>
