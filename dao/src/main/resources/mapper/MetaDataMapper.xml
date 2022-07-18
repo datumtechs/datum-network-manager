@@ -81,6 +81,14 @@
                 jdbcType="VARCHAR"/>
         <result column="data_token_symbol" property="dynamicFields.dataTokenSymbol" javaType="java.lang.String"
                 jdbcType="VARCHAR"/>
+        <result column="data_token_status" property="dynamicFields.dataTokenStatus" javaType="java.lang.Integer"
+                jdbcType="INTEGER"/>
+        <result column="attribute_data_token_name" property="dynamicFields.attributeDataTokenName" javaType="java.lang.String"
+                jdbcType="VARCHAR"/>
+        <result column="attribute_data_token_symbol" property="dynamicFields.attributeDataTokenSymbol" javaType="java.lang.String"
+                jdbcType="VARCHAR"/>
+        <result column="attribute_data_token_status" property="dynamicFields.attributeDataTokenStatus" javaType="java.lang.Integer"
+                jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="listMetaData" parameterType="java.lang.String" resultMap="BaseResultMap_for_list">
@@ -88,7 +96,11 @@
                df.size,
                ifnull(t.task_count, 0) as task_count,
                dt.name                 as data_token_name,
-               dt.symbol               as data_token_symbol
+               dt.symbol               as data_token_symbol,
+               dt.status as data_token_status,
+        adt.name                 as attribute_data_token_name,
+        adt.symbol               as attribute_data_token_symbol,
+        adt.status as attribute_data_token_status
         FROM meta_data md
                  join data_file df on md.file_id = df.file_id
                  left join (select meta_data_id, count(task_id) task_count
