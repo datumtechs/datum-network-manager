@@ -34,7 +34,7 @@ import java.util.List;
 @Api(tags = "有属性数据凭证")
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/dataToken/")
+@RequestMapping("/api/v1/attributeDataToken/")
 public class AttributeDataTokenController extends BaseController {
 
     @Resource

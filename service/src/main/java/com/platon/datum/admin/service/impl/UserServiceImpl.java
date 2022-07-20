@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
         Org localOrg = getCarrierInfo();
         //### 1.2 调用调度服务接口生成见证人钱包
         String walletAddress = yarnClient.generateObServerProxyWalletAddress(localOrg.getCarrierIp(), localOrg.getCarrierPort());
-        localOrg.setCarrierWallet(walletAddress);
+        localOrg.setObserverProxyWalletAddress(walletAddress);
         //### 2.新建local org并入库
         String orgId = IDUtil.generate(IDUtil.IDENTITY_ID_PREFIX);
         localOrg.setIdentityId(orgId);
@@ -112,8 +112,8 @@ public class UserServiceImpl implements UserService {
         org.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
         org.setCarrierConnTime(new Date());
         org.setConnNodeCount(nodeInfo.getConnCount());
-        org.setBootstrapNode(nodeInfo.getLocalBootstrapNode());
-        org.setMultiAddr(nodeInfo.getLocalMultiAddr());
+        org.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
+        org.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
         return org;
     }
 

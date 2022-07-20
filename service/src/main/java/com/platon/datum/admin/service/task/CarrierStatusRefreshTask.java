@@ -27,7 +27,7 @@ import java.util.List;
  */
 
 @Slf4j
-@Configuration
+//@Configuration
 public class CarrierStatusRefreshTask {
 
     @Resource
@@ -90,8 +90,8 @@ public class CarrierStatusRefreshTask {
             org.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
             org.setCarrierConnTime(new Date());
             org.setConnNodeCount(nodeInfo.getConnCount());
-            org.setBootstrapNode(nodeInfo.getLocalBootstrapNode());
-            org.setMultiAddr(nodeInfo.getLocalMultiAddr());
+            org.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
+            org.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
 
             /*if(org.getIdentityId().equals(nodeInfo.getIdentityId())){//相同表示入网了
                 org.setStatus(LocalOrgStatusEnum.JOIN.getStatus());

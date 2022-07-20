@@ -17,7 +17,7 @@ import java.util.List;
  * @date 2021/7/10 17:07
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class SeedNodeRefreshTask {
 
     @Resource

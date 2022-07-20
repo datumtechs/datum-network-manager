@@ -1,28 +1,29 @@
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://{{inventory_hostname}}/datum_admin?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
-      username: {{amin_user}}
-      password: {{admin_password}}
+      url: jdbc:mysql://192.168.10.151/datum_admin_lsy?useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+      username: metis_admin
+      password: admin_123456
   # =============================== consul ===============================
   cloud:
     consul:
-      host: {{consul_leader_ip}}
-      port: {{consul_leader_port}}
+      enabled: false
+      host: 39.101.171.59
+      port: 8500
       discovery:  # 服务发现配置
-        instance-id: adminService_{{inventory_hostname}}_{{admin_web_port}}
+        instance-id: adminService_39.101.171.59_90901
 
 # ==================================== server conf  ==========================================
 server:
-  port: {{admin_web_port}}
+  port: 9090
 
 # =============================== conf for logger ===================================
 # 日志配置
 logging:
   file:
     # 日志文件名格式
-    name: {{admin_log_dir}}/${spring.application.name}.log
+    name: ./logs/${spring.application.name}.log
   logback:
     rollingpolicy:
       # 根据文件大小归档，超过2KB自动归档，次日启动服务时也会自动归档
-      file-name-pattern: {{admin_log_dir}}/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz
+      file-name-pattern: ./logs/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz

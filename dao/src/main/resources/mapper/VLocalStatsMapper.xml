@@ -12,33 +12,7 @@
         sum(core) as totalCore,
         sum(bandwidth) as totalBandwidth
     from
-        local_power_node
-  </select>
-
-  <!-- 查询我发布的数据 -->
-  <select id="queryMyPublishData" resultType="java.lang.Long">
-    select
-        IFNULL(b.calculate_result, 0) as totalSize
-        <!--IFNULL(b.calculate_result, 0) / (1024 * 1024 * 1024) as totalSize -->
-   from
-       v_past_12_month a left join store_calculate_result b
-       on a.month =  b.reside_time
-       and b.store_type = 'my_publish_data'
-   order by a.month desc
-  </select>
-
-  <!-- 查询我发布的算力 -->
-  <select id="queryMyPublishPower" resultType="java.lang.Long">
-      select
-          IFNULL(sum(b.memory), 0) as totalMemory
-          <!-- IFNULL(sum(b.memory), 0) / (1024 * 1024 * 1024) as totalMemory -->
-      from
-          v_past_12_month a left join local_power_node b
-          on a.month =  DATE_FORMAT(b.start_time,'%Y-%m')
-          and b.power_status = 'release'
-          and b.conn_status != '-1'
-      group by a.month
-      order by a.month desc
+        power_node
   </select>
 
   <!-- 查询我的计算任务概况 -->
@@ -51,36 +25,6 @@
     group by status
   </select>
 
-  <!-- 查询全网数据总量月环比（上月/上上月）-->
-  <select id="queryWholeNetDateRingRatio" resultType="java.lang.Double">
-    select
-        IFNULL(sum(b.size), 0) as totalSize
-        <!-- IFNULL(sum(b.size), 0) / (1024 * 1024 * 1024) as totalSize -->
-    from
-        (select DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m') AS `month`
-        UNION select DATE_FORMAT(CURDATE() - INTERVAL 2 MONTH, '%Y-%m') AS `month`) a
-        left join global_data_file b
-        on a.month = DATE_FORMAT(b.publish_time, '%Y-%m')
-        and b.status = 2
-    group by a.month
-    order by a.month desc
-  </select>
-
-  <!-- 查询全网数据总量月同比（当前年上月/去年同上月）-->
-  <select id="queryWholeNetDateSameRatio" resultType="java.lang.Double">
-    select
-        IFNULL(sum(b.size), 0) as totalSize
-        <!-- IFNULL(sum(b.size), 0) / (1024 * 1024 * 1024) as totalSize -->
-    from
-        (select DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%Y-%m') AS `month`
-        UNION select DATE_FORMAT(CURDATE() - INTERVAL 13 MONTH, '%Y-%m') AS `month`) a
-        left join global_data_file b
-        on a.month = DATE_FORMAT(b.publish_time, '%Y-%m')
-        and b.status = 2
-    group by a.month
-    order by a.month desc
-  </select>
-
   <!-- 查询待授权数据列表-->
   <select id="listDataAuthReqWaitingForApprove" resultType="com.platon.datum.admin.dao.dto.DataAuthReqDTO">
     select
@@ -88,7 +32,7 @@
         a.apply_user as applyUser,
         b.meta_data_name as metaDataName
     from
-        local_data_auth a, local_meta_data b
+        data_auth a, meta_data b
     where 1=1
         and a.meta_data_id = b.meta_data_id
         and a.status = 0

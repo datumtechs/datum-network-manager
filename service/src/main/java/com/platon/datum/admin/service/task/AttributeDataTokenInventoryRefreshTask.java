@@ -18,7 +18,7 @@ import java.util.List;
  * @Description 刷新有属性数据凭证库存定时任务
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class AttributeDataTokenInventoryRefreshTask {
 
     @Resource

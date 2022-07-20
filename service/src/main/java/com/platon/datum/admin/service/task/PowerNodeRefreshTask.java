@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * 间隔60秒执行下一次任务
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class PowerNodeRefreshTask {
 
     @Resource

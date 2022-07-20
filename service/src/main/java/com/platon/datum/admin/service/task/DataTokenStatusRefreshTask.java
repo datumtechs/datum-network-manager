@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Description 刷新数据凭证状态定时任务
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class DataTokenStatusRefreshTask {
 
     @Resource

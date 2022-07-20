@@ -77,7 +77,7 @@
         select t.*, o.org_name as owner_name, lpjt.used_core, lpjt.used_memory, lpjt.used_bandwidth
         from task t
                  join task_org o on t.owner_identity_id = o.identity_id
-                 join local_power_join_task lpjt
+                 join power_join_task lpjt
                       on t.task_id = lpjt.task_id and lpjt.node_id = #{nodeId,jdbcType=VARCHAR}
         order by task_start_time desc
     </select>

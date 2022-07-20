@@ -15,9 +15,9 @@
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
         <result column="profile" jdbcType="VARCHAR" property="profile"/>
-        <result column="bootstrap_node" jdbcType="VARCHAR" property="bootstrapNode"/>
-        <result column="multi_addr" jdbcType="VARCHAR" property="multiAddr"/>
-        <result column="carrier_wallet" jdbcType="VARCHAR" property="carrierWallet"/>
+        <result column="local_bootstrap_node" jdbcType="VARCHAR" property="localBootstrapNode"/>
+        <result column="local_multi_addr" jdbcType="VARCHAR" property="localMultiAddr"/>
+        <result column="observer_proxy_wallet_address" jdbcType="VARCHAR" property="observerProxyWalletAddress"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -33,15 +33,15 @@
         `status`,
         image_url,
         `profile`,
-        bootstrap_node,
-        multi_addr,
-        carrier_wallet
+        `local_bootstrap_node`,
+        `local_multi_addr`,
+        `observer_proxy_wallet_address`
     </sql>
 
     <select id="selectAvailableCarrier" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_org
+        from org
         where carrier_conn_status = 'enabled'
           and carrier_status = 'enabled'
     </select>
@@ -52,18 +52,18 @@
 
     <select id="select" resultMap="BaseResultMap_runningTask">
         select o.*, t.running_task
-        from local_org o,
+        from org o,
              (SELECT COUNT(id) as running_task FROM task WHERE `status` = 1 or `status` = 2) t
     </select>
 
     <select id="selectIdentityId" resultType="java.lang.String">
         select identity_id
-        from local_org
+        from org
     </select>
 
     <!-- 选择性插入字段-->
     <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.Org">
-        insert into local_org (`name`,
+        insert into org (`name`,
                                identity_id,
                                carrier_node_id,
                                carrier_ip,
@@ -75,9 +75,9 @@
                                `status`,
                                image_url,
                                profile,
-                               bootstrap_node,
-                               multi_addr,
-                               carrier_wallet)
+                               local_bootstrap_node,
+                               local_multi_addr,
+                               observer_proxy_wallet_address)
         values (#{name,jdbcType=VARCHAR},
                 #{identityId,jdbcType=VARCHAR},
                 #{carrierNodeId,jdbcType=VARCHAR},
@@ -90,13 +90,13 @@
                 #{status,jdbcType=INTEGER},
                 #{imageUrl,jdbcType=VARCHAR},
                 #{profile,jdbcType=VARCHAR},
-                #{bootstrapNode,jdbcType=VARCHAR},
-                #{multiAddr,jdbcType=VARCHAR},
-                #{carrierWallet,jdbcType=VARCHAR})
+                #{localBootstrapNode,jdbcType=VARCHAR},
+                #{localMultiAddr,jdbcType=VARCHAR},
+                #{observerProxyWalletAddress,jdbcType=VARCHAR})
     </insert>
 
     <update id="update" parameterType="com.platon.datum.admin.dao.entity.Org">
-        update local_org
+        update org
         set `name`               = #{name},
             identity_id          = #{identityId},
             carrier_node_id      = #{carrierNodeId},
@@ -109,8 +109,8 @@
             `status`             = #{status},
             `image_url`          = #{imageUrl},
             `profile`            = #{profile},
-            bootstrap_node = #{bootstrapNode,jdbcType=VARCHAR},
-            multi_addr     = #{multiAddr,jdbcType=VARCHAR},
-            carrier_wallet       = #{carrierWallet,jdbcType=VARCHAR}
+            local_bootstrap_node = #{localBootstrapNode,jdbcType=VARCHAR},
+            local_multi_addr     = #{localMultiAddr,jdbcType=VARCHAR},
+            observer_proxy_wallet_address       = #{observerProxyWalletAddress,jdbcType=VARCHAR}
     </update>
 </mapper>
