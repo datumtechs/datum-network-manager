@@ -6,7 +6,11 @@ import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.dao.AttributeDataTokenMapper;
+import com.platon.datum.admin.dao.MetaDataMapper;
 import com.platon.datum.admin.dao.entity.AttributeDataToken;
+import com.platon.datum.admin.dao.entity.DataToken;
+import com.platon.datum.admin.dao.entity.MetaData;
+import com.platon.datum.admin.grpc.client.MetaDataClient;
 import com.platon.datum.admin.service.AttributeDataTokenService;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,10 @@ public class AttributeDataTokenServiceImpl implements AttributeDataTokenService 
 
     @Resource
     private AttributeDataTokenMapper attributeDataTokenMapper;
+    @Resource
+    private MetaDataMapper metaDataMapper;
+    @Resource
+    private MetaDataClient metaDataClient;
 
     /**
      * @param pageNumber
@@ -82,6 +90,37 @@ public class AttributeDataTokenServiceImpl implements AttributeDataTokenService 
      */
     @Override
     public void updateStatus(Integer dataTokenId, int status, String currentUserAddress) {
-        attributeDataTokenMapper.updateStatusByCurrentUser(dataTokenId, status, currentUserAddress);
+        AttributeDataToken dataToken = attributeDataTokenMapper.selectDataTokenById(dataTokenId);
+        if (dataToken == null) {
+            throw new BizException(Errors.SysException, "Data token not exist!");
+        }
+
+        if (!dataToken.getOwner().equals(currentUserAddress)) {
+            throw new BizException(Errors.SysException, "You are not owner!");
+        }
+        attributeDataTokenMapper.updateStatusById(dataTokenId, status);
+    }
+
+    /**
+     * @param dataTokenId
+     * @param sign
+     * @param currentUserAddress
+     */
+    @Override
+    public void bindMetaData(Integer dataTokenId, String sign, String currentUserAddress) {
+        AttributeDataToken attributeDataToken = attributeDataTokenMapper.selectDataTokenById(dataTokenId);
+        if (attributeDataToken == null) {
+            throw new BizException(Errors.SysException, "Data token not exist!");
+        }
+
+        if (!attributeDataToken.getOwner().equals(currentUserAddress)) {
+            throw new BizException(Errors.SysException, "You are not owner!");
+        }
+
+        MetaData metaData = metaDataMapper.selectById(attributeDataToken.getMetaDataDbId());
+        metaData.setSign(sign);
+        metaDataClient.updateMetadata(metaData);
+        //将dataToken状态修改为绑定中
+        attributeDataTokenMapper.updateStatus(dataTokenId, DataToken.StatusEnum.BINDING.getStatus());
     }
 }

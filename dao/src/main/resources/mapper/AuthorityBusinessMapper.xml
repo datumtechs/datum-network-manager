@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.datum.admin.dao.AuthorityBusinessMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.AuthorityBusiness">
+        <!--@mbg.generated-->
+        <!--@Table authority_business-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="apply_org" jdbcType="VARCHAR" property="applyOrg"/>
+        <result column="specify_org" jdbcType="VARCHAR" property="specifyOrg"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="process_status" jdbcType="INTEGER" property="processStatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `type`, apply_org, specify_org, start_time, process_status
+    </sql>
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from authority_business
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete
+        from authority_business
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.platon.datum.admin.dao.entity.AuthorityBusiness" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into authority_business (`type`, apply_org, specify_org,
+                                        start_time, process_status)
+        values (#{type,jdbcType=TINYINT}, #{applyOrg,jdbcType=VARCHAR}, #{specifyOrg,jdbcType=VARCHAR},
+                #{startTime,jdbcType=TIMESTAMP}, #{processStatus,jdbcType=BOOLEAN})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.platon.datum.admin.dao.entity.AuthorityBusiness" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into authority_business
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test="applyOrg != null">
+                apply_org,
+            </if>
+            <if test="specifyOrg != null">
+                specify_org,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="processStatus != null">
+                process_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="applyOrg != null">
+                #{applyOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="specifyOrg != null">
+                #{specifyOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="processStatus != null">
+                #{processStatus,jdbcType=BOOLEAN},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByIdSelective" parameterType="com.platon.datum.admin.dao.entity.AuthorityBusiness">
+        <!--@mbg.generated-->
+        update authority_business
+        <set>
+            <if test="type != null">
+                `type` = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="applyOrg != null">
+                apply_org = #{applyOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="specifyOrg != null">
+                specify_org = #{specifyOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="processStatus != null">
+                process_status = #{processStatus,jdbcType=BOOLEAN},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateById" parameterType="com.platon.datum.admin.dao.entity.AuthorityBusiness">
+        <!--@mbg.generated-->
+        update authority_business
+        set `type`         = #{type,jdbcType=TINYINT},
+            apply_org      = #{applyOrg,jdbcType=VARCHAR},
+            specify_org    = #{specifyOrg,jdbcType=VARCHAR},
+            start_time     = #{startTime,jdbcType=TIMESTAMP},
+            process_status = #{processStatus,jdbcType=BOOLEAN}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <resultMap id="BaseResultMap_With_IdentityName" type="com.platon.datum.admin.dao.entity.AuthorityBusiness"
+               extends="BaseResultMap">
+        <result column="apply_org_name" property="dynamicFields.applyOrgName" jdbcType="VARCHAR"/>
+        <result column="specify_org_name" property="dynamicFields.specifyOrgName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectTodoList" resultMap="BaseResultMap_With_IdentityName">
+        select ab.*,
+               go1.node_name as apply_org_name,
+               go2.node_name as specify_org_name
+        from authority_business ab
+                 left join global_org go1 on ab.apply_org = go1.identity_id
+                 left join global_org go2 on ab.specify_org = go2.identity_id
+        where process_status = 0
+        <if test="keyword != null and keyword != ''">
+            and (go1.node_name like concat('%', #{keyword}, '%') or go2.node_name like concat('%', #{keyword}, '%'))
+        </if>
+    </select>
+
+    <select id="selectTodoCount" resultType="int">
+        select count(*)
+        from authority_business
+        where process_status = 0
+    </select>
+
+    <select id="selectDoneList" resultMap="BaseResultMap_With_IdentityName">
+        select ab.*,
+        go1.node_name as apply_org_name,
+        go2.node_name as specify_org_name
+        from authority_business ab
+        left join global_org go1 on ab.apply_org = go1.identity_id
+        left join global_org go2 on ab.specify_org = go2.identity_id
+        where process_status != 0
+        <if test="keyword != null and keyword != ''">
+            and (go1.node_name like concat('%', #{keyword}, '%') or go2.node_name like concat('%', #{keyword}, '%'))
+        </if>
+    </select>
+
+    <update id="updateStatus">
+        update authority_business set process_status = #{status} where id = #{id}
+    </update>
+</mapper>

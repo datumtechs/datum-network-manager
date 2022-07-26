@@ -120,8 +120,9 @@ public class MetaDataController extends BaseController {
             @ApiImplicitParam(name = "hasTitle", value = "是否包含表头", required = true, paramType = "query", example = "true"),
     })
     @PostMapping("/uploadFile")
-    public JsonResponse<MetaDataImportFileResp> importFile(MultipartFile file,
-                                                           @Validated @NotNull(message = "hasTitle不为空") Boolean hasTitle) {
+    public JsonResponse<MetaDataImportFileResp> importFile(MultipartFile file) {
+        //v0.5.0默认上传的csv文件都有文件头
+        boolean hasTitle = true;
         //校验文件
         DataFile dataFile = metaDataService.uploadFile(file, hasTitle);
         MetaDataImportFileResp resp = MetaDataImportFileResp.from(dataFile);
@@ -159,12 +160,13 @@ public class MetaDataController extends BaseController {
 
         MetaData metaData = new MetaData();
         metaData.setFileId(req.getFileId());
-        metaData.setRemarks(req.getRemarks());
+        metaData.setDesc(req.getDesc());
         metaData.setIndustry(req.getIndustry());
         metaData.setMetaDataName(req.getResourceName());
         metaData.setStatus(DataFileStatusEnum.CREATED.getStatus());//添加数据状态为created
-        metaData.setOwner(userAddress);
+        metaData.setUser(userAddress);
         metaData.setMetaDataType(CarrierEnum.MetadataType.MetadataType_DataFile_VALUE);
+        metaData.setUsage(req.getUsage());
 
         metaData.setMetaDataColumnList(req.getMetaDataColumnList());
 
@@ -206,7 +208,7 @@ public class MetaDataController extends BaseController {
     @PostMapping("/updateLocalMetaData")
     public JsonResponse update(@RequestBody @Validated MetaDataUpdateReq req) {
         MetaData metaData = new MetaData();
-        metaData.setRemarks(req.getRemarks());
+        metaData.setDesc(req.getDesc());
         metaData.setIndustry(req.getIndustry());
         metaData.setId(req.getId());
 
@@ -237,13 +239,13 @@ public class MetaDataController extends BaseController {
         String action = req.getAction();
         switch (action) {
             case "-1"://删除，软删除，status=4
-                metaDataService.delete(req.getId());
+                metaDataService.delete(req.getId(), req.getSign());
                 break;
             case "0"://下架，status=3
-                metaDataService.down(req.getId());
+                metaDataService.down(req.getId(), req.getSign());
                 break;
             case "1"://上架，status=2
-                metaDataService.up(req.getId());
+                metaDataService.up(req.getId(), req.getSign());
                 break;
             default:
                 throw new ArgumentException();

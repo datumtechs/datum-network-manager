@@ -20,7 +20,6 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -111,7 +110,7 @@ public class AuthClient {
         //2.拼装request
         AuthRpcApi.GetMetadataAuthorityListRequest request = AuthRpcApi.GetMetadataAuthorityListRequest
                 .newBuilder()
-                .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
+                .setLastUpdated(LocalDateTimeUtil.getTimestamp(latestSynced))
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
         //3.调用rpc,获取response
@@ -134,7 +133,7 @@ public class AuthClient {
         //2.拼装request
         AuthRpcApi.GetMetadataAuthorityListRequest request = AuthRpcApi.GetMetadataAuthorityListRequest
                 .newBuilder()
-                .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
+                .setLastUpdated(LocalDateTimeUtil.getTimestamp(latestSynced))
                 .build();
         //3.调用rpc,获取response
         AuthRpcApi.GetMetadataAuthorityListResponse response = AuthServiceGrpc

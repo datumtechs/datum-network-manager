@@ -106,6 +106,8 @@ public class NoAttributeDataTokenController extends BaseController {
         dataToken.setOwner(address);
         dataToken.setPublishHash(req.getHash());
         dataToken.setPublishNonce(req.getNonce());
+        dataToken.setPlaintextFee(req.getPlaintextFee());
+        dataToken.setCiphertextFee(req.getCiphertextFee());
         Integer id = noAttributeDataTokenService.publish(dataToken);
         return JsonResponse.success(id);
     }
@@ -139,11 +141,38 @@ public class NoAttributeDataTokenController extends BaseController {
     /**
      * 修改凭证状态
      */
-    @ApiOperation(value = "修改凭证状态")
-    @PostMapping("/updateStatus")
-    public JsonResponse updateStatus(HttpSession session, @RequestBody @Validated NoAttributeDataTokenUpdateStatusReq req) {
+    @ApiOperation(value = "将凭证修改为上架状态")
+    @PostMapping("/updateToPrinceSuccess")
+    public JsonResponse updateToPrinceSuccess(HttpSession session, @RequestBody @Validated NoAttributeDataTokenUpdateStatusReq req) {
         String currentUserAddress = getCurrentUserAddress(session);
-        noAttributeDataTokenService.updateStatus(req.getDataTokenId(), req.getStatus(), currentUserAddress);
+        noAttributeDataTokenService.updateToPrinceSuccess(req.getDataTokenId(), currentUserAddress);
+        return JsonResponse.success();
+    }
+
+    /**
+     * 修改明文和密文消耗量
+     */
+    @ApiOperation(value = "修改明文和密文消耗量")
+    @PostMapping("/updateFee")
+    public JsonResponse updateFee(HttpSession session, @RequestBody @Validated NoAttributeDataTokenUpdateFeeReq req) {
+        String currentUserAddress = getCurrentUserAddress(session);
+        noAttributeDataTokenService.updateFee(
+                req.getDataTokenId(),
+                req.getNewCiphertextFee(),
+                req.getNewPlaintextFee(),
+                req.getSign(),
+                currentUserAddress);
+        return JsonResponse.success();
+    }
+
+    /**
+     * 绑定元数据
+     */
+    @ApiOperation(value = "绑定元数据")
+    @PostMapping("/bindMetaData")
+    public JsonResponse bindMetaData(HttpSession session, @RequestBody @Validated NoAttributeDataTokenBindMetaDataReq req) {
+        String currentUserAddress = getCurrentUserAddress(session);
+        noAttributeDataTokenService.bindMetaData(req.getDataTokenId(), req.getSign(), currentUserAddress);
         return JsonResponse.success();
     }
 }

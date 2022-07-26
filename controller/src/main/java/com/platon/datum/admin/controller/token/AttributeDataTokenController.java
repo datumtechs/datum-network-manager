@@ -10,6 +10,7 @@ import com.platon.datum.admin.dto.req.*;
 import com.platon.datum.admin.dto.resp.AttributeDataTokenGetPublishConfigResp;
 import com.platon.datum.admin.service.AttributeDataTokenInventoryService;
 import com.platon.datum.admin.service.AttributeDataTokenService;
+import com.platon.datum.admin.service.IpfsOpService;
 import com.platon.datum.admin.service.SysConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +44,8 @@ public class AttributeDataTokenController extends BaseController {
     private AttributeDataTokenInventoryService attributeDataTokenInventoryService;
     @Resource
     private SysConfigService sysConfigService;
+    @Resource
+    private IpfsOpService ipfsOpService;
 
     @ApiOperation(value = "获取发布凭证需要的配置")
     @PostMapping("/getPublishConfig")
@@ -100,6 +103,17 @@ public class AttributeDataTokenController extends BaseController {
     }
 
     /**
+     * 绑定元数据
+     */
+    @ApiOperation(value = "绑定元数据")
+    @PostMapping("/bindMetaData")
+    public JsonResponse bindMetaData(HttpSession session, @RequestBody @Validated AttributeDataTokenBindMetaDataReq req) {
+        String currentUserAddress = getCurrentUserAddress(session);
+        attributeDataTokenService.bindMetaData(req.getDataTokenId(), req.getSign(), currentUserAddress);
+        return JsonResponse.success();
+    }
+
+    /**
      * ===============凭证库存相关接口================
      */
 
@@ -109,7 +123,7 @@ public class AttributeDataTokenController extends BaseController {
     @ApiOperation(value = "上传图片接口")
     @PostMapping("/inventoryUpLoad")
     public JsonResponse<String> inventoryUpLoad(@RequestBody MultipartFile file) {
-        String ipfsPath = "";
+        String ipfsPath = ipfsOpService.saveFile(file);
         return JsonResponse.success(ipfsPath);
     }
 

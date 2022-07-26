@@ -109,8 +109,8 @@ public class MetaDataServiceImpl implements MetaDataService {
 
     @Transactional
     @Override
-    public int delete(Integer id) {
-        MetaData metaData = metaDataMapper.selectByPrimaryKey(id);
+    public int delete(Integer id, String sign) {
+        MetaData metaData = metaDataMapper.selectById(id);
         if (Objects.isNull(metaData)) {
             throw new ArgumentException();
         }
@@ -120,12 +120,12 @@ public class MetaDataServiceImpl implements MetaDataService {
                 || DataFileStatusEnum.REVOKING.getStatus() == metaData.getStatus()) {
             throw new CannotOpsData();
         }
-        return metaDataMapper.deleteByPrimaryKey(id);
+        return metaDataMapper.deleteById(id);
     }
 
     @Override
     public void downLoad(HttpServletResponse response, Integer id) {
-        MetaData metaData = metaDataMapper.selectByPrimaryKey(id);
+        MetaData metaData = metaDataMapper.selectById(id);
         if (metaData == null) {
             throw new ObjectNotFound();
         }
@@ -150,7 +150,7 @@ public class MetaDataServiceImpl implements MetaDataService {
     @Transactional
     @Override
     public int update(MetaData metaData) {
-        MetaData existing = metaDataMapper.selectByPrimaryKey(metaData.getId());
+        MetaData existing = metaDataMapper.selectById(metaData.getId());
         if (existing == null) {
             throw new ObjectNotFound();
         }
@@ -162,10 +162,10 @@ public class MetaDataServiceImpl implements MetaDataService {
             throw new CannotOpsData();
         }
         //只允许修改这两个值
-        existing.setRemarks(metaData.getRemarks());
+        existing.setDesc(metaData.getDesc());
         existing.setIndustry(metaData.getIndustry());
 
-        int count = metaDataMapper.updateByPrimaryKey(existing);
+        int count = metaDataMapper.updateById(existing);
 
         //删除meta_data_column信息
         metaDataColumnMapper.deleteByLocalMetaDataDbId(existing.getId());
@@ -180,8 +180,8 @@ public class MetaDataServiceImpl implements MetaDataService {
     }
 
     @Override
-    public void down(Integer id) {
-        MetaData metaData = metaDataMapper.selectByPrimaryKey(id);
+    public void down(Integer id, String sign) {
+        MetaData metaData = metaDataMapper.selectById(id);
         if (metaData == null) {
             throw new ObjectNotFound();
         }
@@ -200,9 +200,9 @@ public class MetaDataServiceImpl implements MetaDataService {
     }
 
     @Override
-    public int up(Integer id) {
+    public int up(Integer id, String sign) {
         //获取文件元数据详情
-        MetaData metaData = metaDataMapper.selectByPrimaryKey(id);
+        MetaData metaData = metaDataMapper.selectById(id);
         if (metaData == null) {
             throw new ObjectNotFound();
         }
@@ -215,16 +215,15 @@ public class MetaDataServiceImpl implements MetaDataService {
         }
         List<MetaDataColumn> columnList = metaDataColumnMapper.selectByLocalMetaDataDbIdToPublish(metaData.getId());
         metaData.setMetaDataColumnList(columnList);
-        DataFile dataFile = dataFileMapper.selectByFileId(metaData.getFileId());
-
+        metaData.setSign(sign);
         //调用grpc
-        String publishMetaDataId = metaDataClient.publishMetaData(dataFile, metaData);
+        String publishMetaDataId = metaDataClient.publishMetaData(metaData);
         //String publishMetaDataId = "metadata:0x3426733d8fbd4a27ed26f06b35caa6ac63bca1fc09b98e56e1b262da9a357ffd";
 
         metaData.setMetaDataId(publishMetaDataId);
         metaData.setStatus(DataFileStatusEnum.RELEASING.getStatus());
         metaData.setPublishTime(LocalDateTime.now(ZoneOffset.UTC));
-        return metaDataMapper.updateByPrimaryKey(metaData);
+        return metaDataMapper.updateById(metaData);
     }
 
     @Override
@@ -244,15 +243,6 @@ public class MetaDataServiceImpl implements MetaDataService {
         List<MetaData> list = metaDataMapper.listMetaDataUnPublishAttributeDataToken(keyword, userAddress);
         return list;
     }
-
-//    @Transactional
-//    @Override
-//    public void saveAndUp(MetaData localMetaData) {
-//        //1.先保存之后返回数据id
-//        int id = this.addLocalMetaData(localMetaData);
-//        //2.上架元数据到数据中心
-//        this.up(id);
-//    }
 
     /**
      * 解析列信息

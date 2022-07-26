@@ -1,5 +1,6 @@
 package com.platon.datum.admin.dto.resp;
 
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.entity.DataAuth;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,11 +8,9 @@ import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 /**
- *
- *授权数据列表
+ * 授权数据列表
  */
 
 @Data
@@ -49,9 +48,8 @@ public class MetaDataAuthPageResp {
     private Long recUpdateTime;
 
 
-
-    public static MetaDataAuthPageResp from(DataAuth dataAuth){
-        if(dataAuth == null){
+    public static MetaDataAuthPageResp from(DataAuth dataAuth) {
+        if (dataAuth == null) {
             return null;
         }
         MetaDataAuthPageResp localDataPageResp = new MetaDataAuthPageResp();
@@ -68,10 +66,10 @@ public class MetaDataAuthPageResp {
         return localDataPageResp;
     }
 
-    private static long getTime(LocalDateTime localDateTime){
-        if(localDateTime == null){
+    private static long getTime(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
             return 0;
         }
-        return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
+        return LocalDateTimeUtil.getTimestamp(localDateTime);
     }
 }

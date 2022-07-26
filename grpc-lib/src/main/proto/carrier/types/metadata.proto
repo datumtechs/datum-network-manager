@@ -32,10 +32,11 @@ message MetadataPB {
   uint64                                publish_at = 13;                // 元数据发布时间
   uint64                                update_at = 14;                 // 元数据更新时间
   uint64                                nonce = 15;                     // 元数据的 nonce (用来标识该元数据在所属组织中的元数据的序号, 从 0 开始递增)
-  string                                metadata_option = 16;           // 元数据的选项，和 data_type 配套使用 （allow_expose/tokenAddress 等字段将被转移到 option里面）
+  string                                metadata_option = 16;           // 元数据的选项，和 data_type 配套使用
   // add by v0.5.0
   string                                user = 17;                      // 发布元数据的账户 (元数据发布是属于用户的)
-  common.constant.UserType              user_type = 18;                 // 账户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  common.constant.UserType              user_type = 18;                 // 账户类型 (自行查看enum定义处)
+  bytes									sign = 19;						// 账户的签名
 }
 
 // 元数据申请记录实体
@@ -73,10 +74,11 @@ message MetadataSummary {
   uint64                                  publish_at = 10;            // 数据发布时间
   uint64                                  update_at = 11;             // 数据更新时间
   uint64                                  nonce = 12;                 // 元数据的 nonce (用来标识该元数据在所属组织中的元数据的序号, 从 0 开始递增)
-  string                                  metadata_option = 13;       // 元数据的选项，和 data_type 配套使用 （allow_expose/tokenAddress 等字段将被转移到 option里面）
+  string                                  metadata_option = 13;       // 元数据的选项，和 data_type 配套使用
   // add by v0.5.0
   string                                  user = 14;                  // 发布元数据的账户 (元数据发布是属于用户的)
-  common.constant.UserType                user_type = 15;             // 账户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  common.constant.UserType                user_type = 15;             // 账户类型  (自行查看enum定义处)
+  bytes 								  sign = 16;				  // 账户的签名
 }
 
 // 元数据的详情信息
@@ -111,7 +113,7 @@ message MetadataUsedQuo {
 message MetadataAuthorityDetail {
   string                                                metadata_auth_id = 1;                 // 元数据授权申请Id
   string                                                user = 2;                             // 发起任务的账户 (数据授权 是属于用户的)
-  common.constant.UserType                              user_type = 3;                        // 账户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  common.constant.UserType                              user_type = 3;                        // 账户类型  (自行查看enum定义处)
   MetadataAuthority                                     auth = 4;                             // 元数据使用授权信息
   common.constant.AuditMetadataOption                   audit_option = 5;                     // 审核结果
   string                                                audit_suggestion = 6;                 // 审核意见 (允许""字符)

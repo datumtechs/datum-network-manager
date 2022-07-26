@@ -24,7 +24,7 @@ public class LocalDateTimeUtil {
     }
 
     public static long getTimestamp(LocalDateTime localDateTime) {
-        return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
+        return LocalDateTimeUtil.getTimestamp(localDateTime);
     }
 
     public static void main(String[] args) {

@@ -1,17 +1,18 @@
 package com.platon.datum.admin.dto.resp;
 
-import com.platon.datum.admin.dao.entity.*;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
+import com.platon.datum.admin.dao.entity.DataAuthDetail;
+import com.platon.datum.admin.dao.entity.DataFile;
+import com.platon.datum.admin.dao.entity.MetaDataColumn;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 /**
- *
  * 查看授权数据详情
  */
 
@@ -26,7 +27,7 @@ public class MetaDataAuthDetailResp {
     @ApiModelProperty(name = "metaDataColumnList", value = "字段信息")
     List<MetaDataColumn> metaDataColumnList;
 
-    public static MetaDataAuthDetailResp from(DataAuthDetail detail){
+    public static MetaDataAuthDetailResp from(DataAuthDetail detail) {
         com.platon.datum.admin.dao.entity.DataAuth dataAuth = detail.getDataAuth();
         DataFile dataFile = detail.getDataFile();
         com.platon.datum.admin.dao.entity.MetaData metaData = detail.getMetaData();
@@ -46,7 +47,7 @@ public class MetaDataAuthDetailResp {
 
         //基本信息
         MetaData basicDataInfo = new MetaData();
-        BeanUtils.copyProperties(metaData,basicDataInfo);
+        BeanUtils.copyProperties(metaData, basicDataInfo);
         basicDataInfo.setFileSize(dataFile.getSize());
         basicDataInfo.setDataColumns(dataFile.getColumns());
         basicDataInfo.setDataRows(dataFile.getRows());
@@ -59,16 +60,16 @@ public class MetaDataAuthDetailResp {
         return resp;
     }
 
-    private static long getTime(LocalDateTime localDateTime){
-        if(localDateTime == null){
+    private static long getTime(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
             return 0;
         }
-        return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
+        return LocalDateTimeUtil.getTimestamp(localDateTime);
     }
 
 
     @Data
-    public static class DataAuth{
+    public static class DataAuth {
         @ApiModelProperty(name = "id", value = "序号")
         private Integer id;
         @ApiModelProperty(name = "authId", value = "元数据授权申请Id")
@@ -119,10 +120,6 @@ public class MetaDataAuthDetailResp {
         @ApiModelProperty(name = "remarks", value = "数据描述")
         private String remarks;
     }
-
-
-
-
 
 
 }

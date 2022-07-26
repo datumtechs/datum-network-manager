@@ -43,7 +43,7 @@ public class MetaMetaDataControllerTest {
         AddLocalMetaDataReq req = new AddLocalMetaDataReq();
         req.setAddType(1);
         req.setIndustry(2);
-        req.setRemarks("testing remarks");
+        req.setDesc("testing remarks");
         req.setResourceName("myResource");
         req.setFileId("myFileId");
 
@@ -75,7 +75,7 @@ public class MetaMetaDataControllerTest {
         MetaDataUpdateReq req = new MetaDataUpdateReq();
         req.setId(30);
         req.setIndustry(4);
-        req.setRemarks("new remarks");
+        req.setDesc("new remarks");
 
         MetaDataColumn column1 = new MetaDataColumn();
         column1.setColumnIdx(1);

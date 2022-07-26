@@ -34,7 +34,7 @@
 
     <!--  插入新数数据 -->
     <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.DataFile">
-        insert into local_data_file (identity_id, file_id, file_name,
+        insert into data_file (identity_id, file_id, file_name,
                                      file_path, file_type,
                                      `size`, `rows`, `columns`, has_title, data_hash, location_type)
         values (#{identityId,jdbcType=VARCHAR}, #{fileId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR},
@@ -47,7 +47,7 @@
     <select id="selectByFileId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_data_file
+        from data_file
         where file_id = #{fileId,jdbcType=VARCHAR}
     </select>
 </mapper>

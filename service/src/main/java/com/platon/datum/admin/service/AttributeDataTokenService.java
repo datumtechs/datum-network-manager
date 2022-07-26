@@ -20,4 +20,6 @@ public interface AttributeDataTokenService {
     AttributeDataToken getDataTokenById(Integer dataTokenId,String currentUserAddress);
 
     void updateStatus(Integer dataTokenId, int status, String currentUserAddress);
+
+    void bindMetaData(Integer dataTokenId, String sign, String currentUserAddress);
 }

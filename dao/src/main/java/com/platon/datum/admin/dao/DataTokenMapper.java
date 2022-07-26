@@ -32,7 +32,7 @@ public interface DataTokenMapper {
 
     int updateStatus(@Param("id") int id, @Param("status") int status);
 
-    int updateStatusByCurrentUser(@Param("id") int id, @Param("status") int status, @Param("currentUserAddress") String currentUserAddress);
+    int updateStatusByCurrentUser(@Param("id") int id, @Param("status") int status);
 
     DataToken selectById(Integer id);
 
@@ -41,4 +41,13 @@ public interface DataTokenMapper {
     int updateTokenAddress(@Param("id") int id, @Param("tokenAddress") String tokenAddress);
 
     DataToken selectByMetaDataId(int metaDataDbId);
+
+    DataToken selectByAddress(@Param("address") String address);
+
+    DataToken selectPublishedByMetaDataId(int metaDataDbId);
+
+    void updateFeeById(@Param("dataTokenId") Integer dataTokenId, @Param("ciphertextFee") String ciphertextFee, @Param("plaintextFee") String plaintextFee);
+
+    void updateNewFeeById(@Param("dataTokenId") Integer dataTokenId, @Param("ciphertextFee") String ciphertextFee, @Param("plaintextFee") String plaintextFee);
+
 }

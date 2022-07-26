@@ -70,7 +70,7 @@ public class MockDataFileTest {
             metaData.setStatus(2);
             metaData.setFileId(fileId);
             metaData.setPublishTime(randomDay());
-            metaData.setRemarks("metadataId_" + i + "_remarks");
+            metaData.setDesc("metadataId_" + i + "_remarks");
             for(int j=0; j<columns; j++){
                 MetaDataColumn column = new MetaDataColumn();
                 column.setColumnIdx(j);

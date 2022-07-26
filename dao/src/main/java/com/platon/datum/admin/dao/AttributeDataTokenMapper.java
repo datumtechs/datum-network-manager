@@ -16,13 +16,14 @@ public interface AttributeDataTokenMapper {
 
     AttributeDataToken selectByMetaDataId(Integer metaDataId);
 
+    AttributeDataToken selectPublishedByMetaDataId(Integer metaDataId);
+
     int insertAndReturnId(AttributeDataToken dataToken);
 
     AttributeDataToken selectDataTokenById(Integer dataTokenId);
 
-    void updateStatusByCurrentUser(@Param("dataTokenId") Integer dataTokenId,
-                                   @Param("status") int status,
-                                   @Param("currentUserAddress") String currentUserAddress);
+    void updateStatusById(@Param("dataTokenId") Integer dataTokenId,
+                          @Param("status") int status);
 
     List<AttributeDataToken> selectListByKeywordAndUser(@Param("keyword") String keyword, @Param("address") String address);
 
@@ -34,7 +35,7 @@ public interface AttributeDataTokenMapper {
 
     AttributeDataToken selectByDataTokenAddress(@Param("tokenAddress") String tokenAddress);
 
-    int updateTotalByAddress(@Param("total")String total, @Param("address")String address);
+    int updateTotalByAddress(@Param("total") String total, @Param("address") String address);
 
-
+    AttributeDataToken selectByAddress(@Param("attributeDataTokenAddress") String attributeDataTokenAddress);
 }

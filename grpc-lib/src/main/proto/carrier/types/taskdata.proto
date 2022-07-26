@@ -16,7 +16,7 @@ message TaskPB {
   string                                      data_id = 2;                                // 预留
   common.constant.DataStatus                  data_status = 3;                            // the status of data for local storage, 1 means valid, 2 means invalid.
   string                                      user = 4;                                   // 发起任务的用户的信息 (task是属于用户的)
-  common.constant.UserType                    user_type = 5;                              // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  common.constant.UserType                    user_type = 5;                              // 用户类型  (自行查看enum定义处)
   string                                      task_name = 6;                              // 任务名称
   TaskOrganization                            sender = 7;                                 // 任务的发起方的组织信息
   TaskOrganization                            algo_supplier = 8;                          // 任务的算法提供者信息
@@ -73,7 +73,7 @@ message TaskDetailSummary {
   string                                    task_id = 1;                          // 任务Id
   string                                    task_name = 2;                        // 任务名称
   string                                    user = 3;                             // 发起任务的用户的信息 (task是属于用户的)
-  common.constant.UserType                  user_type = 4;                        // 用户类型 (0: 未定义; 1: 第二地址; 2: 测试网地址; 3: 主网地址)
+  common.constant.UserType                  user_type = 4;                        // 用户类型  (自行查看enum定义处)
   TaskOrganization                          sender = 5;                           // 任务的发起方的组织信息
   TaskOrganization                          algo_supplier = 6;                    // 任务的算法提供者信息
   repeated TaskOrganization                 data_suppliers = 7;                   // 任务的数据提供方组信息 (可包含发起方和参与方)

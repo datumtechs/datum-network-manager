@@ -1,7 +1,9 @@
 package com.platon.datum.admin.common.util;
 
+import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
 import com.platon.bech32.Bech32;
+import com.platon.parameters.NetworkParameters;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.utils.Numeric;
 
@@ -143,6 +145,14 @@ public class AddressChangeUtil {
             return hrpAddress;
         }
         return "0x" + DataChangeUtils.bytesToHex(Bech32.addressDecode(hrpAddress));
+    }
+
+    public static String hexToBech32(String hex){
+        boolean hexNumber = HexUtil.isHexNumber(hex);
+        if(!hexNumber){
+            return hex;
+        }
+        return Bech32.addressEncode(NetworkParameters.getHrp(), hex);
     }
 
     /**

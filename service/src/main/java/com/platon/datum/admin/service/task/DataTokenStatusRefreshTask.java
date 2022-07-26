@@ -2,6 +2,7 @@ package com.platon.datum.admin.service.task;
 
 import cn.hutool.core.util.StrUtil;
 import com.platon.bech32.Bech32;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataTokenMapper;
 import com.platon.datum.admin.dao.entity.DataToken;
 import com.platon.datum.admin.service.web3j.Web3jManager;
@@ -10,7 +11,6 @@ import com.platon.protocol.core.methods.response.PlatonGetTransactionReceipt;
 import com.platon.protocol.core.methods.response.TransactionReceipt;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -152,7 +151,7 @@ public class DataTokenStatusRefreshTask {
 
     private boolean isExpiredData(DataToken dataToken) {
         LocalDateTime updateTime = dataToken.getRecUpdateTime();
-        long timeStamp = updateTime.plusHours(12).toInstant(ZoneOffset.UTC).toEpochMilli();
+        long timeStamp = LocalDateTimeUtil.getTimestamp(updateTime.plusHours(12));
         if (timeStamp < System.currentTimeMillis()) {
             return true;
         }

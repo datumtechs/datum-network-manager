@@ -20,5 +20,10 @@ public interface NoAttributeDataTokenService {
 
     DataToken getDataTokenById(Integer id);
 
-    void updateStatus(Integer dataTokenId, int status, String currentUserAddress);
+    void updateToPrinceSuccess(Integer dataTokenId, String currentUserAddress);
+
+    void updateFee(Integer dataTokenId, String ciphertextFee, String plaintextFee, String sign, String currentUserAddress);
+
+    void bindMetaData(Integer dataTokenId, String sign, String currentUserAddress);
+
 }

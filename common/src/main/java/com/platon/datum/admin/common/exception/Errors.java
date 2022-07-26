@@ -78,6 +78,13 @@ public enum Errors {
     OrgInNetwork(1051,"Organization information cannot be modified because the organization has not been removed from the network!"),
     UserNoPermission(1052,"The current user does not have permission!"),
 
+
+    // rpc调用时异常
+    CALL_RPC_ERROR(2000,"call node rpc exception"),
+    CALL_RPC_NET_ERROR(2001,"call node rpc network exception"),
+    CALL_RPC_BIZ_ERROR(2002,"call node rpc business exception【%s】"),
+    CALL_RPC_READ_TIMEOUT(2003,"call node rpc read timeout"),
+
     ;
     Errors(int code, String message) {
         this.code = code;

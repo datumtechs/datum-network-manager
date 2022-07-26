@@ -42,7 +42,7 @@ public interface MetaDataService {
      *
      * @param id
      */
-    int delete(Integer id);
+    int delete(Integer id, String sign);
 
     /**
      * 从数据节点下载源文件
@@ -67,7 +67,7 @@ public interface MetaDataService {
      * @param id
      * @return
      */
-    void down(Integer id);
+    void down(Integer id, String sign);
 
     /**
      * 上架文件元数据
@@ -75,7 +75,7 @@ public interface MetaDataService {
      * @param id
      * @return
      */
-    int up(Integer id);
+    int up(Integer id, String sign);
 
     /**
      * 查询指定的Id的resourceName是否在数据库中存在重复
@@ -97,5 +97,4 @@ public interface MetaDataService {
 
     List<MetaData> listMetaDataUnPublishAttributeDataToken(String keyword, String userAddress);
 
-//    void saveAndUp(MetaData localMetaData);
 }

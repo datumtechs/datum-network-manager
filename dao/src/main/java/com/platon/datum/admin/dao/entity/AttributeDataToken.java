@@ -61,11 +61,6 @@ public class AttributeDataToken {
     private Integer metaDataDbId;
 
     /**
-     * 持有人数量
-     */
-    private Integer holder;
-
-    /**
      * 发布凭证交易nonce
      */
     private Integer publishNonce;
@@ -76,7 +71,8 @@ public class AttributeDataToken {
     private String publishHash;
 
     /**
-     * 状态：0-未发布，1-发布中，2-发布失败，3-发布成功
+     * 状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-绑定中，5-绑定失败，6-绑定成功
+     * {@link StatusEnum}
      */
     private Integer status;
 
@@ -90,7 +86,11 @@ public class AttributeDataToken {
         UNPUBLISH(0, "未发布"),
         PUBLISHING(1, "发布中"),
         PUBLISH_FAIL(2, "发布失败"),
-        PUBLISH_SUCCESS(3, "发布成功"),;
+        PUBLISH_SUCCESS(3, "发布成功"),
+        BINDING(4, "绑定中"),
+        BIND_FAIL(5, "绑定失败"),
+        BIND_SUCCESS(6, "绑定成功"),
+        ;
 
         StatusEnum(int status, String desc) {
             this.status = status;

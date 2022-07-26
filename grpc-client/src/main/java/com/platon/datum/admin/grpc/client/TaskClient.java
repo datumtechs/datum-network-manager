@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +60,7 @@ public class TaskClient {
         //2.构造 request
         TaskRpcApi.GetTaskDetailListRequest request = TaskRpcApi.GetTaskDetailListRequest
                 .newBuilder()
-                .setLastUpdated(latestSynced.toInstant(ZoneOffset.UTC).toEpochMilli())
+                .setLastUpdated(LocalDateTimeUtil.getTimestamp(latestSynced))
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
 

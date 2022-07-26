@@ -31,11 +31,6 @@ public class MetaData extends BaseDomain {
     private String metaDataName;
 
     /**
-     * 元数据的状态 (0: 未知; 1: 未发布; 2: 已发布; 3: 已撤销;4:已删除;5: 发布中; 6:撤回中) v0.4.0新增7:凭证发布失败;8:凭证发布中; 9:已发布凭证;10 已绑定凭证
-     * 元数据的状态v0.5.0（0-未知;1-还未发布的新表;2-已发布的表;3-已撤销的表;101-已删除;102-发布中;103-撤回中;）
-     * 对应前端显示：
-     * 未发布数据：0，1，3
-     * 数据发布中：5 -> 102
      * {@link DataFileStatusEnum}
      */
     @ApiModelProperty(name = "status", value = "元数据的状态 (0-未知;1-还未发布的新表;2-已发布的表;3-已撤销的表;101-已删除;102-发布中;103-撤回中;)")
@@ -52,8 +47,8 @@ public class MetaData extends BaseDomain {
     @ApiModelProperty(name = "publishTime", value = "元数据发布时间")
     private LocalDateTime publishTime;
     //数据描述
-    @ApiModelProperty(name = "remarks", value = "元数据描述")
-    private String remarks;
+    @ApiModelProperty(name = "desc", value = "元数据描述")
+    private String desc;
 
     //所属行业 1：金融业（银行）、2：金融业（保险）、3：金融业（证券）、4：金融业（其他）、5：ICT、 6：制造业、 7：能源业、 8：交通运输业、 9 ：医疗健康业、 10 ：公共服务业、 11：传媒广告业、 12 ：其他行业
     @ApiModelProperty(name = "industry", value = "元数据所属行业 1：金融业（银行）、2：金融业（保险）、3：金融业（证券）、4：金融业（其他）、5：ICT、 6：制造业、 7：能源业、 8：交通运输业、 9 ：医疗健康业、 10 ：公共服务业、 11：传媒广告业、 12 ：其他行业")
@@ -64,8 +59,10 @@ public class MetaData extends BaseDomain {
     private LocalDateTime recUpdateTime;
 
     //拥有者钱包地址
-    @ApiModelProperty(name = "owner", value = "拥有者钱包地址")
-    private String owner;
+    @ApiModelProperty(name = "user", value = "拥有者钱包地址")
+    private String user;
+    @ApiModelProperty(name = "userType", value = "用户类型：1-eth，2-alaya，3-platon")
+    private Integer userType;
     //表示该元数据是 普通数据 还是 模型数据的元数据 (0: 未定义; 1: 普通数据元数据; 2: 模型数据元数据)
     @ApiModelProperty(name = "metaDataType", value = "表示该元数据是 普通数据 还是 模型数据的元数据 (0: 未定义; 1: 普通数据元数据; 2: 模型数据元数据)")
     private Integer metaDataType;
@@ -73,14 +70,18 @@ public class MetaData extends BaseDomain {
     @ApiModelProperty(name = "usage", value = "用法：1-明文，2-密文，3-都支持")
     private Integer usage;
 
-    @ApiModelProperty(name = "dataTokenAddress", value = "绑定后的无属性数据凭证地址")
+    @ApiModelProperty(name = "dataTokenAddress", value = "绑定后的无属性数据凭证地址，执行绑定动作前该字段都是空的")
     private String dataTokenAddress;
 
-    @ApiModelProperty(name = "attributeDataTokenAddress", value = "绑定后的有属性数据凭证地址")
+    @ApiModelProperty(name = "attributeDataTokenAddress", value = "绑定后的有属性数据凭证地址，执行绑定动作前该字段都是空的")
     private String attributeDataTokenAddress;
+
+    @ApiModelProperty(name = "sign", value = "用户签名")
+    private String sign;
 
     @ApiModelProperty(name = "metaDataColumnList", value = "元数据的字段定义")
     List<MetaDataColumn> metaDataColumnList;
+
 
     public void addLocalMetaDataColumn(MetaDataColumn metaDataColumn) {
         if (metaDataColumnList == null) {

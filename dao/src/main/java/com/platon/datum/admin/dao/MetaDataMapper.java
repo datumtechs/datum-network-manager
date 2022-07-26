@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface MetaDataMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteById(Integer id);
 
     int insert(MetaData record);
 
@@ -19,7 +19,7 @@ public interface MetaDataMapper {
      */
     List<MetaData> listMetaData(@Param("keyword") String keyword, @Param("userAddress") String userAddress, @Param("status") int status);
 
-    MetaData selectByPrimaryKey(Integer id);
+    MetaData selectById(Integer id);
 
     MetaData findWithTaskCount(Integer id);
 
@@ -27,7 +27,7 @@ public interface MetaDataMapper {
 
     MetaData checkResourceName(@Param("resourceName") String resourceName, @Param("address") String address);
 
-    int updateByPrimaryKey(MetaData record);
+    int updateById(MetaData record);
 
     /**
      * 根据metaDataId, 更新 status, publish_time, rec_update_time,attribute_token_address,attribute_data_token_address
@@ -53,8 +53,6 @@ public interface MetaDataMapper {
      * @return
      */
     List<MetaData> listMetaDataUnPublishAttributeDataToken(@Param("keyword") String keyword, @Param("userAddress") String userAddress);
-
-    List<MetaData> selectByStatus(Integer status);
 
     /**
      * 查询出未绑定无属性凭证的元数据

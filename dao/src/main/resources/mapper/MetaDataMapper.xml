@@ -8,15 +8,17 @@
         <result column="meta_data_name" jdbcType="VARCHAR" property="metaDataName"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
-        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="desc" jdbcType="VARCHAR" property="desc"/>
         <result column="industry" jdbcType="INTEGER" property="industry"/>
         <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime"/>
         <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime"/>
-        <result column="owner" jdbcType="VARCHAR" property="owner"/>
+        <result column="user" jdbcType="VARCHAR" property="user"/>
+        <result column="user_type" jdbcType="INTEGER" property="userType"/>
         <result column="meta_data_type" jdbcType="INTEGER" property="metaDataType"/>
         <result column="usage" jdbcType="INTEGER" property="usage"/>
         <result column="data_token_address" jdbcType="VARCHAR" property="dataTokenAddress"/>
         <result column="attribute_data_token_address" jdbcType="VARCHAR" property="attributeDataTokenAddress"/>
+        <result column="sign" jdbcType="VARCHAR" property="sign"/>
     </resultMap>
     <sql id="Base_Column_List">
         id,
@@ -25,18 +27,19 @@
         meta_data_name,
         `status`,
         publish_time,
-        remarks,
+        `desc`,
         industry,
         rec_create_time,
         rec_update_time,
-        `owner`,
+        `user`,
         meta_data_type,
         `usage`,
         data_token_address,
-        attribute_data_token_address
+        attribute_data_token_address,
+        sign
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from meta_data
@@ -50,14 +53,6 @@
         from meta_data
         where meta_data_id = #{metaDataId,jdbcType=VARCHAR}
     </select>
-
-    <select id="selectByStatus" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from meta_data
-        where `status` = #{status,jdbcType=VARCHAR}
-    </select>
-
 
     <resultMap id="BaseResultMap_for_detail" type="com.platon.datum.admin.dao.entity.MetaData"
                extends="BaseResultMap">
@@ -83,11 +78,14 @@
                 jdbcType="VARCHAR"/>
         <result column="data_token_status" property="dynamicFields.dataTokenStatus" javaType="java.lang.Integer"
                 jdbcType="INTEGER"/>
-        <result column="attribute_data_token_name" property="dynamicFields.attributeDataTokenName" javaType="java.lang.String"
+        <result column="attribute_data_token_name" property="dynamicFields.attributeDataTokenName"
+                javaType="java.lang.String"
                 jdbcType="VARCHAR"/>
-        <result column="attribute_data_token_symbol" property="dynamicFields.attributeDataTokenSymbol" javaType="java.lang.String"
+        <result column="attribute_data_token_symbol" property="dynamicFields.attributeDataTokenSymbol"
+                javaType="java.lang.String"
                 jdbcType="VARCHAR"/>
-        <result column="attribute_data_token_status" property="dynamicFields.attributeDataTokenStatus" javaType="java.lang.Integer"
+        <result column="attribute_data_token_status" property="dynamicFields.attributeDataTokenStatus"
+                javaType="java.lang.Integer"
                 jdbcType="INTEGER"/>
     </resultMap>
 
@@ -97,10 +95,10 @@
                ifnull(t.task_count, 0) as task_count,
                dt.name                 as data_token_name,
                dt.symbol               as data_token_symbol,
-               dt.status as data_token_status,
-        adt.name                 as attribute_data_token_name,
-        adt.symbol               as attribute_data_token_symbol,
-        adt.status as attribute_data_token_status
+               dt.status               as data_token_status,
+               adt.name                as attribute_data_token_name,
+               adt.symbol              as attribute_data_token_symbol,
+               adt.status              as attribute_data_token_status
         FROM meta_data md
                  join data_file df on md.file_id = df.file_id
                  left join (select meta_data_id, count(task_id) task_count
@@ -109,29 +107,29 @@
                  left join data_token dt on md.id = dt.meta_data_db_id
                  left join attribute_data_token adt on md.id = adt.meta_data_db_id
         where md.status != 101
-          and md.`owner` = #{userAddress}
+          and md.`user` = #{userAddress}
         <if test="status == 1">
             AND IF(
-                dt.STATUS IS NULL
-             OR dt.STATUS = 2
-             OR adt.STATUS IS NULL
-             OR adt.STATUS = 2
-              , FALSE
-              , TRUE)
+                        dt.STATUS IS NULL
+                        OR dt.STATUS = 2
+                        OR adt.STATUS IS NULL
+                        OR adt.STATUS = 2
+                , FALSE
+                , TRUE)
         </if>
         <if test="status == 2">
             AND IF(
-                dt.STATUS IS NULL
-             OR dt.STATUS = 2
-             OR adt.STATUS IS NULL
-             OR adt.STATUS = 2
-              , TRUE
-              , FALSE)
+                        dt.STATUS IS NULL
+                        OR dt.STATUS = 2
+                        OR adt.STATUS IS NULL
+                        OR adt.STATUS = 2
+                , TRUE
+                , FALSE)
         </if>
         <if test="keyword != null and keyword != ''">
             and md.meta_data_name like concat('%'
-              , #{keyword,jdbcType=VARCHAR}
-              , '%')
+                , #{keyword,jdbcType=VARCHAR}
+                , '%')
         </if>
         ORDER BY md.rec_create_time desc
     </select>
@@ -143,10 +141,10 @@
         from meta_data
         where meta_data_name = #{resourceName}
           and status != 101
-          and owner = #{address}
+          and `user` = #{address}
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteById" parameterType="java.lang.Integer">
         update meta_data
         set status = 101
         where id = #{id,jdbcType=INTEGER}
@@ -155,21 +153,22 @@
     <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.MetaData" useGeneratedKeys="true"
             keyProperty="id" keyColumn="id">
         insert into meta_data (file_id, meta_data_id, meta_data_name, status, publish_time,
-                               remarks, industry, owner, meta_data_type, `usage`)
+                               `desc`, industry, `user`, meta_data_type, `usage`)
         values (#{fileId,jdbcType=INTEGER}, #{metaDataId,jdbcType=VARCHAR},
                 #{metaDataName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{publishTime,jdbcType=TIMESTAMP},
-                #{remarks,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER}, #{owner}, #{metaDataType}, #{usage})
+                #{desc,jdbcType=VARCHAR}, #{industry,jdbcType=INTEGER}, #{user}, #{metaDataType}, #{usage})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.platon.datum.admin.dao.entity.MetaData">
+    <update id="updateById" parameterType="com.platon.datum.admin.dao.entity.MetaData">
         update meta_data
         set file_id        = #{fileId,jdbcType=VARCHAR},
             meta_data_id   = #{metaDataId,jdbcType=VARCHAR},
             meta_data_name = #{metaDataName,jdbcType=VARCHAR},
-            status         = #{status,jdbcType=INTEGER},
+            `status`         = #{status,jdbcType=INTEGER},
             publish_time   = #{publishTime,jdbcType=TIMESTAMP},
-            remarks        = #{remarks,jdbcType=VARCHAR},
-            industry       = #{industry,jdbcType=INTEGER}
+            `desc`         = #{desc,jdbcType=VARCHAR},
+            industry       = #{industry,jdbcType=INTEGER},
+            sign           = #{sign}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -182,13 +181,12 @@
     <update id="updateByMetaDataIdBatch">
         <foreach collection="metaDataList" item="item" separator=";">
             update meta_data
-            set status                       = #{item.status,jdbcType=INTEGER},
+            set `status`                       = #{item.status,jdbcType=INTEGER},
                 publish_time                 = #{item.publishTime,jdbcType=TIMESTAMP},
                 rec_update_time              = #{item.recUpdateTime,jdbcType=TIMESTAMP},
                 data_token_address           = #{item.dataTokenAddress},
-                attribute_data_token_address = #{item.attributeDataTokenAddress}
-            where meta_data_id = #{item.metaDataId,jdbcType=VARCHAR}
-              and status in (0, 1, 2, 3, 101, 102, 103)
+                attribute_data_token_address = #{item.attributeDataTokenAddress},
+                where meta_data_id = #{item.metaDataId} and `status` in (0, 1, 2, 3, 101, 102, 103)
         </foreach>
     </update>
 
@@ -197,7 +195,7 @@
         from meta_data md
                  left join data_token dt on md.id = dt.meta_data_db_id
         where (md.status = 2 or dt.status = 2)
-          and md.owner = #{userAddress}
+          and md.`user` = #{userAddress}
         <if test="keyword != null and keyword != ''">
             and md.meta_data_name like concat('%'
                 , #{keyword,jdbcType=VARCHAR}
@@ -211,7 +209,7 @@
         from meta_data md
                  left join attribute_data_token adt on md.id = adt.meta_data_db_id
         where (md.status = 2 or adt.status = 2)
-          and md.owner = #{userAddress}
+          and md.`user` = #{userAddress}
         <if test="keyword != null and keyword != ''">
             and md.meta_data_name like concat('%'
                 , #{keyword,jdbcType=VARCHAR}
@@ -221,20 +219,20 @@
     </select>
 
     <select id="selectUnBindDataToken" resultMap="BaseResultMap">
-        select md.id, dt.id as data_token_id
+        select md.id, dt.address as data_token_address
         from meta_data md
                  left join data_token dt on md.id = dt.meta_data_db_id
         where md.status = 2
           and dt.status = 3
-          and md.data_token_id is null
+          and md.data_token_address is null
     </select>
 
     <select id="selectUnBindAttributeDataToken" resultMap="BaseResultMap">
-        select md.id, adt.id as attribute_data_token_id
+        select md.id, adt.address as attribute_data_token_address
         from meta_data md
                  left join attribute_data_token adt on md.id = adt.meta_data_db_id
         where md.status = 2
           and adt.status = 3
-          and md.attribute_data_token_id is null
+          and md.attribute_data_token_address is null
     </select>
 </mapper>

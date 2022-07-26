@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.datum.admin.dao.ProposalMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.Proposal">
+        <!--@mbg.generated-->
+        <!--@Table proposal-->
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="authority_business_id" jdbcType="INTEGER" property="authorityBusinessId"/>
+        <result column="sponsor" jdbcType="VARCHAR" property="sponsor"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="nominee" jdbcType="VARCHAR" property="nominee"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="progress" jdbcType="VARCHAR" property="progress"/>
+        <result column="deadline" jdbcType="VARCHAR" property="deadline"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="material" jdbcType="VARCHAR" property="material"/>
+        <result column="material_desc" jdbcType="VARCHAR" property="materialDesc"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, authority_business_id, sponsor, start_time, nominee, `status`, `progress`, deadline,
+        remark, material, material_desc
+    </sql>
+    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.Proposal">
+        <!--@mbg.generated-->
+        insert into proposal (id, authority_business_id, sponsor,
+                              start_time, nominee, `status`,
+                              `progress`, deadline, remark,
+                              material, material_desc)
+        values (#{id,jdbcType=INTEGER}, #{authorityBusinessId,jdbcType=INTEGER}, #{sponsor,jdbcType=VARCHAR},
+                #{startTime,jdbcType=TIMESTAMP}, #{nominee,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+                #{progress,jdbcType=VARCHAR}, #{deadline,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+                #{material,jdbcType=VARCHAR}, #{materialDesc,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.platon.datum.admin.dao.entity.Proposal">
+        <!--@mbg.generated-->
+        insert into proposal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="authorityBusinessId != null">
+                authority_business_id,
+            </if>
+            <if test="sponsor != null">
+                sponsor,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="nominee != null">
+                nominee,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="progress != null">
+                `progress`,
+            </if>
+            <if test="deadline != null">
+                deadline,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="material != null">
+                material,
+            </if>
+            <if test="materialDesc != null">
+                material_desc,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="authorityBusinessId != null">
+                #{authorityBusinessId,jdbcType=INTEGER},
+            </if>
+            <if test="sponsor != null">
+                #{sponsor,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="nominee != null">
+                #{nominee,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="progress != null">
+                #{progress,jdbcType=VARCHAR},
+            </if>
+            <if test="deadline != null">
+                #{deadline,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="material != null">
+                #{material,jdbcType=VARCHAR},
+            </if>
+            <if test="materialDesc != null">
+                #{materialDesc,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <resultMap id="BaseResultMap_With_Name" type="com.platon.datum.admin.dao.entity.Proposal"
+               extends="BaseResultMap">
+        <result column="sponsor_name" property="dynamicFields.sponsorName" jdbcType="VARCHAR"/>
+        <result column="nominee_name" property="dynamicFields.nomineeName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectBySponsor" resultMap="BaseResultMap_With_Name">
+        select p.*,
+               go1.node_name as sponsor_name,
+               go2.node_name as nominee_name
+        from proposal p
+                 left join global_org go1 on p.sponsor = go1.identity_id
+                 left join global_org go2 on p.nominee = go2.identity_id
+        where p.sponsor = #{sponsor}
+        <if test="keyword != null and keyword != ''">
+            and go2.node_name like concat('%', #{keyword}, '%')
+        </if>
+    </select>
+
+    <select id="selectCountBySponsor" resultType="int">
+        select count(*)
+        from proposal p
+        where sponsor = #{sponsor}
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap_With_Name">
+        select p.*,
+               go1.node_name as sponsor_name,
+               go2.node_name as nominee_name
+        from proposal p
+                 left join global_org go1 on p.sponsor = go1.identity_id
+                 left join global_org go2 on p.nominee = go2.identity_id
+        where p.id = #{id}
+    </select>
+</mapper>

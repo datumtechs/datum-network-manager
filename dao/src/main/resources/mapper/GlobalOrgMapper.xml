@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.datum.admin.dao.GlobalOrgMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.GlobalOrg">
+        <!--@mbg.generated-->
+        <!--@Table global_org-->
+        <id column="identity_id" jdbcType="VARCHAR" property="identityId"/>
+        <result column="identity_type" jdbcType="TINYINT" property="identityType"/>
+        <result column="node_id" jdbcType="VARCHAR" property="nodeId"/>
+        <result column="node_name" jdbcType="VARCHAR" property="nodeName"/>
+        <result column="data_id" jdbcType="VARCHAR" property="dataId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="details" jdbcType="VARCHAR" property="details"/>
+        <result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        identity_id, identity_type, node_id, node_name, data_id, `status`, image_url, details,
+        update_at
+    </sql>
+
+    <select id="selectByIdentityId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from global_org
+        where identity_id = #{identityId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByIdentityId" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete
+        from global_org
+        where identity_id = #{identityId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.GlobalOrg">
+        <!--@mbg.generated-->
+        insert into global_org (identity_id, identity_type, node_id,
+                                node_name, data_id, `status`,
+                                image_url, details, update_at)
+        values (#{identityId,jdbcType=VARCHAR}, #{identityType,jdbcType=TINYINT}, #{nodeId,jdbcType=VARCHAR},
+                #{nodeName,jdbcType=VARCHAR}, #{dataId,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+                #{imageUrl,jdbcType=VARCHAR}, #{details,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateByIdentityIdSelective" parameterType="com.platon.datum.admin.dao.entity.GlobalOrg">
+        <!--@mbg.generated-->
+        update global_org
+        <set>
+            <if test="identityType != null">
+                identity_type = #{identityType,jdbcType=TINYINT},
+            </if>
+            <if test="nodeId != null">
+                node_id = #{nodeId,jdbcType=VARCHAR},
+            </if>
+            <if test="nodeName != null">
+                node_name = #{nodeName,jdbcType=VARCHAR},
+            </if>
+            <if test="dataId != null">
+                data_id = #{dataId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="imageUrl != null">
+                image_url = #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="details != null">
+                details = #{details,jdbcType=VARCHAR},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where identity_id = #{identityId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByIdentityId" parameterType="com.platon.datum.admin.dao.entity.GlobalOrg">
+        <!--@mbg.generated-->
+        update global_org
+        set identity_type = #{identityType,jdbcType=TINYINT},
+            node_id       = #{nodeId,jdbcType=VARCHAR},
+            node_name     = #{nodeName,jdbcType=VARCHAR},
+            data_id       = #{dataId,jdbcType=VARCHAR},
+            `status`      = #{status,jdbcType=TINYINT},
+            image_url     = #{imageUrl,jdbcType=VARCHAR},
+            details       = #{details,jdbcType=VARCHAR},
+            update_at     = #{updateAt,jdbcType=TIMESTAMP}
+        where identity_id = #{identityId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -39,4 +39,7 @@ message Organization  {
   uint64                        update_at = 7;          // the last_update time of corresponding datacenter (unit: UTC ms)
   string                        image_url = 8;          // the link of face image (with a length limit)
   string                        details = 9;            // description of the node (with a length limit)
+  // add by v 0.5.0
+  string                        credential = 10;         // json format for credential
+  uint64                        nonce = 11;             // 身份信息的 nonce (用来标识该身份在所属组织中发布的序号, 从 0 开始递增; 注: 身份可以来回发布注销，所以nonce表示第几次发布)
 }

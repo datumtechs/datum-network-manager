@@ -30,5 +30,17 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- feign 的依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.1.4.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-httpclient</artifactId>
+            <version>11.0</version>
+        </dependency>
     </dependencies>
 </project>

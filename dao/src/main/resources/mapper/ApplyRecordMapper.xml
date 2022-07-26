@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.platon.datum.admin.dao.ApplyRecordMapper">
+    <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.ApplyRecord">
+        <!--@mbg.generated-->
+        <!--@Table apply_record-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="authority_business_id" jdbcType="INTEGER" property="authorityBusinessId"/>
+        <result column="certificate_type" jdbcType="TINYINT" property="certificateType"/>
+        <result column="apply_org" jdbcType="VARCHAR" property="applyOrg"/>
+        <result column="approve_org" jdbcType="VARCHAR" property="approveOrg"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="progress" jdbcType="INTEGER" property="progress"/>
+        <result column="apply_remark" jdbcType="VARCHAR" property="applyRemark"/>
+        <result column="approve_remark" jdbcType="VARCHAR" property="approveRemark"/>
+        <result column="material" jdbcType="VARCHAR" property="material"/>
+        <result column="material_desc" jdbcType="VARCHAR" property="materialDesc"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, authority_business_id, certificate_type, apply_org, approve_org, start_time,end_time,
+        progress, apply_remark, approve_remark, material, material_desc
+    </sql>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete
+        from apply_record
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.platon.datum.admin.dao.entity.ApplyRecord"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into apply_record (authority_business_id, certificate_type,
+                                  apply_org, approve_org, start_time,
+                                  progress, apply_remark, approve_remark,
+                                  material, material_desc)
+        values (#{authorityBusinessId,jdbcType=INTEGER}, #{certificateType,jdbcType=TINYINT},
+                #{applyOrg,jdbcType=VARCHAR}, #{approveOrg,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP},
+                #{progress,jdbcType=INTEGER}, #{applyRemark,jdbcType=VARCHAR}, #{approveRemark,jdbcType=VARCHAR},
+                #{material,jdbcType=VARCHAR}, #{materialDesc,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.platon.datum.admin.dao.entity.ApplyRecord" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into apply_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="authorityBusinessId != null">
+                authority_business_id,
+            </if>
+            <if test="certificateType != null">
+                certificate_type,
+            </if>
+            <if test="applyOrg != null">
+                apply_org,
+            </if>
+            <if test="approveOrg != null">
+                approve_org,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="progress != null">
+                progress,
+            </if>
+            <if test="applyRemark != null">
+                apply_remark,
+            </if>
+            <if test="approveRemark != null">
+                approve_remark,
+            </if>
+            <if test="material != null">
+                material,
+            </if>
+            <if test="materialDesc != null">
+                material_desc,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="authorityBusinessId != null">
+                #{authorityBusinessId,jdbcType=INTEGER},
+            </if>
+            <if test="certificateType != null">
+                #{certificateType,jdbcType=TINYINT},
+            </if>
+            <if test="applyOrg != null">
+                #{applyOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="approveOrg != null">
+                #{approveOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="progress != null">
+                #{progress,jdbcType=INTEGER},
+            </if>
+            <if test="applyRemark != null">
+                #{applyRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="approveRemark != null">
+                #{approveRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="material != null">
+                #{material,jdbcType=VARCHAR},
+            </if>
+            <if test="materialDesc != null">
+                #{materialDesc,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.platon.datum.admin.dao.entity.ApplyRecord">
+        <!--@mbg.generated-->
+        update apply_record
+        <set>
+            <if test="authorityBusinessId != null">
+                authority_business_id = #{authorityBusinessId,jdbcType=INTEGER},
+            </if>
+            <if test="certificateType != null">
+                certificate_type = #{certificateType,jdbcType=TINYINT},
+            </if>
+            <if test="applyOrg != null">
+                apply_org = #{applyOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="approveOrg != null">
+                approve_org = #{approveOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="progress != null">
+                progress = #{progress,jdbcType=INTEGER},
+            </if>
+            <if test="applyRemark != null">
+                apply_remark = #{applyRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="approveRemark != null">
+                approve_remark = #{approveRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="material != null">
+                material = #{material,jdbcType=VARCHAR},
+            </if>
+            <if test="materialDesc != null">
+                material_desc = #{materialDesc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.platon.datum.admin.dao.entity.ApplyRecord">
+        <!--@mbg.generated-->
+        update apply_record
+        set authority_business_id = #{authorityBusinessId,jdbcType=INTEGER},
+            certificate_type      = #{certificateType,jdbcType=TINYINT},
+            apply_org             = #{applyOrg,jdbcType=VARCHAR},
+            approve_org           = #{approveOrg,jdbcType=VARCHAR},
+            start_time            = #{startTime,jdbcType=TIMESTAMP},
+            progress              = #{progress,jdbcType=INTEGER},
+            apply_remark          = #{applyRemark,jdbcType=VARCHAR},
+            approve_remark        = #{approveRemark,jdbcType=VARCHAR},
+            material              = #{material,jdbcType=VARCHAR},
+            material_desc         = #{materialDesc,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <resultMap id="BaseResultMap_With_IdentityName" type="com.platon.datum.admin.dao.entity.ApplyRecord"
+               extends="BaseResultMap">
+        <result column="approve_org_name" property="dynamicFields.approveOrgName" jdbcType="VARCHAR"/>
+        <result column="apply_org_name" property="dynamicFields.applyOrgName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectListByApplyOrg" resultMap="BaseResultMap_With_IdentityName">
+        select ar.*, go.node_name as approve_org_name
+        from apply_record ar
+                 left join global_org go on go.identity_id = ar.approve_org
+        where ar.apply_org = #{applyOrg}
+        order by ar.start_time desc
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap_With_IdentityName">
+        select ar.*, go1.node_name as approve_org_name, go2.node_name as apply_org_name
+        from apply_record ar
+                 left join global_org go1 on go1.identity_id = ar.approve_org
+                 left join global_org go2 on go2.identity_id = ar.apply_org
+        where ar.id = #{id}
+    </select>
+
+    <select id="selectPassCount" resultType="java.lang.Integer">
+        select count(*)
+        from apply_record
+        where progress = 1
+          and apply_org = #{applyOrg}
+    </select>
+
+    <select id="selectApplyCount" resultType="int">
+        select count(*)
+        from apply_record
+        where apply_org = #{applyOrg}
+    </select>
+
+    <select id="selectApproveCount" resultType="int">
+        select count(*)
+        from apply_record
+        where approve_org = #{approveOrg} and progress = 1
+    </select>
+</mapper>

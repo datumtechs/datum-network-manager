@@ -11,8 +11,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.beans.BeanUtils;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,16 +78,16 @@ public class MetaDataImportFileResp {
     @ApiModelProperty(name = "metaDataColumnList", value = "源文件列信息")
     private List<MetaDataColumn> metaDataColumnList = new ArrayList<>();
 
-    public static MetaDataImportFileResp from(DataFile dataFile){
-        if(dataFile == null){
+    public static MetaDataImportFileResp from(DataFile dataFile) {
+        if (dataFile == null) {
             return null;
         }
         MetaDataImportFileResp resp = new MetaDataImportFileResp();
-        BeanUtils.copyProperties(dataFile,resp);
+        BeanUtils.copyProperties(dataFile, resp);
         resp.setStatus(DataFileStatusEnum.ENTERED.getStatus());
         resp.setResourceName(ConvertUtil.convertFileNameToResourceName(dataFile.getFileName()));
         //todo：可以查询数据库，local_data_file上传并insert到db后，会由db产生create/update时间
-        long milliSeconds = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        long milliSeconds = System.currentTimeMillis();
         resp.setRecCreateTime(milliSeconds);
         resp.setRecUpdateTime(milliSeconds);
 

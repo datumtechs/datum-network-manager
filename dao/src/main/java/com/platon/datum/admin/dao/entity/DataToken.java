@@ -71,10 +71,10 @@ public class DataToken {
     private long holder;
 
     /**
-     * 状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功
+     * 状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功，7-绑定中，8-绑定失败，9-绑定成功
      * {@link StatusEnum}
      */
-    @ApiModelProperty("状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功")
+    @ApiModelProperty("状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功，7-绑定中，8-绑定失败，9-绑定成功")
     private int status;
 
     @ApiModelProperty("发布合约的交易nonce")
@@ -97,6 +97,19 @@ public class DataToken {
     @ApiModelProperty("更新时间")
     private LocalDateTime recUpdateTime;
 
+    //前端显示
+    @ApiModelProperty("明文费用")
+    private String plaintextFee;
+    //前端显示
+    @ApiModelProperty("密文费用")
+    private String ciphertextFee;
+    @ApiModelProperty("想要修改成的明文费用")
+    private String newPlaintextFee;
+    @ApiModelProperty("想要修改成的密文费用")
+    private String newCiphertextFee;
+    @ApiModelProperty("明文和密文消耗量上一次修改时间")
+    private LocalDateTime feeUpdateTime;
+
     @Getter
     @ToString
     public enum StatusEnum {
@@ -106,7 +119,11 @@ public class DataToken {
         PUBLISH_SUCCESS(3, "发布成功"),
         PRICING(4, "定价中"),
         PRICE_FAIL(5, "定价失败"),
-        PRICE_SUCCESS(6, "定价成功");
+        PRICE_SUCCESS(6, "定价成功"),
+        BINDING(7, "绑定中"),
+        BIND_FAIL(8, "绑定失败"),
+        BIND_SUCCESS(9, "绑定成功"),
+        ;
 
         StatusEnum(int status, String desc) {
             this.status = status;

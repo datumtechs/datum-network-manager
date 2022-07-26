@@ -1,5 +1,6 @@
 package com.platon.datum.admin.dto.resp;
 
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.entity.DataFile;
 import com.platon.datum.admin.dao.entity.MetaData;
 import com.platon.datum.admin.dao.entity.MetaDataColumn;
@@ -11,7 +12,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.beans.BeanUtils;
 
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,8 +89,8 @@ public class MetaDataDetailResp {
     @ApiModelProperty(name = "metaDataColumnList", value = "源文件列信息")
     private List<MetaDataColumn> metaDataColumnList = new ArrayList<>();
 
-    public static MetaDataDetailResp from(DataFile dataFile, MetaData metaData){
-        if(dataFile == null){
+    public static MetaDataDetailResp from(DataFile dataFile, MetaData metaData) {
+        if (dataFile == null) {
             return null;
         }
         MetaDataDetailResp resp = new MetaDataDetailResp();
@@ -99,7 +99,7 @@ public class MetaDataDetailResp {
         resp.setMetaDataColumnList(metaData.getMetaDataColumnList());
 
         int status = metaData.getStatus();
-        resp.setRemarks(metaData.getRemarks());
+        resp.setRemarks(metaData.getDesc());
         resp.setIndustry(metaData.getIndustry());
         resp.setMetaDataId(metaData.getMetaDataId());
 
@@ -107,13 +107,13 @@ public class MetaDataDetailResp {
         resp.setResourceName(metaData.getMetaDataName());
         resp.setId(metaData.getId());
         //元数据状态:1已发布，0未发布
-        if(DataFileStatusEnum.RELEASED.getStatus()==status){
+        if (DataFileStatusEnum.RELEASED.getStatus() == status) {
             resp.setStatus("1");
         } else {
             resp.setStatus("0");
         }
-        resp.setRecCreateTime(metaData.getRecCreateTime() == null? null : metaData.getRecCreateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-        resp.setRecUpdateTime(metaData.getRecUpdateTime() == null? null : metaData.getRecUpdateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        resp.setRecCreateTime(metaData.getRecCreateTime() == null ? null : LocalDateTimeUtil.getTimestamp(metaData.getRecCreateTime()));
+        resp.setRecUpdateTime(metaData.getRecUpdateTime() == null ? null : LocalDateTimeUtil.getTimestamp(metaData.getRecUpdateTime()));
         return resp;
     }
 }

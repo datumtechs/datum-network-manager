@@ -8,6 +8,7 @@ option java_outer_classname = "CarrierEnum";
 
 package common.constant;
 
+// add by 0.5.0
 enum IdentityType {
   Identity_Unknown = 0;
   Identity_DID = 1;    // DID

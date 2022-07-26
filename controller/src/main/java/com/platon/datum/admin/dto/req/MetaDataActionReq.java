@@ -29,5 +29,7 @@ public class MetaDataActionReq {
     //元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)
     @ApiModelProperty(value = "元数据上下架和删除动作 (-1: 删除; 0: 下架; 1: 上架)",required = true)
     private String action;
+    @ApiModelProperty(value = "用户签名",required = true)
+    private String sign;
 
 }

@@ -53,6 +53,10 @@ public class NoAttributeDataTokenPublishReq {
     //对应的metaDataDbId
     @NotNull
     private Integer metaDataDbId;
+    @ApiModelProperty("明文费用")
+    private String plaintextFee;
+    @ApiModelProperty("密文费用")
+    private String ciphertextFee;
 
     /****************************交易hash*******************************/
 

@@ -5,9 +5,11 @@ import com.platon.datum.admin.dao.DataSyncMapper;
 import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.DataSync;
+import com.platon.datum.admin.dao.entity.DataToken;
 import com.platon.datum.admin.dao.entity.MetaData;
 import com.platon.datum.admin.dao.entity.Org;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,13 @@ public class MetaDataClientTest {
     MetaDataClient metaDataClient;
 
     @Test
-    public void getLocalMetaDataList(){
+    public void getLocalMetaDataList() {
         Org org = orgMapper.select();
         OrgCache.setLocalOrgInfo(org);
 
         DataSync dataSync = dataSyncMapper.findByPK(DataSync.DataType.LocalMetaData);
 
-        List<MetaData> metaDataList = metaDataClient.getLocalMetaDataList(dataSync.getLatestSynced());
+        List<Pair<MetaData, DataToken>> metaDataList = metaDataClient.getLocalMetaDataList(dataSync.getLatestSynced());
         log.info("metaDataList：" + JSON.toJSON(metaDataList));
     }
 

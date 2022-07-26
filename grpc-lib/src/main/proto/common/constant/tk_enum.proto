@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/common/constant";
+
+package common.constant;
+
+enum TkType {
+  Tk20 = 0;
+  Tk721 = 1;
+  Tk1155 = 2;
+}

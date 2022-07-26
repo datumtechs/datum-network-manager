@@ -12,14 +12,18 @@
         <result column="desc" jdbcType="VARCHAR" property="desc"/>
         <result column="owner" jdbcType="VARCHAR" property="owner"/>
         <result column="meta_data_db_id" jdbcType="INTEGER" property="metaDataDbId"/>
-        <result column="holder" jdbcType="INTEGER" property="holder"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="plaintext_fee" jdbcType="VARCHAR" property="plaintextFee"/>
+        <result column="ciphertext_fee" jdbcType="VARCHAR" property="ciphertextFee"/>
+        <result column="new_plaintext_fee" jdbcType="VARCHAR" property="newPlaintextFee"/>
+        <result column="new_ciphertext_fee" jdbcType="VARCHAR" property="newCiphertextFee"/>
         <result column="publish_nonce" jdbcType="INTEGER" property="publishNonce"/>
         <result column="publish_hash" jdbcType="VARCHAR" property="publishHash"/>
         <result column="up_nonce" jdbcType="INTEGER" property="upNonce"/>
         <result column="up_hash" jdbcType="VARCHAR" property="upHash"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="rec_create_time" jdbcType="TIMESTAMP" property="recCreateTime"/>
         <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime"/>
+        <result column="fee_update_time" jdbcType="TIMESTAMP" property="feeUpdateTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -33,14 +37,18 @@
         `desc`,
         `owner`,
         meta_data_db_id,
-        holder,
-        `status`,
+        plaintext_fee,
+        ciphertext_fee,
+        new_plaintext_fee,
+        new_ciphertext_fee,
         `publish_nonce`,
         `publish_hash`,
         up_nonce,
         up_hash,
+        `status`,
         rec_create_time,
-        rec_update_time
+        rec_update_time,
+        fee_update_time
     </sql>
 
     <select id="selectByPricingStatus" resultMap="BaseResultMap">
@@ -62,9 +70,9 @@
 
     <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO data_token (`name`, symbol, init, total, `desc`, `owner`, meta_data_db_id, status, `publish_nonce`,
-                                `publish_hash`)
+                                `publish_hash`, plaintext_fee, ciphertext_fee)
         VALUES (#{name}, #{symbol}, #{init}, #{total}, #{desc}, #{owner}, #{metaDataDbId}, #{status}, #{publishNonce},
-                #{publishHash})
+                #{publishHash}, #{plaintextFee}, #{ciphertextFee}, #{feeUpdateTime})
         ON DUPLICATE KEY
             UPDATE `name`=#{name},
                    symbol=#{symbol},
@@ -74,7 +82,9 @@
                    owner=#{owner},
                    status=#{status},
                    `publish_nonce`=#{publishNonce},
-                   `publish_hash`=#{publishHash}
+                   `publish_hash`=#{publishHash},
+                   plaintext_fee=#{plaintextFee},
+                   ciphertext_fee=#{ciphertextFee}
     </insert>
 
     <update id="updatePricingStatus">
@@ -94,7 +104,7 @@
     <update id="updateStatusByCurrentUser">
         update data_token
         set status = #{status}
-        where id = #{id} and owner = #{currentUserAddress}
+        where id = #{id}
     </update>
 
     <select id="selectById" resultMap="BaseResultMap">
@@ -122,5 +132,35 @@
         <include refid="Base_Column_List"/>
         from data_token
         where meta_data_db_id = #{metaDataDbId}
+    </select>
+
+    <select id="selectPublishedByMetaDataId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from data_token
+        where meta_data_db_id = #{metaDataDbId}
+          and status = 3
+    </select>
+
+    <update id="updateFeeById">
+        update data_token
+        set ciphertext_fee = #{ciphertextFee},
+            plaintext_fee  = #{plaintextFee}
+        where id = #{dataTokenId}
+    </update>
+
+    <update id="updateNewFeeById">
+        update data_token
+        set new_ciphertext_fee = #{ciphertextFee},
+            new_plaintext_fee  = #{plaintextFee},
+            fee_update_time = current_timestamp()
+        where id = #{dataTokenId}
+    </update>
+
+    <select id="selectByAddress" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from data_token
+        where address = #{address}
     </select>
 </mapper>

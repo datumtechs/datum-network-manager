@@ -92,6 +92,11 @@ message GetMetadataAuthorityListResponse {
   repeated carrier.types.MetadataAuthorityDetail        metadata_auths = 3;               // 数据授权信息列表
 }
 
+// Update Identity Credential request
+message UpdateIdentityCredentialRequest {
+  string identity_id = 1;
+  string credential = 2;
+}
 
 service AuthService {
 
@@ -163,4 +168,10 @@ service AuthService {
     };
   }
 
+  // 更新指定组织的credential
+  rpc UpdateIdentityCredential(UpdateIdentityCredentialRequest) returns (carrier.types.SimpleResponse){
+    option (google.api.http) = {
+      post: "/carrier/v1/auth/updateIdentityCredential"
+    };
+  }
 }

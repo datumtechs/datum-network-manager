@@ -1,6 +1,7 @@
 package com.platon.datum.admin.grpc.client;
 
 import com.alibaba.fastjson.JSON;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.entity.Task;
 import com.platon.datum.admin.dao.entity.TaskOrg;
 import com.platon.datum.admin.grpc.carrier.api.TaskRpcApi;
@@ -17,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +72,7 @@ public class TaskClientTest {
         LocalDateTime lastUpdated = LocalDateTime.parse("1970-01-01 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         TaskRpcApi.GetTaskDetailListRequest request = TaskRpcApi.GetTaskDetailListRequest
                 .newBuilder()
-                .setLastUpdated(lastUpdated.toInstant(ZoneOffset.UTC).toEpochMilli())
+                .setLastUpdated(LocalDateTimeUtil.getTimestamp(lastUpdated))
                 .build();
 
         TaskRpcApi.GetTaskDetailListResponse taskDetailListResponse = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
