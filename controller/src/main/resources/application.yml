@@ -97,7 +97,7 @@ logging:
     com.platon: DEBUG
   file:
     # 日志文件名格式
-    name: /home/matrixy/admin/logs/${spring.application.name}.log
+    name: ./logs/${spring.application.name}.log
   pattern:
     # 日志记录格式[组件名称] [时间戳] [日志级别] [类名.方法名] [消息文本]
     file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %C / %line - %msg%n'
@@ -105,7 +105,7 @@ logging:
   logback:
     rollingpolicy:
       # 根据文件大小归档，超过2KB自动归档，次日启动服务时也会自动归档
-      file-name-pattern: /home/matrixy/admin/logs/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz
+      file-name-pattern: ./logs/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz
       # 最大日志文件大小(默认为10MB)
       max-file-size: 200MB
       # 要保留的日志备份的总大小(默认为0B)
