@@ -114,17 +114,28 @@ logging:
       # max-history: 20
 
 # =============================== conf for scheduled task ===================================
-LocalCarrierStatusRefreshTask.fixedDelay: 20000
-LocalDataAuthReqRefreshTask.fixedDelay: 5000
-LocalDataNodeRefreshTask.fixedDelay: 20000
-LocalMetaDataStatusRefreshTask.fixedDelay: 5000
-LocalPowerNodeRefreshTask.fixedDelay: 10000
-LocalTaskRefreshTask.fixedDelay: 5000
-SeedNodeRefreshTask.fixedDelay: 30000
-DataTokenStatusRefreshTask.fixedDelay: 2000
+AttributeDataTokenInventoryRefreshTask.fixedDelay: 5000
+AttributeDataTokenStatusRefreshTask.fixedDelay: 5000
+AuthorityRefreshTask.fixedDelay: 5000
+CarrierStatusRefreshTask.fixedDelay: 20000
+DataAuthReqRefreshTask.fixedDelay: 5000
+DataNodeRefreshTask.fixedDelay: 20000
+DataTokenStatusRefreshTask.fixedDelay: 5000
+MetaDataStatusRefreshTask.fixedDelay: 5000
+PowerNodeRefreshTask.fixedDelay: 20000
+SeedNodeRefreshTask.fixedDelay: 20000
+TaskRefreshTask.fixedDelay: 5000
 
 # gprc客户端缺省超时时间，单位：秒
 grpc-client-timeout: 5
 
 # gprc客户端上传文件超时时间，单位：秒
 grpc-client-upload-file-timeout: 60
+
+#调用pinata接口的jwt
+pinata-token: xxx
+#pinata的网关地址
+pinata-url: https://datumdev.mypinata.cloud/
+
+#无属性数据凭证消耗量更新间隔，单位分钟
+dataToken-updateFee-interval: 5

@@ -157,4 +157,9 @@ public class DataTokenStatusRefreshTask {
         }
         return false;
     }
+
+    //TODO 12个小时候自动失败
+    public void refreshPublishFail(){
+
+    }
 }

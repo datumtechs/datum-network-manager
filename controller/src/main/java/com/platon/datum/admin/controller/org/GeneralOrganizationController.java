@@ -41,6 +41,7 @@ public class GeneralOrganizationController {
 
     /**
      * 主页内容
+     *
      * @since 0.5.0
      */
     @PostMapping("/home")
@@ -60,6 +61,7 @@ public class GeneralOrganizationController {
 
     /**
      * 我的申请列表
+     *
      * @since 0.5.0
      */
     @PostMapping("/applyList")
@@ -70,6 +72,7 @@ public class GeneralOrganizationController {
 
     /**
      * 查看申请详情
+     *
      * @since 0.5.0
      */
     @PostMapping("/applyDetail")
@@ -80,7 +83,9 @@ public class GeneralOrganizationController {
 
     /**
      * 下载证书
+     *
      * @since 0.5.0
+     * TODO
      */
     @PostMapping("/download")
     public void download(@RequestBody @Validated GeneralOrganizationDownloadReq req, HttpServletResponse response) {
@@ -89,6 +94,7 @@ public class GeneralOrganizationController {
 
     /**
      * 上传资料
+     *
      * @since 0.5.0
      */
     @PostMapping("/uploadmMaterial")
@@ -99,11 +105,13 @@ public class GeneralOrganizationController {
 
     /**
      * 申请认证
+     *
      * @since 0.5.0
+     * TODO
      */
     @PostMapping("/apply")
     public JsonResponse apply(@RequestBody @Validated GeneralOrganizationApplyReq req) {
-        generalOrganizationService.apply(req.getApprove(),req.getRemark(),req.getMaterial(),req.getDesc());
+        generalOrganizationService.apply(req.getApprove(), req.getRemark(), req.getMaterial(), req.getDesc());
         return JsonResponse.success();
     }
 

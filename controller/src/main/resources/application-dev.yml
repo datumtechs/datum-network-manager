@@ -26,3 +26,8 @@ logging:
     rollingpolicy:
       # 根据文件大小归档，超过2KB自动归档，次日启动服务时也会自动归档
       file-name-pattern: ./logs/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz
+
+#调用pinata接口的jwt
+pinata-token: xxx
+#pinata的网关地址
+pinata-url: https://datumdev.mypinata.cloud/

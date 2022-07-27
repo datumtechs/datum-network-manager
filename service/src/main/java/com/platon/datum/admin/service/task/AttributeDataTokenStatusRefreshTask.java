@@ -46,7 +46,7 @@ public class AttributeDataTokenStatusRefreshTask {
     /**
      * 刷新发布中的数据
      */
-    @Scheduled(fixedDelayString = "${DataTokenStatusRefreshTask.fixedDelay}")
+    @Scheduled(fixedDelayString = "${AttributeDataTokenStatusRefreshTask.fixedDelay}")
     public void refreshPublishingDataToken() {
         log.debug("刷新有属性数据凭证[发布状态]定时任务开始>>>");
         //更新发布中的凭证状态
@@ -63,7 +63,8 @@ public class AttributeDataTokenStatusRefreshTask {
 
     @Transactional(rollbackFor = {Throwable.class})
     public void processPublishingDataToken(AttributeDataToken dataToken) throws IOException {
-        if (isExpiredData(dataToken)) {//1.数据已过期，直接判断为失败
+        //1.数据已过期，直接判断为失败
+        if (isExpiredData(dataToken)) {
             dataTokenMapper.updateStatus(dataToken.getId(), AttributeDataToken.StatusEnum.PUBLISH_FAIL.getStatus());
             return;
         }
@@ -75,7 +76,8 @@ public class AttributeDataTokenStatusRefreshTask {
 
         //2.判断交易上链结果
         PlatonGetTransactionReceipt transactionReceiptResp = web3j.platonGetTransactionReceipt(hash).send();
-        if (transactionReceiptResp.getResult() != null) {//已上链
+        //已上链
+        if (transactionReceiptResp.getResult() != null) {
             TransactionReceipt transactionReceipt = transactionReceiptResp.getResult();
             //交易状态
             boolean isOK = transactionReceipt.isStatusOK();
@@ -84,7 +86,8 @@ public class AttributeDataTokenStatusRefreshTask {
             //交易的nonce
             int transactionNonce = web3j.platonGetTransactionByHash(hash).send().getResult().getNonce().intValue();
             log.debug("isOK:{},hexFrom:{},transactionNonce:{}", isOK, hexFrom, transactionNonce);
-            if (isOK && address.equals(hexFrom) && transactionNonce == nonce) {//凭证发布成功
+            //凭证发布成功
+            if (isOK && address.equals(hexFrom) && transactionNonce == nonce) {
                 status = DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus();
                 //发布成功，获取token地址
                 String data = transactionReceipt.getLogs().get(0).getData();

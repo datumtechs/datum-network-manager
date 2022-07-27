@@ -4,6 +4,7 @@ import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.AuthorityMapper;
 import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.service.AuthorityService;
+import com.platon.datum.admin.service.IpfsOpService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,8 @@ public class AuthorityServiceImpl implements AuthorityService {
     private AuthorityMapper authorityMapper;
     @Resource
     private ApplyRecordMapper applyRecordMapper;
+    @Resource
+    private IpfsOpService ipfsOpService;
 
     /**
      * @param identityId
@@ -75,8 +78,9 @@ public class AuthorityServiceImpl implements AuthorityService {
      * @param file
      */
     @Override
-    public void upload(MultipartFile file) {
-
+    public String upload(MultipartFile file) {
+        String s = ipfsOpService.saveFile(file);
+        return s;
     }
 
     /**

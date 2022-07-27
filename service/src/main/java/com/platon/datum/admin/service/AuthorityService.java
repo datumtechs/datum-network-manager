@@ -22,7 +22,7 @@ public interface AuthorityService {
 
     void exit();
 
-    void upload(MultipartFile file);
+    String upload(MultipartFile file);
 
     void nominate(String identityId, String ip, int port, String remark, String material, String materialDesc);
 }

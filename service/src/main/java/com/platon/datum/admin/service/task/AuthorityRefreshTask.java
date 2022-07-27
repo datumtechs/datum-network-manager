@@ -28,7 +28,7 @@ public class AuthorityRefreshTask {
     private VoteContract voteContract;
 
     @Transactional
-    @Scheduled(fixedDelayString = "${CarrierStatusRefreshTask.fixedDelay}")
+    @Scheduled(fixedDelayString = "${AuthorityRefreshTask.fixedDelay}")
     public void task() {
         List<Authority> allAuthority = voteContract.getAllAuthority();
         //将原来的删除并将新的存进去

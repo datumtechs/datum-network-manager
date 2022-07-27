@@ -62,7 +62,7 @@ public class PinataIpfsOpServiceImpl implements IpfsOpService {
         PinataPinJSONToIPFSReq req = new PinataPinJSONToIPFSReq();
         req.setPinataContent(content);
         PinataPinResult pinataPinResult = pinataClient.pinJSONToIPFS(req);
-        return null;
+        return pinataPinResult;
     }
 
 }

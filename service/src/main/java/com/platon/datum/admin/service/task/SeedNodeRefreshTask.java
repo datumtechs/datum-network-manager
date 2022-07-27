@@ -29,13 +29,11 @@ public class SeedNodeRefreshTask {
     /**
      * 1.定时刷新种子节点信息, 间隔30秒执行下一次任务
      */
-    //@Scheduled(fixedDelay = 30000)
     @Scheduled(fixedDelayString = "${SeedNodeRefreshTask.fixedDelay}")
     public void refreshSeedNode(){
         log.debug("刷新种子节点定时任务开始>>>");
 
         List<SeedNode> seedNodeList = seedClient.getSeedNodeList();
-        //localSeedNodeMapper.deleteNotInitialized();
 
         if(CollectionUtils.isNotEmpty(seedNodeList)){
             log.debug("本次更新种子节点数量：{}", seedNodeList.size());

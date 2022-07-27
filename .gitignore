@@ -9,5 +9,6 @@
 logs
 log
 /cer
+**/**/application-local.yml
 
 

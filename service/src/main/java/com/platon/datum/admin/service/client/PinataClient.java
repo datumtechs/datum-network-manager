@@ -18,10 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @FeignClient(name = "PinataClient",
-        url = "https://api.pinata.cloud",
+        url = "${pinata-url}",
         configuration = FeignClientConfig.class)
-//@Headers("Authorization=${token}")
-@Headers("Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyOTg0OTg5Ni1iYzE2LTRiYjctOTUzZi02MDU2MDVjOTZhN2EiLCJlbWFpbCI6ImNoZW54aWFvZGFpQDEyNi5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6Ik5ZQzEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiMzA5NTVjODYyM2M0OGNjZjYyNGYiLCJzY29wZWRLZXlTZWNyZXQiOiIzYTU5NzA0ZDY1ZDhiOGMxMWRiZGM2NDE2ZGZiZTI3NDY5M2QyYzAxYjRmYTAyYTc3NzAwZGRlMTg2OGZlMzdkIiwiaWF0IjoxNjU1MzQ1MzYzfQ.8TsNh3LR60owivZYcSBV144BBW3DuWocL4O_du4XNyY")
+@Headers("Authorization: ${pinata-token}")
 public interface PinataClient {
 
     @Headers("Content-Type: multipart/form-data")

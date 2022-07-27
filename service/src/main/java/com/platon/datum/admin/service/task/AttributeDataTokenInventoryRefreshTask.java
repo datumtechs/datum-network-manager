@@ -30,7 +30,7 @@ public class AttributeDataTokenInventoryRefreshTask {
     /**
      * 刷新inventory总量
      */
-    @Scheduled(fixedDelayString = "${DataTokenStatusRefreshTask.fixedDelay}")
+    @Scheduled(fixedDelayString = "${AttributeDataTokenStatusRefreshTask.fixedDelay}")
     public void refreshAttributeDataTokenInventoryTotal() {
         log.debug("刷新有属性数据凭证库存定时任务开始>>>");
         //更新发布中的凭证状态

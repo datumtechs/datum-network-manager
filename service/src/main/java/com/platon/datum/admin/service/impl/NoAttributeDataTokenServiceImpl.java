@@ -12,6 +12,7 @@ import com.platon.datum.admin.dao.entity.MetaData;
 import com.platon.datum.admin.grpc.client.MetaDataClient;
 import com.platon.datum.admin.service.NoAttributeDataTokenService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +38,8 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
     private MetaDataClient metaDataClient;
 
     //消耗量修改时间间隔，单位分钟
-    private static final long updateTimeInterval = 60 * 24;
+    @Value("${dataToken-updateFee-interval:5}")
+    private long updateTimeInterval;
 
     @Override
     public Page<DataToken> page(Integer pageNumber, Integer pageSize, int status, String address) {
