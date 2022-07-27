@@ -27,6 +27,10 @@ public class LocalDateTimeUtil {
         return LocalDateTimeUtil.getTimestamp(localDateTime);
     }
 
+    public static LocalDateTime now(){
+        return LocalDateTime.now(ZoneOffset.UTC);
+    }
+
     public static void main(String[] args) {
         LocalDateTime localDateTime = LocalDateTimeUtil.getLocalDateTime(1653552564775L);
         System.out.println(localDateTime);

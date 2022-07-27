@@ -1,6 +1,7 @@
 package com.platon.datum.admin.service.task;
 
 import cn.hutool.core.util.StrUtil;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.PowerJoinTaskMapper;
 import com.platon.datum.admin.dao.PowerNodeMapper;
 import com.platon.datum.admin.dao.entity.PowerJoinTask;
@@ -10,12 +11,10 @@ import com.platon.datum.admin.grpc.common.constant.CarrierEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -85,7 +84,7 @@ public class PowerNodeRefreshTask {
             //撤销中的powerId如果接口一直有返回，则表示该powerId还未处理完成
             revokingPower.stream().filter(power -> {
                 PowerNode powerNode = nodeIdMap.get(power.getNodeId());
-                return powerNode == null ? false : !StrUtil.equals(powerNode.getPowerId(),power.getPowerId());
+                return powerNode == null ? false : !StrUtil.equals(powerNode.getPowerId(), power.getPowerId());
             }).forEach(power -> {
                 // 停用算力需把上次启动的算力id清空
                 power.setPowerId("");
@@ -120,7 +119,7 @@ public class PowerNodeRefreshTask {
         long expireTime = 10;
         publishingPower.forEach(power -> {
             //expireTime分钟前的数据，判定为发布失败，将powerId回滚至之前的powerId（即”“）,并将算力状态改为撤销状态
-            if (power.getUpdateTime().plusMinutes(expireTime).compareTo(LocalDateTime.now()) < 0) {
+            if (power.getUpdateTime().plusMinutes(expireTime).compareTo(LocalDateTimeUtil.now()) < 0) {
                 power.setPowerId("");
                 power.setPowerStatus(CarrierEnum.PowerState.PowerState_Revoked_VALUE);
                 powerNodeMapper.updatePowerNodeByNodeId(power);
@@ -129,7 +128,7 @@ public class PowerNodeRefreshTask {
 
         revokingPower.forEach(power -> {
             //expireTime分钟前的数据，判定为撤销失败，将powerId回滚至之前的powerId,并将算力状态更新
-            if (power.getUpdateTime().plusMinutes(expireTime).compareTo(LocalDateTime.now()) < 0) {
+            if (power.getUpdateTime().plusMinutes(expireTime).compareTo(LocalDateTimeUtil.now()) < 0) {
                 PowerNode powerNode = powerNodeMap.get(power.getNodeId());
                 power.setPowerId(powerNode.getPowerId());
                 power.setPowerStatus(powerNode.getPowerStatus());

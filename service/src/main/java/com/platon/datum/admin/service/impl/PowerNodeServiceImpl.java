@@ -3,12 +3,13 @@ package com.platon.datum.admin.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.*;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.common.util.NameUtil;
 import com.platon.datum.admin.dao.PowerLoadSnapshotMapper;
 import com.platon.datum.admin.dao.PowerNodeMapper;
+import com.platon.datum.admin.dao.entity.PowerLoad;
 import com.platon.datum.admin.dao.entity.PowerLoadSnapshot;
 import com.platon.datum.admin.dao.entity.PowerNode;
-import com.platon.datum.admin.dao.entity.PowerLoad;
 import com.platon.datum.admin.grpc.carrier.api.SysRpcApi;
 import com.platon.datum.admin.grpc.client.PowerClient;
 import com.platon.datum.admin.grpc.common.constant.CarrierEnum;
@@ -19,7 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -168,7 +168,7 @@ public class PowerNodeServiceImpl implements PowerNodeService {
             powerNode.setPowerId(powerId);
             powerNode.setPowerStatus(5);
             //todo：这个时间是本地时间，而不是数据中心时间
-            powerNode.setStartTime(LocalDateTime.now());
+            powerNode.setStartTime(LocalDateTimeUtil.now());
             powerNodeMapper.updatePowerNodeByNodeId(powerNode);
         } else {
             throw new CannotOpsPowerNode("only unpublished and revoked nodes can be published");

@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataTokenMapper;
 import com.platon.datum.admin.dao.MetaDataMapper;
 import com.platon.datum.admin.dao.entity.DataToken;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 
 /**
  * @Author liushuyu
@@ -61,7 +61,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
         }
         //1.先插入dataToken数据,获取到dataToken id
         dataToken.setStatus(DataToken.StatusEnum.PUBLISHING.getStatus());
-        dataToken.setFeeUpdateTime(LocalDateTime.now());
+        dataToken.setFeeUpdateTime(LocalDateTimeUtil.now());
         dataTokenMapper.insertAndReturnId(dataToken);
         log.debug("插入dataToken数据,获取到dataToken id:{}", dataToken.getId());
         return dataToken.getId();
@@ -122,7 +122,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
                 || dataToken.getStatus() == DataToken.StatusEnum.PRICE_SUCCESS.getStatus()
                 || dataToken.getStatus() == DataToken.StatusEnum.PRICE_FAIL.getStatus()) {
             //24小时之内只能改一次
-            if (dataToken.getFeeUpdateTime().plusMinutes(updateTimeInterval).isAfter(LocalDateTime.now())) {
+            if (dataToken.getFeeUpdateTime().plusMinutes(updateTimeInterval).isAfter(LocalDateTimeUtil.now())) {
                 throw new BizException(Errors.SysException, "The update time is less than 24 hours!");
             }
             MetaData metaData = metaDataMapper.selectById(dataToken.getMetaDataDbId());

@@ -1,6 +1,7 @@
 package com.platon.datum.admin;
 
 
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataAuthMapper;
 import com.platon.datum.admin.dao.entity.DataAuth;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -28,7 +28,7 @@ public class MockDataAuthTest {
     private DataAuthMapper dataAuthMapper;
 
     @Test
-    public void addDataAuth(){
+    public void addDataAuth() {
 
         DataAuth dataAuth = new DataAuth();
         dataAuth.setAuthId("001");
@@ -37,7 +37,7 @@ public class MockDataAuthTest {
         dataAuth.setUserType(1);
         dataAuth.setAuthType(2);
         dataAuth.setAuthValueAmount(2);
-        dataAuth.setCreateAt(LocalDateTime.now());
+        dataAuth.setCreateAt(LocalDateTimeUtil.now());
         dataAuthMapper.insert(dataAuth);
 
         DataAuth dataAuth1 = new DataAuth();
@@ -46,9 +46,9 @@ public class MockDataAuthTest {
         dataAuth1.setApplyUser("user_0bcc975ab55848bda315d7c14799bc17");
         dataAuth1.setUserType(1);
         dataAuth1.setAuthType(1);
-        dataAuth1.setAuthValueStartAt(LocalDateTime.now());
-        dataAuth1.setAuthValueEndAt(LocalDateTime.now());
-        dataAuth1.setCreateAt(LocalDateTime.now());
+        dataAuth1.setAuthValueStartAt(LocalDateTimeUtil.now());
+        dataAuth1.setAuthValueEndAt(LocalDateTimeUtil.now());
+        dataAuth1.setCreateAt(LocalDateTimeUtil.now());
         dataAuthMapper.insert(dataAuth1);
 
 

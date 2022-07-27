@@ -1,6 +1,7 @@
 package com.platon.datum.admin.service.task;
 
 import com.platon.datum.admin.common.exception.MetadataAuthorized;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataAuthMapper;
 import com.platon.datum.admin.dao.entity.DataAuth;
 import com.platon.datum.admin.dao.entity.DataSync;
@@ -14,7 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -102,7 +102,7 @@ public class DataAuthReqRefreshTask {
         DataAuth dataAuth = new DataAuth();
         dataAuth.setAuthId(authId);
         dataAuth.setStatus(DataAuthStatusEnum.REFUSE.getStatus());
-        dataAuth.setAuthAt(LocalDateTime.now());
+        dataAuth.setAuthAt(LocalDateTimeUtil.now());
         dataAuthMapper.updateByPrimaryKeySelective(dataAuth);
     }
 }

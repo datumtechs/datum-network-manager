@@ -4,6 +4,7 @@ package com.platon.datum.admin.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.DataHostExists;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataNodeMapper;
 import com.platon.datum.admin.dao.entity.DataNode;
 import com.platon.datum.admin.grpc.client.YarnClient;
@@ -13,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -63,7 +63,7 @@ public class DataNodeServiceImpl implements DataNodeService {
         dataNode.setNodeId(response.getNodeId());
         dataNode.setConnStatus(response.getConnStatus());
         //dataNode.setIdentityId(OrgCache.getLocalOrgIdentityId());
-        dataNode.setRecCreateTime(LocalDateTime.now());
+        dataNode.setRecCreateTime(LocalDateTimeUtil.now());
         return dataNodeMapper.insert(dataNode);
     }
 
@@ -95,7 +95,7 @@ public class DataNodeServiceImpl implements DataNodeService {
         }
         RegisteredNodeResp response = yarnClient.updateDataNode(dataNode);
         dataNode.setConnStatus(response.getConnStatus());
-        dataNode.setRecUpdateTime(LocalDateTime.now());
+        dataNode.setRecUpdateTime(LocalDateTimeUtil.now());
         return dataNodeMapper.update(dataNode);
     }
 
@@ -130,7 +130,7 @@ public class DataNodeServiceImpl implements DataNodeService {
     public boolean checkDataNodeId(DataNode queryDataNode) {
         DataNode dataNode = dataNodeMapper.selectByProperties(queryDataNode);
         //数据库存在符合条件的数据，且nodeId与当前数据不一致
-        if (dataNode!=null && !dataNode.getNodeId().equals(queryDataNode.getNodeId())) {
+        if (dataNode != null && !dataNode.getNodeId().equals(queryDataNode.getNodeId())) {
             return false;
         }
         return true;
