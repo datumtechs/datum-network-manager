@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         //### 1.2 调用调度服务接口生成见证人钱包
         String walletAddress = yarnClient.generateObServerProxyWalletAddress(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         localOrg.setObserverProxyWalletAddress(walletAddress);
-        //### 2.新建local org并入库
+        //### 2.新建local org并入库 TODO 生成DID
         String orgId = IDUtil.generate(IDUtil.IDENTITY_ID_PREFIX);
         localOrg.setIdentityId(orgId);
         localOrg.setName(orgName);
