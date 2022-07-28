@@ -4,6 +4,7 @@ import com.platon.datum.admin.service.IpfsOpService;
 import com.platon.datum.admin.service.client.PinataClient;
 import com.platon.datum.admin.service.client.dto.PinataPinJSONToIPFSReq;
 import com.platon.datum.admin.service.client.dto.PinataPinResult;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,9 @@ import javax.annotation.Resource;
 public class PinataIpfsOpServiceImpl implements IpfsOpService {
 
     public static final String prefix_ipfs = "ipfs://";
+
+    @Value("Bearer ${pinata-token}")
+    private String token;
 
     @Resource
     private PinataClient pinataClient;
@@ -53,7 +57,7 @@ public class PinataIpfsOpServiceImpl implements IpfsOpService {
     }
 
     private PinataPinResult pinFileToIPFS(MultipartFile file) {
-        PinataPinResult pinataPinResult = pinataClient.pinFileToIPFS(file);
+        PinataPinResult pinataPinResult = pinataClient.pinFileToIPFS(token, file);
         return pinataPinResult;
     }
 
@@ -61,7 +65,7 @@ public class PinataIpfsOpServiceImpl implements IpfsOpService {
     private PinataPinResult pinJSONToIPFS(Object content) {
         PinataPinJSONToIPFSReq req = new PinataPinJSONToIPFSReq();
         req.setPinataContent(content);
-        PinataPinResult pinataPinResult = pinataClient.pinJSONToIPFS(req);
+        PinataPinResult pinataPinResult = pinataClient.pinJSONToIPFS(token, req);
         return pinataPinResult;
     }
 

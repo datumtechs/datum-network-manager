@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+option go_package = "github.com/datumtechs/datum-network-carrier/pb/carrier/api";
+
+package carrier.api;
+
+import "google/protobuf/empty.proto";
+
+message SubmitProposalRequest {
+  int32           proposal_type = 1;            //1:增加 2:踢出 3:主动退出
+  string          proposal_url = 2;
+  string          candidate_address = 3;
+  string          candidate_service_url = 4;
+}
+
+message SubmitProposalResponse {
+  int32           status = 1;                      // 响应码
+  string          msg = 2;                         // 错误信息
+  string          proposalId = 3;
+}
+
+message WithdrawProposalRequest {
+  string          proposal_id = 1;
+}
+
+message WithdrawProposalResponse {
+  int32           status = 1;                      // 响应码
+  string          msg = 2;                         // 错误信息
+  bool            result = 3;
+}
+
+message VoteProposalRequest {
+  string          proposal_id = 1;
+}
+
+message VoteProposalResponse {
+  int32           status = 1;                      // 响应码
+  string          msg = 2;                         // 错误信息
+  bool            result = 3;
+}
+
+message EffectProposalRequest {
+  string          proposal_id = 1;
+}
+
+message EffectProposalResponse {
+  int32           status = 1;                      // 响应码
+  string          msg = 2;                         // 错误信息
+  bool            result = 3;
+}
+
+service ProposalService {
+  rpc SubmitProposal(SubmitProposalRequest) returns (SubmitProposalResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/proposal/submitProposal"
+      body: "*"
+    };
+  }
+
+  rpc WithdrawProposal(WithdrawProposalRequest) returns (WithdrawProposalResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/proposal/withdrawProposal"
+      body: "*"
+    };
+  }
+
+
+  rpc VoteProposal(VoteProposalRequest) returns (VoteProposalResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/proposal/voteProposal"
+      body: "*"
+    };
+  }
+
+  rpc EffectProposal(EffectProposalRequest) returns (EffectProposalResponse) {
+    option (google.api.http) = {
+      post: "/carrier/v1/proposal/effectProposal"
+      body: "*"
+    };
+  }
+}

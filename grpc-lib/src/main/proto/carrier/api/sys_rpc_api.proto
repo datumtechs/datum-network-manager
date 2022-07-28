@@ -282,6 +282,18 @@ message GenerateObServerProxyWalletAddressResponse {
   string  address = 3;   // 当前组织内置系统钱包地址 (见证人代理钱包)
 }
 
+message DownloadTaskResultDataRequest {
+  string task_id = 1;
+  map<string, string> options = 2; // for support download compress file or dir
+}
+
+message DownloadTaskResultDataResponse {
+  oneof data {
+    common.constant.TaskStatus status = 1;
+    bytes content = 2;
+  }
+}
+
 // ## 调度服务 - 系统状态 接口
 service YarnService {
 
@@ -460,4 +472,9 @@ service YarnService {
   //    };
   //  }
 
+  rpc DownloadTaskResultData(DownloadTaskResultDataRequest) returns (stream DownloadTaskResultDataResponse) {
+    option (google.api.http) = {
+      get: "/carrier/v1/yarn/downloadTaskResultData"
+    };
+  }
 }

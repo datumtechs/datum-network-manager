@@ -3,10 +3,8 @@ package com.platon.datum.admin.service.client;
 import com.platon.datum.admin.service.client.config.FeignClientConfig;
 import com.platon.datum.admin.service.client.dto.PinataPinJSONToIPFSReq;
 import com.platon.datum.admin.service.client.dto.PinataPinResult;
-import feign.Headers;
-import feign.RequestLine;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -20,14 +18,16 @@ import org.springframework.web.multipart.MultipartFile;
 @FeignClient(name = "PinataClient",
         url = "${pinata-url}",
         configuration = FeignClientConfig.class)
-@Headers("Authorization: ${pinata-token}")
 public interface PinataClient {
 
-    @Headers("Content-Type: multipart/form-data")
-    @RequestLine("POST /pinning/pinFileToIPFS")
-    PinataPinResult pinFileToIPFS(@RequestPart(value = "file") MultipartFile file);
+    @PostMapping(path = "/pinning/pinFileToIPFS",
+            consumes = "multipart/form-data",
+            produces = "application/json")
+    @ResponseBody
+    PinataPinResult pinFileToIPFS(@RequestHeader("Authorization") String authorization, MultipartFile file);
 
-    @Headers("Content-Type: application/json")
-    @RequestLine("POST /pinning/pinJSONToIPFS")
-    PinataPinResult pinJSONToIPFS(PinataPinJSONToIPFSReq req);
+    @PostMapping(value = "/pinning/pinJSONToIPFS",
+            produces = "application/json")
+    @ResponseBody
+    PinataPinResult pinJSONToIPFS(@RequestHeader("Authorization") String authorization, @RequestBody PinataPinJSONToIPFSReq req);
 }

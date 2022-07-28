@@ -44,6 +44,7 @@ public class DatumAdminApplication {
 
     /**
      * 应用启动后做一些操作
+     *
      * @throws Exception
      */
     @PostConstruct

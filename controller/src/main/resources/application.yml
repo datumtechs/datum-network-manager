@@ -135,7 +135,9 @@ grpc-client-upload-file-timeout: 60
 #调用pinata接口的jwt
 pinata-token: xxx
 #pinata的网关地址
-pinata-url: https://datumdev.mypinata.cloud/
+pinata-gateway: https://datumdev.mypinata.cloud/
+#pinata的上传文件域名
+pinata-url: https://api.pinata.cloud/
 
 #无属性数据凭证消耗量更新间隔，单位分钟
 dataToken-updateFee-interval: 5

@@ -17,8 +17,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FeignClientConfig extends FeignClientsConfiguration {
 
-    @Bean
-    public Contract feignContract() {
-        return new Contract.Default();
-    }
+
+    /**
+     * 如果要使用feign的注解，则使用下面的bean。否则默认使用spring的@RequestMapping等注解
+     */
+//    @Bean
+//    public Contract feignContract() {
+//        return new Contract.Default();
+//    }
+
 }

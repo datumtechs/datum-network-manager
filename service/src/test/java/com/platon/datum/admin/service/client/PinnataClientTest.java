@@ -37,7 +37,7 @@ public class PinnataClientTest {
         Map<String, String> map = new HashMap<>();
         map.put("a", "1");
         req.setPinataContent(map);
-        PinataPinResult pinataPinResult = pinataClient.pinJSONToIPFS(req);
+//        PinataPinResult pinataPinResult = pinataClient.pinJSONToIPFS("",req);
     }
 }
 
