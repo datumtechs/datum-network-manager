@@ -6,7 +6,7 @@ import com.platon.bech32.Bech32;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.AddressChangeUtil;
-import com.platon.datum.admin.common.util.IDUtil;
+import com.platon.datum.admin.common.util.DidUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.service.VoteContract;
@@ -33,7 +33,6 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * TODO voteAddress
@@ -69,7 +68,7 @@ public class VoteContractImpl implements VoteContract {
         List<Authority> resultList = new ArrayList<>();
         for (int i = 0; i < result.getValue1().size(); i++) {
             Authority authority = new Authority();
-            authority.setIdentityId(IDUtil.generateDid(Bech32.addressDecodeHex(result.getValue1().get(i))));
+            authority.setIdentityId(DidUtil.latAddressToDid(Bech32.addressDecodeHex(result.getValue1().get(i))));
             authority.setUrl(result.getValue2().get(i));
             authority.setJoinTime(LocalDateTimeUtil.getLocalDateTime(result.getValue3().get(i).longValue()));
             if(i == 0){

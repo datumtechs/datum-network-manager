@@ -1,10 +1,15 @@
 syntax = "proto3";
 
 option go_package = "github.com/datumtechs/datum-network-carrier/pb/carrier/api";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.datum.admin.grpc.carrier.api";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "ProposalRpcApi";
 
 package carrier.api;
 
-import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "carrier/api/transaction_info.proto";
 
 message SubmitProposalRequest {
   int32           proposal_type = 1;            //1:增加 2:踢出 3:主动退出
@@ -17,6 +22,7 @@ message SubmitProposalResponse {
   int32           status = 1;                      // 响应码
   string          msg = 2;                         // 错误信息
   string          proposalId = 3;
+  carrier.api.TransactionInfo transaction_Info = 4;
 }
 
 message WithdrawProposalRequest {
@@ -27,6 +33,7 @@ message WithdrawProposalResponse {
   int32           status = 1;                      // 响应码
   string          msg = 2;                         // 错误信息
   bool            result = 3;
+  carrier.api.TransactionInfo transaction_Info = 4;
 }
 
 message VoteProposalRequest {
@@ -37,6 +44,7 @@ message VoteProposalResponse {
   int32           status = 1;                      // 响应码
   string          msg = 2;                         // 错误信息
   bool            result = 3;
+  carrier.api.TransactionInfo transaction_Info = 4;
 }
 
 message EffectProposalRequest {
@@ -47,6 +55,7 @@ message EffectProposalResponse {
   int32           status = 1;                      // 响应码
   string          msg = 2;                         // 错误信息
   bool            result = 3;
+  carrier.api.TransactionInfo transaction_Info = 4;
 }
 
 service ProposalService {

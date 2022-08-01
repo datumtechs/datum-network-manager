@@ -111,7 +111,8 @@ public class GeneralOrganizationController {
      */
     @PostMapping("/apply")
     public JsonResponse apply(@RequestBody @Validated GeneralOrganizationApplyReq req) {
-        generalOrganizationService.apply(req.getApprove(), req.getRemark(), req.getMaterial(), req.getDesc());
+        generalOrganizationService.apply
+                (req.getApproveOrg(), req.getRemark(), req.getMaterial(), req.getDesc());
         return JsonResponse.success();
     }
 

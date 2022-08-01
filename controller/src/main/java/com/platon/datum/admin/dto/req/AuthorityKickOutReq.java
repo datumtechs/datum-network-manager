@@ -20,5 +20,5 @@ import lombok.ToString;
 public class AuthorityKickOutReq {
 
     @ApiModelProperty(value = "被踢委员表id",required = true)
-    private int id;
+    private String identityId;
 }

@@ -1,12 +1,14 @@
 package com.platon.datum.admin.service.task;
 
 import com.platon.datum.admin.dao.SeedNodeMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.SeedNode;
 import com.platon.datum.admin.grpc.client.SeedClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
  * @date 2021/7/10 17:07
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class SeedNodeRefreshTask {
 
     @Resource
@@ -29,8 +31,12 @@ public class SeedNodeRefreshTask {
     /**
      * 1.定时刷新种子节点信息, 间隔30秒执行下一次任务
      */
+    @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${SeedNodeRefreshTask.fixedDelay}")
     public void refreshSeedNode(){
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         log.debug("刷新种子节点定时任务开始>>>");
 
         List<SeedNode> seedNodeList = seedClient.getSeedNodeList();

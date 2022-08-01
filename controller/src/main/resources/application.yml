@@ -121,6 +121,7 @@ CarrierStatusRefreshTask.fixedDelay: 20000
 DataAuthReqRefreshTask.fixedDelay: 5000
 DataNodeRefreshTask.fixedDelay: 20000
 DataTokenStatusRefreshTask.fixedDelay: 5000
+GlobalOrgRefreshTask.fixedDelay: 20000
 MetaDataStatusRefreshTask.fixedDelay: 5000
 PowerNodeRefreshTask.fixedDelay: 20000
 SeedNodeRefreshTask.fixedDelay: 20000

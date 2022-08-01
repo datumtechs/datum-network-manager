@@ -18,7 +18,7 @@ public interface AuthorityService {
 
     List<Authority> getAuthorityList(String keyword);
 
-    void kickOut(int id);
+    void kickOut(String identityId);
 
     void exit();
 

@@ -4,6 +4,7 @@ import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.entity.DataAuth;
+import com.platon.datum.admin.dao.entity.GlobalOrg;
 import com.platon.datum.admin.grpc.carrier.api.AuthRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.AuthServiceGrpc;
 import com.platon.datum.admin.grpc.carrier.types.Common;
@@ -12,6 +13,7 @@ import com.platon.datum.admin.grpc.carrier.types.Metadata;
 import com.platon.datum.admin.grpc.channel.SimpleChannelManager;
 import com.platon.datum.admin.grpc.common.constant.CarrierEnum;
 import com.platon.datum.admin.grpc.constant.GrpcConstant;
+import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 /**
@@ -182,6 +185,51 @@ public class AuthClient {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
 
+    }
+
+    public List<GlobalOrg> getIdentityList(LocalDateTime latestSynced) {
+
+        log.debug("从carrier查询元数据列表，latestSynced:{}", latestSynced);
+        //1.获取rpc连接
+        Channel channel = channelManager.getCarrierChannel();
+
+        //2.拼装request
+        AuthRpcApi.GetIdentityListRequest request = AuthRpcApi.GetIdentityListRequest
+                .newBuilder()
+                .setLastUpdated(LocalDateTimeUtil.getTimestamp(latestSynced))
+                .setPageSize(GrpcConstant.PageSize)
+                .build();
+        //3.调用rpc,获取response
+        AuthRpcApi.GetIdentityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getIdentityList(request);
+
+        //4.处理response
+        if (response == null) {
+            throw new CallGrpcServiceFailed();
+        } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
+            throw new CallGrpcServiceFailed(response.getMsg());
+        }
+
+        log.debug("从carrier查询全部组织列表，数量:{}", response.getIdentitysList().size());
+
+        return identityListConvertToGlobalOrg(response.getIdentitysList());
+    }
+
+    private List<GlobalOrg> identityListConvertToGlobalOrg(List<IdentityData.Organization> identitysList) {
+        List<GlobalOrg> orgList = identitysList.stream()
+                .map(organization -> {
+                    GlobalOrg globalOrg = new GlobalOrg();
+                    globalOrg.setIdentityId(organization.getIdentityId());
+                    globalOrg.setIdentityType(organization.getIdeneityTypeValue());
+                    globalOrg.setNodeId(organization.getNodeId());
+                    globalOrg.setNodeName(organization.getNodeName());
+                    globalOrg.setStatus(organization.getStatusValue());
+                    globalOrg.setImageUrl(organization.getImageUrl());
+                    globalOrg.setDetails(organization.getDetails());
+                    globalOrg.setRecUpdateTime(LocalDateTimeUtil.getLocalDateTime(organization.getUpdateAt()));
+                    return globalOrg;
+                })
+                .collect(Collectors.toList());
+        return orgList;
     }
 
 

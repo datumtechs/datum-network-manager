@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.platon.datum.admin.dao.AttributeDataTokenMapper;
 import com.platon.datum.admin.dao.DataTokenMapper;
 import com.platon.datum.admin.dao.MetaDataMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.AttributeDataToken;
 import com.platon.datum.admin.dao.entity.DataSync;
 import com.platon.datum.admin.dao.entity.DataToken;
@@ -14,6 +15,7 @@ import com.platon.datum.admin.service.DataSyncService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,7 @@ import java.util.List;
  */
 
 @Slf4j
-//@Configuration
+@Configuration
 public class MetaDataStatusRefreshTask {
 
     @Resource
@@ -48,6 +50,9 @@ public class MetaDataStatusRefreshTask {
     @Scheduled(fixedDelayString = "${MetaDataStatusRefreshTask.fixedDelay}")
     @Transactional(rollbackFor = Exception.class)
     public void task() {
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         log.debug("刷新本地元数据状态定时任务开始>>>");
         while (true) {
             DataSync dataSync = dataSyncService.findDataSync(DataSync.DataType.LocalMetaData);

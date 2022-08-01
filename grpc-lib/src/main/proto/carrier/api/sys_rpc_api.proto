@@ -9,6 +9,7 @@ option java_outer_classname = "SysRpcApi";
 package carrier.api;
 
 import "common/constant/carrier_enum.proto";
+import "common/constant/fighter_enum.proto";
 import "carrier/types/common.proto";
 import "carrier/types/taskdata.proto";
 import "carrier/types/resourcedata.proto";

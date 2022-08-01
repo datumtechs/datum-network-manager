@@ -13,6 +13,7 @@ import com.platon.datum.admin.grpc.entity.YarnGetNodeInfoResp;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -26,7 +27,7 @@ import java.util.List;
  */
 
 @Slf4j
-//@Configuration
+@Configuration
 public class CarrierStatusRefreshTask {
 
     @Resource
@@ -44,9 +45,12 @@ public class CarrierStatusRefreshTask {
     @Value("${spring.cloud.consul.carrierServiceName}")
     private String carrierServiceName;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${CarrierStatusRefreshTask.fixedDelay}")
     public void task() {
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         log.debug("刷新本组织调度服务状态定时任务开始>>>");
         ConsulClient consulClient = new ConsulClient(consulHost, consulPort);
         Org org = orgMapper.select();

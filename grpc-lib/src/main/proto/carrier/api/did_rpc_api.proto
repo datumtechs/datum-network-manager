@@ -1,40 +1,37 @@
 syntax = "proto3";
 
 option go_package = "github.com/datumtechs/datum-network-carrier/pb/carrier/api";
+//一个proto文件会生成一个最外部类，里面会包含很多子类，指定这个proto文件生成的类所属的包名
+option java_package = "com.platon.datum.admin.grpc.carrier.api";
+//这个proto文件生成会为其中的所有message生成一个最外部类，此配置设置该类类名，如果没有指定此值，则类名为proto文件名的驼峰命名方法
+option java_outer_classname = "DidRpcApi";
 
 package carrier.api;
 
+import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-
+import "carrier/api/transaction_info.proto";
 
 message CreateDIDResponse {
-  int32           status = 1;                      // 响应码
-  string          msg = 2;                         // 错误信息
-  string          did =3;
+  int32           status = 1;         // 响应码
+  string          msg = 2;            // 错误信息
+  string          did = 3;             // user's did
+  carrier.api.TransactionInfo transaction_Info = 4;
 }
 
 message CreateVCRequest {
-  string          did =1;
-  string          context = 2;  // default ""
-  uint64          pct_id = 3;
-  string          claim = 4; //json string
+  string          did =1;             // user's did
+  string          context = 2;        // default ""
+  uint64          pct_id = 3;         // pct id
+  string          claim = 4;          //json string
+  string          expirationDate = 5; //UTC time string, default ""
 }
 
 message CreateVCResponse {
   int32           status = 1;                      // 响应码
   string          msg = 2;                         // 错误信息
-  string          tx_hash =3;
-}
-
-
-message DownloadVCRequest {
-  string          tx_hash =1;
-}
-
-message DownloadVCResponse {
-  int32           status = 1;                      // 响应码
-  string          msg = 2;                         // 错误信息
-  string          vc = 3; //json string
+  string          vc =3;                           // json string
+  carrier.api.TransactionInfo transaction_Info = 4;
 }
 
 
@@ -50,12 +47,6 @@ service DIDService {
     option (google.api.http) = {
       post: "/carrier/v1/did/createVC"
       body: "*"
-    };
-  }
-
-  rpc DownloadVC (CreateVCRequest) returns (CreateVCResponse) {
-    option (google.api.http) = {
-      get: "/carrier/v1/did/downloadVC"
     };
   }
 }

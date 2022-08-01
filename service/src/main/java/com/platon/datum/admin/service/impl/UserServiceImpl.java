@@ -7,13 +7,13 @@ import com.ecwid.consul.v1.health.model.HealthService;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.exception.OrgInfoExists;
-import com.platon.datum.admin.common.util.IDUtil;
 import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.SysUserMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.entity.SysUser;
 import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
+import com.platon.datum.admin.grpc.client.DidClient;
 import com.platon.datum.admin.grpc.client.YarnClient;
 import com.platon.datum.admin.grpc.entity.YarnGetNodeInfoResp;
 import com.platon.datum.admin.service.UserService;
@@ -56,6 +56,9 @@ public class UserServiceImpl implements UserService {
     @Value("${spring.cloud.consul.carrierServiceName}")
     private String carrierServiceName;
 
+    @Resource
+    private DidClient didClient;
+
     @Transactional
     @Override
     public String applyOrgIdentity(String orgName) {
@@ -70,16 +73,17 @@ public class UserServiceImpl implements UserService {
         //### 1.2 调用调度服务接口生成见证人钱包
         String walletAddress = yarnClient.generateObServerProxyWalletAddress(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         localOrg.setObserverProxyWalletAddress(walletAddress);
-        //### 2.新建local org并入库 TODO 生成DID
-        String orgId = IDUtil.generate(IDUtil.IDENTITY_ID_PREFIX);
-        localOrg.setIdentityId(orgId);
+        //### 2.新建local org并入库
+        String did = didClient.createDID(localOrg.getCarrierIp(), localOrg.getCarrierPort());
+        log.debug("申请did：" + did);
+        localOrg.setIdentityId(did);
         localOrg.setName(orgName);
         localOrg.setStatus(Org.Status.NOT_CONNECT_NET.getCode());
         orgMapper.insert(localOrg);
 
         //### 2.新建成功后，设置缓存
         OrgCache.setLocalOrgInfo(localOrg);
-        return orgId;
+        return did;
     }
 
     //获取调度服务信息

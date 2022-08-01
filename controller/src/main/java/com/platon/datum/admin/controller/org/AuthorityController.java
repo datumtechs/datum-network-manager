@@ -87,7 +87,7 @@ public class AuthorityController {
      */
     @PostMapping("/kickOut")
     public JsonResponse kickOut(@RequestBody @Validated AuthorityKickOutReq req) {
-        authorityService.kickOut(req.getId());
+        authorityService.kickOut(req.getIdentityId());
         return JsonResponse.success();
     }
 

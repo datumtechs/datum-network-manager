@@ -1,6 +1,7 @@
 package com.platon.datum.admin.service.task;
 
 import com.platon.datum.admin.dao.*;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.*;
 import com.platon.datum.admin.dao.enums.TaskStatusEnum;
 import com.platon.datum.admin.grpc.client.TaskClient;
@@ -23,7 +24,7 @@ import java.util.Map;
  * 定时刷新本组织相关的任务
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class TaskRefreshTask {
 
     @Resource
@@ -54,9 +55,12 @@ public class TaskRefreshTask {
     @Resource
     private DataSyncService dataSyncService;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${TaskRefreshTask.fixedDelay}")
     public void task() {
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         log.debug("刷新本组织相关任务详情定时任务开始>>>");
         while (true) {
             DataSync dataSync = dataSyncService.findDataSync(DataSync.DataType.LocalTask);

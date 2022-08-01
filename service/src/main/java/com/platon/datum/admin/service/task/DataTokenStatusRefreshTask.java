@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.platon.bech32.Bech32;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataTokenMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.DataToken;
 import com.platon.datum.admin.service.web3j.Web3jManager;
 import com.platon.protocol.Web3j;
@@ -11,6 +12,7 @@ import com.platon.protocol.core.methods.response.PlatonGetTransactionReceipt;
 import com.platon.protocol.core.methods.response.TransactionReceipt;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Description 刷新数据凭证状态定时任务
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class DataTokenStatusRefreshTask {
 
     @Resource
@@ -44,8 +46,12 @@ public class DataTokenStatusRefreshTask {
     /**
      * 刷新发布中的数据
      */
+    @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${DataTokenStatusRefreshTask.fixedDelay}")
     public void refreshPublishingDataToken() {
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         log.debug("刷新数据凭证[发布状态]定时任务开始>>>");
         //更新发布中的凭证状态
         List<DataToken> dataTokenList = dataTokenMapper.selectListByStatus(DataToken.StatusEnum.PUBLISHING.getStatus());
@@ -104,8 +110,12 @@ public class DataTokenStatusRefreshTask {
     /**
      * 刷新定价中的数据
      */
+    @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${DataTokenStatusRefreshTask.fixedDelay}")
     public void refreshPricingDataToken() {
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         log.debug("刷新数据凭证[定价状态]定时任务开始>>>");
         //更新定价中的凭证状态
         List<DataToken> dataTokenList = dataTokenMapper.selectListByStatus(DataToken.StatusEnum.PRICING.getStatus());

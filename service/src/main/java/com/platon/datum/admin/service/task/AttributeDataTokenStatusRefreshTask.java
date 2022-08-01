@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.platon.bech32.Bech32;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.AttributeDataTokenMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.AttributeDataToken;
 import com.platon.datum.admin.dao.entity.DataToken;
 import com.platon.datum.admin.service.web3j.Web3jManager;
@@ -12,6 +13,7 @@ import com.platon.protocol.core.methods.response.PlatonGetTransactionReceipt;
 import com.platon.protocol.core.methods.response.TransactionReceipt;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +29,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Description 刷新有属性数据凭证状态定时任务
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class AttributeDataTokenStatusRefreshTask {
 
     @Resource
-    private AttributeDataTokenMapper dataTokenMapper;
+    private AttributeDataTokenMapper attributeDataTokenMapper;
 
     @Resource
     private Web3jManager web3jManager;
@@ -48,9 +50,12 @@ public class AttributeDataTokenStatusRefreshTask {
      */
     @Scheduled(fixedDelayString = "${AttributeDataTokenStatusRefreshTask.fixedDelay}")
     public void refreshPublishingDataToken() {
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         log.debug("刷新有属性数据凭证[发布状态]定时任务开始>>>");
         //更新发布中的凭证状态
-        List<AttributeDataToken> dataTokenList = dataTokenMapper.selectListByStatus(AttributeDataToken.StatusEnum.PUBLISHING.getStatus());
+        List<AttributeDataToken> dataTokenList = attributeDataTokenMapper.selectListByStatus(AttributeDataToken.StatusEnum.PUBLISHING.getStatus());
         dataTokenList.forEach(dataToken -> {
             try {
                 ((AttributeDataTokenStatusRefreshTask) AopContext.currentProxy()).processPublishingDataToken(dataToken);
@@ -65,7 +70,7 @@ public class AttributeDataTokenStatusRefreshTask {
     public void processPublishingDataToken(AttributeDataToken dataToken) throws IOException {
         //1.数据已过期，直接判断为失败
         if (isExpiredData(dataToken)) {
-            dataTokenMapper.updateStatus(dataToken.getId(), AttributeDataToken.StatusEnum.PUBLISH_FAIL.getStatus());
+            attributeDataTokenMapper.updateStatus(dataToken.getId(), AttributeDataToken.StatusEnum.PUBLISH_FAIL.getStatus());
             return;
         }
         int nonce = dataToken.getPublishNonce();
@@ -92,7 +97,7 @@ public class AttributeDataTokenStatusRefreshTask {
                 //发布成功，获取token地址
                 String data = transactionReceipt.getLogs().get(0).getData();
                 String dataTokenAddress = StrUtil.sub(data, data.length() - 40, data.length() + 1);
-                dataTokenMapper.updateTokenAddress(dataToken.getId(), "0x" + dataTokenAddress);
+                attributeDataTokenMapper.updateTokenAddress(dataToken.getId(), "0x" + dataTokenAddress);
             } else {
                 status = DataToken.StatusEnum.PUBLISH_FAIL.getStatus();
             }
@@ -101,7 +106,7 @@ public class AttributeDataTokenStatusRefreshTask {
         //4.结果入库
         if (status == DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus()
                 || status == DataToken.StatusEnum.PUBLISH_FAIL.getStatus()) {
-            dataTokenMapper.updateStatus(dataToken.getId(), status);
+            attributeDataTokenMapper.updateStatus(dataToken.getId(), status);
         }
     }
 

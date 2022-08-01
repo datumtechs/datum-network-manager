@@ -3,6 +3,7 @@ package com.platon.datum.admin.service.task;
 import com.platon.datum.admin.common.exception.MetadataAuthorized;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataAuthMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.DataAuth;
 import com.platon.datum.admin.dao.entity.DataSync;
 import com.platon.datum.admin.dao.enums.DataAuthStatusEnum;
@@ -43,9 +44,12 @@ public class DataAuthReqRefreshTask {
     @Resource
     private DataSyncService dataSyncService;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${DataAuthReqRefreshTask.fixedDelay}")
     public void task() {
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         log.debug("刷新数据授权申请(查询过期申请)定时任务开始>>>");
         while (true) {
             DataSync dataSync = dataSyncService.findDataSync(DataSync.DataType.DataAuthReq);

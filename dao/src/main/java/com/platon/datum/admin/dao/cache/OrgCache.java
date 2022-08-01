@@ -15,28 +15,38 @@ public class OrgCache {
 
     public static final String LOCAL_ORG = "local_org";
 
-    public static Org getLocalOrgInfo(){
-        Org org = (Org)AppContext.get(LOCAL_ORG);
-        if(org ==null){
+    public static Org getLocalOrgInfo() throws OrgInfoNotFound {
+        Org org = (Org) AppContext.get(LOCAL_ORG);
+        if (org == null) {
             throw new OrgInfoNotFound();
         }
         return org;
     }
 
-    public static String getLocalOrgIdentityId(){
-        Org org = (Org)AppContext.get(LOCAL_ORG);
-        if(org ==null){
+    public static String getLocalOrgIdentityId() throws OrgInfoNotFound, IdentityIdMissing {
+        Org org = (Org) AppContext.get(LOCAL_ORG);
+        if (org == null) {
             throw new OrgInfoNotFound();
-        }else if(StringUtils.isBlank(org.getIdentityId())){
+        } else if (StringUtils.isBlank(org.getIdentityId())) {
             throw new IdentityIdMissing();
         }
         return org.getIdentityId();
     }
+
+    public static boolean localOrgNotFound() {
+        Org org = (Org) AppContext.get(LOCAL_ORG);
+        if (org == null) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 在组织身份机构信息插入数据库的时候设置该信息
+     *
      * @param localOrgInfo
      */
-    public static void setLocalOrgInfo(Object localOrgInfo){
-        AppContext.put(LOCAL_ORG,localOrgInfo,Object.class);
+    public static void setLocalOrgInfo(Object localOrgInfo) {
+        AppContext.put(LOCAL_ORG, localOrgInfo, Object.class);
     }
 }

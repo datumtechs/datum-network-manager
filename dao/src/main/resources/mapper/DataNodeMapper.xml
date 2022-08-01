@@ -35,7 +35,7 @@
     <select id="listNode" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_data_node
+        from data_node
         <where>
             <if test="keyword != null and keyword != ''">
                 node_name like CONCAT('%', #{keyword}, '%')
@@ -47,14 +47,14 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_data_node
+        from data_node
         where node_id = #{nodeId,jdbcType=VARCHAR}
     </select>
 
     <select id="findLocalDataNodeByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_data_node
+        from data_node
         where node_name = #{nodeName,jdbcType=VARCHAR}
     </select>
 
@@ -62,7 +62,7 @@
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_data_node
+        from data_node
         where internal_IP = #{internalIp,jdbcType=VARCHAR}
           and internal_Port = #{internalPort,jdbcType=INTEGER}
           and external_IP = #{externalIp,jdbcType=VARCHAR}
@@ -72,12 +72,12 @@
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete
-        from local_data_node
+        from data_node
         where node_id = #{nodeId,jdbcType=VARCHAR}
     </delete>
 
     <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.DataNode">
-        insert into local_data_node (node_id,
+        insert into data_node (node_id,
                                      node_name, internal_IP, internal_Port,
                                      external_IP, external_Port, conn_Status,
                                      conn_message, conn_Time, status,
@@ -90,7 +90,7 @@
     </insert>
 
     <update id="update" parameterType="com.platon.datum.admin.dao.entity.DataNode">
-        update local_data_node
+        update data_node
         set internal_IP   = #{internalIp,jdbcType=VARCHAR},
             internal_Port = #{internalPort,jdbcType=INTEGER},
             external_IP   = #{externalIp,jdbcType=VARCHAR},
@@ -100,14 +100,14 @@
     </update>
 
     <update id="updateLocalDataNodeName">
-        update local_data_node
+        update data_node
         set node_name = #{nodeName,jdbcType=VARCHAR}
         where node_Id = #{nodeId,jdbcType=VARCHAR}
     </update>
 
     <update id="initNewDataNodeBatch" parameterType="java.util.List">
         <foreach collection="list" item="item" separator=";">
-            INSERT INTO local_data_node (node_id,
+            INSERT INTO data_node (node_id,
                                          node_name,
                                          internal_ip,
                                          internal_port,

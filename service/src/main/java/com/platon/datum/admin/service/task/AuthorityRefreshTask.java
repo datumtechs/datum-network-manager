@@ -1,6 +1,7 @@
 package com.platon.datum.admin.service.task;
 
 import com.platon.datum.admin.dao.AuthorityMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.service.VoteContract;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +28,12 @@ public class AuthorityRefreshTask {
     @Resource
     private VoteContract voteContract;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${AuthorityRefreshTask.fixedDelay}")
     public void task() {
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         List<Authority> allAuthority = voteContract.getAllAuthority();
         //将原来的删除并将新的存进去
         authorityMapper.refresh(allAuthority);

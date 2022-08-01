@@ -24,7 +24,7 @@ public class GeneralOrganizationApplyReq {
 
     @ApiModelProperty(value = "审批节点", required = true)
     @NotBlank
-    private String approve;
+    private String approveOrg;
 
     @ApiModelProperty(value = "申请附言", required = true)
     @NotBlank

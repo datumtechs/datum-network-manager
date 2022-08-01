@@ -1,6 +1,7 @@
 package com.platon.datum.admin.service.task;
 
 import com.platon.datum.admin.dao.AttributeDataTokenMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.AttributeDataToken;
 import com.platon.datum.admin.service.AttributeDataTokenInventoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +19,11 @@ import java.util.List;
  * @Description 刷新有属性数据凭证库存定时任务
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class AttributeDataTokenInventoryRefreshTask {
 
     @Resource
-    private AttributeDataTokenMapper dataTokenMapper;
+    private AttributeDataTokenMapper attributeDataTokenMapper;
 
     @Resource
     private AttributeDataTokenInventoryService attributeDataTokenInventoryService;
@@ -32,9 +33,12 @@ public class AttributeDataTokenInventoryRefreshTask {
      */
     @Scheduled(fixedDelayString = "${AttributeDataTokenStatusRefreshTask.fixedDelay}")
     public void refreshAttributeDataTokenInventoryTotal() {
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         log.debug("刷新有属性数据凭证库存定时任务开始>>>");
         //更新发布中的凭证状态
-        List<AttributeDataToken> dataTokenList = dataTokenMapper.selectListByStatus(AttributeDataToken.StatusEnum.PUBLISH_SUCCESS.getStatus());
+        List<AttributeDataToken> dataTokenList = attributeDataTokenMapper.selectListByStatus(AttributeDataToken.StatusEnum.PUBLISH_SUCCESS.getStatus());
         dataTokenList.forEach(dataToken -> {
             try {
                 ((AttributeDataTokenInventoryRefreshTask) AopContext.currentProxy()).processPublishedDataToken(dataToken);

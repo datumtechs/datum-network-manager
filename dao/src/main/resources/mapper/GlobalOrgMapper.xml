@@ -12,7 +12,7 @@
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
         <result column="details" jdbcType="VARCHAR" property="details"/>
-        <result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
+        <result column="update_at" jdbcType="TIMESTAMP" property="recUpdateTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -36,59 +36,23 @@
         where identity_id = #{identityId,jdbcType=VARCHAR}
     </delete>
 
-    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.GlobalOrg">
-        <!--@mbg.generated-->
-        insert into global_org (identity_id, identity_type, node_id,
-                                node_name, data_id, `status`,
-                                image_url, details, update_at)
-        values (#{identityId,jdbcType=VARCHAR}, #{identityType,jdbcType=TINYINT}, #{nodeId,jdbcType=VARCHAR},
-                #{nodeName,jdbcType=VARCHAR}, #{dataId,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
-                #{imageUrl,jdbcType=VARCHAR}, #{details,jdbcType=VARCHAR}, #{updateAt,jdbcType=TIMESTAMP})
-    </insert>
-
-    <update id="updateByIdentityIdSelective" parameterType="com.platon.datum.admin.dao.entity.GlobalOrg">
-        <!--@mbg.generated-->
-        update global_org
-        <set>
-            <if test="identityType != null">
-                identity_type = #{identityType,jdbcType=TINYINT},
-            </if>
-            <if test="nodeId != null">
-                node_id = #{nodeId,jdbcType=VARCHAR},
-            </if>
-            <if test="nodeName != null">
-                node_name = #{nodeName,jdbcType=VARCHAR},
-            </if>
-            <if test="dataId != null">
-                data_id = #{dataId,jdbcType=VARCHAR},
-            </if>
-            <if test="status != null">
-                `status` = #{status,jdbcType=TINYINT},
-            </if>
-            <if test="imageUrl != null">
-                image_url = #{imageUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="details != null">
-                details = #{details,jdbcType=VARCHAR},
-            </if>
-            <if test="updateAt != null">
-                update_at = #{updateAt,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        where identity_id = #{identityId,jdbcType=VARCHAR}
-    </update>
-
-    <update id="updateByIdentityId" parameterType="com.platon.datum.admin.dao.entity.GlobalOrg">
-        <!--@mbg.generated-->
-        update global_org
-        set identity_type = #{identityType,jdbcType=TINYINT},
-            node_id       = #{nodeId,jdbcType=VARCHAR},
-            node_name     = #{nodeName,jdbcType=VARCHAR},
-            data_id       = #{dataId,jdbcType=VARCHAR},
-            `status`      = #{status,jdbcType=TINYINT},
-            image_url     = #{imageUrl,jdbcType=VARCHAR},
-            details       = #{details,jdbcType=VARCHAR},
-            update_at     = #{updateAt,jdbcType=TIMESTAMP}
-        where identity_id = #{identityId,jdbcType=VARCHAR}
+    <update id="insertOrUpdate">
+        <foreach collection="identityList" item="org" separator=";">
+            insert into global_org (identity_id, identity_type, node_id,
+                                    node_name, `status`,
+                                    image_url, details, update_at)
+            values (#{org.identityId,jdbcType=VARCHAR}, #{org.identityType,jdbcType=TINYINT},
+                    #{org.nodeId,jdbcType=VARCHAR},
+                    #{org.nodeName,jdbcType=VARCHAR}, #{org.status,jdbcType=TINYINT},
+                    #{org.imageUrl,jdbcType=VARCHAR}, #{org.details,jdbcType=VARCHAR},
+                    #{org.recUpdateTime,jdbcType=TIMESTAMP})
+            on duplicate key update identity_type = #{org.identityType,jdbcType=TINYINT},
+                                    node_id       = #{org.nodeId,jdbcType=VARCHAR},
+                                    node_name     = #{org.nodeName,jdbcType=VARCHAR},
+                                    `status`      = #{org.status,jdbcType=TINYINT},
+                                    image_url     = #{org.imageUrl,jdbcType=VARCHAR},
+                                    details       = #{org.details,jdbcType=VARCHAR},
+                                    update_at     = #{org.recUpdateTime,jdbcType=TIMESTAMP}
+        </foreach>
     </update>
 </mapper>

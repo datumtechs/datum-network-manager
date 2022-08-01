@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.ApplyRecord;
+import com.platon.datum.admin.grpc.client.DidClient;
 import com.platon.datum.admin.service.GeneralOrganizationService;
 import com.platon.datum.admin.service.IpfsOpService;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @Author liushuyu
@@ -29,6 +29,8 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
     private ApplyRecordMapper applyRecordMapper;
     @Resource
     private IpfsOpService ipfsOpService;
+    @Resource
+    private DidClient didClient;
 
     /**
      * @return
@@ -102,6 +104,8 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
      */
     @Override
     public void apply(String approve, String remark, String material, String desc) {
-
+        String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
+        String txHash = didClient.createVC("", 0, "", 1, "");
+        //TODO 保存提案信息
     }
 }

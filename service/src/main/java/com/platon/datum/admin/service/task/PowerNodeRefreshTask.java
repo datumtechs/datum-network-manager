@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.PowerJoinTaskMapper;
 import com.platon.datum.admin.dao.PowerNodeMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.PowerJoinTask;
 import com.platon.datum.admin.dao.entity.PowerNode;
 import com.platon.datum.admin.grpc.client.PowerClient;
@@ -11,6 +12,7 @@ import com.platon.datum.admin.grpc.common.constant.CarrierEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +29,7 @@ import java.util.stream.Collectors;
  * 间隔60秒执行下一次任务
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class PowerNodeRefreshTask {
 
     @Resource
@@ -39,9 +41,12 @@ public class PowerNodeRefreshTask {
     @Resource
     private PowerClient powerClient;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${PowerNodeRefreshTask.fixedDelay}")
     public void task() {
+        if(OrgCache.localOrgNotFound()){
+            return;
+        }
         log.debug("刷新本地算力节点的基本信息、状态、拥有的资源、被使用的资源，以及正在执行的任务定时任务开始>>>");
 
         // 定时刷新本地算力节点的基本信息，IP、端口，以及和调度服务的连接情况
