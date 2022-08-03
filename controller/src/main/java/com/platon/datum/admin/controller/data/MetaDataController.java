@@ -3,6 +3,7 @@ package com.platon.datum.admin.controller.data;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.platon.datum.admin.common.exception.*;
+import com.platon.datum.admin.common.util.AddressTypeUtil;
 import com.platon.datum.admin.common.util.NameUtil;
 import com.platon.datum.admin.controller.BaseController;
 import com.platon.datum.admin.dao.DataFileMapper;
@@ -165,6 +166,7 @@ public class MetaDataController extends BaseController {
         metaData.setMetaDataName(req.getResourceName());
         metaData.setStatus(DataFileStatusEnum.CREATED.getStatus());//添加数据状态为created
         metaData.setUser(userAddress);
+        metaData.setUserType(AddressTypeUtil.getType(userAddress));
         metaData.setMetaDataType(CarrierEnum.MetadataType.MetadataType_DataFile_VALUE);
         metaData.setUsage(req.getUsage());
 
@@ -183,7 +185,7 @@ public class MetaDataController extends BaseController {
             @ApiImplicitParam(name = "id", value = "元数据db key", required = true, paramType = "query", example = "1"),
     })
     @GetMapping("/localMetaDataInfo")
-    public JsonResponse<MetaData> detail(@Validated @NotNull(message = "id不为空") Integer id) {
+    public JsonResponse<MetaDataDetailResp> detail(@Validated @NotNull(message = "id不为空") Integer id) {
         //查询localMetaData，并查询出taskCount放入动态字段
         MetaData metaData = metaDataMapper.findWithTaskCount(id);
         if (metaData == null) {
@@ -252,6 +254,16 @@ public class MetaDataController extends BaseController {
         }
 
         return JsonResponse.success();
+    }
+
+    /**
+     * 获取元数据MetaDataOption
+     */
+    @ApiOperation(value = "获取元数据MetaDataOption")
+    @PostMapping("/getMetaDataOption")
+    public JsonResponse<String> getMetaDataOption(@RequestBody @Validated GetMetaDataOptionReq req) {
+        String metaDataOption = metaDataService.getMetaDataOption(req.getId());
+        return JsonResponse.success(metaDataOption);
     }
 
     /**

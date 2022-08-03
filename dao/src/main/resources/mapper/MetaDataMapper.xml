@@ -32,6 +32,7 @@
         rec_create_time,
         rec_update_time,
         `user`,
+        user_type,
         meta_data_type,
         `usage`,
         data_token_address,

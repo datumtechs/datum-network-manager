@@ -97,4 +97,5 @@ public interface MetaDataService {
 
     List<MetaData> listMetaDataUnPublishAttributeDataToken(String keyword, String userAddress);
 
+    String getMetaDataOption(Integer id);
 }

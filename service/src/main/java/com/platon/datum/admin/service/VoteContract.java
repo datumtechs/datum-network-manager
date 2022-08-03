@@ -3,7 +3,6 @@ package com.platon.datum.admin.service;
 import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.protocol.core.methods.response.Log;
 import com.platon.tuples.generated.Tuple2;
-import com.platon.tuples.generated.Tuple3;
 import rx.Observable;
 
 import java.math.BigInteger;
@@ -14,7 +13,6 @@ public interface VoteContract {
 
     /**
      * 初始化合约，用户一次性保存合约的设置
-     *
      */
     void init();
 
@@ -23,7 +21,7 @@ public interface VoteContract {
      *
      * @return 1-提交提案到投票开始时间间隔  2-投票的时间间隔  3-退出候选人犹豫期的时间间隔
      */
-    Tuple3<BigInteger, BigInteger, BigInteger> getConfig();
+//    VoteConfigDto getConfig();
 
     /**
      * 查询已生效的委员会列表
@@ -40,4 +38,5 @@ public interface VoteContract {
      */
     Observable<Optional<Tuple2<Log, Object>>> subscribe(BigInteger beginBN);
 
+    Integer sizeOfAllAuthority(BigInteger bigInteger);
 }

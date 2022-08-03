@@ -42,7 +42,7 @@
       select
           <include refid="Base_Column_List" />
       from
-          local_power_join_task
+          power_join_task
       where
           node_id = #{powerNodeId, jdbcType=VARCHAR}
       order by task_start_time desc
@@ -50,7 +50,7 @@
 
     <insert id="insertBatch">
         <foreach collection="powerJoinTaskList" item="item" separator=",">
-            insert into local_power_join_task (node_id,
+            insert into power_join_task (node_id,
                                                task_id,
                                                task_name,
                                                owner_identity_id,

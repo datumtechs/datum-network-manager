@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://192.168.9.192:3306/datum_storage_0.4.0?useSSL=false&useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: 6qY7CBQo7p!
+
+grpc:
+  server:
+    port: 9090

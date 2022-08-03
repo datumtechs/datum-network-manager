@@ -1,7 +1,8 @@
 package com.platon.datum.admin.grpc.client;
 
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
-import com.platon.datum.admin.grpc.carrier.api.ProposalRpcApi;
+import com.platon.datum.admin.grpc.carrier.api.DidRpcApi;
+import com.platon.datum.admin.grpc.carrier.api.DidRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.ProposalServiceGrpc;
 import com.platon.datum.admin.grpc.channel.SimpleChannelManager;
 import com.platon.datum.admin.grpc.constant.GrpcConstant;
@@ -39,14 +40,14 @@ public class ProposalClient {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        ProposalRpcApi.SubmitProposalRequest request = ProposalRpcApi.SubmitProposalRequest.newBuilder()
+        DidRpcApi.SubmitProposalRequest request = DidRpcApi.SubmitProposalRequest.newBuilder()
                 .setProposalType(proposalType)
                 .setProposalUrl(proposalUrl)
                 .setCandidateAddress(candidateAddress)
                 .setCandidateServiceUrl(candidateServiceUrl)
                 .build();
         //3.调用rpc,获取response
-        ProposalRpcApi.SubmitProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel)
+        DidRpcApi.SubmitProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel)
                 .submitProposal(request);
         //4.处理response
         if (response == null) {
@@ -67,11 +68,11 @@ public class ProposalClient {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        ProposalRpcApi.WithdrawProposalRequest request = ProposalRpcApi.WithdrawProposalRequest.newBuilder()
+        DidRpcApi.WithdrawProposalRequest request = DidRpcApi.WithdrawProposalRequest.newBuilder()
                 .setProposalId(proposalId)
                 .build();
         //3.调用rpc,获取response
-        ProposalRpcApi.WithdrawProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).withdrawProposal(request);
+        DidRpcApi.WithdrawProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).withdrawProposal(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -92,11 +93,11 @@ public class ProposalClient {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        ProposalRpcApi.VoteProposalRequest request = ProposalRpcApi.VoteProposalRequest.newBuilder()
+        DidRpcApi.VoteProposalRequest request = DidRpcApi.VoteProposalRequest.newBuilder()
                 .setProposalId(proposalId)
                 .build();
         //3.调用rpc,获取response
-        ProposalRpcApi.VoteProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).voteProposal(request);
+        DidRpcApi.VoteProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).voteProposal(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -116,11 +117,11 @@ public class ProposalClient {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
-        ProposalRpcApi.EffectProposalRequest request = ProposalRpcApi.EffectProposalRequest.newBuilder()
+        DidRpcApi.EffectProposalRequest request = DidRpcApi.EffectProposalRequest.newBuilder()
                 .setProposalId(proposalId)
                 .build();
         //3.调用rpc,获取response
-        ProposalRpcApi.EffectProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).effectProposal(request);
+        DidRpcApi.EffectProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).effectProposal(request);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();

@@ -7,11 +7,17 @@
         <groupId>com.platon.datum</groupId>
         <version>0.4.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>admin-controller</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.platon.datum</groupId>
+            <artifactId>admin-grpc-server</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>com.platon.datum</groupId>
             <artifactId>admin-service</artifactId>

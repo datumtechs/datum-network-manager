@@ -15,6 +15,7 @@
         <module>service</module>
         <module>controller</module>
         <module>grpc-client</module>
+        <module>grpc-server</module>
     </modules>
 
     <properties>

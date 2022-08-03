@@ -24,10 +24,10 @@ public class LocalDateTimeUtil {
     }
 
     public static long getTimestamp(LocalDateTime localDateTime) {
-        return LocalDateTimeUtil.getTimestamp(localDateTime);
+        return localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli();
     }
 
-    public static LocalDateTime now(){
+    public static LocalDateTime now() {
         return LocalDateTime.now(ZoneOffset.UTC);
     }
 

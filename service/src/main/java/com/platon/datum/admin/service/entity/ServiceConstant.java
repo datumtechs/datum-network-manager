@@ -1,4 +1,4 @@
-package com.platon.datum.admin.service.constant;
+package com.platon.datum.admin.service.entity;
 
 /**
  * @author houz

@@ -73,7 +73,7 @@
              ) t
                  LEFT JOIN (
             SELECT snapshot_time, used_core, used_memory, used_bandwidth
-            FROM local_power_load_snapshot
+            FROM power_load_snapshot
             WHERE node_id = #{nodeId, jdbcType=VARCHAR}
         ) d ON t.snapshot_time = d.snapshot_time
         ORDER BY t.snapshot_time

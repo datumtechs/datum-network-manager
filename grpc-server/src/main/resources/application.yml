@@ -1,0 +1,90 @@
+# ==================================== tidb conf  ==========================================
+spring:
+  profiles:
+    active: dev
+  application:
+    name: datum-storage
+# ==================================== db conf  ==========================================
+    datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.cj.jdbc.Driver
+      druid:
+        url: jdbc:mysql://192.168.120.136:3306/datum_storage?useSSL=false&useServerPrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+        username: ENC(HkIWS/Vhu9RkQsS542nJeQ==)
+        password: ENC(bWqYB1AVri0/bQrC7ta4IZme9ib22Bge)
+        initial-size: 100
+        max-active: 200
+        min-idle: 20
+        max-wait: 60000
+        connection-init-sqls: set names utf8mb4
+        pool-prepared-statements: true
+        max-pool-prepared-statement-per-connection-size: 20
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 1 FROM DUAL
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        stat-view-servlet:
+          enabled: true
+          url-pattern: /druid/*
+        filter:
+          stat:
+            log-slow-sql: true
+            slow-sql-millis: 10000
+            merge-sql: false
+          wall:
+            config:
+              multi-statement-allow: true
+
+# ==================================== conf for mybatis =====================================
+mybatis:
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: com.platon.datum.storage.dao.entity
+
+
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD:}
+
+
+# ==================================== conf for grpc =====================================
+grpc:
+  server:
+    port: 9090
+    in-process-name: datum-storage-server
+    max-inbound-message-size: 1073741824
+  client:
+    #允许客户端在同一应用程序内使用以下配置连接到服务器
+    inProcess:
+      address: in-process:datum-storage-server
+# =============================== conf for logger ===================================
+# 日志配置
+logging:
+  # 日志级别
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.platon: DEBUG
+  file:
+    # 日志文件名格式
+    name: ./logs/${spring.application.name}.log
+  pattern:
+    # 日志记录格式[组件名称] [时间戳] [日志级别] [类名.方法名] [消息文本]
+    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %C / %line - %msg%n'
+    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %C / %line - %msg%n'
+  logback:
+    rollingpolicy:
+      # 根据文件大小归档，超过2KB自动归档，次日启动服务时也会自动归档
+      file-name-pattern: ./logs/%d{yyyyMMdd}/${spring.application.name}.out.log.%d{yyyy-MM-dd}.%i.gz
+      # 最大日志文件大小(默认为10MB)
+      max-file-size: 200MB
+      # 要保留的日志备份的总大小(默认为0B)
+      # total-size-cap: 1GB
+      # 保存存档日志文件的最大天数(默认为7天)
+      max-history: 30
+
+# ==================================== conf for system =====================================
+option-part:
+  #DataOption分开存储大小配置
+  size: 10000

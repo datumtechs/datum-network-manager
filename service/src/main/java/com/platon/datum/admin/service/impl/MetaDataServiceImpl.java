@@ -1,5 +1,6 @@
 package com.platon.datum.admin.service.impl;
 
+import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.*;
@@ -18,6 +19,7 @@ import com.platon.datum.admin.grpc.client.YarnClient;
 import com.platon.datum.admin.grpc.common.constant.CarrierEnum;
 import com.platon.datum.admin.grpc.entity.YarnAvailableDataNodeResp;
 import com.platon.datum.admin.grpc.entity.YarnQueryFilePositionResp;
+import com.platon.datum.admin.grpc.entity.template.BaseMetaDataOption;
 import com.platon.datum.admin.grpc.fighter.api.data.DataSvc;
 import com.platon.datum.admin.service.MetaDataService;
 import lombok.extern.slf4j.Slf4j;
@@ -242,6 +244,19 @@ public class MetaDataServiceImpl implements MetaDataService {
     public List<MetaData> listMetaDataUnPublishAttributeDataToken(String keyword, String userAddress) {
         List<MetaData> list = metaDataMapper.listMetaDataUnPublishAttributeDataToken(keyword, userAddress);
         return list;
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    @Override
+    public String getMetaDataOption(Integer id) {
+        MetaData metaData = metaDataMapper.selectById(id);
+        DataFile localDateFile = dataFileMapper.selectByFileId(metaData.getFileId());
+        CarrierEnum.OrigindataType origindataType = CarrierEnum.OrigindataType.forNumber(localDateFile.getFileType());
+        BaseMetaDataOption metaDataOption = metaDataClient.getMetaDataOption(origindataType, localDateFile, metaData);
+        return JSONUtil.toJsonStr(metaDataOption);
     }
 
     /**

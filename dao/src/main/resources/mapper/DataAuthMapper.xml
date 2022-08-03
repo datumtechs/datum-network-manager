@@ -41,7 +41,7 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_data_auth
+        from data_auth
         where auth_id = #{authId,jdbcType=VARCHAR}
     </select>
 
@@ -53,8 +53,8 @@
     <select id="selectDataAuthList" resultMap="BaseResultMap_With_FileName">
         SELECT lda.*,
                lma.meta_data_name AS resource_name
-        FROM local_data_auth AS lda
-                 LEFT JOIN local_meta_data AS lma ON lda.meta_data_id = lma.meta_data_id
+        FROM data_auth AS lda
+                 LEFT JOIN meta_data AS lma ON lda.meta_data_id = lma.meta_data_id
         <where>
             <if test="status != null and status == 1">
                 and lda.status = 0
@@ -72,31 +72,31 @@
     <select id="listAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_data_auth
+        from data_auth
     </select>
 
     <select id="selectFinishAuthCount" resultType="java.lang.Integer">
         SELECT COUNT(lda.auth_id)
-        FROM local_data_auth AS lda
+        FROM data_auth AS lda
         WHERE lda.`status` != 0
     </select>
 
 
     <select id="selectUnfinishAuthCount" resultType="java.lang.Integer">
         SELECT COUNT(lda.auth_id)
-        FROM local_data_auth AS lda
+        FROM data_auth AS lda
         WHERE lda.`status` = 0
     </select>
 
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete
-        from local_data_auth
+        from data_auth
         where auth_id = #{autId,jdbcType=VARCHAR}
     </delete>
 
     <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.DataAuth">
-        insert into local_data_auth (auth_id, meta_data_id, apply_user,
+        insert into data_auth (auth_id, meta_data_id, apply_user,
                                      user_type, auth_type, auth_value_amount,
                                      auth_value_start_at, auth_value_end_at, create_at,
                                      auth_at, status,
@@ -111,7 +111,7 @@
     </insert>
 
     <insert id="insertBatch" parameterType="java.util.List">
-        INSERT INTO local_data_auth (auth_id, meta_data_id, apply_user,
+        INSERT INTO data_auth (auth_id, meta_data_id, apply_user,
                                      user_type, auth_type, auth_value_amount,
                                      auth_value_start_at, auth_value_end_at, create_at,
                                      auth_at, status,
@@ -130,7 +130,7 @@
     </insert>
 
     <insert id="replaceBatch" parameterType="java.util.List">
-        REPLACE INTO local_data_auth (auth_id, meta_data_id, apply_user,
+        REPLACE INTO data_auth (auth_id, meta_data_id, apply_user,
                                       user_type, auth_type, auth_value_amount,
                                       auth_value_start_at, auth_value_end_at, create_at,
                                       auth_at, status,
@@ -149,7 +149,7 @@
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.platon.datum.admin.dao.entity.DataAuth">
-        update local_data_auth
+        update data_auth
         <set>
             <if test="metaDataId != null">
                 meta_data_id = #{metaDataId,jdbcType=VARCHAR},
@@ -195,7 +195,7 @@
     </update>
 
     <update id="updateByPrimaryKey" parameterType="com.platon.datum.admin.dao.entity.DataAuth">
-        update local_data_auth
+        update data_auth
         set meta_data_id        = #{metaDataId,jdbcType=VARCHAR},
             apply_user          = #{applyUser,jdbcType=VARCHAR},
             user_type           = #{userType,jdbcType=INTEGER},
@@ -215,7 +215,7 @@
     </update>
 
     <update id="updateExpireAuthData">
-        update local_data_auth
+        update data_auth
         set status  = 3,
             auth_at = current_timestamp()
         where auth_type = 1
@@ -225,8 +225,8 @@
 
     <select id="selectAuthIdListWithRevokedMetaData" resultType="java.lang.String">
         select a.auth_id
-        from local_data_auth a
-                 LEFT JOIN local_meta_data b on a.meta_data_id = b.meta_data_id
+        from data_auth a
+                 LEFT JOIN meta_data b on a.meta_data_id = b.meta_data_id
         where a.`status` = 0
           and (b.meta_data_id is null or b.`status` = 3)
     </select>

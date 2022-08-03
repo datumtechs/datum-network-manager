@@ -8,7 +8,7 @@ import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.*;
 import com.platon.datum.admin.dao.enums.TaskStatusEnum;
 import com.platon.datum.admin.service.TaskService;
-import com.platon.datum.admin.service.constant.ServiceConstant;
+import com.platon.datum.admin.service.entity.ServiceConstant;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 

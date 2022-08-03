@@ -89,6 +89,26 @@ public class MetaDataDetailResp {
     @ApiModelProperty(name = "metaDataColumnList", value = "源文件列信息")
     private List<MetaDataColumn> metaDataColumnList = new ArrayList<>();
 
+    //拥有者钱包地址
+    @ApiModelProperty(name = "user", value = "拥有者钱包地址")
+    private String user;
+    @ApiModelProperty(name = "userType", value = "用户类型：1-eth，2-alaya，3-platon")
+    private Integer userType;
+    //表示该元数据是 普通数据 还是 模型数据的元数据 (0: 未定义; 1: 普通数据元数据; 2: 模型数据元数据)
+    @ApiModelProperty(name = "metaDataType", value = "表示该元数据是 普通数据 还是 模型数据的元数据 (0: 未定义; 1: 普通数据元数据; 2: 模型数据元数据)")
+    private Integer metaDataType;
+
+    @ApiModelProperty(name = "usage", value = "用法：1-明文，2-密文，3-都支持")
+    private Integer usage;
+
+    @ApiModelProperty(name = "dataTokenAddress", value = "绑定后的无属性数据凭证地址，执行绑定动作前该字段都是空的")
+    private String dataTokenAddress;
+
+    @ApiModelProperty(name = "attributeDataTokenAddress", value = "绑定后的有属性数据凭证地址，执行绑定动作前该字段都是空的")
+    private String attributeDataTokenAddress;
+    //v0.4.0源数据的存储位置类型 (组织本地服务器、远端服务器、云等)
+    private Integer locationType;
+
     public static MetaDataDetailResp from(DataFile dataFile, MetaData metaData) {
         if (dataFile == null) {
             return null;
@@ -114,6 +134,13 @@ public class MetaDataDetailResp {
         }
         resp.setRecCreateTime(metaData.getRecCreateTime() == null ? null : LocalDateTimeUtil.getTimestamp(metaData.getRecCreateTime()));
         resp.setRecUpdateTime(metaData.getRecUpdateTime() == null ? null : LocalDateTimeUtil.getTimestamp(metaData.getRecUpdateTime()));
+        resp.setUser(metaData.getUser());
+        resp.setUserType(metaData.getUserType());
+        resp.setMetaDataType(metaData.getMetaDataType());
+        resp.setUsage(metaData.getUsage());
+        resp.setDataTokenAddress(metaData.getDataTokenAddress());
+        resp.setAttributeDataTokenAddress(metaData.getAttributeDataTokenAddress());
+        resp.setLocationType(dataFile.getLocationType());
         return resp;
     }
 }

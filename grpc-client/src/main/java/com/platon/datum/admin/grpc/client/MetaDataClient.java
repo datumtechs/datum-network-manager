@@ -18,6 +18,7 @@ import com.platon.datum.admin.grpc.carrier.types.Metadata;
 import com.platon.datum.admin.grpc.channel.SimpleChannelManager;
 import com.platon.datum.admin.grpc.common.constant.CarrierEnum;
 import com.platon.datum.admin.grpc.constant.GrpcConstant;
+import com.platon.datum.admin.grpc.entity.template.BaseMetaDataOption;
 import com.platon.datum.admin.grpc.entity.template.ConsumeOption2;
 import com.platon.datum.admin.grpc.entity.template.MetaDataOption1;
 import io.grpc.Channel;
@@ -68,7 +69,8 @@ public class MetaDataClient {
 
         //2.拼装request
         //2.1
-        MetaDataOption1 metaDataOption = getMetaDataOption(localDateFile, metaData);
+        CarrierEnum.OrigindataType origindataType = CarrierEnum.OrigindataType.forNumber(localDateFile.getFileType());
+        BaseMetaDataOption metaDataOption = getMetaDataOption(origindataType, localDateFile, metaData);
         //2.2文件元数据摘要
         Metadata.MetadataSummary metadataSummary = Metadata.MetadataSummary.newBuilder()
                 .setMetadataId("") //必须有个值
@@ -77,13 +79,13 @@ public class MetaDataClient {
                 .setDataHash(localDateFile.getDataHash())//原始数据内容的 sha256 的Hash
                 .setDesc(metaData.getDesc())
                 .setLocationType(CarrierEnum.DataLocationType.forNumber(localDateFile.getLocationType()))
-                .setDataType(CarrierEnum.OrigindataType.forNumber(localDateFile.getFileType()))
+                .setDataType(origindataType)
                 .setIndustry(String.valueOf(metaData.getIndustry()))
                 .setState(CarrierEnum.MetadataState.forNumber(metaData.getStatus()))
                 .setMetadataOption(JSONUtil.toJsonStr(metaDataOption))//元数据选项 (json字符串, 根据 data_type 的值来配对对应的模板)
                 .setUser(metaData.getUser())
                 .setUserType(CarrierEnum.UserType.forNumber(metaData.getUserType()))
-                .setSign(ByteString.copyFromUtf8(metaData.getSign()))
+                .setSign(metaData.getSign() == null ? ByteString.EMPTY : ByteString.copyFromUtf8(metaData.getSign()))
                 .build();
         //2.3构建完整的请求信息
         MetaDataRpcApi.PublishMetadataRequest request = MetaDataRpcApi.PublishMetadataRequest.newBuilder()
@@ -196,7 +198,8 @@ public class MetaDataClient {
 
         //2.拼装request
         //2.1
-        MetaDataOption1 metaDataOption = getMetaDataOption(localDateFile, metaData);
+        CarrierEnum.OrigindataType origindataType = CarrierEnum.OrigindataType.forNumber(localDateFile.getFileType());
+        BaseMetaDataOption metaDataOption = getMetaDataOption(origindataType, localDateFile, metaData);
         //2.2文件元数据摘要
         Metadata.MetadataSummary metadataSummary = Metadata.MetadataSummary.newBuilder()
                 .setMetadataId(metaData.getMetaDataId()) //必须有个值
@@ -205,7 +208,7 @@ public class MetaDataClient {
                 .setDataHash(localDateFile.getDataHash())//原始数据内容的 sha256 的Hash
                 .setDesc(metaData.getDesc())
                 .setLocationType(CarrierEnum.DataLocationType.forNumber(localDateFile.getLocationType()))
-                .setDataType(CarrierEnum.OrigindataType.forNumber(localDateFile.getFileType()))
+                .setDataType(origindataType)
                 .setIndustry(String.valueOf(metaData.getIndustry()))
                 .setState(CarrierEnum.MetadataState.forNumber(metaData.getStatus()))
                 .setMetadataOption(JSONUtil.toJsonStr(metaDataOption))//元数据选项 (json字符串, 根据 data_type 的值来配对对应的模板)
@@ -227,7 +230,26 @@ public class MetaDataClient {
         }
     }
 
-    private MetaDataOption1 getMetaDataOption(DataFile localDateFile, MetaData metaData) {
+    public BaseMetaDataOption getMetaDataOption(CarrierEnum.OrigindataType origindataType, DataFile localDateFile, MetaData metaData) {
+        BaseMetaDataOption metaDataOption = null;
+        switch (origindataType) {
+            case OrigindataType_CSV:
+                metaDataOption = getMetaDataOption1(localDateFile, metaData);
+                break;
+            case UNRECOGNIZED:
+            case OrigindataType_DIR:
+            case OrigindataType_TXT:
+            case OrigindataType_XLS:
+            case OrigindataType_JSON:
+            case OrigindataType_XLSX:
+            case OrigindataType_BINARY:
+            case OrigindataType_Unknown:
+                throw new BizException(Errors.SysException, "Unsupported dataType:" + origindataType);
+        }
+        return metaDataOption;
+    }
+
+    private MetaDataOption1 getMetaDataOption1(DataFile localDateFile, MetaData metaData) {
         MetaDataOption1 metaDataOption1 = new MetaDataOption1();
         metaDataOption1.setOriginId(localDateFile.getFileId());
         metaDataOption1.setDataPath(localDateFile.getFilePath());

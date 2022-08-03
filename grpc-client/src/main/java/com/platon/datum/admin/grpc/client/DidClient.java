@@ -54,26 +54,26 @@ public class DidClient {
      * @param pctId      组织名称
      * @param claim      证书材料
      */
-    public String createVC(String ip, int port, String identityId, int pctId, String claim) {
-        log.debug("从carrier申请入网，identityId:{}", identityId);
-        //1.获取rpc连接
-        ManagedChannel channel = channelManager.buildChannel(ip, port);
-        //2.拼装request
-        DidRpcApi.CreateVCRequest request = DidRpcApi.CreateVCRequest.newBuilder()
-                .setDid(identityId)
-                .setPctId(pctId)
-                .setClaim(claim)
-                .build();
-
-        //3.调用rpc,获取response
-        DidRpcApi.CreateVCResponse response = DIDServiceGrpc.newBlockingStub(channel).createVC(request);
-        //4.处理response
-        if (response == null) {
-            throw new CallGrpcServiceFailed();
-        } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
-            throw new CallGrpcServiceFailed(response.getMsg());
-        }
-        return response.getVc();
-    }
+//    public String createVC(String ip, int port, String identityId, int pctId, String claim) {
+//        log.debug("从carrier申请入网，identityId:{}", identityId);
+//        //1.获取rpc连接
+//        ManagedChannel channel = channelManager.buildChannel(ip, port);
+//        //2.拼装request
+//        DidRpcApi.CreateVCRequest request = DidRpcApi.CreateVCRequest.newBuilder()
+//                .setDid(identityId)
+//                .setPctId(pctId)
+//                .setClaim(claim)
+//                .build();
+//
+//        //3.调用rpc,获取response
+//        DidRpcApi.CreateVCResponse response = DIDServiceGrpc.newBlockingStub(channel).createVC(request);
+//        //4.处理response
+//        if (response == null) {
+//            throw new CallGrpcServiceFailed();
+//        } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
+//            throw new CallGrpcServiceFailed(response.getMsg());
+//        }
+//        return response.getVc();
+//    }
 
 }

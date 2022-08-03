@@ -142,3 +142,14 @@ pinata-url: https://api.pinata.cloud/
 
 #无属性数据凭证消耗量更新间隔，单位分钟
 dataToken-updateFee-interval: 5
+
+# ==================================== conf for grpc =====================================
+grpc:
+  server:
+    port: 9091
+    in-process-name: datum-admin-server
+    max-inbound-message-size: 1073741824
+  client:
+    #允许客户端在同一应用程序内使用以下配置连接到服务器
+    inProcess:
+      address: in-process:datum-admin-server

@@ -105,7 +105,7 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
     @Override
     public void apply(String approve, String remark, String material, String desc) {
         String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
-        String txHash = didClient.createVC("", 0, "", 1, "");
+//        String txHash = didClient.createVC("", 0, "", 1, "");
         //TODO 保存提案信息
     }
 }

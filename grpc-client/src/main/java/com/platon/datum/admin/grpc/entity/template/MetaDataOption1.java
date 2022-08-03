@@ -49,7 +49,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class MetaDataOption1 {
+public class MetaDataOption1 extends BaseMetaDataOption{
 
     //原始文件ID
     private String originId;

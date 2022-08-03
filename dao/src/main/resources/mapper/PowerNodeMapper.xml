@@ -53,7 +53,7 @@
     <select id="queryPowerNodeDetails" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_power_node
+        from power_node
         where node_id = #{nodeId, jdbcType=VARCHAR}
     </select>
 
@@ -61,14 +61,14 @@
     <select id="findLocalPowerNodeByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_power_node
+        from power_node
         where node_name = #{nodeName,jdbcType=VARCHAR}
     </select>
 
     <!-- 校验计算节点名称 -->
     <select id="checknodeName" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(1)
-        from local_power_node
+        from power_node
         where node_name = #{nodeName, jdbcType=VARCHAR}
     </select>
 
@@ -76,7 +76,7 @@
     <select id="queryPowerNodeList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_power_node
+        from power_node
         where 1 = 1
         <if test="keyword != null and keyword != ''">
             and node_name like concat('%', #{keyword, jdbcType=VARCHAR}, '%')
@@ -88,20 +88,20 @@
     <select id="queryPowerNodeListByStatus" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from local_power_node
+        from power_node
         where power_status = #{status}
     </select>
 
     <!-- 根据节点id删除计算节点 -->
     <delete id="deletePowerNode" parameterType="java.lang.String">
         delete
-        from local_power_node
+        from power_node
         where node_id = #{nodeId, jdbcType=VARCHAR}
     </delete>
 
     <!-- 插入计算节点数据 -->
     <insert id="insertPowerNode" parameterType="com.platon.datum.admin.dao.entity.PowerNode">
-        insert into local_power_node
+        insert into power_node
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="nodeId != null">
                 node_id,
@@ -224,7 +224,7 @@
 
     <!-- 根据节点id修改计算节点数据 -->
     <update id="updatePowerNodeByNodeId" parameterType="com.platon.datum.admin.dao.entity.PowerNode">
-        update local_power_node
+        update power_node
         <set>
             <if test="nodeName != null">
                 node_name = #{nodeName, jdbcType=VARCHAR},
@@ -287,7 +287,7 @@
     <!-- 初始化新计算节点的基本信息，如果相同的key则更新基本信息（不包括节点名称）-->
     <insert id="initNewPowerNodeBatch" parameterType="com.platon.datum.admin.dao.entity.PowerNode">
         <foreach collection="list" item="item" separator=";">
-            INSERT INTO local_power_node (node_id,
+            INSERT INTO power_node (node_id,
                                           node_name,
                                           internal_ip,
                                           internal_port,
@@ -318,7 +318,7 @@
     <update id="updateResourceInfoBatchByNodeIdAndPowerId"
             parameterType="com.platon.datum.admin.dao.entity.PowerNode">
         <foreach collection="list" item="item" separator=";">
-            update local_power_node
+            update power_node
             set power_id       = #{item.powerId, jdbcType=VARCHAR},
                 power_status   = #{item.powerStatus, jdbcType=INTEGER},
                 memory         = #{item.memory, jdbcType=BIGINT},
@@ -334,7 +334,7 @@
     </update>
 
     <update id="updateLocalPowerNodeName">
-        update local_power_node
+        update power_node
         set node_name = #{nodeName,jdbcType=VARCHAR}
         where node_Id = #{nodeId,jdbcType=VARCHAR}
     </update>
@@ -360,7 +360,7 @@
              ) t1,
              (
                  SELECT lpd.core, lpd.memory, lpd.bandwidth
-                 FROM local_power_node lpd
+                 FROM power_node lpd
                  WHERE lpd.node_id = #{nodeId, jdbcType=VARCHAR}
              ) t2
     </select>

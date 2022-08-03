@@ -1,5 +1,6 @@
 package com.platon.datum.admin.dao.entity;
 
+import cn.hutool.json.JSONUtil;
 import com.platon.datum.admin.dao.BaseDomain;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -89,4 +90,17 @@ public class ApplyRecord extends BaseDomain {
      */
     @ApiModelProperty("申请材料的描述")
     private String materialDesc;
+
+    public static void main(String[] args) {
+        ApplyRecord applyRecord = new ApplyRecord();
+        applyRecord.setApplyOrg("申请证书的组织");
+        applyRecord.setApproveOrg("审批的组织");
+        applyRecord.setStartTime(LocalDateTime.now());//申请时间
+        applyRecord.setEndTime(LocalDateTime.now());//审批时间
+        applyRecord.setApplyRemark("申请的备注");
+        applyRecord.setApproveRemark("审批的备注");
+        applyRecord.setMaterial("申请材料的ipfs url");
+        applyRecord.setMaterialDesc("审批材料的描述");
+        System.out.println(JSONUtil.toJsonStr(applyRecord));
+    }
 }
