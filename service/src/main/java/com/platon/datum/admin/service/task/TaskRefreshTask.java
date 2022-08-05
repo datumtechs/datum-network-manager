@@ -58,7 +58,7 @@ public class TaskRefreshTask {
     @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${TaskRefreshTask.fixedDelay}")
     public void task() {
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         log.debug("刷新本组织相关任务详情定时任务开始>>>");

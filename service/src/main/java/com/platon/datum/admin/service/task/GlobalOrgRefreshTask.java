@@ -38,7 +38,7 @@ public class GlobalOrgRefreshTask {
     @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${GlobalOrgRefreshTask.fixedDelay}")
     public void task() {
-        if (OrgCache.localOrgNotFound()) {
+        if (OrgCache.identityIdNotFound()) {
             return;
         }
         log.debug("刷新全网组织定时任务开始>>>");

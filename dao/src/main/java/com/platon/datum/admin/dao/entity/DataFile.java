@@ -41,14 +41,6 @@ public class DataFile extends BaseDomain {
     //源文件列信息
     private List<MetaDataColumn> metaDataColumnList;
 
-    public void addLocalMetaDataColumn(MetaDataColumn metaDataColumn){
-        if(metaDataColumnList ==null){
-            metaDataColumnList = new ArrayList<>();
-        }
-        metaDataColumnList.add(metaDataColumn);
-    }
-
-
     /**
      * // 原始数据类型 (文件类型)
      * enum OrigindataType {

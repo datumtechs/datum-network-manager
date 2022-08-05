@@ -17,6 +17,10 @@ import com.platon.datum.admin.grpc.client.DidClient;
 import com.platon.datum.admin.grpc.client.YarnClient;
 import com.platon.datum.admin.grpc.entity.YarnGetNodeInfoResp;
 import com.platon.datum.admin.service.UserService;
+import com.platon.datum.admin.service.web3j.Web3jManager;
+import com.platon.protocol.Web3j;
+import com.platon.protocol.core.DefaultBlockParameterName;
+import com.platon.protocol.core.methods.response.PlatonGetBalance;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -59,6 +65,9 @@ public class UserServiceImpl implements UserService {
     @Resource
     private DidClient didClient;
 
+    @Resource
+    private Web3jManager web3jManager;
+
     @Transactional
     @Override
     public String applyOrgIdentity(String orgName) {
@@ -72,8 +81,19 @@ public class UserServiceImpl implements UserService {
         Org localOrg = getCarrierInfo();
         //### 1.2 调用调度服务接口生成见证人钱包
         String walletAddress = yarnClient.generateObServerProxyWalletAddress(localOrg.getCarrierIp(), localOrg.getCarrierPort());
+        Web3j web3j = web3jManager.getWeb3j();
+        try {
+            PlatonGetBalance platonGetBalance = web3j.platonGetBalance(walletAddress, DefaultBlockParameterName.LATEST).send();
+            BigInteger balance = platonGetBalance.getBalance();
+            if (balance.intValue() <= 0) {
+                throw new BizException(Errors.InsufficientWalletBalance, "Insufficient wallet balance:" + walletAddress);
+            }
+        } catch (IOException e) {
+            throw new BizException(Errors.SysException, e);
+        }
         localOrg.setObserverProxyWalletAddress(walletAddress);
         //### 2.新建local org并入库
+        //TODO 判断did是否已经创建过
         String did = didClient.createDID(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         log.debug("申请did：" + did);
         localOrg.setIdentityId(did);

@@ -152,11 +152,11 @@ public class VoteContractImpl implements VoteContract {
             });
             return supplier.apply(dataTokenTemplate).send();
         } catch (SocketTimeoutException e) {
-            throw new BizException(Errors.CALL_RPC_READ_TIMEOUT, e);
+            throw new BizException(Errors.CallRpcReadTimeout, e);
         } catch (IOException e) {
-            throw new BizException(Errors.CALL_RPC_NET_ERROR, e);
+            throw new BizException(Errors.CallRpcNetError, e);
         } catch (Exception e) {
-            throw new BizException(Errors.CALL_RPC_ERROR, e);
+            throw new BizException(Errors.CallRpcError, e);
         }
     }
 }

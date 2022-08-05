@@ -50,7 +50,7 @@ public class MetaDataStatusRefreshTask {
     @Scheduled(fixedDelayString = "${MetaDataStatusRefreshTask.fixedDelay}")
     @Transactional(rollbackFor = Exception.class)
     public void task() {
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         log.debug("刷新本地元数据状态定时任务开始>>>");

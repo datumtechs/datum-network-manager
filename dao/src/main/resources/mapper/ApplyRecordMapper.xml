@@ -6,7 +6,7 @@
         <!--@Table apply_record-->
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="authority_business_id" jdbcType="INTEGER" property="authorityBusinessId"/>
-        <result column="certificate_type" jdbcType="TINYINT" property="certificateType"/>
+        <result column="pct_id" jdbcType="TINYINT" property="pctId"/>
         <result column="apply_org" jdbcType="VARCHAR" property="applyOrg"/>
         <result column="approve_org" jdbcType="VARCHAR" property="approveOrg"/>
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
@@ -16,12 +16,17 @@
         <result column="approve_remark" jdbcType="VARCHAR" property="approveRemark"/>
         <result column="material" jdbcType="VARCHAR" property="material"/>
         <result column="material_desc" jdbcType="VARCHAR" property="materialDesc"/>
+        <result column="vc" jdbcType="VARCHAR" property="vc"/>
+        <result column="expiration_date" jdbcType="VARCHAR" property="expirationDate"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="context" jdbcType="VARCHAR" property="context"/>
+        <result column="claim" jdbcType="VARCHAR" property="claim"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, authority_business_id, certificate_type, apply_org, approve_org, start_time,end_time,
-        progress, apply_remark, approve_remark, material, material_desc
+        id, authority_business_id, pct_id, apply_org, approve_org, start_time,end_time,
+        progress, apply_remark, approve_remark, material, material_desc,vc,expiration_date,`status`,`context`,claim
     </sql>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -31,19 +36,6 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.platon.datum.admin.dao.entity.ApplyRecord"
-            useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into apply_record (authority_business_id, certificate_type,
-                                  apply_org, approve_org, start_time,
-                                  progress, apply_remark, approve_remark,
-                                  material, material_desc)
-        values (#{authorityBusinessId,jdbcType=INTEGER}, #{certificateType,jdbcType=TINYINT},
-                #{applyOrg,jdbcType=VARCHAR}, #{approveOrg,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP},
-                #{progress,jdbcType=INTEGER}, #{applyRemark,jdbcType=VARCHAR}, #{approveRemark,jdbcType=VARCHAR},
-                #{material,jdbcType=VARCHAR}, #{materialDesc,jdbcType=VARCHAR})
-    </insert>
-
     <insert id="insertSelective" keyColumn="id" keyProperty="id"
             parameterType="com.platon.datum.admin.dao.entity.ApplyRecord" useGeneratedKeys="true">
         <!--@mbg.generated-->
@@ -52,8 +44,8 @@
             <if test="authorityBusinessId != null">
                 authority_business_id,
             </if>
-            <if test="certificateType != null">
-                certificate_type,
+            <if test="pctId != null">
+                pct_id,
             </if>
             <if test="applyOrg != null">
                 apply_org,
@@ -79,13 +71,28 @@
             <if test="materialDesc != null">
                 material_desc,
             </if>
+            <if test="vc != null">
+                vc,
+            </if>
+            <if test="expirationDate != null">
+                expiration_date,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="context != null">
+                context,
+            </if>
+            <if test="claim != null">
+                claim,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="authorityBusinessId != null">
                 #{authorityBusinessId,jdbcType=INTEGER},
             </if>
-            <if test="certificateType != null">
-                #{certificateType,jdbcType=TINYINT},
+            <if test="pctId != null">
+                #{pctId,jdbcType=TINYINT},
             </if>
             <if test="applyOrg != null">
                 #{applyOrg,jdbcType=VARCHAR},
@@ -111,6 +118,21 @@
             <if test="materialDesc != null">
                 #{materialDesc,jdbcType=VARCHAR},
             </if>
+            <if test="vc != null">
+                #{vc,jdbcType=VARCHAR},
+            </if>
+            <if test="expirationDate != null">
+                #{expirationDate},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="context != null">
+                #{context},
+            </if>
+            <if test="claim != null">
+                #{claim},
+            </if>
         </trim>
     </insert>
 
@@ -121,8 +143,8 @@
             <if test="authorityBusinessId != null">
                 authority_business_id = #{authorityBusinessId,jdbcType=INTEGER},
             </if>
-            <if test="certificateType != null">
-                certificate_type = #{certificateType,jdbcType=TINYINT},
+            <if test="pctId != null">
+                pct_id = #{pctId,jdbcType=TINYINT},
             </if>
             <if test="applyOrg != null">
                 apply_org = #{applyOrg,jdbcType=VARCHAR},
@@ -148,23 +170,22 @@
             <if test="materialDesc != null">
                 material_desc = #{materialDesc,jdbcType=VARCHAR},
             </if>
+            <if test="vc != null">
+               vc =  #{vc,jdbcType=VARCHAR},
+            </if>
+            <if test="expirationDate != null">
+                expiration_date = #{expirationDate},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="context != null">
+                `context` = #{context},
+            </if>
+            <if test="claim != null">
+                `claim` = #{claim},
+            </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-
-    <update id="updateByPrimaryKey" parameterType="com.platon.datum.admin.dao.entity.ApplyRecord">
-        <!--@mbg.generated-->
-        update apply_record
-        set authority_business_id = #{authorityBusinessId,jdbcType=INTEGER},
-            certificate_type      = #{certificateType,jdbcType=TINYINT},
-            apply_org             = #{applyOrg,jdbcType=VARCHAR},
-            approve_org           = #{approveOrg,jdbcType=VARCHAR},
-            start_time            = #{startTime,jdbcType=TIMESTAMP},
-            progress              = #{progress,jdbcType=INTEGER},
-            apply_remark          = #{applyRemark,jdbcType=VARCHAR},
-            approve_remark        = #{approveRemark,jdbcType=VARCHAR},
-            material              = #{material,jdbcType=VARCHAR},
-            material_desc         = #{materialDesc,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
@@ -206,6 +227,16 @@
     <select id="selectApproveCount" resultType="int">
         select count(*)
         from apply_record
-        where approve_org = #{approveOrg} and progress = 1
+        where approve_org = #{approveOrg}
+          and progress = 1
+    </select>
+
+    <select id="selectEffectiveByApplyOrgAndApproveOrg" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from apply_record
+        where apply_org = #{applyOrg}
+          and approve_org = #{approveOrg}
+          and status = 1
     </select>
 </mapper>

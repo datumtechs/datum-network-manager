@@ -34,7 +34,7 @@ public class SeedNodeRefreshTask {
     @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${SeedNodeRefreshTask.fixedDelay}")
     public void refreshSeedNode(){
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         log.debug("刷新种子节点定时任务开始>>>");

@@ -40,7 +40,7 @@ public class DataTokenStatusRefreshTask {
 
     @PostConstruct
     public void init() {
-        web3jContainer = web3jManager.getWeb3jContainer(this);
+        web3jContainer = web3jManager.subscribe(this);
     }
 
     /**
@@ -49,7 +49,7 @@ public class DataTokenStatusRefreshTask {
     @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${DataTokenStatusRefreshTask.fixedDelay}")
     public void refreshPublishingDataToken() {
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         log.debug("刷新数据凭证[发布状态]定时任务开始>>>");
@@ -113,7 +113,7 @@ public class DataTokenStatusRefreshTask {
     @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${DataTokenStatusRefreshTask.fixedDelay}")
     public void refreshPricingDataToken() {
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         log.debug("刷新数据凭证[定价状态]定时任务开始>>>");

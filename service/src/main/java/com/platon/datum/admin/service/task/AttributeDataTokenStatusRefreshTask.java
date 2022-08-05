@@ -42,7 +42,7 @@ public class AttributeDataTokenStatusRefreshTask {
 
     @PostConstruct
     public void init() {
-        web3jContainer = web3jManager.getWeb3jContainer(this);
+        web3jContainer = web3jManager.subscribe(this);
     }
 
     /**
@@ -50,7 +50,7 @@ public class AttributeDataTokenStatusRefreshTask {
      */
     @Scheduled(fixedDelayString = "${AttributeDataTokenStatusRefreshTask.fixedDelay}")
     public void refreshPublishingDataToken() {
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         log.debug("刷新有属性数据凭证[发布状态]定时任务开始>>>");

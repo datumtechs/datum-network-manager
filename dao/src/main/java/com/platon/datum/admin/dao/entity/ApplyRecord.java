@@ -32,10 +32,10 @@ public class ApplyRecord extends BaseDomain {
     private Integer authorityBusinessId;
 
     /**
-     * 证书类型：1-可信任证书
+     * 证书模板pctId
      */
-    @ApiModelProperty("证书类型：1-可信任证书")
-    private Byte certificateType;
+    @ApiModelProperty("证书模板pctId")
+    private Integer pctId;
 
     /**
      * 发起申请的组织
@@ -90,6 +90,36 @@ public class ApplyRecord extends BaseDomain {
      */
     @ApiModelProperty("申请材料的描述")
     private String materialDesc;
+
+    /**
+     * vc json内容
+     */
+    @ApiModelProperty("vc json内容")
+    private String vc;
+
+    /**
+     * 过期时间
+     */
+    @ApiModelProperty("过期时间")
+    private String expirationDate;
+
+    /**
+     * 证书状态：0-无效，1-有效
+     */
+    @ApiModelProperty("证书状态：0-无效，1-有效，2-待生效")
+    private Integer status;
+
+    /**
+     * context
+     */
+    @ApiModelProperty("context")
+    private String context;
+
+    /**
+     * claim
+     */
+    @ApiModelProperty("claim")
+    private String claim;
 
     public static void main(String[] args) {
         ApplyRecord applyRecord = new ApplyRecord();

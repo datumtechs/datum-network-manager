@@ -48,9 +48,6 @@ public class CarrierStatusRefreshTask {
     @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${CarrierStatusRefreshTask.fixedDelay}")
     public void task() {
-        if(OrgCache.localOrgNotFound()){
-            return;
-        }
         log.debug("刷新本组织调度服务状态定时任务开始>>>");
         ConsulClient consulClient = new ConsulClient(consulHost, consulPort);
         Org org = orgMapper.select();

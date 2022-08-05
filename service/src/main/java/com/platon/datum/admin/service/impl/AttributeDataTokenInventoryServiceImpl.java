@@ -59,7 +59,7 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
 
     @PostConstruct
     public void init() throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
-        web3jContainer = web3jManager.getWeb3jContainer(this);
+        web3jContainer = web3jManager.subscribe(this);
         credentials = Credentials.create(Keys.createEcKeyPair());
     }
 

@@ -21,13 +21,7 @@
         </dependency>
         <dependency>
             <groupId>com.platon.datum</groupId>
-            <artifactId>admin-common</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.platon.datum</groupId>
-            <artifactId>admin-dao</artifactId>
+            <artifactId>admin-service</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

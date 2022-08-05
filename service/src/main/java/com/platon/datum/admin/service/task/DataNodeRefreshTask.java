@@ -30,7 +30,7 @@ public class DataNodeRefreshTask {
     @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${DataNodeRefreshTask.fixedDelay}")
     public void task() {
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         log.debug("刷新数据节点列表定时任务开始>>>");

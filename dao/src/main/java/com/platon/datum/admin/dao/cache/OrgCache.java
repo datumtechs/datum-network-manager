@@ -33,9 +33,9 @@ public class OrgCache {
         return org.getIdentityId();
     }
 
-    public static boolean localOrgNotFound() {
+    public static boolean identityIdNotFound() {
         Org org = (Org) AppContext.get(LOCAL_ORG);
-        if (org == null) {
+        if (org == null || StringUtils.isBlank(org.getIdentityId())) {
             return true;
         }
         return false;

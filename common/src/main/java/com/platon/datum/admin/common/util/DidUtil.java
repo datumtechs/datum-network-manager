@@ -1,6 +1,9 @@
 package com.platon.datum.admin.common.util;
 
 import com.platon.bech32.Bech32;
+import network.platon.did.common.config.DidConfig;
+import network.platon.did.sdk.constant.DidConst;
+import network.platon.did.sdk.utils.DidUtils;
 
 import java.util.Objects;
 
@@ -10,9 +13,9 @@ import java.util.Objects;
  * @Version
  * @Desc id 工具类
  */
-public class DidUtil {
+public class DidUtil extends DidUtils {
 
-    public static final String DID_PREFIX = "did:pid:";
+    public static final String DID_PREFIX = DidConst.DID_PREFIX;
 
     public static String latAddressToDid(String address) {
         Objects.requireNonNull(address);

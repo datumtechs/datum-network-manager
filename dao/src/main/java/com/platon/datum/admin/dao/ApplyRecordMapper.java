@@ -1,6 +1,7 @@
 package com.platon.datum.admin.dao;
 
 import com.platon.datum.admin.dao.entity.ApplyRecord;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,13 +14,9 @@ import java.util.List;
 public interface ApplyRecordMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(ApplyRecord record);
-
     int insertSelective(ApplyRecord record);
 
     int updateByPrimaryKeySelective(ApplyRecord record);
-
-    int updateByPrimaryKey(ApplyRecord record);
 
     /**
      * 查询出属于我的认证申请列表，根据认证发起时间倒序
@@ -39,6 +36,7 @@ public interface ApplyRecordMapper {
 
     /**
      * 查询出本组织已获取的认证
+     *
      * @param applyOrg
      * @return
      */
@@ -46,6 +44,7 @@ public interface ApplyRecordMapper {
 
     /**
      * 查询出本组织已发起的申请
+     *
      * @param applyOrg
      * @return
      */
@@ -55,4 +54,7 @@ public interface ApplyRecordMapper {
      * 查询出本组织已发出的信任证书
      */
     int selectApproveCount(String approveOrg);
+
+    ApplyRecord selectEffectiveByApplyOrgAndApproveOrg(@Param("applyOrg") String applyOrg,
+                                                       @Param("approveOrg") String approveOrg);
 }

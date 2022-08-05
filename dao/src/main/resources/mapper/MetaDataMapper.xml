@@ -72,13 +72,17 @@
     <resultMap id="BaseResultMap_for_list" type="com.platon.datum.admin.dao.entity.MetaData"
                extends="BaseResultMap">
         <result column="size" property="dynamicFields.size" javaType="long" jdbcType="BIGINT"/>
+        <result column="location_type" property="dynamicFields.locationType" javaType="int" jdbcType="INTEGER"/>
+        <result column="data_hash" property="dynamicFields.dataHash" javaType="java.lang.String" jdbcType="VARCHAR"/>
         <result column="task_count" property="dynamicFields.taskCount" javaType="int" jdbcType="INTEGER"/>
+        <result column="data_token_id" property="dynamicFields.dataTokenId" javaType="int" jdbcType="INTEGER"/>
         <result column="data_token_name" property="dynamicFields.dataTokenName" javaType="java.lang.String"
                 jdbcType="VARCHAR"/>
         <result column="data_token_symbol" property="dynamicFields.dataTokenSymbol" javaType="java.lang.String"
                 jdbcType="VARCHAR"/>
         <result column="data_token_status" property="dynamicFields.dataTokenStatus" javaType="java.lang.Integer"
                 jdbcType="INTEGER"/>
+        <result column="attribute_data_token_id" property="dynamicFields.attributeDataTokenId" javaType="int" jdbcType="INTEGER"/>
         <result column="attribute_data_token_name" property="dynamicFields.attributeDataTokenName"
                 javaType="java.lang.String"
                 jdbcType="VARCHAR"/>
@@ -93,10 +97,14 @@
     <select id="listMetaData" parameterType="java.lang.String" resultMap="BaseResultMap_for_list">
         SELECT md.*,
                df.size,
+               df.location_type,
+               df.data_hash,
                ifnull(t.task_count, 0) as task_count,
+               dt.id                   as data_token_id,
                dt.name                 as data_token_name,
                dt.symbol               as data_token_symbol,
                dt.status               as data_token_status,
+               adt.id                  as attribute_data_token_id,
                adt.name                as attribute_data_token_name,
                adt.symbol              as attribute_data_token_symbol,
                adt.status              as attribute_data_token_status
@@ -186,7 +194,7 @@
                 publish_time                 = #{item.publishTime,jdbcType=TIMESTAMP},
                 rec_update_time              = #{item.recUpdateTime,jdbcType=TIMESTAMP},
                 data_token_address           = #{item.dataTokenAddress},
-                attribute_data_token_address = #{item.attributeDataTokenAddress},
+                attribute_data_token_address = #{item.attributeDataTokenAddress}
                 where meta_data_id = #{item.metaDataId} and `status` in (0, 1, 2, 3, 101, 102, 103)
         </foreach>
     </update>

@@ -33,7 +33,7 @@ public class AttributeDataTokenInventoryRefreshTask {
      */
     @Scheduled(fixedDelayString = "${AttributeDataTokenStatusRefreshTask.fixedDelay}")
     public void refreshAttributeDataTokenInventoryTotal() {
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         log.debug("刷新有属性数据凭证库存定时任务开始>>>");

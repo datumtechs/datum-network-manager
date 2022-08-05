@@ -29,7 +29,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 通过该类可以获取web3j
- * 主要方法 {@link #getWeb3j()} {@link #getWeb3jContainer(Object)}
+ * 主要方法 {@link #getWeb3j()} {@link #subscribe(Object)}
  */
 
 @Slf4j
@@ -103,11 +103,11 @@ public class Web3jManager {
     }
 
     /**
-     * 主动获取weg3j连接容器，性能会比 {@link #getWeb3j()}好，因为{@link #getWeb3j()}每次需要获取锁
+     * 订阅weg3j连接，当web3j链接变更会自动更新，性能会比 {@link #getWeb3j()}好，因为{@link #getWeb3j()}每次需要获取锁
      *
      * @return
      */
-    public AtomicReference<Web3j> getWeb3jContainer(Object observer) {
+    public AtomicReference<Web3j> subscribe(Object observer) {
         AtomicReference<Web3j> web3jContainer = subscriptionMap.get(observer);
         if (web3jContainer == null) {
             web3jContainer = new AtomicReference<>();

@@ -253,6 +253,8 @@ public class MetaDataServiceImpl implements MetaDataService {
     @Override
     public String getMetaDataOption(Integer id) {
         MetaData metaData = metaDataMapper.selectById(id);
+        List<MetaDataColumn> columnList = metaDataColumnMapper.selectByLocalMetaDataDbIdToPublish(metaData.getId());
+        metaData.setMetaDataColumnList(columnList);
         DataFile localDateFile = dataFileMapper.selectByFileId(metaData.getFileId());
         CarrierEnum.OrigindataType origindataType = CarrierEnum.OrigindataType.forNumber(localDateFile.getFileType());
         BaseMetaDataOption metaDataOption = metaDataClient.getMetaDataOption(origindataType, localDateFile, metaData);

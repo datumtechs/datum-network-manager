@@ -80,7 +80,7 @@ public class MetaData extends BaseDomain {
     private String sign;
 
     @ApiModelProperty(name = "metaDataColumnList", value = "元数据的字段定义")
-    List<MetaDataColumn> metaDataColumnList;
+    List<MetaDataColumn> metaDataColumnList = new ArrayList<>();
 
 
     public void addLocalMetaDataColumn(MetaDataColumn metaDataColumn) {

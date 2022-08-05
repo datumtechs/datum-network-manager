@@ -31,7 +31,7 @@ public class AuthorityRefreshTask {
     @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${AuthorityRefreshTask.fixedDelay}")
     public void task() {
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         List<Authority> allAuthority = voteContract.getAllAuthority();

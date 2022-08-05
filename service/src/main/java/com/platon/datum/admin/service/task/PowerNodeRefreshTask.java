@@ -44,7 +44,7 @@ public class PowerNodeRefreshTask {
     @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${PowerNodeRefreshTask.fixedDelay}")
     public void task() {
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         log.debug("刷新本地算力节点的基本信息、状态、拥有的资源、被使用的资源，以及正在执行的任务定时任务开始>>>");

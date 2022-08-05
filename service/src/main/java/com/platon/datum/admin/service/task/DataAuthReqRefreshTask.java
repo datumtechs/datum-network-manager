@@ -47,7 +47,7 @@ public class DataAuthReqRefreshTask {
     @Transactional(rollbackFor = Exception.class)
     @Scheduled(fixedDelayString = "${DataAuthReqRefreshTask.fixedDelay}")
     public void task() {
-        if(OrgCache.localOrgNotFound()){
+        if(OrgCache.identityIdNotFound()){
             return;
         }
         log.debug("刷新数据授权申请(查询过期申请)定时任务开始>>>");
