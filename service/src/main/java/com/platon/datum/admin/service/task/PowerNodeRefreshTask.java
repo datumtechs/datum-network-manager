@@ -41,7 +41,7 @@ public class PowerNodeRefreshTask {
     @Resource
     private PowerClient powerClient;
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Throwable.class)
     @Scheduled(fixedDelayString = "${PowerNodeRefreshTask.fixedDelay}")
     public void task() {
         if(OrgCache.identityIdNotFound()){

@@ -88,7 +88,7 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
         return inventory;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Throwable.class)
     @Override
     public void refreshByTokenId(String tokenAddress, String tokenId) {
         ERC721Template erc721Template = load(tokenAddress);
@@ -102,7 +102,7 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
     }
 
     //主动刷新5次
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Throwable.class)
     @Override
     public void refresh5(String tokenAddress) {
         ERC721Template erc721Template = load(tokenAddress);
@@ -117,7 +117,7 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
     }
 
     //主动刷新1次
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Throwable.class)
     @Override
     public void refresh(String tokenAddress) {
         ERC721Template erc721Template = load(tokenAddress);

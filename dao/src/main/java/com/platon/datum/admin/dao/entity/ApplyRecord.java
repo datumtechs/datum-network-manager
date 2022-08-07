@@ -121,6 +121,46 @@ public class ApplyRecord extends BaseDomain {
     @ApiModelProperty("claim")
     private String claim;
 
+    /**
+     * 证书申请成功后是否被使用：0-未使用，1-已使用
+     */
+    @ApiModelProperty("证书申请成功后是否被使用：0-未使用，1-已使用")
+    private Integer used;
+
+    @Getter
+    public enum StatusEnum {
+        //证书状态：0-无效，1-有效，2-待生效
+        INVALID(0, "无效"),
+        VALID(1, "有效"),
+        TO_BE_EFFECTIVE(2, "待生效"),
+        ;
+
+        StatusEnum(int status, String desc) {
+            this.status = status;
+            this.desc = desc;
+        }
+
+        private int status;
+        private String desc;
+    }
+
+    @Getter
+    public enum ProgressEnum {
+        //申请进度：0-申请中，1-申请通过，2-申请失败
+        APPLYING(0, "申请中"),
+        AGREE(1, "申请通过"),
+        REJECT(2, "申请失败"),
+        ;
+
+        ProgressEnum(int status, String desc) {
+            this.status = status;
+            this.desc = desc;
+        }
+
+        private int status;
+        private String desc;
+    }
+
     public static void main(String[] args) {
         ApplyRecord applyRecord = new ApplyRecord();
         applyRecord.setApplyOrg("申请证书的组织");

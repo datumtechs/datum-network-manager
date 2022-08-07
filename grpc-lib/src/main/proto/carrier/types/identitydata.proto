@@ -13,7 +13,7 @@ import "common/constant/carrier_enum.proto";
 // IdentityData represents the stored data structure.
 message IdentityPB {
   string                        identity_id = 1;        // 组织的身份标识Id
-  common.constant.IdentityType  ideneity_type = 2;      // 组织的身份标识类型 (0: 未定义; 1: DID)
+  common.constant.IdentityType  identity_type = 2;      // 组织的身份标识类型 (0: 未定义; 1: DID)
   string                        node_id = 3;            // 组织的 p2p用的 nodeId
   string                        node_name = 4;          // 组织的名称
   string                        data_id = 5;            // 预留
@@ -32,7 +32,7 @@ message Organization  {
   string                        node_name = 1;          // 组织的名称
   string                        node_id = 2;            // 组织的 p2p用的 nodeId
   string                        identity_id = 3;        // 组织的身份标识Id
-  common.constant.IdentityType  ideneity_type = 4;      // 组织的身份标识类型 (0: 未定义; 1: DID)
+  common.constant.IdentityType  identity_type = 4;      // 组织的身份标识类型 (0: 未定义; 1: DID)
   common.constant.DataStatus    data_status = 5;        // the status of data for local storage, 1 means valid, 2 means invalid
   common.constant.CommonStatus  status = 6;             // the status of data for datacenter, 1 means valid, 2 means invalid
   // add by v 0.3.0

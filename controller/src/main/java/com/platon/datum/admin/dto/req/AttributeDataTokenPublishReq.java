@@ -24,6 +24,11 @@ public class AttributeDataTokenPublishReq {
 
     /********************** 合约信息 ************************/
 
+    @ApiModelProperty("拥有者")
+    //拥有者
+    @NotBlank
+    private String owner;
+
     @ApiModelProperty("名称，2-64个大小写英文及数字")
     //名称
     @NotBlank

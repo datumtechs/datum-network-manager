@@ -35,7 +35,7 @@ public class GlobalOrgRefreshTask {
     private DataSyncService dataSyncService;
 
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Throwable.class)
     @Scheduled(fixedDelayString = "${GlobalOrgRefreshTask.fixedDelay}")
     public void task() {
         if (OrgCache.identityIdNotFound()) {

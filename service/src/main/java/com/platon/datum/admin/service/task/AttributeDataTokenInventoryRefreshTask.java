@@ -39,6 +39,7 @@ public class AttributeDataTokenInventoryRefreshTask {
         log.debug("刷新有属性数据凭证库存定时任务开始>>>");
         //更新发布中的凭证状态
         List<AttributeDataToken> dataTokenList = attributeDataTokenMapper.selectListByStatus(AttributeDataToken.StatusEnum.PUBLISH_SUCCESS.getStatus());
+        log.debug("dataTokenList.size()==" + dataTokenList.size());
         dataTokenList.forEach(dataToken -> {
             try {
                 ((AttributeDataTokenInventoryRefreshTask) AopContext.currentProxy()).processPublishedDataToken(dataToken);
@@ -46,7 +47,7 @@ public class AttributeDataTokenInventoryRefreshTask {
                 log.error(e.getMessage(), e);
             }
         });
-        log.info("刷新有属性数据凭证库存定时任务结束|||");
+        log.debug("刷新有属性数据凭证库存定时任务结束|||");
     }
 
     @Transactional(rollbackFor = {Throwable.class})

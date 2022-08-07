@@ -129,12 +129,12 @@ public class MetaDataServiceImpl implements MetaDataService {
     public void downLoad(HttpServletResponse response, Integer id) {
         MetaData metaData = metaDataMapper.selectById(id);
         if (metaData == null) {
-            throw new ObjectNotFound();
+            throw new BizException(Errors.QueryRecordNotExist);
         }
         //### 1.获取文件路径
         DataFile dataFile = dataFileMapper.selectByFileId(metaData.getFileId());
         if (dataFile == null) {
-            throw new ObjectNotFound();
+            throw new BizException(Errors.QueryRecordNotExist);
         }
         //### 2.获取可用的数据节点
         YarnQueryFilePositionResp yarnQueryFilePositionResp = yarnClient.queryFilePosition(dataFile.getFileId());
@@ -145,7 +145,7 @@ public class MetaDataServiceImpl implements MetaDataService {
         try {
             ExportFileUtil.exportCsv(metaData.getMetaDataName(), bytes, response);
         } catch (IOException e) {
-            throw new BizException(Errors.ExportCSVFileError, e);
+            throw new BizException(Errors.ExportFileError, e);
         }
     }
 
@@ -154,7 +154,7 @@ public class MetaDataServiceImpl implements MetaDataService {
     public int update(MetaData metaData) {
         MetaData existing = metaDataMapper.selectById(metaData.getId());
         if (existing == null) {
-            throw new ObjectNotFound();
+            throw new BizException(Errors.QueryRecordNotExist);
         }
         //已发布状态的元数据不允许修改
         if (DataFileStatusEnum.RELEASED.getStatus() == existing.getStatus()) {
@@ -185,7 +185,7 @@ public class MetaDataServiceImpl implements MetaDataService {
     public void down(Integer id, String sign) {
         MetaData metaData = metaDataMapper.selectById(id);
         if (metaData == null) {
-            throw new ObjectNotFound();
+            throw new BizException(Errors.QueryRecordNotExist);
         }
         //下架只能针对上架的数据
         if (DataFileStatusEnum.RELEASED.getStatus() != metaData.getStatus()) {
@@ -206,7 +206,7 @@ public class MetaDataServiceImpl implements MetaDataService {
         //获取文件元数据详情
         MetaData metaData = metaDataMapper.selectById(id);
         if (metaData == null) {
-            throw new ObjectNotFound();
+            throw new BizException(Errors.QueryRecordNotExist);
         }
         //已发布状态的元数据不允许修改
         if (DataFileStatusEnum.RELEASED.getStatus() == metaData.getStatus()) {

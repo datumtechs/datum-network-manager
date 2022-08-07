@@ -70,9 +70,9 @@
 
     <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO data_token (`name`, symbol, init, total, `desc`, `owner`, meta_data_db_id, status, `publish_nonce`,
-                                `publish_hash`, plaintext_fee, ciphertext_fee,fee_update_time)
+                                `publish_hash`, plaintext_fee, ciphertext_fee,new_plaintext_fee, new_ciphertext_fee,fee_update_time)
         VALUES (#{name}, #{symbol}, #{init}, #{total}, #{desc}, #{owner}, #{metaDataDbId}, #{status}, #{publishNonce},
-                #{publishHash}, #{plaintextFee}, #{ciphertextFee}, #{feeUpdateTime})
+                #{publishHash}, #{plaintextFee}, #{ciphertextFee},#{plaintextFee}, #{ciphertextFee}, #{feeUpdateTime})
         ON DUPLICATE KEY
             UPDATE `name`=#{name},
                    symbol=#{symbol},
@@ -85,6 +85,8 @@
                    `publish_hash`=#{publishHash},
                    plaintext_fee=#{plaintextFee},
                    ciphertext_fee=#{ciphertextFee},
+                   new_plaintext_fee=#{plaintextFee},
+                   new_ciphertext_fee=#{ciphertextFee},
                    fee_update_time=#{feeUpdateTime}
     </insert>
 

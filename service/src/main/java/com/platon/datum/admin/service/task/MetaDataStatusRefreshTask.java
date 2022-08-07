@@ -48,7 +48,7 @@ public class MetaDataStatusRefreshTask {
     private AttributeDataTokenMapper attributeDataTokenMapper;
 
     @Scheduled(fixedDelayString = "${MetaDataStatusRefreshTask.fixedDelay}")
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Throwable.class)
     public void task() {
         if(OrgCache.identityIdNotFound()){
             return;

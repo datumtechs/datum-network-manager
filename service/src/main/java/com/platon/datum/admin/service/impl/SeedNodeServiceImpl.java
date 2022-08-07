@@ -2,10 +2,7 @@ package com.platon.datum.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.datum.admin.common.exception.ArgumentException;
-import com.platon.datum.admin.common.exception.CannotDeleteInitSeedNode;
-import com.platon.datum.admin.common.exception.ObjectNotFound;
-import com.platon.datum.admin.common.exception.SeedNodeExists;
+import com.platon.datum.admin.common.exception.*;
 import com.platon.datum.admin.dao.SeedNodeMapper;
 import com.platon.datum.admin.dao.entity.SeedNode;
 import com.platon.datum.admin.grpc.carrier.api.SysRpcApi;
@@ -62,7 +59,7 @@ public class SeedNodeServiceImpl implements SeedNodeService {
 
         SeedNode seedNode = seedNodeMapper.querySeedNodeDetails(seedNodeId);
         if (seedNode == null) {
-            throw new ObjectNotFound();
+            throw new BizException(Errors.QueryRecordNotExist);
         }
         if (seedNode.getInitFlag()) {//内置
             throw new CannotDeleteInitSeedNode();

@@ -189,7 +189,7 @@ public class MetaDataController extends BaseController {
         //查询localMetaData，并查询出taskCount放入动态字段
         MetaData metaData = metaDataMapper.findWithTaskCount(id);
         if (metaData == null) {
-            throw new ObjectNotFound();
+            throw new BizException(Errors.QueryRecordNotExist);
         }
 
         //查询元数据的localMetaDataColumnList

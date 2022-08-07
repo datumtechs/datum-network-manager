@@ -17,6 +17,12 @@ public interface GeneralOrganizationService {
 
     int getApplyCount();
 
+    /**
+     * 获取当前已使用的VC
+     * @return
+     */
+    ApplyRecord getCurrentUsingVc();
+
     Page<ApplyRecord> getApplyList(Integer pageNumber, Integer pageSize);
 
     ApplyRecord getApplyDetail(Integer id);
@@ -28,7 +34,20 @@ public interface GeneralOrganizationService {
      */
     void download(Integer id, HttpServletResponse response);
 
+    /**
+     * 上传材料
+     * @param file 上传的文件
+     * @return ipfs的url
+     */
     String uploadMaterial(MultipartFile file);
 
+    /**
+     * @param approve 审批组织
+     * @param remark 申请的备注
+     * @param material 申请材料的ipfsUrl
+     * @param desc 申请材料的描述
+     */
     void apply(String approve, String remark, String material, String desc);
+
+    void use(Integer id);
 }

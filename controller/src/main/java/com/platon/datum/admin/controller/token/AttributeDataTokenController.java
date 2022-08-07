@@ -1,9 +1,12 @@
 package com.platon.datum.admin.controller.token;
 
 import com.github.pagehelper.Page;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.controller.BaseController;
 import com.platon.datum.admin.dao.entity.AttributeDataToken;
 import com.platon.datum.admin.dao.entity.AttributeDataTokenInventory;
+import com.platon.datum.admin.dao.entity.DataToken;
 import com.platon.datum.admin.dao.entity.SysConfig;
 import com.platon.datum.admin.dto.JsonResponse;
 import com.platon.datum.admin.dto.req.*;
@@ -67,16 +70,30 @@ public class AttributeDataTokenController extends BaseController {
     @PostMapping("/publish")
     public JsonResponse<Integer> publish(@RequestBody @Validated AttributeDataTokenPublishReq req, HttpSession session) {
         String currentUserAddress = getCurrentUserAddress(session);
-
+        String owner = req.getOwner();
+        if (!currentUserAddress.equals(owner)) {
+            throw new BizException(Errors.SysException, "Current user is not owner!");
+        }
         AttributeDataToken dataToken = new AttributeDataToken();
         dataToken.setName(req.getName());
         dataToken.setSymbol(req.getSymbol());
         dataToken.setMetaDataDbId(req.getMetaDataDbId());
-        dataToken.setOwner(currentUserAddress);
+        dataToken.setOwner(owner);
         dataToken.setPublishHash(req.getHash());
         dataToken.setPublishNonce(req.getNonce());
         Integer id = attributeDataTokenService.publish(dataToken);
         return JsonResponse.success(id);
+    }
+
+    /**
+     * 根据id获取dataToken状态
+     */
+    @ApiOperation(value = "根据id获取attributeDataToken状态")
+    @PostMapping("/getAttributeDataTokenStatus")
+    public JsonResponse<DataToken> getAttributeDataTokenStatus(HttpSession session, @RequestBody @Validated AttributeDataTokenGetDataTokenStatusReq req) {
+        String currentUserAddress = getCurrentUserAddress(session);
+        AttributeDataToken dataToken = attributeDataTokenService.getDataTokenById(req.getId(), currentUserAddress);
+        return JsonResponse.success(dataToken);
     }
 
     /**

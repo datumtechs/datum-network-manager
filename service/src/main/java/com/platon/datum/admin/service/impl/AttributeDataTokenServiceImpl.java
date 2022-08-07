@@ -66,6 +66,7 @@ public class AttributeDataTokenServiceImpl implements AttributeDataTokenService 
         }
         //1.先插入dataToken数据,获取到dataToken id
         dataToken.setStatus(AttributeDataToken.StatusEnum.PUBLISHING.getStatus());
+        dataToken.setTotal("0");
         attributeDataTokenMapper.insertAndReturnId(dataToken);
         return dataToken.getId();
     }

@@ -45,7 +45,7 @@ public class CarrierStatusRefreshTask {
     @Value("${spring.cloud.consul.carrierServiceName}")
     private String carrierServiceName;
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Throwable.class)
     @Scheduled(fixedDelayString = "${CarrierStatusRefreshTask.fixedDelay}")
     public void task() {
         log.debug("刷新本组织调度服务状态定时任务开始>>>");

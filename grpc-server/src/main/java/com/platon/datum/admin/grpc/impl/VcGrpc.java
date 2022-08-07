@@ -17,6 +17,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @GrpcService
@@ -28,7 +29,7 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
 
     /**
      * <pre>
-     * 保存Vc信息
+     * 委员会成员组织Carrier使用该接口，保存Vc信息
      * </pre>
      */
     @Override
@@ -46,10 +47,22 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
             //2.验证签名
             verifySign(request.getReqDigest(), request.getReqSignature(), DidUtil.didToHexAddress(issuerDid));
             String applicantDid = request.getApplicantDid();
-            //
+            //3.验证did格式
             if (!DidUtil.isValidDid(applicantDid)) {
                 throw new ValidateException("ApplicantDid is invalid: " + applicantDid);
             }
+            //4.验证是否存在有效或者待生效的申请
+            List<ApplyRecord> validApplyRecords =
+                    applyRecordMapper.selectByApplyOrgAndApproveOrg(applicantDid, issuerDid, ApplyRecord.StatusEnum.VALID.getStatus());
+            if (!validApplyRecords.isEmpty()) {
+                throw new ValidateException("Effective records are exist");
+            }
+            List<ApplyRecord> toBeEffectiveApplyRecords =
+                    applyRecordMapper.selectByApplyOrgAndApproveOrg(applicantDid, issuerDid, ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
+            if (!toBeEffectiveApplyRecords.isEmpty()) {
+                throw new ValidateException("Records are exist which to be effective");
+            }
+
             ApplyRecord record = getApplyRecord(request);
             int count = applyRecordMapper.insertSelective(record);
             if (count <= 0) {
@@ -87,15 +100,15 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
         issuerRecord.setApplyRemark(applicantRecord.getApplyRemark());
         issuerRecord.setMaterial(applicantRecord.getMaterial());
         issuerRecord.setMaterialDesc(applicantRecord.getMaterialDesc());
-        issuerRecord.setProgress(0);
-        issuerRecord.setStatus(0);
+        issuerRecord.setProgress(ApplyRecord.ProgressEnum.APPLYING.getStatus());
+        issuerRecord.setStatus(ApplyRecord.StatusEnum.INVALID.getStatus());
         return issuerRecord;
     }
 
 
     /**
      * <pre>
-     * 下载vc信息
+     * 委员会成员组织Carrier使用该接口，下载vc信息
      * </pre>
      */
     @Override
@@ -115,10 +128,13 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
             //2.验证签名
             verifySign(request.getReqDigest(), request.getReqSignature(), DidUtil.didToHexAddress(issuerDid));
             String applicantDid = request.getApplicantDid();
-            applyRecord = applyRecordMapper.selectEffectiveByApplyOrgAndApproveOrg(applicantDid, issuerDid);
-            if (applyRecord == null) {
+            List<ApplyRecord> applyRecordList = applyRecordMapper.selectByApplyOrgAndApproveOrg(applicantDid,
+                    issuerDid,
+                    ApplyRecord.StatusEnum.VALID.getStatus());
+            if (applyRecordList.isEmpty()) {
                 throw new ValidateException("Apply record not exist!");
             }
+            applyRecord = applyRecordList.get(0);
             Integer progress = applyRecord.getProgress();
             switch (progress) {
                 case 0:
@@ -150,6 +166,7 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
             errorMsg = exception.getMessage();
         }
 
+        //status = 0 表示已经处理该申请，已拒绝或则已同意
         DidRpcApi.DownloadVCResponse response = DidRpcApi.DownloadVCResponse.newBuilder()
                 .setStatus(status)
                 .setMsg(errorMsg)

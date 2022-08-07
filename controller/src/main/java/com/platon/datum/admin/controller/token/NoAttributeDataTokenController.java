@@ -1,6 +1,8 @@
 package com.platon.datum.admin.controller.token;
 
 import com.github.pagehelper.Page;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.controller.BaseController;
 import com.platon.datum.admin.dao.entity.DataToken;
 import com.platon.datum.admin.dao.entity.SysConfig;
@@ -95,7 +97,10 @@ public class NoAttributeDataTokenController extends BaseController {
     @PostMapping("/publish")
     public JsonResponse<Integer> publish(@RequestBody @Validated NoAttributeDataTokenPublishReq req, HttpSession session) {
         String address = getCurrentUserAddress(session);
-
+        String owner = req.getOwner();
+        if (!address.equals(owner)) {
+            throw new BizException(Errors.SysException, "Current user is not owner!");
+        }
         DataToken dataToken = new DataToken();
         dataToken.setName(req.getName());
         dataToken.setSymbol(req.getSymbol());
@@ -103,7 +108,7 @@ public class NoAttributeDataTokenController extends BaseController {
         dataToken.setTotal(req.getTotal());
         dataToken.setDesc(req.getDesc());
         dataToken.setMetaDataDbId(req.getMetaDataDbId());
-        dataToken.setOwner(address);
+        dataToken.setOwner(req.getOwner());
         dataToken.setPublishHash(req.getHash());
         dataToken.setPublishNonce(req.getNonce());
         dataToken.setPlaintextFee(req.getPlaintextFee());

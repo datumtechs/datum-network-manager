@@ -6,13 +6,19 @@ import lombok.ToString;
 
 /**
  * @Author liushuyu
- * @Date 2022/8/1 15:40
+ * @Date 2022/8/7 17:32
  * @Version
- * @Desc
+ * @Desc pctid = 1000的模板
  */
 
 @Getter
 @Setter
 @ToString
-public class CallBackResult {
+public class Pct1000 {
+
+    private String nodeId;
+
+    private String nodeName;
+
+    private String url;
 }

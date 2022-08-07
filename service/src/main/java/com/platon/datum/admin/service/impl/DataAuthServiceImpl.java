@@ -2,8 +2,9 @@ package com.platon.datum.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.exception.MetadataAuthorized;
-import com.platon.datum.admin.common.exception.ObjectNotFound;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataAuthMapper;
 import com.platon.datum.admin.dao.DataFileMapper;
@@ -67,12 +68,12 @@ public class DataAuthServiceImpl implements DataAuthService {
 
         DataAuth dataAuth = dataAuthMapper.selectByPrimaryKey(authId);
         if (Objects.isNull(dataAuth) || Objects.isNull(dataAuth.getMetaDataId()) || "".equals(dataAuth.getMetaDataId())) {
-            throw new ObjectNotFound();
+            throw new BizException(Errors.QueryRecordNotExist);
         }
 
         MetaData metaData = metaDataMapper.selectByMetaDataId(dataAuth.getMetaDataId());
         if (metaData == null) {
-            throw new ObjectNotFound();
+            throw new BizException(Errors.QueryRecordNotExist);
         }
         List<MetaDataColumn> metaDataColumnList = metaDataColumnMapper.selectByLocalMetaDataDbId(metaData.getId());
 

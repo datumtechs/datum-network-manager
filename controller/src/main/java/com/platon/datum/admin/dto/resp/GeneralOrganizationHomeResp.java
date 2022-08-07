@@ -32,4 +32,6 @@ public class GeneralOrganizationHomeResp {
     @ApiModelProperty("已发出的申请数量")
     private int applyCount;
 
+    @ApiModelProperty("是否可信任组织")
+    private boolean canTrusted;
 }

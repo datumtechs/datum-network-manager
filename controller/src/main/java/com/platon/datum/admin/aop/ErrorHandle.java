@@ -38,7 +38,7 @@ public class ErrorHandle {
     @ExceptionHandler(SQLException.class)
     public JsonResponse handleSQLException(SQLException exception) {
         log.error("handleSQLException", exception);
-        return JsonResponse.fail(Errors.SQLERROR);
+        return JsonResponse.fail(Errors.SqlError);
     }
 
 

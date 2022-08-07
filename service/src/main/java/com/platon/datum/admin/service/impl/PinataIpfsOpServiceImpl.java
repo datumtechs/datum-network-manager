@@ -1,5 +1,7 @@
 package com.platon.datum.admin.service.impl;
 
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.service.IpfsOpService;
 import com.platon.datum.admin.service.client.PinataClient;
 import com.platon.datum.admin.service.client.dto.PinataPinJSONToIPFSReq;
@@ -36,7 +38,12 @@ public class PinataIpfsOpServiceImpl implements IpfsOpService {
      */
     @Override
     public String saveFile(MultipartFile file) {
-        PinataPinResult pinataPinResult = pinFileToIPFS(file);
+        PinataPinResult pinataPinResult = null;
+        try {
+            pinataPinResult = pinFileToIPFS(file);
+        } catch (Exception exception) {
+            throw new BizException(Errors.UploadFileFailed,exception);
+        }
         return getIpfsLink(pinataPinResult);
     }
 
@@ -47,7 +54,12 @@ public class PinataIpfsOpServiceImpl implements IpfsOpService {
      */
     @Override
     public String saveJson(Object content) {
-        PinataPinResult pinataPinResult = pinJSONToIPFS(content);
+        PinataPinResult pinataPinResult = null;
+        try {
+            pinataPinResult = pinJSONToIPFS(content);
+        } catch (Exception exception) {
+            throw new BizException(Errors.UploadFileFailed,exception);
+        }
         return getIpfsLink(pinataPinResult);
     }
 

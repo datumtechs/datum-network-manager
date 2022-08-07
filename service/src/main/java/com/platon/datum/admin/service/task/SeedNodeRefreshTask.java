@@ -31,7 +31,7 @@ public class SeedNodeRefreshTask {
     /**
      * 1.定时刷新种子节点信息, 间隔30秒执行下一次任务
      */
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Throwable.class)
     @Scheduled(fixedDelayString = "${SeedNodeRefreshTask.fixedDelay}")
     public void refreshSeedNode(){
         if(OrgCache.identityIdNotFound()){
@@ -45,6 +45,6 @@ public class SeedNodeRefreshTask {
             log.debug("本次更新种子节点数量：{}", seedNodeList.size());
             seedNodeMapper.insertBatch(seedNodeList);
         }
-        log.info("刷新种子节点定时任务结束|||");
+        log.debug("刷新种子节点定时任务结束|||");
     }
 }

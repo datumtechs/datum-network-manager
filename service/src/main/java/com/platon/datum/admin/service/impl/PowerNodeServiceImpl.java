@@ -181,7 +181,7 @@ public class PowerNodeServiceImpl implements PowerNodeService {
         PowerNode powerNode = powerNodeMapper.queryPowerNodeDetails(nodeId);
         if (powerNode == null || StringUtils.isEmpty(powerNode.getPowerId())) {
             log.error("power node not found");
-            throw new ObjectNotFound();
+            throw new BizException(Errors.QueryRecordNotExist);
         }
 
         if (powerNode.getPowerStatus() == 2) {

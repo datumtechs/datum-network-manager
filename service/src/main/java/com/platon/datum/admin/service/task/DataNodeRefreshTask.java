@@ -27,7 +27,7 @@ public class DataNodeRefreshTask {
     @Resource
     private YarnClient yarnClient;
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Throwable.class)
     @Scheduled(fixedDelayString = "${DataNodeRefreshTask.fixedDelay}")
     public void task() {
         if(OrgCache.identityIdNotFound()){
