@@ -127,6 +127,12 @@ public class ApplyRecord extends BaseDomain {
     @ApiModelProperty("证书申请成功后是否被使用：0-未使用，1-已使用")
     private Integer used;
 
+    /**
+     * 创建VC的交易hash
+     */
+    @ApiModelProperty("创建VC的交易hash")
+    private String txHash;
+
     @Getter
     public enum StatusEnum {
         //证书状态：0-无效，1-有效，2-待生效

@@ -33,7 +33,7 @@ public class AttributeDataTokenInventoryRefreshTask {
      */
     @Scheduled(fixedDelayString = "${AttributeDataTokenStatusRefreshTask.fixedDelay}")
     public void refreshAttributeDataTokenInventoryTotal() {
-        if(OrgCache.identityIdNotFound()){
+        if (OrgCache.identityIdNotFound()) {
             return;
         }
         log.debug("刷新有属性数据凭证库存定时任务开始>>>");
@@ -43,7 +43,7 @@ public class AttributeDataTokenInventoryRefreshTask {
         dataTokenList.forEach(dataToken -> {
             try {
                 ((AttributeDataTokenInventoryRefreshTask) AopContext.currentProxy()).processPublishedDataToken(dataToken);
-            } catch (IOException e) {
+            } catch (Throwable e) {
                 log.error(e.getMessage(), e);
             }
         });

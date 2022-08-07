@@ -71,7 +71,7 @@ public class DataTokenStatusRefreshTask {
         dataTokenList.forEach(dataToken -> {
             try {
                 ((DataTokenStatusRefreshTask) AopContext.currentProxy()).processPublishingDataToken(dataToken);
-            } catch (IOException e) {
+            } catch (Throwable e) {
                 log.error(e.getMessage(), e);
             }
         });

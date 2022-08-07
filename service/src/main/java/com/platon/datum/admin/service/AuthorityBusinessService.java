@@ -16,7 +16,7 @@ public interface AuthorityBusinessService {
 
     AuthorityBusiness getTodoDetail(int id);
 
-    void processTodo(int id, int result);
+    void processTodo(int id, int result, String remark);
 
     Page<AuthorityBusiness> getDoneList(Integer pageNumber, Integer pageSize, String keyword);
 

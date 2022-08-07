@@ -10,7 +10,6 @@ import com.platon.abi.solidity.datatypes.generated.Uint8;
 import com.platon.bech32.Bech32;
 import com.platon.datum.admin.common.util.AddressChangeUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
-import com.platon.datum.admin.common.util.WalletSignUtil;
 import com.platon.datum.admin.dao.AttributeDataTokenMapper;
 import com.platon.datum.admin.dao.SysConfigMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
@@ -27,7 +26,6 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
-import org.web3j.crypto.WalletUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -74,7 +72,7 @@ public class AttributeDataTokenStatusRefreshTask {
         dataTokenList.forEach(dataToken -> {
             try {
                 ((AttributeDataTokenStatusRefreshTask) AopContext.currentProxy()).processPublishingDataToken(dataToken);
-            } catch (IOException e) {
+            } catch (Throwable e) {
                 log.error(e.getMessage(), e);
             }
         });

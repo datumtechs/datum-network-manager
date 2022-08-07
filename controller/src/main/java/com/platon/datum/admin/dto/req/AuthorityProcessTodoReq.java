@@ -24,4 +24,7 @@ public class AuthorityProcessTodoReq {
 
     @ApiModelProperty(value = "处理结果：1-同意，2-不同意", required = true)
     private int result;
+
+    @ApiModelProperty(value = "审批附言",required = false)
+    private String remark;
 }

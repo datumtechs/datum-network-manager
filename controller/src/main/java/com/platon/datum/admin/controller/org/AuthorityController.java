@@ -158,7 +158,7 @@ public class AuthorityController {
      */
     @PostMapping("/processTodo")
     public JsonResponse processTodo(@RequestBody @Validated AuthorityProcessTodoReq req) {
-        authorityBusinessService.processTodo(req.getId(), req.getResult());
+        authorityBusinessService.processTodo(req.getId(), req.getResult(),req.getRemark());
         return JsonResponse.success();
     }
 

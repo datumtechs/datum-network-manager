@@ -22,12 +22,14 @@
         <result column="context" jdbcType="VARCHAR" property="context"/>
         <result column="claim" jdbcType="VARCHAR" property="claim"/>
         <result column="used" jdbcType="TINYINT" property="used"/>
+        <result column="tx_hash" jdbcType="VARCHAR" property="txHash"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         id, authority_business_id, pct_id, apply_org, approve_org, start_time,end_time,
-        progress, apply_remark, approve_remark, material, material_desc,vc,expiration_date,`status`,`context`,claim,used
+        progress, apply_remark, approve_remark, material, material_desc,vc,expiration_date,
+        `status`,`context`,claim,used,tx_hash
     </sql>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -90,6 +92,9 @@
             <if test="used != null">
                 used,
             </if>
+            <if test="txHash != null">
+                tx_hash,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="authorityBusinessId != null">
@@ -139,6 +144,9 @@
             </if>
             <if test="used != null">
                 #{used},
+            </if>
+            <if test="txHash != null">
+                #{txHash},
             </if>
         </trim>
     </insert>
@@ -194,6 +202,9 @@
             </if>
             <if test="used != null">
                 `used` = #{used},
+            </if>
+            <if test="txHash != null">
+                `tx_hash` = #{txHash},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -257,5 +268,13 @@
         where apply_org = #{applyOrg}
         and used = 1
         and status = 1
+    </select>
+
+    <select id="selectByApproveOrgAndTobeEffective" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from apply_record
+        where approve_org = #{approveOrg}
+        and status = 2
     </select>
 </mapper>

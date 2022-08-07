@@ -114,6 +114,7 @@ logging:
       # max-history: 20
 
 # =============================== conf for scheduled task ===================================
+ApplyRecordStatusTask.fixedDelay: 5000
 AttributeDataTokenInventoryRefreshTask.fixedDelay: 5000
 AttributeDataTokenStatusRefreshTask.fixedDelay: 5000
 AuthorityRefreshTask.fixedDelay: 5000

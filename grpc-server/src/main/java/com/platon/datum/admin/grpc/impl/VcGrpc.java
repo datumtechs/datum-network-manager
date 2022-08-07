@@ -101,7 +101,7 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
         issuerRecord.setMaterial(applicantRecord.getMaterial());
         issuerRecord.setMaterialDesc(applicantRecord.getMaterialDesc());
         issuerRecord.setProgress(ApplyRecord.ProgressEnum.APPLYING.getStatus());
-        issuerRecord.setStatus(ApplyRecord.StatusEnum.INVALID.getStatus());
+        issuerRecord.setStatus(ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
         return issuerRecord;
     }
 

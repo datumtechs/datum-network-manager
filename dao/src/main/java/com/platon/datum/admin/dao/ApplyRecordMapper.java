@@ -63,13 +63,19 @@ public interface ApplyRecordMapper {
      * @return
      */
     List<ApplyRecord> selectByApplyOrgAndApproveOrg(@Param("applyOrg") String applyOrg,
-                                                       @Param("approveOrg") String approveOrg,
-                                                       @Param("status") Integer status);
+                                                    @Param("approveOrg") String approveOrg,
+                                                    @Param("status") Integer status);
 
     /**
      * 查询出组织已使用且有效的vc
+     *
      * @param applyOrg
      * @return
      */
     List<ApplyRecord> selectByUsedAndValidVc(String applyOrg);
+
+    /**
+     * 查询出当前组织审批通过后还处于带生效的VC证书
+     */
+    List<ApplyRecord> selectByApproveOrgAndTobeEffective(@Param("approveOrg") String approveOrg);
 }
