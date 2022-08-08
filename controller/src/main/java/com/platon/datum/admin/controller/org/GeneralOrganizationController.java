@@ -54,14 +54,14 @@ public class GeneralOrganizationController extends BaseController {
 
         int credentialsCount = generalOrganizationService.getCredentialsCount();
         int applyCount = generalOrganizationService.getApplyCount();
-        ApplyRecord currentUsingVc = generalOrganizationService.getCurrentUsingVc();
+        boolean canTrusted = generalOrganizationService.currentOrgCanTrusted();
 
         GeneralOrganizationHomeResp resp = new GeneralOrganizationHomeResp();
         resp.setIdentityId(localOrgInfo.getIdentityId());
         resp.setIdentityName(localOrgInfo.getName());
         resp.setCredentialsCount(credentialsCount);
         resp.setApplyCount(applyCount);
-        resp.setCanTrusted(currentUsingVc == null ? false : true);
+        resp.setCanTrusted(canTrusted);
         return JsonResponse.success(resp);
     }
 

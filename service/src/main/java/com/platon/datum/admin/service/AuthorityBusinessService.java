@@ -14,11 +14,10 @@ public interface AuthorityBusinessService {
 
     Page<AuthorityBusiness> getTodoList(Integer pageNumber, Integer pageSize, String keyword);
 
-    AuthorityBusiness getTodoDetail(int id);
+    AuthorityBusiness getDetail(int id);
 
     void processTodo(int id, int result, String remark);
 
     Page<AuthorityBusiness> getDoneList(Integer pageNumber, Integer pageSize, String keyword);
 
-    AuthorityBusiness getDoneDetail(int id);
 }

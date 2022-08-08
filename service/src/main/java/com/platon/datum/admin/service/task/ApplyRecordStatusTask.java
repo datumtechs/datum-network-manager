@@ -1,9 +1,15 @@
 package com.platon.datum.admin.service.task;
 
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.ApplyRecordMapper;
+import com.platon.datum.admin.dao.AuthorityBusinessMapper;
+import com.platon.datum.admin.dao.AuthorityMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.ApplyRecord;
+import com.platon.datum.admin.dao.entity.Authority;
+import com.platon.datum.admin.dao.entity.AuthorityBusiness;
 import com.platon.datum.admin.service.web3j.Web3jManager;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.methods.response.PlatonGetTransactionReceipt;
@@ -38,6 +44,12 @@ public class ApplyRecordStatusTask {
 
     private AtomicReference<Web3j> web3jContainer;
 
+    @Resource
+    private AuthorityMapper authorityMapper;
+
+    @Resource
+    private AuthorityBusinessMapper authorityBusinessMapper;
+
     @PostConstruct
     public void init() {
         web3jContainer = web3jManager.subscribe(this);
@@ -46,6 +58,10 @@ public class ApplyRecordStatusTask {
     @Scheduled(fixedDelayString = "${ApplyRecordStatusTask.fixedDelay}")
     public void refreshTobeEffectiveApplyRecord() {
         if (OrgCache.identityIdNotFound()) {
+            return;
+        }
+        Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
+        if (authority == null) {
             return;
         }
         log.debug("刷新委员会成员对VC的操作记录状态定时任务开始>>>");
@@ -100,6 +116,12 @@ public class ApplyRecordStatusTask {
             LocalDateTime startTime = record.getStartTime();
             long timeStamp = LocalDateTimeUtil.getTimestamp(startTime.plusHours(240));
             if (timeStamp < System.currentTimeMillis()) {
+                //未审批且自动过期的，则更新一下委员会事务状态为不同意
+                int count = authorityBusinessMapper.updateProcessStatusById(record.getAuthorityBusinessId(),
+                        AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus());
+                if (count <= 0) {
+                    throw new BizException(Errors.UpdateSqlFailed);
+                }
                 return true;
             }
         }

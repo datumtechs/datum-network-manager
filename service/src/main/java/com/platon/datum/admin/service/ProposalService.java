@@ -2,6 +2,7 @@ package com.platon.datum.admin.service;
 
 import com.github.pagehelper.Page;
 import com.platon.datum.admin.dao.entity.Proposal;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author liushuyu
@@ -17,4 +18,12 @@ public interface ProposalService {
     void revokeProposal(int id);
 
     int getProposalCount(String identityId);
+
+    void nominate(String identityId, String ip, int port, String remark, String material, String materialDesc);
+
+    void kickOut(String identityId, String remark, String material, String materialDesc);
+
+    void exit();
+
+    String upload(MultipartFile file);
 }

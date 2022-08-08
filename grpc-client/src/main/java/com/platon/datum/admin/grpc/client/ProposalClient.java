@@ -46,9 +46,11 @@ public class ProposalClient {
                 .setCandidateAddress(candidateAddress)
                 .setCandidateServiceUrl(candidateServiceUrl)
                 .build();
+        log.debug("submitProposal,request:{}",request);
         //3.调用rpc,获取response
         DidRpcApi.SubmitProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel)
                 .submitProposal(request);
+        log.debug("submitProposal,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -71,8 +73,10 @@ public class ProposalClient {
         DidRpcApi.WithdrawProposalRequest request = DidRpcApi.WithdrawProposalRequest.newBuilder()
                 .setProposalId(proposalId)
                 .build();
+        log.debug("withdrawProposal,request:{}",request);
         //3.调用rpc,获取response
         DidRpcApi.WithdrawProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).withdrawProposal(request);
+        log.debug("withdrawProposal,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -96,8 +100,10 @@ public class ProposalClient {
         DidRpcApi.VoteProposalRequest request = DidRpcApi.VoteProposalRequest.newBuilder()
                 .setProposalId(proposalId)
                 .build();
+        log.debug("voteProposal,request:{}",request);
         //3.调用rpc,获取response
         DidRpcApi.VoteProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).voteProposal(request);
+        log.debug("voteProposal,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -120,8 +126,10 @@ public class ProposalClient {
         DidRpcApi.EffectProposalRequest request = DidRpcApi.EffectProposalRequest.newBuilder()
                 .setProposalId(proposalId)
                 .build();
+        log.debug("effectProposal,request:{}",request);
         //3.调用rpc,获取response
         DidRpcApi.EffectProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).effectProposal(request);
+        log.debug("effectProposal,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();

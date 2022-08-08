@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @Author liushuyu
  * @Date 2022/7/22 14:54
@@ -20,5 +22,6 @@ import lombok.ToString;
 public class AuthorityTodoDetailReq {
 
     @ApiModelProperty(value = "委员会事务id", required = true)
-    private int id;
+    @NotNull
+    private Integer id;
 }

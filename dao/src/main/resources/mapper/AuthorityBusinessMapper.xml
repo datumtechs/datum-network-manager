@@ -36,7 +36,7 @@
         values (#{type,jdbcType=TINYINT}, #{applyOrg,jdbcType=VARCHAR}, #{specifyOrg,jdbcType=VARCHAR},
                 #{startTime,jdbcType=TIMESTAMP}, #{processStatus,jdbcType=BOOLEAN})
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+    <insert id="insertSelectiveReturnId" keyColumn="id" keyProperty="id"
             parameterType="com.platon.datum.admin.dao.entity.AuthorityBusiness" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into authority_business
@@ -146,7 +146,8 @@
         </if>
     </select>
 
-    <update id="updateStatus">
+    <update id="updateProcessStatusById">
         update authority_business set process_status = #{status} where id = #{id}
     </update>
+
 </mapper>

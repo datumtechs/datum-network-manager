@@ -52,9 +52,6 @@ public class TaskClient {
      * @return
      */
     public Pair<List<Task>, Map<String, TaskOrg>> getLocalTaskList(LocalDateTime latestSynced) {
-
-        log.debug("从carrier查询本组织参与的任务, latestSynced:{}", latestSynced);
-
         Channel channel = channelManager.getCarrierChannel();
 
         //2.构造 request
@@ -63,17 +60,16 @@ public class TaskClient {
                 .setLastUpdated(LocalDateTimeUtil.getTimestamp(latestSynced))
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
-
+        log.debug("getLocalTaskList,request:{}",request);
         //3.调用rpc服务接口
         TaskRpcApi.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
+        log.debug("getLocalTaskList,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        log.debug("从carrier查询本组织参与的任务, 数量:{},任务内容:{}", response.getTasksList().size(), response.getTasksList());
-
         //过滤掉重复的任务
         List<TaskData.TaskDetail> filteredTaskList = filterTaskList(response);
         return dataConvertToTaskList(filteredTaskList);
@@ -86,24 +82,19 @@ public class TaskClient {
      * @return
      */
     public List<TaskEvent> getTaskEventListData(List<String> taskIds) {
-
-        log.debug("从carrier批量获取多个任务的全部事件列表, taskIds:{}", taskIds);
-
         Channel channel = channelManager.getCarrierChannel();
-
         //2.构造 request
         TaskRpcApi.GetTaskEventListByTaskIdsRequest request = TaskRpcApi.GetTaskEventListByTaskIdsRequest.newBuilder().addAllTaskIds(taskIds).build();
+        log.debug("getTaskEventListData,request:{}",request);
         //3.调用rpc服务接口
         TaskRpcApi.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskEventListByTaskIds(request);
-
+        log.debug("getTaskEventListData,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        log.debug("从carrier批量获取多个任务的全部事件列表, 数量:{}", response.getTaskEventsList().size());
-
         List<TaskEvent> taskEventList = new ArrayList<>();
         //构造taskEvent集合
         for (TaskData.TaskEvent taskEvenShow : response.getTaskEventsList()) {
@@ -151,10 +142,8 @@ public class TaskClient {
      * @return
      */
     private Pair<List<Task>, Map<String, TaskOrg>> dataConvertToTaskList(List<TaskData.TaskDetail> taskDetailList) {
-
         //key:identityId
         Map<String, TaskOrg> taskOrgMap = new HashMap<>();
-
         List<Task> taskList = new ArrayList<>();
         for (int i = 0; i < taskDetailList.size(); i++) {
             TaskData.TaskDetailSummary taskDetail = taskDetailList.get(i).getInformation();

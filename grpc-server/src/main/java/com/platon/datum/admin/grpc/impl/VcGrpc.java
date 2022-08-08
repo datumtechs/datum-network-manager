@@ -5,20 +5,27 @@ import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.exception.ValidateException;
 import com.platon.datum.admin.common.util.DidUtil;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.common.util.WalletSignUtil;
 import com.platon.datum.admin.dao.ApplyRecordMapper;
+import com.platon.datum.admin.dao.AuthorityBusinessMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.ApplyRecord;
+import com.platon.datum.admin.dao.entity.AuthorityBusiness;
 import com.platon.datum.admin.grpc.carrier.api.DidRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.VcServiceGrpc;
 import com.platon.datum.admin.grpc.carrier.types.Common;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @author liushuyu
+ */
 @Slf4j
 @GrpcService
 @Service
@@ -26,12 +33,15 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
 
     @Resource
     private ApplyRecordMapper applyRecordMapper;
+    @Resource
+    private AuthorityBusinessMapper authorityBusinessMapper;
 
     /**
      * <pre>
      * 委员会成员组织Carrier使用该接口，保存Vc信息
      * </pre>
      */
+    @Transactional(rollbackFor = Throwable.class)
     @Override
     public void applyVCRemote(DidRpcApi.ApplyVCReq request,
                               io.grpc.stub.StreamObserver<Common.SimpleResponse> responseObserver) {
@@ -63,10 +73,20 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
                 throw new ValidateException("Records are exist which to be effective");
             }
 
+            //将请求转换成ApplyRecord对象
             ApplyRecord record = getApplyRecord(request);
+
+            //新增一条委员会待处理的事务
+            AuthorityBusiness authorityBusiness = getAuthorrityBusiness(record);
+            authorityBusinessMapper.insertSelectiveReturnId(authorityBusiness);
+            if (authorityBusiness.getId() <= 0) {
+                throw new BizException(Errors.InsertSqlFailed, "Create authority business failed");
+            }
+            //新增一条申请VC的记录
+            record.setAuthorityBusinessId(authorityBusiness.getId());
             int count = applyRecordMapper.insertSelective(record);
             if (count <= 0) {
-                throw new BizException(Errors.SysException, "Create apply record failed");
+                throw new BizException(Errors.InsertSqlFailed, "Create apply record failed");
             }
         } catch (BizException exception) {
             status = 1;
@@ -85,6 +105,16 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
         // 返回
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+    }
+
+    private AuthorityBusiness getAuthorrityBusiness(ApplyRecord record) {
+        AuthorityBusiness authorityBusiness = new AuthorityBusiness();
+        authorityBusiness.setType(AuthorityBusiness.TypeEnum.APPLY_VC.getStatus());
+        authorityBusiness.setApplyOrg(record.getApplyOrg());
+        authorityBusiness.setSpecifyOrg(record.getApproveOrg());
+        authorityBusiness.setStartTime(LocalDateTimeUtil.now());
+        authorityBusiness.setProcessStatus(AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus());
+        return authorityBusiness;
     }
 
     private ApplyRecord getApplyRecord(DidRpcApi.ApplyVCReq request) {

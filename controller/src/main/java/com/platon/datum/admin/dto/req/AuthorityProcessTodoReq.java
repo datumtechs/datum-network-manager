@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @Author liushuyu
  * @Date 2022/7/22 14:54
@@ -20,10 +22,12 @@ import lombok.ToString;
 public class AuthorityProcessTodoReq {
 
     @ApiModelProperty(value = "处理的事务id", required = true)
-    private int id;
+    @NotNull
+    private Integer id;
 
     @ApiModelProperty(value = "处理结果：1-同意，2-不同意", required = true)
-    private int result;
+    @NotNull
+    private Integer result;
 
     @ApiModelProperty(value = "审批附言",required = false)
     private String remark;

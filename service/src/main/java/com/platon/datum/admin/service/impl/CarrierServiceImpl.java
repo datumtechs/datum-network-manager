@@ -11,6 +11,7 @@ import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.datum.admin.grpc.client.AuthClient;
 import com.platon.datum.admin.grpc.client.YarnClient;
 import com.platon.datum.admin.grpc.entity.YarnGetNodeInfoResp;
+import com.platon.datum.admin.service.AuthorityService;
 import com.platon.datum.admin.service.CarrierService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,12 +38,14 @@ public class CarrierServiceImpl implements CarrierService {
     private AuthClient authClient;
     @Resource
     private YarnClient yarnClient;
+    @Resource
+    private AuthorityService authorityService;
 
     @Override
     public CarrierConnStatusEnum connectNode(String ip, int port) {
         //尝试连接调度服务
         boolean success = yarnClient.connectScheduleServer(ip, port);
-        if(!success){
+        if (!success) {
             return CarrierConnStatusEnum.DISABLED;
         }
         Org org = (Org) OrgCache.getLocalOrgInfo();
@@ -60,28 +63,26 @@ public class CarrierServiceImpl implements CarrierService {
 
     @Override
     public Integer applyJoinNetwork() {
-        Org org = (Org) OrgCache.getLocalOrgInfo();
+        Org org = OrgCache.getLocalOrgInfo();
 
-        if(org.getStatus()== Org.Status.CONNECTED.getCode()){
-            throw new OrgConnectNetworkAlready ();
+        if (org.getStatus() == Org.Status.CONNECTED.getCode()) {
+            throw new OrgConnectNetworkAlready();
         }
 
         try {
             authClient.applyIdentityJoin(org.getIdentityId(), org.getName(), org.getImageUrl(), org.getProfile());
-        }catch (Exception e){
-            log.error("入网失败:" , e);
-            throw new ApplyIdentityIDFailed();
+        } catch (Exception e) {
+            throw new ApplyIdentityIDFailed(e);
         }
 
         YarnGetNodeInfoResp nodeInfo;
         try {
             nodeInfo = yarnClient.getNodeInfo(org.getCarrierIp(), org.getCarrierPort());
-        }catch (Exception e){
-            log.error("入网失败:" , e);
-            throw new ApplyIdentityIDFailed();
+        } catch (Exception e) {
+            throw new ApplyIdentityIDFailed(e);
         }
 
-        if(!org.getIdentityId().equals(nodeInfo.getIdentityId())){
+        if (!org.getIdentityId().equals(nodeInfo.getIdentityId())) {
             throw new IdentityIDApplied();
         }
 
@@ -94,25 +95,28 @@ public class CarrierServiceImpl implements CarrierService {
 
         org.setStatus(Org.Status.CONNECTED.getCode());
         orgMapper.update(org);
+
+        //刷新委员会列表
+        authorityService.refreshAuthority();
+
+        org = orgMapper.select();
         //刷新缓存
         OrgCache.setLocalOrgInfo(org);
         return org.getStatus();
-
-
     }
 
     @Override
     public Integer cancelJoinNetwork() {
-        Org org = (Org) OrgCache.getLocalOrgInfo();
-        if(org.getStatus()!= Org.Status.CONNECTED.getCode()){
-           throw new OrgNotConnectNetwork();
+        Org org = OrgCache.getLocalOrgInfo();
+        if (org.getStatus() != Org.Status.CONNECTED.getCode()) {
+            throw new OrgNotConnectNetwork();
         }
         authClient.revokeIdentityJoin();
 
         //退网成功，刷新数据库
         YarnGetNodeInfoResp nodeInfo = yarnClient.getNodeInfo(org.getCarrierIp(), org.getCarrierPort());
-        if(nodeInfo.getStatus() != GRPC_SUCCESS_CODE){
-            log.info("获取调度服务节点信息失败：" + nodeInfo.getMsg());
+        if (nodeInfo.getStatus() != GRPC_SUCCESS_CODE) {
+            log.info("Get node info failed：" + nodeInfo.getMsg());
         } else {
             org.setCarrierStatus(nodeInfo.getState());
         }

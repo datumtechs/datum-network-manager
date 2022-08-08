@@ -1,5 +1,6 @@
 package com.platon.datum.admin.grpc.client;
 
+import cn.hutool.core.util.StrUtil;
 import com.google.protobuf.ByteString;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.datum.admin.grpc.channel.SimpleChannelManager;
@@ -123,28 +124,24 @@ public class DataProviderClient {
                 //等待服务端数据返回
                 boolean await = countDownLatch.await(uploadFileTimeoutInterceptor.getTimeout() + 10, TimeUnit.SECONDS);
                 if (!await) {
-                    log.error("call Carrier RPC uploadData timeout");
-                    throw new CallGrpcServiceFailed();
+                    throw new CallGrpcServiceFailed("call Carrier RPC uploadData timeout");
                 }
             } catch (InterruptedException e) {
-                log.error("call Carrier RPC uploadData error", e);
-                throw new CallGrpcServiceFailed();
+                throw new CallGrpcServiceFailed(e);
             }
-
-            if (responseObserver.getResponse() == null
-                    || responseObserver.getResponse().getStatus() != GrpcConstant.GRPC_SUCCESS_CODE
-                    || StringUtils.isBlank(responseObserver.getResponse().getDataId())
-                    || StringUtils.isBlank(responseObserver.getResponse().getDataPath())) {
-                log.error("上传失败: " + responseObserver.getResponse() == null ? "response=null" :
-                        "status=" + responseObserver.getResponse().getStatus()
-                                + ",dataId=" + responseObserver.getResponse().getDataId()
-                                + ",dataPath=" + responseObserver.getResponse().getDataPath());
-                throw new CallGrpcServiceFailed();
+            DataSvc.UploadReply response = responseObserver.getResponse();
+            if (response == null
+                    || response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE
+                    || StringUtils.isBlank(response.getDataId())
+                    || StringUtils.isBlank(response.getDataPath())) {
+                String message = response == null ?
+                        StrUtil.format("Upload failed，response：null") :
+                        StrUtil.format("Upload failed，status：{}，dataId：{}，dataPath：{}", response.getStatus(), response.getDataId(), response.getDataPath());
+                throw new CallGrpcServiceFailed(message);
             }
             return responseObserver.getResponse();
         } catch (IOException e) {
-            log.error("failed to upload file", e);
-            throw new CallGrpcServiceFailed();
+            throw new CallGrpcServiceFailed(e);
         } finally {
             channelManager.closeChannel(channel);
         }
@@ -249,25 +246,24 @@ public class DataProviderClient {
                 //等待服务端数据返回
                 boolean await = countDownLatch.await(uploadFileTimeoutInterceptor.getTimeout() + 10, TimeUnit.SECONDS);
                 if (!await) {
-                    log.error("call Carrier RPC downloadData timeout");
-                    throw new CallGrpcServiceFailed();
+                    throw new CallGrpcServiceFailed("call Carrier RPC downloadData timeout");
                 }
             } catch (InterruptedException e) {
-                log.error("call Carrier RPC downloadData error", e);
-                throw new CallGrpcServiceFailed();
+                throw new CallGrpcServiceFailed(e);
             }
 
-            log.debug("下载####################filePath:" + filePath + "," +
-                    (responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue()));
+            log.debug("下载完成，filePath:{}，response.status:{}",
+                    filePath,
+                    responseObserver.getResponse() == null ? "null" : responseObserver.getResponse().getStatusValue());
             //只有出错时，才设置了status
             if (responseObserver.getResponse() == null
                     || responseObserver.getResponse().getStatus() != FighterEnum.TaskStatus.Finished) {
-                throw new CallGrpcServiceFailed(responseObserver.getResponse() == null ? "response=null" : "response.status=" + responseObserver.getResponse().getStatusValue());
+                throw new CallGrpcServiceFailed(StrUtil.format("response.status:{}",
+                        responseObserver.getResponse() == null ? "null" : responseObserver.getResponse().getStatusValue()));
             }
 
-            log.debug("下载文件大小:{}",content.get().size());
+            log.debug("下载的文件大小:{}", content.get().size());
             return content.get().toByteArray();
-
         } finally {
             channelManager.closeChannel(channel);
         }

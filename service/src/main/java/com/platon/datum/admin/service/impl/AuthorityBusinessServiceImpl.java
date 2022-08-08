@@ -2,6 +2,9 @@ package com.platon.datum.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
+import com.platon.datum.admin.common.exception.ValidateException;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.AuthorityBusinessMapper;
@@ -58,7 +61,7 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
      * @param id
      */
     @Override
-    public AuthorityBusiness getTodoDetail(int id) {
+    public AuthorityBusiness getDetail(int id) {
         return authorityBusinessMapper.selectById(id);
     }
 
@@ -69,37 +72,53 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
     @Override
     public void processTodo(int id, int result, String remark) {
         AuthorityBusiness authorityBusiness = authorityBusinessMapper.selectById(id);
+        if (authorityBusiness == null) {
+            throw new BizException(Errors.QueryRecordNotExist, "Authority business record not exist");
+        }
         Integer type = authorityBusiness.getType();
         switch (type) {
             case 1://签发证书
-                ApplyRecord applyRecord = null;
-                processVc(applyRecord, result,remark);
+                ApplyRecord applyRecord = applyRecordMapper.selectByAuthorityBusinessId(id);
+                processVc(applyRecord, result, remark);
                 //1.调用调度服务处理
                 break;
-            default://默认为提案
+            case 101://默认为提案
                 //1.调用调度服务处理
                 break;
+            case 102:
+                break;
+            default:
+                throw new ValidateException("Unsupported business type:" + type);
         }
         //修改business表状态为处理完
-        authorityBusinessMapper.updateStatus(id, result);
+        authorityBusinessMapper.updateProcessStatusById(id, result);
     }
 
     private void processVc(ApplyRecord applyRecord, int result, String remark) {
         applyRecord.setApproveRemark(remark);
         applyRecord.setEndTime(LocalDateTimeUtil.now());
+        int processStatus = AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus();
         if (result == 1) {//同意
             applyRecord.setProgress(ApplyRecord.ProgressEnum.AGREE.getStatus());
             applyRecord.setStatus(ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
-
+            //调用创建vc的接口
             Pair<String, DidRpcApi.TxInfo> vcPair = didClient.createVC(applyRecord);
-
             applyRecord.setVc(vcPair.getLeft());
             applyRecord.setTxHash(vcPair.getRight().getTxHash());
+            processStatus = AuthorityBusiness.ProcessStatusEnum.AGREE.getStatus();
         } else {//拒绝
             applyRecord.setProgress(ApplyRecord.ProgressEnum.REJECT.getStatus());
             applyRecord.setStatus(ApplyRecord.StatusEnum.INVALID.getStatus());
+            processStatus = AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus();
         }
-        applyRecordMapper.updateByPrimaryKeySelective(applyRecord);
+        int count = applyRecordMapper.updateByPrimaryKeySelective(applyRecord);
+        if (count <= 0) {
+            throw new BizException(Errors.UpdateSqlFailed, "Update apply record failed");
+        }
+        count = authorityBusinessMapper.updateProcessStatusById(applyRecord.getAuthorityBusinessId(), processStatus);
+        if (count <= 0) {
+            throw new BizException(Errors.UpdateSqlFailed, "Update authority business failed");
+        }
     }
 
     /**
@@ -115,12 +134,4 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
         return authorityBusinesses;
     }
 
-    /**
-     * @param id
-     * @return
-     */
-    @Override
-    public AuthorityBusiness getDoneDetail(int id) {
-        return authorityBusinessMapper.selectById(id);
-    }
 }

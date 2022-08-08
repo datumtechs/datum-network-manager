@@ -53,4 +53,45 @@ public class AuthorityBusiness extends BaseDomain {
      */
     @ApiModelProperty("处理状态：0-未处理，1-同意，2-不同意")
     private Integer processStatus;
+
+
+    /**
+     * 业务类型：1-申请认证，101-提名加入提案，102-提名踢出提案
+     */
+    @Getter
+    @ToString
+    public enum TypeEnum {
+        APPLY_VC(1, "申请认证"),
+        JOIN_PROPOSAL(101, "提名加入提案"),
+        KICK_PROPOSAL(102, "提名踢出提案"),
+        ;
+
+        TypeEnum(int status, String desc) {
+            this.status = status;
+            this.desc = desc;
+        }
+
+        private int status;
+        private String desc;
+    }
+
+    /**
+     * 处理状态：0-未处理，1-同意，2-不同意
+     */
+    @Getter
+    @ToString
+    public enum ProcessStatusEnum {
+        TO_DO(0, "未处理"),
+        AGREE(1, "同意"),
+        DISAGREE(2, "不同意"),
+        ;
+
+        ProcessStatusEnum(int status, String desc) {
+            this.status = status;
+            this.desc = desc;
+        }
+
+        private int status;
+        private String desc;
+    }
 }

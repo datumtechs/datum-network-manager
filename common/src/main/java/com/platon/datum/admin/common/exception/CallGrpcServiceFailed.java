@@ -7,4 +7,8 @@ public class CallGrpcServiceFailed extends BizException {
     public CallGrpcServiceFailed(String msg) {
         super(Errors.CallGrpcServiceFailed, msg);
     }
+
+    public CallGrpcServiceFailed(Throwable t) {
+        super(Errors.CallGrpcServiceFailed, t);
+    }
 }

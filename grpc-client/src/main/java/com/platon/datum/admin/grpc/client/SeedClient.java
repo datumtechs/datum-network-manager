@@ -38,13 +38,14 @@ public class SeedClient {
      */
     public SysRpcApi.SeedPeer addSeedNode(String address) {
         Channel channel = channelManager.getCarrierChannel();
-
         //2.拼装request
         SysRpcApi.SetSeedNodeRequest seedRequest = SysRpcApi.SetSeedNodeRequest.newBuilder()
                 .setAddr(address)
                 .build();
+        log.debug("addSeedNode,request:{}",seedRequest);
         //3.调用rpc,获取response
         SysRpcApi.SetSeedNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setSeedNode(seedRequest);
+        log.debug("addSeedNode,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -60,16 +61,15 @@ public class SeedClient {
      * 删除种子节点
      */
     public void deleteSeedNode(String address) {
-
-        log.debug("从carrier删除种子节点，address:{}", address);
         Channel channel = channelManager.getCarrierChannel();
-
         //2.拼装request
         SysRpcApi.DeleteSeedNodeRequest seedRequest = SysRpcApi.DeleteSeedNodeRequest.newBuilder()
                 .setAddr(address)
                 .build();
+        log.debug("deleteSeedNode,request:{}",seedRequest);
         //3.调用rpc,获取response
         Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);
+        log.debug("deleteSeedNode,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -82,21 +82,21 @@ public class SeedClient {
      * 查询种子服务列表
      */
     public List<SeedNode> getSeedNodeList() {
-        log.debug("从carrier查询种子节点列表");
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
         Empty seedNodeListRequest = Empty.newBuilder().build();
+        log.debug("getSeedNodeList,request:{}",seedNodeListRequest);
         //3.调用rpc,获取response
         SysRpcApi.GetSeedNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(seedNodeListRequest);
+        log.debug("getSeedNodeList,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
         } else if (response.getStatus() != GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        log.debug("从carrier查询种子节点列表，数量：{}", response.getNodesList().size());
         return convertToLocalSeedNodeList(response.getNodesList());
     }
 

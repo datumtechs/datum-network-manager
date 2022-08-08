@@ -16,7 +16,7 @@ public interface AuthorityBusinessMapper {
 
     int insert(AuthorityBusiness record);
 
-    int insertSelective(AuthorityBusiness record);
+    int insertSelectiveReturnId(AuthorityBusiness record);
 
     AuthorityBusiness selectById(Integer id);
 
@@ -43,5 +43,6 @@ public interface AuthorityBusinessMapper {
      */
     List<AuthorityBusiness> selectDoneList(@Param("keyword") String keyword);
 
-    int updateStatus(@Param("id") int id, @Param("status") int status);
+    int updateProcessStatusById(@Param("id") int id, @Param("status") int status);
+
 }

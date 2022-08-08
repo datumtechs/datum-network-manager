@@ -52,7 +52,6 @@ public class AuthClient {
      * @param name       // 组织名称
      */
     public void applyIdentityJoin(String identityId, String name, String imageUrl, String profile) {
-        log.debug("从carrier申请入网，identityId:{}", identityId);
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -67,11 +66,11 @@ public class AuthClient {
                 .newBuilder()
                 .setInformation(orgInfo)
                 .build();
-
+        log.debug("applyIdentityJoin,request:{}",joinRequest);
         //3.调用rpc,获取response
         Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
+        log.debug("applyIdentityJoin,response:{}",response);
         //4.处理response
-
         if (response == null) {
             throw new CallGrpcServiceFailed();
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
@@ -83,15 +82,16 @@ public class AuthClient {
      * 注销准入网络
      */
     public void revokeIdentityJoin() throws BizException {
-        log.debug("从carrier注销入网");
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
         com.google.protobuf.Empty request = com.google.protobuf.Empty
                 .newBuilder()
                 .build();
+        log.debug("revokeIdentityJoin,request:{}",request);
         //3.调用rpc,获取response
         Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
+        log.debug("revokeIdentityJoin,request:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -107,7 +107,6 @@ public class AuthClient {
      * @return
      */
     public List<DataAuth> getMetaDataAuthorityList(LocalDateTime latestSynced) throws BizException {
-        log.debug("从carrier查询数据授权申请列表，latestSynced：{}", latestSynced);
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -116,9 +115,10 @@ public class AuthClient {
                 .setLastUpdated(LocalDateTimeUtil.getTimestamp(latestSynced))
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
+        log.debug("getMetaDataAuthorityList,request:{}",request);
         //3.调用rpc,获取response
         AuthRpcApi.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getLocalMetadataAuthorityList(request);
-
+        log.debug("getMetaDataAuthorityList,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -163,7 +163,6 @@ public class AuthClient {
      * @return
      */
     public void auditMetaData(String metaDataAuthId, int auditOption, String auditDesc) throws BizException {
-        log.debug("从carrier审核数据授权申请，metaDataAuthId：{}， auditOption：{}，auditDesc：{}", metaDataAuthId, auditOption, auditDesc);
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
 
@@ -176,8 +175,10 @@ public class AuthClient {
                 .setAudit(auditDataStatus)
                 .setSuggestion(auditDesc)
                 .build();
+        log.debug("auditMetaData,request:{}",request);
         //3.调用rpc,获取response
         AuthRpcApi.AuditMetadataAuthorityResponse response = AuthServiceGrpc.newBlockingStub(channel).auditMetadataAuthority(request);
+        log.debug("auditMetaData,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -188,8 +189,6 @@ public class AuthClient {
     }
 
     public List<GlobalOrg> getIdentityList(LocalDateTime latestSynced) {
-
-        log.debug("从carrier查询元数据列表，latestSynced:{}", latestSynced);
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
 
@@ -199,9 +198,10 @@ public class AuthClient {
                 .setLastUpdated(LocalDateTimeUtil.getTimestamp(latestSynced))
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
+        log.debug("getIdentityList,request:{}",request);
         //3.调用rpc,获取response
         AuthRpcApi.GetIdentityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getIdentityList(request);
-
+        log.debug("getIdentityList,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -219,7 +219,7 @@ public class AuthClient {
                 .map(organization -> {
                     GlobalOrg globalOrg = new GlobalOrg();
                     globalOrg.setIdentityId(organization.getIdentityId());
-                    globalOrg.setIdentityType(organization.getIdeneityTypeValue());
+                    globalOrg.setIdentityType(organization.getIdentityTypeValue());
                     globalOrg.setNodeId(organization.getNodeId());
                     globalOrg.setNodeName(organization.getNodeName());
                     globalOrg.setStatus(organization.getStatusValue());

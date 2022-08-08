@@ -1,20 +1,17 @@
 package com.platon.datum.admin.service.impl;
 
-import com.platon.datum.admin.common.util.DidUtil;
 import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.AuthorityMapper;
+import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Authority;
-import com.platon.datum.admin.grpc.client.ProposalClient;
 import com.platon.datum.admin.service.AuthorityService;
-import com.platon.datum.admin.service.IpfsOpService;
+import com.platon.datum.admin.service.VoteContract;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author liushuyu
@@ -31,9 +28,9 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Resource
     private ApplyRecordMapper applyRecordMapper;
     @Resource
-    private IpfsOpService ipfsOpService;
+    private VoteContract voteContract;
     @Resource
-    private ProposalClient proposalClient;
+    private OrgMapper orgMapper;
 
 
     /**
@@ -42,8 +39,8 @@ public class AuthorityServiceImpl implements AuthorityService {
      */
     @Override
     public int getAuthorityCount(String identityId) {
-        int i = authorityMapper.selectCount();
-        return i;
+        int count = authorityMapper.selectCount();
+        return count;
     }
 
     /**
@@ -52,8 +49,8 @@ public class AuthorityServiceImpl implements AuthorityService {
      */
     @Override
     public int getApproveCount(String identityId) {
-        int i = applyRecordMapper.selectApproveCount(identityId);
-        return i;
+        int count = applyRecordMapper.selectApproveCount(identityId);
+        return count;
     }
 
     /**
@@ -67,57 +64,21 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     /**
-     * @param identityId
+     * 刷新委员会成员列表
      */
+    @Transactional(rollbackFor = Throwable.class)
     @Override
-    public void kickOut(String identityId) {
-        String address = DidUtil.didToHexAddress(identityId);
-        String proposal = proposalClient.submitProposal(2, "", address, "");
-        //TODO 保存提案信息
-    }
+    public void refreshAuthority() {
+        List<Authority> allAuthority = voteContract.getAllAuthority();
+        //将原来的删除并将新的存进去
+        authorityMapper.refresh(allAuthority);
 
-    /**
-     *
-     */
-    @Override
-    public void exit() {
-        String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
-        String proposal = proposalClient.submitProposal(3, "", observerProxyWalletAddress, "");
-        //TODO 保存提案信息
-    }
-
-    /**
-     * @param file
-     */
-    @Override
-    public String upload(MultipartFile file) {
-        String url = ipfsOpService.saveFile(file);
-        return url;
-    }
-
-    /**
-     * @param identityId
-     * @param ip
-     * @param port
-     * @param remark       提案备注
-     * @param material     提案材料
-     * @param materialDesc 提案材料的描述
-     *                     {
-     *                     "image":"ipfs://bafybeibnsoufr2renqzsh347nrx54wcubt5lgkeivez63xvivplfwhtpym",
-     *                     "desc":"图片描述",
-     *                     "remark":"公示备注信息"
-     *                     }
-     */
-    @Override
-    public void nominate(String identityId, String ip, int port, String remark, String material, String materialDesc) {
-        String address = DidUtil.didToHexAddress(identityId);
-        Map<String, String> map = new HashMap<>();
-        map.put("image", material);
-        map.put("desc", materialDesc);
-        map.put("remark", remark);
-        String url = ipfsOpService.saveJson(map);
-        String proposal = proposalClient.submitProposal(1, url, address, ip + port);
-
-        //TODO 保存提案信息
+        //判断本组织是否是委员会成员
+        Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
+        if (authority == null) {
+            orgMapper.updateIsAuthority(0);
+        } else {
+            orgMapper.updateIsAuthority(1);
+        }
     }
 }

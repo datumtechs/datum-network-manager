@@ -6,16 +6,15 @@ import lombok.ToString;
 
 /**
  * @Author liushuyu
- * @Date 2022/8/7 17:40
+ * @Date 2022/8/8 14:39
  * @Version
  * @Desc
  */
 
-
 @Getter
 @Setter
 @ToString
-public class VcMaterialContent {
+public class ProposalMaterialContent {
 
     /**
      * 材料图片上传的ipfs地址
@@ -27,4 +26,9 @@ public class VcMaterialContent {
      */
     private String desc;
 
+    /**
+     * 公示备注信息
+     */
+    private String remark;
 }
+

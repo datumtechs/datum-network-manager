@@ -47,7 +47,7 @@ public class AddLocalMetaDataReq {
     /**
      * @since v0.5.0
      */
-    @ApiModelProperty(name = "usage", value = "用法：1-明文，2-密文，3-都支持")
+    @ApiModelProperty(name = "usage", value = "用法：1-明文，2-密文，3-都支持", required = true)
     @NotNull
     private Integer usage;
 }

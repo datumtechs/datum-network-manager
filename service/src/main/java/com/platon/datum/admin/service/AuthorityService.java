@@ -18,11 +18,8 @@ public interface AuthorityService {
 
     List<Authority> getAuthorityList(String keyword);
 
-    void kickOut(String identityId);
-
-    void exit();
-
-    String upload(MultipartFile file);
-
-    void nominate(String identityId, String ip, int port, String remark, String material, String materialDesc);
+    /**
+     * 刷新委员会成员列表
+     */
+    void refreshAuthority();
 }

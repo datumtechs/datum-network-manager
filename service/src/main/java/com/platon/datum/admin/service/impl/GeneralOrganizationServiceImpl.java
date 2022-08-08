@@ -82,6 +82,15 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
     }
 
     /**
+     * @return
+     */
+    @Override
+    public boolean currentOrgCanTrusted() {
+        ApplyRecord currentUsingVc = getCurrentUsingVc();
+        return currentUsingVc == null ? false : true;
+    }
+
+    /**
      * @param pageNumber
      * @param pageSize
      * @return

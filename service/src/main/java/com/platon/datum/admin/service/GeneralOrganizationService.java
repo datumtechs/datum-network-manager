@@ -23,6 +23,8 @@ public interface GeneralOrganizationService {
      */
     ApplyRecord getCurrentUsingVc();
 
+    boolean currentOrgCanTrusted();
+
     Page<ApplyRecord> getApplyList(Integer pageNumber, Integer pageSize);
 
     ApplyRecord getApplyDetail(Integer id);

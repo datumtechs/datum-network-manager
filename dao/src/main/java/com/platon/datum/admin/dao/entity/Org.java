@@ -63,6 +63,8 @@ public class Org extends BaseDomain {
     @ApiModelProperty(value = "carrier钱包地址")
     private String observerProxyWalletAddress;
 
+    @ApiModelProperty(value = "是否是委员会成员：0-否，1-是")
+    private Integer isAuthority;
     @Getter
     public enum Status {
         NOT_CONNECT_NET(0, "待接入网络"),

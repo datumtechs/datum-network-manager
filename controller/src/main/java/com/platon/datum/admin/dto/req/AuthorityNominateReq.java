@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * @Author liushuyu
  * @Date 2022/7/22 14:45
@@ -21,15 +24,19 @@ import lombok.ToString;
 public class AuthorityNominateReq {
 
     @ApiModelProperty(value = "被提名组织的identityId", required = true)
+    @NotBlank
     private String identityId;
 
     @ApiModelProperty(value = "被提名组织的调度服务ip", required = true)
+    @NotBlank
     private String ip;
 
     @ApiModelProperty(value = "被提名组织的调度服务port", required = true)
-    private int port;
+    @NotNull
+    private Integer port;
 
     @ApiModelProperty(value = "提名附言", required = true)
+    @NotBlank
     private String remark;
 
     @ApiModelProperty(value = "审批资料url", required = false)

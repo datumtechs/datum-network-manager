@@ -42,6 +42,7 @@ public class DidClient {
         //2.拼装request
         //3.调用rpc,获取response
         DidRpcApi.CreateDIDResponse response = DIDServiceGrpc.newBlockingStub(channel).createDID(Empty.newBuilder().build());
+        log.debug("createDID,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -67,8 +68,10 @@ public class DidClient {
                 .setClaim(applicantRecord.getClaim())
                 .setExtInfo(JSONUtil.toJsonStr(applicantRecord))
                 .build();
+        log.debug("applyVCLocal,request:{}",request);
         //3.调用rpc,获取response
         Common.SimpleResponse response = VcServiceGrpc.newBlockingStub(channel).applyVCLocal(request);
+        log.debug("applyVCLocal,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -89,8 +92,10 @@ public class DidClient {
                 .setIssuerUrl(approveOrgUrl)
                 .setApplicantDid(applyOrg)
                 .build();
+        log.debug("downloadVCLocal,request:{}",request);
         //3.调用rpc,获取response
         DidRpcApi.DownloadVCResponse response = VcServiceGrpc.newBlockingStub(channel).downloadVCLocal(request);
+        log.debug("downloadVCLocal,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -113,10 +118,12 @@ public class DidClient {
                 .setContext(applyRecord.getContext())
                 .setPctId(applyRecord.getPctId())
                 .setClaim(applyRecord.getClaim())
-                .setExpirationDate(LocalDateTimeUtil.now().plusYears(100).toString())//暂时设置100年有效期
+                .setExpirationDate(LocalDateTimeUtil.now().plusYears(100).toString())//TODO 暂时设置100年有效期
                 .build();
+        log.debug("createVC,request:{}",request);
         //3.调用rpc,获取response
         DidRpcApi.CreateVCResponse response = VcServiceGrpc.newBlockingStub(channel).createVC(request);
+        log.debug("createVC,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();

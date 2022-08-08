@@ -54,8 +54,10 @@ public class PowerClient {
                 .setExternalIp(externalIp)
                 .setExternalPort(String.valueOf(externalPort))
                 .build();
+        log.debug("addPowerNode,request:{}",joinRequest);
         //3.调用rpc,获取response
         SysRpcApi.SetJobNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
+        log.debug("addPowerNode,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -79,8 +81,10 @@ public class PowerClient {
                 .setExternalPort(String.valueOf(externalPort))
                 .setId(powerNodeId)
                 .build();
+        log.debug("updatePowerNode,request:{}",joinRequest);
         //3.调用rpc,获取response
         SysRpcApi.SetJobNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).updateJobNode(joinRequest);
+        log.debug("updatePowerNode,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -99,8 +103,10 @@ public class PowerClient {
         //2.拼装request
         SysRpcApi.DeleteRegisteredNodeRequest joinRequest = SysRpcApi.DeleteRegisteredNodeRequest.newBuilder()
                 .setId(powerNodeId).build();
+        log.debug("deletePowerNode,request:{}",joinRequest);
         //3.调用rpc,获取response
         Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
+        log.debug("deletePowerNode,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -116,22 +122,19 @@ public class PowerClient {
      * 查询计算服务列表
      */
     public List<PowerNode> getLocalPowerNodeList() {
-
-        log.debug("从carrier查询本组织的计算节点列表");
-
         Channel channel = channelManager.getCarrierChannel();
         //2.拼装request
         Empty jobNodeListRequest = Empty.newBuilder().build();
+        log.debug("getLocalPowerNodeList,request:{}",jobNodeListRequest);
         //3.调用rpc,获取response
         SysRpcApi.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getJobNodeList(jobNodeListRequest);
-
+        log.debug("getLocalPowerNodeList,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-        log.debug("从carrier查询本组织的计算节点列表, 数量：{}", response.getNodesList().size());
         return convertToLocalPowerNodeList(response.getNodesList());
     }
 
@@ -158,8 +161,10 @@ public class PowerClient {
         //2.拼装request
         PowerRpcApi.PublishPowerRequest joinRequest = PowerRpcApi.PublishPowerRequest.newBuilder()
                 .setJobNodeId(jobNodeId).build();
+        log.debug("publishPower,request:{}",joinRequest);
         //3.调用rpc,获取response
         PowerRpcApi.PublishPowerResponse response = PowerServiceGrpc.newBlockingStub(channel).publishPower(joinRequest);
+        log.debug("publishPower,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -178,8 +183,10 @@ public class PowerClient {
         PowerRpcApi.RevokePowerRequest joinRequest = PowerRpcApi.RevokePowerRequest.newBuilder()
                 .setPowerId(powerId)
                 .build();
+        log.debug("revokePower,request:{}",joinRequest);
         //3.调用rpc,获取response
         Common.SimpleResponse response = PowerServiceGrpc.newBlockingStub(channel).revokePower(joinRequest);
+        log.debug("revokePower,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -197,15 +204,16 @@ public class PowerClient {
         Empty request = Empty
                 .newBuilder()
                 .build();
+        log.debug("getLocalPowerNodeListAndJoinTaskList,request:{}",request);
         //3.调用rpc,获取response
         PowerRpcApi.GetLocalPowerDetailListResponse response = PowerServiceGrpc.newBlockingStub(channel).getLocalPowerDetailList(request);
+        log.debug("getLocalPowerNodeListAndJoinTaskList,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
-
         return convertToLocalPowerNodeAndTaskJoinedList(response.getPowersList());
     }
 

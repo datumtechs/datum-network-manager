@@ -18,6 +18,7 @@
         <result column="local_bootstrap_node" jdbcType="VARCHAR" property="localBootstrapNode"/>
         <result column="local_multi_addr" jdbcType="VARCHAR" property="localMultiAddr"/>
         <result column="observer_proxy_wallet_address" jdbcType="VARCHAR" property="observerProxyWalletAddress"/>
+        <result column="is_authority" jdbcType="INTEGER" property="isAuthority"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -35,7 +36,8 @@
         `profile`,
         `local_bootstrap_node`,
         `local_multi_addr`,
-        `observer_proxy_wallet_address`
+        `observer_proxy_wallet_address`,
+        is_authority
     </sql>
 
     <select id="selectAvailableCarrier" resultMap="BaseResultMap">
@@ -61,23 +63,22 @@
         from org
     </select>
 
-    <!-- 选择性插入字段-->
     <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.Org">
         insert into org (`name`,
-                               identity_id,
-                               carrier_node_id,
-                               carrier_ip,
-                               carrier_port,
-                               carrier_conn_status,
-                               carrier_conn_time,
-                               conn_node_count,
-                               carrier_status,
-                               `status`,
-                               image_url,
-                               profile,
-                               local_bootstrap_node,
-                               local_multi_addr,
-                               observer_proxy_wallet_address)
+                         identity_id,
+                         carrier_node_id,
+                         carrier_ip,
+                         carrier_port,
+                         carrier_conn_status,
+                         carrier_conn_time,
+                         conn_node_count,
+                         carrier_status,
+                         `status`,
+                         image_url,
+                         profile,
+                         local_bootstrap_node,
+                         local_multi_addr,
+                         observer_proxy_wallet_address)
         values (#{name,jdbcType=VARCHAR},
                 #{identityId,jdbcType=VARCHAR},
                 #{carrierNodeId,jdbcType=VARCHAR},
@@ -97,20 +98,25 @@
 
     <update id="update" parameterType="com.platon.datum.admin.dao.entity.Org">
         update org
-        set `name`               = #{name},
-            identity_id          = #{identityId},
-            carrier_node_id      = #{carrierNodeId},
-            carrier_ip           = #{carrierIp},
-            carrier_port         = #{carrierPort},
-            carrier_conn_status  = #{carrierConnStatus},
-            carrier_conn_time    = #{carrierConnTime},
-            conn_node_count      = #{connNodeCount},
-            carrier_status       = #{carrierStatus},
-            `status`             = #{status},
-            `image_url`          = #{imageUrl},
-            `profile`            = #{profile},
-            local_bootstrap_node = #{localBootstrapNode,jdbcType=VARCHAR},
-            local_multi_addr     = #{localMultiAddr,jdbcType=VARCHAR},
-            observer_proxy_wallet_address       = #{observerProxyWalletAddress,jdbcType=VARCHAR}
+        set `name`                        = #{name},
+            identity_id                   = #{identityId},
+            carrier_node_id               = #{carrierNodeId},
+            carrier_ip                    = #{carrierIp},
+            carrier_port                  = #{carrierPort},
+            carrier_conn_status           = #{carrierConnStatus},
+            carrier_conn_time             = #{carrierConnTime},
+            conn_node_count               = #{connNodeCount},
+            carrier_status                = #{carrierStatus},
+            `status`                      = #{status},
+            `image_url`                   = #{imageUrl},
+            `profile`                     = #{profile},
+            local_bootstrap_node          = #{localBootstrapNode,jdbcType=VARCHAR},
+            local_multi_addr              = #{localMultiAddr,jdbcType=VARCHAR},
+            observer_proxy_wallet_address = #{observerProxyWalletAddress,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateIsAuthority">
+        update org
+        set is_authority = #{isAuthority}
     </update>
 </mapper>

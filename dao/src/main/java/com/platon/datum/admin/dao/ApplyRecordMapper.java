@@ -35,6 +35,14 @@ public interface ApplyRecordMapper {
     ApplyRecord selectById(Integer id);
 
     /**
+     * 根据委员会事务ID查看认证详情
+     *
+     * @param authorityBusinessId
+     * @return
+     */
+    ApplyRecord selectByAuthorityBusinessId(@Param("authorityBusinessId") Integer authorityBusinessId);
+
+    /**
      * 查询出本组织已获取的认证
      *
      * @param applyOrg

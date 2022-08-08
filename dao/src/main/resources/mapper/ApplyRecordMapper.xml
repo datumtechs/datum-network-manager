@@ -186,7 +186,7 @@
                 material_desc = #{materialDesc,jdbcType=VARCHAR},
             </if>
             <if test="vc != null">
-               vc =  #{vc,jdbcType=VARCHAR},
+                vc = #{vc,jdbcType=VARCHAR},
             </if>
             <if test="expirationDate != null">
                 expiration_date = #{expirationDate},
@@ -257,8 +257,8 @@
         <include refid="Base_Column_List"/>
         from apply_record
         where apply_org = #{applyOrg}
-        and approve_org = #{approveOrg}
-        and status = #{status}
+          and approve_org = #{approveOrg}
+          and status = #{status}
     </select>
 
     <select id="selectByUsedAndValidVc" resultMap="BaseResultMap">
@@ -266,8 +266,8 @@
         <include refid="Base_Column_List"/>
         from apply_record
         where apply_org = #{applyOrg}
-        and used = 1
-        and status = 1
+          and used = 1
+          and status = 1
     </select>
 
     <select id="selectByApproveOrgAndTobeEffective" resultMap="BaseResultMap">
@@ -275,6 +275,13 @@
         <include refid="Base_Column_List"/>
         from apply_record
         where approve_org = #{approveOrg}
-        and status = 2
+          and status = 2
+    </select>
+
+    <select id="selectByAuthorityBusinessId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from apply_record
+        where authority_business_id = #{authorityBusinessId}
     </select>
 </mapper>

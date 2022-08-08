@@ -13,6 +13,7 @@ import com.platon.datum.admin.service.AuthorityBusinessService;
 import com.platon.datum.admin.service.AuthorityService;
 import com.platon.datum.admin.service.ProposalService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,6 +49,7 @@ public class AuthorityController {
      *
      * @since 0.5.0
      */
+    @ApiOperation("主页内容")
     @PostMapping("/home")
     public JsonResponse<AuthorityHomeResp> home() {
         Org localOrgInfo = OrgCache.getLocalOrgInfo();
@@ -72,6 +74,7 @@ public class AuthorityController {
      *
      * @since 0.5.0
      */
+    @ApiOperation("委员会列表")
     @PostMapping("/list")
     public JsonResponse<List<Authority>> list(@RequestBody @Validated AuthorityListReq req) {
         List<Authority> authorityList = authorityService.getAuthorityList(req.getKeyword());
@@ -85,9 +88,10 @@ public class AuthorityController {
      * @since 0.5.0
      * TODO
      */
+    @ApiOperation("提名踢出")
     @PostMapping("/kickOut")
     public JsonResponse kickOut(@RequestBody @Validated AuthorityKickOutReq req) {
-        authorityService.kickOut(req.getIdentityId());
+        proposalService.kickOut(req.getIdentityId(), req.getRemark(), req.getMaterial(), req.getMaterialDesc());
         return JsonResponse.success();
     }
 
@@ -97,9 +101,10 @@ public class AuthorityController {
      * @since 0.5.0
      * TODO
      */
+    @ApiOperation("退出委员会")
     @PostMapping("/exit")
     public JsonResponse exit() {
-        authorityService.exit();
+        proposalService.exit();
         return JsonResponse.success();
     }
 
@@ -108,9 +113,10 @@ public class AuthorityController {
      *
      * @since 0.5.0
      */
+    @ApiOperation("提名委员会时上传图片")
     @PostMapping("/upload")
     public JsonResponse upload(MultipartFile file) {
-        String url = authorityService.upload(file);
+        String url = proposalService.upload(file);
         return JsonResponse.success(url);
     }
 
@@ -120,9 +126,10 @@ public class AuthorityController {
      * @since 0.5.0
      * TODO
      */
+    @ApiOperation("提名成员")
     @PostMapping("/nominate")
     public JsonResponse nominate(@RequestBody @Validated AuthorityNominateReq req) {
-        authorityService.nominate(req.getIdentityId(), req.getIp(), req.getPort(), req.getRemark(), req.getMaterial(), req.getMaterialDesc());
+        proposalService.nominate(req.getIdentityId(), req.getIp(), req.getPort(), req.getRemark(), req.getMaterial(), req.getMaterialDesc());
         return JsonResponse.success();
     }
 
@@ -133,6 +140,7 @@ public class AuthorityController {
      *
      * @since 0.5.0
      */
+    @ApiOperation("我的待办列表")
     @PostMapping("/todoList")
     public JsonResponse<List<AuthorityBusiness>> todoList(@RequestBody @Validated AuthorityTodoListReq req) {
         Page<AuthorityBusiness> todoList = authorityBusinessService.getTodoList(req.getPageNumber(), req.getPageSize(), req.getKeyword());
@@ -144,9 +152,10 @@ public class AuthorityController {
      *
      * @since 0.5.0
      */
+    @ApiOperation("我的待办详情")
     @PostMapping("/todoDetail")
     public JsonResponse<AuthorityBusiness> todoDetail(@RequestBody @Validated AuthorityTodoDetailReq req) {
-        AuthorityBusiness todoDetail = authorityBusinessService.getTodoDetail(req.getId());
+        AuthorityBusiness todoDetail = authorityBusinessService.getDetail(req.getId());
         return JsonResponse.success(todoDetail);
     }
 
@@ -156,9 +165,10 @@ public class AuthorityController {
      * @since 0.5.0
      * TODO
      */
+    @ApiOperation("处理我的待办")
     @PostMapping("/processTodo")
     public JsonResponse processTodo(@RequestBody @Validated AuthorityProcessTodoReq req) {
-        authorityBusinessService.processTodo(req.getId(), req.getResult(),req.getRemark());
+        authorityBusinessService.processTodo(req.getId(), req.getResult(), req.getRemark());
         return JsonResponse.success();
     }
 
@@ -167,6 +177,7 @@ public class AuthorityController {
      *
      * @since 0.5.0
      */
+    @ApiOperation("我的已办列表")
     @PostMapping("/doneList")
     public JsonResponse<List<AuthorityBusiness>> doneList(@RequestBody @Validated AuthorityDoneListReq req) {
         Page<AuthorityBusiness> doneList = authorityBusinessService.getDoneList(req.getPageNumber(), req.getPageSize(), req.getKeyword());
@@ -178,9 +189,10 @@ public class AuthorityController {
      *
      * @since 0.5.0
      */
+    @ApiOperation("我的已办详情")
     @PostMapping("/doneDetail")
     public JsonResponse<AuthorityBusiness> doneDetail(@RequestBody @Validated AuthorityDoneDetailReq req) {
-        AuthorityBusiness doneDetail = authorityBusinessService.getDoneDetail(req.getId());
+        AuthorityBusiness doneDetail = authorityBusinessService.getDetail(req.getId());
         return JsonResponse.success(doneDetail);
     }
 
@@ -189,6 +201,7 @@ public class AuthorityController {
      *
      * @since 0.5.0
      */
+    @ApiOperation("我的提案列表")
     @PostMapping("/proposalList")
     public JsonResponse<List<Proposal>> proposalList(@RequestBody @Validated AuthorityProposalListReq req) {
         Page<Proposal> proposalList = proposalService.getProposalList(req.getPageNumber(), req.getPageSize(), req.getKeyword());
@@ -200,6 +213,7 @@ public class AuthorityController {
      *
      * @since 0.5.0
      */
+    @ApiOperation("我的提案详情")
     @PostMapping("/proposalDetail")
     public JsonResponse<Proposal> proposalDetail(@RequestBody @Validated AuthorityProposalDetailReq req) {
         Proposal proposalDetail = proposalService.getProposalDetail(req.getId());
@@ -212,6 +226,7 @@ public class AuthorityController {
      * @since 0.5.0
      * TODO
      */
+    @ApiOperation("撤回提案")
     @PostMapping("/revokeProposal")
     public JsonResponse revokeProposal(@RequestBody @Validated AuthorityRevokeProposalReq req) {
         proposalService.revokeProposal(req.getId());
