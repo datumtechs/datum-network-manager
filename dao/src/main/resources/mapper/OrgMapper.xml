@@ -1,52 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--suppress ALL -->
 <mapper namespace="com.platon.datum.admin.dao.OrgMapper">
     <resultMap id="BaseResultMap" type="com.platon.datum.admin.dao.entity.Org">
-        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <!--@mbg.generated-->
+        <!--@Table org-->
+        <id column="name" jdbcType="VARCHAR" property="name"/>
         <result column="identity_id" jdbcType="VARCHAR" property="identityId"/>
         <result column="carrier_node_id" jdbcType="VARCHAR" property="carrierNodeId"/>
         <result column="carrier_ip" jdbcType="VARCHAR" property="carrierIp"/>
         <result column="carrier_port" jdbcType="INTEGER" property="carrierPort"/>
         <result column="carrier_conn_status" jdbcType="VARCHAR" property="carrierConnStatus"/>
-        <result column="carrier_conn_time" jdbcType="TIMESTAMP" property="carrierConnTime"/>
-        <result column="conn_node_count" jdbcType="INTEGER" property="connNodeCount"/>
         <result column="carrier_status" jdbcType="INTEGER" property="carrierStatus"/>
+        <result column="conn_node_count" jdbcType="INTEGER" property="connNodeCount"/>
+        <result column="carrier_conn_time" jdbcType="TIMESTAMP" property="carrierConnTime"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
-        <result column="profile" jdbcType="VARCHAR" property="profile"/>
         <result column="local_bootstrap_node" jdbcType="VARCHAR" property="localBootstrapNode"/>
         <result column="local_multi_addr" jdbcType="VARCHAR" property="localMultiAddr"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="profile" jdbcType="VARCHAR" property="profile"/>
+        <result column="rec_update_time" jdbcType="TIMESTAMP" property="recUpdateTime"/>
         <result column="observer_proxy_wallet_address" jdbcType="VARCHAR" property="observerProxyWalletAddress"/>
         <result column="is_authority" jdbcType="INTEGER" property="isAuthority"/>
+        <result column="credential" jdbcType="VARCHAR" property="credential"/>
     </resultMap>
-
     <sql id="Base_Column_List">
-        `name`,
-        identity_id,
-        carrier_node_id,
-        carrier_ip,
-        carrier_port,
-        carrier_conn_status,
-        carrier_conn_time,
-        conn_node_count,
-        carrier_status,
-        `status`,
-        image_url,
-        `profile`,
-        `local_bootstrap_node`,
-        `local_multi_addr`,
-        `observer_proxy_wallet_address`,
-        is_authority
+        <!--@mbg.generated-->
+        `name`, identity_id, carrier_node_id, carrier_ip, carrier_port, carrier_conn_status,
+        carrier_status, conn_node_count, carrier_conn_time, `status`, local_bootstrap_node,
+        local_multi_addr, image_url, profile, rec_update_time, observer_proxy_wallet_address,
+        is_authority, credential
     </sql>
-
-    <select id="selectAvailableCarrier" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from org
-        where carrier_conn_status = 'enabled'
-          and carrier_status = 'enabled'
-    </select>
 
     <resultMap id="BaseResultMap_runningTask" type="com.platon.datum.admin.dao.entity.Org" extends="BaseResultMap">
         <result column="running_task" property="dynamicFields.runningTask" jdbcType="INTEGER"/>
@@ -63,56 +46,178 @@
         from org
     </select>
 
-    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.Org">
-        insert into org (`name`,
-                         identity_id,
-                         carrier_node_id,
-                         carrier_ip,
-                         carrier_port,
-                         carrier_conn_status,
-                         carrier_conn_time,
-                         conn_node_count,
-                         carrier_status,
-                         `status`,
-                         image_url,
-                         profile,
-                         local_bootstrap_node,
-                         local_multi_addr,
-                         observer_proxy_wallet_address)
-        values (#{name,jdbcType=VARCHAR},
+    <insert id="insertSelective" parameterType="com.platon.datum.admin.dao.entity.Org">
+        <!--@mbg.generated-->
+        insert into org
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="identityId != null">
+                identity_id,
+            </if>
+            <if test="carrierNodeId != null">
+                carrier_node_id,
+            </if>
+            <if test="carrierIp != null">
+                carrier_ip,
+            </if>
+            <if test="carrierPort != null">
+                carrier_port,
+            </if>
+            <if test="carrierConnStatus != null">
+                carrier_conn_status,
+            </if>
+            <if test="carrierStatus != null">
+                carrier_status,
+            </if>
+            <if test="connNodeCount != null">
+                conn_node_count,
+            </if>
+            <if test="carrierConnTime != null">
+                carrier_conn_time,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="localBootstrapNode != null">
+                local_bootstrap_node,
+            </if>
+            <if test="localMultiAddr != null">
+                local_multi_addr,
+            </if>
+            <if test="imageUrl != null">
+                image_url,
+            </if>
+            <if test="profile != null">
+                profile,
+            </if>
+            <if test="recUpdateTime != null">
+                rec_update_time,
+            </if>
+            <if test="observerProxyWalletAddress != null">
+                observer_proxy_wallet_address,
+            </if>
+            <if test="isAuthority != null">
+                is_authority,
+            </if>
+            <if test="credential != null">
+                credential,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="identityId != null">
                 #{identityId,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierNodeId != null">
                 #{carrierNodeId,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierIp != null">
                 #{carrierIp,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierPort != null">
                 #{carrierPort,jdbcType=INTEGER},
+            </if>
+            <if test="carrierConnStatus != null">
                 #{carrierConnStatus,jdbcType=VARCHAR},
-                #{carrierConnTime,jdbcType=TIMESTAMP},
-                #{connNodeCount, jdbcType=INTEGER},
+            </if>
+            <if test="carrierStatus != null">
                 #{carrierStatus,jdbcType=INTEGER},
-                #{status,jdbcType=INTEGER},
-                #{imageUrl,jdbcType=VARCHAR},
-                #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="connNodeCount != null">
+                #{connNodeCount,jdbcType=INTEGER},
+            </if>
+            <if test="carrierConnTime != null">
+                #{carrierConnTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=BOOLEAN},
+            </if>
+            <if test="localBootstrapNode != null">
                 #{localBootstrapNode,jdbcType=VARCHAR},
+            </if>
+            <if test="localMultiAddr != null">
                 #{localMultiAddr,jdbcType=VARCHAR},
-                #{observerProxyWalletAddress,jdbcType=VARCHAR})
+            </if>
+            <if test="imageUrl != null">
+                #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="profile != null">
+                #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="recUpdateTime != null">
+                #{recUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="observerProxyWalletAddress != null">
+                #{observerProxyWalletAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="isAuthority != null">
+                #{isAuthority,jdbcType=BOOLEAN},
+            </if>
+            <if test="credential != null">
+                #{credential,jdbcType=VARCHAR},
+            </if>
+        </trim>
     </insert>
-
-    <update id="update" parameterType="com.platon.datum.admin.dao.entity.Org">
+    <update id="updateSelective" parameterType="com.platon.datum.admin.dao.entity.Org">
+        <!--@mbg.generated-->
         update org
-        set `name`                        = #{name},
-            identity_id                   = #{identityId},
-            carrier_node_id               = #{carrierNodeId},
-            carrier_ip                    = #{carrierIp},
-            carrier_port                  = #{carrierPort},
-            carrier_conn_status           = #{carrierConnStatus},
-            carrier_conn_time             = #{carrierConnTime},
-            conn_node_count               = #{connNodeCount},
-            carrier_status                = #{carrierStatus},
-            `status`                      = #{status},
-            `image_url`                   = #{imageUrl},
-            `profile`                     = #{profile},
-            local_bootstrap_node          = #{localBootstrapNode,jdbcType=VARCHAR},
-            local_multi_addr              = #{localMultiAddr,jdbcType=VARCHAR},
-            observer_proxy_wallet_address = #{observerProxyWalletAddress,jdbcType=VARCHAR}
+        <set>
+            <if test="identityId != null">
+                identity_id = #{identityId,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierNodeId != null">
+                carrier_node_id = #{carrierNodeId,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierIp != null">
+                carrier_ip = #{carrierIp,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierPort != null">
+                carrier_port = #{carrierPort,jdbcType=INTEGER},
+            </if>
+            <if test="carrierConnStatus != null">
+                carrier_conn_status = #{carrierConnStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierStatus != null">
+                carrier_status = #{carrierStatus,jdbcType=INTEGER},
+            </if>
+            <if test="connNodeCount != null">
+                conn_node_count = #{connNodeCount,jdbcType=INTEGER},
+            </if>
+            <if test="carrierConnTime != null">
+                carrier_conn_time = #{carrierConnTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=BOOLEAN},
+            </if>
+            <if test="localBootstrapNode != null">
+                local_bootstrap_node = #{localBootstrapNode,jdbcType=VARCHAR},
+            </if>
+            <if test="localMultiAddr != null">
+                local_multi_addr = #{localMultiAddr,jdbcType=VARCHAR},
+            </if>
+            <if test="imageUrl != null">
+                image_url = #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="profile != null">
+                profile = #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="recUpdateTime != null">
+                rec_update_time = #{recUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="observerProxyWalletAddress != null">
+                observer_proxy_wallet_address = #{observerProxyWalletAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="isAuthority != null">
+                is_authority = #{isAuthority,jdbcType=BOOLEAN},
+            </if>
+            <if test="credential != null">
+                credential = #{credential,jdbcType=VARCHAR},
+            </if>
+        </set>
     </update>
 
     <update id="updateIsAuthority">

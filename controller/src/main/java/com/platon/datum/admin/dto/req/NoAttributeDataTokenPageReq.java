@@ -23,13 +23,6 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class NoAttributeDataTokenPageReq extends CommonPageReq {
 
-    @ApiModelProperty("定价状态：0-未定价，1-已定价")
-    /**
-     * {@link DataToken.StatusEnum}
-     * 所有状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功
-     * 前端传0-未定价则返回：1-发布中，3-发布成功
-     * 前端传1-已定价则返回4-定价中，6-定价成功
-     */
-    @NotNull
-    private Integer status;
+    @ApiModelProperty(value = "按凭证名称查询",required = false)
+    private String keyword;
 }

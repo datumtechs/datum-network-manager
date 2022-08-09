@@ -27,7 +27,7 @@ public interface AttributeDataTokenMapper {
 
     List<AttributeDataToken> selectListByKeywordAndUser(@Param("keyword") String keyword, @Param("address") String address);
 
-    List<AttributeDataToken> selectListByStatus(int status);
+    List<AttributeDataToken> selectListByStatus(@Param("statusList") List<Integer> statusList);
 
     void updateStatus(@Param("id") Integer id, @Param("status") int status);
 

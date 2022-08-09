@@ -4,6 +4,7 @@ import com.platon.datum.admin.common.exception.ApplyIdentityIDFailed;
 import com.platon.datum.admin.common.exception.IdentityIDApplied;
 import com.platon.datum.admin.common.exception.OrgConnectNetworkAlready;
 import com.platon.datum.admin.common.exception.OrgNotConnectNetwork;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
@@ -17,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 import static com.platon.datum.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
 
@@ -48,14 +48,14 @@ public class CarrierServiceImpl implements CarrierService {
         if (!success) {
             return CarrierConnStatusEnum.DISABLED;
         }
-        Org org = (Org) OrgCache.getLocalOrgInfo();
-        org.setRecUpdateTime(new Date());
+        Org org = OrgCache.getLocalOrgInfo();
+        org.setRecUpdateTime(LocalDateTimeUtil.now());
         org.setCarrierIp(ip);
         org.setCarrierPort(port);
         org.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
-        org.setCarrierConnTime(new Date());
+        org.setCarrierConnTime(LocalDateTimeUtil.now());
         //入库
-        int count = orgMapper.update(org);
+        int count = orgMapper.updateSelective(org);
         //更新缓存
         OrgCache.setLocalOrgInfo(org);
         return CarrierConnStatusEnum.ENABLED;
@@ -65,7 +65,7 @@ public class CarrierServiceImpl implements CarrierService {
     public Integer applyJoinNetwork() {
         Org org = OrgCache.getLocalOrgInfo();
 
-        if (org.getStatus() == Org.Status.CONNECTED.getCode()) {
+        if (org.getStatus() == Org.StatusEnum.CONNECTED.getCode()) {
             throw new OrgConnectNetworkAlready();
         }
 
@@ -93,8 +93,8 @@ public class CarrierServiceImpl implements CarrierService {
         org.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
         org.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
 
-        org.setStatus(Org.Status.CONNECTED.getCode());
-        orgMapper.update(org);
+        org.setStatus(Org.StatusEnum.CONNECTED.getCode());
+        orgMapper.updateSelective(org);
 
         //刷新委员会列表
         authorityService.refreshAuthority();
@@ -108,7 +108,7 @@ public class CarrierServiceImpl implements CarrierService {
     @Override
     public Integer cancelJoinNetwork() {
         Org org = OrgCache.getLocalOrgInfo();
-        if (org.getStatus() != Org.Status.CONNECTED.getCode()) {
+        if (org.getStatus() != Org.StatusEnum.CONNECTED.getCode()) {
             throw new OrgNotConnectNetwork();
         }
         authClient.revokeIdentityJoin();
@@ -120,10 +120,10 @@ public class CarrierServiceImpl implements CarrierService {
         } else {
             org.setCarrierStatus(nodeInfo.getState());
         }
-        org.setStatus(Org.Status.LEFT_NET.getCode());
+        org.setStatus(Org.StatusEnum.LEFT_NET.getCode());
         org.setCarrierNodeId("");
         org.setConnNodeCount(0);
-        orgMapper.update(org);
+        orgMapper.updateSelective(org);
         //刷新缓存
         OrgCache.setLocalOrgInfo(org);
         return org.getStatus();

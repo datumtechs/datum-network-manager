@@ -80,7 +80,7 @@ public class MetaDataStatusRefreshTask {
                 //更新dataToken
                 updateDataToken(metaData, newDataToken);
                 //更新atrribute dataToken
-                updateAttriButeToken(metaData);
+                updateAttributeToken(metaData);
             }
 
             //把最近更新时间update到数据库
@@ -100,7 +100,7 @@ public class MetaDataStatusRefreshTask {
         log.debug("刷新本地元数据状态定时任务结束|||");
     }
 
-    private void updateAttriButeToken(MetaData metaData) {
+    private void updateAttributeToken(MetaData metaData) {
         //不为空说明已绑定dataToken成功
         String attributeDataTokenAddress = metaData.getAttributeDataTokenAddress();
         if (StrUtil.isNotBlank(attributeDataTokenAddress)) {

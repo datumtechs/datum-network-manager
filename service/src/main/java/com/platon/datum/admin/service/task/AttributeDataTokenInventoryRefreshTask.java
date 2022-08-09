@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +39,12 @@ public class AttributeDataTokenInventoryRefreshTask {
         }
         log.debug("刷新有属性数据凭证库存定时任务开始>>>");
         //更新发布中的凭证状态
-        List<AttributeDataToken> dataTokenList = attributeDataTokenMapper.selectListByStatus(AttributeDataToken.StatusEnum.PUBLISH_SUCCESS.getStatus());
+        List<Integer> statusList = new ArrayList<>();
+        statusList.add(AttributeDataToken.StatusEnum.PUBLISH_SUCCESS.getStatus());
+        statusList.add(AttributeDataToken.StatusEnum.BINDING.getStatus());
+        statusList.add(AttributeDataToken.StatusEnum.BIND_FAIL.getStatus());
+        statusList.add(AttributeDataToken.StatusEnum.BIND_SUCCESS.getStatus());
+        List<AttributeDataToken> dataTokenList = attributeDataTokenMapper.selectListByStatus(statusList);
         log.debug("dataTokenList.size()==" + dataTokenList.size());
         dataTokenList.forEach(dataToken -> {
             try {

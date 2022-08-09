@@ -12,7 +12,7 @@ import com.platon.datum.admin.dao.entity.DataToken;
 public interface NoAttributeDataTokenService {
 
 
-    Page<DataToken> page(Integer pageNumber, Integer pageSize, int status, String address);
+    Page<DataToken> page(Integer pageNumber, Integer pageSize, String keyword, String address);
 
     Integer publish(DataToken dataToken);
 

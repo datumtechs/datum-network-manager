@@ -115,13 +115,13 @@ public class UserController {
         Org org = orgService.getLocalOrg();
         if (org == null) {
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
-            resp.setConnectNetworkStatus(Org.Status.NOT_CONNECT_NET.getCode());
+            resp.setConnectNetworkStatus(Org.StatusEnum.NOT_CONNECT_NET.getCode());
         } else {
             resp.setConnectNetworkStatus(org.getStatus());
             resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.DONE.getLevel());
             if (StringUtils.isBlank(org.getIdentityId())) {
                 resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
-                //resp.setConnectNetworkStatus(Org.Status.NOT_CONNECT_NET.getCode());
+                //resp.setConnectNetworkStatus(Org.StatusEnum.NOT_CONNECT_NET.getCode());
             } else if (StringUtils.isBlank(org.getImageUrl()) || StringUtils.isBlank(org.getProfile())) {
                 resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_PROFILE.getLevel());
             }
@@ -225,7 +225,7 @@ public class UserController {
     public JsonResponse<String> updateLocalOrg(@RequestBody UpdateLocalOrgReq req) {
         Org org = OrgCache.getLocalOrgInfo();
         //只有退网之后才能修改组织名称
-        if (org.getStatus() == Org.Status.CONNECTED.getCode()) {
+        if (org.getStatus() == Org.StatusEnum.CONNECTED.getCode()) {
             return JsonResponse.fail(Errors.OrgInNetwork);
         }
         if (StringUtils.equals(req.getName(), org.getName())

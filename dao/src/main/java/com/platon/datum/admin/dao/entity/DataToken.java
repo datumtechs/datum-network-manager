@@ -1,5 +1,6 @@
 package com.platon.datum.admin.dao.entity;
 
+import com.platon.datum.admin.dao.BaseDomain;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @ApiModel("数据凭证")
-public class DataToken {
+public class DataToken extends BaseDomain {
 
     //id
     @ApiModelProperty("id")
@@ -71,10 +72,10 @@ public class DataToken {
     private long holder;
 
     /**
-     * 状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功，7-绑定中，8-绑定失败，9-绑定成功
+     * 状态：1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功，7-绑定中，8-绑定失败，9-绑定成功
      * {@link StatusEnum}
      */
-    @ApiModelProperty("状态：0-未发布，1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功，7-绑定中，8-绑定失败，9-绑定成功")
+    @ApiModelProperty("状态：1-发布中，2-发布失败，3-发布成功，4-定价中，5-定价失败，6-定价成功，7-绑定中，8-绑定失败，9-绑定成功")
     private int status;
 
     @ApiModelProperty("发布合约的交易nonce")
@@ -113,7 +114,6 @@ public class DataToken {
     @Getter
     @ToString
     public enum StatusEnum {
-        UNPUBLISH(0, "未发布"),
         PUBLISHING(1, "发布中"),
         PUBLISH_FAIL(2, "发布失败"),
         PUBLISH_SUCCESS(3, "发布成功"),

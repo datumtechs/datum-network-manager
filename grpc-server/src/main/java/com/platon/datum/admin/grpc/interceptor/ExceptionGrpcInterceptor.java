@@ -16,13 +16,13 @@ import org.apache.commons.lang3.StringUtils;
 public class ExceptionGrpcInterceptor {
     /*@GrpcExceptionHandler(BizException.class)
     public StatusException handleBizException(BizException e){
-        Status status = Status.INTERNAL.withDescription(e.getMessage()).withCause(e);
+        StatusEnum status = StatusEnum.INTERNAL.withDescription(e.getMessage()).withCause(e);
         return status.asException();
     }
 
     @GrpcExceptionHandler(Exception.class)
-    public Status handleException(Exception e){
-        return Status.INTERNAL.withDescription(e.getMessage()).withCause(e);
+    public StatusEnum handleException(Exception e){
+        return StatusEnum.INTERNAL.withDescription(e.getMessage()).withCause(e);
     }*/
 
     @GrpcExceptionHandler(Exception.class)

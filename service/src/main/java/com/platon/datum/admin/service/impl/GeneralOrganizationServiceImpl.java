@@ -232,8 +232,8 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
          * 将材料描述和材料一起上传ipfs
          */
         VcMaterialContent vcMaterialContent = new VcMaterialContent();
-        vcMaterialContent.setMaterialUrl(material);
-        vcMaterialContent.setMaterialDesc(desc);
+        vcMaterialContent.setImage(material);
+        vcMaterialContent.setDesc(desc);
         String ipfsUrl = ipfsOpService.saveJson(vcMaterialContent);
 
         //生成claim

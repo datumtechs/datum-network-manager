@@ -8,7 +8,6 @@ import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.dao.AttributeDataTokenMapper;
 import com.platon.datum.admin.dao.MetaDataMapper;
 import com.platon.datum.admin.dao.entity.AttributeDataToken;
-import com.platon.datum.admin.dao.entity.DataToken;
 import com.platon.datum.admin.dao.entity.MetaData;
 import com.platon.datum.admin.grpc.client.MetaDataClient;
 import com.platon.datum.admin.service.AttributeDataTokenService;
@@ -122,6 +121,6 @@ public class AttributeDataTokenServiceImpl implements AttributeDataTokenService 
         metaData.setSign(sign);
         metaDataClient.updateMetadata(metaData);
         //将dataToken状态修改为绑定中
-        attributeDataTokenMapper.updateStatus(dataTokenId, DataToken.StatusEnum.BINDING.getStatus());
+        attributeDataTokenMapper.updateStatus(dataTokenId, AttributeDataToken.StatusEnum.BINDING.getStatus());
     }
 }

@@ -42,9 +42,9 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
     private long updateTimeInterval;
 
     @Override
-    public Page<DataToken> page(Integer pageNumber, Integer pageSize, int status, String address) {
+    public Page<DataToken> page(Integer pageNumber, Integer pageSize, String keyword, String address) {
         Page<DataToken> dataTokenPage = PageHelper.startPage(pageNumber, pageSize);
-        dataTokenMapper.selectByPricingStatus(status, address);
+        dataTokenMapper.selectListByAddress(keyword, address);
         return dataTokenPage;
     }
 
@@ -86,7 +86,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
     public void updateToPrinceSuccess(Integer dataTokenId, String currentUserAddress) {
         DataToken dataToken = dataTokenMapper.selectById(dataTokenId);
         if (dataToken == null) {
-            throw new BizException(Errors.SysException, "Data token not exist!");
+            throw new BizException(Errors.QueryRecordNotExist, "Data token not exist!");
         }
 
         if (!dataToken.getOwner().equals(currentUserAddress)) {
@@ -105,7 +105,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
     public void updateFee(Integer dataTokenId, String ciphertextFee, String plaintextFee, String sign, String currentUserAddress) {
         DataToken dataToken = dataTokenMapper.selectById(dataTokenId);
         if (dataToken == null) {
-            throw new BizException(Errors.SysException, "Data token not exist!");
+            throw new BizException(Errors.QueryRecordNotExist, "Data token not exist!");
         }
 
         if (!dataToken.getOwner().equals(currentUserAddress)) {
@@ -118,7 +118,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
                 || dataToken.getStatus() == DataToken.StatusEnum.BIND_FAIL.getStatus()) {
             dataTokenMapper.updateFeeById(dataTokenId, ciphertextFee, plaintextFee);
         } else if (dataToken.getStatus() == DataToken.StatusEnum.BINDING.getStatus()) {
-            throw new BizException(Errors.SysException, "Modification is not allowed in binding!");
+            throw new BizException(Errors.SysException, "Data token already in binding!");
         } else if (dataToken.getStatus() == DataToken.StatusEnum.BIND_SUCCESS.getStatus()
                 || dataToken.getStatus() == DataToken.StatusEnum.PRICING.getStatus()
                 || dataToken.getStatus() == DataToken.StatusEnum.PRICE_SUCCESS.getStatus()
@@ -147,6 +147,17 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
 
         if (!dataToken.getOwner().equals(currentUserAddress)) {
             throw new BizException(Errors.SysException, "You are not owner!");
+        }
+
+        if (dataToken.getStatus() == DataToken.StatusEnum.PRICING.getStatus()
+                || dataToken.getStatus() == DataToken.StatusEnum.PRICE_FAIL.getStatus()
+                || dataToken.getStatus() == DataToken.StatusEnum.PRICE_SUCCESS.getStatus()
+                || dataToken.getStatus() == DataToken.StatusEnum.BINDING.getStatus()
+                || dataToken.getStatus() == DataToken.StatusEnum.BIND_SUCCESS.getStatus()) {
+            throw new BizException(Errors.SysException, "Data token already bind!");
+        } else if (dataToken.getStatus() == DataToken.StatusEnum.PUBLISHING.getStatus()
+                || dataToken.getStatus() == DataToken.StatusEnum.PUBLISH_FAIL.getStatus()) {
+            throw new BizException(Errors.SysException, "Data token haven not published success!");
         }
 
         MetaData metaData = metaDataMapper.selectById(dataToken.getMetaDataDbId());

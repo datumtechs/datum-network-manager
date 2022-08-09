@@ -46,12 +46,12 @@ public class StreamObserverDelegate<ReqT extends Message, RespT extends Message>
                     .build();
             Metadata.Key<ErrorInfo> ERROR_INFO_TRAILER_KEY = ProtoUtils.keyForProto(errorInfo);
             trailers.put(ERROR_INFO_TRAILER_KEY, errorInfo);
-            this.originResponseObserver.onError(Status.UNKNOWN
+            this.originResponseObserver.onError(StatusEnum.UNKNOWN
                     .withCause(bizException)
                     .asRuntimeException(trailers));
         } else {
             // 非业务异常，返回异常详情到客户端。
-            this.originResponseObserver.onError(Status.UNKNOWN
+            this.originResponseObserver.onError(StatusEnum.UNKNOWN
                     // 这里就是我们的自定义异常信息
                     .withDescription(t.getMessage())
                     .withCause(t)

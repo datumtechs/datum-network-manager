@@ -15,6 +15,7 @@ import com.platon.datum.admin.service.AttributeDataTokenInventoryService;
 import com.platon.datum.admin.service.AttributeDataTokenService;
 import com.platon.datum.admin.service.IpfsOpService;
 import com.platon.datum.admin.service.SysConfigService;
+import com.platon.datum.admin.service.entity.TokenUriContent;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -144,6 +145,14 @@ public class AttributeDataTokenController extends BaseController {
         return JsonResponse.success(ipfsPath);
     }
 
+    @ApiOperation(value = "上传图片，名称和描述接口")
+    @PostMapping("/inventoryUpLoad2")
+    public JsonResponse<String> inventoryUpLoad2(@RequestBody @Validated TokenUriContent req) {
+        String ipfsPath = ipfsOpService.saveJson(req);
+        return JsonResponse.success(ipfsPath);
+    }
+
+
     /**
      * 1.2.创建成功后通知后台刷新库存信息
      */
@@ -166,7 +175,7 @@ public class AttributeDataTokenController extends BaseController {
      */
     @ApiOperation(value = "获取dataToken库存列表")
     @PostMapping("/getDataTokenInventoryPage")
-    public JsonResponse<AttributeDataTokenInventory> getDataTokenInventoryPage(@RequestBody @Validated AttributeDataTokenGetDataTokenInventoryPageReq req) {
+    public JsonResponse<List<AttributeDataTokenInventory>> getDataTokenInventoryPage(@RequestBody @Validated AttributeDataTokenGetDataTokenInventoryPageReq req) {
         Page<AttributeDataTokenInventory> page = attributeDataTokenInventoryService.page(req.getPageNumber(),
                 req.getPageSize(),
                 req.getKeyword(),

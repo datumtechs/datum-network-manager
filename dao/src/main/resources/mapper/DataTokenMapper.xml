@@ -51,28 +51,33 @@
         fee_update_time
     </sql>
 
-    <select id="selectByPricingStatus" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+    <resultMap id="BaseResultMap_With_MetaDataInfo" type="com.platon.datum.admin.dao.entity.DataToken"
+               extends="BaseResultMap">
+        <result column="meta_data_id" property="dynamicFields.metaDataId" jdbcType="VARCHAR"/>
+        <result column="meta_data_name" property="dynamicFields.metaDataName" jdbcType="VARCHAR"/>
+        <result column="usage" property="dynamicFields.usage" jdbcType="INTEGER" javaType="int"/>
+    </resultMap>
+
+    <select id="selectListByAddress" resultMap="BaseResultMap_With_MetaDataInfo">
+        select data_token.*,
+               md.meta_data_id   as meta_data_id,
+               md.meta_data_name as meta_data_name,
+               md.`usage`        as `usage`
         from data_token
-        where
-        <choose>
-            <when test="status == 1">
-                `status` in (4, 6)
-            </when>
-            <otherwise>
-                `status` in (1,3,5)
-            </otherwise>
-        </choose>
-        and `owner` = #{address}
+                 left join meta_data md on data_token.meta_data_db_id = md.id
+        where `owner` = #{address}
+        <if test="keyword != null and keyword != ''">
+            and name like CONCAT('%', #{keyword}, '%')
+        </if>
         order by rec_update_time desc
     </select>
 
     <insert id="insertAndReturnId" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT INTO data_token (`name`, symbol, init, total, `desc`, `owner`, meta_data_db_id, status, `publish_nonce`,
-                                `publish_hash`, plaintext_fee, ciphertext_fee,new_plaintext_fee, new_ciphertext_fee,fee_update_time)
+                                `publish_hash`, plaintext_fee, ciphertext_fee, new_plaintext_fee, new_ciphertext_fee,
+                                fee_update_time)
         VALUES (#{name}, #{symbol}, #{init}, #{total}, #{desc}, #{owner}, #{metaDataDbId}, #{status}, #{publishNonce},
-                #{publishHash}, #{plaintextFee}, #{ciphertextFee},#{plaintextFee}, #{ciphertextFee}, #{feeUpdateTime})
+                #{publishHash}, #{plaintextFee}, #{ciphertextFee}, #{plaintextFee}, #{ciphertextFee}, #{feeUpdateTime})
         ON DUPLICATE KEY
             UPDATE `name`=#{name},
                    symbol=#{symbol},
@@ -142,7 +147,7 @@
         <include refid="Base_Column_List"/>
         from data_token
         where meta_data_db_id = #{metaDataDbId}
-          and status = 3
+          and status in (3, 4, 5, 6, 7, 8, 9)
     </select>
 
     <update id="updateFeeById">
@@ -156,7 +161,7 @@
         update data_token
         set new_ciphertext_fee = #{ciphertextFee},
             new_plaintext_fee  = #{plaintextFee},
-            fee_update_time = current_timestamp()
+            fee_update_time    = current_timestamp()
         where id = #{dataTokenId}
     </update>
 

@@ -47,7 +47,7 @@ public class NoAttributeDataTokenController extends BaseController {
     @PostMapping("/page")
     public JsonResponse<List<DataToken>> page(@RequestBody @Validated NoAttributeDataTokenPageReq req, HttpSession session) {
         String address = getCurrentUserAddress(session);
-        Page<DataToken> page = noAttributeDataTokenService.page(req.getPageNumber(), req.getPageSize(), req.getStatus(), address);
+        Page<DataToken> page = noAttributeDataTokenService.page(req.getPageNumber(), req.getPageSize(), req.getKeyword(), address);
         return JsonResponse.page(page);
     }
 

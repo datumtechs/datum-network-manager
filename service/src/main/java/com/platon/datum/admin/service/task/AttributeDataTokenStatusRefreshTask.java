@@ -14,7 +14,6 @@ import com.platon.datum.admin.dao.AttributeDataTokenMapper;
 import com.platon.datum.admin.dao.SysConfigMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.AttributeDataToken;
-import com.platon.datum.admin.dao.entity.DataToken;
 import com.platon.datum.admin.dao.entity.SysConfig;
 import com.platon.datum.admin.service.web3j.Web3jManager;
 import com.platon.protocol.Web3j;
@@ -31,6 +30,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -68,7 +68,9 @@ public class AttributeDataTokenStatusRefreshTask {
         }
         log.debug("刷新有属性数据凭证[发布状态]定时任务开始>>>");
         //更新发布中的凭证状态
-        List<AttributeDataToken> dataTokenList = attributeDataTokenMapper.selectListByStatus(AttributeDataToken.StatusEnum.PUBLISHING.getStatus());
+        List<Integer> statusList = new ArrayList<>();
+        statusList.add(AttributeDataToken.StatusEnum.PUBLISHING.getStatus());
+        List<AttributeDataToken> dataTokenList = attributeDataTokenMapper.selectListByStatus(statusList);
         dataTokenList.forEach(dataToken -> {
             try {
                 ((AttributeDataTokenStatusRefreshTask) AopContext.currentProxy()).processPublishingDataToken(dataToken);
@@ -90,7 +92,7 @@ public class AttributeDataTokenStatusRefreshTask {
         String hash = dataToken.getPublishHash();
         String address = dataToken.getOwner();
         Web3j web3j = web3jContainer.get();
-        int status = DataToken.StatusEnum.PUBLISHING.getStatus();
+        int status = AttributeDataToken.StatusEnum.PUBLISHING.getStatus();
 
         //2.判断交易上链结果
         PlatonGetTransactionReceipt transactionReceiptResp = web3j.platonGetTransactionReceipt(hash).send();
@@ -106,18 +108,18 @@ public class AttributeDataTokenStatusRefreshTask {
             log.debug("isOK:{},hexFrom:{},transactionNonce:{}", isOK, hexFrom, transactionNonce);
             //凭证发布成功
             if (isOK && address.equals(hexFrom) && transactionNonce == nonce) {
-                status = DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus();
+                status = AttributeDataToken.StatusEnum.PUBLISH_SUCCESS.getStatus();
                 //发布成功，获取token地址
                 String dataTokenAddress = getTokenAddress(transactionReceipt);
                 attributeDataTokenMapper.updateTokenAddress(dataToken.getId(), "0x" + dataTokenAddress);
             } else {
-                status = DataToken.StatusEnum.PUBLISH_FAIL.getStatus();
+                status = AttributeDataToken.StatusEnum.PUBLISH_FAIL.getStatus();
             }
         }
 
         //4.结果入库
-        if (status == DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus()
-                || status == DataToken.StatusEnum.PUBLISH_FAIL.getStatus()) {
+        if (status == AttributeDataToken.StatusEnum.PUBLISH_SUCCESS.getStatus()
+                || status == AttributeDataToken.StatusEnum.PUBLISH_FAIL.getStatus()) {
             attributeDataTokenMapper.updateStatus(dataToken.getId(), status);
         }
     }

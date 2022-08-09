@@ -21,7 +21,7 @@ public class OverviewControllerTest {
 
 
     @Autowired
-    OrgMapper orgMapper;
+    private OrgMapper orgMapper;
 
     @Before
     public void init(){

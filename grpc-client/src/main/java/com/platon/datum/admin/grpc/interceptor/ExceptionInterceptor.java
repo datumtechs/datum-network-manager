@@ -29,8 +29,8 @@ class ExceptionListener <ReqT, RespT> extends ServerCall.Listener {
             this.delegate.onHalfClose();
         } catch (Throwable t) {
            /* // 统一处理异常
-            ExtendedStatusRuntimeException exception = Status.fromThrowable(t);
-            // 调用 call.close() 发送 Status 和 metadata
+            ExtendedStatusRuntimeException exception = StatusEnum.fromThrowable(t);
+            // 调用 call.close() 发送 StatusEnum 和 metadata
             // 这个方式和 onError()本质是一样的
             call.close(exception.getStatus(), exception.getTrailers());*/
         }

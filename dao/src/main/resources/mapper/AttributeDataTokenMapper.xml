@@ -70,10 +70,20 @@
         where id = #{dataTokenId}
     </update>
 
-    <select id="selectListByKeywordAndUser" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
+    <resultMap id="BaseResultMap_With_MetaDataInfo" type="com.platon.datum.admin.dao.entity.AttributeDataToken"
+               extends="BaseResultMap">
+        <result column="meta_data_id" property="dynamicFields.metaDataId" jdbcType="VARCHAR"/>
+        <result column="meta_data_name" property="dynamicFields.metaDataName" jdbcType="VARCHAR"/>
+        <result column="usage" property="dynamicFields.usage" jdbcType="INTEGER" javaType="int"/>
+    </resultMap>
+
+    <select id="selectListByKeywordAndUser" resultMap="BaseResultMap_With_MetaDataInfo">
+        select attribute_data_token.*,
+               md.meta_data_id   as meta_data_id,
+               md.meta_data_name as meta_data_name,
+               md.`usage`        as `usage`
         from attribute_data_token
+                 left join meta_data md on attribute_data_token.meta_data_db_id = md.id
         where
         <if test="keyword != null and keyword != ''">
             name like CONCAT('%', #{keyword}, '%')
@@ -87,7 +97,10 @@
         select
         <include refid="Base_Column_List"/>
         from attribute_data_token
-        where status = #{status}
+        where status in
+        <foreach collection="statusList" item="status" open="(" close=")" separator=",">
+            #{status}
+        </foreach>
     </select>
 
     <update id="updateStatus">
@@ -113,7 +126,7 @@
     <update id="updateTotalByAddress">
         update attribute_data_token
         set total = #{total,jdbcType=VARCHAR}
-            where address = #{address,jdbcType=VARCHAR}
+        where address = #{address,jdbcType=VARCHAR}
     </update>
 
     <select id="selectByAddress" resultMap="BaseResultMap">

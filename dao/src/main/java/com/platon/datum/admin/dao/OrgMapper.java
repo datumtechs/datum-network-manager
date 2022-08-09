@@ -3,22 +3,21 @@ package com.platon.datum.admin.dao;
 import com.platon.datum.admin.dao.entity.Org;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * @Author juzix
+ * @Date 2022/8/9 10:32
+ * @Version 
+ * @Desc 
+ *******************************
+ */
 public interface OrgMapper {
-
     /**
      * 选择性插入字段
      *
      * @param record
      * @return
      */
-    int insert(Org record);
-
-    /**
-     * 获取可用的调度服务信息
-     *
-     * @return
-     */
-    Org selectAvailableCarrier();
+    int insertSelective(Org record);
 
     /**
      * 获取组织信息
@@ -40,7 +39,7 @@ public interface OrgMapper {
      * @param org
      * @return
      */
-    int update(Org org);
+    int updateSelective(Org org);
 
     /**
      * 更新组织的委员会成员标志

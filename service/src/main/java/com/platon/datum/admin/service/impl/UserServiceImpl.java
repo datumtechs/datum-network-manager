@@ -7,6 +7,7 @@ import com.ecwid.consul.v1.health.model.HealthService;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.exception.OrgInfoExists;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.SysUserMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
@@ -31,7 +32,6 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -98,8 +98,8 @@ public class UserServiceImpl implements UserService {
         log.debug("申请did：" + did);
         localOrg.setIdentityId(did);
         localOrg.setName(orgName);
-        localOrg.setStatus(Org.Status.NOT_CONNECT_NET.getCode());
-        orgMapper.insert(localOrg);
+        localOrg.setStatus(Org.StatusEnum.NOT_CONNECT_NET.getCode());
+        orgMapper.insertSelective(localOrg);
 
         //### 2.新建成功后，设置缓存
         OrgCache.setLocalOrgInfo(localOrg);
@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
         org.setCarrierStatus(nodeInfo.getState());
         org.setCarrierNodeId(nodeInfo.getNodeId());
         org.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
-        org.setCarrierConnTime(new Date());
+        org.setCarrierConnTime(LocalDateTimeUtil.now());
         org.setConnNodeCount(nodeInfo.getConnCount());
         org.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
         org.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());

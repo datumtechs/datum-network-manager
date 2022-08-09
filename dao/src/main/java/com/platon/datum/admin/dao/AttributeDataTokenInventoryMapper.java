@@ -12,8 +12,6 @@ import java.util.List;
  * @Desc ******************************
  */
 public interface AttributeDataTokenInventoryMapper {
-    int insert(AttributeDataTokenInventory record);
-
     List<AttributeDataTokenInventory> selectByDataTokenAddressAndKeyword(@Param("dataTokenAddress") String dataTokenAddress, @Param("keyword") String keyword);
 
     AttributeDataTokenInventory selectByDataTokenAddressAndTokenId(@Param("dataTokenAddress") String dataTokenAddress, @Param("tokenId") String tokenId);

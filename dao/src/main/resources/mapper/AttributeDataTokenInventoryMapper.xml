@@ -9,24 +9,15 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
         <result column="desc" jdbcType="VARCHAR" property="desc"/>
-        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
         <result column="usage" jdbcType="INTEGER" property="usage"/>
         <result column="owner" jdbcType="VARCHAR" property="owner"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         data_token_address, token_id, `name`, image_url, `desc`, end_time,
-        `usage`,owner
+        `usage`,`owner`
     </sql>
-    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.AttributeDataTokenInventory">
-        <!--@mbg.generated-->
-        insert into attribute_data_token_inventory (data_token_address, token_id, `name`,
-                                                    image_url, `desc`, start_time,
-                                                    end_time, rec_create_time, `usage`, owner)
-        values (#{dataTokenAddress,jdbcType=VARCHAR}, #{tokenId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-                #{imageUrl,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
-                #{endTime,jdbcType=TIMESTAMP}, #{usage,jdbcType=INTEGER}, #{owner})
-    </insert>
 
     <select id="selectByDataTokenAddressAndKeyword" resultMap="BaseResultMap">
         select
@@ -35,7 +26,7 @@
         <where>
             data_token_address = #{dataTokenAddress}
             <if test="keyword != null and keyword != ''">
-                and (name like CONCAT("%", #{keyword}, "%") or tokenId like CONCAT("%", #{keyword}, "%"))
+                and (name like CONCAT('%', #{keyword}, '%') or token_id like CONCAT('%', #{keyword}, '%'))
             </if>
         </where>
         order by token_id desc
@@ -56,7 +47,8 @@
         <include refid="Base_Column_List"/>
         from attribute_data_token_inventory
         where data_token_address = #{tokenAddress}
-        order by token_id desc limit 1
+        order by token_id desc
+        limit 1
     </select>
 
     <update id="replace">
@@ -84,7 +76,7 @@
             <if test="usage != null">
                 `usage`,
             </if>
-            <if test="owner != null and owner != ''">
+            <if test="owner != null">
                 `owner`,
             </if>
         </trim>
@@ -105,42 +97,36 @@
                 #{desc,jdbcType=VARCHAR},
             </if>
             <if test="endTime != null">
-                #{endTime,jdbcType=TIMESTAMP},
+                #{endTime},
             </if>
             <if test="usage != null">
                 #{usage,jdbcType=INTEGER},
             </if>
-            <if test="owner != null and owner != ''">
+            <if test="owner != null">
                 #{owner},
             </if>
         </trim>
         ON DUPLICATE KEY
-        update attribute_data_token_inventory
-        <set>
-            <if test="dataTokenAddress != null">
-                data_token_address = #{dataTokenAddress,jdbcType=VARCHAR},
-            </if>
-            <if test="tokenId != null">
-                token_id = #{tokenId,jdbcType=VARCHAR},
-            </if>
+        update
+        <trim suffixOverrides=",">
             <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
+                `name` = #{name,jdbcType=VARCHAR},
             </if>
             <if test="imageUrl != null">
                 image_url = #{imageUrl,jdbcType=VARCHAR},
             </if>
             <if test="desc != null">
-                desc = #{desc,jdbcType=VARCHAR},
+                `desc` = #{desc,jdbcType=VARCHAR},
             </if>
             <if test="endTime != null">
-                end_time = #{endTime,jdbcType=TIMESTAMP},
+                end_time = #{endTime},
             </if>
             <if test="usage != null">
-                usage = #{usage,jdbcType=INTEGER},
+                `usage` = #{usage,jdbcType=INTEGER},
             </if>
             <if test="owner != null">
-                owner = #{owner,jdbcType=VARCHAR},
+                `owner` = #{owner,jdbcType=VARCHAR},
             </if>
-        </set>
+        </trim>
     </update>
 </mapper>

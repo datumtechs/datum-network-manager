@@ -10,6 +10,7 @@ import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.AttributeDataTokenMapper;
 import com.platon.datum.admin.dao.DataFileMapper;
 import com.platon.datum.admin.dao.DataTokenMapper;
+import com.platon.datum.admin.dao.MetaDataColumnMapper;
 import com.platon.datum.admin.dao.entity.*;
 import com.platon.datum.admin.grpc.carrier.api.MetaDataRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.MetadataServiceGrpc;
@@ -55,6 +56,8 @@ public class MetaDataClient {
     private DataFileMapper dataFileMapper;
     @Resource
     private AttributeDataTokenMapper attributeDataTokenMapper;
+    @Resource
+    private MetaDataColumnMapper metaDataColumnMapper;
 
     /**
      * 上架或更新文件元数据
@@ -283,7 +286,7 @@ public class MetaDataClient {
 
     private List<MetaDataOption1.MetadataColumn> getMetaDataColumns(MetaData metaData) {
         List<MetaDataOption1.MetadataColumn> metadataColumns = new ArrayList<>();
-        List<MetaDataColumn> columnList = metaData.getMetaDataColumnList();
+        List<MetaDataColumn> columnList = metaDataColumnMapper.selectByLocalMetaDataDbIdToPublish(metaData.getId());
         for (int i = 0; i < columnList.size(); i++) {
             MetaDataColumn metaDataColumn = columnList.get(i);
             MetaDataOption1.MetadataColumn column = new MetaDataOption1.MetadataColumn();

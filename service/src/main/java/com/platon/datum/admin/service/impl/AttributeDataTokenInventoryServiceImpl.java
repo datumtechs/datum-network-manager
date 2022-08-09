@@ -1,6 +1,5 @@
 package com.platon.datum.admin.service.impl;
 
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -8,12 +7,12 @@ import com.platon.crypto.Credentials;
 import com.platon.crypto.Keys;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
-import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.AttributeDataTokenInventoryMapper;
 import com.platon.datum.admin.dao.AttributeDataTokenMapper;
 import com.platon.datum.admin.dao.entity.AttributeDataToken;
 import com.platon.datum.admin.dao.entity.AttributeDataTokenInventory;
 import com.platon.datum.admin.service.AttributeDataTokenInventoryService;
+import com.platon.datum.admin.service.entity.TokenUriContent;
 import com.platon.datum.admin.service.evm.ERC721Template;
 import com.platon.datum.admin.service.web3j.Web3jManager;
 import com.platon.protocol.Web3j;
@@ -30,7 +29,6 @@ import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -73,7 +71,7 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
     @Override
     public Page<AttributeDataTokenInventory> page(Integer pageNumber, Integer pageSize, String keyword, String dataTokenAddress) {
         Page<AttributeDataTokenInventory> dataTokenInventoryPage = PageHelper.startPage(pageNumber, pageSize);
-        inventoryMapper.selectByDataTokenAddressAndKeyword(keyword, dataTokenAddress);
+        inventoryMapper.selectByDataTokenAddressAndKeyword(dataTokenAddress, keyword);
         return dataTokenInventoryPage;
     }
 
@@ -143,20 +141,20 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
             //2.如果库存总量有新增，则找出有变化的库存并更新
             addInventory(tokenAddress, newTotal, erc721Template);
             //3.更新dataToken的total
-            attributeDataTokenMapper.updateTotalByAddress(newTotal.toString(),tokenAddress);
+            attributeDataTokenMapper.updateTotalByAddress(newTotal.toString(), tokenAddress);
         }
     }
 
     private void addInventory(String tokenAddress, BigInteger newTotal, ERC721Template erc721Template) {
         AttributeDataTokenInventory maxTokenIdInventory = inventoryMapper.selectMaxTokenId(tokenAddress);
-        BigInteger maxTokenId = new BigInteger(maxTokenIdInventory.getTokenId());
+        BigInteger maxTokenId = new BigInteger(maxTokenIdInventory == null ? "-1" : maxTokenIdInventory.getTokenId());
         for (BigInteger i = maxTokenId.add(BigInteger.ONE); i.compareTo(newTotal) < 0; i = i.add(BigInteger.ONE)) {
             try {
                 AttributeDataTokenInventory inventory = getToken(erc721Template, tokenAddress, i);
                 //存储到数据库中
-                inventoryMapper.insert(inventory);
+                inventoryMapper.replace(inventory);
             } catch (Exception exception) {
-                new BizException(Errors.SysException, exception);
+                throw new BizException(Errors.SysException, exception);
             }
         }
     }
@@ -167,21 +165,19 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
         String imageUrl = null;
         String desc = null;
         if (JSONUtil.isJson(tokenURI)) {
-            JSONObject jsonObject = JSONUtil.parseObj(tokenURI);
+            TokenUriContent tokenUriContent = JSONUtil.toBean(tokenURI, TokenUriContent.class);
             //获取name
-            name = jsonObject.getStr("name");
+            name = tokenUriContent.getName();
             //image_url
-            imageUrl = jsonObject.getStr("description");
+            imageUrl = tokenUriContent.getImage();
             //desc
-            desc = jsonObject.getStr("image");
+            desc = tokenUriContent.getDescription();
         }
         //value1是owner，value2是时间戳，value3是是否支持密文
         Tuple3<String, String, Boolean> extInfo = erc721Template.getExtInfo(tokenId).send();
         String owner = extInfo.getValue1();
         String timestamp = extInfo.getValue2();
         boolean isCipher = extInfo.getValue3();
-        //end_time
-        LocalDateTime endTime = LocalDateTimeUtil.getLocalDateTime(Long.valueOf(timestamp));
         //usage
         Integer usage = isCipher ? 2 : 1;
         AttributeDataTokenInventory inventory = new AttributeDataTokenInventory(tokenAddress,
@@ -189,7 +185,7 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
                 name,
                 imageUrl,
                 desc,
-                endTime,
+                timestamp,
                 usage,
                 owner);
         return inventory;

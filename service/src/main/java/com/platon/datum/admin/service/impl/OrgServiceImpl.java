@@ -38,6 +38,6 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public void updateLocalOrg(Org org) {
-        orgMapper.update(org);
+        orgMapper.updateSelective(org);
     }
 }

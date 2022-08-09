@@ -4,6 +4,7 @@ import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.health.HealthServicesRequest;
 import com.ecwid.consul.v1.health.model.HealthService;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -80,7 +80,7 @@ public class CarrierStatusRefreshTask {
         if (StringUtils.isEmpty(org.getCarrierIp()) || org.getCarrierPort() == null) {
             log.warn("查询到的调度服务信息错误");
             org.setCarrierConnStatus(CarrierConnStatusEnum.DISABLED.getStatus());
-            org.setCarrierConnTime(new Date());
+            org.setCarrierConnTime(LocalDateTimeUtil.now());
             org.setConnNodeCount(0);
         } else {
             //### 刷新调度服务状态和入网状态
@@ -88,7 +88,7 @@ public class CarrierStatusRefreshTask {
             org.setCarrierStatus(nodeInfo.getState());
             org.setCarrierNodeId(nodeInfo.getNodeId());
             org.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
-            org.setCarrierConnTime(new Date());
+            org.setCarrierConnTime(LocalDateTimeUtil.now());
             org.setConnNodeCount(nodeInfo.getConnCount());
             org.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
             org.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
@@ -99,7 +99,7 @@ public class CarrierStatusRefreshTask {
                 org.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
             }*/
         }
-        orgMapper.update(org);
+        orgMapper.updateSelective(org);
         //刷新缓存
         OrgCache.setLocalOrgInfo(org);
         log.debug("刷新本组织调度服务状态定时任务结束|||");
