@@ -12,15 +12,25 @@
         <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
         <result column="usage" jdbcType="INTEGER" property="usage"/>
         <result column="owner" jdbcType="VARCHAR" property="owner"/>
+        <result column="meta_data_db_id" jdbcType="INTEGER" property="metaDataDbId"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         data_token_address, token_id, `name`, image_url, `desc`, end_time,
-        `usage`,`owner`
+        `usage`,`owner`,meta_data_db_id
     </sql>
 
-    <select id="selectByDataTokenAddressAndKeyword" resultMap="BaseResultMap">
-        select
+    <resultMap id="BaseResultMap_With_MetaDataInfo" type="com.platon.datum.admin.dao.entity.AttributeDataTokenInventory"
+               extends="BaseResultMap">
+        <result column="meta_data_id" property="dynamicFields.metaDataId" jdbcType="VARCHAR"/>
+        <result column="meta_data_name" property="dynamicFields.metaDataName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectByDataTokenAddressAndKeyword" resultMap="BaseResultMap_With_MetaDataInfo">
+        select adti.*,
+               md.meta_data_id   as meta_data_id,
+               md.meta_data_name as meta_data_name
+        from (select
         <include refid="Base_Column_List"/>
         from attribute_data_token_inventory
         <where>
@@ -29,17 +39,22 @@
                 and (name like CONCAT('%', #{keyword}, '%') or token_id like CONCAT('%', #{keyword}, '%'))
             </if>
         </where>
-        order by token_id desc
+        order by token_id desc) adti
+            left join meta_data md on adti.`meta_data_db_id` = md.`id`
     </select>
 
-    <select id="selectByDataTokenAddressAndTokenId" resultMap="BaseResultMap">
-        select
+    <select id="selectByDataTokenAddressAndTokenId" resultMap="BaseResultMap_With_MetaDataInfo">
+        select adti.*,
+               md.meta_data_id   as meta_data_id,
+               md.meta_data_name as meta_data_name
+        from (select
         <include refid="Base_Column_List"/>
         from attribute_data_token_inventory
         <where>
             data_token_address = #{dataTokenAddress}
               and token_id = #{tokenId}
-        </where>
+        </where>) adti
+                    left join meta_data md on adti.`meta_data_db_id` = md.`id`
     </select>
 
     <select id="selectMaxTokenId" resultMap="BaseResultMap">

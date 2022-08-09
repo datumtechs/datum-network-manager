@@ -180,6 +180,7 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
         boolean isCipher = extInfo.getValue3();
         //usage
         Integer usage = isCipher ? 2 : 1;
+        AttributeDataToken attributeDataToken = attributeDataTokenMapper.selectByDataTokenAddress(tokenAddress);
         AttributeDataTokenInventory inventory = new AttributeDataTokenInventory(tokenAddress,
                 tokenId.toString(),
                 name,
@@ -187,7 +188,8 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
                 desc,
                 timestamp,
                 usage,
-                owner);
+                owner,
+                attributeDataToken.getMetaDataDbId());
         return inventory;
     }
 

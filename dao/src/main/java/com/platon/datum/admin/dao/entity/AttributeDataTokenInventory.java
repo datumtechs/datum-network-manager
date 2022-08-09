@@ -1,5 +1,6 @@
 package com.platon.datum.admin.dao.entity;
 
+import com.platon.datum.admin.dao.BaseDomain;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel
-public class AttributeDataTokenInventory {
+public class AttributeDataTokenInventory extends BaseDomain {
     /**
     * 合约地址
     */
@@ -67,4 +68,9 @@ public class AttributeDataTokenInventory {
      */
     @ApiModelProperty("该库存的owner")
     private String owner;
+
+    /**
+     * 元数据列表id
+     */
+    private Integer metaDataDbId;
 }
