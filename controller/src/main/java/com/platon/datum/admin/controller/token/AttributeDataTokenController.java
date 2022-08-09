@@ -10,6 +10,7 @@ import com.platon.datum.admin.dao.entity.DataToken;
 import com.platon.datum.admin.dao.entity.SysConfig;
 import com.platon.datum.admin.dto.JsonResponse;
 import com.platon.datum.admin.dto.req.*;
+import com.platon.datum.admin.dto.resp.AttributeDataTokenGetExchangeResp;
 import com.platon.datum.admin.dto.resp.AttributeDataTokenGetPublishConfigResp;
 import com.platon.datum.admin.service.AttributeDataTokenInventoryService;
 import com.platon.datum.admin.service.AttributeDataTokenService;
@@ -19,6 +20,7 @@ import com.platon.datum.admin.service.entity.TokenUriContent;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -129,6 +132,38 @@ public class AttributeDataTokenController extends BaseController {
         String currentUserAddress = getCurrentUserAddress(session);
         attributeDataTokenService.bindMetaData(req.getDataTokenId(), req.getSign(), currentUserAddress);
         return JsonResponse.success();
+    }
+
+    @ApiOperation(value = "NFT交易所地址")
+    @PostMapping("/getExchange")
+    public JsonResponse<AttributeDataTokenGetExchangeResp> getExchange() {
+        SysConfig config = sysConfigService.getConfig(SysConfig.KeyEnum.ATTRIBUTE_DATA_TOKEN_EXCHANGE.getKey());
+        if (config == null) {
+            throw new BizException(Errors.QueryRecordNotExist, "Exchange miss config!");
+        }
+        String value = config.getValue();
+        List<Pair<String, String>> exchangeList = getExchangeList(value);
+        AttributeDataTokenGetExchangeResp resp = new AttributeDataTokenGetExchangeResp();
+        resp.setExchangeList(exchangeList);
+        return JsonResponse.success(resp);
+    }
+
+    private List<Pair<String, String>> getExchangeList(String value) {
+        List<Pair<String, String>> exchangeList = new ArrayList<>();
+        try {
+            value = value.replace("<", "").replace(">", "");
+            String[] exchangeArray = value.split(",");
+            for (int i = 0; i < exchangeArray.length; i++) {
+                String[] exchange = exchangeArray[i].split("|");
+                String name = exchange[0];
+                String url = exchange[1];
+                exchangeList.add(Pair.of(name, url));
+            }
+        } catch (Throwable ex) {
+            log.error("Parsing exchange config error", ex);
+            throw new BizException(Errors.SysException, "Parsing exchange config error");
+        }
+        return exchangeList;
     }
 
     /**

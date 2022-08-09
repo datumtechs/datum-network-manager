@@ -3,6 +3,7 @@ package com.platon.datum.admin.service.impl;
 import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
+import com.platon.datum.admin.grpc.client.AuthClient;
 import com.platon.datum.admin.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class OrgServiceImpl implements OrgService {
 
     @Resource
     private OrgMapper orgMapper;
+    @Resource
+    private AuthClient authClient;
 
     @Override
     public String getIdentityId() {
@@ -39,5 +42,16 @@ public class OrgServiceImpl implements OrgService {
     @Override
     public void updateLocalOrg(Org org) {
         orgMapper.updateSelective(org);
+    }
+
+    /**
+     * @param credential
+     */
+    @Override
+    public void updateCredential(String credential) {
+        Org localOrgInfo = OrgCache.getLocalOrgInfo();
+        localOrgInfo.setCredential(credential);
+        orgMapper.updateSelective(localOrgInfo);
+        authClient.updateIdentityCredential(localOrgInfo.getIdentityId(),credential);
     }
 }

@@ -1,5 +1,6 @@
 package com.platon.datum.admin.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.health.HealthServicesRequest;
@@ -85,8 +86,8 @@ public class UserServiceImpl implements UserService {
         try {
             PlatonGetBalance platonGetBalance = web3j.platonGetBalance(walletAddress, DefaultBlockParameterName.LATEST).send();
             BigInteger balance = platonGetBalance.getBalance();
-            if (balance.intValue() <= 0) {
-                throw new BizException(Errors.InsufficientWalletBalance, "Insufficient wallet balance:" + walletAddress);
+            if (balance.compareTo(BigInteger.ZERO) <= 0) {
+                throw new BizException(Errors.InsufficientWalletBalance, StrUtil.format("Insufficient wallet balance {} : {}", walletAddress, balance));
             }
         } catch (IOException e) {
             throw new BizException(Errors.SysException, e);

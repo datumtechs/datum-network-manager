@@ -71,6 +71,7 @@ public class SysConfig {
         HRP("hrp","链hrp"),
         RPC_URL_LIST("rpc_url_list","链rpcUrl，主要是给后台系统用，可以是内部IP，例子：http://localhost:6789,多个url用逗号分割"),
         ATTRIBUTE_DATA_TOKEN_FACTORY_ADDRESS("attribute_data_token_factory_address","有属性凭证工厂合约地址"),
+        ATTRIBUTE_DATA_TOKEN_EXCHANGE("attribute_data_token_exchange","有属性凭证交易所地址，格式为<交易所名称|交易所地址>，多个交易所以英文逗号分割"),
         ;
 
         KeyEnum(String key, String desc) {

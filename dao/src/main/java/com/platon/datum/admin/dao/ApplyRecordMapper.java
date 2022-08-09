@@ -86,4 +86,6 @@ public interface ApplyRecordMapper {
      * 查询出当前组织审批通过后还处于带生效的VC证书
      */
     List<ApplyRecord> selectByApproveOrgAndTobeEffective(@Param("approveOrg") String approveOrg);
+
+    void removeUsed();
 }

@@ -67,6 +67,12 @@ public class GlobalOrg {
     @ApiModelProperty("组织机构简介")
     private String details;
 
+    /**
+     * 组织的credentials
+     */
+    @ApiModelProperty("组织机构简介")
+    private String credential;
+
 
     /**
      * 更新时间

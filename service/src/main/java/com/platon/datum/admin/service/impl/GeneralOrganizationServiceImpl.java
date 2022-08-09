@@ -9,6 +9,7 @@ import com.platon.datum.admin.common.util.ExportFileUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.AuthorityMapper;
+import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.ApplyRecord;
 import com.platon.datum.admin.dao.entity.Authority;
@@ -16,6 +17,7 @@ import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.grpc.client.DidClient;
 import com.platon.datum.admin.service.GeneralOrganizationService;
 import com.platon.datum.admin.service.IpfsOpService;
+import com.platon.datum.admin.service.OrgService;
 import com.platon.datum.admin.service.entity.Pct1000;
 import com.platon.datum.admin.service.entity.VcMaterialContent;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +52,9 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
     private AuthorityMapper authorityMapper;
     @Value("${vc.pctId:1000}")
     private Integer pctId;
+    @Resource
+    private OrgService orgService;
+
 
     /**
      * @return
@@ -290,5 +295,6 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
         } else {
             throw new BizException(Errors.ApplyRecordIsApplying);
         }
+        orgService.updateCredential(applyRecord.getVc());
     }
 }

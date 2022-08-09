@@ -284,4 +284,10 @@
         from apply_record
         where authority_business_id = #{authorityBusinessId}
     </select>
+
+    <update id="removeUsed">
+        update apply_record
+        set `used` = 0
+        where `used` = 1
+    </update>
 </mapper>

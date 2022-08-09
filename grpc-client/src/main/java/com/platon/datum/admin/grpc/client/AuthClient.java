@@ -66,10 +66,10 @@ public class AuthClient {
                 .newBuilder()
                 .setInformation(orgInfo)
                 .build();
-        log.debug("applyIdentityJoin,request:{}",joinRequest);
+        log.debug("applyIdentityJoin,request:{}", joinRequest);
         //3.调用rpc,获取response
         Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
-        log.debug("applyIdentityJoin,response:{}",response);
+        log.debug("applyIdentityJoin,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -88,10 +88,10 @@ public class AuthClient {
         com.google.protobuf.Empty request = com.google.protobuf.Empty
                 .newBuilder()
                 .build();
-        log.debug("revokeIdentityJoin,request:{}",request);
+        log.debug("revokeIdentityJoin,request:{}", request);
         //3.调用rpc,获取response
         Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
-        log.debug("revokeIdentityJoin,request:{}",response);
+        log.debug("revokeIdentityJoin,request:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -115,10 +115,10 @@ public class AuthClient {
                 .setLastUpdated(LocalDateTimeUtil.getTimestamp(latestSynced))
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
-        log.debug("getMetaDataAuthorityList,request:{}",request);
+        log.debug("getMetaDataAuthorityList,request:{}", request);
         //3.调用rpc,获取response
         AuthRpcApi.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getLocalMetadataAuthorityList(request);
-        log.debug("getMetaDataAuthorityList,response:{}",response);
+        log.debug("getMetaDataAuthorityList,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -175,10 +175,10 @@ public class AuthClient {
                 .setAudit(auditDataStatus)
                 .setSuggestion(auditDesc)
                 .build();
-        log.debug("auditMetaData,request:{}",request);
+        log.debug("auditMetaData,request:{}", request);
         //3.调用rpc,获取response
         AuthRpcApi.AuditMetadataAuthorityResponse response = AuthServiceGrpc.newBlockingStub(channel).auditMetadataAuthority(request);
-        log.debug("auditMetaData,response:{}",response);
+        log.debug("auditMetaData,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -198,10 +198,10 @@ public class AuthClient {
                 .setLastUpdated(LocalDateTimeUtil.getTimestamp(latestSynced))
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
-        log.debug("getIdentityList,request:{}",request);
+        log.debug("getIdentityList,request:{}", request);
         //3.调用rpc,获取response
         AuthRpcApi.GetIdentityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getIdentityList(request);
-        log.debug("getIdentityList,response:{}",response);
+        log.debug("getIdentityList,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -213,6 +213,33 @@ public class AuthClient {
 
         return identityListConvertToGlobalOrg(response.getIdentitysList());
     }
+
+    /**
+     * 更新指定组织的credential
+     * @param identityId
+     * @param credential vc
+     */
+    public void updateIdentityCredential(String identityId, String credential) {
+        //1.获取rpc连接
+        Channel channel = channelManager.getCarrierChannel();
+
+        //2.拼装request
+        AuthRpcApi.UpdateIdentityCredentialRequest request = AuthRpcApi.UpdateIdentityCredentialRequest.newBuilder()
+                .setIdentityId(identityId)
+                .setCredential(credential)
+                .build();
+        log.debug("updateIdentityCredential,request:{}", request);
+        //3.调用rpc,获取response
+        Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).updateIdentityCredential(request);
+        log.debug("updateIdentityCredential,response:{}", response);
+        //4.处理response
+        if (response == null) {
+            throw new CallGrpcServiceFailed();
+        } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
+            throw new CallGrpcServiceFailed(response.getMsg());
+        }
+    }
+
 
     private List<GlobalOrg> identityListConvertToGlobalOrg(List<IdentityData.Organization> identitysList) {
         List<GlobalOrg> orgList = identitysList.stream()

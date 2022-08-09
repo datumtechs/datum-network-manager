@@ -48,4 +48,11 @@ public interface OrgMapper {
      * @return
      */
     int updateIsAuthority(@Param("isAuthority") Integer isAuthority);
+
+    /**
+     * 更新组织的credential
+     * @param credential
+     * @return
+     */
+    int updateCredential(String credential);
 }

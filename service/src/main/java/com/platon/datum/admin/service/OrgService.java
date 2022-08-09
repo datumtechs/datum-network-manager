@@ -23,4 +23,6 @@ public interface OrgService {
     Org getLocalOrg();
 
     void updateLocalOrg(Org org);
+
+    void updateCredential(String credential);
 }

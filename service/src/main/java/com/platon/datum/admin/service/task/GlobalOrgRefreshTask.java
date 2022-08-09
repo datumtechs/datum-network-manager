@@ -1,6 +1,9 @@
 package com.platon.datum.admin.service.task;
 
+import cn.hutool.core.util.StrUtil;
+import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.GlobalOrgMapper;
+import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.DataSync;
 import com.platon.datum.admin.dao.entity.GlobalOrg;
@@ -28,11 +31,14 @@ public class GlobalOrgRefreshTask {
 
     @Resource
     private GlobalOrgMapper globalOrgMapper;
-
     @Resource
     private AuthClient authClient;
     @Resource
     private DataSyncService dataSyncService;
+    @Resource
+    private OrgMapper orgMapper;
+    @Resource
+    private ApplyRecordMapper applyRecordMapper;
 
 
     @Transactional(rollbackFor = Throwable.class)
@@ -48,6 +54,18 @@ public class GlobalOrgRefreshTask {
             if (CollectionUtils.isEmpty(identityList)) {
                 break;
             }
+            //判断是否包含本组织的更新
+            String localOrgIdentityId = OrgCache.getLocalOrgIdentityId();
+            identityList.forEach(globalOrg -> {
+                if (globalOrg.getIdentityId().equals(localOrgIdentityId)) {
+                    String credential = globalOrg.getCredential();
+                    orgMapper.updateCredential(credential);
+                    if (StrUtil.isBlank(credential)) {
+                        applyRecordMapper.removeUsed();
+                    }
+                }
+            });
+
             //更新元数据
             globalOrgMapper.insertOrUpdate(identityList);
             //把最近更新时间update到数据库

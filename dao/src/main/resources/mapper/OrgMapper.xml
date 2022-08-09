@@ -134,7 +134,7 @@
                 #{carrierConnTime,jdbcType=TIMESTAMP},
             </if>
             <if test="status != null">
-                #{status,jdbcType=BOOLEAN},
+                #{status},
             </if>
             <if test="localBootstrapNode != null">
                 #{localBootstrapNode,jdbcType=VARCHAR},
@@ -155,7 +155,7 @@
                 #{observerProxyWalletAddress,jdbcType=VARCHAR},
             </if>
             <if test="isAuthority != null">
-                #{isAuthority,jdbcType=BOOLEAN},
+                #{isAuthority},
             </if>
             <if test="credential != null">
                 #{credential,jdbcType=VARCHAR},
@@ -191,7 +191,7 @@
                 carrier_conn_time = #{carrierConnTime,jdbcType=TIMESTAMP},
             </if>
             <if test="status != null">
-                `status` = #{status,jdbcType=BOOLEAN},
+                `status` = #{status},
             </if>
             <if test="localBootstrapNode != null">
                 local_bootstrap_node = #{localBootstrapNode,jdbcType=VARCHAR},
@@ -212,12 +212,17 @@
                 observer_proxy_wallet_address = #{observerProxyWalletAddress,jdbcType=VARCHAR},
             </if>
             <if test="isAuthority != null">
-                is_authority = #{isAuthority,jdbcType=BOOLEAN},
+                is_authority = #{isAuthority},
             </if>
             <if test="credential != null">
                 credential = #{credential,jdbcType=VARCHAR},
             </if>
         </set>
+    </update>
+
+    <update id="updateCredential">
+        update org
+        set credential = #{credential}
     </update>
 
     <update id="updateIsAuthority">
