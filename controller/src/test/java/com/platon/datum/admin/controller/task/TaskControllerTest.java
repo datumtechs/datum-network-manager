@@ -1,11 +1,11 @@
 package com.platon.datum.admin.controller.task;
 
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.entity.TaskOrg;
 import com.platon.datum.admin.dto.req.TaskPageReq;
 import com.platon.datum.admin.grpc.common.constant.CarrierEnum;
+import com.platon.datum.admin.service.OrgService;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
@@ -23,19 +23,20 @@ import java.util.Set;
 public class TaskControllerTest {
 
     @Autowired
-    OrgMapper orgMapper;
+    OrgService orgService;
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @BeforeAll
-    public void init(){
-        Org org = orgMapper.select();
-        OrgCache.setLocalOrgInfo(org);;
+    public void init() {
+        Org org = orgService.select();
+        OrgCache.setLocalOrgInfo(org);
+        ;
     }
 
     @Test
-    public void listMyTask(){
+    public void listMyTask() {
         TaskPageReq req = new TaskPageReq();
         req.setPageNumber(1);
         req.setPageSize(10);
@@ -49,14 +50,14 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void myTaskStatistics(){
+    public void myTaskStatistics() {
         ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/task/myTaskStatistics", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }
 
     @Test
-    public void listTaskEvent(){
+    public void listTaskEvent() {
         String taskId = "task:0x159405505b7ba76f183813547725b6e679447d7f353d11cf4b52702c7d7bc1ab";
         ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/task/listTaskEvent?taskId={1}", String.class, taskId);
         System.out.println(entity.getStatusCode());
@@ -64,7 +65,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void taskInfo(){
+    public void taskInfo() {
         String taskId = "task:0x18e84ffff0c37c93321978ebad97e3ae5674a124cbd047aff30168b8b586f091";
         ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/task/taskInfo?taskId={1}", String.class, taskId);
         System.out.println(entity.getStatusCode());
@@ -72,7 +73,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void taskOrgTest(){
+    public void taskOrgTest() {
         Set<TaskOrg> taskOrgList = new HashSet<>();
 
         TaskOrg taskOrg = new TaskOrg();

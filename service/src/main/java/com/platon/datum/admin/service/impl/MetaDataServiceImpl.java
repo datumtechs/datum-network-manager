@@ -3,7 +3,10 @@ package com.platon.datum.admin.service.impl;
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.datum.admin.common.exception.*;
+import com.platon.datum.admin.common.exception.ArgumentException;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
+import com.platon.datum.admin.common.exception.FileEmpty;
 import com.platon.datum.admin.common.util.ExportFileUtil;
 import com.platon.datum.admin.dao.DataFileMapper;
 import com.platon.datum.admin.dao.MetaDataColumnMapper;
@@ -109,7 +112,7 @@ public class MetaDataServiceImpl implements MetaDataService {
     }
 
 
-    @Transactional
+    @Transactional(rollbackFor = Throwable.class)
     @Override
     public int delete(Integer id, String sign) {
         MetaData metaData = metaDataMapper.selectById(id);
@@ -117,10 +120,10 @@ public class MetaDataServiceImpl implements MetaDataService {
             throw new ArgumentException();
         }
         if (DataFileStatusEnum.RELEASED.getStatus() == metaData.getStatus()) {
-            throw new CannotDeletePublishedFile();
+            throw new BizException(Errors.CannotDeletePublishedData);
         } else if (DataFileStatusEnum.RELEASING.getStatus() == metaData.getStatus()
                 || DataFileStatusEnum.REVOKING.getStatus() == metaData.getStatus()) {
-            throw new CannotOpsData();
+            throw new BizException(Errors.CannotOpsData);
         }
         return metaDataMapper.deleteById(id);
     }
@@ -149,7 +152,7 @@ public class MetaDataServiceImpl implements MetaDataService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Throwable.class)
     @Override
     public int update(MetaData metaData) {
         MetaData existing = metaDataMapper.selectById(metaData.getId());
@@ -158,10 +161,10 @@ public class MetaDataServiceImpl implements MetaDataService {
         }
         //已发布状态的元数据不允许修改
         if (DataFileStatusEnum.RELEASED.getStatus() == existing.getStatus()) {
-            throw new CannotEditPublishedFile();
+            throw new BizException(Errors.CannotEditPublishedData);
         } else if (DataFileStatusEnum.RELEASING.getStatus() == existing.getStatus()
                 || DataFileStatusEnum.REVOKING.getStatus() == existing.getStatus()) {
-            throw new CannotOpsData();
+            throw new BizException(Errors.CannotOpsData);
         }
         //只允许修改这两个值
         existing.setDesc(metaData.getDesc());
@@ -189,10 +192,10 @@ public class MetaDataServiceImpl implements MetaDataService {
         }
         //下架只能针对上架的数据
         if (DataFileStatusEnum.RELEASED.getStatus() != metaData.getStatus()) {
-            throw new CannotWithdrawData();
+            throw new BizException(Errors.CannotWithdrawData);
         } else if (DataFileStatusEnum.RELEASING.getStatus() == metaData.getStatus()
                 || DataFileStatusEnum.REVOKING.getStatus() == metaData.getStatus()) {
-            throw new CannotOpsData();
+            throw new BizException(Errors.CannotOpsData);
         }
         metaDataClient.revokeMetaData(metaData.getMetaDataId());
 
@@ -210,10 +213,10 @@ public class MetaDataServiceImpl implements MetaDataService {
         }
         //已发布状态的元数据不允许修改
         if (DataFileStatusEnum.RELEASED.getStatus() == metaData.getStatus()) {
-            throw new CannotPublishData();
+            throw new BizException(Errors.CannotPublishData);
         } else if (DataFileStatusEnum.RELEASING.getStatus() == metaData.getStatus()
                 || DataFileStatusEnum.REVOKING.getStatus() == metaData.getStatus()) {
-            throw new CannotOpsData();
+            throw new BizException(Errors.CannotOpsData);
         }
         List<MetaDataColumn> columnList = metaDataColumnMapper.selectByLocalMetaDataDbIdToPublish(metaData.getId());
         metaData.setMetaDataColumnList(columnList);
@@ -268,8 +271,7 @@ public class MetaDataServiceImpl implements MetaDataService {
      */
     private DataFile resolveUploadFile(MultipartFile file, boolean hasTitle) {
         if (file.isEmpty()) {
-            log.error("file is empty");
-            throw new FileEmpty();
+            throw new FileEmpty("File is empty");
         }
 
         //校验文件名
@@ -280,8 +282,7 @@ public class MetaDataServiceImpl implements MetaDataService {
             //流式读取第一行
             Optional<CSVRecord> headerRecord = csvParser.stream().findFirst();
             if (!headerRecord.isPresent()) {
-                log.error("file has 0 line");
-                throw new FileEmpty();
+                throw new FileEmpty("File has 0 line");
             }
 
             DataFile dataFile = new DataFile();
@@ -349,8 +350,7 @@ public class MetaDataServiceImpl implements MetaDataService {
             Optional<CSVRecord> headerRecord = csvParser.stream().findFirst();
             long rows = csvParser.stream().count();
             if (!headerRecord.isPresent() || rows == 0) {
-                log.error("file has 0 line");
-                throw new FileEmpty();
+                throw new FileEmpty("File has 0 line");
             }
             List<String> headerList = headerRecord.get().toList();
 

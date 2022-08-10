@@ -9,11 +9,11 @@ import com.platon.datum.admin.common.util.ExportFileUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.AuthorityMapper;
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.ApplyRecord;
 import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.dao.entity.Org;
+import com.platon.datum.admin.grpc.client.AuthClient;
 import com.platon.datum.admin.grpc.client.DidClient;
 import com.platon.datum.admin.service.GeneralOrganizationService;
 import com.platon.datum.admin.service.IpfsOpService;
@@ -54,7 +54,8 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
     private Integer pctId;
     @Resource
     private OrgService orgService;
-
+    @Resource
+    private AuthClient authClient;
 
     /**
      * @return
@@ -295,6 +296,7 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
         } else {
             throw new BizException(Errors.ApplyRecordIsApplying);
         }
+        authClient.updateIdentityCredential(applyRecord.getVc());
         orgService.updateCredential(applyRecord.getVc());
     }
 }

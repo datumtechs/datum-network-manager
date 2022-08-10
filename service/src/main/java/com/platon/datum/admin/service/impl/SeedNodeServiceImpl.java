@@ -2,7 +2,9 @@ package com.platon.datum.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.datum.admin.common.exception.*;
+import com.platon.datum.admin.common.exception.ArgumentException;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.dao.SeedNodeMapper;
 import com.platon.datum.admin.dao.entity.SeedNode;
 import com.platon.datum.admin.grpc.carrier.api.SysRpcApi;
@@ -36,11 +38,10 @@ public class SeedNodeServiceImpl implements SeedNodeService {
     public void insertSeedNode(SeedNode seedNode) {
         // 调用grpc接口新增节点信息
         if (!verifySeedNodeId(seedNode.getSeedNodeId())) {
-            log.error("seed node ID error");
-            throw new ArgumentException();
+            throw new ArgumentException("seed node ID error");
         }
         if (seedNodeMapper.querySeedNodeDetails(seedNode.getSeedNodeId()) != null) {
-            throw new SeedNodeExists();
+            throw new BizException(Errors.SeedNodeExists);
         }
 
         SysRpcApi.SeedPeer seedResp = seedClient.addSeedNode(seedNode.getSeedNodeId());
@@ -62,7 +63,7 @@ public class SeedNodeServiceImpl implements SeedNodeService {
             throw new BizException(Errors.QueryRecordNotExist);
         }
         if (seedNode.getInitFlag()) {//内置
-            throw new CannotDeleteInitSeedNode();
+            throw new BizException(Errors.CannotDeleteInitSeedNode);
         }
 
         // 删除底层资源
@@ -89,7 +90,7 @@ public class SeedNodeServiceImpl implements SeedNodeService {
             throw new ArgumentException();
         }
         if (seedNodeMapper.querySeedNodeDetails(seedNodeId) != null) {
-            throw new SeedNodeExists();
+            throw new BizException(Errors.SeedNodeExists);
         }
     }
 

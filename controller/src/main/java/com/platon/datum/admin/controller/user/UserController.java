@@ -12,9 +12,9 @@ import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.entity.SysUser;
 import com.platon.datum.admin.dto.JsonResponse;
 import com.platon.datum.admin.dto.SignMessageDto;
-import com.platon.datum.admin.dto.req.UpdateLocalOrgReq;
-import com.platon.datum.admin.dto.req.UserApplyOrgIdentityReq;
 import com.platon.datum.admin.dto.req.UserLoginReq;
+import com.platon.datum.admin.dto.req.UserSetDescReq;
+import com.platon.datum.admin.dto.req.UserSetOrgNameReq;
 import com.platon.datum.admin.dto.req.UserUpdateAdminReq;
 import com.platon.datum.admin.dto.resp.LoginNonceResp;
 import com.platon.datum.admin.dto.resp.LoginResp;
@@ -98,7 +98,8 @@ public class UserController {
                 .map(com.platon.datum.admin.dao.entity.Resource::getValue)
                 .distinct()
                 .collect(Collectors.toList());
-        session.setAttribute(ControllerConstants.USER_URL_RESOURCE, urlList);//将登录信息存入session中
+        //将登录信息存入session中
+        session.setAttribute(ControllerConstants.USER_URL_RESOURCE, urlList);
 
         LoginResp resp = new LoginResp();
         resp.setUserName(user.getUserName());
@@ -112,18 +113,18 @@ public class UserController {
                 .collect(Collectors.toList());
         resp.setResourceList(uiResourceList);
 
-        Org org = orgService.getLocalOrg();
+        Org org = orgService.select();
         if (org == null) {
-            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
+            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.SET_NAME.getLevel());
             resp.setConnectNetworkStatus(Org.StatusEnum.NOT_CONNECT_NET.getCode());
         } else {
             resp.setConnectNetworkStatus(org.getStatus());
-            resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.DONE.getLevel());
             if (StringUtils.isBlank(org.getIdentityId())) {
-                resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_IDENTITY_ID.getLevel());
-                //resp.setConnectNetworkStatus(Org.StatusEnum.NOT_CONNECT_NET.getCode());
+                resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.SET_DID.getLevel());
             } else if (StringUtils.isBlank(org.getImageUrl()) || StringUtils.isBlank(org.getProfile())) {
-                resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.NEED_PROFILE.getLevel());
+                resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.SET_DESC.getLevel());
+            } else {
+                resp.setOrgInfoCompletionLevel(LoginResp.CompletionLevel.SET_NET.getLevel());
             }
         }
         //登录成功，将nonce重置
@@ -188,30 +189,45 @@ public class UserController {
         SysUser user = (SysUser) session.getAttribute(ControllerConstants.USER_INFO);
         //获取最新的用户信息
         user = userService.getByAddress(user.getAddress());
-        if (user.getIsAdmin() != 1) {//不是管理员则提示错误
+        //不是管理员则提示错误
+        if (user.getIsAdmin() != 1) {
             return JsonResponse.fail(Errors.CurrentUserNotAdmin);
         }
-        if (user.getAddress().toLowerCase().equals(req.getNewAddress().toLowerCase())) {//地址一样，则不修改
+        //地址一样，则不修改
+        if (user.getAddress().equalsIgnoreCase(req.getNewAddress())) {
             return JsonResponse.fail(Errors.NewUserAlreadyAdmin);
         }
         userService.updateAdmin(user, req.getNewAddress());
-        if (session != null) {//修改成功后，将session致为失效，让用户重新登录
+        //修改成功后，将session致为失效，让用户重新登录
+        if (session != null) {
             session.invalidate();
         }
         return JsonResponse.success();
     }
 
+
     /**
-     * 申请身份标识，由系统生成后返回
+     * 设置机构名称
      *
      * @param req
      * @return
      */
-    @ApiOperation(value = "申请身份标识")
-    @PostMapping("/applyOrgIdentity")
-    public JsonResponse<String> applyOrgIdentity(@RequestBody @Validated UserApplyOrgIdentityReq req) {
-        String orgId = userService.applyOrgIdentity(req.getOrgName());
-        return JsonResponse.success(orgId);
+    @ApiOperation(value = "设置机构名称")
+    @PostMapping("/setOrgName")
+    public JsonResponse<Org> setOrgName(@RequestBody @Validated UserSetOrgNameReq req) {
+        Org org = userService.setOrgName(req.getOrgName());
+        return JsonResponse.success(org);
+    }
+
+
+    /**
+     * 申请身份标识，由系统生成后返回
+     */
+    @ApiOperation(value = "设置did")
+    @PostMapping("/setDid")
+    public JsonResponse<Org> setDid() {
+        Org org = userService.applyOrgIdentity();
+        return JsonResponse.success(org);
     }
 
     /**
@@ -221,8 +237,8 @@ public class UserController {
      * @return
      */
     @ApiOperation(value = "更新组织信息（机构信息识别名称，头像链接，或者描述")
-    @PostMapping("/updateLocalOrg")
-    public JsonResponse<String> updateLocalOrg(@RequestBody UpdateLocalOrgReq req) {
+    @PostMapping("/setDesc")
+    public JsonResponse<Org> setDesc(@RequestBody UserSetDescReq req) {
         Org org = OrgCache.getLocalOrgInfo();
         //只有退网之后才能修改组织名称
         if (org.getStatus() == Org.StatusEnum.CONNECTED.getCode()) {
@@ -237,8 +253,8 @@ public class UserController {
         org.setImageUrl(req.getImageUrl());
         org.setProfile(req.getProfile());
 
-        orgService.updateLocalOrg(org);
-        return JsonResponse.success();
+        Org org1 = orgService.update(org);
+        return JsonResponse.success(org1);
     }
 
 
@@ -250,7 +266,7 @@ public class UserController {
     @ApiOperation(value = "查询出当前组织信息")
     @GetMapping("/findLocalOrgInfo")
     public JsonResponse<Org> findLocalOrgInfo() {
-        Org org = orgService.getLocalOrg();
+        Org org = OrgCache.getLocalOrgInfo();
         return JsonResponse.success(org);
     }
 }

@@ -1,8 +1,8 @@
 package com.platon.datum.admin.controller.system;
 
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
+import com.platon.datum.admin.service.OrgService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,24 +21,25 @@ public class OverviewControllerTest {
 
 
     @Autowired
-    private OrgMapper orgMapper;
+    private OrgService orgService;
 
     @Before
-    public void init(){
-        Org org = orgMapper.select();
-        OrgCache.setLocalOrgInfo(org);;
+    public void init() {
+        Org org = orgService.select();
+        OrgCache.setLocalOrgInfo(org);
+        ;
     }
 
 
     @Test
-    public void listLocalPowerStatsTrendMonthly(){
+    public void listLocalPowerStatsTrendMonthly() {
         ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/overview/localPowerStatsTrendMonthly", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
     }
 
     @Test
-    public void listLocalDataFileStatsTrendMonthly(){
+    public void listLocalDataFileStatsTrendMonthly() {
         ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/overview/localDataFileStatsTrendMonthly", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
@@ -46,8 +47,8 @@ public class OverviewControllerTest {
 
 
     @Test
-    public void queryMyCalculateTaskStats(){
-        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/overview/myTaskOverview",String.class);
+    public void queryMyCalculateTaskStats() {
+        ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/overview/myTaskOverview", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());
 

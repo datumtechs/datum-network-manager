@@ -14,15 +14,21 @@ public interface OrgService {
      * 获取本组织ID
      * @return
      */
-    String getIdentityId();
+    String selectIdentityId();
 
     /**
      * 获取本组织信息
      * @return
      */
-    Org getLocalOrg();
+    Org select();
 
-    void updateLocalOrg(Org org);
+    Org updateSelective(Org org);
 
-    void updateCredential(String credential);
+    Org insertSelective(Org record);
+
+    Org update(Org org);
+
+    Org updateIsAuthority(Integer isAuthority);
+
+    Org updateCredential(String credential);
 }

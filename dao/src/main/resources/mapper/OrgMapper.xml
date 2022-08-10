@@ -220,6 +220,30 @@
         </set>
     </update>
 
+    <update id="update" parameterType="com.platon.datum.admin.dao.entity.Org">
+        <!--@mbg.generated-->
+        update org
+        <set>
+            identity_id                   = #{identityId,jdbcType=VARCHAR},
+            carrier_node_id               = #{carrierNodeId,jdbcType=VARCHAR},
+            carrier_ip                    = #{carrierIp,jdbcType=VARCHAR},
+            carrier_port                  = #{carrierPort,jdbcType=INTEGER},
+            carrier_conn_status           = #{carrierConnStatus,jdbcType=VARCHAR},
+            carrier_status                = #{carrierStatus,jdbcType=INTEGER},
+            conn_node_count               = #{connNodeCount,jdbcType=INTEGER},
+            carrier_conn_time             = #{carrierConnTime,jdbcType=TIMESTAMP},
+            `status`                      = #{status},
+            local_bootstrap_node          = #{localBootstrapNode,jdbcType=VARCHAR},
+            local_multi_addr              = #{localMultiAddr,jdbcType=VARCHAR},
+            image_url                     = #{imageUrl,jdbcType=VARCHAR},
+            `profile`                     = #{profile,jdbcType=VARCHAR},
+            rec_update_time               = #{recUpdateTime,jdbcType=TIMESTAMP},
+            observer_proxy_wallet_address = #{observerProxyWalletAddress,jdbcType=VARCHAR},
+            is_authority                  = #{isAuthority},
+            credential                    = #{credential,jdbcType=VARCHAR},
+        </set>
+    </update>
+
     <update id="updateCredential">
         update org
         set credential = #{credential}

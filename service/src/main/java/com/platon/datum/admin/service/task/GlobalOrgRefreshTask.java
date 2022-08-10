@@ -3,13 +3,13 @@ package com.platon.datum.admin.service.task;
 import cn.hutool.core.util.StrUtil;
 import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.GlobalOrgMapper;
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.DataSync;
 import com.platon.datum.admin.dao.entity.GlobalOrg;
 import com.platon.datum.admin.grpc.client.AuthClient;
 import com.platon.datum.admin.grpc.constant.GrpcConstant;
 import com.platon.datum.admin.service.DataSyncService;
+import com.platon.datum.admin.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +36,7 @@ public class GlobalOrgRefreshTask {
     @Resource
     private DataSyncService dataSyncService;
     @Resource
-    private OrgMapper orgMapper;
+    private OrgService orgService;
     @Resource
     private ApplyRecordMapper applyRecordMapper;
 
@@ -59,7 +59,7 @@ public class GlobalOrgRefreshTask {
             identityList.forEach(globalOrg -> {
                 if (globalOrg.getIdentityId().equals(localOrgIdentityId)) {
                     String credential = globalOrg.getCredential();
-                    orgMapper.updateCredential(credential);
+                    orgService.updateCredential(credential);
                     if (StrUtil.isBlank(credential)) {
                         applyRecordMapper.removeUsed();
                     }

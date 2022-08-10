@@ -1,8 +1,8 @@
 package com.platon.datum.admin.controller.node;
 
 import com.github.pagehelper.Page;
-import com.platon.datum.admin.common.exception.NodeNameExists;
-import com.platon.datum.admin.common.exception.NodeNameIllegal;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.NameUtil;
 import com.platon.datum.admin.dao.entity.DataNode;
 import com.platon.datum.admin.dto.JsonResponse;
@@ -60,7 +60,7 @@ public class DataNodeController {
     @PostMapping("/updateNodeName")
     public JsonResponse updateNodeName(@Validated @RequestBody DataNodeUpdateReq dataNodeUpdateReq) {
         if (!NameUtil.isValidName(dataNodeUpdateReq.getNodeName())) {
-            throw new NodeNameIllegal();
+            throw new BizException(Errors.NodeNameIllegal);
         }
 
         DataNode dataNode = dataNodeService.findLocalDataNodeByName(dataNodeUpdateReq.getNodeName());
@@ -68,7 +68,7 @@ public class DataNodeController {
             if (StringUtils.equals(dataNode.getNodeId(), dataNodeUpdateReq.getNodeId())) {
                 return JsonResponse.success();
             } else {
-                throw new NodeNameExists();
+                throw new BizException(Errors.NodeNameExists);
             }
         }
         dataNodeService.updateLocalDataNodeName(dataNodeUpdateReq.getNodeId(), dataNodeUpdateReq.getNodeName());

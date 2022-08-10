@@ -1,5 +1,6 @@
 package com.platon.datum.admin.service;
 
+import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.entity.SysUser;
 
 /**
@@ -12,13 +13,12 @@ public interface UserService {
 
     /**
      * 申请身份标识
-     * @param orgName 身份标识名称
-     * @return 申请成功后的组织ID
      */
-    String applyOrgIdentity(String orgName);
+    Org applyOrgIdentity();
 
     /**
      * 根据地址查询用户
+     *
      * @param address
      * @return
      */
@@ -31,8 +31,18 @@ public interface UserService {
 
     /**
      * 更新管理员钱包地址
-     * @param user 当前管理员
+     *
+     * @param user       当前管理员
      * @param newAddress 新管理员钱包地址
      */
     void updateAdmin(SysUser user, String newAddress);
+
+
+    /**
+     * 设置组织名称
+     *
+     * @param orgName
+     * @return
+     */
+    Org setOrgName(String orgName);
 }

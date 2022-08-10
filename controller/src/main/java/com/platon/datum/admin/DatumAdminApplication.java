@@ -51,7 +51,7 @@ public class DatumAdminApplication {
     public void init() {
         log.info("应用已启动，执行初始化操作.............");
 
-        Org org = orgService.getLocalOrg();
+        Org org = orgService.select();
         OrgCache.setLocalOrgInfo(org);
 
         log.info("执行初始化操作执行完成............");

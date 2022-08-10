@@ -1,13 +1,13 @@
 package com.platon.datum.admin;
 
 import com.platon.datum.admin.dao.DataFileMapper;
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.DataFile;
 import com.platon.datum.admin.dao.entity.MetaData;
 import com.platon.datum.admin.dao.entity.MetaDataColumn;
 import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.service.MetaDataService;
+import com.platon.datum.admin.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,20 +37,21 @@ public class MockDataFileTest {
     private DataFileMapper dataFileMapper;
 
     @Resource
-    OrgMapper orgMapper;
+    OrgService orgService;
 
     @BeforeAll
-    public void init(){
-        Org org = orgMapper.select();
-        OrgCache.setLocalOrgInfo(org);;
+    public void init() {
+        Org org = orgService.select();
+        OrgCache.setLocalOrgInfo(org);
+        ;
     }
 
     @Test
-    public void addDataAuth(){
+    public void addDataAuth() {
         int columns = 10;
-        for(int i=0; i<1000; i++){
+        for (int i = 0; i < 1000; i++) {
             DataFile dataFile = new DataFile();
-            String fileId = StringUtils.leftPad(String.valueOf(i) , 6, "0" );
+            String fileId = StringUtils.leftPad(String.valueOf(i), 6, "0");
             dataFile.setFileId(fileId);
             dataFile.setFilePath(fileId + "_path");
             dataFile.setFileName(fileId + "_fileName");
@@ -59,19 +60,19 @@ public class MockDataFileTest {
             dataFile.setHasTitle(true);
             dataFile.setIdentityId(OrgCache.getLocalOrgIdentityId());
             dataFile.setRows(1000);
-            dataFile.setSize(1024*1024*32L);
+            dataFile.setSize(1024 * 1024 * 32L);
             dataFileMapper.insert(dataFile);
 
 
             MetaData metaData = new MetaData();
-              metaData.setMetaDataId("metadataId_" + i);
+            metaData.setMetaDataId("metadataId_" + i);
             metaData.setMetaDataName("metadata_" + i);
             metaData.setIndustry(1);
             metaData.setStatus(2);
             metaData.setFileId(fileId);
             metaData.setPublishTime(randomDay());
             metaData.setDesc("metadataId_" + i + "_remarks");
-            for(int j=0; j<columns; j++){
+            for (int j = 0; j < columns; j++) {
                 MetaDataColumn column = new MetaDataColumn();
                 column.setColumnIdx(j);
                 column.setColumnName("column_" + j);
@@ -86,12 +87,12 @@ public class MockDataFileTest {
         }
     }
 
-    private LocalDateTime randomDay(){
+    private LocalDateTime randomDay() {
         int gaps = 360;
         LocalDateTime start = LocalDateTime.now(ZoneOffset.UTC).minusDays(gaps);
         Duration duration = Duration.between(start, LocalDateTime.now(ZoneOffset.UTC));
         long days = duration.toDays(); //相差的天数
-        int random = RandomUtils.nextInt(0, (int)days);
+        int random = RandomUtils.nextInt(0, (int) days);
         return start.plusDays(random);
     }
 }

@@ -1,6 +1,5 @@
 package com.platon.datum.admin.controller.resource;
 
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.MetaDataColumn;
 import com.platon.datum.admin.dao.entity.Org;
@@ -9,6 +8,7 @@ import com.platon.datum.admin.dto.req.AddLocalMetaDataReq;
 import com.platon.datum.admin.dto.req.DataJoinTaskListReq;
 import com.platon.datum.admin.dto.req.MetaDataMetaDataListByKeyWordReq;
 import com.platon.datum.admin.dto.req.MetaDataUpdateReq;
+import com.platon.datum.admin.service.OrgService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,16 +30,17 @@ public class MetaMetaDataControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    OrgMapper orgMapper;
+    OrgService orgService;
 
     @Before
-    public void init(){
-        Org org = orgMapper.select();
-        OrgCache.setLocalOrgInfo(org);;
+    public void init() {
+        Org org = orgService.select();
+        OrgCache.setLocalOrgInfo(org);
+        ;
     }
 
     @Test
-    public void addLocalMetaData(){
+    public void addLocalMetaData() {
         AddLocalMetaDataReq req = new AddLocalMetaDataReq();
         req.setAddType(1);
         req.setIndustry(2);
@@ -71,7 +72,7 @@ public class MetaMetaDataControllerTest {
     }
 
     @Test
-    public void updateMetaData(){
+    public void updateMetaData() {
         MetaDataUpdateReq req = new MetaDataUpdateReq();
         req.setId(30);
         req.setIndustry(4);
@@ -103,7 +104,7 @@ public class MetaMetaDataControllerTest {
     }
 
     @Test
-    public void listMetaData(){
+    public void listMetaData() {
         CommonPageReq req = new CommonPageReq();
         req.setPageNumber(1);
         req.setPageSize(20);
@@ -113,7 +114,7 @@ public class MetaMetaDataControllerTest {
     }
 
     @Test
-    public void metaDataListByKeyWord(){
+    public void metaDataListByKeyWord() {
         MetaDataMetaDataListByKeyWordReq req = new MetaDataMetaDataListByKeyWordReq();
         req.setPageNumber(1);
         req.setPageSize(20);
@@ -124,7 +125,7 @@ public class MetaMetaDataControllerTest {
     }
 
     @Test
-    public void checkResourceName(){
+    public void checkResourceName() {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("resourceName", "44");
         map.add("fileId", "5adc085c654b60511b6da2ea9e9d19f964dd4f4e3a87ebcf3e81a3d6223c376d");
@@ -135,7 +136,7 @@ public class MetaMetaDataControllerTest {
     }
 
     @Test
-    public void queryDataJoinTaskList(){
+    public void queryDataJoinTaskList() {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("resourceName", "44");
         map.add("fileId", "5adc085c654b60511b6da2ea9e9d19f964dd4f4e3a87ebcf3e81a3d6223c376d");

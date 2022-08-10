@@ -2,7 +2,9 @@ package com.platon.datum.admin.controller.data;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
-import com.platon.datum.admin.common.exception.*;
+import com.platon.datum.admin.common.exception.ArgumentException;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.AddressTypeUtil;
 import com.platon.datum.admin.common.util.NameUtil;
 import com.platon.datum.admin.controller.BaseController;
@@ -141,19 +143,18 @@ public class MetaDataController extends BaseController {
         String userAddress = getCurrentUserAddress(session);
         //判断数据添加类型
         if (req.getAddType() != DataAddTypeEnum.ADD.getType() && req.getAddType() != DataAddTypeEnum.ADD_AGAIN.getType()) {
-            log.error("AddLocalMetaDataReq.type error:{}", req.getAddType());
-            throw new ArgumentException();
+            throw new ArgumentException(StrUtil.format("AddLocalMetaDataReq.type error:{}", req.getAddType()));
         }
         //判断格式是否对
         if (!NameUtil.isValidName(req.getResourceName())) {
-            log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
-            throw new MetadataResourceNameIllegal();
+            throw new BizException(Errors.MetadataResourceNameIllegal,
+                    StrUtil.format("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName()));
         }
         //判断是否重复
         boolean exist = metaDataService.isExistResourceName(req.getResourceName(), userAddress);
         if (exist) {
-            log.error("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName());
-            throw new MetadataResourceNameExists();
+            throw new BizException(Errors.MetadataResourceNameExists,
+                    StrUtil.format("AddLocalMetaDataReq.resourceName error:{}", req.getResourceName()));
         }
 
         DataFile dataFile = new DataFile();
@@ -290,12 +291,12 @@ public class MetaDataController extends BaseController {
         String currentUserAddress = getCurrentUserAddress(session);
         //判断格式是否对
         if (!NameUtil.isValidName(resourceName)) {
-            return JsonResponse.fail(new MetadataResourceNameIllegal());
+            return JsonResponse.fail(Errors.MetadataResourceNameIllegal);
         }
         //判断是否重复
         boolean exist = metaDataService.isExistResourceName(resourceName, currentUserAddress);
         if (exist) {
-            return JsonResponse.fail(new MetadataResourceNameExists());
+            return JsonResponse.fail(Errors.MetadataResourceNameExists);
         }
         return JsonResponse.success();
     }

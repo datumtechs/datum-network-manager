@@ -2,7 +2,6 @@ package com.platon.datum.admin.interceptor;
 
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
-import com.platon.datum.admin.common.exception.UserNotLogin;
 import com.platon.datum.admin.constant.ControllerConstants;
 import com.platon.datum.admin.dao.entity.SysUser;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +48,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 throw new BizException(Errors.UserNoPermission);
             }
         } else {//未登录，则返回错误信息
-            throw new UserNotLogin();
+            throw new BizException(Errors.UserNotLogin);
         }
     }
 

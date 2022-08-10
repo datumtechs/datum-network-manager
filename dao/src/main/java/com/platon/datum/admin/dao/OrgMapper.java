@@ -11,13 +11,6 @@ import org.apache.ibatis.annotations.Param;
  *******************************
  */
 public interface OrgMapper {
-    /**
-     * 选择性插入字段
-     *
-     * @param record
-     * @return
-     */
-    int insertSelective(Org record);
 
     /**
      * 获取组织信息
@@ -34,12 +27,25 @@ public interface OrgMapper {
     String selectIdentityId();
 
     /**
-     * 更新
-     *
+     * 选择性插入字段，无法插入null值进去
+     * @param record
+     * @return
+     */
+    int insertSelective(Org record);
+
+    /**
+     * 选择性更新，无法更新null值进去
      * @param org
      * @return
      */
     int updateSelective(Org org);
+
+    /**
+     * 更新，可更新null值进去
+     * @param org
+     * @return
+     */
+    int update(Org org);
 
     /**
      * 更新组织的委员会成员标志

@@ -1,11 +1,12 @@
 package com.platon.datum.admin.controller.node;
 
-import com.platon.datum.admin.common.exception.CannotConnectCarrier;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
-import com.platon.datum.admin.service.CarrierService;
 import com.platon.datum.admin.dto.JsonResponse;
 import com.platon.datum.admin.dto.resp.ApplyJoinResp;
 import com.platon.datum.admin.dto.resp.ConnectNodeResp;
+import com.platon.datum.admin.service.CarrierService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -17,17 +18,12 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-/**
- * @Author liushuyu
- * @Date 2021/7/2 16:18
- * @Version
- * @Desc
- */
 
 /**
  * 调度服务管理
+ *
+ * @author liushuyu
  */
-
 @Api(tags = "调度服务配置")
 @RequestMapping("/api/v1/carrier/")
 @RestController
@@ -38,19 +34,22 @@ public class CarrierController {
 
     /**
      * 连接调度节点
+     *
      * @return
+     * @deprecated 0.3.0之后不用手动链接调度服务了
      */
+    @Deprecated
     @ApiOperation(value = "连接调度节点")
     @PostMapping("/connectNode")
     public JsonResponse<ConnectNodeResp> connectNode(@Validated @NotBlank(message = "ip不能为空") String ip,
-                                                     @Validated @NotNull(message = "port不能为空") Integer port){
+                                                     @Validated @NotNull(message = "port不能为空") Integer port) {
         ConnectNodeResp connectNodeResp = new ConnectNodeResp();
         CarrierConnStatusEnum carrierConnStatusEnum = carrierService.connectNode(ip, port);
-        if(CarrierConnStatusEnum.ENABLED == carrierConnStatusEnum){
+        if (CarrierConnStatusEnum.ENABLED == carrierConnStatusEnum) {
             connectNodeResp.setCarrierConnStatus(carrierConnStatusEnum.getStatus());
-           return JsonResponse.success(connectNodeResp);
+            return JsonResponse.success(connectNodeResp);
         } else {
-            throw new CannotConnectCarrier();
+            throw new BizException(Errors.CannotConnectCarrier);
         }
     }
 
@@ -59,7 +58,7 @@ public class CarrierController {
      */
     @ApiOperation(value = "申请准入网络")
     @PostMapping("/applyJoinNetwork")
-    public JsonResponse<ApplyJoinResp> applyJoinNetwork(){
+    public JsonResponse<ApplyJoinResp> applyJoinNetwork() {
         ApplyJoinResp applyJoinResp = new ApplyJoinResp();
         Integer status = carrierService.applyJoinNetwork();
         applyJoinResp.setStatus(status);
@@ -71,7 +70,7 @@ public class CarrierController {
      */
     @ApiOperation(value = "注销网络")
     @PostMapping("/cancelJoinNetwork")
-    public JsonResponse<ApplyJoinResp> cancelJoinNetwork(){
+    public JsonResponse<ApplyJoinResp> cancelJoinNetwork() {
         ApplyJoinResp applyJoinResp = new ApplyJoinResp();
         Integer status = carrierService.cancelJoinNetwork();
         applyJoinResp.setStatus(status);

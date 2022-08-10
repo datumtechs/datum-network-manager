@@ -1,6 +1,7 @@
 package com.platon.datum.admin.service.task;
 
-import com.platon.datum.admin.common.exception.MetadataAuthorized;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataAuthMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
@@ -47,7 +48,7 @@ public class DataAuthReqRefreshTask {
     @Transactional(rollbackFor = Throwable.class)
     @Scheduled(fixedDelayString = "${DataAuthReqRefreshTask.fixedDelay}")
     public void task() {
-        if(OrgCache.identityIdNotFound()){
+        if (OrgCache.identityIdNotFound()) {
             return;
         }
         log.debug("刷新数据授权申请(查询过期申请)定时任务开始>>>");
@@ -98,8 +99,7 @@ public class DataAuthReqRefreshTask {
             throw new ArithmeticException();
         }
         if (localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()) {
-            log.warn("data auth request is processed already.");
-            throw new MetadataAuthorized();
+            throw new BizException(Errors.MetadataAuthorized, "Data auth request is processed already.");
         }
         authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus(), "meta data was revoked, just refuse it.");
 

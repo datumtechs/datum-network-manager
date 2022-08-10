@@ -1,8 +1,8 @@
 package com.platon.datum.admin.controller.system;
 
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
+import com.platon.datum.admin.service.OrgService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,16 +20,17 @@ public class SystemBaseInfoControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    OrgMapper orgMapper;
+    OrgService orgService;
 
     @Before
-    public void init(){
-        Org org = orgMapper.select();
-        OrgCache.setLocalOrgInfo(org);;
+    public void init() {
+        Org org = orgService.select();
+        OrgCache.setLocalOrgInfo(org);
+        ;
     }
 
     @Test
-    public void queryBaseInfo(){
+    public void queryBaseInfo() {
         ResponseEntity<String> entity = restTemplate.getForEntity("/api/v1/system/queryBaseInfo", String.class);
         System.out.println(entity.getStatusCode());
         System.out.println(entity.getBody());

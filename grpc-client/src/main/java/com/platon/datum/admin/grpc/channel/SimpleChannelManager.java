@@ -1,13 +1,12 @@
 package com.platon.datum.admin.grpc.channel;
 
-import com.platon.datum.admin.common.exception.CannotConnectGrpcServer;
-import com.platon.datum.admin.common.exception.CarrierNotConfigured;
-import com.platon.datum.admin.common.exception.IdentityIdMissing;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
+import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.datum.admin.grpc.interceptor.TimeoutInterceptor;
 import com.platon.datum.admin.grpc.interceptor.UploadFileTimeoutInterceptor;
-import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,7 @@ public class SimpleChannelManager {
 
     private ManagedChannel carrierChannel;
 
-    public ManagedChannel buildChannel(String ip, int port) throws CannotConnectGrpcServer {
+    public ManagedChannel buildChannel(String ip, int port) {
         try {
             ManagedChannel channel = ManagedChannelBuilder
                     .forAddress(ip, port)
@@ -48,11 +47,11 @@ public class SimpleChannelManager {
             return channel;
         } catch (Throwable e) {
             log.error("failed to connect to gRPC server {}:{}", ip, port);
-            throw new CannotConnectGrpcServer();
+            throw new BizException(Errors.CannotConnectCarrier, e);
         }
     }
 
-    public ManagedChannel buildUploadFileChannel(String ip, int port) throws CannotConnectGrpcServer {
+    public ManagedChannel buildUploadFileChannel(String ip, int port) {
         try {
             ManagedChannel channel = ManagedChannelBuilder
                     .forAddress(ip, port)
@@ -65,7 +64,7 @@ public class SimpleChannelManager {
             return channel;
         } catch (Throwable e) {
             log.error("failed to connect to gRPC server {}:{}", ip, port);
-            throw new CannotConnectGrpcServer();
+            throw new BizException(Errors.CannotConnectCarrier, e);
         }
     }
 
@@ -104,16 +103,16 @@ public class SimpleChannelManager {
      *
      * @return
      */
-    public ManagedChannel getCarrierChannel() throws CarrierNotConfigured, CannotConnectGrpcServer {
+    public ManagedChannel getCarrierChannel() {
         //获取调度服务的信息
         Org org = OrgCache.getLocalOrgInfo();
 
         if (StringUtils.isBlank(org.getIdentityId())) {
-            throw new IdentityIdMissing();
+            throw new BizException(Errors.IdentityIdMissing);
         }
 
         if (!CarrierConnStatusEnum.ENABLED.getStatus().equals(org.getCarrierConnStatus())) {
-            throw new CarrierNotConfigured();
+            throw new BizException(Errors.CarrierNotConfigured);
         }
 
         if (carrierChannel == null) {

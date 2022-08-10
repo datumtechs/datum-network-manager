@@ -2,7 +2,9 @@ package com.platon.datum.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.datum.admin.common.exception.*;
+import com.platon.datum.admin.common.exception.ArgumentException;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.common.util.NameUtil;
 import com.platon.datum.admin.dao.PowerLoadSnapshotMapper;
@@ -86,14 +88,14 @@ public class PowerNodeServiceImpl implements PowerNodeService {
 
 
         if (localPowerNode.getConnStatus() == PowerNode.ConnStatus.disconnected.getCode()) {
-            throw new CannotConnectPowerNode();
+            throw new BizException(Errors.CannotConnectPowerNode);
         }
         //启用的不能修改
         if (localPowerNode.getPowerStatus() == CarrierEnum.PowerState.PowerState_Released_VALUE
                 || localPowerNode.getPowerStatus() == CarrierEnum.PowerState.PowerState_Occupation_VALUE) {
-            throw new CannotEditPowerNode();
+            throw new BizException(Errors.CannotEditPowerNode);
         } else if (localPowerNode.getPowerStatus() == 5 || localPowerNode.getPowerStatus() == 6) {
-            throw new CannotOpsPowerNode();
+            throw new BizException(Errors.CannotOpsPowerNode);
         }
 
         // 判断是否有正在进行中的任务
@@ -124,14 +126,14 @@ public class PowerNodeServiceImpl implements PowerNodeService {
         PowerNode powerNode = powerNodeMapper.queryPowerNodeDetails(nodeId);
 
         if (powerNode.getConnStatus() == PowerNode.ConnStatus.disconnected.getCode()) {
-            throw new CannotConnectPowerNode();
+            throw new BizException(Errors.CannotConnectPowerNode);
         }
         //启用的不能删除
         if (powerNode.getPowerStatus() == CarrierEnum.PowerState.PowerState_Released_VALUE
                 || powerNode.getPowerStatus() == CarrierEnum.PowerState.PowerState_Occupation_VALUE) {
-            throw new CannotEditPowerNode();
+            throw new BizException(Errors.CannotEditPowerNode);
         } else if (powerNode.getPowerStatus() == 5 || powerNode.getPowerStatus() == 6) {
-            throw new CannotOpsPowerNode();
+            throw new BizException(Errors.CannotOpsPowerNode);
         }
 
         // 判断是否有正在进行中的任务
@@ -171,7 +173,7 @@ public class PowerNodeServiceImpl implements PowerNodeService {
             powerNode.setStartTime(LocalDateTimeUtil.now());
             powerNodeMapper.updatePowerNodeByNodeId(powerNode);
         } else {
-            throw new CannotOpsPowerNode("only unpublished and revoked nodes can be published");
+            throw new BizException(Errors.CannotOpsPowerNode, "Only unpublished and revoked nodes can be published");
         }
 
     }
@@ -193,7 +195,7 @@ public class PowerNodeServiceImpl implements PowerNodeService {
             powerNode.setPowerStatus(6);
             powerNodeMapper.updatePowerNodeByNodeId(powerNode);
         } else {
-            throw new CannotOpsPowerNode("only published nodes can be revoked.");
+            throw new BizException(Errors.CannotOpsPowerNode, "Only published nodes can be revoked.");
         }
 
     }

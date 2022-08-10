@@ -4,7 +4,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
-import com.platon.datum.admin.common.exception.MetadataAuthorized;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataAuthMapper;
 import com.platon.datum.admin.dao.DataFileMapper;
@@ -97,7 +96,7 @@ public class DataAuthServiceImpl implements DataAuthService {
             throw new ArithmeticException();
         }
         if (localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()) {
-            throw new MetadataAuthorized();
+            throw new BizException(Errors.MetadataAuthorized);
         }
 
         int auditOption = DataAuthStatusEnum.AGREE.getStatus();
@@ -132,8 +131,7 @@ public class DataAuthServiceImpl implements DataAuthService {
             throw new ArithmeticException();
         }
         if (localDataAuth.getStatus() != DataAuthStatusEnum.PENDING.getStatus()) {
-            log.warn("data auth request is processed already.");
-            throw new MetadataAuthorized();
+            throw new BizException(Errors.MetadataAuthorized, "Data auth request is processed already.");
         }
         authClient.auditMetaData(localDataAuth.getAuthId(), DataAuthStatusEnum.REFUSE.getStatus(), "");
 

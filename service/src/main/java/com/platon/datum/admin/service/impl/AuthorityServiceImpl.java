@@ -2,10 +2,10 @@ package com.platon.datum.admin.service.impl;
 
 import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.AuthorityMapper;
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.service.AuthorityService;
+import com.platon.datum.admin.service.OrgService;
 import com.platon.datum.admin.service.VoteContract;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Resource
     private VoteContract voteContract;
     @Resource
-    private OrgMapper orgMapper;
+    private OrgService orgService;
 
 
     /**
@@ -76,9 +76,9 @@ public class AuthorityServiceImpl implements AuthorityService {
         //判断本组织是否是委员会成员
         Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
         if (authority == null) {
-            orgMapper.updateIsAuthority(0);
+            orgService.updateIsAuthority(0);
         } else {
-            orgMapper.updateIsAuthority(1);
+            orgService.updateIsAuthority(1);
         }
     }
 }

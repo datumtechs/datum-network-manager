@@ -5,12 +5,12 @@ import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.health.HealthServicesRequest;
 import com.ecwid.consul.v1.health.model.HealthService;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.datum.admin.grpc.client.YarnClient;
 import com.platon.datum.admin.grpc.entity.YarnGetNodeInfoResp;
+import com.platon.datum.admin.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +31,7 @@ import java.util.List;
 public class CarrierStatusRefreshTask {
 
     @Resource
-    private OrgMapper orgMapper;
+    private OrgService orgService;
 
     @Resource
     private YarnClient yarnClient;
@@ -50,7 +50,7 @@ public class CarrierStatusRefreshTask {
     public void task() {
         log.debug("刷新本组织调度服务状态定时任务开始>>>");
         ConsulClient consulClient = new ConsulClient(consulHost, consulPort);
-        Org org = orgMapper.select();
+        Org org = orgService.select();
         if (org == null) {
             log.warn("请先申请身份标识");
             //刷新缓存
@@ -99,9 +99,7 @@ public class CarrierStatusRefreshTask {
                 org.setStatus(LocalOrgStatusEnum.LEAVE.getStatus());
             }*/
         }
-        orgMapper.updateSelective(org);
-        //刷新缓存
-        OrgCache.setLocalOrgInfo(org);
+        orgService.updateSelective(org);
         log.debug("刷新本组织调度服务状态定时任务结束|||");
     }
 

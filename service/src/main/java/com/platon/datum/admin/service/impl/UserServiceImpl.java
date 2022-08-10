@@ -7,17 +7,15 @@ import com.ecwid.consul.v1.health.HealthServicesRequest;
 import com.ecwid.consul.v1.health.model.HealthService;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
-import com.platon.datum.admin.common.exception.OrgInfoExists;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.SysUserMapper;
-import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.entity.SysUser;
 import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.datum.admin.grpc.client.DidClient;
 import com.platon.datum.admin.grpc.client.YarnClient;
 import com.platon.datum.admin.grpc.entity.YarnGetNodeInfoResp;
+import com.platon.datum.admin.service.OrgService;
 import com.platon.datum.admin.service.UserService;
 import com.platon.datum.admin.service.web3j.Web3jManager;
 import com.platon.protocol.Web3j;
@@ -49,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Resource
     private SysUserMapper sysUserMapper;
     @Resource
-    private OrgMapper orgMapper;
+    private OrgService orgService;
 
     @Resource
     private YarnClient yarnClient;
@@ -69,21 +67,17 @@ public class UserServiceImpl implements UserService {
     @Resource
     private Web3jManager web3jManager;
 
-    @Transactional
+    @Transactional(rollbackFor = Throwable.class)
     @Override
-    public String applyOrgIdentity(String orgName) {
+    public Org applyOrgIdentity() {
         //### 1.校验是否已存在组织信息
-        Org org = orgMapper.select();
-        if (org != null) {
-            throw new OrgInfoExists();
+        Org org = orgService.select();
+        if (org == null) {
+            throw new BizException(Errors.OrgInfoNotFound);
         }
-
-        //1.1从注册中心获取调度服务的信息
-        Org localOrg = getCarrierInfo();
-        //### 1.2 调用调度服务接口生成见证人钱包
-        String walletAddress = yarnClient.generateObServerProxyWalletAddress(localOrg.getCarrierIp(), localOrg.getCarrierPort());
         Web3j web3j = web3jManager.getWeb3j();
         try {
+            String walletAddress = org.getObserverProxyWalletAddress();
             PlatonGetBalance platonGetBalance = web3j.platonGetBalance(walletAddress, DefaultBlockParameterName.LATEST).send();
             BigInteger balance = platonGetBalance.getBalance();
             if (balance.compareTo(BigInteger.ZERO) <= 0) {
@@ -92,19 +86,12 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             throw new BizException(Errors.SysException, e);
         }
-        localOrg.setObserverProxyWalletAddress(walletAddress);
-        //### 2.新建local org并入库
         //TODO 判断did是否已经创建过
-        String did = didClient.createDID(localOrg.getCarrierIp(), localOrg.getCarrierPort());
+        String did = didClient.createDID(org.getCarrierIp(), org.getCarrierPort());
         log.debug("申请did：" + did);
-        localOrg.setIdentityId(did);
-        localOrg.setName(orgName);
-        localOrg.setStatus(Org.StatusEnum.NOT_CONNECT_NET.getCode());
-        orgMapper.insertSelective(localOrg);
-
-        //### 2.新建成功后，设置缓存
-        OrgCache.setLocalOrgInfo(localOrg);
-        return did;
+        org.setIdentityId(did);
+        Org org1 = orgService.updateSelective(org);
+        return org1;
     }
 
     //获取调度服务信息
@@ -183,6 +170,31 @@ public class UserServiceImpl implements UserService {
 
         oldAdmin.setIsAdmin(0);
         sysUserMapper.updateByAddress(oldAdmin);
+    }
+
+    /**
+     * 设置组织名称
+     *
+     * @param orgName
+     * @return
+     */
+    @Override
+    public Org setOrgName(String orgName) {
+        //### 1.校验是否已存在组织信息
+        Org org = orgService.select();
+        if (org != null) {
+            throw new BizException(Errors.OrgInfoExists);
+        }
+        //1.1从注册中心获取调度服务的信息
+        Org localOrg = getCarrierInfo();
+        //### 1.2 调用调度服务接口生成见证人钱包
+        String walletAddress = yarnClient.generateObServerProxyWalletAddress(localOrg.getCarrierIp(), localOrg.getCarrierPort());
+        localOrg.setObserverProxyWalletAddress(walletAddress);
+        //### 2.新建local org并入库
+        localOrg.setName(orgName);
+        localOrg.setStatus(Org.StatusEnum.NOT_CONNECT_NET.getCode());
+        Org org1 = orgService.insertSelective(localOrg);
+        return org1;
     }
 
 }

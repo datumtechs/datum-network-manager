@@ -1,11 +1,8 @@
 package com.platon.datum.admin.service.impl;
 
-import com.platon.datum.admin.common.exception.ApplyIdentityIDFailed;
-import com.platon.datum.admin.common.exception.IdentityIDApplied;
-import com.platon.datum.admin.common.exception.OrgConnectNetworkAlready;
-import com.platon.datum.admin.common.exception.OrgNotConnectNetwork;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
-import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
@@ -14,6 +11,7 @@ import com.platon.datum.admin.grpc.client.YarnClient;
 import com.platon.datum.admin.grpc.entity.YarnGetNodeInfoResp;
 import com.platon.datum.admin.service.AuthorityService;
 import com.platon.datum.admin.service.CarrierService;
+import com.platon.datum.admin.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +31,7 @@ import static com.platon.datum.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_COD
 public class CarrierServiceImpl implements CarrierService {
 
     @Resource
-    private OrgMapper orgMapper;
+    private OrgService orgService;
     @Resource
     private AuthClient authClient;
     @Resource
@@ -55,9 +53,7 @@ public class CarrierServiceImpl implements CarrierService {
         org.setCarrierConnStatus(CarrierConnStatusEnum.ENABLED.getStatus());
         org.setCarrierConnTime(LocalDateTimeUtil.now());
         //入库
-        int count = orgMapper.updateSelective(org);
-        //更新缓存
-        OrgCache.setLocalOrgInfo(org);
+        orgService.updateSelective(org);
         return CarrierConnStatusEnum.ENABLED;
     }
 
@@ -66,25 +62,28 @@ public class CarrierServiceImpl implements CarrierService {
         Org org = OrgCache.getLocalOrgInfo();
 
         if (org.getStatus() == Org.StatusEnum.CONNECTED.getCode()) {
-            throw new OrgConnectNetworkAlready();
+            throw new BizException(Errors.OrgConnectNetworkAlready);
         }
 
         try {
             authClient.applyIdentityJoin(org.getIdentityId(), org.getName(), org.getImageUrl(), org.getProfile());
         } catch (Exception e) {
-            throw new ApplyIdentityIDFailed(e);
+            throw new BizException(Errors.ApplyIdentityIDFailed, e);
         }
 
         YarnGetNodeInfoResp nodeInfo;
         try {
             nodeInfo = yarnClient.getNodeInfo(org.getCarrierIp(), org.getCarrierPort());
         } catch (Exception e) {
-            throw new ApplyIdentityIDFailed(e);
+            throw new BizException(Errors.ApplyIdentityIDFailed, e);
         }
 
         if (!org.getIdentityId().equals(nodeInfo.getIdentityId())) {
-            throw new IdentityIDApplied();
+            throw new BizException(Errors.IdentityIDApplied);
         }
+
+        //刷新委员会列表
+        authorityService.refreshAuthority();
 
         //入网成功，刷新数据库
         org.setCarrierNodeId(nodeInfo.getNodeId());
@@ -92,24 +91,16 @@ public class CarrierServiceImpl implements CarrierService {
         org.setConnNodeCount(nodeInfo.getConnCount());
         org.setLocalBootstrapNode(nodeInfo.getLocalBootstrapNode());
         org.setLocalMultiAddr(nodeInfo.getLocalMultiAddr());
-
         org.setStatus(Org.StatusEnum.CONNECTED.getCode());
-        orgMapper.updateSelective(org);
-
-        //刷新委员会列表
-        authorityService.refreshAuthority();
-
-        org = orgMapper.select();
-        //刷新缓存
-        OrgCache.setLocalOrgInfo(org);
-        return org.getStatus();
+        Org org1 = orgService.updateSelective(org);
+        return org1.getStatus();
     }
 
     @Override
     public Integer cancelJoinNetwork() {
         Org org = OrgCache.getLocalOrgInfo();
         if (org.getStatus() != Org.StatusEnum.CONNECTED.getCode()) {
-            throw new OrgNotConnectNetwork();
+            throw new BizException(Errors.OrgNotConnectNetwork);
         }
         authClient.revokeIdentityJoin();
 
@@ -123,9 +114,7 @@ public class CarrierServiceImpl implements CarrierService {
         org.setStatus(Org.StatusEnum.LEFT_NET.getCode());
         org.setCarrierNodeId("");
         org.setConnNodeCount(0);
-        orgMapper.updateSelective(org);
-        //刷新缓存
-        OrgCache.setLocalOrgInfo(org);
-        return org.getStatus();
+        Org org1 = orgService.updateSelective(org);
+        return org1.getStatus();
     }
 }

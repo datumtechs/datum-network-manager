@@ -1,9 +1,10 @@
 package com.platon.datum.admin.service.impl;
 
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.dao.OrgMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
-import com.platon.datum.admin.grpc.client.AuthClient;
 import com.platon.datum.admin.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,34 +25,73 @@ public class OrgServiceImpl implements OrgService {
 
     @Resource
     private OrgMapper orgMapper;
-    @Resource
-    private AuthClient authClient;
 
     @Override
-    public String getIdentityId() {
-        return orgMapper.selectIdentityId();
-    }
-
-    @Override
-    public Org getLocalOrg() {
-        Org org =  orgMapper.select();
-        OrgCache.setLocalOrgInfo(org);
+    public Org select() {
+        Org org = orgMapper.select();
         return org;
     }
 
     @Override
-    public void updateLocalOrg(Org org) {
-        orgMapper.updateSelective(org);
+    public String selectIdentityId() {
+        return orgMapper.selectIdentityId();
+    }
+
+    @Override
+    public Org insertSelective(Org record) {
+        int i = orgMapper.insertSelective(record);
+        if (i <= 0) {
+            throw new BizException(Errors.InsertSqlFailed, "Insert org failed");
+        }
+        Org select = orgMapper.select();
+        OrgCache.setLocalOrgInfo(select);
+        return select;
+    }
+
+    @Override
+    public Org updateSelective(Org org) {
+        int i = orgMapper.updateSelective(org);
+        if (i <= 0) {
+            throw new BizException(Errors.UpdateSqlFailed, "Update org failed");
+        }
+        Org select = orgMapper.select();
+        OrgCache.setLocalOrgInfo(select);
+        return select;
+    }
+
+    @Override
+    public Org update(Org org) {
+        int i = orgMapper.update(org);
+        if (i <= 0) {
+            throw new BizException(Errors.UpdateSqlFailed, "Update org failed");
+        }
+        Org select = orgMapper.select();
+        OrgCache.setLocalOrgInfo(select);
+        return select;
+    }
+
+    @Override
+    public Org updateIsAuthority(Integer isAuthority) {
+        int i = orgMapper.updateIsAuthority(isAuthority);
+        if (i <= 0) {
+            throw new BizException(Errors.UpdateSqlFailed, "Update org failed");
+        }
+        Org select = orgMapper.select();
+        OrgCache.setLocalOrgInfo(select);
+        return select;
     }
 
     /**
      * @param credential
      */
     @Override
-    public void updateCredential(String credential) {
-        Org localOrgInfo = OrgCache.getLocalOrgInfo();
-        localOrgInfo.setCredential(credential);
-        orgMapper.updateSelective(localOrgInfo);
-        authClient.updateIdentityCredential(localOrgInfo.getIdentityId(),credential);
+    public Org updateCredential(String credential) {
+        int i = orgMapper.updateCredential(credential);
+        if (i <= 0) {
+            throw new BizException(Errors.UpdateSqlFailed, "Update org failed");
+        }
+        Org select = orgMapper.select();
+        OrgCache.setLocalOrgInfo(select);
+        return select;
     }
 }

@@ -3,6 +3,7 @@ package com.platon.datum.admin.grpc.client;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.DataAuth;
 import com.platon.datum.admin.dao.entity.GlobalOrg;
 import com.platon.datum.admin.grpc.carrier.api.AuthRpcApi;
@@ -216,16 +217,15 @@ public class AuthClient {
 
     /**
      * 更新指定组织的credential
-     * @param identityId
      * @param credential vc
      */
-    public void updateIdentityCredential(String identityId, String credential) {
+    public void updateIdentityCredential(String credential) {
         //1.获取rpc连接
         Channel channel = channelManager.getCarrierChannel();
 
         //2.拼装request
         AuthRpcApi.UpdateIdentityCredentialRequest request = AuthRpcApi.UpdateIdentityCredentialRequest.newBuilder()
-                .setIdentityId(identityId)
+                .setIdentityId(OrgCache.getLocalOrgIdentityId())
                 .setCredential(credential)
                 .build();
         log.debug("updateIdentityCredential,request:{}", request);

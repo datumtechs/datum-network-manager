@@ -3,7 +3,8 @@ package com.platon.datum.admin.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.platon.datum.admin.common.exception.DataHostExists;
+import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.DataNodeMapper;
 import com.platon.datum.admin.dao.entity.DataNode;
@@ -55,7 +56,7 @@ public class DataNodeServiceImpl implements DataNodeService {
     @Override
     public int addDataNode(DataNode dataNode) {
         if (!checkDataNodeId(dataNode)) {
-            throw new DataHostExists();
+            throw new BizException(Errors.DataHostExists);
         }
 
         RegisteredNodeResp response = yarnClient.setDataNode(dataNode);
@@ -68,21 +69,6 @@ public class DataNodeServiceImpl implements DataNodeService {
     }
 
     /**
-     * 校验数据节点名称是否可用
-     *
-     * @param dataNode
-     * @return true可用，false不可用
-     */
-    /*@Override
-    public boolean checkDataNodeName(DataNode dataNode) {
-        String dbNodeId = dataNodeMapper.getDataNodeIdByName(dataNode.getNodeName());
-        if (!StringUtils.isBlank(dbNodeId) && !dbNodeId.equals(dataNode.getNodeId())) {
-            return false;
-        }
-        return true;
-    }*/
-
-    /**
      * 修改数据节点
      *
      * @param dataNode
@@ -91,7 +77,7 @@ public class DataNodeServiceImpl implements DataNodeService {
     @Override
     public int updateDataNode(DataNode dataNode) {
         if (!checkDataNodeId(dataNode)) {
-            throw new DataHostExists();
+            throw new BizException(Errors.DataHostExists);
         }
         RegisteredNodeResp response = yarnClient.updateDataNode(dataNode);
         dataNode.setConnStatus(response.getConnStatus());

@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @ApiModel(value = "更新本地组织信息")
-public class UpdateLocalOrgReq {
+public class UserSetDescReq {
     @ApiModelProperty(value = "组织名称", required = false)
     String name;
 
