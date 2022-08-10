@@ -74,7 +74,7 @@ public class MetaDataServiceImpl implements MetaDataService {
     }
 
 
-    @Transactional
+    @Transactional(rollbackFor = {Throwable.class})
     @Override
     public DataFile uploadFile(MultipartFile file, boolean hasTitle) {
         //### 1.解析源文件信息
@@ -100,7 +100,7 @@ public class MetaDataServiceImpl implements MetaDataService {
     }
 
 
-    @Transactional
+    @Transactional(rollbackFor = {Throwable.class})
     @Override
     public int addLocalMetaData(MetaData metaData) {
         Integer count = metaDataMapper.insert(metaData);

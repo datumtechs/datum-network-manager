@@ -10,6 +10,7 @@ import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.ApplyRecord;
 import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.dao.entity.AuthorityBusiness;
+import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.service.web3j.Web3jManager;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.methods.response.PlatonGetTransactionReceipt;
@@ -60,6 +61,7 @@ public class ApplyRecordStatusTask {
         if (OrgCache.identityIdNotFound()) {
             return;
         }
+        //1.如果本组织不是委员会成员，则无需关心该任务
         Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
         if (authority == null) {
             return;

@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
         return sysUserMapper.selectByAddress(address);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Throwable.class})
     @Override
     public SysUser createUser(String hexAddress) {
         SysUser user = new SysUser();
@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Throwable.class})
     @Override
     public void updateAdmin(SysUser oldAdmin, String newAddress) {
         SysUser user = new SysUser();

@@ -48,7 +48,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
         return dataTokenPage;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Throwable.class})
     @Override
     public Integer publish(DataToken dataToken) {
         //校验dataToken是否已存在并处于发布中状态
