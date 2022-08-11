@@ -1,9 +1,13 @@
 package com.platon.datum.admin.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
+import com.platon.datum.admin.common.exception.ValidateException;
 import com.platon.datum.admin.service.IpfsOpService;
 import com.platon.datum.admin.service.client.PinataClient;
+import com.platon.datum.admin.service.client.PinataGatewayClient;
 import com.platon.datum.admin.service.client.dto.PinataPinJSONToIPFSReq;
 import com.platon.datum.admin.service.client.dto.PinataPinResult;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +34,8 @@ public class PinataIpfsOpServiceImpl implements IpfsOpService {
 
     @Resource
     private PinataClient pinataClient;
+    @Resource
+    private PinataGatewayClient pinataGatewayClient;
 
     /**
      * 保存图片
@@ -42,7 +48,7 @@ public class PinataIpfsOpServiceImpl implements IpfsOpService {
         try {
             pinataPinResult = pinFileToIPFS(file);
         } catch (Exception exception) {
-            throw new BizException(Errors.UploadFileFailed,exception);
+            throw new BizException(Errors.UploadFileFailed, exception);
         }
         return getIpfsLink(pinataPinResult);
     }
@@ -58,9 +64,31 @@ public class PinataIpfsOpServiceImpl implements IpfsOpService {
         try {
             pinataPinResult = pinJSONToIPFS(content);
         } catch (Exception exception) {
-            throw new BizException(Errors.UploadFileFailed,exception);
+            throw new BizException(Errors.UploadFileFailed, exception);
         }
         return getIpfsLink(pinataPinResult);
+    }
+
+    /**
+     * @param url
+     * @return
+     */
+    @Override
+    public String queryJson(String url) {
+        if (StrUtil.isBlank(url)) {
+            throw new ValidateException("Url can't be blank");
+        }
+        if (!url.startsWith(prefix_ipfs)) {
+            throw new ValidateException("Url need to start with : " + prefix_ipfs);
+        }
+        String cid = StrUtil.removePrefix(url, prefix_ipfs);
+        Object json = null;
+        try {
+            json = pinataGatewayClient.getJsonFromIpfs(cid);
+        } catch (Throwable ex) {
+            throw new BizException(Errors.DownloadFailed,ex);
+        }
+        return JSONUtil.toJsonStr(json);
     }
 
     private String getIpfsLink(PinataPinResult pinataPinResult) {

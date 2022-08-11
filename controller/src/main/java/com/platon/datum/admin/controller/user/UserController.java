@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
+import com.platon.datum.admin.common.exception.OrgInfoNotFound;
 import com.platon.datum.admin.common.util.WalletSignUtil;
 import com.platon.datum.admin.constant.ControllerConstants;
 import com.platon.datum.admin.dao.cache.OrgCache;
@@ -266,7 +267,11 @@ public class UserController {
     @ApiOperation(value = "查询出当前组织信息")
     @GetMapping("/findLocalOrgInfo")
     public JsonResponse<Org> findLocalOrgInfo() {
-        Org org = OrgCache.getLocalOrgInfo();
-        return JsonResponse.success(org);
+        try {
+            Org org = OrgCache.getLocalOrgInfo();
+            return JsonResponse.success(org);
+        } catch (OrgInfoNotFound ex) {
+            return JsonResponse.fail(Errors.OrgInfoNotFound);
+        }
     }
 }

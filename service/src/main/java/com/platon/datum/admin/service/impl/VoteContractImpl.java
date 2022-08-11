@@ -34,6 +34,9 @@ import java.util.List;
 import java.util.Optional;
 
 
+/**
+ * @author liushuyu
+ */
 @Component
 public class VoteContractImpl implements VoteContract {
 

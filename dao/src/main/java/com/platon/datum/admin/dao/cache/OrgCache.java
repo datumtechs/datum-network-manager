@@ -2,6 +2,7 @@ package com.platon.datum.admin.dao.cache;
 
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
+import com.platon.datum.admin.common.exception.OrgInfoNotFound;
 import com.platon.datum.admin.dao.entity.Org;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,18 +16,18 @@ public class OrgCache {
 
     public static final String LOCAL_ORG = "local_org";
 
-    public static Org getLocalOrgInfo() throws BizException {
+    public static Org getLocalOrgInfo() throws OrgInfoNotFound, BizException {
         Org org = (Org) AppContext.get(LOCAL_ORG);
         if (org == null) {
-            throw new BizException(Errors.OrgInfoNotFound);
+            throw new OrgInfoNotFound();
         }
         return org;
     }
 
-    public static String getLocalOrgIdentityId() throws BizException {
+    public static String getLocalOrgIdentityId() throws OrgInfoNotFound, BizException {
         Org org = (Org) AppContext.get(LOCAL_ORG);
         if (org == null) {
-            throw new BizException(Errors.OrgInfoNotFound);
+            throw new OrgInfoNotFound();
         } else if (StringUtils.isBlank(org.getIdentityId())) {
             throw new BizException(Errors.IdentityIdMissing);
         }

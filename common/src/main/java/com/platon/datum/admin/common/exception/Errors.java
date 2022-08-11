@@ -88,6 +88,7 @@ public enum Errors {
     ApplyRecordIsRejected(1057, "Apply record is rejected!"),
     VcIsInvalid(1058, "Vc is invalid!"),
     UsedVcIsExist(1059, "Used vc is exist!"),
+    DownloadFailed(1060, "Download failed!"),
 
     // rpc调用时异常
     CallRpcError(2000, "Call node rpc exception"),

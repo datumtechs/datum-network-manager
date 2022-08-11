@@ -7,6 +7,7 @@ import com.ecwid.consul.v1.health.HealthServicesRequest;
 import com.ecwid.consul.v1.health.model.HealthService;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
+import com.platon.datum.admin.common.exception.OrgInfoNotFound;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.SysUserMapper;
 import com.platon.datum.admin.dao.entity.Org;
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
         //### 1.校验是否已存在组织信息
         Org org = orgService.select();
         if (org == null) {
-            throw new BizException(Errors.OrgInfoNotFound);
+            throw new OrgInfoNotFound();
         }
         Web3j web3j = web3jManager.getWeb3j();
         try {

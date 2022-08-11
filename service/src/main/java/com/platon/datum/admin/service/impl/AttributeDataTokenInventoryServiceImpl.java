@@ -12,6 +12,7 @@ import com.platon.datum.admin.dao.AttributeDataTokenMapper;
 import com.platon.datum.admin.dao.entity.AttributeDataToken;
 import com.platon.datum.admin.dao.entity.AttributeDataTokenInventory;
 import com.platon.datum.admin.service.AttributeDataTokenInventoryService;
+import com.platon.datum.admin.service.IpfsOpService;
 import com.platon.datum.admin.service.entity.TokenUriContent;
 import com.platon.datum.admin.service.evm.ERC721Template;
 import com.platon.datum.admin.service.web3j.Web3jManager;
@@ -47,6 +48,9 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
 
     @Resource
     private AttributeDataTokenMapper attributeDataTokenMapper;
+
+    @Resource
+    private IpfsOpService ipfsOpService;
 
     @Resource
     private Web3jManager web3jManager;
@@ -164,15 +168,13 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
         String name = null;
         String imageUrl = null;
         String desc = null;
-        if (JSONUtil.isJson(tokenURI)) {
-            TokenUriContent tokenUriContent = JSONUtil.toBean(tokenURI, TokenUriContent.class);
-            //获取name
+        TokenUriContent tokenUriContent = getTokenUriContent(tokenURI);
+        if (tokenUriContent == null) {
             name = tokenUriContent.getName();
-            //image_url
             imageUrl = tokenUriContent.getImage();
-            //desc
             desc = tokenUriContent.getDescription();
         }
+
         //value1是owner，value2是时间戳，value3是是否支持密文
         Tuple3<String, String, Boolean> extInfo = erc721Template.getExtInfo(tokenId).send();
         String owner = extInfo.getValue1();
@@ -191,6 +193,16 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
                 owner,
                 attributeDataToken.getMetaDataDbId());
         return inventory;
+    }
+
+    private TokenUriContent getTokenUriContent(String tokenURI) {
+        String jsonStr = ipfsOpService.queryJson(tokenURI);
+        if (JSONUtil.isJson(jsonStr)) {
+            TokenUriContent tokenUriContent = JSONUtil.toBean(jsonStr, TokenUriContent.class);
+            return tokenUriContent;
+        } else {
+            return null;
+        }
     }
 
     private BigInteger GAS_LIMIT = BigInteger.valueOf(4104830);
