@@ -7,7 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author juzix
@@ -29,6 +32,12 @@ public class AuthorityBusiness extends BaseDomain {
      */
     @ApiModelProperty("业务类型：1-申请认证，101-提名加入提案，102-提名踢出提案")
     private Integer type;
+
+    /**
+     * 关联的提案表和vc申请表ID
+     */
+    @ApiModelProperty("关联的提案表和vc申请表ID")
+    private String relationId;
 
     /**
      * 发起申请的组织
@@ -66,13 +75,29 @@ public class AuthorityBusiness extends BaseDomain {
         KICK_PROPOSAL(102, "提名踢出提案"),
         ;
 
-        TypeEnum(int status, String desc) {
-            this.status = status;
+        TypeEnum(int type, String desc) {
+            this.type = type;
             this.desc = desc;
         }
 
-        private int status;
+        private int type;
         private String desc;
+
+        private static Map<Integer, TypeEnum> map = new HashMap<>();
+
+        static {
+            for (TypeEnum value : TypeEnum.values()) {
+                map.put(value.getType(), value);
+            }
+        }
+
+        public static TypeEnum find(Integer value) {
+            return map.get(value);
+        }
+
+        public static TypeEnum find(BigInteger value) {
+            return find(value.intValue());
+        }
     }
 
     /**
@@ -93,5 +118,21 @@ public class AuthorityBusiness extends BaseDomain {
 
         private int status;
         private String desc;
+
+        private static Map<Integer, ProcessStatusEnum> map = new HashMap<>();
+
+        static {
+            for (ProcessStatusEnum value : ProcessStatusEnum.values()) {
+                map.put(value.getStatus(), value);
+            }
+        }
+
+        public static ProcessStatusEnum find(Integer value) {
+            return map.get(value);
+        }
+
+        public static ProcessStatusEnum find(BigInteger value) {
+            return find(value.intValue());
+        }
     }
 }

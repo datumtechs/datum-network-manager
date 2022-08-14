@@ -2,6 +2,7 @@ package com.platon.datum.admin.service;
 
 import com.github.pagehelper.Page;
 import com.platon.datum.admin.dao.entity.AuthorityBusiness;
+import com.platon.datum.admin.dao.entity.Business;
 
 /**
  * @Author liushuyu
@@ -14,9 +15,14 @@ public interface AuthorityBusinessService {
 
     Page<AuthorityBusiness> getTodoList(Integer pageNumber, Integer pageSize, String keyword);
 
-    AuthorityBusiness getDetail(int id);
+    Business getDetail(int id);
 
-    void processTodo(int id, int result, String remark);
+    /**
+     * @param id
+     * @param result {@link AuthorityBusiness.ProcessStatusEnum}
+     * @param remark
+     */
+    void processTodo(int id, AuthorityBusiness.ProcessStatusEnum result, String remark);
 
     Page<AuthorityBusiness> getDoneList(Integer pageNumber, Integer pageSize, String keyword);
 

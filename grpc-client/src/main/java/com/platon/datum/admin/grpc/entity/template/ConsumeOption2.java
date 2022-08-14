@@ -18,7 +18,7 @@ public class ConsumeOption2 {
 
     private String contract;
 
-    private Long cryptoAlgoConsumeUnit;
+    private String cryptoAlgoConsumeUnit;
 
-    private Long plainAlgoConsumeUnit;
+    private String plainAlgoConsumeUnit;
 }

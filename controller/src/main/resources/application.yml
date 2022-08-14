@@ -117,6 +117,7 @@ logging:
 ApplyRecordStatusTask.fixedDelay: 5000
 AttributeDataTokenInventoryRefreshTask.fixedDelay: 5000
 AttributeDataTokenStatusRefreshTask.fixedDelay: 5000
+AuthorityBusinessProcessStatusTask.fixedDelay: 20000
 AuthorityRefreshTask.fixedDelay: 5000
 CarrierStatusRefreshTask.fixedDelay: 20000
 DataAuthReqRefreshTask.fixedDelay: 5000
@@ -125,6 +126,7 @@ DataTokenStatusRefreshTask.fixedDelay: 5000
 GlobalOrgRefreshTask.fixedDelay: 20000
 MetaDataStatusRefreshTask.fixedDelay: 5000
 PowerNodeRefreshTask.fixedDelay: 20000
+ProposalRefreshTask.fixedDelay: 20000
 SeedNodeRefreshTask.fixedDelay: 20000
 TaskRefreshTask.fixedDelay: 5000
 
@@ -154,26 +156,3 @@ grpc:
     #允许客户端在同一应用程序内使用以下配置连接到服务器
     inProcess:
       address: in-process:datum-admin-server
-
-# ==================================== conf for chain =====================================
-#platon:
-#  web3j:
-#    protocol: http
-#    url: 35.247.155.162:6789
-#    gasPrice: 10000000000
-#    gasLimit: 4700000
-#    chainHrp: lat
-#    chainId: 210309
-#    contractPrivateKey: 68efa6466edaed4918f0b6c3b1b9667d37cad591482d672e8abcb4c5d1720f89
-#    adminAddress: lat1d7zjh2vx8xsqrgc4qe0v4usxn368naxvlpu70r
-#    adminServiceUrl: https://github.com/
-#
-#contract:
-#  vote:
-#    address: lat1pgpne286589mrpx3j6n35zaw6akwfy7txheey9
-#  did:
-#    address: lat1l4ne2lmpl8x84pw6wet76z65kzjcvu3rsdhzj7
-#  pct:
-#    address: lat16ncqgyy7mqyhew6xm0fzxdqfdkehkh8xhgq3wc
-#  credential:
-#    address: lat1a8k45et75dr5l5hne3qwjw35wzny8eswn4jzp5

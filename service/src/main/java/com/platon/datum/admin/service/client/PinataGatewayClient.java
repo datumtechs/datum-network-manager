@@ -2,9 +2,8 @@ package com.platon.datum.admin.service.client;
 
 import com.platon.datum.admin.service.client.config.FeignClientConfig;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Author liushuyu
@@ -19,6 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
         configuration = FeignClientConfig.class)
 public interface PinataGatewayClient {
 
-    @PostMapping(value = "/ipfs/{CID}",produces = "application/json")
+    @GetMapping(value = "/ipfs/{CID}", produces = "application/json")
     Object getJsonFromIpfs(@PathVariable("CID") String cid);
 }

@@ -3,9 +3,8 @@ package com.platon.datum.admin.grpc.client;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.google.protobuf.ByteString;
-import com.platon.datum.admin.common.exception.BizException;
+import com.platon.datum.admin.common.exception.ArgumentException;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
-import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.AttributeDataTokenMapper;
 import com.platon.datum.admin.dao.DataFileMapper;
@@ -247,7 +246,7 @@ public class MetaDataClient {
             case OrigindataType_XLSX:
             case OrigindataType_BINARY:
             case OrigindataType_Unknown:
-                throw new BizException(Errors.SysException, "Unsupported dataType:" + origindataType);
+                throw new ArgumentException("Unsupported dataType:" + origindataType);
         }
         return metaDataOption;
     }
@@ -279,7 +278,7 @@ public class MetaDataClient {
                 metaDataOption1.setCondition(3);
                 break;
             default:
-                throw new BizException(Errors.SysException, "Unknown usage:" + usage);
+                throw new ArgumentException("Unknown usage:" + usage);
         }
         return metaDataOption1;
     }
@@ -316,8 +315,8 @@ public class MetaDataClient {
             consumeTypes.add(2);
             ConsumeOption2 consumeOption2 = new ConsumeOption2();
             consumeOption2.setContract(dataToken.getAddress());
-            consumeOption2.setCryptoAlgoConsumeUnit(Long.valueOf(dataToken.getNewCiphertextFee()));
-            consumeOption2.setPlainAlgoConsumeUnit(Long.valueOf(dataToken.getNewPlaintextFee()));
+            consumeOption2.setCryptoAlgoConsumeUnit(dataToken.getNewCiphertextFee());
+            consumeOption2.setPlainAlgoConsumeUnit(dataToken.getNewPlaintextFee());
 
             //支持多个erc20，v0.5.0暂时只支持一个
             List<ConsumeOption2> optionList = new ArrayList<>();
@@ -349,7 +348,7 @@ public class MetaDataClient {
                 processDataType1(metadataOption, metaData, dataToken);
                 break;
             default:
-                throw new BizException(Errors.SysException, "Unknown dataTypeValue: " + dataTypeValue);
+                throw new ArgumentException("Unknown dataTypeValue: " + dataTypeValue);
         }
     }
 
@@ -383,7 +382,7 @@ public class MetaDataClient {
                     }
                     break;
                 default:
-                    throw new BizException(Errors.SysException, "Unsupported consumeType:" + type);
+                    throw new ArgumentException("Unsupported consumeType:" + type);
             }
         }
     }

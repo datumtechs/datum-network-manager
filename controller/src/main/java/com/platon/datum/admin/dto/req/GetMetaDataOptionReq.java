@@ -21,7 +21,9 @@ import javax.validation.constraints.NotNull;
 @ApiModel
 public class GetMetaDataOptionReq {
 
-    //元数据Id
+    /**
+     * 元数据Id
+     */
     @NotNull(message = "元数据ID不能为空")
     @ApiModelProperty(value = "元数据ID(DB自增)", required = true)
     private Integer id;

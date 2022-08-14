@@ -20,16 +20,10 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @ApiModel
-public class ApplyRecord extends BaseDomain {
+public class ApplyRecord extends BaseDomain implements Business{
 
     @ApiModelProperty("id")
     private Integer id;
-
-    /**
-     * 事务ID
-     */
-    @ApiModelProperty("委员会事务ID")
-    private Integer authorityBusinessId;
 
     /**
      * 证书模板pctId

@@ -107,7 +107,7 @@ public class AttributeDataTokenStatusRefreshTask {
             int transactionNonce = web3j.platonGetTransactionByHash(hash).send().getResult().getNonce().intValue();
             log.debug("isOK:{},hexFrom:{},transactionNonce:{}", isOK, hexFrom, transactionNonce);
             //凭证发布成功
-            if (isOK && address.equals(hexFrom) && transactionNonce == nonce) {
+            if (isOK && address.equalsIgnoreCase(hexFrom) && transactionNonce == nonce) {
                 status = AttributeDataToken.StatusEnum.PUBLISH_SUCCESS.getStatus();
                 //发布成功，获取token地址
                 String dataTokenAddress = getTokenAddress(transactionReceipt);
@@ -139,7 +139,7 @@ public class AttributeDataTokenStatusRefreshTask {
         String eventSign = EventEncoder.encode(nftContractCreated);
         for (int i = 0; i < transactionReceipt.getLogs().size(); i++) {
             Log logs = transactionReceipt.getLogs().get(i);
-            if (AddressChangeUtil.convert0xAddress(logs.getAddress()).equals(dataTokenFactory.toLowerCase())) {
+            if (AddressChangeUtil.convert0xAddress(logs.getAddress()).equalsIgnoreCase(dataTokenFactory)) {
                 List<String> topics = logs.getTopics();
                 //事件方法签名等于NFTContractCreated(
                 //        address indexed newTokenAddress,

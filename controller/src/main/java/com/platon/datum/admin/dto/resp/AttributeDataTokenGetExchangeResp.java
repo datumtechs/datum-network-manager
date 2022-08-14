@@ -2,6 +2,7 @@ package com.platon.datum.admin.dto.resp;
 
 import com.platon.datum.admin.dao.entity.AttributeDataToken;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,7 +26,23 @@ public class AttributeDataTokenGetExchangeResp {
 
 
     /**
-     * 合约工厂地址
+     * 交易所地址
      */
-    private List<Pair<String,String>> exchangeList = new ArrayList<>();
+    private List<Exchange> exchangeList = new ArrayList<>();
+
+    @Getter
+    @Setter
+    @ToString
+    @ApiModel
+    public static class Exchange {
+
+        @ApiModelProperty("名称")
+        private String name;
+
+        @ApiModelProperty("地址")
+        private String url;
+
+        @ApiModelProperty("显示的图片")
+        private String imageUrl;
+    }
 }

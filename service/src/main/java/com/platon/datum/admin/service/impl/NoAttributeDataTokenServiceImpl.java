@@ -89,7 +89,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
             throw new BizException(Errors.QueryRecordNotExist, "Data token not exist!");
         }
 
-        if (!dataToken.getOwner().equals(currentUserAddress)) {
+        if (!dataToken.getOwner().equalsIgnoreCase(currentUserAddress)) {
             throw new BizException(Errors.SysException, "You are not owner!");
         }
         dataTokenMapper.updateStatusByCurrentUser(dataTokenId, DataToken.StatusEnum.PRICE_SUCCESS.getStatus());
@@ -108,7 +108,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
             throw new BizException(Errors.QueryRecordNotExist, "Data token not exist!");
         }
 
-        if (!dataToken.getOwner().equals(currentUserAddress)) {
+        if (!dataToken.getOwner().equalsIgnoreCase(currentUserAddress)) {
             throw new BizException(Errors.SysException, "You are not owner!");
         }
 
@@ -125,7 +125,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
                 || dataToken.getStatus() == DataToken.StatusEnum.PRICE_FAIL.getStatus()) {
             //24小时之内只能改一次
             if (dataToken.getFeeUpdateTime().plusMinutes(updateTimeInterval).isAfter(LocalDateTimeUtil.now())) {
-                throw new BizException(Errors.SysException, "The update time is less than 24 hours!");
+                throw new BizException(Errors.TimeLessThan24H, "The update time is less than 24 hours!");
             }
             MetaData metaData = metaDataMapper.selectById(dataToken.getMetaDataDbId());
             metaData.setSign(sign);
@@ -145,7 +145,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
             throw new BizException(Errors.SysException, "Data token not exist!");
         }
 
-        if (!dataToken.getOwner().equals(currentUserAddress)) {
+        if (!dataToken.getOwner().equalsIgnoreCase(currentUserAddress)) {
             throw new BizException(Errors.SysException, "You are not owner!");
         }
 

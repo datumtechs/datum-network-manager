@@ -203,7 +203,7 @@
         select md.*
         from meta_data md
                  left join data_token dt on md.id = dt.meta_data_db_id
-        where (md.status = 2 or dt.status = 2)
+        where md.status = 2 and dt.status = 2
           and md.`user` = #{userAddress}
         <if test="keyword != null and keyword != ''">
             and md.meta_data_name like concat('%'
@@ -217,7 +217,7 @@
         select md.*
         from meta_data md
                  left join attribute_data_token adt on md.id = adt.meta_data_db_id
-        where (md.status = 2 or adt.status = 2)
+        where md.status = 2 and adt.status = 2
           and md.`user` = #{userAddress}
         <if test="keyword != null and keyword != ''">
             and md.meta_data_name like concat('%'

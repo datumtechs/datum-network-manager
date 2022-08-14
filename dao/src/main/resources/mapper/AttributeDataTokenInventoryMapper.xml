@@ -12,22 +12,23 @@
         <result column="end_time" jdbcType="VARCHAR" property="endTime"/>
         <result column="usage" jdbcType="INTEGER" property="usage"/>
         <result column="owner" jdbcType="VARCHAR" property="owner"/>
-        <result column="meta_data_db_id" jdbcType="INTEGER" property="metaDataDbId"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         data_token_address, token_id, `name`, image_url, `desc`, end_time,
-        `usage`,`owner`,meta_data_db_id
+        `usage`,`owner`
     </sql>
 
     <resultMap id="BaseResultMap_With_MetaDataInfo" type="com.platon.datum.admin.dao.entity.AttributeDataTokenInventory"
                extends="BaseResultMap">
+        <result column="data_token_name" property="dynamicFields.dataTokenName" jdbcType="VARCHAR"/>
         <result column="meta_data_id" property="dynamicFields.metaDataId" jdbcType="VARCHAR"/>
         <result column="meta_data_name" property="dynamicFields.metaDataName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectByDataTokenAddressAndKeyword" resultMap="BaseResultMap_With_MetaDataInfo">
         select adti.*,
+               adt.name as data_token_name,
                md.meta_data_id   as meta_data_id,
                md.meta_data_name as meta_data_name
         from (select
@@ -40,11 +41,13 @@
             </if>
         </where>
         order by token_id desc) adti
-            left join meta_data md on adti.`meta_data_db_id` = md.`id`
+        left join attribute_data_token adt on adt.address = adti.data_token_address
+        left join meta_data md on adt.`meta_data_db_id` = md.`id`
     </select>
 
     <select id="selectByDataTokenAddressAndTokenId" resultMap="BaseResultMap_With_MetaDataInfo">
         select adti.*,
+               adt.name as data_token_name,
                md.meta_data_id   as meta_data_id,
                md.meta_data_name as meta_data_name
         from (select
@@ -54,7 +57,8 @@
             data_token_address = #{dataTokenAddress}
               and token_id = #{tokenId}
         </where>) adti
-                    left join meta_data md on adti.`meta_data_db_id` = md.`id`
+        left join attribute_data_token adt on adt.address = adti.data_token_address
+        left join meta_data md on adt.`meta_data_db_id` = md.`id`
     </select>
 
     <select id="selectMaxTokenId" resultMap="BaseResultMap">

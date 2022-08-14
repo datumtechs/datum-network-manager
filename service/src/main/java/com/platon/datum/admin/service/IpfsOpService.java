@@ -25,5 +25,5 @@ public interface IpfsOpService {
      */
     String saveJson(Object content);
 
-    String queryJson(String url);
+    <T> T queryJson(String url, Class<T> tClass);
 }

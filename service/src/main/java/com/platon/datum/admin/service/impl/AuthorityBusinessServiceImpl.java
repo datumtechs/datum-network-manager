@@ -10,9 +10,13 @@ import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.AuthorityBusinessMapper;
 import com.platon.datum.admin.dao.entity.ApplyRecord;
 import com.platon.datum.admin.dao.entity.AuthorityBusiness;
+import com.platon.datum.admin.dao.entity.AuthorityBusiness.TypeEnum;
+import com.platon.datum.admin.dao.entity.Business;
+import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.grpc.carrier.api.DidRpcApi;
 import com.platon.datum.admin.grpc.client.DidClient;
 import com.platon.datum.admin.service.AuthorityBusinessService;
+import com.platon.datum.admin.service.ProposalService;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +36,8 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
     private AuthorityBusinessMapper authorityBusinessMapper;
     @Resource
     private ApplyRecordMapper applyRecordMapper;
+    @Resource
+    private ProposalService proposalService;
     @Resource
     private DidClient didClient;
 
@@ -54,6 +60,13 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
     public Page<AuthorityBusiness> getTodoList(Integer pageNumber, Integer pageSize, String keyword) {
         Page<AuthorityBusiness> authorityBusinesses = PageHelper.startPage(pageNumber, pageSize);
         authorityBusinessMapper.selectTodoList(keyword);
+        authorityBusinesses.forEach(authorityBusiness -> {
+            if (authorityBusiness.getType() != TypeEnum.APPLY_VC.getType()) {
+                //查询提案状态
+                Proposal proposalDetail = proposalService.getProposalDetail(authorityBusiness.getRelationId());
+                authorityBusiness.getDynamicFields().put("proposalStatus", proposalDetail.getStatus());
+            }
+        });
         return authorityBusinesses;
     }
 
@@ -61,8 +74,20 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
      * @param id
      */
     @Override
-    public AuthorityBusiness getDetail(int id) {
-        return authorityBusinessMapper.selectById(id);
+    public Business getDetail(int id) {
+        AuthorityBusiness authorityBusiness = authorityBusinessMapper.selectById(id);
+        if (authorityBusiness == null) {
+            throw new BizException(Errors.QueryRecordNotExist, "Authority business record not exist");
+        }
+
+        Business business = null;
+        String relationId = authorityBusiness.getRelationId();
+        if (authorityBusiness.getType() == TypeEnum.APPLY_VC.getType()) {
+            business = applyRecordMapper.selectById(Integer.parseInt(relationId));
+        } else {
+            business = proposalService.getProposalDetail(relationId);
+        }
+        return business;
     }
 
     /**
@@ -70,31 +95,34 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
      * @param result
      */
     @Override
-    public void processTodo(int id, int result, String remark) {
+    public void processTodo(int id, AuthorityBusiness.ProcessStatusEnum result, String remark) {
         AuthorityBusiness authorityBusiness = authorityBusinessMapper.selectById(id);
         if (authorityBusiness == null) {
             throw new BizException(Errors.QueryRecordNotExist, "Authority business record not exist");
         }
-        Integer type = authorityBusiness.getType();
+        TypeEnum type = TypeEnum.find(authorityBusiness.getType());
+        String relationId = authorityBusiness.getRelationId();
         switch (type) {
-            case 1://签发证书
-                ApplyRecord applyRecord = applyRecordMapper.selectByAuthorityBusinessId(id);
-                processVc(applyRecord, result, remark);
+            case APPLY_VC://签发证书
+                ApplyRecord applyRecord = applyRecordMapper.selectById(Integer.parseInt(relationId));
+                processVc(id, applyRecord, result.getStatus(), remark);
                 //1.调用调度服务处理
                 break;
-            case 101://默认为提案
+            case JOIN_PROPOSAL://默认为提案
                 //1.调用调度服务处理
-                break;
-            case 102:
+            case KICK_PROPOSAL:
+                if (result == AuthorityBusiness.ProcessStatusEnum.AGREE) {
+                    proposalService.vote(relationId);
+                }
                 break;
             default:
                 throw new ValidateException("Unsupported business type:" + type);
         }
         //修改business表状态为处理完
-        authorityBusinessMapper.updateProcessStatusById(id, result);
+        authorityBusinessMapper.updateProcessStatusById(id, result.getStatus());
     }
 
-    private void processVc(ApplyRecord applyRecord, int result, String remark) {
+    private void processVc(int id, ApplyRecord applyRecord, int result, String remark) {
         applyRecord.setApproveRemark(remark);
         applyRecord.setEndTime(LocalDateTimeUtil.now());
         int processStatus = AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus();
@@ -115,7 +143,7 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
         if (count <= 0) {
             throw new BizException(Errors.UpdateSqlFailed, "Update apply record failed");
         }
-        count = authorityBusinessMapper.updateProcessStatusById(applyRecord.getAuthorityBusinessId(), processStatus);
+        count = authorityBusinessMapper.updateProcessStatusById(id, processStatus);
         if (count <= 0) {
             throw new BizException(Errors.UpdateSqlFailed, "Update authority business failed");
         }

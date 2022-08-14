@@ -101,7 +101,7 @@ public class DataTokenStatusRefreshTask {
             //交易的nonce
             int transactionNonce = web3j.platonGetTransactionByHash(hash).send().getResult().getNonce().intValue();
             log.debug("isOK:{},hexFrom:{},transactionNonce:{}", isOK, hexFrom, transactionNonce);
-            if (isOK && address.equals(hexFrom) && transactionNonce == nonce) {//凭证发布成功
+            if (isOK && address.equalsIgnoreCase(hexFrom) && transactionNonce == nonce) {//凭证发布成功
                 status = DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus();
                 //发布成功，获取token地址
                 String dataTokenAddress = getTokenAddress(transactionReceipt);
@@ -129,7 +129,7 @@ public class DataTokenStatusRefreshTask {
         String eventSign = EventEncoder.encode(tokenCreatedEvent);
         for (int i = 0; i < transactionReceipt.getLogs().size(); i++) {
             Log logs = transactionReceipt.getLogs().get(i);
-            if (AddressChangeUtil.convert0xAddress(logs.getAddress()).equals(dataTokenFactory.toLowerCase())) {
+            if (AddressChangeUtil.convert0xAddress(logs.getAddress()).equalsIgnoreCase(dataTokenFactory)) {
                 List<String> topics = logs.getTopics();
                 //事件方法签名等于TokenCreated(token, tokenTemplate, name)
                 String eventSign1 = topics.get(0);
@@ -177,7 +177,7 @@ public class DataTokenStatusRefreshTask {
                     //交易的nonce
                     int transactionNonce = web3j.platonGetTransactionByHash(hash).send().getResult().getNonce().intValue();
                     log.debug("isOK:{},hexFrom:{},transactionNonce:{}", isOK, hexFrom, transactionNonce);
-                    if (isOK && address.equals(hexFrom) && transactionNonce == nonce) {//凭证定价成功
+                    if (isOK && address.equalsIgnoreCase(hexFrom) && transactionNonce == nonce) {//凭证定价成功
                         status = DataToken.StatusEnum.PRICE_SUCCESS.getStatus();
                     } else {
                         status = DataToken.StatusEnum.PRICE_FAIL.getStatus();

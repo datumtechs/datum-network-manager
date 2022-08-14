@@ -98,7 +98,7 @@ public class NoAttributeDataTokenController extends BaseController {
     public JsonResponse<Integer> publish(@RequestBody @Validated NoAttributeDataTokenPublishReq req, HttpSession session) {
         String address = getCurrentUserAddress(session);
         String owner = req.getOwner();
-        if (!address.equals(owner)) {
+        if (!address.equalsIgnoreCase(owner)) {
             throw new BizException(Errors.SysException, "Current user is not owner!");
         }
         DataToken dataToken = new DataToken();

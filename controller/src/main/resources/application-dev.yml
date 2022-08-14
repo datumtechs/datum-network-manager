@@ -41,9 +41,3 @@ dataToken-updateFee-interval: 5
 grpc:
   server:
     port: 9091
-    in-process-name: datum-admin-server
-    max-inbound-message-size: 1073741824
-  client:
-    #允许客户端在同一应用程序内使用以下配置连接到服务器
-    inProcess:
-      address: in-process:datum-admin-server

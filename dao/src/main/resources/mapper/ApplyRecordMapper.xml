@@ -5,7 +5,6 @@
         <!--@mbg.generated-->
         <!--@Table apply_record-->
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="authority_business_id" jdbcType="INTEGER" property="authorityBusinessId"/>
         <result column="pct_id" jdbcType="TINYINT" property="pctId"/>
         <result column="apply_org" jdbcType="VARCHAR" property="applyOrg"/>
         <result column="approve_org" jdbcType="VARCHAR" property="approveOrg"/>
@@ -27,7 +26,7 @@
 
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, authority_business_id, pct_id, apply_org, approve_org, start_time,end_time,
+        id, pct_id, apply_org, approve_org, start_time,end_time,
         progress, apply_remark, approve_remark, material, material_desc,vc,expiration_date,
         `status`,`context`,claim,used,tx_hash
     </sql>
@@ -44,9 +43,6 @@
         <!--@mbg.generated-->
         insert into apply_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="authorityBusinessId != null">
-                authority_business_id,
-            </if>
             <if test="pctId != null">
                 pct_id,
             </if>
@@ -97,9 +93,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="authorityBusinessId != null">
-                #{authorityBusinessId,jdbcType=INTEGER},
-            </if>
             <if test="pctId != null">
                 #{pctId,jdbcType=TINYINT},
             </if>
@@ -155,9 +148,6 @@
         <!--@mbg.generated-->
         update apply_record
         <set>
-            <if test="authorityBusinessId != null">
-                authority_business_id = #{authorityBusinessId,jdbcType=INTEGER},
-            </if>
             <if test="pctId != null">
                 pct_id = #{pctId,jdbcType=TINYINT},
             </if>
@@ -276,13 +266,6 @@
         from apply_record
         where approve_org = #{approveOrg}
           and status = 2
-    </select>
-
-    <select id="selectByAuthorityBusinessId" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from apply_record
-        where authority_business_id = #{authorityBusinessId}
     </select>
 
     <update id="removeUsed">

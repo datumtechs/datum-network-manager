@@ -20,7 +20,7 @@ import com.platon.datum.admin.service.entity.TokenUriContent;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,6 +53,8 @@ public class AttributeDataTokenController extends BaseController {
     private SysConfigService sysConfigService;
     @Resource
     private IpfsOpService ipfsOpService;
+    @Value("${pinata-gateway}")
+    private String pinataGateway;
 
     @ApiOperation(value = "获取发布凭证需要的配置")
     @PostMapping("/getPublishConfig")
@@ -75,7 +77,7 @@ public class AttributeDataTokenController extends BaseController {
     public JsonResponse<Integer> publish(@RequestBody @Validated AttributeDataTokenPublishReq req, HttpSession session) {
         String currentUserAddress = getCurrentUserAddress(session);
         String owner = req.getOwner();
-        if (!currentUserAddress.equals(owner)) {
+        if (!currentUserAddress.equalsIgnoreCase(owner)) {
             throw new BizException(Errors.SysException, "Current user is not owner!");
         }
         AttributeDataToken dataToken = new AttributeDataToken();
@@ -142,14 +144,14 @@ public class AttributeDataTokenController extends BaseController {
             throw new BizException(Errors.QueryRecordNotExist, "Exchange miss config!");
         }
         String value = config.getValue();
-        List<Pair<String, String>> exchangeList = getExchangeList(value);
+        List<AttributeDataTokenGetExchangeResp.Exchange> exchangeList = getExchangeList(value);
         AttributeDataTokenGetExchangeResp resp = new AttributeDataTokenGetExchangeResp();
         resp.setExchangeList(exchangeList);
         return JsonResponse.success(resp);
     }
 
-    private List<Pair<String, String>> getExchangeList(String value) {
-        List<Pair<String, String>> exchangeList = new ArrayList<>();
+    private List<AttributeDataTokenGetExchangeResp.Exchange> getExchangeList(String value) {
+        List<AttributeDataTokenGetExchangeResp.Exchange> exchangeList = new ArrayList<>();
         try {
             value = value.replace("<", "").replace(">", "");
             String[] exchangeArray = value.split(",");
@@ -157,7 +159,10 @@ public class AttributeDataTokenController extends BaseController {
                 String[] exchange = exchangeArray[i].split("|");
                 String name = exchange[0];
                 String url = exchange[1];
-                exchangeList.add(Pair.of(name, url));
+                AttributeDataTokenGetExchangeResp.Exchange exchange1 = new AttributeDataTokenGetExchangeResp.Exchange();
+                exchange1.setName(name);
+                exchange1.setUrl(url);
+                exchangeList.add(exchange1);
             }
         } catch (Throwable ex) {
             log.error("Parsing exchange config error", ex);
@@ -227,6 +232,7 @@ public class AttributeDataTokenController extends BaseController {
         AttributeDataTokenInventory inventory = attributeDataTokenInventoryService.getInventoryByDataTokenAddressAndTokenId(
                 req.getDataTokenAddress(),
                 req.getTokenId());
+        inventory.getDynamicFields().put("pinataGateway", pinataGateway);
         return JsonResponse.success(inventory);
     }
 

@@ -8,7 +8,10 @@ import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.AddressChangeUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.entity.Authority;
+import com.platon.datum.admin.dao.entity.SysConfig;
+import com.platon.datum.admin.service.SysConfigService;
 import com.platon.datum.admin.service.VoteContract;
+import com.platon.datum.admin.service.entity.VoteConfig;
 import com.platon.datum.admin.service.evm.Vote;
 import com.platon.datum.admin.service.function.ExceptionFunction;
 import com.platon.datum.admin.service.web3j.Web3jManager;
@@ -42,7 +45,11 @@ public class VoteContractImpl implements VoteContract {
 
     @Resource
     private Web3jManager web3jManager;
-//    private VoteConfigDto voteConfigDto;
+    private VoteConfig voteConfig;
+    @Resource
+    private SysConfigService sysConfigService;
+
+    private String voteAddress;
 
     public final static String newProposalSignature = EventEncoder.encode(Vote.NEWPROPOSAL_EVENT);
     public final static String proposalResultSignature = EventEncoder.encode(Vote.PROPOSALRESULT_EVENT);
@@ -53,23 +60,28 @@ public class VoteContractImpl implements VoteContract {
 
     @Override
     public void init() {
-        BigInteger rangeBeginVote = query(contract -> contract.getInterval(BigInteger.valueOf(1)), "platONProperties.getVoteAddress()", Optional.empty());
-        BigInteger rangeVote = query(contract -> contract.getInterval(BigInteger.valueOf(2)), "platONProperties.getVoteAddress()", Optional.empty());
-        BigInteger rangeQuit = query(contract -> contract.getInterval(BigInteger.valueOf(4)), "platONProperties.getVoteAddress()", Optional.empty());
-//        voteConfigDto = new VoteConfigDto();
-//        voteConfigDto.setBeginVote(rangeBeginVote);
-//        voteConfigDto.setVote(rangeVote);
-//        voteConfigDto.setQuit(rangeQuit);
+        SysConfig voteAddressConfig = sysConfigService.getConfig(SysConfig.KeyEnum.VOTE_CONTRACT_ADDRESS.getKey());
+        if (voteAddressConfig == null) {
+            throw new BizException(Errors.QueryRecordNotExist, "You need configure a vote address");
+        }
+        voteAddress = voteAddressConfig.getValue();
+        BigInteger rangeBeginVote = query(contract -> contract.getInterval(BigInteger.valueOf(1)), voteAddress, Optional.empty());
+        BigInteger rangeVote = query(contract -> contract.getInterval(BigInteger.valueOf(2)), voteAddress, Optional.empty());
+        BigInteger rangeQuit = query(contract -> contract.getInterval(BigInteger.valueOf(4)), voteAddress, Optional.empty());
+        voteConfig = new VoteConfig();
+        voteConfig.setBeginVote(rangeBeginVote);
+        voteConfig.setVote(rangeVote);
+        voteConfig.setQuit(rangeQuit);
     }
 
-//    @Override
-//    public VoteConfigDto getConfig() {
-//        return voteConfigDto;
-//    }
+    @Override
+    public VoteConfig getConfig() {
+        return voteConfig;
+    }
 
     @Override
     public List<Authority> getAllAuthority() {
-        Tuple3<List<String>, List<String>, List<BigInteger>> result = query(contract -> contract.getAllAuthority(), "platONProperties.getVoteAddress()", Optional.empty());
+        Tuple3<List<String>, List<String>, List<BigInteger>> result = query(contract -> contract.getAllAuthority(), voteAddress, Optional.empty());
         List<Authority> resultList = new ArrayList<>();
         for (int i = 0; i < result.getValue1().size(); i++) {
             Authority authorityDto = new Authority();
@@ -83,7 +95,7 @@ public class VoteContractImpl implements VoteContract {
 
     @Override
     public Observable<Optional<Tuple2<Log, Object>>> subscribe(BigInteger beginBN) {
-        PlatonFilter filter = new PlatonFilter(DefaultBlockParameter.valueOf(beginBN), DefaultBlockParameterName.LATEST, "platONProperties.getVoteAddress()");
+        PlatonFilter filter = new PlatonFilter(DefaultBlockParameter.valueOf(beginBN), DefaultBlockParameterName.LATEST, voteAddress);
         filter.addOptionalTopics(newProposalSignature, proposalResultSignature, voteProposalSignature, withdrawProposalSignature, authorityAddSignature, authorityDeleteSignature);
         return web3jManager.getWeb3j().platonLogObservable(filter).map(log -> {
             List<String> topics = log.getTopics();
@@ -141,7 +153,7 @@ public class VoteContractImpl implements VoteContract {
 
     @Override
     public Integer sizeOfAllAuthority(BigInteger bigInteger) {
-        Tuple3<List<String>, List<String>, List<BigInteger>> result = query(contract -> contract.getAllAuthority(), "platONProperties.getVoteAddress()", Optional.of(bigInteger));
+        Tuple3<List<String>, List<String>, List<BigInteger>> result = query(contract -> contract.getAllAuthority(), voteAddress, Optional.of(bigInteger));
         return result.getValue1().size();
     }
 

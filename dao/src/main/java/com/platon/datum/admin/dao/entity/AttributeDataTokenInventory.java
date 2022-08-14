@@ -68,9 +68,4 @@ public class AttributeDataTokenInventory extends BaseDomain {
      */
     @ApiModelProperty("该库存的owner")
     private String owner;
-
-    /**
-     * 元数据列表id
-     */
-    private Integer metaDataDbId;
 }

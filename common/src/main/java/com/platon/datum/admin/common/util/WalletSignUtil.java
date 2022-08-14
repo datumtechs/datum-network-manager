@@ -59,7 +59,7 @@ public class WalletSignUtil {
             return false;
         }
         String tmpAddress = Keys.getAddress(bigInteger);
-        return Numeric.cleanHexPrefix(address).equals(Numeric.cleanHexPrefix(tmpAddress));
+        return Numeric.cleanHexPrefix(address).equalsIgnoreCase(Numeric.cleanHexPrefix(tmpAddress));
     }
 
     /**

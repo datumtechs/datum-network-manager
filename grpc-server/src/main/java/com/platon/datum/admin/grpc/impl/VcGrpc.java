@@ -75,18 +75,16 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
 
             //将请求转换成ApplyRecord对象
             ApplyRecord record = getApplyRecord(request);
-
-            //新增一条委员会待处理的事务
-            AuthorityBusiness authorityBusiness = getAuthorrityBusiness(record);
-            authorityBusinessMapper.insertSelectiveReturnId(authorityBusiness);
-            if (authorityBusiness.getId() <= 0) {
-                throw new BizException(Errors.InsertSqlFailed, "Create authority business failed");
-            }
             //新增一条申请VC的记录
-            record.setAuthorityBusinessId(authorityBusiness.getId());
             int count = applyRecordMapper.insertSelective(record);
             if (count <= 0) {
                 throw new BizException(Errors.InsertSqlFailed, "Create apply record failed");
+            }
+            //新增一条委员会待处理的事务
+            AuthorityBusiness authorityBusiness = getAuthorityBusiness(record);
+            authorityBusinessMapper.insertSelectiveReturnId(authorityBusiness);
+            if (authorityBusiness.getId() <= 0) {
+                throw new BizException(Errors.InsertSqlFailed, "Create authority business failed");
             }
         } catch (BizException exception) {
             status = 1;
@@ -107,9 +105,10 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
         responseObserver.onCompleted();
     }
 
-    private AuthorityBusiness getAuthorrityBusiness(ApplyRecord record) {
+    private AuthorityBusiness getAuthorityBusiness(ApplyRecord record) {
         AuthorityBusiness authorityBusiness = new AuthorityBusiness();
-        authorityBusiness.setType(AuthorityBusiness.TypeEnum.APPLY_VC.getStatus());
+        authorityBusiness.setType(AuthorityBusiness.TypeEnum.APPLY_VC.getType());
+        authorityBusiness.setRelationId(record.getId().toString());
         authorityBusiness.setApplyOrg(record.getApplyOrg());
         authorityBusiness.setSpecifyOrg(record.getApproveOrg());
         authorityBusiness.setStartTime(LocalDateTimeUtil.now());

@@ -32,6 +32,13 @@ public interface AuthorityBusinessMapper {
     List<AuthorityBusiness> selectTodoList(@Param("keyword") String keyword);
 
     /**
+     * 查询待处理的提案
+     *
+     * @return
+     */
+    List<AuthorityBusiness> selectProposalTodoList();
+
+    /**
      * 查询我待办的事务总数
      */
     int selectTodoCount();
@@ -44,5 +51,9 @@ public interface AuthorityBusinessMapper {
     List<AuthorityBusiness> selectDoneList(@Param("keyword") String keyword);
 
     int updateProcessStatusById(@Param("id") int id, @Param("status") int status);
+
+    AuthorityBusiness selectByTypeAndRelationId(@Param("type") int type, @Param("relationId") String relationId);
+
+    int updateStatusByTypeAndRelationId(@Param("type") int type, @Param("relationId") String relationId, @Param("status") int status);
 
 }

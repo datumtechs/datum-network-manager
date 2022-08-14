@@ -1,6 +1,5 @@
 package com.platon.datum.admin.service.impl;
 
-import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.crypto.Credentials;
@@ -168,8 +167,8 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
         String name = null;
         String imageUrl = null;
         String desc = null;
-        TokenUriContent tokenUriContent = getTokenUriContent(tokenURI);
-        if (tokenUriContent == null) {
+        TokenUriContent tokenUriContent = ipfsOpService.queryJson(tokenURI, TokenUriContent.class);
+        if (tokenUriContent != null) {
             name = tokenUriContent.getName();
             imageUrl = tokenUriContent.getImage();
             desc = tokenUriContent.getDescription();
@@ -182,7 +181,6 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
         boolean isCipher = extInfo.getValue3();
         //usage
         Integer usage = isCipher ? 2 : 1;
-        AttributeDataToken attributeDataToken = attributeDataTokenMapper.selectByDataTokenAddress(tokenAddress);
         AttributeDataTokenInventory inventory = new AttributeDataTokenInventory(tokenAddress,
                 tokenId.toString(),
                 name,
@@ -190,19 +188,8 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
                 desc,
                 timestamp,
                 usage,
-                owner,
-                attributeDataToken.getMetaDataDbId());
+                owner);
         return inventory;
-    }
-
-    private TokenUriContent getTokenUriContent(String tokenURI) {
-        String jsonStr = ipfsOpService.queryJson(tokenURI);
-        if (JSONUtil.isJson(jsonStr)) {
-            TokenUriContent tokenUriContent = JSONUtil.toBean(jsonStr, TokenUriContent.class);
-            return tokenUriContent;
-        } else {
-            return null;
-        }
     }
 
     private BigInteger GAS_LIMIT = BigInteger.valueOf(4104830);

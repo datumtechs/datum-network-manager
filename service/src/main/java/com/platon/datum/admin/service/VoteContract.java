@@ -1,6 +1,7 @@
 package com.platon.datum.admin.service;
 
 import com.platon.datum.admin.dao.entity.Authority;
+import com.platon.datum.admin.service.entity.VoteConfig;
 import com.platon.protocol.core.methods.response.Log;
 import com.platon.tuples.generated.Tuple2;
 import rx.Observable;
@@ -21,7 +22,7 @@ public interface VoteContract {
      *
      * @return 1-提交提案到投票开始时间间隔  2-投票的时间间隔  3-退出候选人犹豫期的时间间隔
      */
-//    VoteConfigDto getConfig();
+    VoteConfig getConfig();
 
     /**
      * 查询已生效的委员会列表

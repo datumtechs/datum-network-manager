@@ -77,7 +77,7 @@ public class AttributeDataTokenServiceImpl implements AttributeDataTokenService 
     @Override
     public AttributeDataToken getDataTokenById(Integer dataTokenId, String currentUserAddress) {
         AttributeDataToken dataToken = attributeDataTokenMapper.selectDataTokenById(dataTokenId);
-        if (dataToken == null || !StrUtil.equals(currentUserAddress, dataToken.getOwner())) {
+        if (dataToken == null || !StrUtil.equalsIgnoreCase(currentUserAddress, dataToken.getOwner())) {
             return null;
         }
         return dataToken;
@@ -95,7 +95,7 @@ public class AttributeDataTokenServiceImpl implements AttributeDataTokenService 
             throw new BizException(Errors.SysException, "Data token not exist!");
         }
 
-        if (!dataToken.getOwner().equals(currentUserAddress)) {
+        if (!dataToken.getOwner().equalsIgnoreCase(currentUserAddress)) {
             throw new BizException(Errors.SysException, "You are not owner!");
         }
         attributeDataTokenMapper.updateStatusById(dataTokenId, status);
@@ -113,7 +113,7 @@ public class AttributeDataTokenServiceImpl implements AttributeDataTokenService 
             throw new BizException(Errors.SysException, "Data token not exist!");
         }
 
-        if (!attributeDataToken.getOwner().equals(currentUserAddress)) {
+        if (!attributeDataToken.getOwner().equalsIgnoreCase(currentUserAddress)) {
             throw new BizException(Errors.SysException, "You are not owner!");
         }
 

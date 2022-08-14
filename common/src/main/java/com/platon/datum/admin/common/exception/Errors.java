@@ -89,13 +89,16 @@ public enum Errors {
     VcIsInvalid(1058, "Vc is invalid!"),
     UsedVcIsExist(1059, "Used vc is exist!"),
     DownloadFailed(1060, "Download failed!"),
+    NonceTooLow(1061, "Nonce too low!"),
+    TxExceedsBlockGasLimit(1062, "Exceeds block gas limit!"),
+    TxKnownTx(1063,"known transaction"),
+    TimeLessThan24H(1064,"Time is less than 24 hours!"),
 
     // rpc调用时异常
     CallRpcError(2000, "Call node rpc exception"),
     CallRpcNetError(2001, "Call node rpc network exception"),
     CallRpcBizError(2002, "Call node rpc business exception【%s】"),
     CallRpcReadTimeout(2003, "Call node rpc read timeout"),
-
     ;
 
     Errors(int code, String message) {

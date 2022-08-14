@@ -5,6 +5,7 @@ import com.github.pagehelper.Page;
 import com.platon.datum.admin.common.exception.ArgumentException;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
+import com.platon.datum.admin.common.exception.ValidateException;
 import com.platon.datum.admin.common.util.AddressTypeUtil;
 import com.platon.datum.admin.common.util.NameUtil;
 import com.platon.datum.admin.controller.BaseController;
@@ -222,13 +223,12 @@ public class MetaDataController extends BaseController {
             String columnType = localMetaDataColumn.getColumnType();
             if (StrUtil.isBlank(columnName)
                     || StrUtil.isBlank(columnType)) {
-                throw new BizException(Errors.SysException, "columnName or columnType is null!");
+                throw new ValidateException("columnName or columnType is null!");
             }
         });
 
         metaData.setMetaDataColumnList(req.getMetaDataColumnList());
         metaDataService.update(metaData);
-
         return JsonResponse.success();
     }
 
@@ -241,13 +241,16 @@ public class MetaDataController extends BaseController {
     public JsonResponse localMetaDataOp(@RequestBody @Validated MetaDataActionReq req) {
         String action = req.getAction();
         switch (action) {
-            case "-1"://删除，软删除，status=4
+            //删除，软删除，status=4
+            case "-1":
                 metaDataService.delete(req.getId(), req.getSign());
                 break;
-            case "0"://下架，status=3
+            //下架，status=3
+            case "0":
                 metaDataService.down(req.getId(), req.getSign());
                 break;
-            case "1"://上架，status=2
+            //上架，status=2
+            case "1":
                 metaDataService.up(req.getId(), req.getSign());
                 break;
             default:

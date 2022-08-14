@@ -10,6 +10,7 @@ import com.platon.datum.admin.service.client.PinataClient;
 import com.platon.datum.admin.service.client.PinataGatewayClient;
 import com.platon.datum.admin.service.client.dto.PinataPinJSONToIPFSReq;
 import com.platon.datum.admin.service.client.dto.PinataPinResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,7 @@ import javax.annotation.Resource;
  */
 
 
+@Slf4j
 @Service
 public class PinataIpfsOpServiceImpl implements IpfsOpService {
 
@@ -74,7 +76,7 @@ public class PinataIpfsOpServiceImpl implements IpfsOpService {
      * @return
      */
     @Override
-    public String queryJson(String url) {
+    public <T> T queryJson(String url, Class<T> tClass) {
         if (StrUtil.isBlank(url)) {
             throw new ValidateException("Url can't be blank");
         }
@@ -88,7 +90,18 @@ public class PinataIpfsOpServiceImpl implements IpfsOpService {
         } catch (Throwable ex) {
             throw new BizException(Errors.DownloadFailed,ex);
         }
-        return JSONUtil.toJsonStr(json);
+        String jsonStr = JSONUtil.toJsonStr(json);
+        return parseJson(jsonStr,tClass);
+    }
+
+    private <T> T parseJson(String jsonStr,Class<T> tClass) {
+        if (JSONUtil.isJson(jsonStr)) {
+            T t = JSONUtil.toBean(jsonStr, tClass);
+            return t;
+        } else {
+            log.debug("jsonStr is not json : {}", jsonStr);
+            return null;
+        }
     }
 
     private String getIpfsLink(PinataPinResult pinataPinResult) {

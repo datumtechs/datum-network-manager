@@ -10,7 +10,6 @@ import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.ApplyRecord;
 import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.dao.entity.AuthorityBusiness;
-import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.service.web3j.Web3jManager;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.methods.response.PlatonGetTransactionReceipt;
@@ -119,7 +118,9 @@ public class ApplyRecordStatusTask {
             long timeStamp = LocalDateTimeUtil.getTimestamp(startTime.plusHours(240));
             if (timeStamp < System.currentTimeMillis()) {
                 //未审批且自动过期的，则更新一下委员会事务状态为不同意
-                int count = authorityBusinessMapper.updateProcessStatusById(record.getAuthorityBusinessId(),
+                int count = authorityBusinessMapper.updateStatusByTypeAndRelationId(
+                        AuthorityBusiness.TypeEnum.APPLY_VC.getType(),
+                        record.getId().toString(),
                         AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus());
                 if (count <= 0) {
                     throw new BizException(Errors.UpdateSqlFailed);
