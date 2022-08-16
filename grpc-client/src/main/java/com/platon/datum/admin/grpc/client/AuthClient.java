@@ -2,6 +2,7 @@ package com.platon.datum.admin.grpc.client;
 
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.DataAuth;
@@ -75,6 +76,10 @@ public class AuthClient {
         if (response == null) {
             throw new CallGrpcServiceFailed();
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
+            //identity was already exist
+            if (response.getStatus() == 10001) {
+                throw new BizException(Errors.OrgConnectNetworkAlready);
+            }
             throw new CallGrpcServiceFailed(response.getMsg());
         }
     }
@@ -217,6 +222,7 @@ public class AuthClient {
 
     /**
      * 更新指定组织的credential
+     *
      * @param credential vc
      */
     public void updateIdentityCredential(String credential) {
