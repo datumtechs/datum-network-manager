@@ -34,7 +34,7 @@ import java.util.Map;
  */
 
 @Slf4j
-@Configuration
+//@Configuration
 public class ProposalRefreshTask {
 
     @Resource
@@ -68,6 +68,28 @@ public class ProposalRefreshTask {
 
         log.debug("刷新提案状态定时任务结束|||");
     }
+
+    /**
+     * 将投票完的提案进行生效，需要调用effect方法
+     */
+    @Transactional(rollbackFor = Throwable.class)
+    @Scheduled(fixedDelayString = "${ProposalRefreshTask.fixedDelay}")
+    public void effectProposal() {
+        if (OrgCache.identityIdNotFound()) {
+            return;
+        }
+        log.debug("刷新提案状态定时任务开始>>>");
+        List<ProposalLog> proposalLogList = proposalLogMapper.selectByStatus(ProposalLog.StatusEnum.TODO.getValue());
+
+        if (CollectionUtil.isEmpty(proposalLogList)) {
+            return;
+        }
+        //日志分析
+        analyzeProposalLog(proposalLogList);
+
+        log.debug("刷新提案状态定时任务结束|||");
+    }
+
 
     private void analyzeProposalLog(List<ProposalLog> proposalLogList) {
         Map<String, Proposal> saveMap = new HashMap<>();
@@ -177,4 +199,5 @@ public class ProposalRefreshTask {
         authorityBusiness.setProcessStatus(AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus());
         return authorityBusiness;
     }
+
 }

@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 
 @Slf4j
-@Configuration
+//@Configuration
 public class ApplyRecordStatusTask {
 
     @Resource
