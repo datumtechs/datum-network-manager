@@ -82,7 +82,8 @@
                 jdbcType="VARCHAR"/>
         <result column="data_token_status" property="dynamicFields.dataTokenStatus" javaType="java.lang.Integer"
                 jdbcType="INTEGER"/>
-        <result column="attribute_data_token_id" property="dynamicFields.attributeDataTokenId" javaType="int" jdbcType="INTEGER"/>
+        <result column="attribute_data_token_id" property="dynamicFields.attributeDataTokenId" javaType="int"
+                jdbcType="INTEGER"/>
         <result column="attribute_data_token_name" property="dynamicFields.attributeDataTokenName"
                 javaType="java.lang.String"
                 jdbcType="VARCHAR"/>
@@ -173,7 +174,7 @@
         set file_id        = #{fileId,jdbcType=VARCHAR},
             meta_data_id   = #{metaDataId,jdbcType=VARCHAR},
             meta_data_name = #{metaDataName,jdbcType=VARCHAR},
-            `status`         = #{status,jdbcType=INTEGER},
+            `status`       = #{status,jdbcType=INTEGER},
             publish_time   = #{publishTime,jdbcType=TIMESTAMP},
             `desc`         = #{desc,jdbcType=VARCHAR},
             industry       = #{industry,jdbcType=INTEGER},
@@ -190,12 +191,13 @@
     <update id="updateByMetaDataIdBatch">
         <foreach collection="metaDataList" item="item" separator=";">
             update meta_data
-            set `status`                       = #{item.status,jdbcType=INTEGER},
+            set `status`                     = #{item.status,jdbcType=INTEGER},
                 publish_time                 = #{item.publishTime,jdbcType=TIMESTAMP},
                 rec_update_time              = #{item.recUpdateTime,jdbcType=TIMESTAMP},
                 data_token_address           = #{item.dataTokenAddress},
                 attribute_data_token_address = #{item.attributeDataTokenAddress}
-                where meta_data_id = #{item.metaDataId} and `status` in (0, 1, 2, 3, 101, 102, 103)
+            where meta_data_id = #{item.metaDataId}
+              and `status` in (0, 1, 2, 3, 101, 102, 103)
         </foreach>
     </update>
 
@@ -203,7 +205,8 @@
         select md.*
         from meta_data md
                  left join data_token dt on md.id = dt.meta_data_db_id
-        where md.status = 2 and dt.status = 2
+        where md.status = 2
+          and (dt.status = 2 or dt.status is null)
           and md.`user` = #{userAddress}
         <if test="keyword != null and keyword != ''">
             and md.meta_data_name like concat('%'
@@ -217,7 +220,8 @@
         select md.*
         from meta_data md
                  left join attribute_data_token adt on md.id = adt.meta_data_db_id
-        where md.status = 2 and adt.status = 2
+        where md.status = 2
+          and (adt.status = 2 or adt.status is null)
           and md.`user` = #{userAddress}
         <if test="keyword != null and keyword != ''">
             and md.meta_data_name like concat('%'

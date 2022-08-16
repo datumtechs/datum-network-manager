@@ -6,11 +6,7 @@ use `datum_admin`;
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 192.168.10.151--lsy
 Source Server Version : 50739
-Source Host           : 192.168.10.151:3306
-Source Database       : datum_admin_lsy
-
 Target Server Type    : MYSQL
 Target Server Version : 50739
 File Encoding         : 65001

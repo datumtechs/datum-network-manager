@@ -75,15 +75,18 @@
         <result column="meta_data_id" property="dynamicFields.metaDataId" jdbcType="VARCHAR"/>
         <result column="meta_data_name" property="dynamicFields.metaDataName" jdbcType="VARCHAR"/>
         <result column="usage" property="dynamicFields.usage" jdbcType="INTEGER" javaType="int"/>
+        <result column="data_hash" property="dynamicFields.dataHash" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectListByKeywordAndUser" resultMap="BaseResultMap_With_MetaDataInfo">
         select attribute_data_token.*,
                md.meta_data_id   as meta_data_id,
                md.meta_data_name as meta_data_name,
-               md.`usage`        as `usage`
+               md.`usage`        as `usage`,
+               df.data_hash      as data_hash
         from attribute_data_token
                  left join meta_data md on attribute_data_token.meta_data_db_id = md.id
+                 left join data_file df on md.file_id = df.file_id
         where
         <if test="keyword != null and keyword != ''">
             name like CONCAT('%', #{keyword}, '%')
