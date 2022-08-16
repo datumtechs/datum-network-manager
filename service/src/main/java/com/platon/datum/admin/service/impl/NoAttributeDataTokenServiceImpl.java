@@ -1,5 +1,6 @@
 package com.platon.datum.admin.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.BizException;
@@ -125,7 +126,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
                 || dataToken.getStatus() == DataToken.StatusEnum.PRICE_FAIL.getStatus()) {
             //24小时之内只能改一次
             if (dataToken.getFeeUpdateTime().plusMinutes(updateTimeInterval).isAfter(LocalDateTimeUtil.now())) {
-                throw new BizException(Errors.TimeLessThan24H, "The update time is less than 24 hours!");
+                throw new BizException(Errors.TimeLessThan24H, StrUtil.format("The update time is less than {} minutes!)",updateTimeInterval));
             }
             MetaData metaData = metaDataMapper.selectById(dataToken.getMetaDataDbId());
             metaData.setSign(sign);

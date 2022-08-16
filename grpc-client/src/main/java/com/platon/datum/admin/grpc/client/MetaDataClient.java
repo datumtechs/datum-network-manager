@@ -87,7 +87,7 @@ public class MetaDataClient {
                 .setMetadataOption(JSONUtil.toJsonStr(metaDataOption))//元数据选项 (json字符串, 根据 data_type 的值来配对对应的模板)
                 .setUser(metaData.getUser())
                 .setUserType(CarrierEnum.UserType.forNumber(metaData.getUserType()))
-                .setSign(metaData.getSign() == null ? ByteString.EMPTY : ByteString.copyFrom(Numeric.hexStringToByteArray(metaData.getSign())))
+                .setSign(getSign(metaData.getSign()))
                 .build();
         //2.3构建完整的请求信息
         MetaDataRpcApi.PublishMetadataRequest request = MetaDataRpcApi.PublishMetadataRequest.newBuilder()
@@ -214,7 +214,7 @@ public class MetaDataClient {
                 .setMetadataOption(JSONUtil.toJsonStr(metaDataOption))//元数据选项 (json字符串, 根据 data_type 的值来配对对应的模板)
                 .setUser(metaData.getUser())
                 .setUserType(CarrierEnum.UserType.forNumber(metaData.getUserType()))
-                .setSign(ByteString.copyFromUtf8(metaData.getSign()))
+                .setSign(getSign(metaData.getSign()))
                 .build();
         //2.4构建完整的请求信息
         MetaDataRpcApi.UpdateMetadataRequest request = MetaDataRpcApi.UpdateMetadataRequest.newBuilder()
@@ -370,8 +370,8 @@ public class MetaDataClient {
                         ConsumeOption2 consumeOption2 = erc20List.get(0);
                         metaData.setDataTokenAddress(consumeOption2.getContract());
                         dataToken.setAddress(consumeOption2.getContract());
-                        dataToken.setCiphertextFee(consumeOption2.getCryptoAlgoConsumeUnit().toString());
-                        dataToken.setPlaintextFee(consumeOption2.getPlainAlgoConsumeUnit().toString());
+                        dataToken.setCiphertextFee(consumeOption2.getCryptoAlgoConsumeUnit());
+                        dataToken.setPlaintextFee(consumeOption2.getPlainAlgoConsumeUnit());
                     }
                     break;
                 case 3:
@@ -385,6 +385,10 @@ public class MetaDataClient {
                     throw new ArgumentException("Unsupported consumeType:" + type);
             }
         }
+    }
+
+    private ByteString getSign(String sign) {
+        return sign == null ? ByteString.EMPTY : ByteString.copyFrom(Numeric.hexStringToByteArray(sign));
     }
 
 }

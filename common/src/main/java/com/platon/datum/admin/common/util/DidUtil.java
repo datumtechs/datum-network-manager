@@ -1,11 +1,11 @@
 package com.platon.datum.admin.common.util;
 
 import com.platon.bech32.Bech32;
-import network.platon.did.common.config.DidConfig;
-import network.platon.did.sdk.constant.DidConst;
-import network.platon.did.sdk.utils.DidUtils;
+import com.platon.parameters.NetworkParameters;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * @Author liushuyu
@@ -13,9 +13,9 @@ import java.util.Objects;
  * @Version
  * @Desc id 工具类
  */
-public class DidUtil extends DidUtils {
+public class DidUtil {
 
-    public static final String DID_PREFIX = DidConst.DID_PREFIX;
+    public static final String DID_PREFIX = "did:pid:";
 
     public static String latAddressToDid(String address) {
         Objects.requireNonNull(address);
@@ -32,6 +32,35 @@ public class DidUtil extends DidUtils {
         Objects.requireNonNull(did);
         String bech32Address = did.replace(DID_PREFIX, "");
         return Bech32.addressDecodeHex(bech32Address);
+    }
+
+    public static Boolean isValidDid(String did) {
+        if (StringUtils.isBlank(did)) {
+            return false;
+        } else {
+            return !did.startsWith(DID_PREFIX) ? false : isValidAddressStr(trimDidPrefix(did));
+        }
+    }
+
+    public static String trimDidPrefix(String did) {
+        return StringUtils.removeStart(did, DID_PREFIX);
+    }
+
+    public static boolean isValidAddressStr(String addr) {
+        if (!StringUtils.isBlank(addr) && Pattern.compile("[a-zA-Z0-9]{42}").matcher(addr).matches()) {
+            if (!addr.startsWith(NetworkParameters.getHrp())) {
+                return false;
+            } else {
+                try {
+                    new String(addr);
+                    return true;
+                } catch (Exception var2) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
     }
 
     public static void main(String[] args) {
