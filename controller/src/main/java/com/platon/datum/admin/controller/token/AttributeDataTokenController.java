@@ -1,6 +1,6 @@
 package com.platon.datum.admin.controller.token;
 
-import cn.hutool.json.JSONUtil;
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
@@ -151,20 +151,15 @@ public class AttributeDataTokenController extends BaseController {
         return JsonResponse.success(resp);
     }
 
-    public static void main(String[] args) {
-        List<AttributeDataTokenGetExchangeResp.Exchange> exchangeList = getExchangeList("<tofu|https://tofunft.com/>,<tofu1|http://www.tofu1.com>");
-        System.out.println(JSONUtil.toJsonStr(exchangeList));
-    }
-
     private static List<AttributeDataTokenGetExchangeResp.Exchange> getExchangeList(String value) {
         List<AttributeDataTokenGetExchangeResp.Exchange> exchangeList = new ArrayList<>();
         try {
             value = value.replace("<", "").replace(">", "");
             String[] exchangeArray = value.split(",");
             for (int i = 0; i < exchangeArray.length; i++) {
-                String[] exchange = exchangeArray[i].split("|");
-                String name = exchange[0];
-                String url = exchange[1];
+                List<String> exchange = StrUtil.split(exchangeArray[i], "|");
+                String name = exchange.get(0);
+                String url = exchange.get(1);
                 AttributeDataTokenGetExchangeResp.Exchange exchange1 = new AttributeDataTokenGetExchangeResp.Exchange();
                 exchange1.setName(name);
                 exchange1.setUrl(url);
