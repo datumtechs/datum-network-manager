@@ -3,6 +3,7 @@ package com.platon.datum.admin.service.task;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.service.AuthorityService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ import javax.annotation.Resource;
 
 
 @Slf4j
-//@Configuration
+@Configuration
 public class AuthorityRefreshTask {
 
     @Resource

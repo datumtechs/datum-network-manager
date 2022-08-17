@@ -65,8 +65,10 @@ public class ProposalServiceImpl implements ProposalService {
         BigInteger avgPackTime = platONClient.getAvgPackTime();
 
         proposalPage.forEach(proposal -> {
-            convertProposalStatus(proposal);
-            proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+            boolean changed = convertProposalStatus(curBn, proposal);
+            if (changed) {
+                proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+            }
 
             //添加附加信息
             Map dynamicFields = proposal.getDynamicFields();
@@ -102,11 +104,14 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     public Proposal getProposalDetail(String id) {
         Proposal proposal = proposalMapper.selectByPrimaryKey(id);
-        convertProposalStatus(proposal);
-        proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
 
         // 查询当前块高
         BigInteger curBn = platONClient.platonBlockNumber();
+        boolean changed = convertProposalStatus(curBn, proposal);
+        if (changed) {
+            proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+        }
+
         // 查询平均出块时间
         BigInteger avgPackTime = platONClient.getAvgPackTime();
         //添加附加信息
@@ -138,7 +143,13 @@ public class ProposalServiceImpl implements ProposalService {
             throw new ValidateException("Proposal not initiated by current organization");
         }
 
-        convertProposalStatus(proposal);
+        //当前块高
+        BigInteger curBn = platONClient.platonBlockNumber();
+
+        boolean changed = convertProposalStatus(curBn, proposal);
+        if (changed) {
+            proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+        }
         Integer status = proposal.getStatus();
         //投票未开始前可以投票
         if (status == Proposal.StatusEnum.HAS_NOT_STARTED.getValue()) {
@@ -224,7 +235,14 @@ public class ProposalServiceImpl implements ProposalService {
         if (proposal == null) {
             throw new BizException(Errors.QueryRecordNotExist, "Proposal not exist : " + proposalId);
         }
-        convertProposalStatus(proposal);
+
+        //当前块高
+        BigInteger curBn = platONClient.platonBlockNumber();
+
+        boolean changed = convertProposalStatus(curBn, proposal);
+        if (changed) {
+            proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+        }
         if (proposal.getStatus() == Proposal.StatusEnum.VOTE_START.getValue()) {
             proposalClient.voteProposal(proposalId);
         } else {
@@ -245,14 +263,14 @@ public class ProposalServiceImpl implements ProposalService {
      * 将投票未开始的状态转换为投票中的状态
      *
      * @param proposal
+     * @return proposal状态是否发生改变
      */
     @Override
-    public void convertProposalStatus(Proposal proposal) {
+    public boolean convertProposalStatus(BigInteger curBn, Proposal proposal) {
+        int oldStatus = proposal.getStatus();
         if (proposal.getStatus() == Proposal.StatusEnum.HAS_NOT_STARTED.getValue()) {
             //开始投票的块高
             String voteBeginBn = proposal.getVoteBeginBn();
-            //当前块高
-            BigInteger curBn = platONClient.platonBlockNumber();
             if (curBn.compareTo(new BigInteger(voteBeginBn)) >= 0) {
                 //将投票未开始的状态转换为投票开始的状态
                 proposal.setStatus(Proposal.StatusEnum.VOTE_START.getValue());
@@ -262,15 +280,14 @@ public class ProposalServiceImpl implements ProposalService {
         if (proposal.getStatus() == Proposal.StatusEnum.VOTE_START.getValue()) {
             //结束投票的块高
             String voteEndBn = proposal.getVoteEndBn();
-            //当前块高
-            BigInteger curBn = platONClient.platonBlockNumber();
             if (curBn.compareTo(new BigInteger(voteEndBn)) >= 0) {
                 //将投票未开始的状态转换为投票开始的状态
                 proposal.setStatus(Proposal.StatusEnum.VOTE_END.getValue());
             }
         }
 
-
+        int newStatus = proposal.getStatus();
+        return oldStatus == newStatus ? true : false;
     }
 
 }

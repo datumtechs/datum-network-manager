@@ -8,11 +8,13 @@ import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.dao.entity.AuthorityBusiness;
 import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.service.ProposalService;
+import com.platon.datum.admin.service.web3j.PlatONClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.annotation.Resource;
+import java.math.BigInteger;
 import java.util.List;
 
 
@@ -22,7 +24,7 @@ import java.util.List;
  */
 
 @Slf4j
-//@Configuration
+@Configuration
 public class AuthorityBusinessProcessStatusTask {
 
     @Resource
@@ -33,6 +35,8 @@ public class AuthorityBusinessProcessStatusTask {
     private ProposalMapper proposalMapper;
     @Resource
     private AuthorityMapper authorityMapper;
+    @Resource
+    private PlatONClient platONClient;
 
     @Scheduled(fixedDelayString = "${AuthorityBusinessProcessStatusTask.fixedDelay}")
     public void refreshTodoList() {
@@ -48,9 +52,12 @@ public class AuthorityBusinessProcessStatusTask {
         //1.查询出委员会事务对提案的待办列表
         List<AuthorityBusiness> authorityBusinessList = authorityBusinessMapper.selectProposalTodoList();
 
+        //当前块高
+        BigInteger curBn = platONClient.platonBlockNumber();
+
         //2.查询待办列表中提案的状态
         authorityBusinessList.forEach(authorityBusiness -> {
-            Proposal proposal = getProposal(authorityBusiness);
+            Proposal proposal = getProposal(curBn, authorityBusiness);
             //3.如果提案过了投票时间了，则将未处理的事务改成处理状态为拒绝
             if (proposal.getStatus() == Proposal.StatusEnum.VOTE_END.getValue()) {
                 authorityBusinessMapper.updateProcessStatusById(authorityBusiness.getId(), AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus());
@@ -59,7 +66,7 @@ public class AuthorityBusinessProcessStatusTask {
         log.debug("刷新委员会成员的事务处理状态定时任务结束|||");
     }
 
-    private Proposal getProposal(AuthorityBusiness authorityBusiness) {
+    private Proposal getProposal(BigInteger curBn, AuthorityBusiness authorityBusiness) {
         String id = authorityBusiness.getRelationId();
         int status = (int) authorityBusiness.getDynamicFields().get("status");
         String submissionBn = (String) authorityBusiness.getDynamicFields().get("submissionBn");
@@ -72,12 +79,9 @@ public class AuthorityBusinessProcessStatusTask {
         proposal.setVoteBeginBn(voteBeginBn);
         proposal.setVoteEndBn(voteEndBn);
 
-        proposalService.convertProposalStatus(proposal);
-
-        Integer newStatus = proposal.getStatus();
-        //状态改变了则修改数据库
-        if (status != newStatus) {
-            proposalMapper.updateStatus(id, newStatus);
+        boolean changed = proposalService.convertProposalStatus(curBn, proposal);
+        if(changed){
+            proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
         }
 
         return proposal;

@@ -57,7 +57,7 @@ public class DatumAdminApplication {
         Org org = orgService.select();
         OrgCache.setLocalOrgInfo(org);
 
-//        proposalLogService.subscribe();
+        proposalLogService.subscribe();
         log.info("执行初始化操作执行完成............");
     }
 }

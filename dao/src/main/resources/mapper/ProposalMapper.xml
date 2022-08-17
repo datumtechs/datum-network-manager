@@ -281,4 +281,14 @@
         from proposal
         where submitter = #{identityId}
     </select>
+
+    <select id="selectBySubmitterAndStatus" resultMap="BaseResultMap">
+        select p.*
+        from proposal p
+        where submitter = #{localOrgIdentityId}
+          and status in
+        <foreach collection="statusList" separator="," open="(" close=")" item="status">
+            #{status}
+        </foreach>
+    </select>
 </mapper>

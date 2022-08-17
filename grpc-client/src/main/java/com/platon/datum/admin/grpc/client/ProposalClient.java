@@ -1,6 +1,8 @@
 package com.platon.datum.admin.grpc.client;
 
+import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.grpc.carrier.api.DidRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.DidRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.ProposalServiceGrpc;
@@ -134,6 +136,9 @@ public class ProposalClient {
         if (response == null) {
             throw new CallGrpcServiceFailed();
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
+            if("invalid proposal id".equalsIgnoreCase(response.getMsg())){
+                throw new BizException(Errors.AlreadyEffectProposal);
+            }
             throw new CallGrpcServiceFailed(response.getMsg());
         }
         return response.getResult();

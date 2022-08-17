@@ -11,10 +11,13 @@ import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.AuthorityBusiness;
 import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.dao.entity.ProposalLog;
+import com.platon.datum.admin.grpc.client.ProposalClient;
 import com.platon.datum.admin.service.IpfsOpService;
+import com.platon.datum.admin.service.ProposalService;
 import com.platon.datum.admin.service.VoteContract;
 import com.platon.datum.admin.service.entity.ProposalMaterialContent;
 import com.platon.datum.admin.service.entity.VoteConfig;
+import com.platon.datum.admin.service.web3j.PlatONClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author liushuyu
@@ -34,7 +38,7 @@ import java.util.Map;
  */
 
 @Slf4j
-//@Configuration
+@Configuration
 public class ProposalRefreshTask {
 
     @Resource
@@ -47,6 +51,12 @@ public class ProposalRefreshTask {
     private VoteContract voteContract;
     @Resource
     private IpfsOpService ipfsOpService;
+    @Resource
+    private ProposalClient proposalClient;
+    @Resource
+    private ProposalService proposalService;
+    @Resource
+    private PlatONClient platONClient;
 
     /**
      * 刷新提案状态
@@ -78,18 +88,38 @@ public class ProposalRefreshTask {
         if (OrgCache.identityIdNotFound()) {
             return;
         }
-        log.debug("刷新提案状态定时任务开始>>>");
-        List<ProposalLog> proposalLogList = proposalLogMapper.selectByStatus(ProposalLog.StatusEnum.TODO.getValue());
+        log.debug("提案effect定时任务开始>>>");
+        //1.获取投票完的提案列表
+        String localOrgIdentityId = OrgCache.getLocalOrgIdentityId();
+        List<Integer> statusList = new ArrayList<>();
+        statusList.add(Proposal.StatusEnum.HAS_NOT_STARTED.getValue());
+        statusList.add(Proposal.StatusEnum.VOTE_START.getValue());
+        statusList.add(Proposal.StatusEnum.VOTE_END.getValue());
+        List<Proposal> proposalList = proposalMapper.selectBySubmitterAndStatus(localOrgIdentityId, statusList);
 
-        if (CollectionUtil.isEmpty(proposalLogList)) {
-            return;
-        }
-        //日志分析
-        analyzeProposalLog(proposalLogList);
+        BigInteger curBn = platONClient.platonBlockNumber();
 
-        log.debug("刷新提案状态定时任务结束|||");
+        proposalList = proposalList.stream()
+                .map(proposal -> {
+                    boolean changed = proposalService.convertProposalStatus(curBn, proposal);
+                    if(changed){
+                        proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+                    }
+                    return proposal;
+                })
+                .filter(proposal -> proposal.getStatus() == Proposal.StatusEnum.VOTE_END.getValue())
+                .collect(Collectors.toList());
+        //2.调用effect方法生效
+        proposalList.forEach(proposal -> {
+            String proposalId = proposal.getId();
+            try {
+                proposalClient.effectProposal(proposalId);
+            } catch (Throwable exception) {
+                log.error("Call proposalClient effectProposal failed!", exception);
+            }
+        });
+        log.debug("提案effect定时任务结束|||");
     }
-
 
     private void analyzeProposalLog(List<ProposalLog> proposalLogList) {
         Map<String, Proposal> saveMap = new HashMap<>();
