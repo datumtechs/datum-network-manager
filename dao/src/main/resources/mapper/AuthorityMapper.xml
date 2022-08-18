@@ -18,30 +18,8 @@
         select
         <include refid="Base_Column_List"/>
         from authority
-        where identity_id = #{identityId,jdbcType=VARCHAR}
+        where identity_id = #{identityId}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        <!--@mbg.generated-->
-        delete
-        from authority
-        where identity_id = #{identityId,jdbcType=VARCHAR}
-    </delete>
-    <insert id="insert" parameterType="com.platon.datum.admin.dao.entity.Authority">
-        <!--@mbg.generated-->
-        insert into authority (identity_id, url, join_time,
-                               is_admin)
-        values (#{identityId,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{joinTime,jdbcType=TIMESTAMP},
-                #{isAdmin,jdbcType=BOOLEAN})
-    </insert>
-
-    <update id="updateByIdentityId" parameterType="com.platon.datum.admin.dao.entity.Authority">
-        <!--@mbg.generated-->
-        update authority
-        set url       = #{url,jdbcType=VARCHAR},
-            join_time = #{joinTime,jdbcType=TIMESTAMP},
-            is_admin  = #{isAdmin,jdbcType=BOOLEAN}
-        where identity_id = #{identityId,jdbcType=VARCHAR}
-    </update>
 
     <resultMap id="BaseResultMap_With_IdentityName" type="com.platon.datum.admin.dao.entity.Authority"
                extends="BaseResultMap">
@@ -72,9 +50,9 @@
         <foreach collection="allAuthority" item="authority" separator=";">
             insert into authority (identity_id, url, join_time,
                                    is_admin)
-            values (#{authority.identityId,jdbcType=VARCHAR}, #{authority.url,jdbcType=VARCHAR},
-                    #{authority.joinTime,jdbcType=TIMESTAMP},
-                    #{authority.isAdmin,jdbcType=BOOLEAN})
+            values (#{authority.identityId}, #{authority.url},
+                    #{authority.joinTime},
+                    #{authority.isAdmin})
         </foreach>
     </update>
 </mapper>

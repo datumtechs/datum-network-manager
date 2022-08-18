@@ -4,6 +4,7 @@ import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.service.OrgService;
 import com.platon.datum.admin.service.ProposalLogService;
+import com.platon.datum.admin.service.VoteContract;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +37,9 @@ public class DatumAdminApplication {
     @Resource
     private ProposalLogService proposalLogService;
 
+    @Resource
+    private VoteContract voteContract;
+
     public static void main(String[] args) {
         SpringApplication.run(DatumAdminApplication.class, args);
     }
@@ -56,6 +60,8 @@ public class DatumAdminApplication {
 
         Org org = orgService.select();
         OrgCache.setLocalOrgInfo(org);
+
+        voteContract.init();
 
         proposalLogService.subscribe();
         log.info("执行初始化操作执行完成............");

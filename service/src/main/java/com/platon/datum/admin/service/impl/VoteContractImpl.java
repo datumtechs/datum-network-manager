@@ -6,6 +6,7 @@ import com.platon.bech32.Bech32;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.AddressChangeUtil;
+import com.platon.datum.admin.common.util.DidUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.dao.entity.SysConfig;
@@ -25,6 +26,7 @@ import com.platon.tuples.generated.Tuple3;
 import com.platon.tx.Contract;
 import com.platon.tx.ReadonlyTransactionManager;
 import com.platon.tx.gas.ContractGasProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import rx.Observable;
 
@@ -40,6 +42,8 @@ import java.util.Optional;
 /**
  * @author liushuyu
  */
+
+@Slf4j
 @Component
 public class VoteContractImpl implements VoteContract {
 
@@ -82,12 +86,22 @@ public class VoteContractImpl implements VoteContract {
     @Override
     public List<Authority> getAllAuthority() {
         Tuple3<List<String>, List<String>, List<BigInteger>> result = query(contract -> contract.getAllAuthority(), voteAddress, Optional.empty());
+
+        Tuple3<String, String, BigInteger> adminAuthority = query(contract -> contract.getAdmin(), voteAddress, Optional.empty());
+        String adminAddress = adminAuthority.getValue1();
+
         List<Authority> resultList = new ArrayList<>();
         for (int i = 0; i < result.getValue1().size(); i++) {
             Authority authorityDto = new Authority();
-            authorityDto.setIdentityId(Bech32.addressDecodeHex(result.getValue1().get(i)));
+            authorityDto.setIdentityId(DidUtil.addressToDid(result.getValue1().get(i)));
             authorityDto.setUrl(result.getValue2().get(i));
             authorityDto.setJoinTime(LocalDateTimeUtil.getLocalDateTime(result.getValue3().get(i).longValue()));
+
+            //判断是否是初始成员
+            if (adminAddress.equalsIgnoreCase(result.getValue1().get(i))) {
+                authorityDto.setIsAdmin(1);
+            }
+            log.debug("authority : {},{},{}", result.getValue1().get(i), result.getValue2().get(i), result.getValue3().get(i));
             resultList.add(authorityDto);
         }
         return resultList;
@@ -161,11 +175,11 @@ public class VoteContractImpl implements VoteContract {
         contractAddress = AddressChangeUtil.hexToBech32(contractAddress);
         ReadonlyTransactionManager transactionManager = new ReadonlyTransactionManager(web3jManager.getWeb3j(), contractAddress);
         try {
-            Vote dataTokenTemplate = Vote.load(contractAddress, web3jManager.getWeb3j(), transactionManager, new ContractGasProvider(BigInteger.ZERO, BigInteger.ZERO));
+            Vote vote = Vote.load(contractAddress, web3jManager.getWeb3j(), transactionManager, new ContractGasProvider(BigInteger.ZERO, BigInteger.ZERO));
             queryBlockNumber.ifPresent(bigInteger -> {
-                dataTokenTemplate.setDefaultBlockParameter(DefaultBlockParameter.valueOf(bigInteger));
+                vote.setDefaultBlockParameter(DefaultBlockParameter.valueOf(bigInteger));
             });
-            return supplier.apply(dataTokenTemplate).send();
+            return supplier.apply(vote).send();
         } catch (SocketTimeoutException e) {
             throw new BizException(Errors.CallRpcReadTimeout, e);
         } catch (IOException e) {

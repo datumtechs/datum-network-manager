@@ -97,7 +97,7 @@ CREATE TABLE `attribute_data_token_inventory` (
 -- ----------------------------
 DROP TABLE IF EXISTS `authority`;
 CREATE TABLE `authority` (
-                             `identity_id` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织的地址',
+                             `identity_id` varchar(140) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织的地址',
                              `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组织的url',
                              `join_time` timestamp NULL DEFAULT NULL COMMENT '加入委员会的时间',
                              `is_admin` tinyint(1) DEFAULT NULL COMMENT '是否是初始成员：0-否，1-是',
