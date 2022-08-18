@@ -1,5 +1,6 @@
 package com.platon.datum.admin.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.crypto.Credentials;
@@ -86,6 +87,20 @@ public class AttributeDataTokenInventoryServiceImpl implements AttributeDataToke
     @Override
     public AttributeDataTokenInventory getInventoryByDataTokenAddressAndTokenId(String dataTokenAddress, String tokenId) {
         AttributeDataTokenInventory inventory = inventoryMapper.selectByDataTokenAddressAndTokenId(dataTokenAddress, tokenId);
+        if (inventory == null) {
+            return null;
+        }
+        try {
+            ERC721Template erc721Template = load(dataTokenAddress);
+            String owner = erc721Template.ownerOf(new BigInteger(tokenId)).send();
+            //不相同则更新
+            if (!StrUtil.equalsIgnoreCase(owner, inventory.getOwner())) {
+                inventory.setOwner(owner);
+                inventoryMapper.replace(inventory);
+            }
+        } catch (Throwable throwable) {
+            log.error("Update inventory failed!", throwable);
+        }
         return inventory;
     }
 

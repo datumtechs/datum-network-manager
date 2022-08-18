@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -24,6 +25,7 @@ import javax.validation.constraints.NotNull;
 public class AttributeDataTokenGetDataTokenInventoryPageReq extends CommonPageReq {
 
     @ApiModelProperty("凭证合约地址")
+    @NotBlank
     private String dataTokenAddress;
 
     @ApiModelProperty("支持名字和tokenId模糊查询")
