@@ -9,6 +9,8 @@ import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.common.util.NameUtil;
 import com.platon.datum.admin.dao.PowerLoadSnapshotMapper;
 import com.platon.datum.admin.dao.PowerNodeMapper;
+import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.entity.PowerLoad;
 import com.platon.datum.admin.dao.entity.PowerLoadSnapshot;
 import com.platon.datum.admin.dao.entity.PowerNode;
@@ -162,7 +164,16 @@ public class PowerNodeServiceImpl implements PowerNodeService {
 
     @Override
     public void publishPower(String nodeId) {
+        //校验
+        Org localOrgInfo = OrgCache.getLocalOrgInfo();
+        //退网则不执行操作
+        if (localOrgInfo.getStatus() == Org.StatusEnum.LEFT_NET.getCode()) {
+            throw new BizException(Errors.OrgNotConnectNetwork, "Organization has been left net!");
+        }
         PowerNode oldPowerNode = powerNodeMapper.queryPowerNodeDetails(nodeId);
+        if (oldPowerNode == null) {
+            throw new BizException(Errors.QueryRecordNotExist, "Power node not exist!");
+        }
         if (oldPowerNode.getPowerStatus() == 1 || oldPowerNode.getPowerStatus() == 4) {
             String powerId = powerClient.publishPower(nodeId);
             PowerNode powerNode = new PowerNode();
@@ -180,7 +191,16 @@ public class PowerNodeServiceImpl implements PowerNodeService {
 
     @Override
     public void revokePower(String nodeId) {
+        //校验
+        Org localOrgInfo = OrgCache.getLocalOrgInfo();
+        //退网则不执行操作
+        if (localOrgInfo.getStatus() == Org.StatusEnum.LEFT_NET.getCode()) {
+            throw new BizException(Errors.OrgNotConnectNetwork, "Organization has been left net!");
+        }
         PowerNode powerNode = powerNodeMapper.queryPowerNodeDetails(nodeId);
+        if (powerNode == null) {
+            throw new BizException(Errors.QueryRecordNotExist, "Power node not exist!");
+        }
         if (powerNode == null || StringUtils.isEmpty(powerNode.getPowerId())) {
             log.error("power node not found");
             throw new BizException(Errors.QueryRecordNotExist);

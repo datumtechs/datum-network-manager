@@ -102,6 +102,7 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
      * @param plaintextFee
      * @param currentUserAddress
      */
+    @Transactional(rollbackFor = Throwable.class)
     @Override
     public void updateFee(Integer dataTokenId, String ciphertextFee, String plaintextFee, String sign, String currentUserAddress) {
         DataToken dataToken = dataTokenMapper.selectById(dataTokenId);
@@ -110,28 +111,46 @@ public class NoAttributeDataTokenServiceImpl implements NoAttributeDataTokenServ
         }
 
         if (!dataToken.getOwner().equalsIgnoreCase(currentUserAddress)) {
-            throw new BizException(Errors.SysException, "You are not owner!");
+            throw new BizException(Errors.YouAreNotOwner, "You are not owner!");
         }
 
         dataTokenMapper.updateNewFeeById(dataTokenId, ciphertextFee, plaintextFee);
         //还未绑定的情况下可以任意修改消耗量
-        if (dataToken.getStatus() == DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus()
-                || dataToken.getStatus() == DataToken.StatusEnum.BIND_FAIL.getStatus()) {
-            dataTokenMapper.updateFeeById(dataTokenId, ciphertextFee, plaintextFee);
-        } else if (dataToken.getStatus() == DataToken.StatusEnum.BINDING.getStatus()) {
+        if (dataToken.getStatus() == DataToken.StatusEnum.BINDING.getStatus()) {
             throw new BizException(Errors.SysException, "Data token already in binding!");
-        } else if (dataToken.getStatus() == DataToken.StatusEnum.BIND_SUCCESS.getStatus()
-                || dataToken.getStatus() == DataToken.StatusEnum.PRICING.getStatus()
-                || dataToken.getStatus() == DataToken.StatusEnum.PRICE_SUCCESS.getStatus()
-                || dataToken.getStatus() == DataToken.StatusEnum.PRICE_FAIL.getStatus()) {
+        } else if (dataToken.getStatus() == DataToken.StatusEnum.PUBLISHING.getStatus()
+                || dataToken.getStatus() == DataToken.StatusEnum.PUBLISH_FAIL.getStatus()
+                || dataToken.getStatus() == DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus()
+                || dataToken.getStatus() == DataToken.StatusEnum.BIND_FAIL.getStatus()) {
+            throw new BizException(Errors.SysException, "Data token haven't bind!");
+        } else {
             //24小时之内只能改一次
             if (dataToken.getFeeUpdateTime().plusMinutes(updateTimeInterval).isAfter(LocalDateTimeUtil.now())) {
-                throw new BizException(Errors.TimeLessThan24H, StrUtil.format("The update time is less than {} minutes!)",updateTimeInterval));
+                throw new BizException(Errors.TimeLessThan24H, StrUtil.format("The update time is less than {} minutes!)", updateTimeInterval));
             }
             MetaData metaData = metaDataMapper.selectById(dataToken.getMetaDataDbId());
             metaData.setSign(sign);
             metaDataClient.updateMetadata(metaData);
         }
+//        //还未绑定的情况下可以任意修改消耗量
+//        if (dataToken.getStatus() == DataToken.StatusEnum.PUBLISH_SUCCESS.getStatus()
+//                || dataToken.getStatus() == DataToken.StatusEnum.BIND_FAIL.getStatus()) {
+//            dataTokenMapper.updateFeeById(dataTokenId, ciphertextFee, plaintextFee);
+//        } else
+//        if (dataToken.getStatus() == DataToken.StatusEnum.BINDING.getStatus()) {
+//            throw new BizException(Errors.SysException, "Data token already in binding!");
+//        } else if (dataToken.getStatus() == DataToken.StatusEnum.BIND_SUCCESS.getStatus()
+//                || dataToken.getStatus() == DataToken.StatusEnum.PRICING.getStatus()
+//                || dataToken.getStatus() == DataToken.StatusEnum.PRICE_SUCCESS.getStatus()
+//                || dataToken.getStatus() == DataToken.StatusEnum.PRICE_FAIL.getStatus()) {
+//            //24小时之内只能改一次
+//            if (dataToken.getFeeUpdateTime().plusMinutes(updateTimeInterval).isAfter(LocalDateTimeUtil.now())) {
+//                throw new BizException(Errors.TimeLessThan24H, StrUtil.format("The update time is less than {} minutes!)",updateTimeInterval));
+//            }
+//            MetaData metaData = metaDataMapper.selectById(dataToken.getMetaDataDbId());
+//            metaData.setSign(sign);
+//            metaDataClient.updateMetadata(metaData);
+//        }
     }
 
     /**

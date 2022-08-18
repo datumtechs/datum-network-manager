@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author houz
@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public class PowerQueryDetailsReq {
 
 
-    @NotNull(message = "计算节点ID不能为空")
+    @NotBlank(message = "计算节点ID不能为空")
     @ApiModelProperty(value = "计算节点ID", example = "", required = true)
     private String powerNodeId;
 }
