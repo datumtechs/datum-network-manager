@@ -40,7 +40,7 @@ public class ProposalLogServiceImpl implements ProposalLogService {
     @Override
     public void subscribe() {
         SysConfig config = sysConfigService.getConfig(SysConfig.KeyEnum.VOTE_CONTRACT_DEPLOY_BN.getKey());
-        BigInteger begin = config == null ? BigInteger.ONE : new BigInteger(config.getKey());
+        BigInteger begin = config == null ? BigInteger.ONE : new BigInteger(config.getValue());
         ProposalLog latest = proposalLogMapper.selectLatestOne();
         if (ObjectUtil.isNotNull(latest)) {
             begin = new BigInteger(latest.getBlockNumber());
