@@ -93,7 +93,8 @@ public enum Errors {
     TxExceedsBlockGasLimit(1062, "Exceeds block gas limit!"),
     TxKnownTx(1063,"known transaction"),
     TimeLessThan24H(1064,"Time is less than 24 hours!"),
-    AlreadyEffectProposal(1065,"Proposal already effect!"),
+    YouAreNotOwner(1065,"You are not owner!"),
+    AlreadyEffectProposal(1066,"Proposal already effect!"),
 
     // rpc调用时异常
     CallRpcError(2000, "Call node rpc exception"),

@@ -14,6 +14,7 @@ import com.platon.datum.admin.service.CarrierService;
 import com.platon.datum.admin.service.OrgService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -57,6 +58,7 @@ public class CarrierServiceImpl implements CarrierService {
         return CarrierConnStatusEnum.ENABLED;
     }
 
+    @Transactional(rollbackFor = Throwable.class)
     @Override
     public Integer applyJoinNetwork() {
         Org org = OrgCache.getLocalOrgInfo();
@@ -67,6 +69,13 @@ public class CarrierServiceImpl implements CarrierService {
 
         try {
             authClient.applyIdentityJoin(org.getIdentityId(), org.getName(), org.getImageUrl(), org.getProfile());
+        } catch (BizException exception) {
+            //已经注册过了
+            if (exception.getErrorCode() == Errors.OrgConnectNetworkAlready.getCode()) {
+                //do nothing
+            } else {
+                throw new BizException(Errors.ApplyIdentityIDFailed, exception);
+            }
         } catch (Exception e) {
             throw new BizException(Errors.ApplyIdentityIDFailed, e);
         }
@@ -83,7 +92,7 @@ public class CarrierServiceImpl implements CarrierService {
         }
 
         //刷新委员会列表
-        authorityService.refreshAuthority();
+//        authorityService.refreshAuthority();
 
         //入网成功，刷新数据库
         org.setCarrierNodeId(nodeInfo.getNodeId());

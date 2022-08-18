@@ -20,6 +20,10 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigInteger;
 
+/**
+ * @author liushuyu
+ */
+
 @Slf4j
 @Service
 public class ProposalLogServiceImpl implements ProposalLogService {

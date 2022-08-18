@@ -1,8 +1,10 @@
 package com.platon.datum.admin.controller.token;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
+import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.controller.BaseController;
 import com.platon.datum.admin.dao.entity.DataToken;
 import com.platon.datum.admin.dao.entity.SysConfig;
@@ -48,6 +50,18 @@ public class NoAttributeDataTokenController extends BaseController {
     public JsonResponse<List<DataToken>> page(@RequestBody @Validated NoAttributeDataTokenPageReq req, HttpSession session) {
         String address = getCurrentUserAddress(session);
         Page<DataToken> page = noAttributeDataTokenService.page(req.getPageNumber(), req.getPageSize(), req.getKeyword(), address);
+        page.forEach(dataToken -> {
+            if (dataToken.getFeeUpdateTime() != null) {
+                dataToken.getDynamicFields().put("feeUpdateTimestamp", LocalDateTimeUtil.getTimestamp(dataToken.getFeeUpdateTime()));
+            }
+            if (StrUtil.equalsIgnoreCase(dataToken.getCiphertextFee(), dataToken.getNewCiphertextFee())
+                    && StrUtil.equalsIgnoreCase(dataToken.getPlaintextFee(), dataToken.getNewPlaintextFee())) {
+                //修改完成
+                dataToken.getDynamicFields().put("feeUpdateStatus", "updated");
+            } else {
+                dataToken.getDynamicFields().put("feeUpdateStatus", "updating");
+            }
+        });
         return JsonResponse.page(page);
     }
 

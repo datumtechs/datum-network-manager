@@ -41,17 +41,6 @@ public class PowerNodeController {
     @Resource
     TaskService taskService;
 
-    /*@PostMapping("/addPowerNode")
-    @ApiOperation(value="新增计算节点", response = JsonResponse.class)
-    public JsonResponse addPowerNode(@Validated @RequestBody PowerAddReq powerAddReq) {
-        PowerNode localPowerNode = new PowerNode();
-        BeanUtils.copyProperties(powerAddReq, localPowerNode);
-
-        //localPowerNode.status =
-        powerNodeService.insertPowerNode(localPowerNode);
-        return JsonResponse.success();
-    }*/
-
     @PostMapping("/updateNodeName")
     @ApiOperation(value = "修改计算节点名称", response = JsonResponse.class)
     public JsonResponse updateNodeName(@Validated @RequestBody PowerUpdateReq powerUpdateReq) {
@@ -72,13 +61,6 @@ public class PowerNodeController {
         powerNodeService.updateLocalPowerNodeName(powerUpdateReq.getNodeId(), powerUpdateReq.getNodeName());
         return JsonResponse.success();
     }
-
-    /*@PostMapping("/deletePowerNode")
-    @ApiOperation(value="删除计算节点", response = JsonResponse.class)
-    public JsonResponse deletePowerNode(@Validated @RequestBody PowerDeleteReq powerDeleteReq) {
-        powerNodeService.deletePowerNodeByNodeId(powerDeleteReq.getPowerNodeId());
-        return JsonResponse.success();
-    }*/
 
     @PostMapping("/powerNodeDetails")
     @ApiOperation(value = "查询计算节点详情", response = JsonResponse.class)
@@ -108,14 +90,6 @@ public class PowerNodeController {
         return JsonResponse.success();
     }
 
-/*    @PostMapping("/listPowerNodeUseHistory")
-    @ApiOperation(value="查询计算节点历史记录", response = JsonResponse.class)
-    public JsonResponse listPowerNodeUseHistory(@Validated @RequestBody PowerHistoryReq powerHistoryReq) {
-        List dataList = powerNodeService.queryPowerNodeUseHistory(powerHistoryReq.getPowerNodeId(),
-                powerHistoryReq.getResourceType(), powerHistoryReq.getTimeType());
-        return JsonResponse.success(dataList);
-    }*/
-
     @PostMapping("/listRunningTaskByPowerNodeId")
     @ApiOperation(value = "查询计算节点参与的正在计算中的任务列表", response = JsonResponse.class)
     public JsonResponse<Page<Task>> listRunningTaskByPowerNodeId(@Validated @RequestBody PowerJoinTaskReq powerJoinTaskReq) {
@@ -124,13 +98,6 @@ public class PowerNodeController {
 
         return JsonResponse.page(page);
     }
-
-/*    @PostMapping("/checkPowerNodeName")
-    @ApiOperation(value="校验计算节点名称是否可用", response = JsonResponse.class)
-    public JsonResponse checkPowerNodeName(@Validated @RequestBody PowerCheckNameReq powerCheckNameReq) {
-        powerNodeService.checkPowerNodeName(powerCheckNameReq.getPowerNodeName());
-        return JsonResponse.success();
-    }*/
 
     @GetMapping("/listLocalPowerLoadSnapshotByPowerNodeId")
     @ApiOperation(value = "查询算力节点的最近24小时的负载情况", response = JsonResponse.class)

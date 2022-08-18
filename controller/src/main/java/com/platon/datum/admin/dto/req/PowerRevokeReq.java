@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author houzhuang
@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "停用算力请求参数")
 public class PowerRevokeReq {
 
-    @NotNull(message = "算力NodeID不能为空")
+    @NotBlank(message = "算力NodeID不能为空")
     @ApiModelProperty(value = "算力NodeID", example = "", required = true)
     private String powerNodeId;
 
