@@ -1,6 +1,7 @@
 package com.platon.datum.admin.service.evm;
 
 import com.platon.abi.solidity.EventEncoder;
+import com.platon.abi.solidity.FunctionEncoder;
 import com.platon.abi.solidity.TypeReference;
 import com.platon.abi.solidity.datatypes.*;
 import com.platon.abi.solidity.datatypes.generated.Uint256;
@@ -9,14 +10,22 @@ import com.platon.crypto.Credentials;
 import com.platon.protocol.Web3j;
 import com.platon.protocol.core.DefaultBlockParameter;
 import com.platon.protocol.core.RemoteCall;
+import com.platon.protocol.core.Response;
 import com.platon.protocol.core.methods.request.PlatonFilter;
+import com.platon.protocol.core.methods.request.Transaction;
 import com.platon.protocol.core.methods.response.Log;
+import com.platon.protocol.core.methods.response.PlatonCall;
 import com.platon.protocol.core.methods.response.TransactionReceipt;
 import com.platon.tuples.generated.Tuple3;
 import com.platon.tuples.generated.Tuple7;
 import com.platon.tx.Contract;
 import com.platon.tx.TransactionManager;
+import com.platon.tx.exceptions.PlatonCallException;
+import com.platon.tx.exceptions.PlatonCallTimeoutException;
 import com.platon.tx.gas.GasProvider;
+import com.platon.utils.Strings;
+import lombok.SneakyThrows;
+import org.web3j.abi.FunctionReturnDecoder;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -26,6 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 /**
  * <p>Auto generated code.
@@ -70,35 +80,57 @@ public class Vote extends Contract {
     public static final String FUNC_WITHDRAWPROPOSAL = "withdrawProposal";
 
     public static final Event AUTHORITYADD_EVENT = new Event("AuthorityAdd",
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+            }, new TypeReference<Utf8String>() {
+            }, new TypeReference<Uint256>() {
+            }));
     ;
 
     public static final Event AUTHORITYDELETE_EVENT = new Event("AuthorityDelete",
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+            }, new TypeReference<Utf8String>() {
+            }, new TypeReference<Uint256>() {
+            }));
     ;
 
     public static final Event INITIALIZED_EVENT = new Event("Initialized",
-            Arrays.<TypeReference<?>>asList(new TypeReference<Uint8>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Uint8>() {
+            }));
     ;
 
     public static final Event NEWPROPOSAL_EVENT = new Event("NewProposal",
-            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>(true) {}, new TypeReference<Uint8>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Address>() {}, new TypeReference<Utf8String>() {}, new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>(true) {
+            }, new TypeReference<Uint8>(true) {
+            }, new TypeReference<Address>(true) {
+            }, new TypeReference<Address>() {
+            }, new TypeReference<Utf8String>() {
+            }, new TypeReference<Utf8String>() {
+            }, new TypeReference<Uint256>() {
+            }));
     ;
 
     public static final Event OWNERSHIPTRANSFERRED_EVENT = new Event("OwnershipTransferred",
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {
+            }, new TypeReference<Address>(true) {
+            }));
     ;
 
     public static final Event PROPOSALRESULT_EVENT = new Event("ProposalResult",
-            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>(true) {}, new TypeReference<Bool>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>(true) {
+            }, new TypeReference<Bool>() {
+            }));
     ;
 
     public static final Event VOTEPROPOSAL_EVENT = new Event("VoteProposal",
-            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>(true) {}, new TypeReference<Address>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>(true) {
+            }, new TypeReference<Address>() {
+            }));
     ;
 
     public static final Event WITHDRAWPROPOSAL_EVENT = new Event("WithdrawProposal",
-            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>(true) {}, new TypeReference<Uint256>() {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>(true) {
+            }, new TypeReference<Uint256>() {
+            }));
     ;
 
     protected Vote(String contractAddress, Web3j web3j, Credentials credentials, GasProvider contractGasProvider) {
@@ -396,7 +428,10 @@ public class Vote extends Contract {
     public RemoteCall<Tuple3<String, String, BigInteger>> getAdmin() {
         final Function function = new Function(FUNC_GETADMIN,
                 Arrays.<Type>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}));
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+                }, new TypeReference<Utf8String>() {
+                }, new TypeReference<Uint256>() {
+                }));
         return new RemoteCall<Tuple3<String, String, BigInteger>>(
                 new Callable<Tuple3<String, String, BigInteger>>() {
                     @Override
@@ -410,28 +445,79 @@ public class Vote extends Contract {
                 });
     }
 
-    @SuppressWarnings("unchecked")
     public RemoteCall<Tuple3<List<String>, List<String>, List<BigInteger>>> getAllAuthority() {
+        return new RemoteCall<>(
+                () -> getAllAuthorityCall());
+
+    }
+
+    @SneakyThrows
+    public Tuple3<List<String>, List<String>, List<BigInteger>> getAllAuthorityCall() {
         final Function function = new Function(FUNC_GETALLAUTHORITY,
                 Arrays.<Type>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Address>>() {}, new TypeReference<DynamicArray<Utf8String>>() {}, new TypeReference<DynamicArray<Uint256>>() {}));
-        return new RemoteCall<Tuple3<List<String>, List<String>, List<BigInteger>>>(
-                new Callable<Tuple3<List<String>, List<String>, List<BigInteger>>>() {
-                    @Override
-                    public Tuple3<List<String>, List<String>, List<BigInteger>> call() throws Exception {
-                        List<Type> results = executeCallMultipleValueReturn(function);
-                        return new Tuple3<List<String>, List<String>, List<BigInteger>>(
-                                convertToNative((List<Address>) results.get(0).getValue()),
-                                convertToNative((List<Utf8String>) results.get(1).getValue()),
-                                convertToNative((List<Uint256>) results.get(2).getValue()));
-                    }
-                });
+                Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Address>>() {
+                }, new TypeReference<DynamicArray<Utf8String>>() {
+                }, new TypeReference<DynamicArray<Uint256>>() {
+                }));
+
+        String encodedFunction = FunctionEncoder.encode(function);
+        PlatonCall ethCall = web3j.platonCall(
+                        Transaction.createEthCallTransaction(
+                                transactionManager.getFromAddress(), contractAddress, encodedFunction),
+                        defaultBlockParameter)
+                .send();
+
+        //判断底层返回的错误信息是否包含超时信息
+        if (ethCall.hasError()) {
+            Response.Error error = ethCall.getError();
+            String message = error.getMessage();
+            String lowMessage = !Strings.isBlank(message) ? message.toLowerCase() : null;
+            //包含timeout则抛超时异常，其他错误则直接抛出runtime异常
+            if (!Strings.isBlank(lowMessage)
+                    && lowMessage.contains("timeout")) {
+                throw new PlatonCallTimeoutException(error.getCode(), error.getMessage(), ethCall);
+            } else {
+                throw new PlatonCallException(error.getCode(), error.getMessage(), ethCall);
+            }
+        }
+
+        String value = ethCall.getValue();
+        return decodeAuthorityList(value);
     }
+
+    private Tuple3<List<String>, List<String>, List<BigInteger>> decodeAuthorityList(String value) {
+        org.web3j.abi.TypeReference<org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.Address>> typeReference = new org.web3j.abi.TypeReference<org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.Address>>() {
+        };
+        org.web3j.abi.TypeReference<org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.Utf8String>> typeReference1 = new org.web3j.abi.TypeReference<org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.Utf8String>>() {
+        };
+        org.web3j.abi.TypeReference<org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>> typeReference2 = new org.web3j.abi.TypeReference<org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>>() {
+        };
+
+        final org.web3j.abi.datatypes.Function function = new org.web3j.abi.datatypes.Function(FUNC_GETALLAUTHORITY,
+                new ArrayList<>(),
+                Arrays.asList(typeReference, typeReference1, typeReference2));
+
+        List<org.web3j.abi.datatypes.Type> decode = FunctionReturnDecoder.decode(value, function.getOutputParameters());
+        org.web3j.abi.datatypes.Type type = decode.get(0);
+        org.web3j.abi.datatypes.Type type1 = decode.get(1);
+        org.web3j.abi.datatypes.Type type2 = decode.get(2);
+        List<org.web3j.abi.datatypes.Address> a = (List<org.web3j.abi.datatypes.Address>) type.getValue();
+        List<org.web3j.abi.datatypes.Utf8String> b = (List<org.web3j.abi.datatypes.Utf8String>) type1.getValue();
+        List<org.web3j.abi.datatypes.generated.Uint256> c = (List<org.web3j.abi.datatypes.generated.Uint256>) type2.getValue();
+
+        List<String> identityIdList = a.stream().map(org.web3j.abi.datatypes.Address::getValue).collect(Collectors.toList());
+        List<String> urlList = b.stream().map(org.web3j.abi.datatypes.Utf8String::getValue).collect(Collectors.toList());
+        List<BigInteger> joinTimeList = c.stream().map(org.web3j.abi.datatypes.generated.Uint256::getValue).collect(Collectors.toList());
+        Tuple3<List<String>, List<String>, List<BigInteger>> tuple3 = new Tuple3<>(identityIdList, urlList, joinTimeList);
+        return tuple3;
+    }
+
 
     public RemoteCall<List> getAllProposalId() {
         final Function function = new Function(FUNC_GETALLPROPOSALID,
                 Arrays.<Type>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Uint256>>() {}));
+                Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Uint256>>() {
+                }));
         return new RemoteCall<List>(
                 new Callable<List>() {
                     @Override
@@ -446,7 +532,8 @@ public class Vote extends Contract {
     public RemoteCall<BigInteger> getInterval(BigInteger flag) {
         final Function function = new Function(FUNC_GETINTERVAL,
                 Arrays.<Type>asList(new Uint8(flag)),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
@@ -454,7 +541,14 @@ public class Vote extends Contract {
     public RemoteCall<Tuple7<BigInteger, String, String, String, String, BigInteger, List<String>>> getProposal(BigInteger proposalId) {
         final Function function = new Function(FUNC_GETPROPOSAL,
                 Arrays.<Type>asList(new Uint256(proposalId)),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint8>() {}, new TypeReference<Utf8String>() {}, new TypeReference<Address>() {}, new TypeReference<Utf8String>() {}, new TypeReference<Address>() {}, new TypeReference<Uint256>() {}, new TypeReference<DynamicArray<Address>>() {}));
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint8>() {
+                }, new TypeReference<Utf8String>() {
+                }, new TypeReference<Address>() {
+                }, new TypeReference<Utf8String>() {
+                }, new TypeReference<Address>() {
+                }, new TypeReference<Uint256>() {
+                }, new TypeReference<DynamicArray<Address>>() {
+                }));
         return new RemoteCall<Tuple7<BigInteger, String, String, String, String, BigInteger, List<String>>>(
                 new Callable<Tuple7<BigInteger, String, String, String, String, BigInteger, List<String>>>() {
                     @Override
@@ -475,7 +569,8 @@ public class Vote extends Contract {
     public RemoteCall<List> getProposalId(BigInteger blockNo) {
         final Function function = new Function(FUNC_GETPROPOSALID,
                 Arrays.<Type>asList(new Uint256(blockNo)),
-                Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Uint256>>() {}));
+                Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Uint256>>() {
+                }));
         return new RemoteCall<List>(
                 new Callable<List>() {
                     @Override
@@ -499,7 +594,8 @@ public class Vote extends Contract {
     public RemoteCall<String> owner() {
         final Function function = new Function(FUNC_OWNER,
                 Arrays.<Type>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {
+                }));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
@@ -556,11 +652,11 @@ public class Vote extends Contract {
     }
 
     public static RemoteCall<Vote> deploy(Web3j web3j, Credentials credentials, GasProvider contractGasProvider) {
-        return deployRemoteCall(Vote.class, web3j, credentials, contractGasProvider, BINARY,  "");
+        return deployRemoteCall(Vote.class, web3j, credentials, contractGasProvider, BINARY, "");
     }
 
     public static RemoteCall<Vote> deploy(Web3j web3j, TransactionManager transactionManager, GasProvider contractGasProvider) {
-        return deployRemoteCall(Vote.class, web3j, transactionManager, contractGasProvider, BINARY,  "");
+        return deployRemoteCall(Vote.class, web3j, transactionManager, contractGasProvider, BINARY, "");
     }
 
     public static Vote load(String contractAddress, Web3j web3j, Credentials credentials, GasProvider contractGasProvider) {

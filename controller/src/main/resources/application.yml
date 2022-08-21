@@ -70,6 +70,7 @@ spring:
         health-check-url: http://${spring.cloud.client.ip-address}:${server.port}/${server.servlet.context-path}/health
         # health-check-path: ${management.endpoints.web.base-path}/health
       carrierServiceName: carrierService
+      grcServiceIp: 39.101.171.59
 
 # ==================================== conf for mybatis =====================================
 mybatis:

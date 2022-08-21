@@ -12,6 +12,7 @@ import com.platon.datum.admin.service.AuthorityService;
 import com.platon.datum.admin.service.ProposalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,8 +59,7 @@ public class AuthorityController {
         int proposalCount = proposalService.getProposalCount(localOrgInfo.getIdentityId());
 
         AuthorityHomeResp resp = new AuthorityHomeResp();
-        resp.setIdentityId(localOrgInfo.getIdentityId());
-        resp.setIdentityName(localOrgInfo.getName());
+        BeanUtils.copyProperties(localOrgInfo, resp);
         resp.setAuthorityCount(authorityCount);
         resp.setApproveCount(approveCount);
         resp.setTodoCount(todoCount);
