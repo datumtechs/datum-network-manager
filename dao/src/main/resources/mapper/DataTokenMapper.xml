@@ -176,4 +176,10 @@
         from data_token
         where address = #{address}
     </select>
+
+    <select id="count" resultType="int">
+        select count(*)
+        from data_token
+        where status != 2
+    </select>
 </mapper>

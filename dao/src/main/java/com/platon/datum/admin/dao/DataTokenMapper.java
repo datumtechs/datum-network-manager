@@ -46,4 +46,5 @@ public interface DataTokenMapper {
 
     void updateNewFeeById(@Param("dataTokenId") Integer dataTokenId, @Param("ciphertextFee") String ciphertextFee, @Param("plaintextFee") String plaintextFee);
 
+    int count();
 }
