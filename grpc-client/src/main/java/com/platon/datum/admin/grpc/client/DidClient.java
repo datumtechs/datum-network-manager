@@ -52,7 +52,7 @@ public class DidClient {
         } else if (response.getStatus() != 15002) {
             //did已经创建
             String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
-            return DidUtil.latAddressToDid(observerProxyWalletAddress);
+            return DidUtil.addressToDid(observerProxyWalletAddress);
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
