@@ -28,7 +28,7 @@
 
     <select id="selectByDataTokenAddressAndKeyword" resultMap="BaseResultMap_With_MetaDataInfo">
         select adti.*,
-               adt.name as data_token_name,
+               adt.name          as data_token_name,
                md.meta_data_id   as meta_data_id,
                md.meta_data_name as meta_data_name
         from (select
@@ -40,14 +40,14 @@
                 and (name like CONCAT('%', #{keyword}, '%') or token_id like CONCAT('%', #{keyword}, '%'))
             </if>
         </where>
-        order by token_id desc) adti
-        left join attribute_data_token adt on adt.address = adti.data_token_address
-        left join meta_data md on adt.`meta_data_db_id` = md.`id`
+        order by token_id + 0 desc) adti
+            left join attribute_data_token adt on adt.address = adti.data_token_address
+            left join meta_data md on adt.`meta_data_db_id` = md.`id`
     </select>
 
     <select id="selectByDataTokenAddressAndTokenId" resultMap="BaseResultMap_With_MetaDataInfo">
         select adti.*,
-               adt.name as data_token_name,
+               adt.name          as data_token_name,
                md.meta_data_id   as meta_data_id,
                md.meta_data_name as meta_data_name
         from (select
@@ -57,8 +57,8 @@
             data_token_address = #{dataTokenAddress}
               and token_id = #{tokenId}
         </where>) adti
-        left join attribute_data_token adt on adt.address = adti.data_token_address
-        left join meta_data md on adt.`meta_data_db_id` = md.`id`
+                    left join attribute_data_token adt on adt.address = adti.data_token_address
+                    left join meta_data md on adt.`meta_data_db_id` = md.`id`
     </select>
 
     <select id="selectMaxTokenId" resultMap="BaseResultMap">
