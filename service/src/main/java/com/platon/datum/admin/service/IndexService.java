@@ -4,6 +4,7 @@ import com.platon.datum.admin.dao.dto.DataAuthReqDTO;
 import com.platon.datum.admin.dao.dto.StatsDataTrendDTO;
 import com.platon.datum.admin.dao.dto.StatsPowerTrendDTO;
 import com.platon.datum.admin.dao.dto.UsedResourceDTO;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 import java.util.Map;
@@ -51,5 +52,12 @@ public interface IndexService {
      * @return
      */
     List<StatsPowerTrendDTO> listLocalPowerStatsTrendMonthly();
+
+    /**
+     * left 是无属性凭证数量
+     * right 有属性凭证数量
+     * @return
+     */
+    Pair<Long, Long> listDataTokenOverview();
 
 }

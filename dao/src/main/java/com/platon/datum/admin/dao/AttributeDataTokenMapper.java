@@ -38,4 +38,6 @@ public interface AttributeDataTokenMapper {
     int updateTotalByAddress(@Param("total") String total, @Param("address") String address);
 
     AttributeDataToken selectByAddress(@Param("attributeDataTokenAddress") String attributeDataTokenAddress);
+
+    int count();
 }

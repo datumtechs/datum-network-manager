@@ -140,4 +140,10 @@
         from attribute_data_token
         where address = #{attributeDataTokenAddress}
     </select>
+
+    <select id="count" resultType="int">
+        select count(*)
+        from attribute_data_token
+        where status != 2
+    </select>
 </mapper>

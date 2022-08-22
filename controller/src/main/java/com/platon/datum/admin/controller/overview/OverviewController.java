@@ -6,11 +6,13 @@ import com.platon.datum.admin.dao.dto.StatsPowerTrendDTO;
 import com.platon.datum.admin.dao.dto.UsedResourceDTO;
 import com.platon.datum.admin.dto.JsonResponse;
 import com.platon.datum.admin.dto.resp.MyTaskStatsResp;
+import com.platon.datum.admin.dto.resp.OverviewDataTokenOverviewResp;
 import com.platon.datum.admin.dto.resp.UsedResourceResp;
 import com.platon.datum.admin.service.IndexService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -133,6 +135,16 @@ public class OverviewController {
     public JsonResponse<DataAuthReqDTO> listDataAuthReqWaitingForApprove() {
         List<DataAuthReqDTO> list = indexService.listDataAuthReqWaitingForApprove();
         return JsonResponse.success(list == null || list.size() == 0 ? new ArrayList<>() : list);
+    }
+
+    @ApiOperation(value = "查询数据凭证概况")
+    @GetMapping("/dataTokenOverview")
+    public JsonResponse<OverviewDataTokenOverviewResp> dataTokenOverview() {
+        Pair<Long, Long> pair = indexService.listDataTokenOverview();
+        OverviewDataTokenOverviewResp overviewDataTokenOverviewResp = new OverviewDataTokenOverviewResp();
+        overviewDataTokenOverviewResp.setDataTokenCount(pair.getLeft());
+        overviewDataTokenOverviewResp.setAttributeDataTokenCount(pair.getRight());
+        return JsonResponse.success(overviewDataTokenOverviewResp);
     }
 
 }
