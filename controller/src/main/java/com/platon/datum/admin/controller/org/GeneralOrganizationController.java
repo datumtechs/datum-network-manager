@@ -16,6 +16,7 @@ import com.platon.datum.admin.service.GeneralOrganizationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +43,8 @@ public class GeneralOrganizationController extends BaseController {
 
     @Resource
     private GeneralOrganizationService generalOrganizationService;
+    @Value("${pinata-gateway}")
+    private String pinataGateway;
 
     /**
      * 主页内容
@@ -86,6 +89,7 @@ public class GeneralOrganizationController extends BaseController {
     @PostMapping("/applyDetail")
     public JsonResponse<ApplyRecord> applyDetail(@RequestBody @Validated GeneralOrganizationApplyDetailReq req) {
         ApplyRecord applyRecord = generalOrganizationService.getApplyDetail(req.getId());
+        applyRecord.getDynamicFields().put("pinataGateway", pinataGateway);
         return JsonResponse.success(applyRecord);
     }
 

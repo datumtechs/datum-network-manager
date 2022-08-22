@@ -2,6 +2,7 @@ package com.platon.datum.admin.controller.org;
 
 import com.github.pagehelper.Page;
 import com.platon.datum.admin.common.exception.ValidateException;
+import com.platon.datum.admin.dao.BaseDomain;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.*;
 import com.platon.datum.admin.dto.JsonResponse;
@@ -13,6 +14,7 @@ import com.platon.datum.admin.service.ProposalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +44,8 @@ public class AuthorityController {
     private AuthorityBusinessService authorityBusinessService;
     @Resource
     private ProposalService proposalService;
+    @Value("${pinata-gateway}")
+    private String pinataGateway;
 
     /**
      * 主页内容
@@ -151,6 +155,9 @@ public class AuthorityController {
     @PostMapping("/todoDetail")
     public JsonResponse<Business> todoDetail(@RequestBody @Validated AuthorityTodoDetailReq req) {
         Business todoDetail = authorityBusinessService.getDetail(req.getId());
+        if(todoDetail instanceof BaseDomain){
+            ((BaseDomain) todoDetail).getDynamicFields().put("pinataGateway", pinataGateway);
+        }
         return JsonResponse.success(todoDetail);
     }
 
@@ -193,6 +200,9 @@ public class AuthorityController {
     @PostMapping("/doneDetail")
     public JsonResponse<Business> doneDetail(@RequestBody @Validated AuthorityDoneDetailReq req) {
         Business doneDetail = authorityBusinessService.getDetail(req.getId());
+        if (doneDetail instanceof BaseDomain) {
+            ((BaseDomain) doneDetail).getDynamicFields().put("pinataGateway", pinataGateway);
+        }
         return JsonResponse.success(doneDetail);
     }
 
