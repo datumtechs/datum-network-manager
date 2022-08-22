@@ -1,5 +1,6 @@
 package com.platon.datum.admin.grpc.client;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.google.protobuf.Empty;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
@@ -56,6 +57,9 @@ public class DidClient {
      * 申请VC
      */
     public void applyVCLocal(ApplyRecord applicantRecord, String approveOrgUrl) {
+
+        approveOrgUrl = StrUtil.subAfter(approveOrgUrl, "//", true);
+
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -84,6 +88,9 @@ public class DidClient {
      * 普通组织使用该接口，下载VC
      */
     public String downloadVCLocal(String approveOrg, String approveOrgUrl, String applyOrg) {
+
+        approveOrgUrl = StrUtil.subAfter(approveOrgUrl, "//", true);
+
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request

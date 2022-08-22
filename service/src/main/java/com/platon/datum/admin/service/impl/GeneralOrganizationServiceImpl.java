@@ -1,6 +1,5 @@
 package com.platon.datum.admin.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -262,8 +261,7 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
         applicantRecord.setProgress(ApplyRecord.ProgressEnum.APPLYING.getStatus());
         applicantRecord.setStatus(ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
 
-        String authorityUrl = StrUtil.subAfter(authority.getUrl(), "//", true);
-        didClient.applyVCLocal(applicantRecord, authorityUrl);
+        didClient.applyVCLocal(applicantRecord, authority.getUrl());
         //保存提案信息
         int i = applyRecordMapper.insertSelective(applicantRecord);
         if (i <= 0) {

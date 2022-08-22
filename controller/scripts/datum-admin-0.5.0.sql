@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `apply_record`;
 CREATE TABLE `apply_record` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
-                                `pct_id` tinyint(4) DEFAULT NULL COMMENT '证书模板pctid',
+                                `pct_id` int(11) DEFAULT NULL COMMENT '证书模板pctid',
                                 `apply_org` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '发起申请的组织',
                                 `approve_org` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审批的组织',
                                 `start_time` timestamp NULL DEFAULT NULL COMMENT '申请时间',

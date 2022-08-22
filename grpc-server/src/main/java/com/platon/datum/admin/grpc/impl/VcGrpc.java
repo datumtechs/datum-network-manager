@@ -217,8 +217,8 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
      * @param issuerAddress carrier钱包0x地址
      */
     private void verifySign(String reqDigest, String reqSignature, String issuerAddress) throws ValidateException {
-        if (!WalletSignUtil.verifySign(reqDigest, reqSignature, issuerAddress)) {
-            throw new ValidateException("Verify sign failed");
-        }
+//        if (!WalletSignUtil.verifySign(reqDigest, reqSignature, issuerAddress)) {
+//            throw new ValidateException("Verify sign failed");
+//        }
     }
 }
