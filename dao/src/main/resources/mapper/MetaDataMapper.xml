@@ -120,19 +120,21 @@
           and md.`user` = #{userAddress}
         <if test="status == 1">
             AND IF(
-                        dt.STATUS IS NULL
-                        OR dt.STATUS = 2
-                        OR adt.STATUS IS NULL
-                        OR adt.STATUS = 2
+                        (dt.STATUS IS NULL
+                            OR dt.STATUS = 2)
+                        and
+                        (adt.STATUS IS NULL
+                            OR adt.STATUS = 2)
                 , FALSE
                 , TRUE)
         </if>
         <if test="status == 2">
             AND IF(
-                        dt.STATUS IS NULL
-                        OR dt.STATUS = 2
-                        OR adt.STATUS IS NULL
-                        OR adt.STATUS = 2
+                        (dt.STATUS IS NULL
+                            OR dt.STATUS = 2)
+                        and
+                        (adt.STATUS IS NULL
+                            OR adt.STATUS = 2)
                 , TRUE
                 , FALSE)
         </if>

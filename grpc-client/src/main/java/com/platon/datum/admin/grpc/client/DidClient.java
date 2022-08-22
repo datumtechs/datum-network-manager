@@ -4,7 +4,9 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.google.protobuf.Empty;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
+import com.platon.datum.admin.common.util.DidUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
+import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.ApplyRecord;
 import com.platon.datum.admin.grpc.carrier.api.DIDServiceGrpc;
 import com.platon.datum.admin.grpc.carrier.api.DidRpcApi;
@@ -43,10 +45,14 @@ public class DidClient {
         //2.拼装request
         //3.调用rpc,获取response
         DidRpcApi.CreateDIDResponse response = DIDServiceGrpc.newBlockingStub(channel).createDID(Empty.newBuilder().build());
-        log.debug("createDID,response:{}",response);
+        log.debug("createDID,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
+        } else if (response.getStatus() != 15002) {
+            //did已经创建
+            String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
+            return DidUtil.latAddressToDid(observerProxyWalletAddress);
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
@@ -72,10 +78,10 @@ public class DidClient {
                 .setClaim(applicantRecord.getClaim())
                 .setExtInfo(JSONUtil.toJsonStr(applicantRecord))
                 .build();
-        log.debug("applyVCLocal,request:{}",request);
+        log.debug("applyVCLocal,request:{}", request);
         //3.调用rpc,获取response
         Common.SimpleResponse response = VcServiceGrpc.newBlockingStub(channel).applyVCLocal(request);
-        log.debug("applyVCLocal,response:{}",response);
+        log.debug("applyVCLocal,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -99,10 +105,10 @@ public class DidClient {
                 .setIssuerUrl(approveOrgUrl)
                 .setApplicantDid(applyOrg)
                 .build();
-        log.debug("downloadVCLocal,request:{}",request);
+        log.debug("downloadVCLocal,request:{}", request);
         //3.调用rpc,获取response
         DidRpcApi.DownloadVCResponse response = VcServiceGrpc.newBlockingStub(channel).downloadVCLocal(request);
-        log.debug("downloadVCLocal,response:{}",response);
+        log.debug("downloadVCLocal,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -127,10 +133,10 @@ public class DidClient {
                 .setClaim(applyRecord.getClaim())
                 .setExpirationDate(LocalDateTimeUtil.now().plusYears(100).toString())//TODO 暂时设置100年有效期
                 .build();
-        log.debug("createVC,request:{}",request);
+        log.debug("createVC,request:{}", request);
         //3.调用rpc,获取response
         DidRpcApi.CreateVCResponse response = VcServiceGrpc.newBlockingStub(channel).createVC(request);
-        log.debug("createVC,response:{}",response);
+        log.debug("createVC,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -139,6 +145,6 @@ public class DidClient {
         }
         String vc = response.getVc();
         DidRpcApi.TxInfo txInfo = response.getTxInfo();
-        return Pair.of(vc,txInfo);
+        return Pair.of(vc, txInfo);
     }
 }

@@ -87,7 +87,6 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             throw new BizException(Errors.SysException, e);
         }
-        //TODO 判断did是否已经创建过
         String did = didClient.createDID(org.getCarrierIp(), org.getCarrierPort());
         log.debug("申请did：" + did);
         org.setIdentityId(did);
