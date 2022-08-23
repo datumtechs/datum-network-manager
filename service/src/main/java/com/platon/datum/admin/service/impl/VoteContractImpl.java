@@ -98,7 +98,8 @@ public class VoteContractImpl implements VoteContract {
             authorityDto.setJoinTime(LocalDateTimeUtil.getLocalDateTime(result.getValue3().get(i).longValue()));
 
             //判断是否是初始成员
-            if (adminAddress.equalsIgnoreCase(result.getValue1().get(i))) {
+            log.debug("adminAddress:{},authorityAddress:{}", DidUtil.addressToDid(adminAddress), DidUtil.addressToDid(adminAddress));
+            if (DidUtil.addressToDid(adminAddress).equalsIgnoreCase(DidUtil.addressToDid(adminAddress))) {
                 authorityDto.setIsAdmin(1);
             }
             log.debug("authority : {},{},{}", result.getValue1().get(i), result.getValue2().get(i), result.getValue3().get(i));

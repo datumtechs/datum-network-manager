@@ -245,7 +245,7 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
 //            String signPublicKeyStr = Numeric.toHexStringWithPrefix(signPublicKey);
 //            String address = Keys.getAddress(signPublicKeyStr);
 //
-//            if (!address.equalsIgnoreCase(issuerAddress)) {
+//            if (!Numeric.cleanHexPrefix(address).equalsIgnoreCase(Numeric.cleanHexPrefix(issuerAddress))) {
 //                throw new ValidateException("Verify sign failed");
 //            }
 //        } catch (Exception exception) {

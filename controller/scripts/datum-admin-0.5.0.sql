@@ -600,6 +600,8 @@ INSERT INTO `resource` VALUES ('91', '2', '有属性凭证详情', 'voucher/Attr
 INSERT INTO `resource` VALUES ('92', '2', '组织管理', 'OrgManage', null, '0');
 INSERT INTO `resource` VALUES ('93', '2', '提名委员会', 'OrgManage/nominationCommittee', null, '0');
 INSERT INTO `resource` VALUES ('94', '2', '委员会申请认证', 'OrgManage/applyCertification', null, '0');
+INSERT INTO `resource` VALUES ('95', '2', '委员会申请认证', 'OrgManage/orgManageApplyDetails', NULL, '0');
+
 
 -- ----------------------------
 -- Table structure for role_resource
@@ -770,6 +772,7 @@ INSERT INTO `role_resource` VALUES ('1', '91');
 INSERT INTO `role_resource` VALUES ('1', '92');
 INSERT INTO `role_resource` VALUES ('1', '93');
 INSERT INTO `role_resource` VALUES ('1', '94');
+INSERT INTO `role_resource` VALUES ('1', '95');
 
 -- ----------------------------
 -- Table structure for seed_node
@@ -817,7 +820,7 @@ INSERT INTO `sys_config` VALUES ('9', 'hrp', 'lat', '1', 'hrp', '2022-04-07 12:0
 INSERT INTO `sys_config` VALUES ('10', 'rpc_url_list', 'https://devnetopenapi2.platon.network/rpc', '1', '链rpcUrl，主要是给后台系统用，可以是内部IP', '2022-04-08 03:02:48', '2022-04-08 03:01:36');
 INSERT INTO `sys_config` VALUES ('11', 'attribute_data_token_factory_address', '0x6FCf0573c4d95fc927d4319f2f859638d8c8492a', '1', '有属性凭证工厂合约地址', '2022-08-05 07:25:39', '2022-04-06 02:14:42');
 INSERT INTO `sys_config` VALUES ('12', 'attribute_data_token_exchange', '<交易所名称1|交易所地址1>,<交易所名称2|交易所地址2>', '1', '有属性凭证交易所地址，格式为<交易所名称,交易所地址>，多个交易所以英文逗号分割', '2022-08-09 10:19:10', '2022-08-09 08:57:18');
-INSERT INTO `sys_config` VALUES ('13', 'vote_contract_address', '0x6FCf0573c4d95fc927d4319f2f859638d8c8492a', '1', '投票合约合约地址', '2022-08-14 23:14:38', '2022-04-06 02:14:42');
+INSERT INTO `sys_config` VALUES ('13', 'vote_contract_address', '0x857027b23F73F5823984d90550A39cAA6FA43A11', '1', '投票合约合约地址', '2022-08-14 23:14:38', '2022-04-06 02:14:42');
 INSERT INTO `sys_config` VALUES ('14', 'vote_contract_deploy_bn', '1', '1', '投票合约部署的区块，这个配置决定了事件从哪个区块开始读取', '2022-08-14 23:32:20', '2022-04-06 02:14:42');
 
 -- ----------------------------

@@ -121,6 +121,18 @@ public class AuthorityController {
     }
 
     /**
+     * 获取可提名的成员
+     *
+     * @since 0.5.0
+     */
+    @ApiOperation("获取可提名的成员")
+    @PostMapping("/getNominateMember")
+    public JsonResponse<List<GlobalOrg>> getNominateMember(@RequestBody @Validated AuthorityGetNominateMemberReq req) {
+        List<GlobalOrg> globalOrgList = proposalService.getNominateMember(req.getKeyword());
+        return JsonResponse.success(globalOrgList);
+    }
+
+    /**
      * 提名成员,需要将部分内容上传ipfs
      *
      * @since 0.5.0
@@ -155,7 +167,7 @@ public class AuthorityController {
     @PostMapping("/todoDetail")
     public JsonResponse<Business> todoDetail(@RequestBody @Validated AuthorityTodoDetailReq req) {
         Business todoDetail = authorityBusinessService.getDetail(req.getId());
-        if(todoDetail instanceof BaseDomain){
+        if (todoDetail instanceof BaseDomain) {
             ((BaseDomain) todoDetail).getDynamicFields().put("pinataGateway", pinataGateway);
         }
         return JsonResponse.success(todoDetail);
@@ -165,7 +177,6 @@ public class AuthorityController {
      * 处理我的待办
      *
      * @since 0.5.0
-     * TODO
      */
     @ApiOperation("处理我的待办")
     @PostMapping("/processTodo")

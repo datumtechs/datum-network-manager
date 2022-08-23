@@ -7,9 +7,11 @@ import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.exception.ValidateException;
 import com.platon.datum.admin.common.util.DidUtil;
 import com.platon.datum.admin.dao.AuthorityMapper;
+import com.platon.datum.admin.dao.GlobalOrgMapper;
 import com.platon.datum.admin.dao.ProposalMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Authority;
+import com.platon.datum.admin.dao.entity.GlobalOrg;
 import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.grpc.client.ProposalClient;
 import com.platon.datum.admin.service.IpfsOpService;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,6 +45,8 @@ public class ProposalServiceImpl implements ProposalService {
     private ProposalClient proposalClient;
     @Resource
     private AuthorityMapper authorityMapper;
+    @Resource
+    private GlobalOrgMapper globalOrgMapper;
     @Resource
     private PlatONClient platONClient;
 
@@ -178,6 +183,11 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Override
     public void nominate(String identityId, String ip, int port, String remark, String material, String materialDesc) {
+        Authority authority = authorityMapper.selectByPrimaryKey(identityId);
+        //校验
+        if (authority != null) {
+            throw new BizException(Errors.SysException, "Authority already exist!");
+        }
         String address = DidUtil.didToHexAddress(identityId);
         ProposalMaterialContent proposalMaterialContent = new ProposalMaterialContent();
         proposalMaterialContent.setImage(material);
@@ -198,10 +208,13 @@ public class ProposalServiceImpl implements ProposalService {
         Authority authority = authorityMapper.selectByPrimaryKey(identityId);
         //校验
         if (authority == null) {
-            throw new BizException(Errors.QueryRecordNotExist, "Authority not exist");
+            throw new BizException(Errors.QueryRecordNotExist, "Authority not exist!");
+        }
+        if (authority.getIsAdmin() == 1) {
+            throw new BizException(Errors.SysException, "Can't kick out authority admin!");
         }
         if (OrgCache.getLocalOrgInfo().getIsAuthority() == 0) {
-            throw new BizException(Errors.SysException, "Current org is not authority");
+            throw new BizException(Errors.SysException, "Current org is not authority!");
         }
 
         //上传文件
@@ -288,6 +301,15 @@ public class ProposalServiceImpl implements ProposalService {
 
         int newStatus = proposal.getStatus();
         return oldStatus == newStatus ? true : false;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public List<GlobalOrg> getNominateMember(String keyword) {
+        List<GlobalOrg> list = globalOrgMapper.selectNominateMemberList(keyword);
+        return list;
     }
 
 }

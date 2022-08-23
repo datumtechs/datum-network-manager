@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +63,7 @@ public class TaskClient {
                 .build();
         log.debug("getLocalTaskList,request:{}",request);
         //3.调用rpc服务接口
-        TaskRpcApi.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
+        TaskRpcApi.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getLocalTaskDetailList(request);
         log.debug("getLocalTaskList,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -87,7 +88,7 @@ public class TaskClient {
         TaskRpcApi.GetTaskEventListByTaskIdsRequest request = TaskRpcApi.GetTaskEventListByTaskIdsRequest.newBuilder().addAllTaskIds(taskIds).build();
         log.debug("getTaskEventListData,request:{}",request);
         //3.调用rpc服务接口
-        TaskRpcApi.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskEventListByTaskIds(request);
+        TaskRpcApi.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getTaskEventListByTaskIds(request);
         log.debug("getTaskEventListData,response:{}",response);
         //4.处理response
         if (response == null) {
