@@ -123,7 +123,7 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
      * @param id
      * @param response
      */
-    @Transactional(noRollbackFor = BizException.class, rollbackFor = Throwable.class)
+    @Transactional(rollbackFor = Throwable.class)
     @Override
     public void download(Integer id, HttpServletResponse response) {
         ApplyRecord applyRecord = applyRecordMapper.selectById(id);

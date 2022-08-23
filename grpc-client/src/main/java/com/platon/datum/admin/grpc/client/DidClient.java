@@ -66,8 +66,9 @@ public class DidClient {
      * 申请VC
      */
     public void applyVCLocal(ApplyRecord applicantRecord, String approveOrgUrl) {
-
-        approveOrgUrl = StrUtil.subAfter(approveOrgUrl, "//", true);
+        if (approveOrgUrl.contains("//")) {
+            approveOrgUrl = StrUtil.subAfter(approveOrgUrl, "//", true);
+        }
 
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
@@ -99,8 +100,9 @@ public class DidClient {
      * 普通组织使用该接口，下载VC
      */
     public String downloadVCLocal(String approveOrg, String approveOrgUrl, String applyOrg) {
-
-        approveOrgUrl = StrUtil.subAfter(approveOrgUrl, "//", true);
+        if (approveOrgUrl.contains("//")) {
+            approveOrgUrl = StrUtil.subAfter(approveOrgUrl, "//", true);
+        }
 
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
