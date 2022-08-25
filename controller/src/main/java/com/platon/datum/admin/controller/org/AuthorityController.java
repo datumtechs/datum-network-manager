@@ -238,6 +238,7 @@ public class AuthorityController {
     @PostMapping("/proposalDetail")
     public JsonResponse<Proposal> proposalDetail(@RequestBody @Validated AuthorityProposalDetailReq req) {
         Proposal proposalDetail = proposalService.getProposalDetail(req.getId());
+        proposalDetail.getDynamicFields().put("pinataGateway", pinataGateway);
         return JsonResponse.success(proposalDetail);
     }
 

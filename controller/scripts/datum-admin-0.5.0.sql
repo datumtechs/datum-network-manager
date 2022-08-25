@@ -501,7 +501,7 @@ CREATE TABLE `resource` (
                             `url_resource_id` int(11) DEFAULT NULL COMMENT '按钮或者菜单对应的url的资源id',
                             `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '父资源ID,如果没有父资源ID，则设置0',
                             PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='资源表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='资源表';
 
 -- ----------------------------
 -- Records of resource
@@ -570,13 +570,12 @@ INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `paren
 INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('806', '1', '普通组织-申请认证', '/api/v1/generalOrganization/apply', NULL, '0');
 INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('807', '1', '普通组织-使用证书', '/api/v1/generalOrganization/use', NULL, '0');
 
-
-INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('901', '1', '系统概况-查询本地计算资源占用情况', '/api/v1/overview/localPowerUsage', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('901', '1', '系统概况-查询本组织计算资源占用情况', '/api/v1/overview/localPowerUsage', NULL, '0');
 INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('902', '1', '系统概况-查询我发布的数据', '/api/v1/overview/localDataFileStatsTrendMonthly', NULL, '0');
-INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('903', '1', '系统概况-查询我发布的算力', '/api/v1/overview/localPowerStatsTrendMonthly', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('903', '1', '系统概况-查询本组织发布的算力', '/api/v1/overview/localPowerStatsTrendMonthly', NULL, '0');
 INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('904', '1', '系统概况-查询我的计算任务概况', '/api/v1/overview/myTaskOverview', NULL, '0');
-INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('905', '1', '系统概况-查询数据待授权列表', '/api/v1/overview/listDataAuthReqWaitingForApprove', NULL, '0');
-INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('906', '1', '系统概况-查询数据凭证概况', '/api/v1/overview/dataTokenOverview', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('905', '1', '系统概况-查询我的数据待授权列表', '/api/v1/overview/listDataAuthReqWaitingForApprove', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('906', '1', '系统概况-查询我的数据凭证概况', '/api/v1/overview/dataTokenOverview', NULL, '0');
 
 INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1001', '1', '计算任务相关接口-我参与的任务情况统计', '/api/v1/task/myTaskStatistics', NULL, '0');
 INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1002', '1', '计算任务相关接口-条件查询组织参与的任务列表', '/api/v1/task/listMyTask', NULL, '0');
@@ -699,8 +698,6 @@ INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '904');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '905');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '906');
 
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1001');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1002');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1003');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1004');
 
@@ -735,13 +732,6 @@ INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1303');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1308');
 
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5001');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5002');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5003');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5004');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5005');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5006');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5007');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5008');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5009');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5010');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5011');
@@ -765,10 +755,6 @@ INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5028');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5029');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5030');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5031');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5032');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5033');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5034');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5035');
 
 -- ----------------------------
 -- Table structure for seed_node
@@ -975,15 +961,15 @@ CREATE TABLE `task_result_consumer` (
 
 -- 创建本地元数据月统计视图
 CREATE OR REPLACE VIEW v_data_file_stats_monthly as
-SELECT a.stats_time, a.month_size, SUM(a.month_size) AS accu_size
+SELECT a.stats_time, a.month_size, SUM(a.month_size) AS accu_size,a.`user` AS `user`
 FROM (
-         SELECT DATE_FORMAT(lmd.publish_time, '%Y-%m')  as stats_time, sum(ldf.size) as month_size
+         SELECT DATE_FORMAT(lmd.publish_time, '%Y-%m')  as stats_time, sum(ldf.size) as month_size,lmd.`user` as `user`
          FROM data_file ldf, meta_data lmd
-         WHERE ldf.file_id = lmd.file_id AND lmd.status in (2,7,8,9,10)
-         GROUP BY DATE_FORMAT(lmd.publish_time, '%Y-%m')
+         WHERE ldf.file_id = lmd.file_id AND lmd.status in (2)
+         GROUP BY DATE_FORMAT(lmd.publish_time, '%Y-%m'),lmd.`user`
          ORDER BY DATE_FORMAT(lmd.publish_time, '%Y-%m')
      ) a
-GROUP BY a.stats_time
+GROUP BY a.stats_time,a.`user`
 ORDER BY a.stats_time;
 
 

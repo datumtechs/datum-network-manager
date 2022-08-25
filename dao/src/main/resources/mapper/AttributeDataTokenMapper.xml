@@ -141,9 +141,10 @@
         where address = #{attributeDataTokenAddress}
     </select>
 
-    <select id="count" resultType="int">
+    <select id="countByUser" resultType="int">
         select count(*)
         from attribute_data_token
-        where status != 2
+                 left join meta_data md on attribute_data_token.meta_data_db_id = md.id
+        where md.user = #{userAddress}
     </select>
 </mapper>

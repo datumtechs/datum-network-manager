@@ -1,23 +1,20 @@
 package com.platon.datum.admin.controller.overview;
 
-import com.platon.datum.admin.dao.dto.DataAuthReqDTO;
-import com.platon.datum.admin.dao.dto.StatsDataTrendDTO;
-import com.platon.datum.admin.dao.dto.StatsPowerTrendDTO;
-import com.platon.datum.admin.dao.dto.UsedResourceDTO;
+import com.platon.datum.admin.controller.BaseController;
+import com.platon.datum.admin.dao.dto.*;
 import com.platon.datum.admin.dto.JsonResponse;
 import com.platon.datum.admin.dto.resp.MyTaskStatsResp;
-import com.platon.datum.admin.dto.resp.OverviewDataTokenOverviewResp;
 import com.platon.datum.admin.dto.resp.UsedResourceResp;
 import com.platon.datum.admin.service.IndexService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,40 +32,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/overview/")
 @Slf4j
-public class OverviewController {
+public class OverviewController extends BaseController {
 
     @Resource
     private IndexService indexService;
 
 
-//    /**
-//     * 查看当前系统的概览信息,即首页信息，该接口内容为统计信息
-//     * @return
-//     */
-//    @ApiOperation(value = "首页信息统计信息")
-//    @GetMapping("/overview")
-//    public JsonResponse<IndexOverviewResp> overview(){
-//        VLocalStats localStats = indexService.getOverview();
-//        IndexOverviewResp resp = IndexOverviewResp.from(localStats);
-//        return JsonResponse.success(resp);
-//    }
-//
-//
-//    /**
-//     * 即首页信息计算节点列表
-//     * @return
-//     */
-//    @ApiOperation(value = "首页计算节点列表")
-//    @GetMapping("/nodeList")
-//    public JsonResponse<List<IndexNodeListResp>> nodeList(){
-//        List<PowerNode> powerNodeList = indexService.getPowerNodeList();
-//        List<IndexNodeListResp> respList= powerNodeList.stream()
-//                .map(IndexNodeListResp::from)
-//                .collect(Collectors.toList());
-//        return JsonResponse.success(respList);
-//    }
-
-    @ApiOperation(value = "查询本地计算资源占用情况")
+    @ApiOperation(value = "查询本组织计算资源占用情况")
     @GetMapping("/localPowerUsage")
     public JsonResponse<UsedResourceResp> localPowerUsage() {
         UsedResourceDTO usedResourceDTO = indexService.queryUsedTotalResource();
@@ -77,12 +47,13 @@ public class OverviewController {
 
     @ApiOperation(value = "查询我发布的数据")
     @GetMapping("/localDataFileStatsTrendMonthly")
-    public JsonResponse<List<StatsDataTrendDTO>> localDataFileStatsTrendMonthly() {
-        List<StatsDataTrendDTO> dataPowerList = indexService.listLocalDataFileStatsTrendMonthly();
+    public JsonResponse<List<StatsDataTrendDTO>> localDataFileStatsTrendMonthly(HttpSession session) {
+        String currentUserAddress = getCurrentUserAddress(session);
+        List<StatsDataTrendDTO> dataPowerList = indexService.listLocalDataFileStatsTrendMonthly(currentUserAddress);
         return JsonResponse.success(dataPowerList);
     }
 
-    @ApiOperation(value = "查询我发布的算力")
+    @ApiOperation(value = "查询本组织发布的算力")
     @GetMapping("/localPowerStatsTrendMonthly")
     public JsonResponse<List<StatsPowerTrendDTO>> localPowerStatsTrendMonthly() {
         List<StatsPowerTrendDTO> dataPowerList = indexService.listLocalPowerStatsTrendMonthly();
@@ -91,60 +62,33 @@ public class OverviewController {
 
     @ApiOperation(value = "查询我的计算任务概况")
     @GetMapping("/myTaskOverview")
-    public JsonResponse<MyTaskStatsResp> queryMyCalculateTaskStats() {
-        List<Map<String, Object>> list = indexService.queryMyCalculateTaskStats();
+    public JsonResponse<MyTaskStatsResp> queryMyCalculateTaskStats(HttpSession session) {
+        String currentUserAddress = getCurrentUserAddress(session);
+        List<Map<String, Object>> list = indexService.queryMyCalculateTaskStats(currentUserAddress, currentUserIsAdmin(session));
         List<MyTaskStatsResp> respList = new ArrayList<>();
         for (Map<String, Object> map : list) {
             MyTaskStatsResp resp = new MyTaskStatsResp();
             resp.setStatus(Integer.parseInt(map.get("status").toString()));
-            resp.setStatusCount(Integer.parseInt(map.get("statusCount").toString()));
+            resp.setStatusCount(map.get("statusCount") == null ? 0 : Integer.parseInt(map.get("statusCount").toString()));
             respList.add(resp);
         }
         return JsonResponse.success(respList);
     }
 
-    /*@ApiOperation(value = "查询全网算力总量走势")
-    @GetMapping("/globalPowerStatsTrendMonthly")
-    public JsonResponse<List<StatsTrendDTO>> listGlobalPowerStatsTrendMonthly(){
-        List<StatsTrendDTO> list = indexService.listGlobalPowerStatsTrendMonthly();
-        return JsonResponse.success(list);
-    }
-
-    @ApiOperation(value = "查询全网有效数据总量，每月新发布数据量走势")
-    @GetMapping("/globalDataFileStatsTrendMonthly")
-    public JsonResponse<List<StatsTrendDTO>> listGlobalDataFileStatsTrendMonthly(){
-        List<StatsTrendDTO> list = indexService.listGlobalDataFileStatsTrendMonthly();
-        return JsonResponse.success(list);
-
-    }
-
-    @ApiOperation(value = "查询全网数据总量环比")
-    @GetMapping("/queryWholeNetDateRatio")
-    @Deprecated
-    public JsonResponse<DataRatioResp> queryWholeNetDateRatio(){
-        Map<String, Object> map = indexService.queryWholeNetDateTotalRatio();
-
-        DataRatioResp resp = new DataRatioResp();
-        resp.setRingRatio((String)map.get("ringRatio"));
-        resp.setRingRatio((String)map.get("sameRatio"));
-        return JsonResponse.success(resp);
-    }*/
-
-    @ApiOperation(value = "查询数据待授权列表")
+    @ApiOperation(value = "查询我的数据待授权列表")
     @GetMapping("/listDataAuthReqWaitingForApprove")
-    public JsonResponse<DataAuthReqDTO> listDataAuthReqWaitingForApprove() {
-        List<DataAuthReqDTO> list = indexService.listDataAuthReqWaitingForApprove();
+    public JsonResponse<DataAuthReqDTO> listDataAuthReqWaitingForApprove(HttpSession session) {
+        String currentUserAddress = getCurrentUserAddress(session);
+        List<DataAuthReqDTO> list = indexService.listDataAuthReqWaitingForApprove(currentUserAddress);
         return JsonResponse.success(list == null || list.size() == 0 ? new ArrayList<>() : list);
     }
 
-    @ApiOperation(value = "查询数据凭证概况")
+    @ApiOperation(value = "查询我的数据凭证概况")
     @GetMapping("/dataTokenOverview")
-    public JsonResponse<OverviewDataTokenOverviewResp> dataTokenOverview() {
-        Pair<Long, Long> pair = indexService.listDataTokenOverview();
-        OverviewDataTokenOverviewResp overviewDataTokenOverviewResp = new OverviewDataTokenOverviewResp();
-        overviewDataTokenOverviewResp.setDataTokenCount(pair.getLeft());
-        overviewDataTokenOverviewResp.setAttributeDataTokenCount(pair.getRight());
-        return JsonResponse.success(overviewDataTokenOverviewResp);
+    public JsonResponse<DataTokenOverviewDTO> dataTokenOverview(HttpSession session) {
+        String currentUserAddress = getCurrentUserAddress(session);
+        DataTokenOverviewDTO dataTokenOverviewDTO = indexService.listDataTokenOverview(currentUserAddress);
+        return JsonResponse.success(dataTokenOverviewDTO);
     }
 
 }

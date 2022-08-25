@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class StatsDataTrendDTO {
     /** 统计时间 */
     String statsTime;
-    /** 累计值 */
+    /** 每个月累加的 */
     Long totalValue;
-    /** 增量值 */
+    /** 当月的 */
     Long incrementValue;
 }

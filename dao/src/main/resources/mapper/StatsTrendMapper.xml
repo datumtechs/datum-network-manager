@@ -33,7 +33,7 @@
                  UNION
                  SELECT DATE_FORMAT(CURRENT_DATE(), '%Y-%m') AS stats_time
              ) t
-                 LEFT JOIN (SELECT stats_time, month_size, accu_size FROM v_data_file_stats_monthly) d
+                 LEFT JOIN (SELECT stats_time, month_size, accu_size FROM v_data_file_stats_monthly where `user` = #{userAddress}) d
                            ON t.stats_time = d.stats_time
         ORDER BY t.stats_time
     </select>

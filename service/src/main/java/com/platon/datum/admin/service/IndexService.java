@@ -1,9 +1,6 @@
 package com.platon.datum.admin.service;
 
-import com.platon.datum.admin.dao.dto.DataAuthReqDTO;
-import com.platon.datum.admin.dao.dto.StatsDataTrendDTO;
-import com.platon.datum.admin.dao.dto.StatsPowerTrendDTO;
-import com.platon.datum.admin.dao.dto.UsedResourceDTO;
+import com.platon.datum.admin.dao.dto.*;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -30,21 +27,21 @@ public interface IndexService {
      *
      * @return
      */
-    List<Map<String, Object>> queryMyCalculateTaskStats();
+    List<Map<String, Object>> queryMyCalculateTaskStats(String userAddress, boolean isAdmin);
 
     /**
      * 查询数据待授权列表
      *
      * @return
      */
-    List<DataAuthReqDTO> listDataAuthReqWaitingForApprove();
+    List<DataAuthReqDTO> listDataAuthReqWaitingForApprove(String userAddress);
 
     /**
      * 查询本地数据总量月走势
      *
      * @return
      */
-    List<StatsDataTrendDTO> listLocalDataFileStatsTrendMonthly();
+    List<StatsDataTrendDTO> listLocalDataFileStatsTrendMonthly(String userAddress);
 
     /**
      * 查询本地算力（内存）总量月走势
@@ -54,10 +51,8 @@ public interface IndexService {
     List<StatsPowerTrendDTO> listLocalPowerStatsTrendMonthly();
 
     /**
-     * left 是无属性凭证数量
-     * right 有属性凭证数量
      * @return
      */
-    Pair<Long, Long> listDataTokenOverview();
+    DataTokenOverviewDTO listDataTokenOverview(String currentUserAddress);
 
 }

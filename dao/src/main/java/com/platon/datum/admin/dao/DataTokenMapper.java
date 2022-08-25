@@ -8,6 +8,7 @@ import java.util.List;
 public interface DataTokenMapper {
 
     /**
+     *
      */
     List<DataToken> selectListByAddress(@Param("keyword") String keyword, @Param("address") String address);
 
@@ -46,5 +47,7 @@ public interface DataTokenMapper {
 
     void updateNewFeeById(@Param("dataTokenId") Integer dataTokenId, @Param("ciphertextFee") String ciphertextFee, @Param("plaintextFee") String plaintextFee);
 
-    int count();
+    int countByUserAndPriced(@Param("userAddress") String userAddress);
+
+    int countByUserAndUnPriced(@Param("userAddress") String userAddress);
 }

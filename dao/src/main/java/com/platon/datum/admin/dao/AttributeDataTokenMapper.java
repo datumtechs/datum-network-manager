@@ -39,5 +39,5 @@ public interface AttributeDataTokenMapper {
 
     AttributeDataToken selectByAddress(@Param("attributeDataTokenAddress") String attributeDataTokenAddress);
 
-    int count();
+    int countByUser(String userAddress);
 }

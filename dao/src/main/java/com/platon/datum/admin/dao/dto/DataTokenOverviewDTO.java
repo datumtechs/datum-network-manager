@@ -1,4 +1,4 @@
-package com.platon.datum.admin.dto.resp;
+package com.platon.datum.admin.dao.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,7 +8,7 @@ import lombok.ToString;
 
 /**
  * @author liushuyu
- * @date 2022/8/22 20:43
+ * @date 2022/8/25 12:14
  * @desc
  */
 
@@ -16,12 +16,15 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel
-public class OverviewDataTokenOverviewResp {
+public class DataTokenOverviewDTO {
 
-    @ApiModelProperty("无属性数据凭证数量")
-    private Long dataTokenCount = 0L;
+    @ApiModelProperty("未定价无属性数据凭证数量")
+    private Long pricedDataTokenCount = 0L;
 
+    @ApiModelProperty("已定价无属性数据凭证数量")
+    private Long unPriceddataTokenCount = 0L;
 
     @ApiModelProperty("有属性数据凭证数量")
     private Long attributeDataTokenCount = 0L;
+
 }
