@@ -62,6 +62,11 @@ public class AuthorityBusinessProcessStatusTask {
             if (proposal.getStatus() == Proposal.StatusEnum.VOTE_END.getValue()) {
                 authorityBusinessMapper.updateProcessStatusById(authorityBusiness.getId(), AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus());
             }
+            //4.如果提案被撤销了，则将0-未处理设置为2-拒绝
+            if (proposal.getStatus() == Proposal.StatusEnum.REVOKED.getValue()
+                    && authorityBusiness.getProcessStatus() == AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus()) {
+                authorityBusinessMapper.updateProcessStatusById(authorityBusiness.getId(), AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus());
+            }
         });
         log.debug("刷新委员会成员的事务处理状态定时任务结束|||");
     }

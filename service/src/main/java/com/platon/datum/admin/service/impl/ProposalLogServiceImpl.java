@@ -63,7 +63,7 @@ public class ProposalLogServiceImpl implements ProposalLogService {
             }
             if (proposalLogMapper.countByBnAndTxHashAndLogIndex(tuple2.getValue1().getBlockNumber().toString(),
                     tuple2.getValue1().getTransactionHash(),
-                    tuple2.getValue1().getLogIndex().toString()) > 0) {
+                    tuple2.getValue1().getLogIndex().toString()) <= 0) {
                 ProposalLog save = new ProposalLog();
                 Log log = tuple2.getValue1();
                 save.setBlockNumber(log.getBlockNumber().toString());

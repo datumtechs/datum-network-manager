@@ -35,8 +35,10 @@ public interface ProposalMapper {
     List<Proposal> selectBySubmitter(@Param("localOrgIdentityId") String localOrgIdentityId,
                                      @Param("keyword") String keyword);
 
-    List<Proposal> selectBySubmitterAndStatus(@Param("localOrgIdentityId") String localOrgIdentityId, @Param("statusList") List<Integer> statusList);
+    List<Proposal> selectBySubmitterAndStatus(@Param("localOrgIdentityId") String localOrgIdentityId,
+                                              @Param("statusList") List<Integer> statusList);
 
+    List<Proposal> selectByStatus(@Param("statusList") List<Integer> statusList);
     int updateStatus(@Param("id") String id,
                      @Param("status") Integer status);
 

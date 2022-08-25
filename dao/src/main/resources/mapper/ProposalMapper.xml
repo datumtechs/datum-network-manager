@@ -291,4 +291,13 @@
             #{status}
         </foreach>
     </select>
+
+    <select id="selectByStatus" resultMap="BaseResultMap">
+        select p.*
+        from proposal p
+        where status in
+        <foreach collection="statusList" separator="," open="(" close=")" item="status">
+            #{status}
+        </foreach>
+    </select>
 </mapper>

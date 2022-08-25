@@ -98,9 +98,11 @@ public class VoteContractImpl implements VoteContract {
             authorityDto.setJoinTime(LocalDateTimeUtil.getLocalDateTime(result.getValue3().get(i).longValue()));
 
             //判断是否是初始成员
-            log.debug("adminAddress:{},authorityAddress:{}", DidUtil.addressToDid(adminAddress), DidUtil.addressToDid(adminAddress));
-            if (DidUtil.addressToDid(adminAddress).equalsIgnoreCase(DidUtil.addressToDid(adminAddress))) {
+            log.debug("adminAddress:{},authorityAddress:{}", DidUtil.addressToDid(adminAddress), authorityDto.getIdentityId());
+            if (DidUtil.addressToDid(adminAddress).equalsIgnoreCase(authorityDto.getIdentityId())) {
                 authorityDto.setIsAdmin(1);
+            } else {
+                authorityDto.setIsAdmin(0);
             }
             log.debug("authority : {},{},{}", result.getValue1().get(i), result.getValue2().get(i), result.getValue3().get(i));
             resultList.add(authorityDto);
@@ -112,13 +114,15 @@ public class VoteContractImpl implements VoteContract {
     public Observable<Optional<Tuple2<Log, Object>>> subscribe(BigInteger beginBN) {
         PlatonFilter filter = new PlatonFilter(DefaultBlockParameter.valueOf(beginBN), DefaultBlockParameterName.LATEST, voteAddress);
         filter.addOptionalTopics(newProposalSignature, proposalResultSignature, voteProposalSignature, withdrawProposalSignature, authorityAddSignature, authorityDeleteSignature);
-        return web3jManager.getWeb3j().platonLogObservable(filter).map(log -> {
-            List<String> topics = log.getTopics();
+        return web3jManager.getWeb3j().platonLogObservable(filter).map(platonlog -> {
+            log.debug("subscribe1===>{}", platonlog);
+            List<String> topics = platonlog.getTopics();
             if (topics == null || topics.size() == 0) {
                 return Optional.empty();
             }
             if (topics.get(0).equals(newProposalSignature)) {
-                EventValues eventValues = Contract.staticExtractEventParameters(Vote.NEWPROPOSAL_EVENT, log);
+                log.debug("subscribe2");
+                EventValues eventValues = Contract.staticExtractEventParameters(Vote.NEWPROPOSAL_EVENT, platonlog);
                 Vote.NewProposalEventResponse typedResponse = new Vote.NewProposalEventResponse();
                 typedResponse.proposalId = (BigInteger) eventValues.getIndexedValues().get(0).getValue();
                 typedResponse.proposalType = (BigInteger) eventValues.getIndexedValues().get(1).getValue();
@@ -127,40 +131,46 @@ public class VoteContractImpl implements VoteContract {
                 typedResponse.candidateServiceUrl = (String) eventValues.getNonIndexedValues().get(1).getValue();
                 typedResponse.proposalUrl = (String) eventValues.getNonIndexedValues().get(2).getValue();
                 typedResponse.submitBlockNo = (BigInteger) eventValues.getNonIndexedValues().get(3).getValue();
-                return Optional.of(new Tuple2<>(log, typedResponse));
+                return Optional.of(new Tuple2<>(platonlog, typedResponse));
             } else if (topics.get(0).equals(proposalResultSignature)) {
-                EventValues eventValues = Contract.staticExtractEventParameters(Vote.PROPOSALRESULT_EVENT, log);
+                log.debug("subscribe3");
+                EventValues eventValues = Contract.staticExtractEventParameters(Vote.PROPOSALRESULT_EVENT, platonlog);
                 Vote.ProposalResultEventResponse typedResponse = new Vote.ProposalResultEventResponse();
                 typedResponse.proposalId = (BigInteger) eventValues.getIndexedValues().get(0).getValue();
                 typedResponse.result = (Boolean) eventValues.getNonIndexedValues().get(0).getValue();
-                return Optional.of(new Tuple2<>(log, typedResponse));
+                return Optional.of(new Tuple2<>(platonlog, typedResponse));
             } else if (topics.get(0).equals(voteProposalSignature)) {
-                EventValues eventValues = Contract.staticExtractEventParameters(Vote.VOTEPROPOSAL_EVENT, log);
+                log.debug("subscribe4");
+                EventValues eventValues = Contract.staticExtractEventParameters(Vote.VOTEPROPOSAL_EVENT, platonlog);
                 Vote.VoteProposalEventResponse typedResponse = new Vote.VoteProposalEventResponse();
                 typedResponse.proposalId = (BigInteger) eventValues.getIndexedValues().get(0).getValue();
                 typedResponse.voter = Bech32.addressDecodeHex((String) eventValues.getNonIndexedValues().get(0).getValue());
-                return Optional.of(new Tuple2<>(log, typedResponse));
+                return Optional.of(new Tuple2<>(platonlog, typedResponse));
             } else if (topics.get(0).equals(withdrawProposalSignature)) {
-                EventValues eventValues = Contract.staticExtractEventParameters(Vote.WITHDRAWPROPOSAL_EVENT, log);
+                log.debug("subscribe5");
+                EventValues eventValues = Contract.staticExtractEventParameters(Vote.WITHDRAWPROPOSAL_EVENT, platonlog);
                 Vote.WithdrawProposalEventResponse typedResponse = new Vote.WithdrawProposalEventResponse();
                 typedResponse.proposalId = (BigInteger) eventValues.getIndexedValues().get(0).getValue();
                 typedResponse.blockNo = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
-                return Optional.of(new Tuple2<>(log, typedResponse));
+                return Optional.of(new Tuple2<>(platonlog, typedResponse));
             } else if (topics.get(0).equals(authorityDeleteSignature)) {
-                EventValues eventValues = Contract.staticExtractEventParameters(Vote.AUTHORITYDELETE_EVENT, log);
+                log.debug("subscribe6");
+                EventValues eventValues = Contract.staticExtractEventParameters(Vote.AUTHORITYDELETE_EVENT, platonlog);
                 Vote.AuthorityDeleteEventResponse typedResponse = new Vote.AuthorityDeleteEventResponse();
                 typedResponse.addr = Bech32.addressDecodeHex((String) eventValues.getNonIndexedValues().get(0).getValue());
                 typedResponse.serviceUrl = (String) eventValues.getNonIndexedValues().get(1).getValue();
                 typedResponse.joinTime = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
-                return Optional.of(new Tuple2<>(log, typedResponse));
+                return Optional.of(new Tuple2<>(platonlog, typedResponse));
             } else if (topics.get(0).equals(authorityAddSignature)) {
-                EventValues eventValues = Contract.staticExtractEventParameters(Vote.AUTHORITYADD_EVENT, log);
+                log.debug("subscribe7");
+                EventValues eventValues = Contract.staticExtractEventParameters(Vote.AUTHORITYADD_EVENT, platonlog);
                 Vote.AuthorityAddEventResponse typedResponse = new Vote.AuthorityAddEventResponse();
                 typedResponse.addr = Bech32.addressDecodeHex((String) eventValues.getNonIndexedValues().get(0).getValue());
                 typedResponse.serviceUrl = (String) eventValues.getNonIndexedValues().get(1).getValue();
                 typedResponse.joinTime = (BigInteger) eventValues.getNonIndexedValues().get(2).getValue();
-                return Optional.of(new Tuple2<>(log, typedResponse));
+                return Optional.of(new Tuple2<>(platonlog, typedResponse));
             } else {
+                log.debug("subscribe8");
                 return Optional.empty();
             }
         });

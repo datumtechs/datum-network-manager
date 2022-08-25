@@ -89,8 +89,8 @@ public class UserController {
         if (user == null) {
             user = userService.createUser(hexAddress);
         }
-        //4.设置用户会话
-        session.setAttribute(ControllerConstants.USER_INFO, user);//将登录信息存入session中
+        //4.设置用户会话，将用户信息存入session中
+        session.setAttribute(ControllerConstants.USER_INFO, user);
         //5.获取用户权限,现在默认只有两个角色，一个是管理员，一个是非管理员，管理员默认有所有的权限
         Set<com.platon.datum.admin.dao.entity.Resource> resourceList = resourceService.getResourceListByUserId(user.getIsAdmin());
         //6.将用户权限存入session中
@@ -99,7 +99,7 @@ public class UserController {
                 .map(com.platon.datum.admin.dao.entity.Resource::getValue)
                 .distinct()
                 .collect(Collectors.toList());
-        //将登录信息存入session中
+        //将权限信息存入session中
         session.setAttribute(ControllerConstants.USER_URL_RESOURCE, urlList);
 
         LoginResp resp = new LoginResp();

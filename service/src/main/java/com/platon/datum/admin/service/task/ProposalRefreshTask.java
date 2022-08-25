@@ -1,10 +1,13 @@
 package com.platon.datum.admin.service.task;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.platon.datum.admin.common.util.DidUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.AuthorityBusinessMapper;
+import com.platon.datum.admin.dao.AuthorityMapper;
 import com.platon.datum.admin.dao.ProposalLogMapper;
 import com.platon.datum.admin.dao.ProposalMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
@@ -47,6 +50,8 @@ public class ProposalRefreshTask {
     private ProposalMapper proposalMapper;
     @Resource
     private AuthorityBusinessMapper authorityBusinessMapper;
+    @Resource
+    private AuthorityMapper authorityMapper;
     @Resource
     private VoteContract voteContract;
     @Resource
@@ -102,7 +107,7 @@ public class ProposalRefreshTask {
         proposalList = proposalList.stream()
                 .map(proposal -> {
                     boolean changed = proposalService.convertProposalStatus(curBn, proposal);
-                    if(changed){
+                    if (changed) {
                         proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
                     }
                     return proposal;
@@ -118,33 +123,62 @@ public class ProposalRefreshTask {
                 log.error("Call proposalClient effectProposal failed!", exception);
             }
         });
+
+        //处理主动退出的proposal
+        processExitingProposal();
+
         log.debug("提案effect定时任务结束|||");
+    }
+
+    private void processExitingProposal() {
+        //1.获取主动退出中的提案
+        String localOrgIdentityId = OrgCache.getLocalOrgIdentityId();
+        List<Integer> statusList = new ArrayList<>();
+        statusList.add(Proposal.StatusEnum.EXITING.getValue());
+        List<Proposal> proposalList = proposalMapper.selectBySubmitterAndStatus(localOrgIdentityId, statusList);
+
+        BigInteger curBn = platONClient.platonBlockNumber();
+
+        proposalList.stream()
+                //2.只处理到了生效时间还未生效的提案
+                .filter(proposal -> curBn.compareTo(new BigInteger(proposal.getAutoQuitBn())) >= 0)
+                .forEach(proposal -> {
+                    String proposalId = proposal.getId();
+                    //3.调用effect
+                    try {
+                        proposalClient.effectProposal(proposalId);
+                    } catch (Throwable exception) {
+                        log.error("Call proposalClient effectProposal failed!", exception);
+                    }
+                });
     }
 
     private void analyzeProposalLog(List<ProposalLog> proposalLogList) {
         Map<String, Proposal> saveMap = new HashMap<>();
         VoteConfig voteConfig = voteContract.getConfig();
 
-        List<AuthorityBusiness> authorityBusinessList = new ArrayList<>();
+        List<AuthorityBusiness> insertAuthorityBusinessList = new ArrayList<>();
 
         proposalLogList.forEach(proposalLog -> {
             JSONObject contentJsonObject = JSONUtil.parseObj(proposalLog.getContent());
-            AuthorityBusiness authorityBusiness = null;
+            AuthorityBusiness insertAuthorityBusiness = null;
             // 提交提案
             if (proposalLog.getType() == ProposalLog.TypeEnum.NEWPROPOSAL_EVENT.getValue()) {
                 Proposal proposal = new Proposal();
                 proposal.setId(contentJsonObject.getStr("proposalId"));
-                proposal.setSubmitter(contentJsonObject.getStr("submitter"));
-                proposal.setCandidate(contentJsonObject.getStr("candidate"));
+                proposal.setSubmitter(DidUtil.addressToDid(contentJsonObject.getStr("submitter")));
+                proposal.setCandidate(DidUtil.addressToDid(contentJsonObject.getStr("candidate")));
                 proposal.setSubmissionBn(contentJsonObject.getStr("submitBlockNo"));
                 proposal.setStatus(Proposal.StatusEnum.HAS_NOT_STARTED.getValue());
 
                 //将公示信息拿出来放到数据库中
                 String proposalUrl = contentJsonObject.getStr("proposalUrl");
-                ProposalMaterialContent materialContent = ipfsOpService.queryJson(proposalUrl, ProposalMaterialContent.class);
-                proposal.setRemark(materialContent.getRemark());
-                proposal.setMaterial(materialContent.getImage());
-                proposal.setMaterialDesc(materialContent.getDesc());
+                if (StrUtil.isNotBlank(proposalUrl)) {
+                    ProposalMaterialContent materialContent = ipfsOpService.queryJson(proposalUrl, ProposalMaterialContent.class);
+                    proposal.setRemark(materialContent.getRemark());
+                    proposal.setMaterial(materialContent.getImage());
+                    proposal.setMaterialDesc(materialContent.getDesc());
+                }
 
                 // 增加委员会成员
                 if (contentJsonObject.getInt("proposalType") == 1) {
@@ -153,7 +187,7 @@ public class ProposalRefreshTask {
                     proposal.setVoteEndBn(new BigInteger(proposal.getSubmissionBn()).add(voteConfig.getBeginVote()).add(voteConfig.getVote()).toString());
                     proposal.setVoteAgreeNumber(0);
 
-                    authorityBusiness = getAuthorityBusiness(proposal);
+                    insertAuthorityBusiness = getInsertAuthorityBusiness(proposal);
                 }
                 // 踢出委员会成员
                 if (contentJsonObject.getInt("proposalType") == 2) {
@@ -162,7 +196,7 @@ public class ProposalRefreshTask {
                     proposal.setVoteEndBn(new BigInteger(proposal.getSubmissionBn()).add(voteConfig.getBeginVote()).add(voteConfig.getVote()).toString());
                     proposal.setVoteAgreeNumber(0);
 
-                    authorityBusiness = getAuthorityBusiness(proposal);
+                    insertAuthorityBusiness = getInsertAuthorityBusiness(proposal);
                 }
                 // 主动退出
                 if (contentJsonObject.getInt("proposalType") == 3) {
@@ -191,13 +225,17 @@ public class ProposalRefreshTask {
             if (proposalLog.getType() == ProposalLog.TypeEnum.PROPOSALRESULT_EVENT.getValue()) {
                 //查询出指定的提案，并将状态修改为投票通过或者投票不通过
                 Proposal proposal = saveMap.computeIfAbsent(contentJsonObject.getStr("proposalId"), id -> proposalMapper.selectByPrimaryKey(id));
-                proposal.setStatus(contentJsonObject.getBool("result") ? Proposal.StatusEnum.VOTE_PASS.getValue() : Proposal.StatusEnum.VOTE_NOT_PASS.getValue());
+                if (proposal.getType() == Proposal.TypeEnum.AUTO_QUIT_AUTHORITY.getValue()) {
+                    proposal.setStatus(Proposal.StatusEnum.SIGNED_OUT.getValue());
+                } else {
+                    proposal.setStatus(contentJsonObject.getBool("result") ? Proposal.StatusEnum.VOTE_PASS.getValue() : Proposal.StatusEnum.VOTE_NOT_PASS.getValue());
+                }
                 proposal.setAuthorityNumber(voteContract.sizeOfAllAuthority(new BigInteger(proposalLog.getBlockNumber()).subtract(BigInteger.ONE)));
             }
             proposalLog.setStatus(ProposalLog.StatusEnum.DONE.getValue());
 
-            if (authorityBusiness != null) {
-                authorityBusinessList.add(authorityBusiness);
+            if (insertAuthorityBusiness != null) {
+                insertAuthorityBusinessList.add(insertAuthorityBusiness);
             }
 
         });
@@ -207,13 +245,13 @@ public class ProposalRefreshTask {
         proposalLogMapper.updateListStatus(proposalLogList);
 
         //更新委员会事务表authorityBusiness
-        authorityBusinessList.forEach(authorityBusiness -> {
+        insertAuthorityBusinessList.forEach(authorityBusiness -> {
             authorityBusinessMapper.insertSelectiveReturnId(authorityBusiness);
         });
     }
 
 
-    private AuthorityBusiness getAuthorityBusiness(Proposal proposal) {
+    private AuthorityBusiness getInsertAuthorityBusiness(Proposal proposal) {
         AuthorityBusiness authorityBusiness = new AuthorityBusiness();
         if (Proposal.TypeEnum.KICK_OUT_AUTHORITY.getValue() == proposal.getType()) {
             authorityBusiness.setType(AuthorityBusiness.TypeEnum.KICK_PROPOSAL.getType());

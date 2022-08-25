@@ -100,7 +100,7 @@ CREATE TABLE `authority` (
                              `identity_id` varchar(140) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '组织的地址',
                              `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组织的url',
                              `join_time` timestamp NULL DEFAULT NULL COMMENT '加入委员会的时间',
-                             `is_admin` tinyint(1) DEFAULT NULL COMMENT '是否是初始成员：0-否，1-是',
+                             `is_admin` tinyint(1) DEFAULT '0' COMMENT '是否是初始成员：0-否，1-是',
                              PRIMARY KEY (`identity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -455,7 +455,7 @@ CREATE TABLE `proposal` (
                             `auto_quit_bn` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '主动退出的块高',
                             `vote_agree_number` int(11) DEFAULT NULL COMMENT '赞成票数量',
                             `authority_number` int(11) DEFAULT NULL COMMENT '委员总数，如果为空需要实时查询',
-                            `status` int(11) NOT NULL COMMENT '提案状态：0-投票未开始; 1-投票中; 2-投票通过; 3-投票未通过；4-退出中；5-已退出;6-撤销中；7-已撤销',
+                            `status` int(11) NOT NULL COMMENT '提案状态：0-投票未开始；1-投票开始；2-投票结束，但是还未通过；3-投票通过；4-投票未通过；5-退出中；6-已退出；7-撤销中；8-已撤销',
                             `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                             `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                             `material` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '提案的材料',
@@ -506,102 +506,160 @@ CREATE TABLE `resource` (
 -- ----------------------------
 -- Records of resource
 -- ----------------------------
-INSERT INTO `resource` VALUES ('1', '2', '系统概况', 'overview', null, '0');
-INSERT INTO `resource` VALUES ('2', '2', '个人主页', 'userCenter/Profile', null, '0');
-INSERT INTO `resource` VALUES ('3', '2', '个人信息', 'userCenter/userInfo', null, '0');
-INSERT INTO `resource` VALUES ('4', '2', '修改管理员', 'userCenter/updateAdmin', null, '0');
-INSERT INTO `resource` VALUES ('5', '2', '节点管理', 'nodeMgt', null, '0');
-INSERT INTO `resource` VALUES ('6', '2', '引导节点管理', 'nodeMgt/SeedNodeMgt', null, '5');
-INSERT INTO `resource` VALUES ('7', '2', '存储资源管理', 'nodeMgt/dataNodeMgt', null, '5');
-INSERT INTO `resource` VALUES ('8', '2', '计算资源管理', 'nodeMgt/computeNodeMgt', null, '5');
-INSERT INTO `resource` VALUES ('9', '2', '我的数据', 'myData', null, '0');
-INSERT INTO `resource` VALUES ('10', '2', '数据管理', 'myData/dataMgt', null, '9');
-INSERT INTO `resource` VALUES ('11', '2', '数据添加', 'myData/dataAddition', null, '9');
-INSERT INTO `resource` VALUES ('12', '2', '计算任务', 'tasks', null, '0');
-INSERT INTO `resource` VALUES ('13', '2', '我的凭证', 'voucher', null, '0');
-INSERT INTO `resource` VALUES ('14', '2', '无属性凭证', 'voucher/NoAttribute', null, '13');
-INSERT INTO `resource` VALUES ('15', '1', '我的数据-数据列表关键字查询', '/api/v1/data/listLocalMetaDataByKeyword', null, '0');
-INSERT INTO `resource` VALUES ('16', '1', '我的数据-数据列表关键字查询', '/api/v1/data/listLocalMetaDataByKeyword', null, '0');
-INSERT INTO `resource` VALUES ('17', '1', '我的数据-未绑定凭证Id数据列表关键字查询', '/api/v1/data/listUnBindLocalMetaDataByKeyword', null, '0');
-INSERT INTO `resource` VALUES ('18', '1', '我的数据-数据参与的任务信息列表', '/api/v1/data/listTaskByMetaDataId', null, '0');
-INSERT INTO `resource` VALUES ('19', '1', '我的数据-导入文件', '/api/v1/data/uploadFile', null, '0');
-INSERT INTO `resource` VALUES ('20', '1', '我的数据-添加数据/另存为新数据', '/api/v1/data/addLocalMetaData', null, '0');
-INSERT INTO `resource` VALUES ('21', '1', '我的数据-查看元数据详情', '/api/v1/data/localMetaDataInfo', null, '0');
-INSERT INTO `resource` VALUES ('22', '1', '我的数据-修改元数据信息', '/api/v1/data/updateLocalMetaData', null, '0');
-INSERT INTO `resource` VALUES ('23', '1', '我的数据-元数据操作：上架、下架和删除', '/api/v1/data/localMetaDataOp', null, '0');
-INSERT INTO `resource` VALUES ('24', '1', '我的数据-源文件下载', '/api/v1/data/download', null, '0');
-INSERT INTO `resource` VALUES ('25', '1', '我的数据-校验元数据名称是否合法', '/api/v1/data/checkResourceName', null, '0');
-INSERT INTO `resource` VALUES ('26', '1', '调度服务配置-连接调度节点', '/api/v1/carrier/connectNode', null, '0');
-INSERT INTO `resource` VALUES ('27', '1', '调度服务配置-申请准入网络', '/api/v1/carrier/applyJoinNetwork', null, '0');
-INSERT INTO `resource` VALUES ('28', '1', '调度服务配置-注销网络', '/api/v1/carrier/cancelJoinNetwork', null, '0');
-INSERT INTO `resource` VALUES ('29', '1', '数据节点管理-数据节点分页查询', '/api/v1/datanode/listNode', null, '0');
-INSERT INTO `resource` VALUES ('30', '1', '数据节点管理-修改数据节点名称', '/api/v1/datanode/updateNodeName', null, '0');
-INSERT INTO `resource` VALUES ('31', '1', '计算节点控制类-修改计算节点名称', '/api/v1/powernode/updateNodeName', null, '0');
-INSERT INTO `resource` VALUES ('32', '1', '计算节点控制类-查询计算节点详情', '/api/v1/powernode/powerNodeDetails', null, '0');
-INSERT INTO `resource` VALUES ('33', '1', '计算节点控制类-查询计算节点列表', '/api/v1/powernode/listPowerNode', null, '0');
-INSERT INTO `resource` VALUES ('34', '1', '计算节点控制类-启用算力', '/api/v1/powernode/publishPower', null, '0');
-INSERT INTO `resource` VALUES ('35', '1', '计算节点控制类-停用算力', '/api/v1/powernode/revokePower', null, '0');
-INSERT INTO `resource` VALUES ('36', '1', '计算节点控制类-查询计算节点参与的正在计算中的任务列表', '/api/v1/powernode/listRunningTaskByPowerNodeId', null, '0');
-INSERT INTO `resource` VALUES ('37', '1', '计算节点控制类-查询算力节点的最近24小时的负载情况', '/api/v1/powernode/listLocalPowerLoadSnapshotByPowerNodeId', null, '0');
-INSERT INTO `resource` VALUES ('38', '1', '计算节点控制类-查询算力节点当前的负载情况', '/api/v1/powernode/getCurrentLocalPowerLoadByPowerNodeId', null, '0');
-INSERT INTO `resource` VALUES ('39', '1', '种子节点控制类-新增种子节点', '/api/v1/seednode/addSeedNode', null, '0');
-INSERT INTO `resource` VALUES ('40', '1', '种子节点控制类-删除种子节点', '/api/v1/seednode/deleteSeedNode', null, '0');
-INSERT INTO `resource` VALUES ('41', '1', '种子节点控制类-查询种子节点服务列表', '/api/v1/seednode/listSeedNode', null, '0');
-INSERT INTO `resource` VALUES ('42', '1', '种子节点控制类-查询种子节点详情', '/api/v1/seednode/seedNodeDetails', null, '0');
-INSERT INTO `resource` VALUES ('43', '1', '种子节点控制类-校验计算节点名称是否可用', '/api/v1/seednode/checkSeedNodeId', null, '0');
-INSERT INTO `resource` VALUES ('44', '1', '系统概况-查询本地计算资源占用情况', '/api/v1/overview/localPowerUsage', null, '0');
-INSERT INTO `resource` VALUES ('45', '1', '系统概况-查询我发布的数据', '/api/v1/overview/localDataFileStatsTrendMonthly', null, '0');
-INSERT INTO `resource` VALUES ('46', '1', '系统概况-查询我发布的算力', '/api/v1/overview/localPowerStatsTrendMonthly', null, '0');
-INSERT INTO `resource` VALUES ('47', '1', '系统概况-查询我的计算任务概况', '/api/v1/overview/myTaskOverview', null, '0');
-INSERT INTO `resource` VALUES ('48', '1', '系统概况-查询数据待授权列表', '/api/v1/overview/listDataAuthReqWaitingForApprove', null, '0');
-INSERT INTO `resource` VALUES ('49', '1', '计算任务相关接口-我参与的任务情况统计', '/api/v1/task/myTaskStatistics', null, '0');
-INSERT INTO `resource` VALUES ('50', '1', '计算任务相关接口-条件查询组织参与的任务列表', '/api/v1/task/listMyTask', null, '0');
-INSERT INTO `resource` VALUES ('51', '1', '计算任务相关接口-查询组织参与的单个任务详情', '/api/v1/task/taskInfo', null, '0');
-INSERT INTO `resource` VALUES ('52', '1', '计算任务相关接口-单个任务事件日志列表', '/api/v1/task/listTaskEvent', null, '0');
-INSERT INTO `resource` VALUES ('53', '1', '无属性数据凭证-查询列表', '/api/v1/dataToken/page', null, '0');
-INSERT INTO `resource` VALUES ('54', '1', '无属性数据凭证-查询dex链接地址', '/api/v1/dataToken/getDexWebUrl', null, '0');
-INSERT INTO `resource` VALUES ('55', '1', '无属性数据凭证-获取发布凭证需要的配置', '/api/v1/dataToken/getPublishConfig', null, '0');
-INSERT INTO `resource` VALUES ('56', '1', '无属性数据凭证-发布凭证', '/api/v1/dataToken/publish', null, '0');
-INSERT INTO `resource` VALUES ('57', '1', '无属性数据凭证-获取上架市场需要的配置', '/api/v1/dataToken/getUpConfig', null, '0');
-INSERT INTO `resource` VALUES ('58', '1', '无属性数据凭证-上架市场', '/api/v1/dataToken/up', null, '0');
-INSERT INTO `resource` VALUES ('59', '1', '用户相关接口-获取登录Nonce', '/api/v1/user/getLoginNonce', null, '0');
-INSERT INTO `resource` VALUES ('60', '1', '用户相关接口-用户登录', '/api/v1/user/login', null, '0');
-INSERT INTO `resource` VALUES ('61', '1', '用户相关接口-退出登录状态', '/api/v1/user/logout', null, '0');
-INSERT INTO `resource` VALUES ('62', '1', '用户相关接口-替换管理员', '/api/v1/user/updateAdmin', null, '0');
-INSERT INTO `resource` VALUES ('63', '1', '用户相关接口-申请身份标识', '/api/v1/user/applyOrgIdentity', null, '0');
-INSERT INTO `resource` VALUES ('64', '1', '用户相关接口-更新组织信息', '/api/v1/user/updateLocalOrg', null, '0');
-INSERT INTO `resource` VALUES ('65', '1', '用户相关接口-查询出当前组织信息', '/api/v1/user/findLocalOrgInfo', null, '0');
-INSERT INTO `resource` VALUES ('66', '1', '系统相关-metaMask所需配置', '/api/v1/system/getMetaMaskConfig', null, '0');
-INSERT INTO `resource` VALUES ('67', '1', '系统相关-查询系统配置的key', '/api/v1/system/getSystemConfigKey', null, '0');
-INSERT INTO `resource` VALUES ('68', '1', '系统相关-查询配置列表', '/api/v1/system/getAllConfig', null, '0');
-INSERT INTO `resource` VALUES ('69', '1', '系统相关-根据key查询配置', '/api/v1/system/getConfigByKey', null, '0');
-INSERT INTO `resource` VALUES ('70', '1', '系统相关-新增自定义配置', '/api/v1/system/addCustomConfig', null, '0');
-INSERT INTO `resource` VALUES ('71', '1', '系统相关-删除系统配置', '/api/v1/system/deleteCustomConfig', null, '0');
-INSERT INTO `resource` VALUES ('72', '1', '系统相关-更新系统配置', '/api/v1/system/updateValueByKey', null, '0');
-INSERT INTO `resource` VALUES ('73', '1', '无属性数据凭证-根据id获取dataToken状态', '/api/v1/dataToken/getDataTokenStatus', null, '0');
-INSERT INTO `resource` VALUES ('74', '1', '我的数据-未绑定凭证Id数据列表关键字查询', '/api/v1/data/listUnBindLocalMetaDataByKeyword', null, '0');
-INSERT INTO `resource` VALUES ('75', '2', '凭证发布', 'myData/dataVoucherPublishing', null, '9');
-INSERT INTO `resource` VALUES ('76', '2', '编辑数据', 'myData/dataMgt/saveNewData', null, '0');
-INSERT INTO `resource` VALUES ('77', '2', '数据详情', 'myData/dataMgt/dataDetail', null, '0');
-INSERT INTO `resource` VALUES ('78', '2', '任务详情', 'myData/dataMgt/dataDetail/dataDetailTask', null, '0');
-INSERT INTO `resource` VALUES ('79', '2', '数据任务详情', 'myData/dataMgt/dataDetail/dataDetailTask/taskDetail', null, '0');
-INSERT INTO `resource` VALUES ('80', '2', '数据任务事件', 'myData/dataMgt/dataDetail/dataDetailTask/TaskEvent', null, '0');
-INSERT INTO `resource` VALUES ('81', '2', '账号初始化', 'didApplication', null, '0');
-INSERT INTO `resource` VALUES ('82', '2', '计算资源节点详情', 'nodeMgt/computeNodeMgt/computeNodeDetail', null, '0');
-INSERT INTO `resource` VALUES ('83', '2', '无属性凭证价格设置', 'myData/dataVoucherPublishing/PriceSet', null, '0');
-INSERT INTO `resource` VALUES ('84', '2', '创建无属性凭证', 'myData/dataVoucherPublishing/CredentialInfo', null, '0');
-INSERT INTO `resource` VALUES ('85', '2', '计算任务详情', 'tasks/taskDetail', null, '0');
-INSERT INTO `resource` VALUES ('86', '2', '计算任务事件', 'tasks/TaskEvent', null, '0');
-INSERT INTO `resource` VALUES ('87', '2', '构建属性凭证', 'myData/dataVoucherPublishing/AttributedPublishing', null, '0');
-INSERT INTO `resource` VALUES ('88', '2', '属性数据凭证page', 'voucher/AttributeCredential', null, '0');
-INSERT INTO `resource` VALUES ('89', '2', '有属性凭证创建', 'voucher/AttributeCredential/createCredential', null, '0');
-INSERT INTO `resource` VALUES ('90', '2', '有属性凭证库存', 'voucher/AttributeCredential/credentialInventory', null, '0');
-INSERT INTO `resource` VALUES ('91', '2', '有属性凭证详情', 'voucher/AttributeCredential/credentialDetails', null, '0');
-INSERT INTO `resource` VALUES ('92', '2', '组织管理', 'OrgManage', null, '0');
-INSERT INTO `resource` VALUES ('93', '2', '提名委员会', 'OrgManage/nominationCommittee', null, '0');
-INSERT INTO `resource` VALUES ('94', '2', '委员会申请认证', 'OrgManage/applyCertification', null, '0');
-INSERT INTO `resource` VALUES ('95', '2', '委员会申请认证', 'OrgManage/orgManageApplyDetails', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('101', '1', '数据授权-授权数据列表分页查询', '/api/v1/dataAuth/listLocalDataAuth', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('102', '1', '数据授权-授权数据数量统计', '/api/v1/dataAuth/dataAuthStatistics', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('103', '1', '数据授权-数据授权同意、拒绝', '/api/v1/dataAuth/replyDataAuth', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('104', '1', '数据授权-授权申请查看', '/api/v1/dataAuth/dataAuthDetail', NULL, '0');
 
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('201', '1', '我的数据-数据列表关键字查询', '/api/v1/data/listLocalMetaDataByKeyword', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('202', '1', '我的数据-关键字查询未发布无属性凭证的元数据', '/api/v1/data/listMetaDataUnPublishDataTokenByKeyword', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('203', '1', '我的数据-关键字查询未发布有属性凭证的元数据', '/api/v1/data/listMetaDataUnPublishAttributeDataTokenByKeyword', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('204', '1', '我的数据-数据参与的任务信息列表', '/api/v1/data/listTaskByMetaDataId', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('205', '1', '我的数据-导入文件', '/api/v1/data/uploadFile', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('206', '1', '我的数据-添加数据/另存为新数据', '/api/v1/data/addLocalMetaData', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('207', '1', '我的数据-查看元数据详情', '/api/v1/data/localMetaDataInfo', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('208', '1', '我的数据-修改元数据信息', '/api/v1/data/updateLocalMetaData', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('209', '1', '我的数据-元数据操作：上架、下架和删除', '/api/v1/data/localMetaDataOp', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('210', '1', '我的数据-获取元数据MetaDataOption', '/api/v1/data/getMetaDataOption', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('211', '1', '我的数据-源文件下载', '/api/v1/data/download', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('212', '1', '我的数据-校验元数据名称是否合法', '/api/v1/data/checkResourceName', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('301', '1', '调度服务配置-连接调度节点', '/api/v1/carrier/connectNode', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('302', '1', '调度服务配置-申请准入网络', '/api/v1/carrier/applyJoinNetwork', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('303', '1', '调度服务配置-注销网络', '/api/v1/carrier/cancelJoinNetwork', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('401', '1', '数据节点管理-数据节点分页查询', '/api/v1/datanode/listNode', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('402', '1', '数据节点管理-修改数据节点名称', '/api/v1/datanode/updateNodeName', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('501', '1', '计算节点控制类-修改计算节点名称', '/api/v1/powernode/updateNodeName', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('502', '1', '计算节点控制类-查询计算节点详情', '/api/v1/powernode/powerNodeDetails', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('503', '1', '计算节点控制类-查询计算节点列表', '/api/v1/powernode/listPowerNode', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('504', '1', '计算节点控制类-启用算力', '/api/v1/powernode/publishPower', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('505', '1', '计算节点控制类-停用算力', '/api/v1/powernode/revokePower', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('506', '1', '计算节点控制类-查询计算节点参与的正在计算中的任务列表', '/api/v1/powernode/listRunningTaskByPowerNodeId', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('507', '1', '计算节点控制类-查询算力节点的最近24小时的负载情况', '/api/v1/powernode/listLocalPowerLoadSnapshotByPowerNodeId', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('508', '1', '计算节点控制类-查询算力节点当前的负载情况', '/api/v1/powernode/getCurrentLocalPowerLoadByPowerNodeId', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('601', '1', '种子节点控制类-新增种子节点', '/api/v1/seednode/addSeedNode', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('602', '1', '种子节点控制类-删除种子节点', '/api/v1/seednode/deleteSeedNode', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('603', '1', '种子节点控制类-查询种子节点服务列表', '/api/v1/seednode/listSeedNode', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('604', '1', '种子节点控制类-查询种子节点详情', '/api/v1/seednode/seedNodeDetails', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('605', '1', '种子节点控制类-校验计算节点名称是否可用', '/api/v1/seednode/checkSeedNodeId', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('701', '1', '委员会组织-主页内容', '/api/v1/authority/home', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('702', '1', '委员会组织-委员会列表', '/api/v1/authority/list', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('703', '1', '委员会组织-提名踢出', '/api/v1/authority/kickOut', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('704', '1', '委员会组织-退出委员会', '/api/v1/authority/exit', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('705', '1', '委员会组织-提名委员会时上传图片', '/api/v1/authority/upload', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('706', '1', '委员会组织-获取可提名的成员', '/api/v1/authority/getNominateMember', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('707', '1', '委员会组织-提名成员', '/api/v1/authority/nominate', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('708', '1', '委员会组织-我的待办列表', '/api/v1/authority/todoList', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('709', '1', '委员会组织-我的待办详情', '/api/v1/authority/todoDetail', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('710', '1', '委员会组织-处理我的待办', '/api/v1/authority/processTodo', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('711', '1', '委员会组织-我的已办列表', '/api/v1/authority/doneList', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('712', '1', '委员会组织-我的已办详情', '/api/v1/authority/doneDetail', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('713', '1', '委员会组织-我的提案列表', '/api/v1/authority/myProposalList', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('714', '1', '委员会组织-我的提案详情', '/api/v1/authority/proposalDetail', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('715', '1', '委员会组织-撤回提案', '/api/v1/authority/revokeProposal', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('801', '1', '普通组织-主页内容', '/api/v1/generalOrganization/home', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('802', '1', '普通组织-我的申请列表', '/api/v1/generalOrganization/applyList', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('803', '1', '普通组织-查看申请详情', '/api/v1/generalOrganization/applyDetail', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('804', '1', '普通组织-下载证书', '/api/v1/generalOrganization/download', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('805', '1', '普通组织-上传资料', '/api/v1/generalOrganization/uploadmMaterial', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('806', '1', '普通组织-申请认证', '/api/v1/generalOrganization/apply', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('807', '1', '普通组织-使用证书', '/api/v1/generalOrganization/use', NULL, '0');
+
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('901', '1', '系统概况-查询本地计算资源占用情况', '/api/v1/overview/localPowerUsage', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('902', '1', '系统概况-查询我发布的数据', '/api/v1/overview/localDataFileStatsTrendMonthly', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('903', '1', '系统概况-查询我发布的算力', '/api/v1/overview/localPowerStatsTrendMonthly', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('904', '1', '系统概况-查询我的计算任务概况', '/api/v1/overview/myTaskOverview', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('905', '1', '系统概况-查询数据待授权列表', '/api/v1/overview/listDataAuthReqWaitingForApprove', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('906', '1', '系统概况-查询数据凭证概况', '/api/v1/overview/dataTokenOverview', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1001', '1', '计算任务相关接口-我参与的任务情况统计', '/api/v1/task/myTaskStatistics', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1002', '1', '计算任务相关接口-条件查询组织参与的任务列表', '/api/v1/task/listMyTask', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1003', '1', '计算任务相关接口-查询组织参与的单个任务详情', '/api/v1/task/taskInfo', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1004', '1', '计算任务相关接口-单个任务事件日志列表', '/api/v1/task/listTaskEvent', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1101', '1', '有属性数据凭证-获取发布凭证需要的配置', '/api/v1/attributeDataToken/getPublishConfig', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1102', '1', '有属性数据凭证-发布凭证', '/api/v1/attributeDataToken/publish', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1103', '1', '有属性数据凭证-根据id获取attributeDataToken状态', '/api/v1/attributeDataToken/getAttributeDataTokenStatus', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1104', '1', '有属性数据凭证-修改凭证状态', '/api/v1/attributeDataToken/updateDataTokenStatus', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1105', '1', '有属性数据凭证-查询凭证列表', '/api/v1/attributeDataToken/page', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1106', '1', '有属性数据凭证-绑定元数据', '/api/v1/attributeDataToken/bindMetaData', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1107', '1', '有属性数据凭证-NFT交易所地址', '/api/v1/attributeDataToken/getExchange', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1108', '1', '有属性数据凭证-上传图片接口', '/api/v1/attributeDataToken/inventoryUpLoad', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1109', '1', '有属性数据凭证-上传图片，名称和描述接口', '/api/v1/attributeDataToken/inventoryUpLoad2', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1110', '1', '有属性数据凭证-刷新库存信息5次', '/api/v1/attributeDataToken/refreshInventory5', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1111', '1', '有属性数据凭证-刷新指定tokenId库存信息', '/api/v1/attributeDataToken/refreshInventoryByTokenId', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1112', '1', '有属性数据凭证-获取dataToken库存列表', '/api/v1/attributeDataToken/getDataTokenInventoryPage', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1113', '1', '有属性数据凭证-根据id获取dataToken库存详情', '/api/v1/attributeDataToken/getDataTokenInventoryDetail', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1201', '1', '无属性数据凭证-查询列表', '/api/v1/dataToken/page', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1202', '1', '无属性数据凭证-根据id获取dataToken状态', '/api/v1/dataToken/getDataTokenStatus', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1203', '1', '无属性数据凭证-查询dex链接地址', '/api/v1/dataToken/getDexWebUrl', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1204', '1', '无属性数据凭证-获取发布凭证需要的配置', '/api/v1/dataToken/getPublishConfig', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1205', '1', '无属性数据凭证-发布凭证', '/api/v1/dataToken/publish', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1206', '1', '无属性数据凭证-获取上架市场需要的配置', '/api/v1/dataToken/getUpConfig', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1207', '1', '无属性数据凭证-上架市场', '/api/v1/dataToken/up', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1208', '1', '无属性数据凭证-将凭证修改为上架状态', '/api/v1/dataToken/updateToPrinceSuccess', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1209', '1', '无属性数据凭证-修改明文和密文消耗量', '/api/v1/dataToken/updateFee', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1210', '1', '无属性数据凭证-绑定元数据', '/api/v1/dataToken/bindMetaData', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1301', '1', '用户相关接口-获取登录Nonce', '/api/v1/user/getLoginNonce', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1302', '1', '用户相关接口-用户登录', '/api/v1/user/login', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1303', '1', '用户相关接口-退出登录状态', '/api/v1/user/logout', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1304', '1', '用户相关接口-替换管理员', '/api/v1/user/updateAdmin', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1305', '1', '用户相关接口-设置机构名称', '/api/v1/user/setOrgName', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1306', '1', '用户相关接口-设置did', '/api/v1/user/setDid', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1307', '1', '用户相关接口-更新组织信息（机构信息识别名称，头像链接，或者描述', '/api/v1/user/setDesc', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1308', '1', '用户相关接口-查询出当前组织信息', '/api/v1/user/findLocalOrgInfo', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1401', '1', '系统相关-metaMask所需配置', '/api/v1/system/getMetaMaskConfig', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1402', '1', '系统相关-查询系统配置的key', '/api/v1/system/getSystemConfigKey', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1403', '1', '系统相关-查询配置列表', '/api/v1/system/getAllConfig', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1404', '1', '系统相关-根据key查询配置', '/api/v1/system/getConfigByKey', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1405', '1', '系统相关-新增自定义配置', '/api/v1/system/addCustomConfig', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1406', '1', '系统相关-删除系统配置', '/api/v1/system/deleteCustomConfig', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('1407', '1', '系统相关-更新系统配置', '/api/v1/system/updateValueByKey', NULL, '0');
+
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5001', '2', '系统概况', 'overview', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5002', '2', '个人主页', 'userCenter/Profile', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5003', '2', '个人信息', 'userCenter/userInfo', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5004', '2', '修改管理员', 'userCenter/updateAdmin', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5005', '2', '节点管理', 'nodeMgt', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5006', '2', '引导节点管理', 'nodeMgt/SeedNodeMgt', NULL, '5');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5007', '2', '存储资源管理', 'nodeMgt/dataNodeMgt', NULL, '5');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5008', '2', '计算资源管理', 'nodeMgt/computeNodeMgt', NULL, '5');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5009', '2', '我的数据', 'myData', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5010', '2', '数据管理', 'myData/dataMgt', NULL, '9');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5011', '2', '数据添加', 'myData/dataAddition', NULL, '9');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5012', '2', '计算任务', 'tasks', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5013', '2', '我的凭证', 'voucher', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5014', '2', '无属性凭证', 'voucher/NoAttribute', NULL, '13');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5015', '2', '凭证发布', 'myData/dataVoucherPublishing', NULL, '9');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5016', '2', '编辑数据', 'myData/dataMgt/saveNewData', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5017', '2', '数据详情', 'myData/dataMgt/dataDetail', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5018', '2', '任务详情', 'myData/dataMgt/dataDetail/dataDetailTask', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5019', '2', '数据任务详情', 'myData/dataMgt/dataDetail/dataDetailTask/taskDetail', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5020', '2', '数据任务事件', 'myData/dataMgt/dataDetail/dataDetailTask/TaskEvent', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5021', '2', '账号初始化', 'didApplication', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5022', '2', '计算资源节点详情', 'nodeMgt/computeNodeMgt/computeNodeDetail', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5023', '2', '无属性凭证价格设置', 'myData/dataVoucherPublishing/PriceSet', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5024', '2', '创建无属性凭证', 'myData/dataVoucherPublishing/CredentialInfo', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5025', '2', '计算任务详情', 'tasks/taskDetail', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5026', '2', '计算任务事件', 'tasks/TaskEvent', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5027', '2', '构建属性凭证', 'myData/dataVoucherPublishing/AttributedPublishing', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5028', '2', '属性数据凭证page', 'voucher/AttributeCredential', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5029', '2', '有属性凭证创建', 'voucher/AttributeCredential/createCredential', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5030', '2', '有属性凭证库存', 'voucher/AttributeCredential/credentialInventory', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5031', '2', '有属性凭证详情', 'voucher/AttributeCredential/credentialDetails', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5032', '2', '组织管理', 'OrgManage', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5033', '2', '提名委员会', 'OrgManage/nominationCommittee', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5034', '2', '委员会申请认证', 'OrgManage/applyCertification', NULL, '0');
+INSERT INTO `resource` (`id`, `type`, `name`, `value`, `url_resource_id`, `parent_id`) VALUES ('5035', '2', '委员会申请认证', 'OrgManage/orgManageApplyDetails', NULL, '0');
 
 -- ----------------------------
 -- Table structure for role_resource
@@ -616,163 +674,101 @@ CREATE TABLE `role_resource` (
 -- ----------------------------
 -- Records of role_resource
 -- ----------------------------
-INSERT INTO `role_resource` VALUES ('0', '1');
-INSERT INTO `role_resource` VALUES ('0', '9');
-INSERT INTO `role_resource` VALUES ('0', '10');
-INSERT INTO `role_resource` VALUES ('0', '11');
-INSERT INTO `role_resource` VALUES ('0', '13');
-INSERT INTO `role_resource` VALUES ('0', '14');
-INSERT INTO `role_resource` VALUES ('0', '15');
-INSERT INTO `role_resource` VALUES ('0', '16');
-INSERT INTO `role_resource` VALUES ('0', '17');
-INSERT INTO `role_resource` VALUES ('0', '18');
-INSERT INTO `role_resource` VALUES ('0', '19');
-INSERT INTO `role_resource` VALUES ('0', '20');
-INSERT INTO `role_resource` VALUES ('0', '21');
-INSERT INTO `role_resource` VALUES ('0', '22');
-INSERT INTO `role_resource` VALUES ('0', '23');
-INSERT INTO `role_resource` VALUES ('0', '24');
-INSERT INTO `role_resource` VALUES ('0', '25');
-INSERT INTO `role_resource` VALUES ('0', '44');
-INSERT INTO `role_resource` VALUES ('0', '45');
-INSERT INTO `role_resource` VALUES ('0', '46');
-INSERT INTO `role_resource` VALUES ('0', '47');
-INSERT INTO `role_resource` VALUES ('0', '48');
-INSERT INTO `role_resource` VALUES ('0', '49');
-INSERT INTO `role_resource` VALUES ('0', '50');
-INSERT INTO `role_resource` VALUES ('0', '51');
-INSERT INTO `role_resource` VALUES ('0', '52');
-INSERT INTO `role_resource` VALUES ('0', '53');
-INSERT INTO `role_resource` VALUES ('0', '54');
-INSERT INTO `role_resource` VALUES ('0', '55');
-INSERT INTO `role_resource` VALUES ('0', '56');
-INSERT INTO `role_resource` VALUES ('0', '57');
-INSERT INTO `role_resource` VALUES ('0', '58');
-INSERT INTO `role_resource` VALUES ('0', '59');
-INSERT INTO `role_resource` VALUES ('0', '60');
-INSERT INTO `role_resource` VALUES ('0', '61');
-INSERT INTO `role_resource` VALUES ('0', '65');
-INSERT INTO `role_resource` VALUES ('0', '66');
-INSERT INTO `role_resource` VALUES ('0', '67');
-INSERT INTO `role_resource` VALUES ('0', '68');
-INSERT INTO `role_resource` VALUES ('0', '69');
-INSERT INTO `role_resource` VALUES ('0', '73');
-INSERT INTO `role_resource` VALUES ('0', '74');
-INSERT INTO `role_resource` VALUES ('0', '75');
-INSERT INTO `role_resource` VALUES ('0', '76');
-INSERT INTO `role_resource` VALUES ('0', '77');
-INSERT INTO `role_resource` VALUES ('0', '78');
-INSERT INTO `role_resource` VALUES ('0', '79');
-INSERT INTO `role_resource` VALUES ('0', '80');
-INSERT INTO `role_resource` VALUES ('0', '81');
-INSERT INTO `role_resource` VALUES ('0', '82');
-INSERT INTO `role_resource` VALUES ('0', '83');
-INSERT INTO `role_resource` VALUES ('0', '84');
-INSERT INTO `role_resource` VALUES ('0', '85');
-INSERT INTO `role_resource` VALUES ('0', '86');
-INSERT INTO `role_resource` VALUES ('0', '87');
-INSERT INTO `role_resource` VALUES ('0', '88');
-INSERT INTO `role_resource` VALUES ('0', '89');
-INSERT INTO `role_resource` VALUES ('0', '90');
-INSERT INTO `role_resource` VALUES ('0', '91');
-INSERT INTO `role_resource` VALUES ('0', '92');
-INSERT INTO `role_resource` VALUES ('0', '93');
-INSERT INTO `role_resource` VALUES ('0', '94');
-INSERT INTO `role_resource` VALUES ('1', '1');
-INSERT INTO `role_resource` VALUES ('1', '2');
-INSERT INTO `role_resource` VALUES ('1', '3');
-INSERT INTO `role_resource` VALUES ('1', '4');
-INSERT INTO `role_resource` VALUES ('1', '5');
-INSERT INTO `role_resource` VALUES ('1', '6');
-INSERT INTO `role_resource` VALUES ('1', '7');
-INSERT INTO `role_resource` VALUES ('1', '8');
-INSERT INTO `role_resource` VALUES ('1', '9');
-INSERT INTO `role_resource` VALUES ('1', '10');
-INSERT INTO `role_resource` VALUES ('1', '11');
-INSERT INTO `role_resource` VALUES ('1', '12');
-INSERT INTO `role_resource` VALUES ('1', '13');
-INSERT INTO `role_resource` VALUES ('1', '14');
-INSERT INTO `role_resource` VALUES ('1', '15');
-INSERT INTO `role_resource` VALUES ('1', '16');
-INSERT INTO `role_resource` VALUES ('1', '17');
-INSERT INTO `role_resource` VALUES ('1', '18');
-INSERT INTO `role_resource` VALUES ('1', '19');
-INSERT INTO `role_resource` VALUES ('1', '20');
-INSERT INTO `role_resource` VALUES ('1', '21');
-INSERT INTO `role_resource` VALUES ('1', '22');
-INSERT INTO `role_resource` VALUES ('1', '23');
-INSERT INTO `role_resource` VALUES ('1', '24');
-INSERT INTO `role_resource` VALUES ('1', '25');
-INSERT INTO `role_resource` VALUES ('1', '26');
-INSERT INTO `role_resource` VALUES ('1', '27');
-INSERT INTO `role_resource` VALUES ('1', '28');
-INSERT INTO `role_resource` VALUES ('1', '29');
-INSERT INTO `role_resource` VALUES ('1', '30');
-INSERT INTO `role_resource` VALUES ('1', '31');
-INSERT INTO `role_resource` VALUES ('1', '32');
-INSERT INTO `role_resource` VALUES ('1', '33');
-INSERT INTO `role_resource` VALUES ('1', '34');
-INSERT INTO `role_resource` VALUES ('1', '35');
-INSERT INTO `role_resource` VALUES ('1', '36');
-INSERT INTO `role_resource` VALUES ('1', '37');
-INSERT INTO `role_resource` VALUES ('1', '38');
-INSERT INTO `role_resource` VALUES ('1', '39');
-INSERT INTO `role_resource` VALUES ('1', '40');
-INSERT INTO `role_resource` VALUES ('1', '41');
-INSERT INTO `role_resource` VALUES ('1', '42');
-INSERT INTO `role_resource` VALUES ('1', '43');
-INSERT INTO `role_resource` VALUES ('1', '44');
-INSERT INTO `role_resource` VALUES ('1', '45');
-INSERT INTO `role_resource` VALUES ('1', '46');
-INSERT INTO `role_resource` VALUES ('1', '47');
-INSERT INTO `role_resource` VALUES ('1', '48');
-INSERT INTO `role_resource` VALUES ('1', '49');
-INSERT INTO `role_resource` VALUES ('1', '50');
-INSERT INTO `role_resource` VALUES ('1', '51');
-INSERT INTO `role_resource` VALUES ('1', '52');
-INSERT INTO `role_resource` VALUES ('1', '53');
-INSERT INTO `role_resource` VALUES ('1', '54');
-INSERT INTO `role_resource` VALUES ('1', '55');
-INSERT INTO `role_resource` VALUES ('1', '56');
-INSERT INTO `role_resource` VALUES ('1', '57');
-INSERT INTO `role_resource` VALUES ('1', '58');
-INSERT INTO `role_resource` VALUES ('1', '59');
-INSERT INTO `role_resource` VALUES ('1', '60');
-INSERT INTO `role_resource` VALUES ('1', '61');
-INSERT INTO `role_resource` VALUES ('1', '62');
-INSERT INTO `role_resource` VALUES ('1', '63');
-INSERT INTO `role_resource` VALUES ('1', '64');
-INSERT INTO `role_resource` VALUES ('1', '65');
-INSERT INTO `role_resource` VALUES ('1', '66');
-INSERT INTO `role_resource` VALUES ('1', '67');
-INSERT INTO `role_resource` VALUES ('1', '68');
-INSERT INTO `role_resource` VALUES ('1', '69');
-INSERT INTO `role_resource` VALUES ('1', '70');
-INSERT INTO `role_resource` VALUES ('1', '71');
-INSERT INTO `role_resource` VALUES ('1', '72');
-INSERT INTO `role_resource` VALUES ('1', '73');
-INSERT INTO `role_resource` VALUES ('1', '74');
-INSERT INTO `role_resource` VALUES ('1', '75');
-INSERT INTO `role_resource` VALUES ('1', '76');
-INSERT INTO `role_resource` VALUES ('1', '77');
-INSERT INTO `role_resource` VALUES ('1', '78');
-INSERT INTO `role_resource` VALUES ('1', '79');
-INSERT INTO `role_resource` VALUES ('1', '80');
-INSERT INTO `role_resource` VALUES ('1', '81');
-INSERT INTO `role_resource` VALUES ('1', '82');
-INSERT INTO `role_resource` VALUES ('1', '83');
-INSERT INTO `role_resource` VALUES ('1', '84');
-INSERT INTO `role_resource` VALUES ('1', '85');
-INSERT INTO `role_resource` VALUES ('1', '86');
-INSERT INTO `role_resource` VALUES ('1', '87');
-INSERT INTO `role_resource` VALUES ('1', '88');
-INSERT INTO `role_resource` VALUES ('1', '89');
-INSERT INTO `role_resource` VALUES ('1', '90');
-INSERT INTO `role_resource` VALUES ('1', '91');
-INSERT INTO `role_resource` VALUES ('1', '92');
-INSERT INTO `role_resource` VALUES ('1', '93');
-INSERT INTO `role_resource` VALUES ('1', '94');
-INSERT INTO `role_resource` VALUES ('1', '95');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '101');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '102');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '103');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '104');
+
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '201');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '202');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '203');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '204');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '205');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '206');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '207');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '208');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '209');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '210');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '211');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '212');
+
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '901');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '902');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '903');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '904');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '905');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '906');
+
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1001');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1002');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1003');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1004');
+
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1101');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1102');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1103');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1104');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1105');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1106');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1107');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1108');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1109');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1110');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1111');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1112');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1113');
+
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1201');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1202');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1203');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1204');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1205');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1206');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1207');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1208');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1209');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1210');
+
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1301');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1302');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1303');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '1308');
+
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5001');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5002');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5003');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5004');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5005');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5006');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5007');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5008');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5009');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5010');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5011');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5012');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5013');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5014');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5015');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5016');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5017');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5018');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5019');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5020');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5021');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5022');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5023');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5024');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5025');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5026');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5027');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5028');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5029');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5030');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5031');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5032');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5033');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5034');
+INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5035');
 
 -- ----------------------------
 -- Table structure for seed_node
@@ -819,7 +815,7 @@ INSERT INTO `sys_config` VALUES ('8', 'block_explorer_url', 'https://devnetscan.
 INSERT INTO `sys_config` VALUES ('9', 'hrp', 'lat', '1', 'hrp', '2022-04-07 12:04:35', '2022-04-07 12:01:58');
 INSERT INTO `sys_config` VALUES ('10', 'rpc_url_list', 'https://devnetopenapi2.platon.network/rpc', '1', '链rpcUrl，主要是给后台系统用，可以是内部IP', '2022-04-08 03:02:48', '2022-04-08 03:01:36');
 INSERT INTO `sys_config` VALUES ('11', 'attribute_data_token_factory_address', '0x6FCf0573c4d95fc927d4319f2f859638d8c8492a', '1', '有属性凭证工厂合约地址', '2022-08-05 07:25:39', '2022-04-06 02:14:42');
-INSERT INTO `sys_config` VALUES ('12', 'attribute_data_token_exchange', '<交易所名称1|交易所地址1>,<交易所名称2|交易所地址2>', '1', '有属性凭证交易所地址，格式为<交易所名称,交易所地址>，多个交易所以英文逗号分割', '2022-08-09 10:19:10', '2022-08-09 08:57:18');
+INSERT INTO `sys_config` VALUES ('12', 'attribute_data_token_exchange', '<tofunft交易所|https://tofunft.com/>', '1', '有属性凭证交易所地址，格式为<交易所名称,交易所地址>，多个交易所以英文逗号分割', '2022-08-09 10:19:10', '2022-08-09 08:57:18');
 INSERT INTO `sys_config` VALUES ('13', 'vote_contract_address', '0x857027b23F73F5823984d90550A39cAA6FA43A11', '1', '投票合约合约地址', '2022-08-14 23:14:38', '2022-04-06 02:14:42');
 INSERT INTO `sys_config` VALUES ('14', 'vote_contract_deploy_bn', '1', '1', '投票合约部署的区块，这个配置决定了事件从哪个区块开始读取', '2022-08-14 23:32:20', '2022-04-06 02:14:42');
 

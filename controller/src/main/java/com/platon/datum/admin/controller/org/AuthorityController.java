@@ -245,7 +245,6 @@ public class AuthorityController {
      * 撤回提案
      *
      * @since 0.5.0
-     * TODO
      */
     @ApiOperation("撤回提案")
     @PostMapping("/revokeProposal")

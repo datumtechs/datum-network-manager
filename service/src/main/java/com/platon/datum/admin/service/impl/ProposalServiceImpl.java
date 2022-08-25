@@ -1,16 +1,19 @@
 package com.platon.datum.admin.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.exception.ValidateException;
 import com.platon.datum.admin.common.util.DidUtil;
+import com.platon.datum.admin.dao.AuthorityBusinessMapper;
 import com.platon.datum.admin.dao.AuthorityMapper;
 import com.platon.datum.admin.dao.GlobalOrgMapper;
 import com.platon.datum.admin.dao.ProposalMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Authority;
+import com.platon.datum.admin.dao.entity.AuthorityBusiness;
 import com.platon.datum.admin.dao.entity.GlobalOrg;
 import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.grpc.client.ProposalClient;
@@ -47,6 +50,8 @@ public class ProposalServiceImpl implements ProposalService {
     private AuthorityMapper authorityMapper;
     @Resource
     private GlobalOrgMapper globalOrgMapper;
+    @Resource
+    private AuthorityBusinessMapper authorityBusinessMapper;
     @Resource
     private PlatONClient platONClient;
 
@@ -85,6 +90,9 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     private Long bn2Date(String bn, BigInteger curBn, BigInteger avgPackTime) {
+        if(StrUtil.isBlank(bn)){
+            return null;
+        }
         BigInteger convertBn = new BigInteger(bn);
         int comp = convertBn.compareTo(curBn);
         if (comp > 0) {
@@ -156,7 +164,7 @@ public class ProposalServiceImpl implements ProposalService {
             proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
         }
         Integer status = proposal.getStatus();
-        //投票未开始前可以投票
+        //投票未开始前可以撤回
         if (status == Proposal.StatusEnum.HAS_NOT_STARTED.getValue()) {
             //调用调度服务撤销提案
             boolean success = proposalClient.withdrawProposal(String.valueOf(id));
@@ -164,9 +172,22 @@ public class ProposalServiceImpl implements ProposalService {
                 throw new BizException(Errors.SysException, "Revoke proposal failed!");
             } else {
                 proposalMapper.updateStatus(id, Proposal.StatusEnum.REVOKING.getValue());
+                //将authorityBusiness状态0-未处理设置为状态2-拒绝
+                this.rejectProposal(id, proposal.getType());
             }
         } else {
             throw new ValidateException("Revoke time has passed!");
+        }
+    }
+
+    private void rejectProposal(String proposalId, int proposalType) {
+        //将authorityBusiness状态0-未处理设置为状态2-拒绝
+        AuthorityBusiness.TypeEnum typeEnum = proposalType == Proposal.TypeEnum.ADD_AUTHORITY.getValue() ?
+                AuthorityBusiness.TypeEnum.JOIN_PROPOSAL : AuthorityBusiness.TypeEnum.KICK_PROPOSAL;
+        AuthorityBusiness authorityBusiness = authorityBusinessMapper.selectByTypeAndRelationId(typeEnum.getType(), proposalId);
+        if (authorityBusiness != null
+                && authorityBusiness.getProcessStatus() == AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus()) {
+            authorityBusinessMapper.updateProcessStatusById(authorityBusiness.getId(), AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus());
         }
     }
 
@@ -234,6 +255,10 @@ public class ProposalServiceImpl implements ProposalService {
      */
     @Override
     public void exit() {
+        Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
+        if (authority.getIsAdmin() == 1) {
+            throw new BizException(Errors.SysException, "Authority admin can't exit!");
+        }
         String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
         proposalClient.submitProposal(3, "", observerProxyWalletAddress, "");
     }
