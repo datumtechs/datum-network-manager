@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -60,10 +61,10 @@ public class TaskClient {
                 .setLastUpdated(LocalDateTimeUtil.getTimestamp(latestSynced))
                 .setPageSize(GrpcConstant.PageSize)
                 .build();
-        log.debug("getLocalTaskList,request:{}",request);
+        log.debug("getLocalTaskList,request:{}", request);
         //3.调用rpc服务接口
-        TaskRpcApi.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
-        log.debug("getLocalTaskList,response:{}",response);
+        TaskRpcApi.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getLocalTaskDetailList(request);
+        log.debug("getLocalTaskList,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -85,10 +86,10 @@ public class TaskClient {
         Channel channel = channelManager.getCarrierChannel();
         //2.构造 request
         TaskRpcApi.GetTaskEventListByTaskIdsRequest request = TaskRpcApi.GetTaskEventListByTaskIdsRequest.newBuilder().addAllTaskIds(taskIds).build();
-        log.debug("getTaskEventListData,request:{}",request);
+        log.debug("getTaskEventListData,request:{}", request);
         //3.调用rpc服务接口
-        TaskRpcApi.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskEventListByTaskIds(request);
-        log.debug("getTaskEventListData,response:{}",response);
+        TaskRpcApi.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getTaskEventListByTaskIds(request);
+        log.debug("getTaskEventListData,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
@@ -317,7 +318,29 @@ public class TaskClient {
                 case 30004:
                 case 30005:
                 case 30006:
-                case 30007:
+                    break;
+                case 40001:
+                    DataPolicyOption40001 dataPolicyOption40001 = JSONUtil.toBean(option, DataPolicyOption40001.class);
+                    metaDataId = dataPolicyOption40001.getMetadataId();
+                    metaDataName = dataPolicyOption40001.getMetadataName();
+                    hash = taskId + dataPolicyOption40001.getHash(i);
+                    break;
+                case 40002:
+                    DataPolicyOption40002 dataPolicyOption40002 = JSONUtil.toBean(option, DataPolicyOption40002.class);
+                    metaDataId = dataPolicyOption40002.getMetadataId();
+                    metaDataName = dataPolicyOption40002.getMetadataName();
+                    hash = taskId + dataPolicyOption40002.getHash(i);
+                    break;
+                case 40003:
+                    DataPolicyOption40003 dataPolicyOption40003 = JSONUtil.toBean(option, DataPolicyOption40003.class);
+                    metaDataId = dataPolicyOption40003.getMetadataId();
+                    metaDataName = dataPolicyOption40003.getMetadataName();
+                    hash = taskId + dataPolicyOption40003.getHash(i);
+                    break;
+                case 40004:
+                case 40005:
+                case 40006:
+                case 40007:
                     break;
                 default:
                     log.error("taskId : {},unknown data policy type : {}", taskDetail.getTaskId(), type);
