@@ -8,6 +8,7 @@
         <result column="meta_data_name" jdbcType="VARCHAR" property="metaDataName"/>
         <result column="identity_id" jdbcType="VARCHAR" property="identityId"/>
         <result column="party_id" jdbcType="VARCHAR" property="partyId"/>
+        <result column="contract" jdbcType="VARCHAR" property="contract"/>
     </resultMap>
     <sql id="Base_Column_List">
         hash,
@@ -15,7 +16,8 @@
         meta_data_id,
         meta_data_name,
         identity_id,
-        party_id
+        party_id,
+        contract
     </sql>
 
     <resultMap id="BaseResultMap_With_OrgName" type="com.platon.datum.admin.dao.entity.TaskDataProvider"
@@ -32,12 +34,12 @@
     </select>
 
     <insert id="replaceBatch" parameterType="list">
-        replace into task_data_provider (hash, task_id, meta_data_id, meta_data_name, identity_id, party_id)
+        replace into task_data_provider (hash, task_id, meta_data_id, meta_data_name, identity_id, party_id,contract)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.hash,jdbcType=VARCHAR}, #{item.taskId,jdbcType=VARCHAR}, #{item.metaDataId,jdbcType=VARCHAR},
              #{item.metaDataName,jdbcType=VARCHAR}, #{item.identityId,jdbcType=VARCHAR},
-             #{item.partyId,jdbcType=VARCHAR})
+             #{item.partyId,jdbcType=VARCHAR},#{item.contract,jdbcType=VARCHAR})
         </foreach>
     </insert>
 </mapper>

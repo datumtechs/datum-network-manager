@@ -883,6 +883,7 @@ CREATE TABLE `task_data_provider` (
                                       `meta_data_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '参与任务的元数据名称',
                                       `identity_id` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '数据提供者组织身份ID',
                                       `party_id` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '参与方在计算任务中的partyId',
+                                      `contract` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '元数据关联的凭证地址',
                                       PRIMARY KEY (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务数据提供方表 存储某个任务数据提供方的信息';
 

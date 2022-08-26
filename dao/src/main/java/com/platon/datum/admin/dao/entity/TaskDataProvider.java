@@ -26,4 +26,7 @@ public class TaskDataProvider extends BaseDomain {
     @ApiModelProperty(name = "partyId", value = "数据提供者在任务中的party ID")
     private String partyId;
 
+    @ApiModelProperty(name = "contract", value = "元数据关联的凭证地址")
+    private String contract;
+
 }

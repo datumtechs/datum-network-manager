@@ -1,7 +1,10 @@
 package com.platon.datum.admin.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.platon.crypto.Credentials;
+import com.platon.crypto.Keys;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.*;
 import com.platon.datum.admin.dao.cache.OrgCache;
@@ -9,16 +12,29 @@ import com.platon.datum.admin.dao.entity.*;
 import com.platon.datum.admin.dao.enums.TaskStatusEnum;
 import com.platon.datum.admin.service.TaskService;
 import com.platon.datum.admin.service.entity.ServiceConstant;
+import com.platon.datum.admin.service.evm.ERC721Template;
+import com.platon.datum.admin.service.web3j.Web3jManager;
+import com.platon.protocol.Web3j;
+import com.platon.tx.gas.ContractGasProvider;
+import com.platon.tx.gas.GasProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
+@Slf4j
 public class TaskServiceImpl implements TaskService {
 
     @Resource
@@ -42,6 +58,18 @@ public class TaskServiceImpl implements TaskService {
     @Resource
     private TaskPowerProviderMapper taskPowerProviderMapper;
 
+    @Resource
+    private Web3jManager web3jManager;
+
+    private AtomicReference<Web3j> web3jContainer;
+
+    private Credentials credentials;
+
+    @PostConstruct
+    public void init() throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
+        web3jContainer = web3jManager.subscribe(this);
+        credentials = Credentials.create(Keys.createEcKeyPair());
+    }
 
     @Override
     public Page<Task> listTaskByIdentityIdWithRole(String identityId, Integer statusFilter, Integer roleFilter, Long startTimestamp, Long endTimestamp, int pageNumber, int pageSize) {
@@ -91,6 +119,10 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.taskStatistics(identityId);
     }
 
+    private BigInteger GAS_LIMIT = BigInteger.valueOf(4104830);
+    private BigInteger GAS_PRICE = BigInteger.valueOf(1000000000L);
+    private GasProvider gasProvider = new ContractGasProvider(GAS_PRICE, GAS_LIMIT);
+
     @Override
     public Task getTaskDetails(String taskId) {
         Task task = taskMapper.selectTaskByTaskId(taskId, null);
@@ -112,6 +144,19 @@ public class TaskServiceImpl implements TaskService {
 
         //数据提供方
         List<TaskDataProvider> dataSupplierList = taskDataProviderMapper.selectTaskDataWithOrgByTaskId(taskId);
+        dataSupplierList.forEach(taskDataProvider -> {
+            String contract = taskDataProvider.getContract();
+            if (StrUtil.isNotBlank(contract)) {
+                ERC721Template erc721Template = ERC721Template.load(contract, web3jContainer.get(), credentials, gasProvider);
+                try {
+                    String contractName = erc721Template.name().send();
+                    taskDataProvider.getDynamicFields().put("contractName", contractName);
+                } catch (Throwable throwable) {
+                    log.error("Get contract name failed : " + contract, throwable);
+                }
+            }
+        });
+
         task.setDataSupplier(dataSupplierList);
 
         //结果接收方

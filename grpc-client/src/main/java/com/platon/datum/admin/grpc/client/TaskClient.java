@@ -20,10 +20,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -279,6 +276,7 @@ public class TaskClient {
             String metaDataId = "";
             String metaDataName = "";
             String hash = taskId + i;
+            StringJoiner contract = new StringJoiner(",");
             switch (type) {
                 case 0:
                     DataPolicyOption0 dataPolicyOption0 = JSONUtil.toBean(option, DataPolicyOption0.class);
@@ -324,18 +322,39 @@ public class TaskClient {
                     metaDataId = dataPolicyOption40001.getMetadataId();
                     metaDataName = dataPolicyOption40001.getMetadataName();
                     hash = taskId + dataPolicyOption40001.getHash(i);
+
+                    List<String> consumeOptions40001 = dataPolicyOption40001.getConsumeOptions();
+                    consumeOptions40001.forEach(consumeOption -> {
+                        DataPolicyOptionConsumeOption dataPolicyOptionConsumeOption = JSONUtil.toBean(consumeOption, DataPolicyOptionConsumeOption.class);
+                        contract.add(dataPolicyOptionConsumeOption.getContract());
+                    });
+
                     break;
                 case 40002:
                     DataPolicyOption40002 dataPolicyOption40002 = JSONUtil.toBean(option, DataPolicyOption40002.class);
                     metaDataId = dataPolicyOption40002.getMetadataId();
                     metaDataName = dataPolicyOption40002.getMetadataName();
                     hash = taskId + dataPolicyOption40002.getHash(i);
+
+                    List<String> consumeOptions40002 = dataPolicyOption40002.getConsumeOptions();
+                    consumeOptions40002.forEach(consumeOption -> {
+                        DataPolicyOptionConsumeOption dataPolicyOptionConsumeOption = JSONUtil.toBean(consumeOption, DataPolicyOptionConsumeOption.class);
+                        contract.add(dataPolicyOptionConsumeOption.getContract());
+                    });
+
                     break;
                 case 40003:
                     DataPolicyOption40003 dataPolicyOption40003 = JSONUtil.toBean(option, DataPolicyOption40003.class);
                     metaDataId = dataPolicyOption40003.getMetadataId();
                     metaDataName = dataPolicyOption40003.getMetadataName();
                     hash = taskId + dataPolicyOption40003.getHash(i);
+
+                    List<String> consumeOptions40003 = dataPolicyOption40003.getConsumeOptions();
+                    consumeOptions40003.forEach(consumeOption -> {
+                        DataPolicyOptionConsumeOption dataPolicyOptionConsumeOption = JSONUtil.toBean(consumeOption, DataPolicyOptionConsumeOption.class);
+                        contract.add(dataPolicyOptionConsumeOption.getContract());
+                    });
+
                     break;
                 case 40004:
                 case 40005:
@@ -354,6 +373,7 @@ public class TaskClient {
             dataProvider.setMetaDataName(metaDataName);
             dataProvider.setIdentityId(dataSupplier.getIdentityId());
             dataProvider.setPartyId(dataSupplier.getPartyId());
+            dataProvider.setContract(contract.toString());
             taskDataProviderList.add(dataProvider);
             //搜集taskOrg， 数据提供方
             taskOrgMap.put(dataSupplier.getIdentityId(),
