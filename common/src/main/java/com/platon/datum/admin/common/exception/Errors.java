@@ -94,6 +94,7 @@ public enum Errors {
     TxKnownTx(1063,"known transaction"),
     TimeLessThan24H(1064,"Time is less than 24 hours!"),
     YouAreNotOwner(1065,"You are not owner!"),
+    AlreadyEffectProposal(1066,"Proposal already effect!"),
 
     // rpc调用时异常
     CallRpcError(2000, "Call node rpc exception"),

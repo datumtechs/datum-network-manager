@@ -55,6 +55,9 @@
             <if test="startTime != null">
                 start_time,
             </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
             <if test="progress != null">
                 progress,
             </if>
@@ -104,6 +107,9 @@
             </if>
             <if test="startTime != null">
                 #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
             </if>
             <if test="progress != null">
                 #{progress,jdbcType=INTEGER},
@@ -159,6 +165,9 @@
             </if>
             <if test="startTime != null">
                 start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
             </if>
             <if test="progress != null">
                 progress = #{progress,jdbcType=INTEGER},

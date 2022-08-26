@@ -1,5 +1,6 @@
 package com.platon.datum.admin.dto.resp;
 
+import com.platon.datum.admin.dao.entity.Org;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -18,13 +19,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel
-public class GeneralOrganizationHomeResp {
-
-    @ApiModelProperty("组织ID")
-    private String identityId;
-
-    @ApiModelProperty("组织名称")
-    private String identityName;
+public class GeneralOrganizationHomeResp extends Org {
 
     @ApiModelProperty("已获取的证书数量")
     private int credentialsCount;

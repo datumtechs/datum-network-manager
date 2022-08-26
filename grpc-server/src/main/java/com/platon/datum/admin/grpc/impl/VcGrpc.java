@@ -1,12 +1,14 @@
 package com.platon.datum.admin.grpc.impl;
 
 import cn.hutool.json.JSONUtil;
+import com.platon.crypto.ECDSASignature;
+import com.platon.crypto.Keys;
+import com.platon.crypto.Sign;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.exception.ValidateException;
 import com.platon.datum.admin.common.util.DidUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
-import com.platon.datum.admin.common.util.WalletSignUtil;
 import com.platon.datum.admin.dao.ApplyRecordMapper;
 import com.platon.datum.admin.dao.AuthorityBusinessMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
@@ -15,12 +17,14 @@ import com.platon.datum.admin.dao.entity.AuthorityBusiness;
 import com.platon.datum.admin.grpc.carrier.api.DidRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.VcServiceGrpc;
 import com.platon.datum.admin.grpc.carrier.types.Common;
+import com.platon.utils.Numeric;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -216,9 +220,31 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
      * @param reqSignature  对请求摘要的签名。从req_digest,req_signature能恢复出签名私钥对应的公钥
      * @param issuerAddress carrier钱包0x地址
      */
-    private void verifySign(String reqDigest, String reqSignature, String issuerAddress) throws ValidateException {
-        if (!WalletSignUtil.verifySign(reqDigest, reqSignature, issuerAddress)) {
+    private static void verifySign(String reqDigest, String reqSignature, String issuerAddress) throws ValidateException {
+        byte[] digest = Numeric.hexStringToByteArray(reqDigest);
+        byte[] goSignData = Numeric.hexStringToByteArray(reqSignature);
+        byte[] v = new byte[1];
+        byte[] r = new byte[32];
+        byte[] s = new byte[32];
+        System.arraycopy(goSignData, 0, r, 0, 32);
+        System.arraycopy(goSignData, 32, s, 0, 32);
+        System.arraycopy(goSignData, 64, v, 0, 1);
+
+        ECDSASignature sig = new ECDSASignature(
+                new BigInteger(1, r),
+                new BigInteger(1, s));
+
+        int recId = v[0] & 0xFF;
+        BigInteger signPublicKey = Sign.recoverFromSignature(recId, sig, digest);
+        String address = Keys.getAddress(signPublicKey);
+        if (!Numeric.cleanHexPrefix(address).equalsIgnoreCase(Numeric.cleanHexPrefix(issuerAddress))) {
             throw new ValidateException("Verify sign failed");
         }
+    }
+
+    public static void main(String[] args) {
+        String req_digest = "0xebd5186e34a8a67b541cf27b17106bae3c77d11154d6e72c2a2f6f243bc04533";
+        String req_signature = "0x036e119f9ddf6bdb7c41198b45790b6f81e9bcf35a95a3f47bcddfa1b6994e5a29d5b7a2c448c9c03336afe6858eba59860828a2a0c404d4f16dedc60f5ebb9b00";
+        verifySign(req_digest, req_signature, "0xE665Bc266B63026F35aEAf54770443a87973dBe5");
     }
 }

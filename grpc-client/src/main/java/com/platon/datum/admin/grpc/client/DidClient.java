@@ -1,5 +1,6 @@
 package com.platon.datum.admin.grpc.client;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.google.protobuf.Empty;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author liushuyu
@@ -43,15 +45,17 @@ public class DidClient {
         ManagedChannel channel = channelManager.buildChannel(scheduleIP, schedulePort);
         //2.拼装request
         //3.调用rpc,获取response
-        DidRpcApi.CreateDIDResponse response = DIDServiceGrpc.newBlockingStub(channel).createDID(Empty.newBuilder().build());
+        DidRpcApi.CreateDIDResponse response = DIDServiceGrpc.newBlockingStub(channel)
+                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                .createDID(Empty.newBuilder().build());
         log.debug("createDID,response:{}", response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
-        } else if (response.getStatus() != 15002) {
+        } else if (response.getStatus() == 15002) {
             //did已经创建
             String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
-            return DidUtil.latAddressToDid(observerProxyWalletAddress);
+            return DidUtil.addressToDid(observerProxyWalletAddress);
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
             throw new CallGrpcServiceFailed(response.getMsg());
         }
@@ -62,6 +66,10 @@ public class DidClient {
      * 申请VC
      */
     public void applyVCLocal(ApplyRecord applicantRecord, String approveOrgUrl) {
+        if (approveOrgUrl.contains("//")) {
+            approveOrgUrl = StrUtil.subAfter(approveOrgUrl, "//", true);
+        }
+
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -76,7 +84,9 @@ public class DidClient {
                 .build();
         log.debug("applyVCLocal,request:{}", request);
         //3.调用rpc,获取response
-        Common.SimpleResponse response = VcServiceGrpc.newBlockingStub(channel).applyVCLocal(request);
+        Common.SimpleResponse response = VcServiceGrpc.newBlockingStub(channel)
+                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                .applyVCLocal(request);
         log.debug("applyVCLocal,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -90,6 +100,10 @@ public class DidClient {
      * 普通组织使用该接口，下载VC
      */
     public String downloadVCLocal(String approveOrg, String approveOrgUrl, String applyOrg) {
+        if (approveOrgUrl.contains("//")) {
+            approveOrgUrl = StrUtil.subAfter(approveOrgUrl, "//", true);
+        }
+
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
@@ -100,7 +114,9 @@ public class DidClient {
                 .build();
         log.debug("downloadVCLocal,request:{}", request);
         //3.调用rpc,获取response
-        DidRpcApi.DownloadVCResponse response = VcServiceGrpc.newBlockingStub(channel).downloadVCLocal(request);
+        DidRpcApi.DownloadVCResponse response = VcServiceGrpc.newBlockingStub(channel)
+                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                .downloadVCLocal(request);
         log.debug("downloadVCLocal,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -128,7 +144,9 @@ public class DidClient {
                 .build();
         log.debug("createVC,request:{}", request);
         //3.调用rpc,获取response
-        DidRpcApi.CreateVCResponse response = VcServiceGrpc.newBlockingStub(channel).createVC(request);
+        DidRpcApi.CreateVCResponse response = VcServiceGrpc.newBlockingStub(channel)
+                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                .createVC(request);
         log.debug("createVC,response:{}", response);
         //4.处理response
         if (response == null) {

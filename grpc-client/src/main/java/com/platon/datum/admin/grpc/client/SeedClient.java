@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.platon.datum.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
@@ -44,7 +45,7 @@ public class SeedClient {
                 .build();
         log.debug("addSeedNode,request:{}",seedRequest);
         //3.调用rpc,获取response
-        SysRpcApi.SetSeedNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setSeedNode(seedRequest);
+        SysRpcApi.SetSeedNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).setSeedNode(seedRequest);
         log.debug("addSeedNode,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -68,7 +69,7 @@ public class SeedClient {
                 .build();
         log.debug("deleteSeedNode,request:{}",seedRequest);
         //3.调用rpc,获取response
-        Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteSeedNode(seedRequest);
+        Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).deleteSeedNode(seedRequest);
         log.debug("deleteSeedNode,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -89,7 +90,7 @@ public class SeedClient {
         Empty seedNodeListRequest = Empty.newBuilder().build();
         log.debug("getSeedNodeList,request:{}",seedNodeListRequest);
         //3.调用rpc,获取response
-        SysRpcApi.GetSeedNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getSeedNodeList(seedNodeListRequest);
+        SysRpcApi.GetSeedNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getSeedNodeList(seedNodeListRequest);
         log.debug("getSeedNodeList,response:{}",response);
         //4.处理response
         if (response == null) {

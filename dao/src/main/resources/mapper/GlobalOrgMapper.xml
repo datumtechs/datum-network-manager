@@ -55,4 +55,15 @@
                                     update_at     = #{org.recUpdateTime,jdbcType=TIMESTAMP}
         </foreach>
     </update>
+
+    <select id="selectNominateMemberList" resultMap="BaseResultMap">
+        select *
+        from global_org
+        left join authority a on global_org.identity_id = a.identity_id
+        where
+        a.identity_id is null
+        <if test="keyword != null and keyword != ''">
+            and global_org.node_name like CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
 </mapper>

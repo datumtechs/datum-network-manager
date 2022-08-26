@@ -14,13 +14,8 @@ import com.platon.datum.admin.dao.entity.Authority;
  * @Desc ******************************
  */
 public interface AuthorityMapper {
-    int deleteByPrimaryKey(String identityId);
-
-    int insert(Authority record);
 
     Authority selectByPrimaryKey(String identityId);
-
-    int updateByIdentityId(Authority record);
 
     /**
      * 根据名字模糊查询出所有委员会成员
@@ -36,5 +31,5 @@ public interface AuthorityMapper {
      */
     int selectCount();
 
-    void refresh(@Param("allAuthority") List<Authority> allAuthority);
+    int refresh(@Param("allAuthority") List<Authority> allAuthority);
 }

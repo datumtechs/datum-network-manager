@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Api(tags = "数据授权")
 @Slf4j
 //@RestController
-@RequestMapping("/api/v1/data/")
+@RequestMapping("/api/v1/dataAuth/")
 public class DataAuthController {
 
     @Resource
@@ -63,8 +63,6 @@ public class DataAuthController {
         return JsonResponse.page(dataAuthPage, localDataAuthPageList);
     }
 
-
-
     /**
      * 授权数据数量统计
      */
@@ -79,7 +77,6 @@ public class DataAuthController {
         statisticsDataAuthResp.setUnFinishAuthCount(unFinishAuthCount);
         return JsonResponse.success(statisticsDataAuthResp);
     }
-
 
     /**
      * 数据授权动作 (1: 同意; 2: 拒绝)
@@ -101,8 +98,6 @@ public class DataAuthController {
         return JsonResponse.success();
     }
 
-
-
     /**
      * 授权申请查看
      */
@@ -114,27 +109,6 @@ public class DataAuthController {
         MetaDataAuthDetailResp resp = MetaDataAuthDetailResp.from(dataAuthDetail);
         return JsonResponse.success(resp);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

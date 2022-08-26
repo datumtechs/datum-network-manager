@@ -1,8 +1,12 @@
 package com.platon.datum.admin.service;
 
 import com.github.pagehelper.Page;
+import com.platon.datum.admin.dao.entity.GlobalOrg;
 import com.platon.datum.admin.dao.entity.Proposal;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.math.BigInteger;
+import java.util.List;
 
 /**
  * @Author liushuyu
@@ -53,5 +57,14 @@ public interface ProposalService {
 
     String upload(MultipartFile file);
 
-    void convertProposalStatus(Proposal proposal);
+    /**
+     * 转换proposal的状态
+     * @param curBn 当前的块高
+     * @param proposal 需要转换的proposal
+     * @return proposal状态是否发生改变
+     */
+    boolean convertProposalStatus(BigInteger curBn, Proposal proposal);
+
+    List<GlobalOrg> getNominateMember(String keyword);
+
 }

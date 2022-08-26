@@ -180,7 +180,7 @@
         from authority_business ab
                  left join proposal p on ab.relation_id = p.id
         where process_status = 0
-          and type != 1
+          and ab.type != 1
     </select>
 
     <select id="selectByTypeAndRelationId" resultMap="BaseResultMap">

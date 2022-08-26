@@ -3,6 +3,7 @@ package com.platon.datum.admin.service;
 import com.github.pagehelper.Page;
 import com.platon.datum.admin.dao.entity.AuthorityBusiness;
 import com.platon.datum.admin.dao.entity.Business;
+import com.platon.datum.admin.dao.entity.Proposal;
 
 /**
  * @Author liushuyu

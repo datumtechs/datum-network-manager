@@ -83,7 +83,7 @@
 
     <select id="countByBnAndTxHashAndLogIndex" resultType="int">
         select
-        <include refid="Base_Column_List"/>
+        count(*)
         from proposal_log
         where block_number = #{blockNumber}
           and tx_hash = #{transactionHash}

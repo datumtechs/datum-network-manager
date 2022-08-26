@@ -70,7 +70,7 @@ public class AuthClient {
                 .build();
         log.debug("applyIdentityJoin,request:{}", joinRequest);
         //3.调用rpc,获取response
-        Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).applyIdentityJoin(joinRequest);
+        Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).applyIdentityJoin(joinRequest);
         log.debug("applyIdentityJoin,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -96,7 +96,7 @@ public class AuthClient {
                 .build();
         log.debug("revokeIdentityJoin,request:{}", request);
         //3.调用rpc,获取response
-        Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).revokeIdentityJoin(request);
+        Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).revokeIdentityJoin(request);
         log.debug("revokeIdentityJoin,request:{}", response);
         //4.处理response
         if (response == null) {
@@ -123,7 +123,7 @@ public class AuthClient {
                 .build();
         log.debug("getMetaDataAuthorityList,request:{}", request);
         //3.调用rpc,获取response
-        AuthRpcApi.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getLocalMetadataAuthorityList(request);
+        AuthRpcApi.GetMetadataAuthorityListResponse response = AuthServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getLocalMetadataAuthorityList(request);
         log.debug("getMetaDataAuthorityList,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -146,7 +146,7 @@ public class AuthClient {
                 .build();
         //3.调用rpc,获取response
         AuthRpcApi.GetMetadataAuthorityListResponse response = AuthServiceGrpc
-                .newBlockingStub(channel)
+                .newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS)
                 .withDeadlineAfter(timeout, TimeUnit.SECONDS)
                 .getLocalMetadataAuthorityList(request);
 
@@ -183,7 +183,7 @@ public class AuthClient {
                 .build();
         log.debug("auditMetaData,request:{}", request);
         //3.调用rpc,获取response
-        AuthRpcApi.AuditMetadataAuthorityResponse response = AuthServiceGrpc.newBlockingStub(channel).auditMetadataAuthority(request);
+        AuthRpcApi.AuditMetadataAuthorityResponse response = AuthServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).auditMetadataAuthority(request);
         log.debug("auditMetaData,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -206,7 +206,7 @@ public class AuthClient {
                 .build();
         log.debug("getIdentityList,request:{}", request);
         //3.调用rpc,获取response
-        AuthRpcApi.GetIdentityListResponse response = AuthServiceGrpc.newBlockingStub(channel).getIdentityList(request);
+        AuthRpcApi.GetIdentityListResponse response = AuthServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getIdentityList(request);
         log.debug("getIdentityList,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -236,7 +236,7 @@ public class AuthClient {
                 .build();
         log.debug("updateIdentityCredential,request:{}", request);
         //3.调用rpc,获取response
-        Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).updateIdentityCredential(request);
+        Common.SimpleResponse response = AuthServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).updateIdentityCredential(request);
         log.debug("updateIdentityCredential,response:{}", response);
         //4.处理response
         if (response == null) {

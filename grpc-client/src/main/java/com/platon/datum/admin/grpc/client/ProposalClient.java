@@ -1,6 +1,8 @@
 package com.platon.datum.admin.grpc.client;
 
+import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.CallGrpcServiceFailed;
+import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.grpc.carrier.api.DidRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.DidRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.ProposalServiceGrpc;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author liushuyu
@@ -49,6 +52,7 @@ public class ProposalClient {
         log.debug("submitProposal,request:{}",request);
         //3.调用rpc,获取response
         DidRpcApi.SubmitProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel)
+                .withDeadlineAfter(30, TimeUnit.SECONDS)
                 .submitProposal(request);
         log.debug("submitProposal,response:{}",response);
         //4.处理response
@@ -75,7 +79,9 @@ public class ProposalClient {
                 .build();
         log.debug("withdrawProposal,request:{}",request);
         //3.调用rpc,获取response
-        DidRpcApi.WithdrawProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).withdrawProposal(request);
+        DidRpcApi.WithdrawProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel)
+                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                .withdrawProposal(request);
         log.debug("withdrawProposal,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -102,7 +108,9 @@ public class ProposalClient {
                 .build();
         log.debug("voteProposal,request:{}",request);
         //3.调用rpc,获取response
-        DidRpcApi.VoteProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).voteProposal(request);
+        DidRpcApi.VoteProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel)
+                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                .voteProposal(request);
         log.debug("voteProposal,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -128,12 +136,17 @@ public class ProposalClient {
                 .build();
         log.debug("effectProposal,request:{}",request);
         //3.调用rpc,获取response
-        DidRpcApi.EffectProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).effectProposal(request);
+        DidRpcApi.EffectProposalResponse response = ProposalServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS)
+                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                .effectProposal(request);
         log.debug("effectProposal,response:{}",response);
         //4.处理response
         if (response == null) {
             throw new CallGrpcServiceFailed();
         } else if (response.getStatus() != GrpcConstant.GRPC_SUCCESS_CODE) {
+            if("invalid proposal id".equalsIgnoreCase(response.getMsg())){
+                throw new BizException(Errors.AlreadyEffectProposal);
+            }
             throw new CallGrpcServiceFailed(response.getMsg());
         }
         return response.getResult();

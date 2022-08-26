@@ -17,4 +17,6 @@ public interface GlobalOrgMapper {
     GlobalOrg selectByIdentityId(String identityId);
 
     int insertOrUpdate(@Param("identityList") List<GlobalOrg> identityList);
+
+    List<GlobalOrg> selectNominateMemberList(@Param("keyword") String keyword);
 }

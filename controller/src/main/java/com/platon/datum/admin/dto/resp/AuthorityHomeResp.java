@@ -1,5 +1,6 @@
 package com.platon.datum.admin.dto.resp;
 
+import com.platon.datum.admin.dao.entity.Org;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -17,13 +18,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel
-public class AuthorityHomeResp {
-
-    @ApiModelProperty("组织ID")
-    private String identityId;
-
-    @ApiModelProperty("组织名称")
-    private String identityName;
+public class AuthorityHomeResp extends Org {
 
     @ApiModelProperty("委员会成员数量")
     private int authorityCount;

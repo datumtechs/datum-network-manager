@@ -19,11 +19,20 @@
     </sql>
 
     <select id="selectByRoleId" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from resource r,
-             (select * from role_resource where role_id = #{roleId}) rr
-        where r.id in (rr.resource_id)
+        <!-- 管理员有全部的权限-->
+        <if test="roleId == 1">
+            select
+            <include refid="Base_Column_List"/>
+            from resource
+        </if>
+        <!-- 非管理员用户则根据role_resource 对应关系-->
+        <if test="roleId != 1">
+            select
+            <include refid="Base_Column_List"/>
+            from resource r,
+            (select * from role_resource where role_id = #{roleId}) rr
+            where r.id in (rr.resource_id)
+        </if>
     </select>
 
     <select id="selectByResourceIdList" resultMap="BaseResultMap">

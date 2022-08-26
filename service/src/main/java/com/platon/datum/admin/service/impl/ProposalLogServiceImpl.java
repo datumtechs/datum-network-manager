@@ -1,6 +1,7 @@
 package com.platon.datum.admin.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.platon.datum.admin.common.exception.OrgInfoNotFound;
 import com.platon.datum.admin.dao.ProposalLogMapper;
@@ -40,7 +41,7 @@ public class ProposalLogServiceImpl implements ProposalLogService {
     @Override
     public void subscribe() {
         SysConfig config = sysConfigService.getConfig(SysConfig.KeyEnum.VOTE_CONTRACT_DEPLOY_BN.getKey());
-        BigInteger begin = config == null ? BigInteger.ONE : new BigInteger(config.getKey());
+        BigInteger begin = config == null ? BigInteger.ONE : new BigInteger(StrUtil.trim(config.getValue()));
         ProposalLog latest = proposalLogMapper.selectLatestOne();
         if (ObjectUtil.isNotNull(latest)) {
             begin = new BigInteger(latest.getBlockNumber());
@@ -62,7 +63,7 @@ public class ProposalLogServiceImpl implements ProposalLogService {
             }
             if (proposalLogMapper.countByBnAndTxHashAndLogIndex(tuple2.getValue1().getBlockNumber().toString(),
                     tuple2.getValue1().getTransactionHash(),
-                    tuple2.getValue1().getLogIndex().toString()) > 0) {
+                    tuple2.getValue1().getLogIndex().toString()) <= 0) {
                 ProposalLog save = new ProposalLog();
                 Log log = tuple2.getValue1();
                 save.setBlockNumber(log.getBlockNumber().toString());

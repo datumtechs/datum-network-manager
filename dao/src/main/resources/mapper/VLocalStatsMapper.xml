@@ -1,43 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.platon.datum.admin.dao.VLocalStatsMapper">
+    <!-- 查询总占用资源 -->
+    <select id="queryUsedTotalResource" resultType="com.platon.datum.admin.dao.dto.UsedResourceDTO">
+        select sum(used_core)      as usedCore,
+               sum(used_memory)    as usedMemory,
+               sum(used_bandwidth) as usedBandwidth,
+               sum(memory)         as totalMemory,
+               sum(core)           as totalCore,
+               sum(bandwidth)      as totalBandwidth
+        from power_node
+    </select>
 
-  <!-- 查询总占用资源 -->
-  <select id="queryUsedTotalResource" resultType="com.platon.datum.admin.dao.dto.UsedResourceDTO">
-    select
-        sum(used_core) as usedCore,
-        sum(used_memory) as usedMemory,
-        sum(used_bandwidth) as usedBandwidth,
-        sum(memory) as totalMemory,
-        sum(core) as totalCore,
-        sum(bandwidth) as totalBandwidth
-    from
-        power_node
-  </select>
+    <!-- 查询普通用户的计算任务概况 -->
+    <select id="queryMyCalculateTaskStats" resultType="java.util.Map">
+        select task.status        as status,
+               count(task.status) as statusCount
+        from task
+                 left join task_data_provider tdp on task.task_Id = tdp.task_id
+                 left join meta_data md on md.id = tdp.meta_data_id
+        where md.user = #{userAddress}
+        group by task.status
+    </select>
 
-  <!-- 查询我的计算任务概况 -->
-  <select id="queryMyCalculateTaskStats" resultType="java.util.Map">
-    select
-        status as status,
-        count(status) as statusCount
-    from
-        task
-    group by status
-  </select>
+    <!-- 查询管理员用户的计算任务概况 -->
+    <select id="queryAdminCalculateTaskStats" resultType="java.util.Map">
+        select a.status        as status,
+               count(a.status) as statusCount
+        from task a
+        where a.id not in (select task.id
+                           from task
+                                    left join task_data_provider tdp on task.task_Id = tdp.task_id
+                                    left join meta_data md on md.meta_data_id = tdp.meta_data_id
+                           where md.user != #{userAddress})
+        group by a.status
+    </select>
 
-  <!-- 查询待授权数据列表-->
-  <select id="listDataAuthReqWaitingForApprove" resultType="com.platon.datum.admin.dao.dto.DataAuthReqDTO">
-    select
-        a.create_at as applyTime,
-        a.apply_user as applyUser,
-        b.meta_data_name as metaDataName
-    from
-        data_auth a, meta_data b
-    where 1=1
-        and a.meta_data_id = b.meta_data_id
-        and a.status = 0
-        and b.status = 2
-    order by a.create_at desc
-  </select>
-
+    <!-- 查询待授权数据列表-->
+    <select id="listDataAuthReqWaitingForApprove" resultType="com.platon.datum.admin.dao.dto.DataAuthReqDTO">
+        select a.create_at      as applyTime,
+               a.apply_user     as applyUser,
+               b.meta_data_name as metaDataName
+        from data_auth a,
+             meta_data b
+        where 1 = 1
+          and a.meta_data_id = b.meta_data_id
+          and a.status = 0
+          and b.status = 2
+          and b.user = #{userAddress}
+        order by a.create_at desc
+    </select>
 </mapper>

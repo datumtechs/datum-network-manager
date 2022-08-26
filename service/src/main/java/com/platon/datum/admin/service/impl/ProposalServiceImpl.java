@@ -1,15 +1,20 @@
 package com.platon.datum.admin.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.exception.ValidateException;
 import com.platon.datum.admin.common.util.DidUtil;
+import com.platon.datum.admin.dao.AuthorityBusinessMapper;
 import com.platon.datum.admin.dao.AuthorityMapper;
+import com.platon.datum.admin.dao.GlobalOrgMapper;
 import com.platon.datum.admin.dao.ProposalMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Authority;
+import com.platon.datum.admin.dao.entity.AuthorityBusiness;
+import com.platon.datum.admin.dao.entity.GlobalOrg;
 import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.grpc.client.ProposalClient;
 import com.platon.datum.admin.service.IpfsOpService;
@@ -21,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,6 +48,10 @@ public class ProposalServiceImpl implements ProposalService {
     private ProposalClient proposalClient;
     @Resource
     private AuthorityMapper authorityMapper;
+    @Resource
+    private GlobalOrgMapper globalOrgMapper;
+    @Resource
+    private AuthorityBusinessMapper authorityBusinessMapper;
     @Resource
     private PlatONClient platONClient;
 
@@ -65,8 +75,10 @@ public class ProposalServiceImpl implements ProposalService {
         BigInteger avgPackTime = platONClient.getAvgPackTime();
 
         proposalPage.forEach(proposal -> {
-            convertProposalStatus(proposal);
-            proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+            boolean changed = convertProposalStatus(curBn, proposal);
+            if (changed) {
+                proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+            }
 
             //添加附加信息
             Map dynamicFields = proposal.getDynamicFields();
@@ -78,6 +90,9 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     private Long bn2Date(String bn, BigInteger curBn, BigInteger avgPackTime) {
+        if(StrUtil.isBlank(bn)){
+            return null;
+        }
         BigInteger convertBn = new BigInteger(bn);
         int comp = convertBn.compareTo(curBn);
         if (comp > 0) {
@@ -102,11 +117,14 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     public Proposal getProposalDetail(String id) {
         Proposal proposal = proposalMapper.selectByPrimaryKey(id);
-        convertProposalStatus(proposal);
-        proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
 
         // 查询当前块高
         BigInteger curBn = platONClient.platonBlockNumber();
+        boolean changed = convertProposalStatus(curBn, proposal);
+        if (changed) {
+            proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+        }
+
         // 查询平均出块时间
         BigInteger avgPackTime = platONClient.getAvgPackTime();
         //添加附加信息
@@ -138,9 +156,15 @@ public class ProposalServiceImpl implements ProposalService {
             throw new ValidateException("Proposal not initiated by current organization");
         }
 
-        convertProposalStatus(proposal);
+        //当前块高
+        BigInteger curBn = platONClient.platonBlockNumber();
+
+        boolean changed = convertProposalStatus(curBn, proposal);
+        if (changed) {
+            proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+        }
         Integer status = proposal.getStatus();
-        //投票未开始前可以投票
+        //投票未开始前可以撤回
         if (status == Proposal.StatusEnum.HAS_NOT_STARTED.getValue()) {
             //调用调度服务撤销提案
             boolean success = proposalClient.withdrawProposal(String.valueOf(id));
@@ -148,9 +172,22 @@ public class ProposalServiceImpl implements ProposalService {
                 throw new BizException(Errors.SysException, "Revoke proposal failed!");
             } else {
                 proposalMapper.updateStatus(id, Proposal.StatusEnum.REVOKING.getValue());
+                //将authorityBusiness状态0-未处理设置为状态2-拒绝
+                this.rejectProposal(id, proposal.getType());
             }
         } else {
             throw new ValidateException("Revoke time has passed!");
+        }
+    }
+
+    private void rejectProposal(String proposalId, int proposalType) {
+        //将authorityBusiness状态0-未处理设置为状态2-拒绝
+        AuthorityBusiness.TypeEnum typeEnum = proposalType == Proposal.TypeEnum.ADD_AUTHORITY.getValue() ?
+                AuthorityBusiness.TypeEnum.JOIN_PROPOSAL : AuthorityBusiness.TypeEnum.KICK_PROPOSAL;
+        AuthorityBusiness authorityBusiness = authorityBusinessMapper.selectByTypeAndRelationId(typeEnum.getType(), proposalId);
+        if (authorityBusiness != null
+                && authorityBusiness.getProcessStatus() == AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus()) {
+            authorityBusinessMapper.updateProcessStatusById(authorityBusiness.getId(), AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus());
         }
     }
 
@@ -167,6 +204,11 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Override
     public void nominate(String identityId, String ip, int port, String remark, String material, String materialDesc) {
+        Authority authority = authorityMapper.selectByPrimaryKey(identityId);
+        //校验
+        if (authority != null) {
+            throw new BizException(Errors.SysException, "Authority already exist!");
+        }
         String address = DidUtil.didToHexAddress(identityId);
         ProposalMaterialContent proposalMaterialContent = new ProposalMaterialContent();
         proposalMaterialContent.setImage(material);
@@ -187,10 +229,13 @@ public class ProposalServiceImpl implements ProposalService {
         Authority authority = authorityMapper.selectByPrimaryKey(identityId);
         //校验
         if (authority == null) {
-            throw new BizException(Errors.QueryRecordNotExist, "Authority not exist");
+            throw new BizException(Errors.QueryRecordNotExist, "Authority not exist!");
+        }
+        if (authority.getIsAdmin() == 1) {
+            throw new BizException(Errors.SysException, "Can't kick out authority admin!");
         }
         if (OrgCache.getLocalOrgInfo().getIsAuthority() == 0) {
-            throw new BizException(Errors.SysException, "Current org is not authority");
+            throw new BizException(Errors.SysException, "Current org is not authority!");
         }
 
         //上传文件
@@ -210,6 +255,10 @@ public class ProposalServiceImpl implements ProposalService {
      */
     @Override
     public void exit() {
+        Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
+        if (authority.getIsAdmin() == 1) {
+            throw new BizException(Errors.SysException, "Authority admin can't exit!");
+        }
         String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
         proposalClient.submitProposal(3, "", observerProxyWalletAddress, "");
     }
@@ -224,7 +273,14 @@ public class ProposalServiceImpl implements ProposalService {
         if (proposal == null) {
             throw new BizException(Errors.QueryRecordNotExist, "Proposal not exist : " + proposalId);
         }
-        convertProposalStatus(proposal);
+
+        //当前块高
+        BigInteger curBn = platONClient.platonBlockNumber();
+
+        boolean changed = convertProposalStatus(curBn, proposal);
+        if (changed) {
+            proposalMapper.updateStatus(proposal.getId(), proposal.getStatus());
+        }
         if (proposal.getStatus() == Proposal.StatusEnum.VOTE_START.getValue()) {
             proposalClient.voteProposal(proposalId);
         } else {
@@ -245,14 +301,14 @@ public class ProposalServiceImpl implements ProposalService {
      * 将投票未开始的状态转换为投票中的状态
      *
      * @param proposal
+     * @return proposal状态是否发生改变
      */
     @Override
-    public void convertProposalStatus(Proposal proposal) {
+    public boolean convertProposalStatus(BigInteger curBn, Proposal proposal) {
+        int oldStatus = proposal.getStatus();
         if (proposal.getStatus() == Proposal.StatusEnum.HAS_NOT_STARTED.getValue()) {
             //开始投票的块高
             String voteBeginBn = proposal.getVoteBeginBn();
-            //当前块高
-            BigInteger curBn = platONClient.platonBlockNumber();
             if (curBn.compareTo(new BigInteger(voteBeginBn)) >= 0) {
                 //将投票未开始的状态转换为投票开始的状态
                 proposal.setStatus(Proposal.StatusEnum.VOTE_START.getValue());
@@ -262,15 +318,23 @@ public class ProposalServiceImpl implements ProposalService {
         if (proposal.getStatus() == Proposal.StatusEnum.VOTE_START.getValue()) {
             //结束投票的块高
             String voteEndBn = proposal.getVoteEndBn();
-            //当前块高
-            BigInteger curBn = platONClient.platonBlockNumber();
             if (curBn.compareTo(new BigInteger(voteEndBn)) >= 0) {
                 //将投票未开始的状态转换为投票开始的状态
                 proposal.setStatus(Proposal.StatusEnum.VOTE_END.getValue());
             }
         }
 
+        int newStatus = proposal.getStatus();
+        return oldStatus == newStatus ? true : false;
+    }
 
+    /**
+     * @return
+     */
+    @Override
+    public List<GlobalOrg> getNominateMember(String keyword) {
+        List<GlobalOrg> list = globalOrgMapper.selectNominateMemberList(keyword);
+        return list;
     }
 
 }

@@ -498,7 +498,7 @@
                 cost_Bandwidth    = #{item.costBandwidth,jdbcType=BIGINT},
                 reviewed          = #{item.reviewed,jdbcType=BIT},
                 update_at         = #{item.updateAt,jdbcType=TIMESTAMP}
-            where task_Id = #{taskId,jdbcType=VARCHAR}
+            where task_Id = #{item.taskId,jdbcType=VARCHAR}
         </foreach>
     </update>
 </mapper>

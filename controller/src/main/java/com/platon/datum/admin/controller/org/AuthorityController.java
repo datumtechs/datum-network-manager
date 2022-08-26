@@ -2,6 +2,7 @@ package com.platon.datum.admin.controller.org;
 
 import com.github.pagehelper.Page;
 import com.platon.datum.admin.common.exception.ValidateException;
+import com.platon.datum.admin.dao.BaseDomain;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.*;
 import com.platon.datum.admin.dto.JsonResponse;
@@ -12,6 +13,8 @@ import com.platon.datum.admin.service.AuthorityService;
 import com.platon.datum.admin.service.ProposalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +44,8 @@ public class AuthorityController {
     private AuthorityBusinessService authorityBusinessService;
     @Resource
     private ProposalService proposalService;
+    @Value("${pinata-gateway}")
+    private String pinataGateway;
 
     /**
      * 主页内容
@@ -58,8 +63,7 @@ public class AuthorityController {
         int proposalCount = proposalService.getProposalCount(localOrgInfo.getIdentityId());
 
         AuthorityHomeResp resp = new AuthorityHomeResp();
-        resp.setIdentityId(localOrgInfo.getIdentityId());
-        resp.setIdentityName(localOrgInfo.getName());
+        BeanUtils.copyProperties(localOrgInfo, resp);
         resp.setAuthorityCount(authorityCount);
         resp.setApproveCount(approveCount);
         resp.setTodoCount(todoCount);
@@ -117,6 +121,18 @@ public class AuthorityController {
     }
 
     /**
+     * 获取可提名的成员
+     *
+     * @since 0.5.0
+     */
+    @ApiOperation("获取可提名的成员")
+    @PostMapping("/getNominateMember")
+    public JsonResponse<List<GlobalOrg>> getNominateMember(@RequestBody @Validated AuthorityGetNominateMemberReq req) {
+        List<GlobalOrg> globalOrgList = proposalService.getNominateMember(req.getKeyword());
+        return JsonResponse.success(globalOrgList);
+    }
+
+    /**
      * 提名成员,需要将部分内容上传ipfs
      *
      * @since 0.5.0
@@ -151,6 +167,9 @@ public class AuthorityController {
     @PostMapping("/todoDetail")
     public JsonResponse<Business> todoDetail(@RequestBody @Validated AuthorityTodoDetailReq req) {
         Business todoDetail = authorityBusinessService.getDetail(req.getId());
+        if (todoDetail instanceof BaseDomain) {
+            ((BaseDomain) todoDetail).getDynamicFields().put("pinataGateway", pinataGateway);
+        }
         return JsonResponse.success(todoDetail);
     }
 
@@ -158,7 +177,6 @@ public class AuthorityController {
      * 处理我的待办
      *
      * @since 0.5.0
-     * TODO
      */
     @ApiOperation("处理我的待办")
     @PostMapping("/processTodo")
@@ -193,6 +211,9 @@ public class AuthorityController {
     @PostMapping("/doneDetail")
     public JsonResponse<Business> doneDetail(@RequestBody @Validated AuthorityDoneDetailReq req) {
         Business doneDetail = authorityBusinessService.getDetail(req.getId());
+        if (doneDetail instanceof BaseDomain) {
+            ((BaseDomain) doneDetail).getDynamicFields().put("pinataGateway", pinataGateway);
+        }
         return JsonResponse.success(doneDetail);
     }
 
@@ -217,6 +238,7 @@ public class AuthorityController {
     @PostMapping("/proposalDetail")
     public JsonResponse<Proposal> proposalDetail(@RequestBody @Validated AuthorityProposalDetailReq req) {
         Proposal proposalDetail = proposalService.getProposalDetail(req.getId());
+        proposalDetail.getDynamicFields().put("pinataGateway", pinataGateway);
         return JsonResponse.success(proposalDetail);
     }
 
@@ -224,7 +246,6 @@ public class AuthorityController {
      * 撤回提案
      *
      * @since 0.5.0
-     * TODO
      */
     @ApiOperation("撤回提案")
     @PostMapping("/revokeProposal")

@@ -4,12 +4,8 @@ import com.platon.datum.admin.dao.AttributeDataTokenMapper;
 import com.platon.datum.admin.dao.DataTokenMapper;
 import com.platon.datum.admin.dao.StatsTrendMapper;
 import com.platon.datum.admin.dao.VLocalStatsMapper;
-import com.platon.datum.admin.dao.dto.DataAuthReqDTO;
-import com.platon.datum.admin.dao.dto.StatsDataTrendDTO;
-import com.platon.datum.admin.dao.dto.StatsPowerTrendDTO;
-import com.platon.datum.admin.dao.dto.UsedResourceDTO;
+import com.platon.datum.admin.dao.dto.*;
 import com.platon.datum.admin.service.IndexService;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,18 +38,22 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public List<Map<String, Object>> queryMyCalculateTaskStats() {
-        return localStatsMapper.queryMyCalculateTaskStats();
+    public List<Map<String, Object>> queryMyCalculateTaskStats(String userAddress, boolean isAdmin) {
+        if(isAdmin){
+            return localStatsMapper.queryAdminCalculateTaskStats(userAddress);
+        } else {
+            return localStatsMapper.queryMyCalculateTaskStats(userAddress);
+        }
     }
 
     @Override
-    public List<DataAuthReqDTO> listDataAuthReqWaitingForApprove() {
-        return localStatsMapper.listDataAuthReqWaitingForApprove();
+    public List<DataAuthReqDTO> listDataAuthReqWaitingForApprove(String userAddress) {
+        return localStatsMapper.listDataAuthReqWaitingForApprove(userAddress);
     }
 
     @Override
-    public List<StatsDataTrendDTO> listLocalDataFileStatsTrendMonthly() {
-        return statsTrendMapper.listLocalDataFileStatsTrendMonthly();
+    public List<StatsDataTrendDTO> listLocalDataFileStatsTrendMonthly(String userAddress) {
+        return statsTrendMapper.listLocalDataFileStatsTrendMonthly(userAddress);
     }
 
     @Override
@@ -68,10 +68,15 @@ public class IndexServiceImpl implements IndexService {
      * @return
      */
     @Override
-    public Pair<Long, Long> listDataTokenOverview() {
-        long dataTokenCount = dataTokenMapper.count();
-        long attributeDataTokenCount = attributeDataTokenMapper.count();
-        return Pair.of(dataTokenCount,attributeDataTokenCount);
+    public DataTokenOverviewDTO listDataTokenOverview(String currentUserAddress) {
+        long pricedCount  = dataTokenMapper.countByUserAndPriced(currentUserAddress);
+        long unPricedCount  = dataTokenMapper.countByUserAndUnPriced(currentUserAddress);
+        long attributeDataTokenCount = attributeDataTokenMapper.countByUser(currentUserAddress);
+        DataTokenOverviewDTO dataTokenOverviewDTO = new DataTokenOverviewDTO();
+        dataTokenOverviewDTO.setPricedDataTokenCount(pricedCount);
+        dataTokenOverviewDTO.setUnPriceddataTokenCount(unPricedCount);
+        dataTokenOverviewDTO.setAttributeDataTokenCount(attributeDataTokenCount);
+        return dataTokenOverviewDTO;
     }
 
 }

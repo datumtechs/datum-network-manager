@@ -1,6 +1,7 @@
 package com.platon.datum.admin.dao.entity;
 
 import com.platon.datum.admin.dao.BaseDomain;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,71 +21,85 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
+@ApiModel
 public class Proposal extends BaseDomain implements Business {
 
     /**
      * 提案id
      */
+    @ApiModelProperty("提案id")
     private String id;
 
     /**
      * 提案提交者
      */
+    @ApiModelProperty("提案提交者")
     private String submitter;
 
     /**
      * 提案关联者
      */
+    @ApiModelProperty("提案关联者")
     private String candidate;
 
     /**
      * 提案类型, 1-增加委员会成员; 2-剔除委员会成员; 3-委员会成员退出
      */
+    @ApiModelProperty("提案类型, 1-增加委员会成员; 2-剔除委员会成员; 3-委员会成员退出")
     private Integer type;
 
     /**
      * 提交块高
      */
+    @ApiModelProperty("提交块高")
     private String submissionBn;
 
     /**
      * 投票开始块高
      */
+    @ApiModelProperty("投票开始块高")
     private String voteBeginBn;
 
     /**
      * 投票结束块高
      */
+    @ApiModelProperty("投票结束块高")
     private String voteEndBn;
 
     /**
      * 主动退出成功的块高
      */
+    @ApiModelProperty("主动退出成功的块高")
     private String autoQuitBn;
 
     /**
      * 赞成票数量
      */
+    @ApiModelProperty("赞成票数量")
     private Integer voteAgreeNumber;
 
     /**
      * 委员总数，如果为空(即在投票中的状态)需要实时查询
      */
+    @ApiModelProperty("委员总数，如果为空(即在投票中的状态)需要实时查询")
     private Integer authorityNumber;
 
     /**
      * 提案状态：0-投票未开始；1-投票开始；2-投票结束，但是还未通过；3-投票通过；4-投票未通过；5-退出中；6-已退出；7-撤销中；8-已撤销
      */
+    @ApiModelProperty("提案状态：0-投票未开始；1-投票开始；2-投票结束，但是还未通过；3-投票通过；4-投票未通过；5-退出中；6-已退出；7-撤销中；8-已撤销")
     private Integer status;
 
     /**
      * 创建时间
      */
+    @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
+    @ApiModelProperty("更新时间")
     private LocalDateTime updateTime;
 
 
