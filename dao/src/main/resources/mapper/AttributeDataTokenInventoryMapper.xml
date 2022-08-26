@@ -40,9 +40,10 @@
                 and (name like CONCAT('%', #{keyword}, '%') or token_id like CONCAT('%', #{keyword}, '%'))
             </if>
         </where>
-        order by token_id + 0 desc) adti
+        ) adti
             left join attribute_data_token adt on adt.address = adti.data_token_address
             left join meta_data md on adt.`meta_data_db_id` = md.`id`
+        ORDER BY token_id + 0 DESC
     </select>
 
     <select id="selectByDataTokenAddressAndTokenId" resultMap="BaseResultMap_With_MetaDataInfo">
