@@ -282,4 +282,11 @@
         set `used` = 0
         where `used` = 1
     </update>
+
+    <select id="selectByProgress" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from apply_record
+        where progress = #{progress}
+    </select>
 </mapper>

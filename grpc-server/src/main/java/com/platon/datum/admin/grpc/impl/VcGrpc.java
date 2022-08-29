@@ -151,7 +151,7 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
         String errorMsg = "";
         int status = 0;
         ApplyRecord applyRecord = null;
-        String vc = null;
+        String vc = "";
         try {
             //1.判断审批人是否是本组织
             String issuerDid = request.getIssuerDid();

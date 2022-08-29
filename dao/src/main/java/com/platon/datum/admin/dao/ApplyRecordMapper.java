@@ -80,4 +80,7 @@ public interface ApplyRecordMapper {
     List<ApplyRecord> selectByApproveOrgAndTobeEffective(@Param("approveOrg") String approveOrg);
 
     void removeUsed();
+
+    List<ApplyRecord> selectByProgress(@Param("progress") Integer progress);
+
 }
