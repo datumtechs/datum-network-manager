@@ -221,13 +221,13 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
         /**
          * 判断是否该申请的审批方是否已经有一个审批中或者生效中的申请存在，如果存在则
          */
-        List<ApplyRecord> applyRecord1 = applyRecordMapper.selectByApplyOrgAndApproveOrg(applyOrg.getIdentityId(),
+        List<ApplyRecord> applyRecord1 = applyRecordMapper.selectByApplyOrgAndApproveOrgAndStatus(applyOrg.getIdentityId(),
                 approve,
                 ApplyRecord.StatusEnum.VALID.getStatus());
         if (!applyRecord1.isEmpty()) {
             throw new BizException(Errors.SysException, "The approved certificate already exists");
         }
-        List<ApplyRecord> applyRecord2 = applyRecordMapper.selectByApplyOrgAndApproveOrg(applyOrg.getIdentityId(),
+        List<ApplyRecord> applyRecord2 = applyRecordMapper.selectByApplyOrgAndApproveOrgAndStatus(applyOrg.getIdentityId(),
                 approve,
                 ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
         if (!applyRecord2.isEmpty()) {

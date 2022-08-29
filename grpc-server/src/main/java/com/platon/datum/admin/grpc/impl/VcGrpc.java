@@ -67,12 +67,12 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
             }
             //4.验证是否存在有效或者待生效的申请
             List<ApplyRecord> validApplyRecords =
-                    applyRecordMapper.selectByApplyOrgAndApproveOrg(applicantDid, issuerDid, ApplyRecord.StatusEnum.VALID.getStatus());
+                    applyRecordMapper.selectByApplyOrgAndApproveOrgAndStatus(applicantDid, issuerDid, ApplyRecord.StatusEnum.VALID.getStatus());
             if (!validApplyRecords.isEmpty()) {
                 throw new ValidateException("Effective records are exist");
             }
             List<ApplyRecord> toBeEffectiveApplyRecords =
-                    applyRecordMapper.selectByApplyOrgAndApproveOrg(applicantDid, issuerDid, ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
+                    applyRecordMapper.selectByApplyOrgAndApproveOrgAndStatus(applicantDid, issuerDid, ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
             if (!toBeEffectiveApplyRecords.isEmpty()) {
                 throw new ValidateException("Records are exist which to be effective");
             }
@@ -162,8 +162,7 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
             verifySign(request.getReqDigest(), request.getReqSignature(), DidUtil.didToHexAddress(issuerDid));
             String applicantDid = request.getApplicantDid();
             List<ApplyRecord> applyRecordList = applyRecordMapper.selectByApplyOrgAndApproveOrg(applicantDid,
-                    issuerDid,
-                    ApplyRecord.StatusEnum.VALID.getStatus());
+                    issuerDid);
             if (applyRecordList.isEmpty()) {
                 throw new ValidateException("Apply record not exist!");
             }
@@ -202,9 +201,9 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
         //status = 0 表示已经处理该申请，已拒绝或则已同意
         DidRpcApi.DownloadVCResponse response = DidRpcApi.DownloadVCResponse.newBuilder()
                 .setStatus(status)
-                .setMsg(errorMsg)
-                .setVc(vc)
-                .setExtInfo(JSONUtil.toJsonStr(applyRecord))
+                .setMsg(errorMsg == null ? "" : errorMsg)
+                .setVc(vc == null ? "" : vc)
+                .setExtInfo(applyRecord == null ? "" : JSONUtil.toJsonStr(applyRecord))
                 .build();
         log.debug("downloadVCRemote response:{}", response);
 

@@ -72,11 +72,15 @@ public class GeneralOrganizationApplyRecordStatusTask {
         String applyRecordJson = didClient.downloadVCLocal(applyRecord.getApproveOrg(),
                 authority.getUrl(),
                 applyRecord.getApplyOrg());
-        ApplyRecord issuerApplyRecord = JSONUtil.toBean(applyRecordJson, ApplyRecord.class);
-        //更新申请记录
-        ApplyRecord newApplyRecord = updateApplyRecord(applyRecord, issuerApplyRecord);
-        if (newApplyRecord.getProgress() != ApplyRecord.ProgressEnum.APPLYING.getStatus()) {
-            applyRecordMapper.updateByPrimaryKeySelective(newApplyRecord);
+        if (JSONUtil.isJson(applyRecordJson)) {
+            ApplyRecord issuerApplyRecord = JSONUtil.toBean(applyRecordJson, ApplyRecord.class);
+            //更新申请记录
+            ApplyRecord newApplyRecord = updateApplyRecord(applyRecord, issuerApplyRecord);
+            if (newApplyRecord.getProgress() != ApplyRecord.ProgressEnum.APPLYING.getStatus()) {
+                applyRecordMapper.updateByPrimaryKeySelective(newApplyRecord);
+            }
+        } else {
+            log.error("applyRecordJson is not json : " + applyRecordJson);
         }
     }
 

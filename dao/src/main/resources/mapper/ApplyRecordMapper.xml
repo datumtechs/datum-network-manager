@@ -251,7 +251,7 @@
           and progress = 1
     </select>
 
-    <select id="selectByApplyOrgAndApproveOrg" resultMap="BaseResultMap">
+    <select id="selectByApplyOrgAndApproveOrgAndStatus" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from apply_record
@@ -288,5 +288,14 @@
         <include refid="Base_Column_List"/>
         from apply_record
         where progress = #{progress}
+    </select>
+
+    <select id="selectByApplyOrgAndApproveOrg" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from apply_record
+        where apply_org = #{applyOrg}
+        and approve_org = #{approveOrg}
+        order by id desc
     </select>
 </mapper>

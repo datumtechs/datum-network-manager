@@ -62,9 +62,19 @@ public interface ApplyRecordMapper {
      * @param approveOrg
      * @return
      */
+    List<ApplyRecord> selectByApplyOrgAndApproveOrgAndStatus(@Param("applyOrg") String applyOrg,
+                                                             @Param("approveOrg") String approveOrg,
+                                                             @Param("status") Integer status);
+
+    /**
+     * 查询审批组织下对应状态的记录
+     *
+     * @param applyOrg
+     * @param approveOrg
+     * @return
+     */
     List<ApplyRecord> selectByApplyOrgAndApproveOrg(@Param("applyOrg") String applyOrg,
-                                                    @Param("approveOrg") String approveOrg,
-                                                    @Param("status") Integer status);
+                                                             @Param("approveOrg") String approveOrg);
 
     /**
      * 查询出组织已使用且有效的vc
