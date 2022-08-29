@@ -155,7 +155,7 @@ public class AuthorityController {
     @PostMapping("/todoList")
     public JsonResponse<List<AuthorityBusiness>> todoList(@RequestBody @Validated AuthorityTodoListReq req) {
         Page<AuthorityBusiness> todoList = authorityBusinessService.getTodoList(req.getPageNumber(), req.getPageSize(), req.getKeyword());
-        return JsonResponse.success(todoList);
+        return JsonResponse.page(todoList);
     }
 
     /**
@@ -199,7 +199,7 @@ public class AuthorityController {
     @PostMapping("/doneList")
     public JsonResponse<List<AuthorityBusiness>> doneList(@RequestBody @Validated AuthorityDoneListReq req) {
         Page<AuthorityBusiness> doneList = authorityBusinessService.getDoneList(req.getPageNumber(), req.getPageSize(), req.getKeyword());
-        return JsonResponse.success(doneList);
+        return JsonResponse.page(doneList);
     }
 
     /**

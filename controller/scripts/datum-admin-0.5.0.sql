@@ -802,8 +802,8 @@ INSERT INTO `sys_config` VALUES ('9', 'hrp', 'lat', '1', 'hrp', '2022-04-07 12:0
 INSERT INTO `sys_config` VALUES ('10', 'rpc_url_list', 'https://devnetopenapi2.platon.network/rpc', '1', '链rpcUrl，主要是给后台系统用，可以是内部IP', '2022-04-08 03:02:48', '2022-04-08 03:01:36');
 INSERT INTO `sys_config` VALUES ('11', 'attribute_data_token_factory_address', '0x6FCf0573c4d95fc927d4319f2f859638d8c8492a', '1', '有属性凭证工厂合约地址', '2022-08-05 07:25:39', '2022-04-06 02:14:42');
 INSERT INTO `sys_config` VALUES ('12', 'attribute_data_token_exchange', '<tofunft交易所|https://tofunft.com/>', '1', '有属性凭证交易所地址，格式为<交易所名称,交易所地址>，多个交易所以英文逗号分割', '2022-08-09 10:19:10', '2022-08-09 08:57:18');
-INSERT INTO `sys_config` VALUES ('13', 'vote_contract_address', '0x857027b23F73F5823984d90550A39cAA6FA43A11', '1', '投票合约合约地址', '2022-08-14 23:14:38', '2022-04-06 02:14:42');
-INSERT INTO `sys_config` VALUES ('14', 'vote_contract_deploy_bn', '1', '1', '投票合约部署的区块，这个配置决定了事件从哪个区块开始读取', '2022-08-14 23:32:20', '2022-04-06 02:14:42');
+INSERT INTO `sys_config` VALUES ('13', 'vote_contract_address', '0x5858781B484B7cdB0d76f34B8bC3bEa2C75561E9', '1', '投票合约合约地址', '2022-08-14 23:14:38', '2022-04-06 02:14:42');
+INSERT INTO `sys_config` VALUES ('14', 'vote_contract_deploy_bn', '28197947', '1', '投票合约部署的区块，这个配置决定了事件从哪个区块开始读取', '2022-08-14 23:32:20', '2022-04-06 02:14:42');
 
 -- ----------------------------
 -- Table structure for sys_user
