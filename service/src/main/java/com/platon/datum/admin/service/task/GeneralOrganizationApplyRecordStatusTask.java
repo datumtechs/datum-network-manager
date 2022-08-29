@@ -50,12 +50,12 @@ public class GeneralOrganizationApplyRecordStatusTask {
         applyRecordList.forEach(applyRecord -> {
             try {
                 String applyOrg = applyRecord.getApplyOrg();
-                if(!applyOrg.equalsIgnoreCase(OrgCache.getLocalOrgIdentityId())){
+                if (!applyOrg.equalsIgnoreCase(OrgCache.getLocalOrgIdentityId())) {
                     return;
                 }
                 refreshApplyRecordStatus(applyRecord);
             } catch (Throwable throwable) {
-                log.error("刷新VC状态失败",throwable);
+                log.error("刷新VC状态失败", throwable);
             }
         });
         log.debug("刷新VC状态结束|||");
@@ -68,16 +68,14 @@ public class GeneralOrganizationApplyRecordStatusTask {
             throw new BizException(Errors.QueryRecordNotExist, "Approve is not exist");
         }
 
-        Integer progress = applyRecord.getProgress();
-        //如果审批同意，则下载vc
-        if (progress == ApplyRecord.ProgressEnum.APPLYING.getStatus()) {
-            //调用下载接口
-            String applyRecordJson = didClient.downloadVCLocal(applyRecord.getApproveOrg(),
-                    authority.getUrl(),
-                    applyRecord.getApplyOrg());
-            ApplyRecord issuerApplyRecord = JSONUtil.toBean(applyRecordJson, ApplyRecord.class);
-            //更新申请记录
-            ApplyRecord newApplyRecord = updateApplyRecord(applyRecord, issuerApplyRecord);
+        //调用下载接口
+        String applyRecordJson = didClient.downloadVCLocal(applyRecord.getApproveOrg(),
+                authority.getUrl(),
+                applyRecord.getApplyOrg());
+        ApplyRecord issuerApplyRecord = JSONUtil.toBean(applyRecordJson, ApplyRecord.class);
+        //更新申请记录
+        ApplyRecord newApplyRecord = updateApplyRecord(applyRecord, issuerApplyRecord);
+        if (newApplyRecord.getProgress() != ApplyRecord.ProgressEnum.APPLYING.getStatus()) {
             applyRecordMapper.updateByPrimaryKeySelective(newApplyRecord);
         }
     }
