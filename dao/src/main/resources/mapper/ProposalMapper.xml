@@ -268,6 +268,7 @@
         <if test="keyword != null and keyword != ''">
             and go2.node_name like concat('%', #{keyword}, '%')
         </if>
+        order by id + 0 desc
     </select>
 
     <update id="updateStatus">

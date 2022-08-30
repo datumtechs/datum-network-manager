@@ -90,7 +90,7 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     private Long bn2Date(String bn, BigInteger curBn, BigInteger avgPackTime) {
-        if(StrUtil.isBlank(bn)){
+        if (StrUtil.isBlank(bn)) {
             return null;
         }
         BigInteger convertBn = new BigInteger(bn);
@@ -176,7 +176,7 @@ public class ProposalServiceImpl implements ProposalService {
                 this.rejectProposal(id, proposal.getType());
             }
         } else {
-            throw new ValidateException("Revoke time has passed!");
+            throw new BizException(Errors.ProposalRevokeTimeExpired);
         }
     }
 
