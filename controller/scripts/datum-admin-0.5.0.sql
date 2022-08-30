@@ -31,7 +31,7 @@ CREATE TABLE `apply_record` (
                                 `apply_remark` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '申请备注',
                                 `approve_remark` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '审批备注',
                                 `material` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '申请材料的url',
-                                `material_desc` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '申请材料的描述',
+                                `material_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '申请材料的描述',
                                 `vc` text COLLATE utf8mb4_unicode_ci,
                                 `expiration_date` varchar(0) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '过期时间',
                                 `status` tinyint(1) DEFAULT NULL COMMENT '证书状态：0-无效，1-有效，2-待生效',
