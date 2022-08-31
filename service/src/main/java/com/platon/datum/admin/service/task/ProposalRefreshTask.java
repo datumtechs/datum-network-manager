@@ -159,6 +159,8 @@ public class ProposalRefreshTask {
         //被撤销的提案
         Set<String> withdrawProposalId = new HashSet<>();
 
+        BigInteger curBn = platONClient.platonBlockNumber();
+
         proposalLogList.forEach(proposalLog -> {
             JSONObject contentJsonObject = JSONUtil.parseObj(proposalLog.getContent());
             AuthorityBusiness insertAuthorityBusiness = null;
@@ -187,7 +189,7 @@ public class ProposalRefreshTask {
                     proposal.setVoteEndBn(new BigInteger(proposal.getSubmissionBn()).add(voteConfig.getBeginVote()).add(voteConfig.getVote()).toString());
                     proposal.setVoteAgreeNumber(0);
 
-                    insertAuthorityBusiness = getInsertAuthorityBusiness(proposal);
+                    insertAuthorityBusiness = getInsertAuthorityBusiness(curBn, proposal);
                 }
                 // 踢出委员会成员
                 if (contentJsonObject.getInt("proposalType") == 2) {
@@ -196,7 +198,7 @@ public class ProposalRefreshTask {
                     proposal.setVoteEndBn(new BigInteger(proposal.getSubmissionBn()).add(voteConfig.getBeginVote()).add(voteConfig.getVote()).toString());
                     proposal.setVoteAgreeNumber(0);
 
-                    insertAuthorityBusiness = getInsertAuthorityBusiness(proposal);
+                    insertAuthorityBusiness = getInsertAuthorityBusiness(curBn, proposal);
                 }
                 // 主动退出
                 if (contentJsonObject.getInt("proposalType") == 3) {
@@ -258,8 +260,9 @@ public class ProposalRefreshTask {
     }
 
 
-    private AuthorityBusiness getInsertAuthorityBusiness(Proposal proposal) {
+    private AuthorityBusiness getInsertAuthorityBusiness(BigInteger curBn, Proposal proposal) {
         AuthorityBusiness authorityBusiness = new AuthorityBusiness();
+        //1.只有加入和踢出的提案需要投票。则会加入到委员会事务中
         if (Proposal.TypeEnum.KICK_OUT_AUTHORITY.getValue() == proposal.getType()) {
             authorityBusiness.setType(AuthorityBusiness.TypeEnum.KICK_PROPOSAL.getType());
         } else if (Proposal.TypeEnum.ADD_AUTHORITY.getValue() == proposal.getType()) {
@@ -267,12 +270,20 @@ public class ProposalRefreshTask {
         } else {
             return null;
         }
-        authorityBusiness.setRelationId(proposal.getId());
-        authorityBusiness.setApplyOrg(proposal.getSubmitter());
-        authorityBusiness.setSpecifyOrg(proposal.getCandidate());
-        authorityBusiness.setStartTime(LocalDateTimeUtil.now());
-        authorityBusiness.setProcessStatus(AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus());
-        return authorityBusiness;
+
+        //2.如果过了提案投票时间的，则不需要加入到委员会事务中
+        proposalService.convertProposalStatus(curBn, proposal);
+        if (proposal.getStatus() == Proposal.StatusEnum.HAS_NOT_STARTED.getValue()
+                || proposal.getStatus() == Proposal.StatusEnum.VOTE_START.getValue()) {
+            authorityBusiness.setRelationId(proposal.getId());
+            authorityBusiness.setApplyOrg(proposal.getSubmitter());
+            authorityBusiness.setSpecifyOrg(proposal.getCandidate());
+            authorityBusiness.setStartTime(LocalDateTimeUtil.now());
+            authorityBusiness.setProcessStatus(AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus());
+            return authorityBusiness;
+        } else{
+            return null;
+        }
     }
 
 }
