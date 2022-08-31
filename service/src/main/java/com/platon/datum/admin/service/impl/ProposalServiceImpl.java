@@ -98,7 +98,7 @@ public class ProposalServiceImpl implements ProposalService {
         if (comp > 0) {
             // 需要通过预估获得时间
             Long curBnTime = getTimeByBn(curBn);
-            return curBnTime + avgPackTime.longValue();
+            return curBnTime + (convertBn.subtract(curBn).multiply(avgPackTime)).longValue();
         } else {
             // 已经过去的块高
             return getTimeByBn(convertBn);
