@@ -275,6 +275,7 @@
         from apply_record
         where approve_org = #{approveOrg}
           and status = 2
+          and progress = 1
     </select>
 
     <update id="removeUsed">
@@ -283,11 +284,12 @@
         where `used` = 1
     </update>
 
-    <select id="selectByProgress" resultMap="BaseResultMap">
+    <select id="selectByApplyOrgAndStatus" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from apply_record
-        where progress = #{progress}
+        where apply_org = #{applyOrg}
+          and status = #{status}
     </select>
 
     <select id="selectByApplyOrgAndApproveOrg" resultMap="BaseResultMap">
@@ -295,7 +297,7 @@
         <include refid="Base_Column_List"/>
         from apply_record
         where apply_org = #{applyOrg}
-        and approve_org = #{approveOrg}
+          and approve_org = #{approveOrg}
         order by id desc
     </select>
 </mapper>

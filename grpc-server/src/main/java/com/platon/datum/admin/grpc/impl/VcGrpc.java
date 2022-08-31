@@ -65,12 +65,13 @@ public class VcGrpc extends VcServiceGrpc.VcServiceImplBase {
             if (!DidUtil.isValidDid(applicantDid)) {
                 throw new ValidateException("ApplicantDid is invalid: " + applicantDid);
             }
-            //4.验证是否存在有效或者待生效的申请
+            //4.1验证是否存在有效的申请
             List<ApplyRecord> validApplyRecords =
                     applyRecordMapper.selectByApplyOrgAndApproveOrgAndStatus(applicantDid, issuerDid, ApplyRecord.StatusEnum.VALID.getStatus());
             if (!validApplyRecords.isEmpty()) {
                 throw new ValidateException("Effective records are exist");
             }
+            //4.2验证是否存在待生效的申请
             List<ApplyRecord> toBeEffectiveApplyRecords =
                     applyRecordMapper.selectByApplyOrgAndApproveOrgAndStatus(applicantDid, issuerDid, ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
             if (!toBeEffectiveApplyRecords.isEmpty()) {

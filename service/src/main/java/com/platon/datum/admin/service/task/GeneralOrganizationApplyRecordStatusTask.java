@@ -46,13 +46,12 @@ public class GeneralOrganizationApplyRecordStatusTask {
             return;
         }
         log.debug("刷新VC状态开始>>>");
-        List<ApplyRecord> applyRecordList = applyRecordMapper.selectByProgress(ApplyRecord.ProgressEnum.APPLYING.getStatus());
+        //查询出本组织待生效的VC
+        List<ApplyRecord> applyRecordList = applyRecordMapper.selectByApplyOrgAndStatus(
+                OrgCache.getLocalOrgIdentityId(),
+                ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
         applyRecordList.forEach(applyRecord -> {
             try {
-                String applyOrg = applyRecord.getApplyOrg();
-                if (!applyOrg.equalsIgnoreCase(OrgCache.getLocalOrgIdentityId())) {
-                    return;
-                }
                 refreshApplyRecordStatus(applyRecord);
             } catch (Throwable throwable) {
                 log.error("刷新VC状态失败", throwable);
@@ -69,14 +68,12 @@ public class GeneralOrganizationApplyRecordStatusTask {
         }
 
         //调用下载接口
-        String applyRecordJson = didClient.downloadVCLocal(applyRecord.getApproveOrg(),
-                authority.getUrl(),
-                applyRecord.getApplyOrg());
+        String applyRecordJson = didClient.downloadVCLocal(applyRecord.getApproveOrg(), authority.getUrl(), applyRecord.getApplyOrg());
         if (JSONUtil.isJson(applyRecordJson)) {
             ApplyRecord issuerApplyRecord = JSONUtil.toBean(applyRecordJson, ApplyRecord.class);
             //更新申请记录
             ApplyRecord newApplyRecord = updateApplyRecord(applyRecord, issuerApplyRecord);
-            if (newApplyRecord.getProgress() != ApplyRecord.ProgressEnum.APPLYING.getStatus()) {
+            if (newApplyRecord.getStatus() != ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus()) {
                 applyRecordMapper.updateByPrimaryKeySelective(newApplyRecord);
             }
         } else {
@@ -85,8 +82,7 @@ public class GeneralOrganizationApplyRecordStatusTask {
     }
 
     private ApplyRecord updateApplyRecord(ApplyRecord applyRecord, ApplyRecord issuerApplyRecord) {
-        Integer progress = issuerApplyRecord.getProgress();
-        applyRecord.setProgress(progress);
+        applyRecord.setProgress(issuerApplyRecord.getProgress());
         applyRecord.setStatus(issuerApplyRecord.getStatus());
         applyRecord.setApproveRemark(issuerApplyRecord.getApproveRemark());
         applyRecord.setEndTime(issuerApplyRecord.getEndTime());

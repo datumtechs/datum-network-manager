@@ -134,7 +134,7 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
 
         Authority authority = authorityMapper.selectByPrimaryKey(applyRecord.getApproveOrg());
         if (authority == null) {
-            throw new BizException(Errors.QueryRecordNotExist, "Approve is not exist");
+            throw new BizException(Errors.AuthorityNotExist, "Approve is not exist");
         }
 
         Integer progress = applyRecord.getProgress();
@@ -213,25 +213,28 @@ public class GeneralOrganizationServiceImpl implements GeneralOrganizationServic
 
         Authority authority = authorityMapper.selectByPrimaryKey(approve);
         if (authority == null) {
-            throw new BizException(Errors.SysException, "Approve is not authority");
+            throw new BizException(Errors.AuthorityNotExist, "Approve is not authority");
         }
 
         Org applyOrg = OrgCache.getLocalOrgInfo();
 
         /**
-         * 判断是否该申请的审批方是否已经有一个审批中或者生效中的申请存在，如果存在则
+         * 判断是否该申请的审批方是否已经有一个生效中的申请存在，如果存在则不允许申请了
          */
         List<ApplyRecord> applyRecord1 = applyRecordMapper.selectByApplyOrgAndApproveOrgAndStatus(applyOrg.getIdentityId(),
                 approve,
                 ApplyRecord.StatusEnum.VALID.getStatus());
         if (!applyRecord1.isEmpty()) {
-            throw new BizException(Errors.SysException, "The approved certificate already exists");
+            throw new BizException(Errors.VcAlreadyExists, "The vc already exists");
         }
+        /**
+         * 判断是否该申请的审批方是否已经有一个审批中的申请存在，如果存在则不允许申请了
+         */
         List<ApplyRecord> applyRecord2 = applyRecordMapper.selectByApplyOrgAndApproveOrgAndStatus(applyOrg.getIdentityId(),
                 approve,
                 ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
         if (!applyRecord2.isEmpty()) {
-            throw new BizException(Errors.SysException, "A approving certificate already exists");
+            throw new BizException(Errors.ApplyingVcAlreadyExists, "A applying vc already exists");
         }
 
         /**

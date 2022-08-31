@@ -42,6 +42,13 @@ public interface AuthorityBusinessMapper {
     List<AuthorityBusiness> selectProposalTodoList();
 
     /**
+     * 查询待处理的提案
+     *
+     * @return
+     */
+    List<AuthorityBusiness> selecVCTodoList();
+
+    /**
      * 查询我待办的事务总数
      */
     int selectTodoCount();

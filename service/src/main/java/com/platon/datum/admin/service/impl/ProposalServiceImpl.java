@@ -208,7 +208,7 @@ public class ProposalServiceImpl implements ProposalService {
         Authority authority = authorityMapper.selectByPrimaryKey(identityId);
         //校验
         if (authority != null) {
-            throw new BizException(Errors.SysException, "Authority already exist!");
+            throw new BizException(Errors.AuthorityAlreadyExists, "Authority already exist!");
         }
         String address = DidUtil.didToHexAddress(identityId);
         ProposalMaterialContent proposalMaterialContent = new ProposalMaterialContent();
@@ -230,10 +230,10 @@ public class ProposalServiceImpl implements ProposalService {
         Authority authority = authorityMapper.selectByPrimaryKey(identityId);
         //校验
         if (authority == null) {
-            throw new BizException(Errors.QueryRecordNotExist, "Authority not exist!");
+            throw new BizException(Errors.AuthorityAlreadyKickOut, "Authority already has been kicked out!");
         }
         if (authority.getIsAdmin() == 1) {
-            throw new BizException(Errors.SysException, "Can't kick out authority admin!");
+            throw new BizException(Errors.CantKickOutAuthorityAdmin, "Can't kick out authority admin!");
         }
         if (OrgCache.getLocalOrgInfo().getIsAuthority() == 0) {
             throw new BizException(Errors.SysException, "Current org is not authority!");
@@ -258,7 +258,7 @@ public class ProposalServiceImpl implements ProposalService {
     public void exit() {
         Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
         if (authority.getIsAdmin() == 1) {
-            throw new BizException(Errors.SysException, "Authority admin can't exit!");
+            throw new BizException(Errors.AuthorityAdminCantExit, "Authority admin can't exit!");
         }
         String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
         proposalClient.submitProposal(3, "", observerProxyWalletAddress, "");
@@ -285,7 +285,8 @@ public class ProposalServiceImpl implements ProposalService {
         if (proposal.getStatus() == Proposal.StatusEnum.VOTE_START.getValue()) {
             proposalClient.voteProposal(proposalId);
         } else {
-            throw new ValidateException("Proposal status is not VOTE_START : " + Proposal.StatusEnum.find(proposal.getStatus()));
+            throw new BizException(Errors.ProposalStatusNotStartVote,
+                    "Proposal status is not VOTE_START : " + Proposal.StatusEnum.find(proposal.getStatus()));
         }
     }
 

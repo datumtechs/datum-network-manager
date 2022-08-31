@@ -92,10 +92,9 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
 
     /**
      * @param id
-     * @param result
      */
     @Override
-    public void processTodo(int id, AuthorityBusiness.ProcessStatusEnum result, String remark) {
+    public void processTodo(int id, AuthorityBusiness.ProcessStatusEnum processStatusEnum, String remark) {
         AuthorityBusiness authorityBusiness = authorityBusinessMapper.selectById(id);
         if (authorityBusiness == null) {
             throw new BizException(Errors.QueryRecordNotExist, "Authority business record not exist");
@@ -105,13 +104,13 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
         switch (type) {
             case APPLY_VC://签发证书
                 ApplyRecord applyRecord = applyRecordMapper.selectById(Integer.parseInt(relationId));
-                processVc(id, applyRecord, result.getStatus(), remark);
+                processVc(applyRecord, processStatusEnum.getStatus(), remark);
                 //1.调用调度服务处理
                 break;
             case JOIN_PROPOSAL://默认为提案
                 //1.调用调度服务处理
             case KICK_PROPOSAL:
-                if (result == AuthorityBusiness.ProcessStatusEnum.AGREE) {
+                if (processStatusEnum == AuthorityBusiness.ProcessStatusEnum.AGREE) {
                     proposalService.vote(relationId);
                 }
                 break;
@@ -119,33 +118,26 @@ public class AuthorityBusinessServiceImpl implements AuthorityBusinessService {
                 throw new ValidateException("Unsupported business type:" + type);
         }
         //修改business表状态为处理完
-        authorityBusinessMapper.updateProcessStatusById(id, result.getStatus());
+        authorityBusinessMapper.updateProcessStatusById(id, processStatusEnum.getStatus());
     }
 
-    private void processVc(int id, ApplyRecord applyRecord, int result, String remark) {
+    private void processVc(ApplyRecord applyRecord, int processStatus, String remark) {
         applyRecord.setApproveRemark(remark);
         applyRecord.setEndTime(LocalDateTimeUtil.now());
-        int processStatus = AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus();
-        if (result == 1) {//同意
+        if (processStatus == 1) {//同意
             applyRecord.setProgress(ApplyRecord.ProgressEnum.AGREE.getStatus());
             applyRecord.setStatus(ApplyRecord.StatusEnum.TO_BE_EFFECTIVE.getStatus());
             //调用创建vc的接口
             Pair<String, DidRpcApi.TxInfo> vcPair = didClient.createVC(applyRecord);
             applyRecord.setVc(vcPair.getLeft());
             applyRecord.setTxHash(vcPair.getRight().getTxHash());
-            processStatus = AuthorityBusiness.ProcessStatusEnum.AGREE.getStatus();
         } else {//拒绝
             applyRecord.setProgress(ApplyRecord.ProgressEnum.REJECT.getStatus());
             applyRecord.setStatus(ApplyRecord.StatusEnum.INVALID.getStatus());
-            processStatus = AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus();
         }
         int count = applyRecordMapper.updateByPrimaryKeySelective(applyRecord);
         if (count <= 0) {
             throw new BizException(Errors.UpdateSqlFailed, "Update apply record failed");
-        }
-        count = authorityBusinessMapper.updateProcessStatusById(id, processStatus);
-        if (count <= 0) {
-            throw new BizException(Errors.UpdateSqlFailed, "Update authority business failed");
         }
     }
 

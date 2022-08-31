@@ -97,6 +97,20 @@ public enum Errors {
     AlreadyEffectProposal(1066,"Proposal already effect!"),
     ProposalRevokeTimeExpired(1067,"Revoke time has passed!"),
 
+
+
+
+
+    AuthorityNotExist(1068,"Authority not exist!"),
+    VcAlreadyExists(1069,"The vc already exists！"),
+    ApplyingVcAlreadyExists(1070,"A applying vc already exists！"),
+    ProposalStatusNotStartVote(1071,"Proposal status is not 'start vote' status!"),
+    AuthorityAlreadyExists(1072,"Authority already exist!"),
+    AuthorityAlreadyKickOut(1073,"Authority already has been kicked out!"),
+    CantKickOutAuthorityAdmin(1074,"Can't kick out authority admin!"),
+    AuthorityAdminCantExit(1075,"Authority admin can't exit!"),
+
+
     // rpc调用时异常
     CallRpcError(2000, "Call node rpc exception"),
     CallRpcNetError(2001, "Call node rpc network exception"),

@@ -74,7 +74,7 @@ public interface ApplyRecordMapper {
      * @return
      */
     List<ApplyRecord> selectByApplyOrgAndApproveOrg(@Param("applyOrg") String applyOrg,
-                                                             @Param("approveOrg") String approveOrg);
+                                                    @Param("approveOrg") String approveOrg);
 
     /**
      * 查询出组织已使用且有效的vc
@@ -85,12 +85,13 @@ public interface ApplyRecordMapper {
     List<ApplyRecord> selectByUsedAndValidVc(String applyOrg);
 
     /**
-     * 查询出当前组织审批通过后还处于带生效的VC证书
+     * 查询出当前组织审批通过后还处于待生效的VC证书
      */
     List<ApplyRecord> selectByApproveOrgAndTobeEffective(@Param("approveOrg") String approveOrg);
 
     void removeUsed();
 
-    List<ApplyRecord> selectByProgress(@Param("progress") Integer progress);
+    List<ApplyRecord> selectByApplyOrgAndStatus(@Param("applyOrg") String applyOrg,
+                                                @Param("status") Integer status);
 
 }
