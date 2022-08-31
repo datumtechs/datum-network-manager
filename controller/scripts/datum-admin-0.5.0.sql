@@ -735,7 +735,6 @@ INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5001');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5009');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5010');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5011');
-INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5012');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5013');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5014');
 INSERT INTO `role_resource` (`role_id`, `resource_id`) VALUES ('0', '5015');
