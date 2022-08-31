@@ -31,4 +31,7 @@ public class AuthorityHomeResp extends Org {
 
     @ApiModelProperty("我的提案数量")
     private int proposalCount;
+
+    @ApiModelProperty("是否是委员会初始成员：0-否，1-是")
+    private Integer isAuthorityAdmin = 0;
 }

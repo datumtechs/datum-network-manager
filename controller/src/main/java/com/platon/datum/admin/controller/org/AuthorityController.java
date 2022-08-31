@@ -68,6 +68,15 @@ public class AuthorityController {
         resp.setApproveCount(approveCount);
         resp.setTodoCount(todoCount);
         resp.setProposalCount(proposalCount);
+
+        List<Authority> authorityList = authorityService.getAuthorityList(null);
+        authorityList.forEach(authority -> {
+            if (localOrgInfo.getIdentityId().equalsIgnoreCase(authority.getIdentityId())
+                    && authority.getIsAdmin() == 1) {
+                resp.setIsAuthorityAdmin(1);
+            }
+        });
+
         return JsonResponse.success(resp);
     }
 
