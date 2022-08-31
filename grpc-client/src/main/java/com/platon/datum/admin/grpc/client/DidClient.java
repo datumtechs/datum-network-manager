@@ -20,7 +20,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @Author liushuyu
@@ -46,7 +45,7 @@ public class DidClient {
         //2.拼装request
         //3.调用rpc,获取response
         DidRpcApi.CreateDIDResponse response = DIDServiceGrpc.newBlockingStub(channel)
-                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                
                 .createDID(Empty.newBuilder().build());
         log.debug("createDID,response:{}", response);
         //4.处理response
@@ -85,7 +84,7 @@ public class DidClient {
         log.debug("applyVCLocal,request:{}", request);
         //3.调用rpc,获取response
         Common.SimpleResponse response = VcServiceGrpc.newBlockingStub(channel)
-                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                
                 .applyVCLocal(request);
         log.debug("applyVCLocal,response:{}", response);
         //4.处理response
@@ -115,7 +114,7 @@ public class DidClient {
         log.debug("downloadVCLocal,request:{}", request);
         //3.调用rpc,获取response
         DidRpcApi.DownloadVCResponse response = VcServiceGrpc.newBlockingStub(channel)
-                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                
                 .downloadVCLocal(request);
         log.debug("downloadVCLocal,response:{}", response);
         //4.处理response
@@ -145,7 +144,7 @@ public class DidClient {
         log.debug("createVC,request:{}", request);
         //3.调用rpc,获取response
         DidRpcApi.CreateVCResponse response = VcServiceGrpc.newBlockingStub(channel)
-                .withDeadlineAfter(30, TimeUnit.SECONDS)
+                
                 .createVC(request);
         log.debug("createVC,response:{}", response);
         //4.处理response

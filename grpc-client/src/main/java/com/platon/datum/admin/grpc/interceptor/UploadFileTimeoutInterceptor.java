@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Configuration
 public class UploadFileTimeoutInterceptor implements ClientInterceptor {
-    @Value("${grpc-client-upload-file-timeout}")
+    @Value("${grpc-client-upload-file-timeout:60}")
     private long timeout; //seconds
 
     public long getTimeout(){

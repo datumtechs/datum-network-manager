@@ -22,7 +22,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -57,7 +56,7 @@ public class YarnClient {
                 setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
         log.debug("setDataNode,request:{}", setDataNodeRequest);
         //3.调用rpc,获取response
-        SysRpcApi.SetDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).setDataNode(setDataNodeRequest);
+        SysRpcApi.SetDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setDataNode(setDataNodeRequest);
         log.debug("setDataNode,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -95,7 +94,7 @@ public class YarnClient {
                 setExternalPort(String.valueOf(dataNode.getExternalPort())).build();
         log.debug("updateDataNode,request:{}", request);
         //3.调用rpc,获取response
-        SysRpcApi.SetDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).updateDataNode(request);
+        SysRpcApi.SetDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).updateDataNode(request);
         log.debug("updateDataNode,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -127,7 +126,7 @@ public class YarnClient {
         SysRpcApi.DeleteRegisteredNodeRequest request = SysRpcApi.DeleteRegisteredNodeRequest.newBuilder().setId(id).build();
         log.debug("deleteDataNode,request:{}", request);
         //3.调用rpc,获取response
-        Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).deleteDataNode(request);
+        Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteDataNode(request);
         log.debug("deleteDataNode,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -149,7 +148,7 @@ public class YarnClient {
         Empty emptyGetParams = Empty.newBuilder().build();
         log.debug("getLocalDataNodeList,request:{}", emptyGetParams);
         //3.调用rpc,获取response
-        SysRpcApi.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getDataNodeList(emptyGetParams);
+        SysRpcApi.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getDataNodeList(emptyGetParams);
         log.debug("getLocalDataNodeList,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -189,7 +188,7 @@ public class YarnClient {
                 .build();
         log.debug("getAvailableDataNode,request:{}", request);
         //3.调用rpc,获取response
-        SysRpcApi.QueryAvailableDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).queryAvailableDataNode(request);
+        SysRpcApi.QueryAvailableDataNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).queryAvailableDataNode(request);
         log.debug("getAvailableDataNode,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -221,7 +220,7 @@ public class YarnClient {
                 .build();
         log.debug("queryFilePosition,request:{}", request);
         //3.调用rpc,获取response
-        SysRpcApi.QueryFilePositionResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).queryFilePosition(request);
+        SysRpcApi.QueryFilePositionResponse response = YarnServiceGrpc.newBlockingStub(channel).queryFilePosition(request);
         log.debug("queryFilePosition,response:{}", response);
         //4.处理response
         //4.处理response
@@ -256,7 +255,7 @@ public class YarnClient {
             Empty request = Empty.newBuilder().build();
             log.debug("connectScheduleServer,request:{}", request);
             //3.调用rpc,获取response
-            SysRpcApi.GetNodeInfoResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getNodeInfo(request);
+            SysRpcApi.GetNodeInfoResponse response = YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
             log.debug("connectScheduleServer,response:{}", response);
             //4.处理response
             if (response == null) {
@@ -289,7 +288,7 @@ public class YarnClient {
             Empty request = Empty.newBuilder().build();
             log.debug("getNodeInfo,request:{}", request);
             //3.调用rpc,获取response
-            SysRpcApi.GetNodeInfoResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getNodeInfo(request);
+            SysRpcApi.GetNodeInfoResponse response = YarnServiceGrpc.newBlockingStub(channel).getNodeInfo(request);
             log.debug("getNodeInfo,response:{}", response);
             //4.处理response
             if (response == null) {
@@ -338,7 +337,7 @@ public class YarnClient {
             log.debug("generateObServerProxyWalletAddress,request:{}", request);
             //3.调用rpc,获取response
             SysRpcApi.GenerateObServerProxyWalletAddressResponse response =
-                    YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).generateObServerProxyWalletAddress(request);
+                    YarnServiceGrpc.newBlockingStub(channel).generateObServerProxyWalletAddress(request);
             log.debug("generateObServerProxyWalletAddress,response:{}", response);
             //4.处理response
             if (response == null) {

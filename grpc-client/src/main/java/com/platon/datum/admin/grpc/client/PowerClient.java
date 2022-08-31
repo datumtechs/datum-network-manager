@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -57,7 +56,7 @@ public class PowerClient {
                 .build();
         log.debug("addPowerNode,request:{}",joinRequest);
         //3.调用rpc,获取response
-        SysRpcApi.SetJobNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).setJobNode(joinRequest);
+        SysRpcApi.SetJobNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).setJobNode(joinRequest);
         log.debug("addPowerNode,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -84,7 +83,7 @@ public class PowerClient {
                 .build();
         log.debug("updatePowerNode,request:{}",joinRequest);
         //3.调用rpc,获取response
-        SysRpcApi.SetJobNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).updateJobNode(joinRequest);
+        SysRpcApi.SetJobNodeResponse response = YarnServiceGrpc.newBlockingStub(channel).updateJobNode(joinRequest);
         log.debug("updatePowerNode,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -106,7 +105,7 @@ public class PowerClient {
                 .setId(powerNodeId).build();
         log.debug("deletePowerNode,request:{}",joinRequest);
         //3.调用rpc,获取response
-        Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).deleteJobNode(joinRequest);
+        Common.SimpleResponse response = YarnServiceGrpc.newBlockingStub(channel).deleteJobNode(joinRequest);
         log.debug("deletePowerNode,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -128,7 +127,7 @@ public class PowerClient {
         Empty jobNodeListRequest = Empty.newBuilder().build();
         log.debug("getLocalPowerNodeList,request:{}",jobNodeListRequest);
         //3.调用rpc,获取response
-        SysRpcApi.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getJobNodeList(jobNodeListRequest);
+        SysRpcApi.GetRegisteredNodeListResponse response = YarnServiceGrpc.newBlockingStub(channel).getJobNodeList(jobNodeListRequest);
         log.debug("getLocalPowerNodeList,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -164,7 +163,7 @@ public class PowerClient {
                 .setJobNodeId(jobNodeId).build();
         log.debug("publishPower,request:{}",joinRequest);
         //3.调用rpc,获取response
-        PowerRpcApi.PublishPowerResponse response = PowerServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).publishPower(joinRequest);
+        PowerRpcApi.PublishPowerResponse response = PowerServiceGrpc.newBlockingStub(channel).publishPower(joinRequest);
         log.debug("publishPower,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -186,7 +185,7 @@ public class PowerClient {
                 .build();
         log.debug("revokePower,request:{}",joinRequest);
         //3.调用rpc,获取response
-        Common.SimpleResponse response = PowerServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).revokePower(joinRequest);
+        Common.SimpleResponse response = PowerServiceGrpc.newBlockingStub(channel).revokePower(joinRequest);
         log.debug("revokePower,response:{}",response);
         //4.处理response
         if (response == null) {
@@ -207,7 +206,7 @@ public class PowerClient {
                 .build();
         log.debug("getLocalPowerNodeListAndJoinTaskList,request:{}",request);
         //3.调用rpc,获取response
-        PowerRpcApi.GetLocalPowerDetailListResponse response = PowerServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getLocalPowerDetailList(request);
+        PowerRpcApi.GetLocalPowerDetailListResponse response = PowerServiceGrpc.newBlockingStub(channel).getLocalPowerDetailList(request);
         log.debug("getLocalPowerNodeListAndJoinTaskList,response:{}",response);
         //4.处理response
         if (response == null) {

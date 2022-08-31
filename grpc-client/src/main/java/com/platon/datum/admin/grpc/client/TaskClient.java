@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -60,7 +59,7 @@ public class TaskClient {
                 .build();
         log.debug("getLocalTaskList,request:{}", request);
         //3.调用rpc服务接口
-        TaskRpcApi.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getLocalTaskDetailList(request);
+        TaskRpcApi.GetTaskDetailListResponse response = TaskServiceGrpc.newBlockingStub(channel).getLocalTaskDetailList(request);
         log.debug("getLocalTaskList,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -85,7 +84,7 @@ public class TaskClient {
         TaskRpcApi.GetTaskEventListByTaskIdsRequest request = TaskRpcApi.GetTaskEventListByTaskIdsRequest.newBuilder().addAllTaskIds(taskIds).build();
         log.debug("getTaskEventListData,request:{}", request);
         //3.调用rpc服务接口
-        TaskRpcApi.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getTaskEventListByTaskIds(request);
+        TaskRpcApi.GetTaskEventListResponse response = TaskServiceGrpc.newBlockingStub(channel).getTaskEventListByTaskIds(request);
         log.debug("getTaskEventListData,response:{}", response);
         //4.处理response
         if (response == null) {

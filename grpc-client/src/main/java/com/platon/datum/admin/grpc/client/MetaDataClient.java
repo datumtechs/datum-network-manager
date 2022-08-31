@@ -32,7 +32,6 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -96,7 +95,7 @@ public class MetaDataClient {
                 .build();
         log.debug("publishMetaData, request:{}", request);
         //3.调用rpc,获取response
-        MetaDataRpcApi.PublishMetadataResponse response = MetadataServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS)
+        MetaDataRpcApi.PublishMetadataResponse response = MetadataServiceGrpc.newBlockingStub(channel)
                 .publishMetadata(request);
         log.debug("publishMetaData, response:{}", response);
         //4.处理response
@@ -131,7 +130,7 @@ public class MetaDataClient {
                 .build();
         log.debug("revokeMetaData,request:{}", revokeMetadataRequest);
         //3.调用rpc,获取response
-        Common.SimpleResponse response = MetadataServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS)
+        Common.SimpleResponse response = MetadataServiceGrpc.newBlockingStub(channel)
                 .revokeMetadata(revokeMetadataRequest);
         log.debug("revokeMetaData,response:{}", response);
         //4.处理response
@@ -161,7 +160,7 @@ public class MetaDataClient {
                 .build();
         log.debug("getLocalMetaDataList,request:{}", request);
         //3.调用rpc,获取response
-        MetaDataRpcApi.GetLocalMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).getLocalMetadataDetailList(request);
+        MetaDataRpcApi.GetLocalMetadataDetailListResponse response = MetadataServiceGrpc.newBlockingStub(channel).getLocalMetadataDetailList(request);
         log.debug("getLocalMetaDataList,response:{}", response);
         //4.处理response
         if (response == null) {
@@ -223,7 +222,7 @@ public class MetaDataClient {
                 .build();
         log.debug("updateMetadata,request:{}", request);
         //3.调用rpc,获取response
-        Common.SimpleResponse response = MetadataServiceGrpc.newBlockingStub(channel).withDeadlineAfter(30, TimeUnit.SECONDS).updateMetadata(request);
+        Common.SimpleResponse response = MetadataServiceGrpc.newBlockingStub(channel).updateMetadata(request);
         log.debug("updateMetadata,response:{}", response);
         //4.处理response
         if (response == null) {
