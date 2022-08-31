@@ -4,6 +4,7 @@ import com.platon.datum.admin.dao.entity.AuthorityBusiness;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author juzix
@@ -13,6 +14,8 @@ import java.util.List;
  */
 public interface AuthorityBusinessMapper {
     int deleteById(Integer id);
+
+    int deleteWithdrawProposalByProposalIds(@Param("proposalIds") Set<String> proposalIds);
 
     int insert(AuthorityBusiness record);
 

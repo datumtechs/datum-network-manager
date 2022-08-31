@@ -113,9 +113,10 @@ public class ApplyRecordStatusTask {
             if (timeStamp < System.currentTimeMillis()) {
                 return true;
             }
-        } else {//未审批完240h为过期时间
+        } else {//未审批完30*24h为过期时间
             LocalDateTime startTime = record.getStartTime();
-            long timeStamp = LocalDateTimeUtil.getTimestamp(startTime.plusHours(240));
+//            long timeStamp = LocalDateTimeUtil.getTimestamp(startTime.plusHours(720));
+            long timeStamp = LocalDateTimeUtil.getTimestamp(startTime.plusMinutes(5));//TODO for test
             if (timeStamp < System.currentTimeMillis()) {
                 //未审批且自动过期的，则更新一下委员会事务状态为不同意
                 int count = authorityBusinessMapper.updateStatusByTypeAndRelationId(

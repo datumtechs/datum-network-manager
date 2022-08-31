@@ -47,20 +47,20 @@ public class ProposalLogServiceImpl implements ProposalLogService {
             begin = new BigInteger(latest.getBlockNumber());
         }
         voteContract.subscribe(begin).subscribe(oo -> oo.ifPresent(tuple2 -> {
-            //如果是委员会成员，或者退出委员会后有未结束的提案才会继续往下走
-            try {
-                Org localOrgInfo = OrgCache.getLocalOrgInfo();
-                boolean isAuthority = localOrgInfo.getIsAuthority() == 1;
-                boolean hasUnfinishedProposal = proposalMapper.unfinishedProposalCount() > 0;
-                if (isAuthority || hasUnfinishedProposal) {
-                    log.debug("isAuthority or hasUnfinishedProposal==>{} or {}", isAuthority, hasUnfinishedProposal);
-                } else {
-                    return;
-                }
-            } catch (OrgInfoNotFound ex) {
-                log.warn(ex.getErrorMessage());
-                return;
-            }
+//            //如果是委员会成员，或者退出委员会后有未结束的提案才会继续往下走
+//            try {
+//                Org localOrgInfo = OrgCache.getLocalOrgInfo();
+//                boolean isAuthority = localOrgInfo.getIsAuthority() == 1;
+//                boolean hasUnfinishedProposal = proposalMapper.unfinishedProposalCount() > 0;
+//                if (isAuthority || hasUnfinishedProposal) {
+//                    log.debug("isAuthority or hasUnfinishedProposal==>{} or {}", isAuthority, hasUnfinishedProposal);
+//                } else {
+//                    return;
+//                }
+//            } catch (OrgInfoNotFound ex) {
+//                log.warn(ex.getErrorMessage());
+//                return;
+//            }
             if (proposalLogMapper.countByBnAndTxHashAndLogIndex(tuple2.getValue1().getBlockNumber().toString(),
                     tuple2.getValue1().getTransactionHash(),
                     tuple2.getValue1().getLogIndex().toString()) <= 0) {

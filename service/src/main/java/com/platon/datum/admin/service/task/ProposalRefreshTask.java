@@ -28,10 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -159,6 +156,9 @@ public class ProposalRefreshTask {
 
         List<AuthorityBusiness> insertAuthorityBusinessList = new ArrayList<>();
 
+        //被撤销的提案
+        Set<String> withdrawProposalId = new HashSet<>();
+
         proposalLogList.forEach(proposalLog -> {
             JSONObject contentJsonObject = JSONUtil.parseObj(proposalLog.getContent());
             AuthorityBusiness insertAuthorityBusiness = null;
@@ -212,6 +212,8 @@ public class ProposalRefreshTask {
                 //查询出指定的提案，并将状态修改为撤销状态
                 Proposal proposal = saveMap.computeIfAbsent(contentJsonObject.getStr("proposalId"), id -> proposalMapper.selectByPrimaryKey(id));
                 proposal.setStatus(Proposal.StatusEnum.REVOKED.getValue());
+                //删除指定的委员会事务
+                withdrawProposalId.add(proposal.getId());
             }
 
             // 对提案投票
@@ -248,6 +250,11 @@ public class ProposalRefreshTask {
         insertAuthorityBusinessList.forEach(authorityBusiness -> {
             authorityBusinessMapper.insertSelectiveReturnId(authorityBusiness);
         });
+
+        //撤回的提案不显示在待办事务和已办事务中
+        if (!withdrawProposalId.isEmpty()) {
+            authorityBusinessMapper.deleteWithdrawProposalByProposalIds(withdrawProposalId);
+        }
     }
 
 

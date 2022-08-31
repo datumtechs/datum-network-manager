@@ -132,6 +132,7 @@ public class ProposalServiceImpl implements ProposalService {
         dynamicFields.put("submissionTime", bn2Date(proposal.getSubmissionBn(), curBn, avgPackTime));
         dynamicFields.put("voteBeginTime", bn2Date(proposal.getVoteBeginBn(), curBn, avgPackTime));
         dynamicFields.put("voteEndTime", bn2Date(proposal.getVoteEndBn(), curBn, avgPackTime));
+        dynamicFields.put("autoQuitTime", bn2Date(proposal.getAutoQuitBn(), curBn, avgPackTime));
 
         //投票进度=投票赞成数/委员会人数
         if (proposal.getAuthorityNumber() == null) {

@@ -200,4 +200,13 @@
         where type = #{type}
           and relation_id = #{relationId}
     </update>
+
+    <delete id="deleteWithdrawProposalByProposalIds">
+        delete from authority_business
+        where type in (101,102)
+        and relation_id in
+        <foreach collection="proposalIds" item="proposalId" open="(" close=")" separator=",">
+            #{proposalId}
+        </foreach>
+    </delete>
 </mapper>
