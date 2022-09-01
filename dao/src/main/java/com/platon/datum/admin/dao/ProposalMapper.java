@@ -43,4 +43,11 @@ public interface ProposalMapper {
                      @Param("status") Integer status);
 
     int countBySubmitter(@Param("identityId") String identityId);
+
+
+    /**
+     * 查询出当前组织是否存在已打开的提案
+     */
+    List<Proposal> selectByCandidateAndStatus(@Param("localOrgIdentityId") String localOrgIdentityId,
+                                              @Param("statusList") List<Integer> statusList);
 }

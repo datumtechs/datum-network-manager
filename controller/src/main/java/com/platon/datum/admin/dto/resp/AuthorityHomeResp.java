@@ -34,4 +34,7 @@ public class AuthorityHomeResp extends Org {
 
     @ApiModelProperty("是否是委员会初始成员：0-否，1-是")
     private Integer isAuthorityAdmin = 0;
+
+    @ApiModelProperty("是否存在已打开的提案：0-否，1-是")
+    private Integer hasOpenProposal = 0;
 }

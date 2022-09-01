@@ -77,6 +77,8 @@ public class AuthorityController {
             }
         });
 
+        boolean hasOpenProposal = proposalService.hasOpenProposal(localOrgInfo.getIdentityId());
+        resp.setHasOpenProposal(hasOpenProposal ? 1 : 0);
         return JsonResponse.success(resp);
     }
 

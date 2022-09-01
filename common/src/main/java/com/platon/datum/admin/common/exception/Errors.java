@@ -109,6 +109,7 @@ public enum Errors {
     AuthorityAlreadyKickOut(1073,"Authority already has been kicked out!"),
     CantKickOutAuthorityAdmin(1074,"Can't kick out authority admin!"),
     AuthorityAdminCantExit(1075,"Authority admin can't exit!"),
+    AnOpenProposalAlreadyExists(1076,"An open proposal already exists!"),
 
 
     // rpc调用时异常

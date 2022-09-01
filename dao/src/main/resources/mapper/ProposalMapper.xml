@@ -301,4 +301,14 @@
             #{status}
         </foreach>
     </select>
+
+    <select id="selectByCandidateAndStatus" resultMap="BaseResultMap">
+        select p.*
+        from proposal p
+        where status in
+        <foreach collection="statusList" separator="," open="(" close=")" item="status">
+            #{status}
+        </foreach>
+        and candidate = #{localOrgIdentityId}
+    </select>
 </mapper>

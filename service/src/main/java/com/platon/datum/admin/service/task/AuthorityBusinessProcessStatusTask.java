@@ -112,11 +112,11 @@ public class AuthorityBusinessProcessStatusTask {
         authorityBusinessList.forEach(authorityBusiness -> {
             Proposal proposal = getProposal(curBn, authorityBusiness);
             //3.如果提案过了投票时间了，则将未处理的事务改成处理状态为拒绝
-            if (proposal.getStatus() == Proposal.StatusEnum.VOTE_END.getValue()) {
+            if (proposal.getStatus() == Proposal.StatusEnum.VOTE_END.getStatus()) {
                 authorityBusinessMapper.updateProcessStatusById(authorityBusiness.getId(), AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus());
             }
             //4.如果提案被撤销了，则将0-未处理设置为2-拒绝
-            if (proposal.getStatus() == Proposal.StatusEnum.REVOKED.getValue()
+            if (proposal.getStatus() == Proposal.StatusEnum.REVOKED.getStatus()
                     && authorityBusiness.getProcessStatus() == AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus()) {
                 authorityBusinessMapper.updateProcessStatusById(authorityBusiness.getId(), AuthorityBusiness.ProcessStatusEnum.DISAGREE.getStatus());
             }

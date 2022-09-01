@@ -137,11 +137,11 @@ public class Proposal extends BaseDomain implements Business {
         REVOKED(8, "已撤销"),
         ;
 
-        private int value;
+        private int status;
         private String desc;
 
-        StatusEnum(Integer value, String desc) {
-            this.value = value;
+        StatusEnum(Integer status, String desc) {
+            this.status = status;
             this.desc = desc;
         }
 
@@ -149,7 +149,7 @@ public class Proposal extends BaseDomain implements Business {
 
         static {
             for (StatusEnum value : StatusEnum.values()) {
-                map.put(value.getValue(), value);
+                map.put(value.getStatus(), value);
             }
         }
 

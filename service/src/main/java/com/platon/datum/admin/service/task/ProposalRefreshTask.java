@@ -94,9 +94,9 @@ public class ProposalRefreshTask {
         //1.获取投票完的提案列表
         String localOrgIdentityId = OrgCache.getLocalOrgIdentityId();
         List<Integer> statusList = new ArrayList<>();
-        statusList.add(Proposal.StatusEnum.HAS_NOT_STARTED.getValue());
-        statusList.add(Proposal.StatusEnum.VOTE_START.getValue());
-        statusList.add(Proposal.StatusEnum.VOTE_END.getValue());
+        statusList.add(Proposal.StatusEnum.HAS_NOT_STARTED.getStatus());
+        statusList.add(Proposal.StatusEnum.VOTE_START.getStatus());
+        statusList.add(Proposal.StatusEnum.VOTE_END.getStatus());
         List<Proposal> proposalList = proposalMapper.selectBySubmitterAndStatus(localOrgIdentityId, statusList);
 
         BigInteger curBn = platONClient.platonBlockNumber();
@@ -109,7 +109,7 @@ public class ProposalRefreshTask {
                     }
                     return proposal;
                 })
-                .filter(proposal -> proposal.getStatus() == Proposal.StatusEnum.VOTE_END.getValue())
+                .filter(proposal -> proposal.getStatus() == Proposal.StatusEnum.VOTE_END.getStatus())
                 .collect(Collectors.toList());
         //2.调用effect方法生效
         proposalList.forEach(proposal -> {
@@ -131,7 +131,7 @@ public class ProposalRefreshTask {
         //1.获取主动退出中的提案
         String localOrgIdentityId = OrgCache.getLocalOrgIdentityId();
         List<Integer> statusList = new ArrayList<>();
-        statusList.add(Proposal.StatusEnum.EXITING.getValue());
+        statusList.add(Proposal.StatusEnum.EXITING.getStatus());
         List<Proposal> proposalList = proposalMapper.selectBySubmitterAndStatus(localOrgIdentityId, statusList);
 
         BigInteger curBn = platONClient.platonBlockNumber();
@@ -171,7 +171,7 @@ public class ProposalRefreshTask {
                 proposal.setSubmitter(DidUtil.addressToDid(contentJsonObject.getStr("submitter")));
                 proposal.setCandidate(DidUtil.addressToDid(contentJsonObject.getStr("candidate")));
                 proposal.setSubmissionBn(contentJsonObject.getStr("submitBlockNo"));
-                proposal.setStatus(Proposal.StatusEnum.HAS_NOT_STARTED.getValue());
+                proposal.setStatus(Proposal.StatusEnum.HAS_NOT_STARTED.getStatus());
 
                 //将公示信息拿出来放到数据库中
                 String proposalUrl = contentJsonObject.getStr("proposalUrl");
@@ -204,7 +204,7 @@ public class ProposalRefreshTask {
                 if (contentJsonObject.getInt("proposalType") == 3) {
                     proposal.setType(Proposal.TypeEnum.AUTO_QUIT_AUTHORITY.getValue());
                     proposal.setAutoQuitBn(new BigInteger(proposal.getSubmissionBn()).add(voteConfig.getQuit()).toString());
-                    proposal.setStatus(Proposal.StatusEnum.EXITING.getValue());
+                    proposal.setStatus(Proposal.StatusEnum.EXITING.getStatus());
                 }
                 saveMap.put(proposal.getId(), proposal);
             }
@@ -213,7 +213,7 @@ public class ProposalRefreshTask {
             if (proposalLog.getType() == ProposalLog.TypeEnum.WITHDRAWPROPOSAL_EVENT.getValue()) {
                 //查询出指定的提案，并将状态修改为撤销状态
                 Proposal proposal = saveMap.computeIfAbsent(contentJsonObject.getStr("proposalId"), id -> proposalMapper.selectByPrimaryKey(id));
-                proposal.setStatus(Proposal.StatusEnum.REVOKED.getValue());
+                proposal.setStatus(Proposal.StatusEnum.REVOKED.getStatus());
                 //删除指定的委员会事务
                 withdrawProposalId.add(proposal.getId());
             }
@@ -230,9 +230,9 @@ public class ProposalRefreshTask {
                 //查询出指定的提案，并将状态修改为投票通过或者投票不通过
                 Proposal proposal = saveMap.computeIfAbsent(contentJsonObject.getStr("proposalId"), id -> proposalMapper.selectByPrimaryKey(id));
                 if (proposal.getType() == Proposal.TypeEnum.AUTO_QUIT_AUTHORITY.getValue()) {
-                    proposal.setStatus(Proposal.StatusEnum.SIGNED_OUT.getValue());
+                    proposal.setStatus(Proposal.StatusEnum.SIGNED_OUT.getStatus());
                 } else {
-                    proposal.setStatus(contentJsonObject.getBool("result") ? Proposal.StatusEnum.VOTE_PASS.getValue() : Proposal.StatusEnum.VOTE_NOT_PASS.getValue());
+                    proposal.setStatus(contentJsonObject.getBool("result") ? Proposal.StatusEnum.VOTE_PASS.getStatus() : Proposal.StatusEnum.VOTE_NOT_PASS.getStatus());
                 }
                 proposal.setAuthorityNumber(voteContract.sizeOfAllAuthority(new BigInteger(proposalLog.getBlockNumber()).subtract(BigInteger.ONE)));
             }
@@ -273,8 +273,8 @@ public class ProposalRefreshTask {
 
         //2.如果过了提案投票时间的，则不需要加入到委员会事务中
         proposalService.convertProposalStatus(curBn, proposal);
-        if (proposal.getStatus() == Proposal.StatusEnum.HAS_NOT_STARTED.getValue()
-                || proposal.getStatus() == Proposal.StatusEnum.VOTE_START.getValue()) {
+        if (proposal.getStatus() == Proposal.StatusEnum.HAS_NOT_STARTED.getStatus()
+                || proposal.getStatus() == Proposal.StatusEnum.VOTE_START.getStatus()) {
             authorityBusiness.setRelationId(proposal.getId());
             authorityBusiness.setApplyOrg(proposal.getSubmitter());
             authorityBusiness.setSpecifyOrg(proposal.getCandidate());
