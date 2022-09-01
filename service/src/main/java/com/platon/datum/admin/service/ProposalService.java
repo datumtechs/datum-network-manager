@@ -3,7 +3,6 @@ package com.platon.datum.admin.service;
 import com.github.pagehelper.Page;
 import com.platon.datum.admin.dao.entity.GlobalOrg;
 import com.platon.datum.admin.dao.entity.Proposal;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigInteger;
@@ -71,5 +70,7 @@ public interface ProposalService {
     /**
      * 查询出当前组织是否存在已打开的提案
      */
-    boolean hasOpenProposal(String candidate);
+    boolean candidateHasOpenProposal(String candidate);
+
+    boolean submitterHasOpenProposal(String submitter);
 }

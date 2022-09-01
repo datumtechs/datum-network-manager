@@ -210,11 +210,11 @@
         </foreach>
     </delete>
 
-    <delete id="selecVCTodoList">
+    <select id="selectVCTodoList" resultMap="BaseResultMap">
         select ab.*
         from authority_business ab
         where process_status = 0
           and ab.type = 1
         order by id desc
-    </delete>
+    </select>
 </mapper>

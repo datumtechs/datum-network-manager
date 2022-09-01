@@ -69,7 +69,7 @@ public class AuthorityBusinessProcessStatusTask {
 
     private void processTodoVC() {
         //1.查询出委员会事务对VC的待办列表
-        List<AuthorityBusiness> authorityBusinessList = authorityBusinessMapper.selecVCTodoList();
+        List<AuthorityBusiness> authorityBusinessList = authorityBusinessMapper.selectVCTodoList();
         authorityBusinessList.forEach(authorityBusiness -> {
             //5分钟未操作则视为拒绝
             processExpiredData(authorityBusiness);

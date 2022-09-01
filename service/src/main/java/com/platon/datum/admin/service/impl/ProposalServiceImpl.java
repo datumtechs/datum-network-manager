@@ -169,17 +169,28 @@ public class ProposalServiceImpl implements ProposalService {
         Integer status = proposal.getStatus();
         //投票未开始前可以撤回
         if (status == Proposal.StatusEnum.HAS_NOT_STARTED.getStatus()) {
-            //调用调度服务撤销提案
-            boolean success = proposalClient.withdrawProposal(String.valueOf(id));
-            if (!success) {
-                throw new BizException(Errors.SysException, "Revoke proposal failed!");
-            } else {
-                proposalMapper.updateStatus(id, Proposal.StatusEnum.REVOKING.getStatus());
-                //将authorityBusiness状态0-未处理设置为状态2-拒绝
-                this.rejectProposal(id, proposal.getType());
+            revoke(proposal);
+        } else if (status == Proposal.StatusEnum.EXITING.getStatus()) {
+            //是否已经过了撤回时间
+            String autoQuitBn = proposal.getAutoQuitBn();
+            if (curBn.compareTo(new BigInteger(autoQuitBn)) > 0) {
+                throw new BizException(Errors.ProposalRevokeTimeExpired);
             }
+            revoke(proposal);
         } else {
             throw new BizException(Errors.ProposalRevokeTimeExpired);
+        }
+    }
+
+    private void revoke(Proposal proposal) {
+        //调用调度服务撤销提案
+        boolean success = proposalClient.withdrawProposal(proposal.getId());
+        if (!success) {
+            throw new BizException(Errors.SysException, "Revoke proposal failed!");
+        } else {
+            proposalMapper.updateStatus(proposal.getId(), Proposal.StatusEnum.REVOKING.getStatus());
+            //将authorityBusiness状态0-未处理设置为状态2-拒绝
+            this.rejectProposal(proposal.getId(), proposal.getType());
         }
     }
 
@@ -213,7 +224,7 @@ public class ProposalServiceImpl implements ProposalService {
             throw new BizException(Errors.AuthorityAlreadyExists, "Authority already exist!");
         }
         //如果有已打开的提案则不可再提案
-        if (hasOpenProposal(identityId)) {
+        if (candidateHasOpenProposal(identityId)) {
             throw new BizException(Errors.AnOpenProposalAlreadyExists);
         }
         String address = DidUtil.didToHexAddress(identityId);
@@ -245,7 +256,7 @@ public class ProposalServiceImpl implements ProposalService {
             throw new BizException(Errors.SysException, "Current org is not authority!");
         }
         //如果有已打开的提案则不可再提案
-        if (hasOpenProposal(identityId)) {
+        if (candidateHasOpenProposal(identityId) && submitterHasOpenProposal(identityId)) {
             throw new BizException(Errors.AnOpenProposalAlreadyExists);
         }
 
@@ -271,7 +282,8 @@ public class ProposalServiceImpl implements ProposalService {
             throw new BizException(Errors.AuthorityAdminCantExit, "Authority admin can't exit!");
         }
         //如果有已打开的提案则不可再提案
-        if (hasOpenProposal(OrgCache.getLocalOrgIdentityId())) {
+        if (candidateHasOpenProposal(OrgCache.getLocalOrgIdentityId())
+                && submitterHasOpenProposal(OrgCache.getLocalOrgIdentityId())) {
             throw new BizException(Errors.AnOpenProposalAlreadyExists);
         }
         String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
@@ -351,7 +363,7 @@ public class ProposalServiceImpl implements ProposalService {
     public List<GlobalOrg> getNominateMember(String keyword) {
         List<GlobalOrg> list = globalOrgMapper.selectNominateMemberList(keyword);
         list = list.stream()
-                .filter(globalOrg -> !hasOpenProposal(globalOrg.getIdentityId()))
+                .filter(globalOrg -> !candidateHasOpenProposal(globalOrg.getIdentityId()))
                 .collect(Collectors.toList());
         return list;
     }
@@ -360,7 +372,7 @@ public class ProposalServiceImpl implements ProposalService {
      * 查询出当前组织是否存在已打开的提案
      */
     @Override
-    public boolean hasOpenProposal(String candidate) {
+    public boolean candidateHasOpenProposal(String candidate) {
         List<Integer> statusList = new ArrayList<>();
         statusList.add(Proposal.StatusEnum.HAS_NOT_STARTED.getStatus());
         statusList.add(Proposal.StatusEnum.VOTE_START.getStatus());
@@ -368,6 +380,21 @@ public class ProposalServiceImpl implements ProposalService {
         statusList.add(Proposal.StatusEnum.EXITING.getStatus());
         statusList.add(Proposal.StatusEnum.REVOKING.getStatus());
         List<Proposal> proposals = proposalMapper.selectByCandidateAndStatus(candidate, statusList);
+        return proposals.isEmpty() ? false : true;
+    }
+
+    /**
+     * 查询出当前组织是否存在已打开的提案
+     */
+    @Override
+    public boolean submitterHasOpenProposal(String submitter) {
+        List<Integer> statusList = new ArrayList<>();
+        statusList.add(Proposal.StatusEnum.HAS_NOT_STARTED.getStatus());
+        statusList.add(Proposal.StatusEnum.VOTE_START.getStatus());
+        statusList.add(Proposal.StatusEnum.VOTE_END.getStatus());
+        statusList.add(Proposal.StatusEnum.EXITING.getStatus());
+        statusList.add(Proposal.StatusEnum.REVOKING.getStatus());
+        List<Proposal> proposals = proposalMapper.selectBySubmitterAndStatus(submitter, statusList);
         return proposals.isEmpty() ? false : true;
     }
 

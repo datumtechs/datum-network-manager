@@ -10,6 +10,7 @@ import com.platon.datum.admin.dto.req.*;
 import com.platon.datum.admin.dto.resp.AuthorityHomeResp;
 import com.platon.datum.admin.service.AuthorityBusinessService;
 import com.platon.datum.admin.service.AuthorityService;
+import com.platon.datum.admin.service.ProposalLogService;
 import com.platon.datum.admin.service.ProposalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +47,8 @@ public class AuthorityController {
     private ProposalService proposalService;
     @Value("${pinata-gateway}")
     private String pinataGateway;
+    @Resource
+    private ProposalLogService proposalLogService;
 
     /**
      * 主页内容
@@ -77,7 +80,7 @@ public class AuthorityController {
             }
         });
 
-        boolean hasOpenProposal = proposalService.hasOpenProposal(localOrgInfo.getIdentityId());
+        boolean hasOpenProposal = proposalService.candidateHasOpenProposal(localOrgInfo.getIdentityId());
         resp.setHasOpenProposal(hasOpenProposal ? 1 : 0);
         return JsonResponse.success(resp);
     }
@@ -103,6 +106,8 @@ public class AuthorityController {
     @ApiOperation("提名踢出")
     @PostMapping("/kickOut")
     public JsonResponse kickOut(@RequestBody @Validated AuthorityKickOutReq req) {
+        //先刷新下proposalLog获取最新的提案状态
+        proposalLogService.processTodoProposalLog();
         proposalService.kickOut(req.getIdentityId(), req.getRemark(), req.getMaterial(), req.getMaterialDesc());
         return JsonResponse.success();
     }
@@ -115,6 +120,8 @@ public class AuthorityController {
     @ApiOperation("退出委员会")
     @PostMapping("/exit")
     public JsonResponse exit() {
+        //先刷新下proposalLog获取最新的提案状态
+        proposalLogService.processTodoProposalLog();
         proposalService.exit();
         return JsonResponse.success();
     }
@@ -151,6 +158,8 @@ public class AuthorityController {
     @ApiOperation("提名成员")
     @PostMapping("/nominate")
     public JsonResponse nominate(@RequestBody @Validated AuthorityNominateReq req) {
+        //先刷新下proposalLog获取最新的提案状态
+        proposalLogService.processTodoProposalLog();
         proposalService.nominate(req.getIdentityId(), req.getIp(), req.getPort(), req.getRemark(), req.getMaterial(), req.getMaterialDesc());
         return JsonResponse.success();
     }
@@ -261,6 +270,8 @@ public class AuthorityController {
     @ApiOperation("撤回提案")
     @PostMapping("/revokeProposal")
     public JsonResponse revokeProposal(@RequestBody @Validated AuthorityRevokeProposalReq req) {
+        //先刷新下proposalLog获取最新的提案状态
+        proposalLogService.processTodoProposalLog();
         proposalService.revokeProposal(req.getId());
         return JsonResponse.success();
     }

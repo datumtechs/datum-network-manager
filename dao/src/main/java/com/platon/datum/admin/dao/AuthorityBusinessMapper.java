@@ -46,7 +46,7 @@ public interface AuthorityBusinessMapper {
      *
      * @return
      */
-    List<AuthorityBusiness> selecVCTodoList();
+    List<AuthorityBusiness> selectVCTodoList();
 
     /**
      * 查询我待办的事务总数
