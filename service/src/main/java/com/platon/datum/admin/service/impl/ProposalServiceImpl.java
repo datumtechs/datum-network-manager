@@ -21,6 +21,7 @@ import com.platon.datum.admin.service.IpfsOpService;
 import com.platon.datum.admin.service.ProposalService;
 import com.platon.datum.admin.service.entity.ProposalMaterialContent;
 import com.platon.datum.admin.service.web3j.PlatONClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,6 +41,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
+@Slf4j
 public class ProposalServiceImpl implements ProposalService {
 
     @Resource
@@ -256,7 +258,7 @@ public class ProposalServiceImpl implements ProposalService {
             throw new BizException(Errors.SysException, "Current org is not authority!");
         }
         //如果有已打开的提案则不可再提案
-        if (candidateHasOpenProposal(identityId) && submitterHasOpenProposal(identityId)) {
+        if (candidateHasOpenProposal(identityId) || submitterHasOpenProposal(identityId)) {
             throw new BizException(Errors.AnOpenProposalAlreadyExists);
         }
 
@@ -283,7 +285,7 @@ public class ProposalServiceImpl implements ProposalService {
         }
         //如果有已打开的提案则不可再提案
         if (candidateHasOpenProposal(OrgCache.getLocalOrgIdentityId())
-                && submitterHasOpenProposal(OrgCache.getLocalOrgIdentityId())) {
+                || submitterHasOpenProposal(OrgCache.getLocalOrgIdentityId())) {
             throw new BizException(Errors.AnOpenProposalAlreadyExists);
         }
         String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
@@ -380,7 +382,9 @@ public class ProposalServiceImpl implements ProposalService {
         statusList.add(Proposal.StatusEnum.EXITING.getStatus());
         statusList.add(Proposal.StatusEnum.REVOKING.getStatus());
         List<Proposal> proposals = proposalMapper.selectByCandidateAndStatus(candidate, statusList);
-        return proposals.isEmpty() ? false : true;
+        boolean b = proposals.isEmpty() ? false : true;
+        log.debug("candidateHasOpenProposal------>{}", b);
+        return b;
     }
 
     /**
@@ -395,7 +399,9 @@ public class ProposalServiceImpl implements ProposalService {
         statusList.add(Proposal.StatusEnum.EXITING.getStatus());
         statusList.add(Proposal.StatusEnum.REVOKING.getStatus());
         List<Proposal> proposals = proposalMapper.selectBySubmitterAndStatus(submitter, statusList);
-        return proposals.isEmpty() ? false : true;
+        boolean b = proposals.isEmpty() ? false : true;
+        log.debug("submitterHasOpenProposal------>{}", b);
+        return b;
     }
 
 }

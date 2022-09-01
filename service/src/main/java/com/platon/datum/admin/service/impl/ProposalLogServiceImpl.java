@@ -129,6 +129,7 @@ public class ProposalLogServiceImpl implements ProposalLogService {
     public void processTodoProposalLog() {
         List<ProposalLog> proposalLogList = proposalLogMapper.selectByStatus(ProposalLog.StatusEnum.TODO.getValue());
 
+        log.debug("processTodoProposalLog");
         if (CollectionUtil.isEmpty(proposalLogList)) {
             return;
         }
