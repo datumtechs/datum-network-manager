@@ -109,7 +109,7 @@ public class ProposalServiceImpl implements ProposalService {
 
     private Long getTimeByBn(BigInteger bn) {
         BigInteger time = timeCache.computeIfAbsent(bn, k -> platONClient.platonGetBlockByNumber(k).getTimestamp());
-        return time.longValue();
+        return time.longValue() * 1000;
     }
 
     /**

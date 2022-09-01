@@ -11,6 +11,7 @@ import com.platon.datum.admin.dao.AuthorityMapper;
 import com.platon.datum.admin.dao.ProposalLogMapper;
 import com.platon.datum.admin.dao.ProposalMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.dao.entity.AuthorityBusiness;
 import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.dao.entity.ProposalLog;
@@ -69,6 +70,12 @@ public class ProposalRefreshTask {
         if (OrgCache.identityIdNotFound()) {
             return;
         }
+        Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
+        //如果不是委员会成员则不关心提案状态
+        if (authority == null) {
+            return;
+        }
+
         log.debug("刷新提案状态定时任务开始>>>");
         List<ProposalLog> proposalLogList = proposalLogMapper.selectByStatus(ProposalLog.StatusEnum.TODO.getValue());
 
@@ -281,7 +288,7 @@ public class ProposalRefreshTask {
             authorityBusiness.setStartTime(LocalDateTimeUtil.now());
             authorityBusiness.setProcessStatus(AuthorityBusiness.ProcessStatusEnum.TO_DO.getStatus());
             return authorityBusiness;
-        } else{
+        } else {
             return null;
         }
     }
