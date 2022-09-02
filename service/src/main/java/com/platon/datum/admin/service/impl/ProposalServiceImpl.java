@@ -366,6 +366,8 @@ public class ProposalServiceImpl implements ProposalService {
         List<GlobalOrg> list = globalOrgMapper.selectNominateMemberList(keyword);
         list = list.stream()
                 .filter(globalOrg -> !candidateHasOpenProposal(globalOrg.getIdentityId()))
+                .filter(globalOrg -> !submitterHasOpenProposal(globalOrg.getIdentityId()))
+                .filter(globalOrg -> !globalOrg.getIdentityId().equalsIgnoreCase(OrgCache.getLocalOrgIdentityId()))
                 .collect(Collectors.toList());
         return list;
     }
