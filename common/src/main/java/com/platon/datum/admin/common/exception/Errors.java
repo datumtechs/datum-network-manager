@@ -91,25 +91,23 @@ public enum Errors {
     DownloadFailed(1060, "Download failed!"),
     NonceTooLow(1061, "Nonce too low!"),
     TxExceedsBlockGasLimit(1062, "Exceeds block gas limit!"),
-    TxKnownTx(1063,"known transaction"),
-    TimeLessThan24H(1064,"Time is less than 24 hours!"),
-    YouAreNotOwner(1065,"You are not owner!"),
-    AlreadyEffectProposal(1066,"Proposal already effect!"),
-    ProposalRevokeTimeExpired(1067,"Revoke time has passed!"),
+    TxKnownTx(1063, "known transaction"),
+    TimeLessThan24H(1064, "Time is less than 24 hours!"),
+    YouAreNotOwner(1065, "You are not owner!"),
+    AlreadyEffectProposal(1066, "Proposal already effect!"),
+    ProposalRevokeTimeExpired(1067, "Revoke time has passed!"),
 
 
-
-
-
-    AuthorityNotExist(1068,"Authority not exist!"),
-    VcAlreadyExists(1069,"The vc already exists！"),
-    ApplyingVcAlreadyExists(1070,"A applying vc already exists！"),
-    ProposalStatusNotStartVote(1071,"Proposal status is not 'start vote' status!"),
-    AuthorityAlreadyExists(1072,"Authority already exist!"),
-    AuthorityAlreadyKickOut(1073,"Authority already has been kicked out!"),
-    CantKickOutAuthorityAdmin(1074,"Can't kick out authority admin!"),
-    AuthorityAdminCantExit(1075,"Authority admin can't exit!"),
-    AnOpenProposalAlreadyExists(1076,"An open proposal already exists!"),
+    AuthorityNotExist(1068, "Authority not exist!"),
+    VcAlreadyExists(1069, "The vc already exists！"),
+    ApplyingVcAlreadyExists(1070, "A applying vc already exists！"),
+    ProposalStatusNotStartVote(1071, "Proposal status is not 'start vote' status!"),
+    AuthorityAlreadyExists(1072, "Authority already exist!"),
+    AuthorityAlreadyKickOut(1073, "Authority already has been kicked out!"),
+    CantKickOutAuthorityAdmin(1074, "Can't kick out authority admin!"),
+    AuthorityAdminCantExit(1075, "Authority admin can't exit!"),
+    AnOpenProposalAlreadyExists(1076, "An open proposal already exists!"),
+    AuthorityCantExitNetwork(1077, "Authority can't exit network!"),
 
 
     // rpc调用时异常

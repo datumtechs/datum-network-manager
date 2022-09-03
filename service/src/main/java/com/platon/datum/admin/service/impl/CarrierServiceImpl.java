@@ -4,6 +4,7 @@ import com.platon.datum.admin.common.exception.BizException;
 import com.platon.datum.admin.common.exception.Errors;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.datum.admin.grpc.client.AuthClient;
@@ -12,11 +13,13 @@ import com.platon.datum.admin.grpc.entity.YarnGetNodeInfoResp;
 import com.platon.datum.admin.service.AuthorityService;
 import com.platon.datum.admin.service.CarrierService;
 import com.platon.datum.admin.service.OrgService;
+import com.platon.datum.admin.service.VoteContract;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 import static com.platon.datum.admin.grpc.constant.GrpcConstant.GRPC_SUCCESS_CODE;
 
@@ -39,6 +42,8 @@ public class CarrierServiceImpl implements CarrierService {
     private YarnClient yarnClient;
     @Resource
     private AuthorityService authorityService;
+    @Resource
+    private VoteContract voteContract;
 
     @Override
     public CarrierConnStatusEnum connectNode(String ip, int port) {
@@ -111,6 +116,16 @@ public class CarrierServiceImpl implements CarrierService {
         if (org.getStatus() != Org.StatusEnum.CONNECTED.getCode()) {
             throw new BizException(Errors.OrgNotConnectNetwork);
         }
+
+        //实时的去获取委员会成员列表
+        List<Authority> allAuthority = voteContract.getAllAuthority();
+        allAuthority.forEach(authority -> {
+            if (authority.getIdentityId().equalsIgnoreCase(org.getIdentityId())) {
+                //委员会成员需要先退出委员会才能退网
+                throw new BizException(Errors.AuthorityCantExitNetwork);
+            }
+        });
+
         authClient.revokeIdentityJoin();
 
         //退网成功，刷新数据库
