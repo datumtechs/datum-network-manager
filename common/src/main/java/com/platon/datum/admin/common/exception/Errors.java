@@ -108,6 +108,7 @@ public enum Errors {
     AuthorityAdminCantExit(1075, "Authority admin can't exit!"),
     AnOpenProposalAlreadyExists(1076, "An open proposal already exists!"),
     AuthorityCantExitNetwork(1077, "Authority can't exit network!"),
+    NominateMemberNotInNetwork(1078, "Nominate member not in network!"),
 
 
     // rpc调用时异常

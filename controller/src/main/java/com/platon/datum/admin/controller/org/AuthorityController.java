@@ -140,11 +140,11 @@ public class AuthorityController {
     }
 
     /**
-     * 获取可提名的成员
+     * 获取可提名加入的成员
      *
      * @since 0.5.0
      */
-    @ApiOperation("获取可提名的成员")
+    @ApiOperation("获取可提名加入的成员")
     @PostMapping("/getNominateMember")
     public JsonResponse<List<GlobalOrg>> getNominateMember(@RequestBody @Validated AuthorityGetNominateMemberReq req) {
         List<GlobalOrg> globalOrgList = proposalService.getNominateMember(req.getKeyword());

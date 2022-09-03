@@ -229,6 +229,15 @@ public class ProposalServiceImpl implements ProposalService {
         if (candidateHasOpenProposal(identityId)) {
             throw new BizException(Errors.AnOpenProposalAlreadyExists);
         }
+        GlobalOrg globalOrg = globalOrgMapper.selectByIdentityId(identityId);
+        if(globalOrg == null){
+            throw new BizException(Errors.OrgInfoNotFound);
+        }
+        //被提名的成员不在网络中
+        if (globalOrg.getStatus() != 1) {
+            throw new BizException(Errors.NominateMemberNotInNetwork);
+        }
+
         String address = DidUtil.didToHexAddress(identityId);
         ProposalMaterialContent proposalMaterialContent = new ProposalMaterialContent();
         proposalMaterialContent.setImage(material);
@@ -368,6 +377,7 @@ public class ProposalServiceImpl implements ProposalService {
                 .filter(globalOrg -> !candidateHasOpenProposal(globalOrg.getIdentityId()))
                 .filter(globalOrg -> !submitterHasOpenProposal(globalOrg.getIdentityId()))
                 .filter(globalOrg -> !globalOrg.getIdentityId().equalsIgnoreCase(OrgCache.getLocalOrgIdentityId()))
+                .filter(globalOrg -> globalOrg.getStatus() == 1)
                 .collect(Collectors.toList());
         return list;
     }
