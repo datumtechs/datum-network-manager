@@ -259,6 +259,7 @@ public class AuthClient {
                     globalOrg.setImageUrl(organization.getImageUrl());
                     globalOrg.setDetails(organization.getDetails());
                     globalOrg.setRecUpdateTime(LocalDateTimeUtil.getLocalDateTime(organization.getUpdateAt()));
+                    globalOrg.setCredential(organization.getCredential());
                     return globalOrg;
                 })
                 .collect(Collectors.toList());
