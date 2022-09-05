@@ -9,12 +9,11 @@ import com.alibaba.fastjson.JSON;
 import com.platon.datum.admin.common.util.DidUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.AuthorityBusinessMapper;
+import com.platon.datum.admin.dao.AuthorityMapper;
 import com.platon.datum.admin.dao.ProposalLogMapper;
 import com.platon.datum.admin.dao.ProposalMapper;
-import com.platon.datum.admin.dao.entity.AuthorityBusiness;
-import com.platon.datum.admin.dao.entity.Proposal;
-import com.platon.datum.admin.dao.entity.ProposalLog;
-import com.platon.datum.admin.dao.entity.SysConfig;
+import com.platon.datum.admin.dao.cache.OrgCache;
+import com.platon.datum.admin.dao.entity.*;
 import com.platon.datum.admin.service.*;
 import com.platon.datum.admin.service.entity.ProposalMaterialContent;
 import com.platon.datum.admin.service.entity.VoteConfig;
@@ -53,6 +52,8 @@ public class ProposalLogServiceImpl implements ProposalLogService {
     private PlatONClient platONClient;
     @Resource
     private ProposalService proposalService;
+    @Resource
+    private AuthorityMapper authorityMapper;
 
     @Override
     public void subscribe() {
@@ -235,14 +236,18 @@ public class ProposalLogServiceImpl implements ProposalLogService {
         //更新Proposal log表
         proposalLogMapper.updateListStatus(proposalLogList);
 
-        //更新委员会事务表authorityBusiness
-        insertAuthorityBusinessList.forEach(authorityBusiness -> {
-            authorityBusinessMapper.insertSelectiveReturnId(authorityBusiness);
-        });
+        Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
+        //如果不是委员会成员则不关心提案状态
+        if (authority != null) {
+            //更新委员会事务表authorityBusiness
+            insertAuthorityBusinessList.forEach(authorityBusiness -> {
+                authorityBusinessMapper.insertSelectiveReturnId(authorityBusiness);
+            });
 
-        //撤回的提案不显示在待办事务和已办事务中
-        if (!withdrawProposalId.isEmpty()) {
-            authorityBusinessMapper.deleteWithdrawProposalByProposalIds(withdrawProposalId);
+            //撤回的提案不显示在待办事务和已办事务中
+            if (!withdrawProposalId.isEmpty()) {
+                authorityBusinessMapper.deleteWithdrawProposalByProposalIds(withdrawProposalId);
+            }
         }
     }
 

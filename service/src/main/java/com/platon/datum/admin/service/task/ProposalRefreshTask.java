@@ -32,8 +32,7 @@ public class ProposalRefreshTask {
 
     @Resource
     private ProposalMapper proposalMapper;
-    @Resource
-    private AuthorityMapper authorityMapper;
+
     @Resource
     private ProposalClient proposalClient;
     @Resource
@@ -50,11 +49,6 @@ public class ProposalRefreshTask {
     @Scheduled(fixedDelayString = "${ProposalRefreshTask.fixedDelay}")
     public void refreshProposal() {
         if (OrgCache.identityIdNotFound()) {
-            return;
-        }
-        Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
-        //如果不是委员会成员则不关心提案状态
-        if (authority == null) {
             return;
         }
 
