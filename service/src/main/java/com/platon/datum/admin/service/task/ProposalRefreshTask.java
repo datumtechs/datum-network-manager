@@ -1,7 +1,6 @@
 package com.platon.datum.admin.service.task;
 
 import com.platon.datum.admin.dao.AuthorityMapper;
-import com.platon.datum.admin.dao.ProposalLogMapper;
 import com.platon.datum.admin.dao.ProposalMapper;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Authority;
@@ -31,8 +30,6 @@ import java.util.stream.Collectors;
 @Configuration
 public class ProposalRefreshTask {
 
-    @Resource
-    private ProposalLogMapper proposalLogMapper;
     @Resource
     private ProposalMapper proposalMapper;
     @Resource

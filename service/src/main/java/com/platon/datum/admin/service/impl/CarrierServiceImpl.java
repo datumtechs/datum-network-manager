@@ -10,10 +10,7 @@ import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.datum.admin.grpc.client.AuthClient;
 import com.platon.datum.admin.grpc.client.YarnClient;
 import com.platon.datum.admin.grpc.entity.YarnGetNodeInfoResp;
-import com.platon.datum.admin.service.AuthorityService;
-import com.platon.datum.admin.service.CarrierService;
-import com.platon.datum.admin.service.OrgService;
-import com.platon.datum.admin.service.VoteContract;
+import com.platon.datum.admin.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +38,11 @@ public class CarrierServiceImpl implements CarrierService {
     @Resource
     private YarnClient yarnClient;
     @Resource
-    private AuthorityService authorityService;
+    private ProposalService proposalService;
     @Resource
     private VoteContract voteContract;
+    @Resource
+    private AuthorityService authorityService;
 
     @Override
     public CarrierConnStatusEnum connectNode(String ip, int port) {
@@ -73,7 +72,7 @@ public class CarrierServiceImpl implements CarrierService {
         }
 
         try {
-            authClient.applyIdentityJoin(org.getIdentityId(), org.getName(), org.getImageUrl(), org.getProfile());
+            authClient.applyIdentityJoin(org);
         } catch (BizException exception) {
             //已经注册过了
             if (exception.getErrorCode() == Errors.OrgConnectNetworkAlready.getCode()) {
@@ -97,7 +96,7 @@ public class CarrierServiceImpl implements CarrierService {
         }
 
         //刷新委员会列表
-//        authorityService.refreshAuthority();
+        authorityService.refreshAuthority();
 
         //入网成功，刷新数据库
         org.setCarrierNodeId(nodeInfo.getNodeId());
@@ -125,6 +124,13 @@ public class CarrierServiceImpl implements CarrierService {
                 throw new BizException(Errors.AuthorityCantExitNetwork);
             }
         });
+
+        boolean candidateHasOpenProposal = proposalService.candidateHasOpenProposal(org.getIdentityId());
+        boolean submitterHasOpenProposal = proposalService.submitterHasOpenProposal(org.getIdentityId());
+        if(candidateHasOpenProposal || submitterHasOpenProposal){
+            //被提名的组织暂时不能退网
+            throw new BizException(Errors.AnOpenProposalAlreadyExists);
+        }
 
         authClient.revokeIdentityJoin();
 

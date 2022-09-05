@@ -79,8 +79,8 @@ public class AuthorityBusinessProcessStatusTask {
     private void processExpiredData(AuthorityBusiness business) {
         //未审批完30*24h为过期时间
         LocalDateTime startTime = business.getStartTime();
-//            long timeStamp = LocalDateTimeUtil.getTimestamp(startTime.plusHours(720));
-        long timeStamp = LocalDateTimeUtil.getTimestamp(startTime.plusMinutes(5));//TODO for test
+            long timeStamp = LocalDateTimeUtil.getTimestamp(startTime.plusHours(720));
+//        long timeStamp = LocalDateTimeUtil.getTimestamp(startTime.plusMinutes(5));//TODO for test
         if (timeStamp < System.currentTimeMillis()) {
             //未审批且自动过期的，则更新一下委员会事务状态为不同意
             int count = authorityBusinessMapper.updateProcessStatusById(business.getId(),

@@ -1,5 +1,6 @@
 package com.platon.datum.admin.grpc.client;
 
+import com.platon.datum.admin.dao.entity.Org;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,17 +25,22 @@ public class AuthClientTest extends BaseClientTest {
     AuthClient authClient;
 
     @Test
-    public void testApplyIdentityJoin(){
+    public void testApplyIdentityJoin() {
         String identityId = "identityId_000001";
         String name = "orgName_000001";
         String url = "http://url";
         String profile = "node profile";
-        authClient.applyIdentityJoin(identityId, name, url, profile);
+        Org org = new Org();
+        org.setIdentityId(identityId);
+        org.setName(name);
+        org.setImageUrl(url);
+        org.setProfile(profile);
+        authClient.applyIdentityJoin(org);
 
     }
 
     @Test
-    public void testRevokeIdentityJoin(){
+    public void testRevokeIdentityJoin() {
         authClient.revokeIdentityJoin();
     }
 }

@@ -20,6 +20,7 @@ import com.platon.datum.admin.dto.req.UserUpdateAdminReq;
 import com.platon.datum.admin.dto.resp.LoginNonceResp;
 import com.platon.datum.admin.dto.resp.LoginResp;
 import com.platon.datum.admin.service.OrgService;
+import com.platon.datum.admin.service.ProposalService;
 import com.platon.datum.admin.service.ResourceService;
 import com.platon.datum.admin.service.UserService;
 import io.swagger.annotations.Api;
@@ -61,6 +62,9 @@ public class UserController {
 
     @Resource
     private ResourceService resourceService;
+
+    @Resource
+    private ProposalService proposalService;
 
     @GetMapping("/getLoginNonce")
     @ApiOperation(value = "获取登录Nonce", notes = "获取登录Nonce")
@@ -269,6 +273,13 @@ public class UserController {
     public JsonResponse<Org> findLocalOrgInfo() {
         try {
             Org org = OrgCache.getLocalOrgInfo();
+            boolean submitterHasOpenProposal = proposalService.submitterHasOpenProposal(org.getIdentityId());
+            boolean candidateHasOpenProposal = proposalService.candidateHasOpenProposal(org.getIdentityId());
+            if (candidateHasOpenProposal || submitterHasOpenProposal) {
+                org.getDynamicFields().put("hasOpenProposal", 1);
+            } else {
+                org.getDynamicFields().put("hasOpenProposal", 0);
+            }
             return JsonResponse.success(org);
         } catch (OrgInfoNotFound ex) {
             return JsonResponse.fail(Errors.OrgInfoNotFound);

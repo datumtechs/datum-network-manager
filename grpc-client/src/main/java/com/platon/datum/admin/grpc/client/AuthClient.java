@@ -7,6 +7,7 @@ import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.DataAuth;
 import com.platon.datum.admin.dao.entity.GlobalOrg;
+import com.platon.datum.admin.dao.entity.Org;
 import com.platon.datum.admin.grpc.carrier.api.AuthRpcApi;
 import com.platon.datum.admin.grpc.carrier.api.AuthServiceGrpc;
 import com.platon.datum.admin.grpc.carrier.types.Common;
@@ -49,20 +50,18 @@ public class AuthClient {
 
     /**
      * 申请准入网络
-     *
-     * @param identityId // 组织的身份标识Id
-     * @param name       // 组织名称
      */
-    public void applyIdentityJoin(String identityId, String name, String imageUrl, String profile) {
+    public void applyIdentityJoin(Org org) {
         //1.获取rpc连接
         ManagedChannel channel = channelManager.getCarrierChannel();
         //2.拼装request
         IdentityData.Organization orgInfo = IdentityData.Organization
                 .newBuilder()
-                .setNodeName(name)
-                .setIdentityId(identityId)
-                .setImageUrl(StringUtils.trimToEmpty(imageUrl))
-                .setDetails(StringUtils.trimToEmpty(profile))
+                .setIdentityId(org.getIdentityId())
+                .setNodeName(org.getName())
+                .setCredential(org.getCredential())
+                .setImageUrl(StringUtils.trimToEmpty(org.getImageUrl()))
+                .setDetails(StringUtils.trimToEmpty(org.getProfile()))
                 .build();
         AuthRpcApi.ApplyIdentityJoinRequest joinRequest = AuthRpcApi.ApplyIdentityJoinRequest
                 .newBuilder()
