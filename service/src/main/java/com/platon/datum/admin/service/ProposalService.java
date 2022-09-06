@@ -59,7 +59,8 @@ public interface ProposalService {
 
     /**
      * 转换proposal的状态
-     * @param curBn 当前的块高
+     *
+     * @param curBn    当前的块高
      * @param proposal 需要转换的proposal
      * @return proposal状态是否发生改变
      */
@@ -70,7 +71,5 @@ public interface ProposalService {
     /**
      * 查询出当前组织是否存在已打开的提案
      */
-    boolean candidateHasOpenProposal(String candidate);
-
-    boolean submitterHasOpenProposal(String submitter);
+    boolean hasOpenProposal(String identityId);
 }

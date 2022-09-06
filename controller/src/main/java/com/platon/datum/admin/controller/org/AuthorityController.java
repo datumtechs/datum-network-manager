@@ -80,9 +80,8 @@ public class AuthorityController {
             }
         });
 
-        boolean candidateHasOpenProposal = proposalService.candidateHasOpenProposal(localOrgInfo.getIdentityId());
-        boolean submitterHasOpenProposal = proposalService.submitterHasOpenProposal(localOrgInfo.getIdentityId());
-        resp.setHasOpenProposal((candidateHasOpenProposal || submitterHasOpenProposal) ? 1 : 0);
+        boolean hasOpenProposal = proposalService.hasOpenProposal(localOrgInfo.getIdentityId());
+        resp.setHasOpenProposal(hasOpenProposal ? 1 : 0);
         return JsonResponse.success(resp);
     }
 

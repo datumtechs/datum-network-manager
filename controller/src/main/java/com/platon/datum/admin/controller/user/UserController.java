@@ -10,7 +10,6 @@ import com.platon.datum.admin.common.util.WalletSignUtil;
 import com.platon.datum.admin.constant.ControllerConstants;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
-import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.dao.entity.SysUser;
 import com.platon.datum.admin.dto.JsonResponse;
 import com.platon.datum.admin.dto.SignMessageDto;
@@ -273,15 +272,13 @@ public class UserController {
     public JsonResponse<Org> findLocalOrgInfo() {
         try {
             Org org = OrgCache.getLocalOrgInfo();
-            org.getDynamicFields().put("hasOpenProposal", 0);
-            List<Proposal> openProposalList = voteContract.getOpenProposalList();
-            openProposalList.forEach(openProposal -> {
-                if (openProposal.getCandidate().equalsIgnoreCase(org.getIdentityId())
-                        || openProposal.getSubmitter().equalsIgnoreCase(org.getIdentityId())) {
-                    //被提名的组织暂时不能退网
-                    org.getDynamicFields().put("hasOpenProposal", 1);
-                }
-            });
+            boolean hasOpenProposal = proposalService.hasOpenProposal(org.getIdentityId());
+            if (hasOpenProposal) {
+                //被提名的组织暂时不能退网
+                org.getDynamicFields().put("hasOpenProposal", 1);
+            } else {
+                org.getDynamicFields().put("hasOpenProposal", 0);
+            }
             return JsonResponse.success(org);
         } catch (OrgInfoNotFound ex) {
             return JsonResponse.fail(Errors.OrgInfoNotFound);

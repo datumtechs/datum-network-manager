@@ -19,6 +19,7 @@ import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.grpc.client.ProposalClient;
 import com.platon.datum.admin.service.IpfsOpService;
 import com.platon.datum.admin.service.ProposalService;
+import com.platon.datum.admin.service.VoteContract;
 import com.platon.datum.admin.service.entity.ProposalMaterialContent;
 import com.platon.datum.admin.service.web3j.PlatONClient;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +59,8 @@ public class ProposalServiceImpl implements ProposalService {
     private AuthorityBusinessMapper authorityBusinessMapper;
     @Resource
     private PlatONClient platONClient;
+    @Resource
+    private VoteContract voteContract;
 
     private static Map<BigInteger, BigInteger> timeCache = new ConcurrentHashMap<>();
 
@@ -226,11 +229,11 @@ public class ProposalServiceImpl implements ProposalService {
             throw new BizException(Errors.AuthorityAlreadyExists, "Authority already exist!");
         }
         //如果有已打开的提案则不可再提案
-        if (candidateHasOpenProposal(identityId)) {
+        if (hasOpenProposal(identityId)) {
             throw new BizException(Errors.AnOpenProposalAlreadyExists);
         }
         GlobalOrg globalOrg = globalOrgMapper.selectByIdentityId(identityId);
-        if(globalOrg == null){
+        if (globalOrg == null) {
             throw new BizException(Errors.OrgInfoNotFound);
         }
         //被提名的成员不在网络中
@@ -267,7 +270,7 @@ public class ProposalServiceImpl implements ProposalService {
             throw new BizException(Errors.SysException, "Current org is not authority!");
         }
         //如果有已打开的提案则不可再提案
-        if (candidateHasOpenProposal(identityId) || submitterHasOpenProposal(identityId)) {
+        if (hasOpenProposal(identityId)) {
             throw new BizException(Errors.AnOpenProposalAlreadyExists);
         }
 
@@ -293,8 +296,7 @@ public class ProposalServiceImpl implements ProposalService {
             throw new BizException(Errors.AuthorityAdminCantExit, "Authority admin can't exit!");
         }
         //如果有已打开的提案则不可再提案
-        if (candidateHasOpenProposal(OrgCache.getLocalOrgIdentityId())
-                || submitterHasOpenProposal(OrgCache.getLocalOrgIdentityId())) {
+        if (hasOpenProposal(OrgCache.getLocalOrgIdentityId())) {
             throw new BizException(Errors.AnOpenProposalAlreadyExists);
         }
         String observerProxyWalletAddress = OrgCache.getLocalOrgInfo().getObserverProxyWalletAddress();
@@ -374,8 +376,7 @@ public class ProposalServiceImpl implements ProposalService {
     public List<GlobalOrg> getNominateMember(String keyword) {
         List<GlobalOrg> list = globalOrgMapper.selectNominateMemberList(keyword);
         list = list.stream()
-                .filter(globalOrg -> !candidateHasOpenProposal(globalOrg.getIdentityId()))
-                .filter(globalOrg -> !submitterHasOpenProposal(globalOrg.getIdentityId()))
+                .filter(globalOrg -> !hasOpenProposal(globalOrg.getIdentityId()))
                 .filter(globalOrg -> !globalOrg.getIdentityId().equalsIgnoreCase(OrgCache.getLocalOrgIdentityId()))
                 .filter(globalOrg -> globalOrg.getStatus() == 1)
                 .collect(Collectors.toList());
@@ -386,34 +387,17 @@ public class ProposalServiceImpl implements ProposalService {
      * 查询出当前组织是否存在已打开的提案
      */
     @Override
-    public boolean candidateHasOpenProposal(String candidate) {
-        List<Integer> statusList = new ArrayList<>();
-        statusList.add(Proposal.StatusEnum.HAS_NOT_STARTED.getStatus());
-        statusList.add(Proposal.StatusEnum.VOTE_START.getStatus());
-        statusList.add(Proposal.StatusEnum.VOTE_END.getStatus());
-        statusList.add(Proposal.StatusEnum.EXITING.getStatus());
-        statusList.add(Proposal.StatusEnum.REVOKING.getStatus());
-        List<Proposal> proposals = proposalMapper.selectByCandidateAndStatus(candidate, statusList);
-        boolean b = proposals.isEmpty() ? false : true;
-        log.debug("candidateHasOpenProposal------>{}", b);
-        return b;
-    }
-
-    /**
-     * 查询出当前组织是否存在已打开的提案
-     */
-    @Override
-    public boolean submitterHasOpenProposal(String submitter) {
-        List<Integer> statusList = new ArrayList<>();
-        statusList.add(Proposal.StatusEnum.HAS_NOT_STARTED.getStatus());
-        statusList.add(Proposal.StatusEnum.VOTE_START.getStatus());
-        statusList.add(Proposal.StatusEnum.VOTE_END.getStatus());
-        statusList.add(Proposal.StatusEnum.EXITING.getStatus());
-        statusList.add(Proposal.StatusEnum.REVOKING.getStatus());
-        List<Proposal> proposals = proposalMapper.selectBySubmitterAndStatus(submitter, statusList);
-        boolean b = proposals.isEmpty() ? false : true;
-        log.debug("submitterHasOpenProposal------>{}", b);
-        return b;
+    public boolean hasOpenProposal(String identityId) {
+        List<Proposal> openProposalList = voteContract.getOpenProposalList();
+        for (int i = 0; i < openProposalList.size(); i++) {
+            Proposal openProposal = openProposalList.get(i);
+            if (openProposal.getCandidate().equalsIgnoreCase(identityId)
+                    || openProposal.getSubmitter().equalsIgnoreCase(identityId)) {
+                //被提名的组织暂时不能退网
+                return true;
+            }
+        }
+        return false;
     }
 
 }
