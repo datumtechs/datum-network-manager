@@ -201,7 +201,7 @@ public class VoteContractImpl implements VoteContract {
             proposal.setId(proposalId.toString());
             proposal.setType(proposalType.intValue());
             proposal.setCandidate(DidUtil.addressToDid(candidate));
-            proposal.setSubmitter(submitter);
+            proposal.setSubmitter(DidUtil.addressToDid(submitter));
             proposal.setSubmissionBn(submitBlockNo.toString());
             return proposal;
         }).collect(Collectors.toList());
