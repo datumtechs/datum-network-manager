@@ -10,6 +10,7 @@ import com.platon.datum.admin.common.util.WalletSignUtil;
 import com.platon.datum.admin.constant.ControllerConstants;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Org;
+import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.dao.entity.SysUser;
 import com.platon.datum.admin.dto.JsonResponse;
 import com.platon.datum.admin.dto.SignMessageDto;
@@ -19,10 +20,7 @@ import com.platon.datum.admin.dto.req.UserSetOrgNameReq;
 import com.platon.datum.admin.dto.req.UserUpdateAdminReq;
 import com.platon.datum.admin.dto.resp.LoginNonceResp;
 import com.platon.datum.admin.dto.resp.LoginResp;
-import com.platon.datum.admin.service.OrgService;
-import com.platon.datum.admin.service.ProposalService;
-import com.platon.datum.admin.service.ResourceService;
-import com.platon.datum.admin.service.UserService;
+import com.platon.datum.admin.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +63,8 @@ public class UserController {
 
     @Resource
     private ProposalService proposalService;
+    @Resource
+    private VoteContract voteContract;
 
     @GetMapping("/getLoginNonce")
     @ApiOperation(value = "获取登录Nonce", notes = "获取登录Nonce")
@@ -273,13 +273,15 @@ public class UserController {
     public JsonResponse<Org> findLocalOrgInfo() {
         try {
             Org org = OrgCache.getLocalOrgInfo();
-            boolean submitterHasOpenProposal = proposalService.submitterHasOpenProposal(org.getIdentityId());
-            boolean candidateHasOpenProposal = proposalService.candidateHasOpenProposal(org.getIdentityId());
-            if (candidateHasOpenProposal || submitterHasOpenProposal) {
-                org.getDynamicFields().put("hasOpenProposal", 1);
-            } else {
-                org.getDynamicFields().put("hasOpenProposal", 0);
-            }
+            org.getDynamicFields().put("hasOpenProposal", 0);
+            List<Proposal> openProposalList = voteContract.getOpenProposalList();
+            openProposalList.forEach(openProposal -> {
+                if (openProposal.getCandidate().equalsIgnoreCase(org.getIdentityId())
+                        || openProposal.getSubmitter().equalsIgnoreCase(org.getIdentityId())) {
+                    //被提名的组织暂时不能退网
+                    org.getDynamicFields().put("hasOpenProposal", 1);
+                }
+            });
             return JsonResponse.success(org);
         } catch (OrgInfoNotFound ex) {
             return JsonResponse.fail(Errors.OrgInfoNotFound);
