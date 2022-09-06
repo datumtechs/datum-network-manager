@@ -122,6 +122,8 @@ public class TaskClient {
                 //筛选掉时间更旧的数据
                 long endAt = information.getEndAt();
                 long oldEndAt = oldTaskDetail.getInformation().getEndAt();
+
+                log.debug("oldTaskDetail---->{},taskDetail---->{},oldEndAt:{},endAt:{}", oldTaskDetail, taskDetail, oldEndAt, endAt);
                 if (oldEndAt < endAt) {
                     taskMap.put(taskId, taskDetail);
                 }
