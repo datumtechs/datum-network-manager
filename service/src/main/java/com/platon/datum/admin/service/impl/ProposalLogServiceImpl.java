@@ -232,9 +232,13 @@ public class ProposalLogServiceImpl implements ProposalLogService {
 
         });
         //更新Proposal表
-        proposalMapper.insertOrUpdateBatch(saveMap.values());
+        if (!saveMap.values().isEmpty()) {
+            proposalMapper.insertOrUpdateBatch(saveMap.values());
+        }
         //更新Proposal log表
-        proposalLogMapper.updateListStatus(proposalLogList);
+        if (!proposalLogList.isEmpty()) {
+            proposalLogMapper.updateListStatus(proposalLogList);
+        }
 
         Authority authority = authorityMapper.selectByPrimaryKey(OrgCache.getLocalOrgIdentityId());
         //如果不是委员会成员则不关心提案状态

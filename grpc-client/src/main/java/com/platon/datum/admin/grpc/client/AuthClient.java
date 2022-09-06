@@ -59,7 +59,7 @@ public class AuthClient {
                 .newBuilder()
                 .setIdentityId(org.getIdentityId())
                 .setNodeName(org.getName())
-                .setCredential(org.getCredential())
+                .setCredential(StringUtils.trimToEmpty(org.getCredential()))
                 .setImageUrl(StringUtils.trimToEmpty(org.getImageUrl()))
                 .setDetails(StringUtils.trimToEmpty(org.getProfile()))
                 .build();
