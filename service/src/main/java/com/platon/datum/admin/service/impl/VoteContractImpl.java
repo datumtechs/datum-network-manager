@@ -9,6 +9,7 @@ import com.platon.datum.admin.common.util.AddressChangeUtil;
 import com.platon.datum.admin.common.util.DidUtil;
 import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.entity.Authority;
+import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.dao.entity.SysConfig;
 import com.platon.datum.admin.service.SysConfigService;
 import com.platon.datum.admin.service.VoteContract;
@@ -23,6 +24,7 @@ import com.platon.protocol.core.methods.request.PlatonFilter;
 import com.platon.protocol.core.methods.response.Log;
 import com.platon.tuples.generated.Tuple2;
 import com.platon.tuples.generated.Tuple3;
+import com.platon.tuples.generated.Tuple7;
 import com.platon.tx.Contract;
 import com.platon.tx.ReadonlyTransactionManager;
 import com.platon.tx.gas.ContractGasProvider;
@@ -37,6 +39,7 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 /**
@@ -172,6 +175,38 @@ public class VoteContractImpl implements VoteContract {
     public Integer sizeOfAllAuthority(BigInteger bigInteger) {
         Tuple3<List<String>, List<String>, List<BigInteger>> result = query(contract -> contract.getAllAuthority(), voteAddress, Optional.of(bigInteger));
         return result.getValue1().size();
+    }
+
+    @Override
+    public List<BigInteger> getAllOpenProposalId() {
+        List<BigInteger> allOpenProposalIdList = query(contract -> contract.getAllProposalId(), voteAddress, Optional.empty());
+        log.debug("allOpenProposalIdList --> {}", allOpenProposalIdList);
+        return allOpenProposalIdList;
+    }
+
+    @Override
+    public List<Proposal> getOpenProposalList() {
+        List<BigInteger> allProposalIdList = getAllOpenProposalId();
+        List<Proposal> proposalList = allProposalIdList.stream().map(proposalId -> {
+            Tuple7<BigInteger, String, String, String, String, BigInteger, List<String>> proposalInfo =
+                    query(contract -> contract.getProposal(proposalId), voteAddress, Optional.empty());
+            BigInteger proposalType = proposalInfo.getValue1();
+            String proposalUrl = proposalInfo.getValue2();
+            String candidate = proposalInfo.getValue3();
+            String candidateServiceUrl = proposalInfo.getValue4();
+            String submitter = proposalInfo.getValue5();
+            BigInteger submitBlockNo = proposalInfo.getValue6();
+            List<String> voters = proposalInfo.getValue7();
+            Proposal proposal = new Proposal();
+            proposal.setId(proposalId.toString());
+            proposal.setType(proposalType.intValue());
+            proposal.setCandidate(DidUtil.addressToDid(candidate));
+            proposal.setSubmitter(submitter);
+            proposal.setSubmissionBn(submitBlockNo.toString());
+            return proposal;
+        }).collect(Collectors.toList());
+        log.debug("proposalList --> {}", proposalList);
+        return proposalList;
     }
 
     private <R> R query(ExceptionFunction<Vote, RemoteCall<R>> supplier, String contractAddress, Optional<BigInteger> queryBlockNumber) {

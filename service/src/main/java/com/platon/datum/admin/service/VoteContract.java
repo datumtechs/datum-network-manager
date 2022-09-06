@@ -1,6 +1,7 @@
 package com.platon.datum.admin.service;
 
 import com.platon.datum.admin.dao.entity.Authority;
+import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.service.entity.VoteConfig;
 import com.platon.protocol.core.methods.response.Log;
 import com.platon.tuples.generated.Tuple2;
@@ -40,4 +41,8 @@ public interface VoteContract {
     Observable<Optional<Tuple2<Log, Object>>> subscribe(BigInteger beginBN);
 
     Integer sizeOfAllAuthority(BigInteger bigInteger);
+
+    List<BigInteger> getAllOpenProposalId();
+
+    List<Proposal> getOpenProposalList();
 }

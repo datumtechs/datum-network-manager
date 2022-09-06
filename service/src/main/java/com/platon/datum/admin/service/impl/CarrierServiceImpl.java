@@ -6,6 +6,7 @@ import com.platon.datum.admin.common.util.LocalDateTimeUtil;
 import com.platon.datum.admin.dao.cache.OrgCache;
 import com.platon.datum.admin.dao.entity.Authority;
 import com.platon.datum.admin.dao.entity.Org;
+import com.platon.datum.admin.dao.entity.Proposal;
 import com.platon.datum.admin.dao.enums.CarrierConnStatusEnum;
 import com.platon.datum.admin.grpc.client.AuthClient;
 import com.platon.datum.admin.grpc.client.YarnClient;
@@ -125,12 +126,14 @@ public class CarrierServiceImpl implements CarrierService {
             }
         });
 
-        boolean candidateHasOpenProposal = proposalService.candidateHasOpenProposal(org.getIdentityId());
-        boolean submitterHasOpenProposal = proposalService.submitterHasOpenProposal(org.getIdentityId());
-        if(candidateHasOpenProposal || submitterHasOpenProposal){
-            //被提名的组织暂时不能退网
-            throw new BizException(Errors.AnOpenProposalAlreadyExists);
-        }
+        List<Proposal> openProposalList = voteContract.getOpenProposalList();
+        openProposalList.forEach(openProposal -> {
+            if (openProposal.getCandidate().equalsIgnoreCase(org.getIdentityId())
+                    || openProposal.getSubmitter().equalsIgnoreCase(org.getIdentityId())) {
+                //被提名的组织暂时不能退网
+                throw new BizException(Errors.AnOpenProposalAlreadyExists);
+            }
+        });
 
         authClient.revokeIdentityJoin();
 
